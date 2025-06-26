@@ -183,645 +183,446 @@
 <script>
 // Toate cele 60 de întrebări din fișierul PDF au fost adăugate mai jos.
 const questions = [
-    {
-        q: "Care este definiția corectă a managementului strategic?",
-        options: [
-            "a) Proces de conducere axat exclusiv pe implementarea deciziilor operaționale",
-            "b) Set de decizii și acțiuni pentru dezvoltarea unor strategii eficiente care ajută la atingerea obiectivelor firmei",
-            "c) Elaborarea de politici anuale la nivelul fiecărui compartiment",
-            "d) Realizarea de planuri tactice pe termen scurt",
-            "e) Implementarea strategiilor fără evaluare sau control"
-        ],
-        correct: 1
-    },
-    {
-        q: "Dimensiunile fundamentale ale managementului strategic sunt:",
-        options: [
-            "a) Economică, financiară și tehnologică",
-            "b) Economică, umană și organizațională",
-            "c) Operațională, logistică și de vânzare",
-            "d) Legală, financiară și de marketing",
-            "e) Decizională, informatică și socială"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este principalul avantaj al practicării managementului strategic?",
-        options: [
-            "a) Reduce motivația angajaților",
-            "b) Crește rigiditatea organizației",
-            "c) Asigură unitatea de concepție și acțiune la toate nivelurile ierarhice",
-            "d) Întârzie procesul decizional",
-            "e) Reduce competitivitatea firmei"
-        ],
-        correct: 2
-    },
-    {
-        q: "Care este caracteristica principală a strategiei firmei?",
-        options: [
-            "a) Se concentrează pe acțiuni izolate",
-            "b) Se aplică doar pentru un departament",
-            "c) Este cuprinzătoare, unitară și integratoare",
-            "d) Nu influențează obiectivele firmei",
-            "e) Are orizont de timp de maximum 6 luni"
-        ],
-        correct: 2
-    },
-    {
-        q: "Conform lui Michael Porter, care sunt cele două mari tipuri de avantaje competitive?",
-        options: [
-            "a) Reducerea costurilor și creșterea prețurilor",
-            "b) Diferențiere și leadership în costuri",
-            "c) Concentrare și extindere",
-            "d) Diversificare și integrare",
-            "e) Globalizare și segmentare"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care sunt elementele de bază ale strategiei economice a unei firme?",
-        options: [
-            "a) Misiunea, obiectivele strategice, modalitățile de realizare, resursele, termenele, avantajul competitiv",
-            "b) Viziunea, profitul, acționarii",
-            "c) Bugetul anual și politica de marketing",
-            "d) Leadership, comunicare, planificare",
-            "e) Planificare operațională și structură organizațională"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce reprezintă lanțul valoric (value chain) în managementul strategic?",
-        options: [
-            "a) Ansamblul activităților de marketing ale firmei",
-            "b) Totalitatea activităților care adaugă valoare produsului de la achiziția materiilor prime până la distribuție",
-            "c) Doar procesul de producție",
-            "d) Activitățile financiare ale firmei",
-            "e) Doar activitățile de vânzare"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este rolul analizei SWOT în elaborarea strategiei?",
-        options: [
-            "a) Analizează doar concurența",
-            "b) Evaluează punctele forte, punctele slabe, oportunitățile și amenințările firmei",
-            "c) Măsoară eficiența financiară",
-            "d) Identifică doar resursele interne",
-            "e) Realizează audituri de calitate"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care dintre următoarele NU este o trăsătură a strategiei?",
-        options: [
-            "a) Vizează obținerea unui avantaj competitiv",
-            "b) Are în vedere întreaga întreprindere",
-            "c) Se concentrează pe tactici pe termen scurt",
-            "d) Are ca scop realizarea unor obiective strategice",
-            "e) Ține cont de mediul extern"
-        ],
-        correct: 2
-    },
-    {
-        q: "Care este sursa principală a avantajului competitiv durabil?",
-        options: [
-            "a) Accesul la credite bancare",
-            "b) Resurse rare, valoroase, greu de imitat și imposibil de substituit",
-            "c) Publicitatea agresivă",
-            "d) Locația geografică",
-            "e) Dimensiunea pieței"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce înseamnă strategia de diferențiere?",
-        options: [
-            "a) Reducerea costurilor prin standardizare",
-            "b) Oferirea unui produs sau serviciu perceput ca unic de către clienți",
-            "c) Orientarea exclusivă către export",
-            "d) Concentrarea pe o singură piață",
-            "e) Integrarea verticală"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care dintre următoarele reprezintă un factor generator al competitivității?",
-        options: [
-            "a) Cererea și oferta",
-            "b) Bugetul anual",
-            "c) Structura acționariatului",
-            "d) Numărul de angajați",
-            "e) Politica salarială"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce reprezintă segmentarea strategică?",
-        options: [
-            "a) Împărțirea activităților firmei în domenii omogene pentru analiză și concurență specifică",
-            "b) Stabilirea unui buget pentru fiecare departament",
-            "c) Selectarea furnizorilor după preț",
-            "d) Recrutarea de personal pe segmente",
-            "e) Analiza doar a activităților de vânzare"
-        ],
-        correct: 0
-    },
-    {
-        q: "Care este obiectivul fundamental al strategiei concurențiale?",
-        options: [
-            "a) Reducerea numărului de angajați",
-            "b) Creșterea competitivității firmei",
-            "c) Atragerea de fonduri europene",
-            "d) Îmbunătățirea imaginii publice",
-            "e) Diversificarea produselor"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce tip de strategie presupune satisfacerea nevoilor unui segment îngust de consumatori?",
-        options: [
-            "a) Strategie orientată",
-            "b) Strategie integrată",
-            "c) Strategie de fuziune",
-            "d) Strategie de exit",
-            "e) Strategie de dezvoltare"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce este politica firmei?",
-        options: [
-            "a) Un set de acțiuni pentru întreaga perioadă strategică",
-            "b) Un set de obiective pe termen mediu ce se referă la activități sau componente majore, resurse, acțiuni și termene",
-            "c) Un plan de investiții pe termen lung",
-            "d) Planificarea resurselor umane",
-            "e) Strategia de diferențiere a produsului"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care sunt cele cinci forțe competitive identificate de Michael Porter?",
-        options: [
-            "a) Inovare, leadership, costuri, marketing, vânzări",
-            "b) Clienți, furnizori, concurenți existenți, concurenți potențiali, produse de substituție",
-            "c) Segmentare, diversificare, concentrare, integrare, marketing",
-            "d) Infrastructură, competențe, imagine, resurse, leadership",
-            "e) Poziționare, extindere, dezvoltare, analiză SWOT, fuziune"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care dintre următoarele reprezintă o activitate primară în lanțul valoric?",
-        options: [
-            "a) Managementul resurselor umane",
-            "b) Logistică internă",
-            "c) Managementul dezvoltării tehnologice",
-            "d) Managementul firmei",
-            "e) Marketingul financiar"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce este o competență distinctivă?",
-        options: [
-            "a) Orice resursă la dispoziția firmei",
-            "b) Element de superioritate în capabilități sau resurse, care duce la avantaj competitiv",
-            "c) Orice abilitate managerială de bază",
-            "d) Orice proces automatizat",
-            "e) Orice activitate externalizată"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce presupune procesul birocratic în managementul strategic?",
-        options: [
-            "a) Stabilirea tipului de organizație, procesul de luare a deciziilor, stilul de motivare și procesul de control",
-            "b) Doar întocmirea de acte administrative",
-            "c) Aprobarea bugetelor",
-            "d) Elaborarea de politici de marketing",
-            "e) Implementarea unui sistem informatic"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce este o strategie de integrare a costului redus și a diferențierii?",
-        options: [
-            "a) Strategie ce vizează doar costurile",
-            "b) Strategie hibrid care urmărește simultan avantajul de cost și diferențiere",
-            "c) Strategie exclusivă de export",
-            "d) Plan tactic anual",
-            "e) Strategie de exit"
-        ],
-        correct: 1
-    },
   {
-        q: "Care dintre următoarele nu este o componentă a mediului extern analizată în procesul strategic?",
-        options: [
-            "a) Micromediul",
-            "b) Macromediul",
-            "c) Structura acționariatului",
-            "d) Piața concurențială",
-            "e) Stakeholderii"
-        ],
-        correct: 2
-    },
-    {
-        q: "Care este prima etapă în elaborarea strategiei firmei?",
-        options: [
-            "a) Segmentarea strategică",
-            "b) Formularea misiunii",
-            "c) Stabilirea obiectivelor financiare",
-            "d) Analiza SWOT",
-            "e) Implementarea strategiei"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce reprezintă avantajul competitiv temporar?",
-        options: [
-            "a) Avantaj pe termen lung, greu de imitat",
-            "b) Avantaj obținut valorificând o oportunitate trecătoare sau conjunctură favorabilă",
-            "c) Avantaj bazat pe fuziuni",
-            "d) Diferențiere sustenabilă",
-            "e) Sinergie între departamente"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este principalul rol al viziunii organizației în managementul strategic?",
-        options: [
-            "a) Fixează salariile",
-            "b) Ghidează și motivează angajații spre obiective pe termen lung",
-            "c) Controlează costurile",
-            "d) Stabilește politicile comerciale",
-            "e) Reglementează structura juridică"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce reprezintă inovarea pentru competitivitate?",
-        options: [
-            "a) Doar dezvoltarea de produse noi",
-            "b) Orice soluție nouă sau inedită care permite firmei să obțină un avantaj competitiv",
-            "c) Creșterea bugetului de marketing",
-            "d) Fuziunea cu alte firme",
-            "e) Creșterea numărului de angajați"
-        ],
-        correct: 1
-    },
-    {
-        q: "În modelul Porter, puterea furnizorilor este mare când:",
-        options: [
-            "a) Clienții pot schimba ușor furnizorul",
-            "b) Există multe produse de substituție",
-            "c) Clientela este dispersată și nu există alternative ușoare",
-            "d) Există concurență puternică între furnizori",
-            "e) Prețurile sunt reglementate de stat"
-        ],
-        correct: 2
-    },
-    {
-        q: "O strategie orientată pe cost presupune:",
-        options: [
-            "a) Investiții majore în cercetare-dezvoltare",
-            "b) Oferirea de produse sau servicii la prețuri scăzute către un segment restrâns de clienți",
-            "c) Diferențiere unică pe piață",
-            "d) Dominarea întregii piețe globale",
-            "e) Lipsa controlului asupra cheltuielilor"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este scopul principal al analizei SWOT?",
-        options: [
-            "a) Crearea unui plan financiar",
-            "b) Identificarea punctelor tari și slabe, oportunităților și amenințărilor pentru firmă",
-            "c) Calculul profitului",
-            "d) Stabilirea prețurilor",
-            "e) Selectarea partenerilor de afaceri"
-        ],
-        correct: 1
-    },
-    {
-        q: "Când poate fi considerată o firmă ca având competitivitate strategică?",
-        options: [
-            "a) Când imită strategia liderului de piață",
-            "b) Când reușește să formuleze și să implementeze o strategie creatoare de valoare greu de copiat de concurenți",
-            "c) Când reduce cheltuielile operaționale",
-            "d) Când crește numărul de angajați",
-            "e) Când investește în publicitate"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce rol are cultura organizațională în managementul strategic?",
-        options: [
-            "a) Determină structura bugetului",
-            "b) Influențează comportamentul, valorile și atitudinile care susțin implementarea strategiei",
-            "c) Este neglijabilă",
-            "d) Se referă doar la comunicarea internă",
-            "e) Stabilește contractele de muncă"
-        ],
-        correct: 1
-    },
-    {
-        q: "În procesul de segmentare strategică, ce criterii se pot folosi?",
-        options: [
-            "a) Tipul de clientelă, tipul de nevoi sau funcția produsului, tipul de tehnologie utilizată",
-            "b) Doar zona geografică",
-            "c) Numărul de angajați",
-            "d) Dimensiunea profitului",
-            "e) Numărul de produse comercializate"
-        ],
-        correct: 0
-    },
-    {
-        q: "Care este diferența fundamentală dintre strategie și politică la nivel de firmă?",
-        options: [
-            "a) Nu există nicio diferență",
-            "b) Strategia are orizont lung și vizează direcția generală, politica are orizont mediu/scurt și detaliază acțiunile",
-            "c) Politica se referă la marketing, strategia la producție",
-            "d) Politica este doar la nivel național",
-            "e) Strategia este impusă de stat"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce implică poziționarea concurențială a firmei pe piață?",
-        options: [
-            "a) Stabilirea prețurilor la întâmplare",
-            "b) Alegerea unui loc pe piață, astfel încât să obțină un avantaj competitiv față de concurenți",
-            "c) Selectarea angajaților",
-            "d) Exclusiv controlul costurilor",
-            "e) Promovarea doar prin publicitate"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este scopul final al strategiei de diferențiere?",
-        options: [
-            "a) Obținerea unui avantaj competitiv prin unicitatea percepută de consumatori",
-            "b) Reducerea costurilor la minimum",
-            "c) Creșterea cifrei de afaceri pe termen scurt",
-            "d) Externalizarea serviciilor",
-            "e) Eliminarea concurenței"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce este un lanț valoric vertical?",
-        options: [
-            "a) Succesul obținut din fuziuni",
-            "b) Succesiunea de activități prin care se creează valoare de la aprovizionare la livrarea către client",
-            "c) Planificarea fiscală",
-            "d) Numai activitatea de producție",
-            "e) Activitatea de marketing digital"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce reprezintă competențele de bază (core competences) ale unei firme?",
-        options: [
-            "a) Abilități comune tuturor firmelor din industrie",
-            "b) Avantaje tehnice, economice sau manageriale unice care susțin avantajul competitiv",
-            "c) Doar cunoștințele angajaților",
-            "d) Planuri anuale de investiții",
-            "e) Echipamentele utilizate"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care dintre următoarele reprezintă o pârghie a avantajului competitiv?",
-        options: [
-            "a) Eficiența superioară, capacitatea de inovare, calitatea, adaptarea la clientelă",
-            "b) Fuziunea cu concurența",
-            "c) Creșterea numărului de departamente",
-            "d) Diversificarea surselor de finanțare",
-            "e) Angajarea unui consultant extern"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce presupune strategia promoțională concentrată?",
-        options: [
-            "a) Promovarea tuturor produselor către întreaga piață",
-            "b) Orientarea comunicării doar către un segment specific de piață",
-            "c) Excluderea oricărei activități promoționale",
-            "d) Cheltuieli ridicate cu publicitatea",
-            "e) Promovarea exclusiv pe rețele sociale"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce înseamnă extinderea geografică pentru o firmă?",
-        options: [
-            "a) Reducerea numărului de produse",
-            "b) Creșterea vânzărilor pe aceeași piață",
-            "c) Accesarea de noi piețe în alte regiuni sau țări pentru a crește competitivitatea",
-            "d) Diversificarea activităților interne",
-            "e) Închirierea de spații suplimentare"
-        ],
-        correct: 2
-    },
-    {
-        q: "Care este principalul risc al strategiei de diferențiere?",
-        options: [
-            "a) Creșterea fidelității clienților",
-            "b) Prețul mai mare nu este justificat de beneficiile percepute de consumatori",
-            "c) Diminuarea costurilor de producție",
-            "d) Satisfacerea tuturor segmentelor de piață",
-            "e) Eliminarea concurenței"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este rolul stakeholderilor în managementul strategic?",
-        options: [
-            "a) Nu au niciun rol",
-            "b) Influențează așteptările și obiectivele firmei, trebuie analizați în procesul de elaborare a strategiei",
-            "c) Doar aprobă bugetul anual",
-            "d) Determină nivelul de salarizare",
-            "e) Sunt responsabili cu promovarea externă"
-        ],
-        correct: 1
-    },
-    {
-        q: "Când este recomandată strategia integrată de cost redus și diferențiere?",
-        options: [
-            "a) Când piața nu permite niciun fel de diferențiere",
-            "b) Când firma poate oferi produse diferențiate la costuri mai mici decât concurența",
-            "c) Când nu există concurență pe piață",
-            "d) Doar pentru companiile mari",
-            "e) Când produsul este standardizat"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este diferența dintre avantaj competitiv și competență distinctivă?",
-        options: [
-            "a) Nu există diferență",
-            "b) Avantajul competitiv este rezultatul, competența distinctivă este sursa acestuia",
-            "c) Avantajul competitiv este doar financiar",
-            "d) Competența distinctivă se referă la relații externe",
-            "e) Avantajul competitiv se măsoară doar prin vânzări"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce reprezintă analiza PEST în contextul managementului strategic?",
-        options: [
-            "a) Analiza proceselor interne",
-            "b) Analiza factorilor politici, economici, sociali și tehnologici din mediul extern",
-            "c) Analiza costurilor de producție",
-            "d) Auditul de calitate",
-            "e) Evaluarea performanței angajaților"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce implică strategia de concentrare bazată pe cost?",
-        options: [
-            "a) Vizează satisfacerea unui segment restrâns prin prețuri scăzute",
-            "b) Se adresează întregii piețe",
-            "c) Mizează pe unicitatea produsului",
-            "d) Include doar servicii suplimentare",
-            "e) Se aplică doar firmelor multinaționale"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce reprezintă riscul strategic?",
-        options: [
-            "a) Doar riscul financiar al investițiilor",
-            "b) Incertitudinea asociată cu atingerea obiectivelor strategice ale firmei",
-            "c) Riscul schimbării managementului",
-            "d) Pierderi datorate inflației",
-            "e) Riscul legat de fluctuațiile valutare"
-        ],
-        correct: 1
-    },
-    {
-        q: "În ce constă procesul de evaluare a strategiei?",
-        options: [
-            "a) Verificarea doar a rezultatelor financiare",
-            "b) Măsurarea performanței, identificarea deviațiilor și ajustarea strategiei",
-            "c) Controlul bugetului de marketing",
-            "d) Auditul anual",
-            "e) Modificarea structurii de personal"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce înseamnă flexibilitatea organizațională în contextul competitivității?",
-        options: [
-            "a) Schimbarea frecventă a managerilor",
-            "b) Capacitatea firmei de a răspunde rapid la schimbările mediului extern",
-            "c) Rotirea angajaților între departamente",
-            "d) Reducerea timpului de producție",
-            "e) Adoptarea oricărui trend de pe piață"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce rol are managementul resurselor umane în avantajul competitiv?",
-        options: [
-            "a) Nu influențează competitivitatea",
-            "b) Are efect asupra competențelor, motivației și costului angajaților, influențând direct avantajul competitiv",
-            "c) Se ocupă doar de recrutare",
-            "d) Controlează exclusiv salariile",
-            "e) Gestionează programul de lucru"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este relația dintre strategie și performanță economică?",
-        options: [
-            "a) Nu există nicio legătură",
-            "b) Strategia bine formulată și implementată îmbunătățește semnificativ performanța economică a firmei",
-            "c) Strategia determină doar structura departamentelor",
-            "d) Performanța depinde exclusiv de contextul economic extern",
-            "e) Doar strategia de marketing contează"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce tip de analiză permite identificarea punctelor forte și slabe ale concurenților?",
-        options: [
-            "a) Analiza SWOT",
-            "b) Analiza PEST",
-            "c) Analiza financiară",
-            "d) Auditul intern",
-            "e) Analiza mixului de marketing"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce înseamnă leadership strategic?",
-        options: [
-            "a) Conducerea axată exclusiv pe profit",
-            "b) Conducerea orientată spre formularea, implementarea și adaptarea strategiei pentru succesul pe termen lung",
-            "c) Doar abilități de comunicare",
-            "d) Administrarea operațiunilor zilnice",
-            "e) Controlul fluxurilor financiare"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care este rolul evaluării mediului concurențial?",
-        options: [
-            "a) Identificarea rapidă a schimbărilor tehnologice",
-            "b) Estimarea calității mediului concurențial, măsurarea atractivității și identificarea avantajelor competitive",
-            "c) Stabilirea salariilor managerilor",
-            "d) Analiza performanței bugetare",
-            "e) Controlul promoțiilor"
-        ],
-        correct: 1
-    },
-    {
-        q: "Ce implică poziționarea focalizată pe consumator?",
-        options: [
-            "a) Scoaterea în evidență a beneficiilor pentru consumatori și asocierea produsului cu nevoile acestora",
-            "b) Promovarea intensă a brandului",
-            "c) Analiza costurilor de producție",
-            "d) Dezvoltarea de politici interne",
-            "e) Crearea de parteneriate externe"
-        ],
-        correct: 0
-    },
-    {
-        q: "Care este una dintre metodele principale de creștere a competitivității firmei?",
-        options: [
-            "a) Diversificarea, fuziunile și achizițiile, extinderea geografică",
-            "b) Reducerea personalului",
-            "c) Limitarea inovației",
-            "d) Creșterea rigidității structurale",
-            "e) Creșterea costurilor de producție"
-        ],
-        correct: 0
-    },
-    {
-        q: "Ce implică strategia defensivă în promovare?",
-        options: [
-            "a) Creșterea bugetului de marketing",
-            "b) Menținerea poziției curente și protejarea pieței față de concurenți",
-            "c) Atacarea directă a concurenței",
-            "d) Reorientarea totală a pieței",
-            "e) Lărgirea portofoliului de produse"
-        ],
-        correct: 1
-    },
-    {
-        q: "Care dintre următoarele reprezintă o barieră la intrarea pe piață?",
-        options: [
-            "a) Costuri de capital ridicate, reglementări stricte, loialitatea față de brandurile existente",
-            "b) Prețuri mici la produse",
-            "c) Forță de muncă abundentă",
-            "d) Inovație permanentă",
-            "e) Cerere redusă"
-        ],
-        correct: 0
-    }
-]
+    q: "Principalele teorii care au marcat etapele dezvoltarii managementului strategic au fost:",
+    options: [
+      "a) Teoria sistemica",
+      "b) Teoria clasica",
+      "c) Teoria avantajului comparativ",
+      "d) Teoria cresterii si teoria portofoliului",
+      "e) Teoria deciziei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Strategia de diferentiere are in vedere:",
+    options: [
+      "a) Obtinerea unui avantaj competitional prin crearea unui produs ce este perceput de catre consumatori ca fiind unic",
+      "b) Oferirea unui cost mic si in acelasi timp, a unei calitatii apropiata de cea a mediei de pe piata",
+      "c) Coordonarea competentelor si a mijloacelor necesare pentru evitarea riscului",
+      "d) Ocuparea unei pozitii de neinlocuit pe un anumit segment",
+      "e) Realizarea unor noi piete de desfacere"
+    ],
+    correct: 0
+  },
+  {
+    q: "Avantajele oferite firmei de managementului strategic sunt:",
+    options: [
+      "a) Asigura unitatea de viziune a actionarilor",
+      "b) Asigura un cadru legal deciziilor managerilor",
+      "c) Furnizeaza un cadru stiintific deciziilor managerilor",
+      "d) Contribuie la cresterea profitului actionarilor",
+      "e) Constituie forma de conducere cea mai bine adaptata pentru anticiparea problemelor viitoare"
+    ],
+    correct: 4
+  },
+  {
+    q: "Elementele de care trebuie sa tina seama un proces strategic sunt:",
+    options: [
+      "a) Marimea firmei",
+      "b) Competenta tehnica, tehnologica a intreprinderii si modul de organizare a acesteia",
+      "c) Sistemul de salarizare a salariatilor",
+      "d) Domeniul de actiune a firmei",
+      "e) Politica de perfectionare profesionala"
+    ],
+    correct: 1
+  },
+  {
+    q: "Etapa comuna a modelelor lui: W. Glueck, A. Sharplin, L.Rue si Ph.Holland si a lui A. Thompson Jr. si A. Strickland III este:",
+    options: [
+      "a) Aplicarea strategiei",
+      "b) Stabilirea obiectivelor strategice",
+      "c) Analiza mediului intern si extern firmei",
+      "d) Evaluarea performantelor",
+      "e) Compararea alternativelor strategice"
+    ],
+    correct: 0
+  },
+  {
+    q: "Matricea marii strategii evalueaza:",
+    options: [
+      "a) Factorii externi si interni",
+      "b) Aria de desfacere a firmei",
+      "c) Nivelul costurilor",
+      "d) Doua dimensiuni: pozitia competitiva si cresterea pietei",
+      "e) Gradul de inovare tehnologica a firmei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Realizarea unei strategii de crestere inseamna:",
+    options: [
+      "a) Integrarea vertical",
+      "b) Dizolvarea firmei prin absorbtie",
+      "c) Adresarea produselor catre clientii traditionali",
+      "d) Sporirea volumului vânzarilor",
+      "e) Integrarea orizontala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Strategiile de produs se refera la:",
+    options: [
+      "a) Satisfacerea cerintelor pietei",
+      "b) Introducerea celor mai noi tehnologii de productie si desfacere",
+      "c) Cresterea volumului activitatii",
+      "d) Diversificarea productiei",
+      "e) Concentrarea productiei"
+    ],
+    correct: 1
+  },
+  {
+    q: "Determinantii endogeni sunt:",
+    options: [
+      "a) Ofertantii",
+      "b) Firmele juridice",
+      "c) Sectorul de activitate",
+      "d) Dimensiunea firmei",
+      "e) Cultura economico-sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Politicile se caracterizeaza prin:",
+    options: [
+      "a) Coerenta",
+      "b) Realism",
+      "c) Complementaritate",
+      "d) Detaliere",
+      "e) Eficienta"
+    ],
+    correct: 0
+  },
+  {
+    q: "Principalelor trasaturi ale managementului strategic asa cum era el cunoscut pâna in anii 1970 regasite in lucrarea lui Ellen-Earle Chaffee din anul 1985 sunt:",
+    options: [
+      "a) Dinamism",
+      "b) Imbina gândirea conceptuala cu cea analitica",
+      "c) Veridicitate",
+      "d) Obiectivitate",
+      "e) Adaptare cerintele clientilor"
+    ],
+    correct: 1
+  },
+  {
+    q: "Determinantii exogeni sunt:",
+    options: [
+      "a) Factorii demografici",
+      "b) Grupurile de salariati",
+      "c) Organizatii de mediu",
+      "d) Factorii politici",
+      "e) Piata de capital"
+    ],
+    correct: 0
+  },
+  {
+    q: "Strategiile defensive (de restrângere) se refera la:",
+    options: [
+      "a) Fuziune-sciziune",
+      "b) Absorbtie",
+      "c) Indatorare publica",
+      "d) Imbunatatirea calitatii produselor",
+      "e) Deposedare partiala de active"
+    ],
+    correct: 4
+  },
+  {
+    q: "Managementul strategic ca proces presupune:",
+    options: [
+      "a) Abordarea factorilor de mediu",
+      "b) Confirmarea gap-ului dintre obiective",
+      "c) Validarea deciziei strategice a firmei",
+      "d) Elaborarea unor strategii riguroase si implementarea acestora",
+      "e) Economie de scara"
+    ],
+    correct: 3
+  },
+  {
+    q: "Elementele esentiale in practica managementului japonez sunt:",
+    options: [
+      "a) Cunoaste mediul",
+      "b) Fa cum este mai bine",
+      "c) Orientarea catre valori a conducerii de vârf a firmei",
+      "d) Realizarea de studii si analize",
+      "e) Conducerea dictatoriala"
+    ],
+    correct: 2
+  },
+  {
+    q: "Ipotezele pe care se bazeaza managementul strategic din perspectiva sociologica sunt:",
+    options: [
+      "a) Rationalitate",
+      "b) Maximizare profit",
+      "c) Minimizare costuri",
+      "d) Comportament de satisfactie",
+      "e) Valorificarea resurselor umane"
+    ],
+    correct: 3
+  },
+  {
+    q: "Procesul strategic depinde de:",
+    options: [
+      "a) Vointa actionarilor",
+      "b) Relatiile existente intre strategia actuala si cea dorita pentru viitor",
+      "c) Evolutia mediului de afaceri",
+      "d) Marimea pietei",
+      "e) Cerintele clientilor"
+    ],
+    correct: 1
+  },
+  {
+    q: "Dimensiunea economica a managementului strategi se articuleaza in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Care este situatia actuala a firmei ?",
+      "b) Ce pot acestia face ?",
+      "c) Ce se poate face cu sau impotriva lor ?",
+      "d) Ce stil de motivare ?",
+      "e) Care este situatia mediului?"
+    ],
+    correct: 0
+  },
+  {
+    q: "Strategiile de gasire a unei brese ecologice se refera la:",
+    options: [
+      "a) Strategia reducerii consumurilor",
+      "b) Strategia protectiei mediului",
+      "c) Strategia reducerii noxelor",
+      "d) Strategia barierei",
+      "e) Strategia eficientizarii energetice"
+    ],
+    correct: 3
+  },
+  {
+    q: "Cele patru abordari ale ale managementului strategic ale lui Whittington (2001) sunt:",
+    options: [
+      "a) Evolutionista",
+      "b) Progresista",
+      "c) Clasica",
+      "d) Empirica",
+      "e) Sociala"
+    ],
+    correct: 1
+  },
+  {
+    q: "Dimensiunea organizationala a managementului strategic se articuleaza in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Ce vrea firma ?",
+      "b) Ce se decide a face ?",
+      "c) Care sunt stakeholderii in prezent ?",
+      "d) Ce proces de control ?",
+      "e) Ce va face managerul ?"
+    ],
+    correct: 3
+  },
+  {
+    q: "Procesul socio-politic (dimensiunea umana) al managementului strategic este concentrat in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Ce proceduri de control ?",
+      "b) Ce influenteaza actorii ?",
+      "c) Ce procedure de evaluare ?",
+      "d) Cum abordezi riscul ?",
+      "e) Cine sunt ”actorii ?”"
+    ],
+    correct: 0
+  },
+  {
+    q: "Abordarea antreprenoriala a lui Mintzberg implica:",
+    options: [
+      "a) Concentrarea autoritatii in mâinile managerului",
+      "b) Elaborarea planului firmei",
+      "c) Cresterea competitivitatii firmei",
+      "d) Cercetarea oportunitatilor pietei si posibilitatile firmei de a le exploata",
+      "e) Stabilirea misiunii firmei"
+    ],
+    correct: 3
+  },
+  {
+    q: "In cadrul matricei SPACE pozitia strategica totala este data de:",
+    options: [
+      "a) Alegerea strategiei",
+      "b) Avantajele financiare, avantajele competitive,stabilitatea mediului si punctele tari ale industriei",
+      "c) Pozitia strategica externa",
+      "d) Pozitia defensiva",
+      "e) Pozitia strategica interna"
+    ],
+    correct: 1
+  },
+  {
+    q: "Care din aceste strategii este o strategie de piata?",
+    options: [
+      "a) Concentrarea pe gasirea unor nise de piata",
+      "b) Dezvoltarea de noi cai de comunicatie",
+      "c) Cresterea nivelului salariilor angajatilor",
+      "d) Mentinerea numarului de angajati",
+      "e) Dezvoltarea de noi compartimente la nivelul firmei"
+    ],
+    correct: 0
+  },
+  {
+    q: "Obiectivele firmei pot fi:",
+    options: [
+      "a) Obiective fezabile",
+      "b) Obiective durabile",
+      "c) Obiective divizionale",
+      "d) Obiective calitative",
+      "e) Obiective subiective"
+    ],
+    correct: 2
+  },
+  {
+    q: "Tehnicile cantitative utilizate in planificarea strategica sunt:",
+    options: [
+      "a) Analiza SWOT",
+      "b) Analiza BPEST",
+      "c) Analiza decizionala",
+      "d) Planificarea bugetului",
+      "e) Tehnica Delphi"
+    ],
+    correct: 3
+  },
+  {
+    q: "Managementul strategic din perspectiva economica lucreaza cu urmatoarele concepte:",
+    options: [
+      "a) Estimari viitoare",
+      "b) Maximizarea profitului",
+      "c) Organizare piramidala",
+      "d) Colaborare si armonie",
+      "e) Economie de piata"
+    ],
+    correct: 1
+  },
+  {
+    q: "Dimensiunea umana a managementului strategi se concentreaza in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Ce vrea sa faca ?",
+      "b) Ce proces de luare a deciziilor ?",
+      "c) Ce va face ?",
+      "d) Ce se decide a face ?",
+      "e) Ce stil de motivare ?"
+    ],
+    correct: 3
+  },
+  {
+    q: "Tehnicile calitative utilizate in planificarea strategica sunt:",
+    options: [
+      "a) Analiza de tip PIMS",
+      "b) Simple proiectii calitative",
+      "c) Analiza indicatorilor de tip raport",
+      "d) Tehnici Delphi",
+      "e) Anchete"
+    ],
+    correct: 3
+  },
+  {
+    q: "Strategia este definita drept:",
+    options: [
+      "a) ansamblul obiectivelor majore ale organizatiei pe termen lung, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "b) ansamblul obiectivelor majore ale organizatiei pe termen scurt, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "c) ansamblul obiectivelor individuale ale resurselor umane pe termen lung, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "d) ansamblul obiectivelor individuale ale resurselor umane pe termen scurt, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "e) nici un rapuns correct"
+    ],
+    correct: 0
+  },
+  {
+    q: "Avantajul competitiv se bazeaza in prezent pe investitia in factori avansati de productie, dintre care ii retinem pe urmatorii:",
+    options: [
+      "a) abilitati deosebite ale resursei lunare",
+      "b) tehnologia de reciclare",
+      "c) sisteme avansate de management",
+      "d) sistemele primare de transport si telecomunicatii",
+      "e) nici un raspuns corect"
+    ],
+    correct: 2
+  },
+  {
+    q: "Managementul strategic se refera la:",
+    options: [
+      "a) procesul prin care managerii stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "b) procesul prin care angajatii stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "c) procesul prin care furnizorii firmei stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "d) ) procesul prin care angajatii stabilesc directia de evolutie pe termen lung a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "e) nici un raspuns corect"
+    ],
+    correct: 0
+  },
+  {
+    q: "Principalele avantajele de natura economica urmarite cu prioritate prin practicarea managementului strategic sunt:",
+    options: [
+      "a) concentrarea eforturilor salariatilor in scopul realizarii obiectivelor personale",
+      "b) consecventa actiunilor managementului si a celorlalti salariati ai organizatiei in vederea realizarii strategiei propuse",
+      "c) asigurarea inflexibilitatii organizationale",
+      "d) Stabilirea directiei de actiune a firmei",
+      "e) 1+2"
+    ],
+    correct: 4
+  },
+  {
+    q: "Procesul de decizie strategica contine trei etape esentiale (conform Modelului lui S. Oréal):",
+    options: [
+      "a) alegerea obiectivelor strategice pe care le va urmari firma",
+      "b) formularea unei strategii locale a firmei pentru a le putea realiza",
+      "c) alegerea strategiilor functionale, in scopul administrarii necorespunzatoare a dezvoltarii portofoliului de activitati din firma",
+      "d) alegerea obiectivelor individuale pe care le va urmari firma",
+      "e) nici un raspuns corect"
+    ],
+    correct: 0
+  },
+  {
+    q: "Care din urmatoarele combinatii reprezinta etape ce se afla la baza modelului dinamic, conceput pentru procesul strategic desfasurat in firmele românesti:",
+    options: [
+      "1) identificarea si definirea problemei decizionale",
+      "2) precizarea obiectivului decizional si stabilirea criteriilor decizionale",
+      "3) stabilirea alternativelor sau variantelor decizionale",
+      "4) adoptarea variantei decizionale considerata cea mai buna",
+      "5) aplicarea deciziei si evaluarea rezultatelor aplicarii deciziei"
+    ],
+    correct: 0
+  },
+  {
+    q: "Planificarea strategica este necesara, potrivit lui H. Mintzberg din mai multe considerente:",
+    options: [
+      "a) organizatiile trebuie sa planifice pentru a-si coordona oamenii, intrucât planurile si planificarea pot servi ca mecanisme importante pentru a reuni activitatile disparate",
+      "b) organizatiile trebuie sa planifice pentru a se asigura ca viitorul este corect inteles si luat in considerare",
+      "c) organizatiile trebuie sa planifice pentru a fi irationale, adica adaptate cerintelor pietei si conjuncturii economice",
+      "d) organizatiile trebuie sa posede drept de vot in Consiliul de Administratie",
+      "e) nici un raspuns corect"
+    ],
+    correct: 1
+  },
+  {
+    q: "Reusita apelarii la modelarea managerial este conditionata de cunoasterea mai multor factori, in functie de care se decide asupra modelului ales. Printre cei mai importanti sunt urmatorii:",
+    options: [
+      "a) managementul vânzarii, un factor care poate avea o influenta pozitiva (dat fiind faptul ca acesta cunoaste bine “nevoile” firmei in materie de strategie), dar si negativa (daca nu este bine informat in acest domeniu)",
+      "b) misiunea firmei, stabilita de catre managementul sau sau de catre proprietari sau actionari, poate reprezenta un factor pozitiv, favorabil pentru alegerea celui mai adecvat model strategic decizional sau de planificare strategica",
+      "c) cultura, locala a regiunii care poate avea, in functie de gradul de dezvoltare si de integrare a modelarii culturii manageriale, o influenta pozitiva sau negative",
+      "d) managementul aprovizionarii",
+      "e) politica in domeniul managementului resurselor umane, stabilita de catre managementul sau sau de catre proprietari sau actionari, poate reprezenta un factor pozitiv"
+    ],
+    correct: 1
+  },
+  {
+    q: "Cauzele trecerii de la amatorism, bazat exclusiv pe intuitie, fler, talent la un management profesionist, competent, adica una dintre cele mai actuale si complexe modificari survenite in ultimele doua decenii pe plan mondial in domeniul managementului, sunt:",
+    options: [
+      "1) complexitatea crescânda a activitatilor economice",
+      "2) interdependentele cultural manifestate la scara mondiala",
+      "3) dinamica nemaiintâlnita a evolutiilor din cultura",
+      "4) evolutiile recente din domeniul managementului stiintific"
+    ],
+    correct: 3
+  },
+  {
+    q: "Avantajele utilizarii managementului strategic la nivel comportamental sunt:",
+    options: [
+      "a) motivarea personalului de management si de executie este putin corelata cu nivelul de participare a acestuia la stabilirea obiectivelor organizatiei si la realizarea lor",
+      "b) cele mai bune decizii pentru organizatie sunt cele care rezulta din practicarea consecventa a managementului strategic",
+      "c) anticiparea de catre managementul firmei si maximizarea posibilelor consecinte negative ale nerespectarii termenelor stabilite pentru realizarea unor obiective cuprinse in strategie",
+      "d) golurile si suprapunerile in activitati intre diversi membri ai grupului sau intre grupuri pot fi crescute in cadrul participarii la procesul de formulare a strategiei prin clarificarea asemanarii rolurilor",
+      "e) nici un raspuns corect"
+    ],
+    correct: 1
+  }
+];
 
 
 let selectedQuestions = [];
