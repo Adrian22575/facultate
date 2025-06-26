@@ -147,10 +147,30 @@
         .revolut-button:hover {
             background-color: #005a9e;
         }
+        .btn-back {
+          display: inline-block;
+          padding: 12px 24px;
+          background: #1250b1;
+          color: #fff;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: background 0.2s, transform 0.2s;
+        }
+        .btn-back:hover,
+        .btn-back:focus {
+          background: #0c3879;
+          transform: translateY(-2px);
+        }
+        .btn-back:focus {
+          outline: 2px dashed var(--primary);
+          outline-offset: 4px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <a href="index.html" class="btn-back">Înapoi la meniu</a>
         <h1>Test – Managementul calității</h1>
         <div id="mainContent">
             <div style="text-align:center;">
