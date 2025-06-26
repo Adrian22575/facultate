@@ -1,69 +1,935 @@
-<!-- placeholder.html -->
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test [Nume Materie]</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --primary: #1250b1; --bg: #f7f9fc; --white: #fff; }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
-    .container {
-      background: var(--white);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
-    }
-    h1 {
-      font-size: 1.75rem;
-      color: var(--primary);
-      margin-bottom: 16px;
-    }
-    p {
-      color: #555;
-      margin-bottom: 24px;
-      font-size: 1rem;
-    }
-    .btn-back {
-      display: inline-block;
-      padding: 12px 24px;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .btn-back:hover,
-    .btn-back:focus {
-      background: #0c3879;
-      transform: translateY(-2px);
-    }
-    .btn-back:focus {
-      outline: 2px dashed var(--primary);
-      outline-offset: 4px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test – Managementul calității</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 720px;
+            margin: 30px auto;
+            background: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            padding: 24px 30px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1250b1;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 5px;
+        }
+        .question strong {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .answers label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .answers label:hover {
+            background-color: #f5f9ff;
+        }
+        .answers input[type="radio"] {
+            margin-right: 10px;
+        }
+        #startBtn, button[type="submit"], .restart-btn {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            background: #1250b1;
+            color: #fff;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 9px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        #startBtn:hover, button[type="submit"]:hover, .restart-btn:hover {
+            background: #0c3879;
+            transform: translateY(-2px);
+        }
+        .result {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        .result h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        .result .score {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .result .correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .result .wrong {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .show-correct {
+            font-size: 0.9em;
+            margin-left: 8px;
+            color: #555;
+        }
+        .show-correct b {
+             color: #28a745;
+        }
+        .donation-section {
+            text-align: center;
+            margin: 40px 0 30px 0;
+            padding: 25px 15px;
+            background-color: #f5f9ff;
+            border-radius: 10px;
+            border: 1px solid #e0e8f3;
+        }
+        .donation-section h3 {
+            margin-top: 0;
+            color: #1250b1;
+        }
+        .donation-section p {
+            font-size: 0.95em;
+            color: #444;
+            max-width: 500px;
+            margin: 0 auto 20px auto;
+        }
+        .donation-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .donation-content img {
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        .revolut-button {
+            display: inline-block;
+            background-color: #0075c9;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .revolut-button:hover {
+            background-color: #005a9e;
+        }
+        .btn-back {
+          display: inline-block;
+          padding: 12px 24px;
+          background: #1250b1;
+          color: #fff;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          transition: background 0.2s, transform 0.2s;
+        }
+        .btn-back:hover,
+        .btn-back:focus {
+          background: #0c3879;
+          transform: translateY(-2px);
+        }
+        .btn-back:focus {
+          outline: 2px dashed var(--primary);
+          outline-offset: 4px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Management Strategic</h1>
-    <p>🚧 Testul pentru această materie este momentan în lucru și va fi disponibil în curând.</p>
-    <a href="index.html" class="btn-back">Înapoi la meniu</a>
-  </div>
+    <div class="container">
+        <a href="index.html" class="btn-back">Înapoi la meniu</a>
+        <h1>Test – Managementul calității</h1>
+        <div id="mainContent">
+            <div style="text-align:center;">
+                <p>Testul conține 10 întrebări selectate aleatoriu dintr-un set de 60.</p>
+                <p>Fiecare răspuns corect valorează 1 punct. Mult succes!</p>
+            </div>
+            <button id="startBtn">Începe testul</button>
+        </div>
+    </div>
+<script>
+// Toate cele 60 de întrebări din fișierul PDF au fost adăugate mai jos.
+const questions = [
+    {
+        q: "Care este definiția corectă a managementului strategic?",
+        options: [
+            "a) Proces de conducere axat exclusiv pe implementarea deciziilor operaționale",
+            "b) Set de decizii și acțiuni pentru dezvoltarea unor strategii eficiente care ajută la atingerea obiectivelor firmei",
+            "c) Elaborarea de politici anuale la nivelul fiecărui compartiment",
+            "d) Realizarea de planuri tactice pe termen scurt",
+            "e) Implementarea strategiilor fără evaluare sau control"
+        ],
+        correct: 1
+    },
+    {
+        q: "Dimensiunile fundamentale ale managementului strategic sunt:",
+        options: [
+            "a) Economică, financiară și tehnologică",
+            "b) Economică, umană și organizațională",
+            "c) Operațională, logistică și de vânzare",
+            "d) Legală, financiară și de marketing",
+            "e) Decizională, informatică și socială"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este principalul avantaj al practicării managementului strategic?",
+        options: [
+            "a) Reduce motivația angajaților",
+            "b) Crește rigiditatea organizației",
+            "c) Asigură unitatea de concepție și acțiune la toate nivelurile ierarhice",
+            "d) Întârzie procesul decizional",
+            "e) Reduce competitivitatea firmei"
+        ],
+        correct: 2
+    },
+    {
+        q: "Care este caracteristica principală a strategiei firmei?",
+        options: [
+            "a) Se concentrează pe acțiuni izolate",
+            "b) Se aplică doar pentru un departament",
+            "c) Este cuprinzătoare, unitară și integratoare",
+            "d) Nu influențează obiectivele firmei",
+            "e) Are orizont de timp de maximum 6 luni"
+        ],
+        correct: 2
+    },
+    {
+        q: "Conform lui Michael Porter, care sunt cele două mari tipuri de avantaje competitive?",
+        options: [
+            "a) Reducerea costurilor și creșterea prețurilor",
+            "b) Diferențiere și leadership în costuri",
+            "c) Concentrare și extindere",
+            "d) Diversificare și integrare",
+            "e) Globalizare și segmentare"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care sunt elementele de bază ale strategiei economice a unei firme?",
+        options: [
+            "a) Misiunea, obiectivele strategice, modalitățile de realizare, resursele, termenele, avantajul competitiv",
+            "b) Viziunea, profitul, acționarii",
+            "c) Bugetul anual și politica de marketing",
+            "d) Leadership, comunicare, planificare",
+            "e) Planificare operațională și structură organizațională"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce reprezintă lanțul valoric (value chain) în managementul strategic?",
+        options: [
+            "a) Ansamblul activităților de marketing ale firmei",
+            "b) Totalitatea activităților care adaugă valoare produsului de la achiziția materiilor prime până la distribuție",
+            "c) Doar procesul de producție",
+            "d) Activitățile financiare ale firmei",
+            "e) Doar activitățile de vânzare"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este rolul analizei SWOT în elaborarea strategiei?",
+        options: [
+            "a) Analizează doar concurența",
+            "b) Evaluează punctele forte, punctele slabe, oportunitățile și amenințările firmei",
+            "c) Măsoară eficiența financiară",
+            "d) Identifică doar resursele interne",
+            "e) Realizează audituri de calitate"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care dintre următoarele NU este o trăsătură a strategiei?",
+        options: [
+            "a) Vizează obținerea unui avantaj competitiv",
+            "b) Are în vedere întreaga întreprindere",
+            "c) Se concentrează pe tactici pe termen scurt",
+            "d) Are ca scop realizarea unor obiective strategice",
+            "e) Ține cont de mediul extern"
+        ],
+        correct: 2
+    },
+    {
+        q: "Care este sursa principală a avantajului competitiv durabil?",
+        options: [
+            "a) Accesul la credite bancare",
+            "b) Resurse rare, valoroase, greu de imitat și imposibil de substituit",
+            "c) Publicitatea agresivă",
+            "d) Locația geografică",
+            "e) Dimensiunea pieței"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce înseamnă strategia de diferențiere?",
+        options: [
+            "a) Reducerea costurilor prin standardizare",
+            "b) Oferirea unui produs sau serviciu perceput ca unic de către clienți",
+            "c) Orientarea exclusivă către export",
+            "d) Concentrarea pe o singură piață",
+            "e) Integrarea verticală"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care dintre următoarele reprezintă un factor generator al competitivității?",
+        options: [
+            "a) Cererea și oferta",
+            "b) Bugetul anual",
+            "c) Structura acționariatului",
+            "d) Numărul de angajați",
+            "e) Politica salarială"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce reprezintă segmentarea strategică?",
+        options: [
+            "a) Împărțirea activităților firmei în domenii omogene pentru analiză și concurență specifică",
+            "b) Stabilirea unui buget pentru fiecare departament",
+            "c) Selectarea furnizorilor după preț",
+            "d) Recrutarea de personal pe segmente",
+            "e) Analiza doar a activităților de vânzare"
+        ],
+        correct: 0
+    },
+    {
+        q: "Care este obiectivul fundamental al strategiei concurențiale?",
+        options: [
+            "a) Reducerea numărului de angajați",
+            "b) Creșterea competitivității firmei",
+            "c) Atragerea de fonduri europene",
+            "d) Îmbunătățirea imaginii publice",
+            "e) Diversificarea produselor"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce tip de strategie presupune satisfacerea nevoilor unui segment îngust de consumatori?",
+        options: [
+            "a) Strategie orientată",
+            "b) Strategie integrată",
+            "c) Strategie de fuziune",
+            "d) Strategie de exit",
+            "e) Strategie de dezvoltare"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce este politica firmei?",
+        options: [
+            "a) Un set de acțiuni pentru întreaga perioadă strategică",
+            "b) Un set de obiective pe termen mediu ce se referă la activități sau componente majore, resurse, acțiuni și termene",
+            "c) Un plan de investiții pe termen lung",
+            "d) Planificarea resurselor umane",
+            "e) Strategia de diferențiere a produsului"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care sunt cele cinci forțe competitive identificate de Michael Porter?",
+        options: [
+            "a) Inovare, leadership, costuri, marketing, vânzări",
+            "b) Clienți, furnizori, concurenți existenți, concurenți potențiali, produse de substituție",
+            "c) Segmentare, diversificare, concentrare, integrare, marketing",
+            "d) Infrastructură, competențe, imagine, resurse, leadership",
+            "e) Poziționare, extindere, dezvoltare, analiză SWOT, fuziune"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care dintre următoarele reprezintă o activitate primară în lanțul valoric?",
+        options: [
+            "a) Managementul resurselor umane",
+            "b) Logistică internă",
+            "c) Managementul dezvoltării tehnologice",
+            "d) Managementul firmei",
+            "e) Marketingul financiar"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce este o competență distinctivă?",
+        options: [
+            "a) Orice resursă la dispoziția firmei",
+            "b) Element de superioritate în capabilități sau resurse, care duce la avantaj competitiv",
+            "c) Orice abilitate managerială de bază",
+            "d) Orice proces automatizat",
+            "e) Orice activitate externalizată"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce presupune procesul birocratic în managementul strategic?",
+        options: [
+            "a) Stabilirea tipului de organizație, procesul de luare a deciziilor, stilul de motivare și procesul de control",
+            "b) Doar întocmirea de acte administrative",
+            "c) Aprobarea bugetelor",
+            "d) Elaborarea de politici de marketing",
+            "e) Implementarea unui sistem informatic"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce este o strategie de integrare a costului redus și a diferențierii?",
+        options: [
+            "a) Strategie ce vizează doar costurile",
+            "b) Strategie hibrid care urmărește simultan avantajul de cost și diferențiere",
+            "c) Strategie exclusivă de export",
+            "d) Plan tactic anual",
+            "e) Strategie de exit"
+        ],
+        correct: 1
+    },
+  {
+        q: "Care dintre următoarele nu este o componentă a mediului extern analizată în procesul strategic?",
+        options: [
+            "a) Micromediul",
+            "b) Macromediul",
+            "c) Structura acționariatului",
+            "d) Piața concurențială",
+            "e) Stakeholderii"
+        ],
+        correct: 2
+    },
+    {
+        q: "Care este prima etapă în elaborarea strategiei firmei?",
+        options: [
+            "a) Segmentarea strategică",
+            "b) Formularea misiunii",
+            "c) Stabilirea obiectivelor financiare",
+            "d) Analiza SWOT",
+            "e) Implementarea strategiei"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce reprezintă avantajul competitiv temporar?",
+        options: [
+            "a) Avantaj pe termen lung, greu de imitat",
+            "b) Avantaj obținut valorificând o oportunitate trecătoare sau conjunctură favorabilă",
+            "c) Avantaj bazat pe fuziuni",
+            "d) Diferențiere sustenabilă",
+            "e) Sinergie între departamente"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este principalul rol al viziunii organizației în managementul strategic?",
+        options: [
+            "a) Fixează salariile",
+            "b) Ghidează și motivează angajații spre obiective pe termen lung",
+            "c) Controlează costurile",
+            "d) Stabilește politicile comerciale",
+            "e) Reglementează structura juridică"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce reprezintă inovarea pentru competitivitate?",
+        options: [
+            "a) Doar dezvoltarea de produse noi",
+            "b) Orice soluție nouă sau inedită care permite firmei să obțină un avantaj competitiv",
+            "c) Creșterea bugetului de marketing",
+            "d) Fuziunea cu alte firme",
+            "e) Creșterea numărului de angajați"
+        ],
+        correct: 1
+    },
+    {
+        q: "În modelul Porter, puterea furnizorilor este mare când:",
+        options: [
+            "a) Clienții pot schimba ușor furnizorul",
+            "b) Există multe produse de substituție",
+            "c) Clientela este dispersată și nu există alternative ușoare",
+            "d) Există concurență puternică între furnizori",
+            "e) Prețurile sunt reglementate de stat"
+        ],
+        correct: 2
+    },
+    {
+        q: "O strategie orientată pe cost presupune:",
+        options: [
+            "a) Investiții majore în cercetare-dezvoltare",
+            "b) Oferirea de produse sau servicii la prețuri scăzute către un segment restrâns de clienți",
+            "c) Diferențiere unică pe piață",
+            "d) Dominarea întregii piețe globale",
+            "e) Lipsa controlului asupra cheltuielilor"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este scopul principal al analizei SWOT?",
+        options: [
+            "a) Crearea unui plan financiar",
+            "b) Identificarea punctelor tari și slabe, oportunităților și amenințărilor pentru firmă",
+            "c) Calculul profitului",
+            "d) Stabilirea prețurilor",
+            "e) Selectarea partenerilor de afaceri"
+        ],
+        correct: 1
+    },
+    {
+        q: "Când poate fi considerată o firmă ca având competitivitate strategică?",
+        options: [
+            "a) Când imită strategia liderului de piață",
+            "b) Când reușește să formuleze și să implementeze o strategie creatoare de valoare greu de copiat de concurenți",
+            "c) Când reduce cheltuielile operaționale",
+            "d) Când crește numărul de angajați",
+            "e) Când investește în publicitate"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce rol are cultura organizațională în managementul strategic?",
+        options: [
+            "a) Determină structura bugetului",
+            "b) Influențează comportamentul, valorile și atitudinile care susțin implementarea strategiei",
+            "c) Este neglijabilă",
+            "d) Se referă doar la comunicarea internă",
+            "e) Stabilește contractele de muncă"
+        ],
+        correct: 1
+    },
+    {
+        q: "În procesul de segmentare strategică, ce criterii se pot folosi?",
+        options: [
+            "a) Tipul de clientelă, tipul de nevoi sau funcția produsului, tipul de tehnologie utilizată",
+            "b) Doar zona geografică",
+            "c) Numărul de angajați",
+            "d) Dimensiunea profitului",
+            "e) Numărul de produse comercializate"
+        ],
+        correct: 0
+    },
+    {
+        q: "Care este diferența fundamentală dintre strategie și politică la nivel de firmă?",
+        options: [
+            "a) Nu există nicio diferență",
+            "b) Strategia are orizont lung și vizează direcția generală, politica are orizont mediu/scurt și detaliază acțiunile",
+            "c) Politica se referă la marketing, strategia la producție",
+            "d) Politica este doar la nivel național",
+            "e) Strategia este impusă de stat"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce implică poziționarea concurențială a firmei pe piață?",
+        options: [
+            "a) Stabilirea prețurilor la întâmplare",
+            "b) Alegerea unui loc pe piață, astfel încât să obțină un avantaj competitiv față de concurenți",
+            "c) Selectarea angajaților",
+            "d) Exclusiv controlul costurilor",
+            "e) Promovarea doar prin publicitate"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este scopul final al strategiei de diferențiere?",
+        options: [
+            "a) Obținerea unui avantaj competitiv prin unicitatea percepută de consumatori",
+            "b) Reducerea costurilor la minimum",
+            "c) Creșterea cifrei de afaceri pe termen scurt",
+            "d) Externalizarea serviciilor",
+            "e) Eliminarea concurenței"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce este un lanț valoric vertical?",
+        options: [
+            "a) Succesul obținut din fuziuni",
+            "b) Succesiunea de activități prin care se creează valoare de la aprovizionare la livrarea către client",
+            "c) Planificarea fiscală",
+            "d) Numai activitatea de producție",
+            "e) Activitatea de marketing digital"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce reprezintă competențele de bază (core competences) ale unei firme?",
+        options: [
+            "a) Abilități comune tuturor firmelor din industrie",
+            "b) Avantaje tehnice, economice sau manageriale unice care susțin avantajul competitiv",
+            "c) Doar cunoștințele angajaților",
+            "d) Planuri anuale de investiții",
+            "e) Echipamentele utilizate"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care dintre următoarele reprezintă o pârghie a avantajului competitiv?",
+        options: [
+            "a) Eficiența superioară, capacitatea de inovare, calitatea, adaptarea la clientelă",
+            "b) Fuziunea cu concurența",
+            "c) Creșterea numărului de departamente",
+            "d) Diversificarea surselor de finanțare",
+            "e) Angajarea unui consultant extern"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce presupune strategia promoțională concentrată?",
+        options: [
+            "a) Promovarea tuturor produselor către întreaga piață",
+            "b) Orientarea comunicării doar către un segment specific de piață",
+            "c) Excluderea oricărei activități promoționale",
+            "d) Cheltuieli ridicate cu publicitatea",
+            "e) Promovarea exclusiv pe rețele sociale"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce înseamnă extinderea geografică pentru o firmă?",
+        options: [
+            "a) Reducerea numărului de produse",
+            "b) Creșterea vânzărilor pe aceeași piață",
+            "c) Accesarea de noi piețe în alte regiuni sau țări pentru a crește competitivitatea",
+            "d) Diversificarea activităților interne",
+            "e) Închirierea de spații suplimentare"
+        ],
+        correct: 2
+    },
+    {
+        q: "Care este principalul risc al strategiei de diferențiere?",
+        options: [
+            "a) Creșterea fidelității clienților",
+            "b) Prețul mai mare nu este justificat de beneficiile percepute de consumatori",
+            "c) Diminuarea costurilor de producție",
+            "d) Satisfacerea tuturor segmentelor de piață",
+            "e) Eliminarea concurenței"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este rolul stakeholderilor în managementul strategic?",
+        options: [
+            "a) Nu au niciun rol",
+            "b) Influențează așteptările și obiectivele firmei, trebuie analizați în procesul de elaborare a strategiei",
+            "c) Doar aprobă bugetul anual",
+            "d) Determină nivelul de salarizare",
+            "e) Sunt responsabili cu promovarea externă"
+        ],
+        correct: 1
+    },
+    {
+        q: "Când este recomandată strategia integrată de cost redus și diferențiere?",
+        options: [
+            "a) Când piața nu permite niciun fel de diferențiere",
+            "b) Când firma poate oferi produse diferențiate la costuri mai mici decât concurența",
+            "c) Când nu există concurență pe piață",
+            "d) Doar pentru companiile mari",
+            "e) Când produsul este standardizat"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este diferența dintre avantaj competitiv și competență distinctivă?",
+        options: [
+            "a) Nu există diferență",
+            "b) Avantajul competitiv este rezultatul, competența distinctivă este sursa acestuia",
+            "c) Avantajul competitiv este doar financiar",
+            "d) Competența distinctivă se referă la relații externe",
+            "e) Avantajul competitiv se măsoară doar prin vânzări"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce reprezintă analiza PEST în contextul managementului strategic?",
+        options: [
+            "a) Analiza proceselor interne",
+            "b) Analiza factorilor politici, economici, sociali și tehnologici din mediul extern",
+            "c) Analiza costurilor de producție",
+            "d) Auditul de calitate",
+            "e) Evaluarea performanței angajaților"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce implică strategia de concentrare bazată pe cost?",
+        options: [
+            "a) Vizează satisfacerea unui segment restrâns prin prețuri scăzute",
+            "b) Se adresează întregii piețe",
+            "c) Mizează pe unicitatea produsului",
+            "d) Include doar servicii suplimentare",
+            "e) Se aplică doar firmelor multinaționale"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce reprezintă riscul strategic?",
+        options: [
+            "a) Doar riscul financiar al investițiilor",
+            "b) Incertitudinea asociată cu atingerea obiectivelor strategice ale firmei",
+            "c) Riscul schimbării managementului",
+            "d) Pierderi datorate inflației",
+            "e) Riscul legat de fluctuațiile valutare"
+        ],
+        correct: 1
+    },
+    {
+        q: "În ce constă procesul de evaluare a strategiei?",
+        options: [
+            "a) Verificarea doar a rezultatelor financiare",
+            "b) Măsurarea performanței, identificarea deviațiilor și ajustarea strategiei",
+            "c) Controlul bugetului de marketing",
+            "d) Auditul anual",
+            "e) Modificarea structurii de personal"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce înseamnă flexibilitatea organizațională în contextul competitivității?",
+        options: [
+            "a) Schimbarea frecventă a managerilor",
+            "b) Capacitatea firmei de a răspunde rapid la schimbările mediului extern",
+            "c) Rotirea angajaților între departamente",
+            "d) Reducerea timpului de producție",
+            "e) Adoptarea oricărui trend de pe piață"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce rol are managementul resurselor umane în avantajul competitiv?",
+        options: [
+            "a) Nu influențează competitivitatea",
+            "b) Are efect asupra competențelor, motivației și costului angajaților, influențând direct avantajul competitiv",
+            "c) Se ocupă doar de recrutare",
+            "d) Controlează exclusiv salariile",
+            "e) Gestionează programul de lucru"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este relația dintre strategie și performanță economică?",
+        options: [
+            "a) Nu există nicio legătură",
+            "b) Strategia bine formulată și implementată îmbunătățește semnificativ performanța economică a firmei",
+            "c) Strategia determină doar structura departamentelor",
+            "d) Performanța depinde exclusiv de contextul economic extern",
+            "e) Doar strategia de marketing contează"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce tip de analiză permite identificarea punctelor forte și slabe ale concurenților?",
+        options: [
+            "a) Analiza SWOT",
+            "b) Analiza PEST",
+            "c) Analiza financiară",
+            "d) Auditul intern",
+            "e) Analiza mixului de marketing"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce înseamnă leadership strategic?",
+        options: [
+            "a) Conducerea axată exclusiv pe profit",
+            "b) Conducerea orientată spre formularea, implementarea și adaptarea strategiei pentru succesul pe termen lung",
+            "c) Doar abilități de comunicare",
+            "d) Administrarea operațiunilor zilnice",
+            "e) Controlul fluxurilor financiare"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care este rolul evaluării mediului concurențial?",
+        options: [
+            "a) Identificarea rapidă a schimbărilor tehnologice",
+            "b) Estimarea calității mediului concurențial, măsurarea atractivității și identificarea avantajelor competitive",
+            "c) Stabilirea salariilor managerilor",
+            "d) Analiza performanței bugetare",
+            "e) Controlul promoțiilor"
+        ],
+        correct: 1
+    },
+    {
+        q: "Ce implică poziționarea focalizată pe consumator?",
+        options: [
+            "a) Scoaterea în evidență a beneficiilor pentru consumatori și asocierea produsului cu nevoile acestora",
+            "b) Promovarea intensă a brandului",
+            "c) Analiza costurilor de producție",
+            "d) Dezvoltarea de politici interne",
+            "e) Crearea de parteneriate externe"
+        ],
+        correct: 0
+    },
+    {
+        q: "Care este una dintre metodele principale de creștere a competitivității firmei?",
+        options: [
+            "a) Diversificarea, fuziunile și achizițiile, extinderea geografică",
+            "b) Reducerea personalului",
+            "c) Limitarea inovației",
+            "d) Creșterea rigidității structurale",
+            "e) Creșterea costurilor de producție"
+        ],
+        correct: 0
+    },
+    {
+        q: "Ce implică strategia defensivă în promovare?",
+        options: [
+            "a) Creșterea bugetului de marketing",
+            "b) Menținerea poziției curente și protejarea pieței față de concurenți",
+            "c) Atacarea directă a concurenței",
+            "d) Reorientarea totală a pieței",
+            "e) Lărgirea portofoliului de produse"
+        ],
+        correct: 1
+    },
+    {
+        q: "Care dintre următoarele reprezintă o barieră la intrarea pe piață?",
+        options: [
+            "a) Costuri de capital ridicate, reglementări stricte, loialitatea față de brandurile existente",
+            "b) Prețuri mici la produse",
+            "c) Forță de muncă abundentă",
+            "d) Inovație permanentă",
+            "e) Cerere redusă"
+        ],
+        correct: 0
+    }
+]
+
+
+let selectedQuestions = [];
+let userAnswers = [];
+const mainContent = document.getElementById('mainContent');
+const container = document.querySelector('.container');
+
+/**
+ * Amestecă un array folosind algoritmul Fisher-Yates.
+ * @param {Array} array - Array-ul care trebuie amestecat.
+ * @returns {Array} - Array-ul amestecat.
+ */
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
+
+/**
+ * Inițiază testul: selectează 10 întrebări aleatoriu și le afișează.
+ */
+function startTest() {
+    selectedQuestions = shuffle([...questions]).slice(0, 10);
+    userAnswers = Array(10).fill(null);
+    renderQuestions();
+}
+
+/**
+ * Generează și afișează HTML-ul pentru întrebările selectate.
+ */
+function renderQuestions() {
+    let html = `<form id="quizForm">`;
+    selectedQuestions.forEach((q, idx) => {
+        html += `<div class="question"><strong>${idx + 1}. ${q.q}</strong>
+        <div class="answers">`;
+        q.options.forEach((opt, i) => {
+            html += `<label>
+                <input type="radio" name="q${idx}" value="${i}" required>
+                ${opt}
+            </label>`;
+        });
+        html += `</div></div>`;
+    });
+    html += `<button type="submit">Vezi rezultatele</button></form>`;
+    mainContent.innerHTML = html;
+
+    // Adaugă event listener pentru submit-ul formularului
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Colectarea răspunsurilor într-un mod compatibil cu toate browserele
+        for (let i = 0; i < selectedQuestions.length; i++) {
+            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+            userAnswers[i] = selectedOption ? parseInt(selectedOption.value) : null;
+        }
+        showResults();
+    });
+}
+
+/**
+ * Calculează și afișează rezultatele testului.
+ */
+function showResults() {
+    // Derulează la începutul containerului pentru a afișa nota
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    let correctCount = userAnswers.filter((ans, i) => ans === selectedQuestions[i].correct).length;
+    let html = `<div class="result">
+                    <h2>Rezultate</h2>
+                    <p class="score">Ai răspuns corect la <b>${correctCount}</b> din 10 întrebări.</p>
+                    <p class="score"><b>Nota: ${correctCount}</b></p>
+                    <hr>`;
+    selectedQuestions.forEach((q, idx) => {
+        const userAnswerIndex = userAnswers[idx];
+        const isCorrect = userAnswerIndex === q.correct;
+        html += `<div class="question">
+            <strong>${idx + 1}. ${q.q}</strong><br>
+            <span class="${isCorrect ? 'correct' : 'wrong'}">
+                Răspunsul tău: ${userAnswerIndex !== null ? q.options[userAnswerIndex] : 'Fără răspuns'}
+            </span>`;
+        if (!isCorrect) {
+            html += `<span class="show-correct">(Corect: <b>${q.options[q.correct]}</b>)</span>`;
+        }
+        html += `</div>`;
+    });
+
+    // Secțiunea pentru donații
+    html += `<div class="donation-section">
+                <h3>Apreciezi acest proiect?</h3>
+                <p>Dacă acest test gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
+                <div class="donation-content">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut">
+                    <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
+                </div>
+            </div>`;
+
+    html += `<button class="restart-btn">Refă testul</button></div>`;
+    mainContent.innerHTML = html;
+
+    // Adaugă event listener pentru butonul de restart
+    mainContent.querySelector('.restart-btn').addEventListener('click', startTest);
+}
+
+// Adaugă event listener pentru butonul de start
+document.getElementById('startBtn').addEventListener('click', startTest);
+</script>
 </body>
 </html>
