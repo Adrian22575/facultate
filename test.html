@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Învățare – Managementul Strategic</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 720px;
+            margin: 30px auto;
+            background: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            padding: 24px 30px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1250b1;
+        }
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+        .menu-buttons button {
+            background: #1250b1;
+            color: #fff;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 9px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            min-width: 250px;
+        }
+        .menu-buttons button:hover {
+            background: #0c3879;
+            transform: translateY(-2px);
+        }
+        .study-content {
+            display: none;
+        }
+        .question-study {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #1250b1;
+        }
+        .question-study h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #1250b1;
+            font-size: 1.1em;
+        }
+        .options-study {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .options-study li {
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            background: #fff;
+            border: 1px solid #e9ecef;
+        }
+        .options-study li.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: bold;
+        }
+        .options-study li.correct::before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #1250b1;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+            margin-bottom: 20px;
+        }
+        .btn-back:hover,
+        .btn-back:focus {
+            background: #0c3879;
+            transform: translateY(-2px);
+        }
+        .btn-back:focus {
+            outline: 2px dashed #1250b1;
+            outline-offset: 4px;
+        }
+        .back-to-menu {
+            display: none;
+            margin: 30px auto 0;
+            background: #6c757d;
+            color: #fff;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .back-to-menu:hover {
+            background: #5a6268;
+        }
+        .study-intro {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            border: 1px solid #bbdefb;
+        }
+        .study-intro h2 {
+            color: #1250b1;
+            margin-top: 0;
+        }
+        .study-intro p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #28a745;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .donation-section {
+            text-align: center;
+            margin: 40px 0 30px 0;
+            padding: 25px 15px;
+            background-color: #f5f9ff;
+            border-radius: 10px;
+            border: 1px solid #e0e8f3;
+        }
+        .donation-section h3 {
+            margin-top: 0;
+            color: #1250b1;
+        }
+        .donation-section p {
+            font-size: 0.95em;
+            color: #444;
+            max-width: 500px;
+            margin: 0 auto 20px auto;
+        }
+        .donation-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .donation-content img {
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        .revolut-button {
+            display: inline-block;
+            background-color: #0075c9;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .revolut-button:hover {
+            background-color: #005a9e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">Înapoi la meniu</a>
+        <h1>Managementul Strategic</h1>
+        
+        <div id="menuContent">
+            <div style="text-align:center; margin-bottom: 30px;">
+                <p>Alege modul de învățare care ți se potrivește cel mai bine:</p>
+            </div>
+            
+            <div class="menu-buttons">
+                <button onclick="startFlashcards()">📚 Învață cu Flashcards</button>
+                <button onclick="startStudyMode()">📖 Studiază Întrebările</button>
+                <button onclick="startTest()">🎯 Testează-te</button>
+            </div>
+        </div>
+
+        <div id="studyContent" class="study-content">
+            <div class="study-intro">
+                <h2>📖 Mod Studiu</h2>
+                <p>Studiază toate întrebările cu răspunsurile corecte evidențiate.</p>
+                <p>Parcurge materialul în ritmul tău și memorează informațiile importante.</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">Progres: 0 din 3 întrebări vizualizate</p>
+            </div>
+
+            <div id="questionsContainer">
+                <!-- Întrebările vor fi generate aici -->
+            </div>
+
+            <button class="back-to-menu" onclick="showMenu()">Înapoi la Meniu</button>
+        </div>
+    </div>
+
+    <script>
+
+// Toate cele 40 de întrebări din fișierul PDF au fost adăugate mai jos.
+const questions = [
+  {
+    q: "Principalele teorii care au marcat etapele dezvoltarii managementului strategic au fost:",
+    options: [
+      "a) Teoria sistemica",
+      "b) Teoria clasica",
+      "c) Teoria avantajului comparativ",
+      "d) Teoria cresterii si teoria portofoliului",
+      "e) Teoria deciziei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Strategia de diferentiere are in vedere:",
+    options: [
+      "a) Obtinerea unui avantaj competitional prin crearea unui produs ce este perceput de catre consumatori ca fiind unic",
+      "b) Oferirea unui cost mic si in acelasi timp, a unei calitatii apropiata de cea a mediei de pe piata",
+      "c) Coordonarea competentelor si a mijloacelor necesare pentru evitarea riscului",
+      "d) Ocuparea unei pozitii de neinlocuit pe un anumit segment",
+      "e) Realizarea unor noi piete de desfacere"
+    ],
+    correct: 0
+  },
+  {
+    q: "Avantajele oferite firmei de managementului strategic sunt:",
+    options: [
+      "a) Asigura unitatea de viziune a actionarilor",
+      "b) Asigura un cadru legal deciziilor managerilor",
+      "c) Furnizeaza un cadru stiintific deciziilor managerilor",
+      "d) Contribuie la cresterea profitului actionarilor",
+      "e) Constituie forma de conducere cea mai bine adaptata pentru anticiparea problemelor viitoare"
+    ],
+    correct: 4
+  },
+  {
+    q: "Elementele de care trebuie sa tina seama un proces strategic sunt:",
+    options: [
+      "a) Marimea firmei",
+      "b) Competenta tehnica, tehnologica a intreprinderii si modul de organizare a acesteia",
+      "c) Sistemul de salarizare a salariatilor",
+      "d) Domeniul de actiune a firmei",
+      "e) Politica de perfectionare profesionala"
+    ],
+    correct: 1
+  },
+  {
+    q: "Etapa comuna a modelelor lui: W. Glueck, A. Sharplin, L.Rue si Ph.Holland si a lui A. Thompson Jr. si A. Strickland III este:",
+    options: [
+      "a) Aplicarea strategiei",
+      "b) Stabilirea obiectivelor strategice",
+      "c) Analiza mediului intern si extern firmei",
+      "d) Evaluarea performantelor",
+      "e) Compararea alternativelor strategice"
+    ],
+    correct: 0
+  },
+  {
+    q: "Matricea marii strategii evalueaza:",
+    options: [
+      "a) Factorii externi si interni",
+      "b) Aria de desfacere a firmei",
+      "c) Nivelul costurilor",
+      "d) Doua dimensiuni: pozitia competitiva si cresterea pietei",
+      "e) Gradul de inovare tehnologica a firmei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Realizarea unei strategii de crestere inseamna:",
+    options: [
+      "a) Integrarea vertical",
+      "b) Dizolvarea firmei prin absorbtie",
+      "c) Adresarea produselor catre clientii traditionali",
+      "d) Sporirea volumului vânzarilor",
+      "e) Integrarea orizontala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Strategiile de produs se refera la:",
+    options: [
+      "a) Satisfacerea cerintelor pietei",
+      "b) Introducerea celor mai noi tehnologii de productie si desfacere",
+      "c) Cresterea volumului activitatii",
+      "d) Diversificarea productiei",
+      "e) Concentrarea productiei"
+    ],
+    correct: 1
+  },
+  {
+    q: "Determinantii endogeni sunt:",
+    options: [
+      "a) Ofertantii",
+      "b) Firmele juridice",
+      "c) Sectorul de activitate",
+      "d) Dimensiunea firmei",
+      "e) Cultura economico-sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Politicile se caracterizeaza prin:",
+    options: [
+      "a) Coerenta",
+      "b) Realism",
+      "c) Complementaritate",
+      "d) Detaliere",
+      "e) Eficienta"
+    ],
+    correct: 0
+  },
+  {
+    q: "Principalelor trasaturi ale managementului strategic asa cum era el cunoscut pâna in anii 1970 regasite in lucrarea lui Ellen-Earle Chaffee din anul 1985 sunt:",
+    options: [
+      "a) Dinamism",
+      "b) Imbina gândirea conceptuala cu cea analitica",
+      "c) Veridicitate",
+      "d) Obiectivitate",
+      "e) Adaptare cerintele clientilor"
+    ],
+    correct: 1
+  },
+  {
+    q: "Determinantii exogeni sunt:",
+    options: [
+      "a) Factorii demografici",
+      "b) Grupurile de salariati",
+      "c) Organizatii de mediu",
+      "d) Factorii politici",
+      "e) Piata de capital"
+    ],
+    correct: 0
+  },
+  {
+    q: "Strategiile defensive (de restrângere) se refera la:",
+    options: [
+      "a) Fuziune-sciziune",
+      "b) Absorbtie",
+      "c) Indatorare publica",
+      "d) Imbunatatirea calitatii produselor",
+      "e) Deposedare partiala de active"
+    ],
+    correct: 4
+  },
+  {
+    q: "Managementul strategic ca proces presupune:",
+    options: [
+      "a) Abordarea factorilor de mediu",
+      "b) Confirmarea gap-ului dintre obiective",
+      "c) Validarea deciziei strategice a firmei",
+      "d) Elaborarea unor strategii riguroase si implementarea acestora",
+      "e) Economie de scara"
+    ],
+    correct: 3
+  },
+  {
+    q: "Elementele esentiale in practica managementului japonez sunt:",
+    options: [
+      "a) Cunoaste mediul",
+      "b) Fa cum este mai bine",
+      "c) Orientarea catre valori a conducerii de vârf a firmei",
+      "d) Realizarea de studii si analize",
+      "e) Conducerea dictatoriala"
+    ],
+    correct: 2
+  },
+  {
+    q: "Ipotezele pe care se bazeaza managementul strategic din perspectiva sociologica sunt:",
+    options: [
+      "a) Rationalitate",
+      "b) Maximizare profit",
+      "c) Minimizare costuri",
+      "d) Comportament de satisfactie",
+      "e) Valorificarea resurselor umane"
+    ],
+    correct: 3
+  },
+  {
+    q: "Procesul strategic depinde de:",
+    options: [
+      "a) Vointa actionarilor",
+      "b) Relatiile existente intre strategia actuala si cea dorita pentru viitor",
+      "c) Evolutia mediului de afaceri",
+      "d) Marimea pietei",
+      "e) Cerintele clientilor"
+    ],
+    correct: 1
+  },
+  {
+    q: "Dimensiunea economica a managementului strategi se articuleaza in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Care este situatia actuala a firmei ?",
+      "b) Ce pot acestia face ?",
+      "c) Ce se poate face cu sau impotriva lor ?",
+      "d) Ce stil de motivare ?",
+      "e) Care este situatia mediului?"
+    ],
+    correct: 0
+  },
+  {
+    q: "Strategiile de gasire a unei brese ecologice se refera la:",
+    options: [
+      "a) Strategia reducerii consumurilor",
+      "b) Strategia protectiei mediului",
+      "c) Strategia reducerii noxelor",
+      "d) Strategia barierei",
+      "e) Strategia eficientizarii energetice"
+    ],
+    correct: 3
+  },
+  {
+    q: "Cele patru abordari ale ale managementului strategic ale lui Whittington (2001) sunt:",
+    options: [
+      "a) Evolutionista",
+      "b) Progresista",
+      "c) Clasica",
+      "d) Empirica",
+      "e) Sociala"
+    ],
+    correct: 1
+  },
+  {
+    q: "Dimensiunea organizationala a managementului strategic se articuleaza in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Ce vrea firma ?",
+      "b) Ce se decide a face ?",
+      "c) Care sunt stakeholderii in prezent ?",
+      "d) Ce proces de control ?",
+      "e) Ce va face managerul ?"
+    ],
+    correct: 3
+  },
+  {
+    q: "Procesul socio-politic (dimensiunea umana) al managementului strategic este concentrat in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Ce proceduri de control ?",
+      "b) Ce influenteaza actorii ?",
+      "c) Ce procedure de evaluare ?",
+      "d) Cum abordezi riscul ?",
+      "e) Cine sunt ”actorii ?”"
+    ],
+    correct: 0
+  },
+  {
+    q: "Abordarea antreprenoriala a lui Mintzberg implica:",
+    options: [
+      "a) Concentrarea autoritatii in mâinile managerului",
+      "b) Elaborarea planului firmei",
+      "c) Cresterea competitivitatii firmei",
+      "d) Cercetarea oportunitatilor pietei si posibilitatile firmei de a le exploata",
+      "e) Stabilirea misiunii firmei"
+    ],
+    correct: 3
+  },
+  {
+    q: "In cadrul matricei SPACE pozitia strategica totala este data de:",
+    options: [
+      "a) Alegerea strategiei",
+      "b) Avantajele financiare, avantajele competitive,stabilitatea mediului si punctele tari ale industriei",
+      "c) Pozitia strategica externa",
+      "d) Pozitia defensiva",
+      "e) Pozitia strategica interna"
+    ],
+    correct: 1
+  },
+  {
+    q: "Care din aceste strategii este o strategie de piata?",
+    options: [
+      "a) Concentrarea pe gasirea unor nise de piata",
+      "b) Dezvoltarea de noi cai de comunicatie",
+      "c) Cresterea nivelului salariilor angajatilor",
+      "d) Mentinerea numarului de angajati",
+      "e) Dezvoltarea de noi compartimente la nivelul firmei"
+    ],
+    correct: 0
+  },
+  {
+    q: "Obiectivele firmei pot fi:",
+    options: [
+      "a) Obiective fezabile",
+      "b) Obiective durabile",
+      "c) Obiective divizionale",
+      "d) Obiective calitative",
+      "e) Obiective subiective"
+    ],
+    correct: 2
+  },
+  {
+    q: "Tehnicile cantitative utilizate in planificarea strategica sunt:",
+    options: [
+      "a) Analiza SWOT",
+      "b) Analiza BPEST",
+      "c) Analiza decizionala",
+      "d) Planificarea bugetului",
+      "e) Tehnica Delphi"
+    ],
+    correct: 3
+  },
+  {
+    q: "Managementul strategic din perspectiva economica lucreaza cu urmatoarele concepte:",
+    options: [
+      "a) Estimari viitoare",
+      "b) Maximizarea profitului",
+      "c) Organizare piramidala",
+      "d) Colaborare si armonie",
+      "e) Economie de piata"
+    ],
+    correct: 1
+  },
+  {
+    q: "Dimensiunea umana a managementului strategi se concentreaza in jurul urmatoarelor intrebari:",
+    options: [
+      "a) Ce vrea sa faca ?",
+      "b) Ce proces de luare a deciziilor ?",
+      "c) Ce va face ?",
+      "d) Ce se decide a face ?",
+      "e) Ce stil de motivare ?"
+    ],
+    correct: 3
+  },
+  {
+    q: "Tehnicile calitative utilizate in planificarea strategica sunt:",
+    options: [
+      "a) Analiza de tip PIMS",
+      "b) Simple proiectii calitative",
+      "c) Analiza indicatorilor de tip raport",
+      "d) Tehnici Delphi",
+      "e) Anchete"
+    ],
+    correct: 3
+  },
+  {
+    q: "Strategia este definita drept:",
+    options: [
+      "a) ansamblul obiectivelor majore ale organizatiei pe termen lung, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "b) ansamblul obiectivelor majore ale organizatiei pe termen scurt, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "c) ansamblul obiectivelor individuale ale resurselor umane pe termen lung, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "d) ansamblul obiectivelor individuale ale resurselor umane pe termen scurt, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei",
+      "e) nici un rapuns correct"
+    ],
+    correct: 0
+  },
+  {
+    q: "Avantajul competitiv se bazeaza in prezent pe investitia in factori avansati de productie, dintre care ii retinem pe urmatorii:",
+    options: [
+      "a) abilitati deosebite ale resursei lunare",
+      "b) tehnologia de reciclare",
+      "c) sisteme avansate de management",
+      "d) sistemele primare de transport si telecomunicatii",
+      "e) nici un raspuns corect"
+    ],
+    correct: 2
+  },
+  {
+    q: "Managementul strategic se refera la:",
+    options: [
+      "a) procesul prin care managerii stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "b) procesul prin care angajatii stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "c) procesul prin care furnizorii firmei stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "d) ) procesul prin care angajatii stabilesc directia de evolutie pe termen lung a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales",
+      "e) nici un raspuns corect"
+    ],
+    correct: 0
+  },
+  {
+    q: "Principalele avantajele de natura economica urmarite cu prioritate prin practicarea managementului strategic sunt:",
+    options: [
+      "a) concentrarea eforturilor salariatilor in scopul realizarii obiectivelor personale",
+      "b) consecventa actiunilor managementului si a celorlalti salariati ai organizatiei in vederea realizarii strategiei propuse",
+      "c) asigurarea inflexibilitatii organizationale",
+      "d) Stabilirea directiei de actiune a firmei",
+      "e) 1+2"
+    ],
+    correct: 4
+  },
+  {
+    q: "Procesul de decizie strategica contine trei etape esentiale (conform Modelului lui S. Oréal):",
+    options: [
+      "a) alegerea obiectivelor strategice pe care le va urmari firma",
+      "b) formularea unei strategii locale a firmei pentru a le putea realiza",
+      "c) alegerea strategiilor functionale, in scopul administrarii necorespunzatoare a dezvoltarii portofoliului de activitati din firma",
+      "d) alegerea obiectivelor individuale pe care le va urmari firma",
+      "e) nici un raspuns corect"
+    ],
+    correct: 0
+  },
+  {
+    q: "Care din urmatoarele combinatii reprezinta etape ce se afla la baza modelului dinamic, conceput pentru procesul strategic desfasurat in firmele românesti:",
+    options: [
+      "1) identificarea si definirea problemei decizionale",
+      "2) precizarea obiectivului decizional si stabilirea criteriilor decizionale",
+      "3) stabilirea alternativelor sau variantelor decizionale",
+      "4) adoptarea variantei decizionale considerata cea mai buna",
+      "5) aplicarea deciziei si evaluarea rezultatelor aplicarii deciziei"
+    ],
+    correct: 0
+  },
+  {
+    q: "Planificarea strategica este necesara, potrivit lui H. Mintzberg din mai multe considerente:",
+    options: [
+      "a) organizatiile trebuie sa planifice pentru a-si coordona oamenii, intrucât planurile si planificarea pot servi ca mecanisme importante pentru a reuni activitatile disparate",
+      "b) organizatiile trebuie sa planifice pentru a se asigura ca viitorul este corect inteles si luat in considerare",
+      "c) organizatiile trebuie sa planifice pentru a fi irationale, adica adaptate cerintelor pietei si conjuncturii economice",
+      "d) organizatiile trebuie sa posede drept de vot in Consiliul de Administratie",
+      "e) nici un raspuns corect"
+    ],
+    correct: 1
+  },
+  {
+    q: "Reusita apelarii la modelarea managerial este conditionata de cunoasterea mai multor factori, in functie de care se decide asupra modelului ales. Printre cei mai importanti sunt urmatorii:",
+    options: [
+      "a) managementul vânzarii, un factor care poate avea o influenta pozitiva (dat fiind faptul ca acesta cunoaste bine “nevoile” firmei in materie de strategie), dar si negativa (daca nu este bine informat in acest domeniu)",
+      "b) misiunea firmei, stabilita de catre managementul sau sau de catre proprietari sau actionari, poate reprezenta un factor pozitiv, favorabil pentru alegerea celui mai adecvat model strategic decizional sau de planificare strategica",
+      "c) cultura, locala a regiunii care poate avea, in functie de gradul de dezvoltare si de integrare a modelarii culturii manageriale, o influenta pozitiva sau negative",
+      "d) managementul aprovizionarii",
+      "e) politica in domeniul managementului resurselor umane, stabilita de catre managementul sau sau de catre proprietari sau actionari, poate reprezenta un factor pozitiv"
+    ],
+    correct: 1
+  },
+  {
+    q: "Cauzele trecerii de la amatorism, bazat exclusiv pe intuitie, fler, talent la un management profesionist, competent, adica una dintre cele mai actuale si complexe modificari survenite in ultimele doua decenii pe plan mondial in domeniul managementului, sunt:",
+    options: [
+      "1) complexitatea crescânda a activitatilor economice",
+      "2) interdependentele cultural manifestate la scara mondiala",
+      "3) dinamica nemaiintâlnita a evolutiilor din cultura",
+      "4) evolutiile recente din domeniul managementului stiintific"
+    ],
+    correct: 3
+  },
+  {
+    q: "Avantajele utilizarii managementului strategic la nivel comportamental sunt:",
+    options: [
+      "a) motivarea personalului de management si de executie este putin corelata cu nivelul de participare a acestuia la stabilirea obiectivelor organizatiei si la realizarea lor",
+      "b) cele mai bune decizii pentru organizatie sunt cele care rezulta din practicarea consecventa a managementului strategic",
+      "c) anticiparea de catre managementul firmei si maximizarea posibilelor consecinte negative ale nerespectarii termenelor stabilite pentru realizarea unor obiective cuprinse in strategie",
+      "d) golurile si suprapunerile in activitati intre diversi membri ai grupului sau intre grupuri pot fi crescute in cadrul participarii la procesul de formulare a strategiei prin clarificarea asemanarii rolurilor",
+      "e) nici un raspuns corect"
+    ],
+    correct: 1
+  }
+];
+
+        let viewedQuestions = new Set();
+
+        function showMenu() {
+            document.getElementById('menuContent').style.display = 'block';
+            document.getElementById('studyContent').style.display = 'none';
+            // Reset progress când revenim la meniu
+            viewedQuestions.clear();
+            updateProgress();
+        }
+
+        function startFlashcards() {
+            // Redirect către pagina de flashcards (va fi creată ulterior)
+            alert('Funcționalitatea Flashcards va fi disponibilă în curând!');
+        }
+
+        function startStudyMode() {
+            document.getElementById('menuContent').style.display = 'none';
+            document.getElementById('studyContent').style.display = 'block';
+            document.querySelector('.back-to-menu').style.display = 'block';
+            renderStudyQuestions();
+        }
+
+        function startTest() {
+            // Redirect către pagina de test existentă
+            window.location.href = 'management-strategic.html';
+        }
+
+        function renderStudyQuestions() {
+            const container = document.getElementById('questionsContainer');
+            let html = '';
+
+            questions.forEach((question, index) => {
+                html += `
+                    <div class="question-study" data-question="${index}">
+                        <h3>${index + 1}. ${question.q}</h3>
+                        <ul class="options-study">
+                `;
+                
+                question.options.forEach((option, optIndex) => {
+                    const isCorrect = optIndex === question.correct;
+                    html += `<li class="${isCorrect ? 'correct' : ''}">${option}</li>`;
+                });
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+            });
+
+    // Secțiunea pentru donații
+    html += `<div class="donation-section">
+                <h3>Apreciezi acest proiect?</h3>
+                <p>Dacă acest test gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
+                <div class="donation-content">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut">
+                    <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
+                </div>
+            </div>`;
+
+    html += `<button class="restart-btn">Generează un alt test</button></div>`;
+    mainContent.innerHTML = html;
+
+            // Adaugă scroll listeners pentru tracking progres
+            setupScrollTracking();
+        }
+
+        function setupScrollTracking() {
+            const questionElements = document.querySelectorAll('.question-study');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const questionIndex = parseInt(entry.target.dataset.question);
+                        viewedQuestions.add(questionIndex);
+                        updateProgress();
+                    }
+                });
+            }, {
+                threshold: 0.7 // Consideră vizualizată când 70% din întrebare este vizibilă
+            });
+
+            questionElements.forEach(el => observer.observe(el));
+        }
+
+        function updateProgress() {
+            const totalQuestions = questions.length;
+            const viewedCount = viewedQuestions.size;
+            const percentage = (viewedCount / totalQuestions) * 100;
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `Progres: ${viewedCount} din ${totalQuestions} întrebări vizualizate`;
+        }
+
+        // Inițializează aplicația
+        document.addEventListener('DOMContentLoaded', function() {
+            showMenu();
+        });
+    </script>
+</body>
+</html>
