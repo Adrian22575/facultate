@@ -234,9 +234,8 @@
     </div>
 
     <script>
-
-// Toate cele 40 de întrebări din fișierul PDF au fost adăugate mai jos.
-const questions = [
+        // Doar 3 întrebări ca exemplu - vei adăuga restul
+        const questions = [
   {
     q: "Principalele teorii care au marcat etapele dezvoltarii managementului strategic au fost:",
     options: [
@@ -677,7 +676,7 @@ const questions = [
     correct: 1
   }
 ];
-
+        
         let viewedQuestions = new Set();
 
         function showMenu() {
@@ -727,18 +726,19 @@ const questions = [
                 `;
             });
 
-    // Secțiunea pentru donații
-    html += `<div class="donation-section">
-                <h3>Apreciezi acest proiect?</h3>
-                <p>Dacă acest test gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
-                <div class="donation-content">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut">
-                    <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
+            // Adaugă secțiunea pentru donații la final
+            html += `
+                <div class="donation-section">
+                    <h3>Apreciezi acest proiect?</h3>
+                    <p>Dacă acest material gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
+                    <div class="donation-content">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut">
+                        <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
+                    </div>
                 </div>
-            </div>`;
+            `;
 
-    html += `<button class="restart-btn">Generează un alt test</button></div>`;
-    mainContent.innerHTML = html;
+            container.innerHTML = html;
 
             // Adaugă scroll listeners pentru tracking progres
             setupScrollTracking();
