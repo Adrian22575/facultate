@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modul de Învățare – Managementul Calitatii</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 720px;
+            margin: 20px auto;
+            padding: 0 15px;
+            background: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            padding: 24px 30px;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #1250b1;
+            text-align: center;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 10px;
+            background-color: #1250b1;
+            border-radius: 10px;
+            transition: width 0.3s ease-in-out;
+        }
+        .question-container {
+            flex-grow: 1;
+        }
+        .question-header {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .answers .option {
+            display: block;
+            margin-bottom: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .answers .option:hover {
+            background-color: #f5f9ff;
+            border-color: #1250b1;
+        }
+        /* Stare după ce s-a răspuns */
+        .answers.answered .option {
+            cursor: default;
+            pointer-events: none; /* Blochează click-urile ulterioare */
+        }
+        .answers.answered .option:not(.selected) {
+            opacity: 0.6;
+        }
+        .answers .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            font-weight: bold;
+        }
+        .answers .option.wrong {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            font-weight: bold;
+        }
+        .reset-btn {
+            background: #dc3545;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .reset-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .nav-btn {
+            background: #1250b1;
+            color: #fff;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .nav-btn:hover {
+            background: #0c3879;
+            transform: translateY(-2px);
+        }
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .question-counter {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mod de Învățare</h1>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div id="flashcard-container">
+            <!-- Conținutul flashcard-ului va fi generat de JavaScript -->
+        </div>
+        <div class="navigation">
+            <button id="prevBtn" class="nav-btn">Anterioară</button>
+            <span id="questionCounter" class="question-counter"></span>
+            <button id="nextBtn" class="nav-btn">Următoare</button>
+        </div>
+    </div>
+
+<script>
+    // --- BAZA DE DATE CU ÎNTREBĂRI ---
+    // Aceeași bază de date ca în pagina de test
+    const allQuestions = [
+  {
+    q: "Modul in care un ansamblu de caracteristici intrinseci ale unui produs sau serviciu satisfac cerintele clientului poarta denumirea de:",
+    options: [
+      "valoare de intrebuintare (utilitate)",
+      "standardizare",
+      "calitate",
+      "valoare psihosenzoriala",
+      "valoare de piata"
+    ],
+    correct: 2
+  },
+  {
+    q: "Printre factorii care determina caracterul dinamic al calitatii nu regasim:",
+    options: [
+      "progresul tehnic",
+      "progresul stiintific",
+      "exigentele crescande ale consumatorilor",
+      "concurenta",
+      "publicitatea"
+    ],
+    correct: 4
+  },
+  {
+    q: "Masurarea si estimarea calitatii produselor si serviciilor este obiectul de studiu al:",
+    options: [
+      "calimetriei",
+      "calitologiei",
+      "merceologiei",
+      "managementului calitatii",
+      "publicitatea"
+    ],
+    correct: 0
+  },
+  {
+    q: "Indicatorul care reflecta aportul caracteristicilor produselor, ponderate dupa importanta si exprimate fie cantitativ (numeric), fie atributiv (notional) poarta denumirea de:",
+    options: [
+      "indicatorul noncalitatii",
+      "indicatorul complex (sintetic) al calitatii",
+      "indicatorul cauza-efect",
+      "indicatorul optim al calitatii",
+      "indicatorul standard al calitatii"
+    ],
+    correct: 1
+  },
+  {
+    q: "Ce ipostaza a calitatii are ponderea cea mai mare (circa 70%) in obtinerea unui produs de calitate?",
+    options: [
+      "calitatea proiectata",
+      "calitatea contractata",
+      "calitatea reala",
+      "calitatea prescrisa",
+      "calitatea omologata"
+    ],
+    correct: 0
+  },
+  {
+    q: "Calitatea specificata in standarde poarta denumirea de:",
+    options: [
+      "calitatea proiectata",
+      "calitatea contractata",
+      "calitatea reala",
+      "calitatea prescrisa",
+      "calitatea omologata"
+    ],
+    correct: 3
+  },
+  {
+    q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+    options: [
+      "cercetarea si proiectarea",
+      "transportul",
+      "standarde",
+      "managementul calitatii",
+      "calificarea profesionala a lucratorilor"
+    ],
+    correct: 1
+  },
+  {
+    q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+    options: [
+      "cercetarea si proiectarea",
+      "calificarea profesionala a lucratorilor",
+      "standarde",
+      "managementul calitatii",
+      "ambalarea"
+    ],
+    correct: 4
+  },
+  {
+    q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+    options: [
+      "managementul calitatii",
+      "calificarea profesionala a lucratorilor",
+      "pastrarea",
+      "cercetarea si proiectarea",
+      "standarde"
+    ],
+    correct: 2
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "materiile prime si materialele",
+      "transportul",
+      "ambalarea",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 0
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "cercetarea si proiectarea",
+      "transportul",
+      "ambalarea",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 0
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "ambalarea",
+      "transportul",
+      "procesul tehnologic",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 2
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "ambalarea",
+      "calificarea profesionala a lucratorilor",
+      "transportul",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 1
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "transportul",
+      "pastrarea",
+      "ambalarea",
+      "managementul calitatii",
+      "depozitarea"
+    ],
+    correct: 3
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "transportul",
+      "pastrarea",
+      "ambalarea",
+      "standarde",
+      "depozitarea"
+    ],
+    correct: 3
+  },
+  {
+    q: "Activitatile coordonate pentru a orienta si controla o organizatie in ceea ce priveste calitatea reprezinta o definitie a:",
+    options: [
+      "managementului",
+      "merceologiei",
+      "calitologiei",
+      "calimetriei",
+      "managementului calitatii"
+    ],
+    correct: 4
+  },
+  {
+    q: "Totalitatea activitatilor desfasurate pentru obtinerea calitatii, activitati ce se regasesc in toate etapele realizarii produsului/serviciului reprezinta o definitie a:",
+    options: [
+      "managementului calitatii",
+      "merceologiei",
+      "calitologiei",
+      "calimetriei",
+      "managementului"
+    ],
+    correct: 0
+  },
+  {
+    q: "In cadrul evolutiei organizarii activitatii privind calitatea intr-o firma, modalitatea ce tinde catre excelenta si care integreaza toate conceptele anterioare se numeste:",
+    options: [
+      "managementul calitatii totale (TQM)",
+      "inspectia calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "sistemul de management al calitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "Accentul pus pe verificarea produsului finit, cu rol pasiv, de depistare a greselilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "managementul calitatii totale (TQM)",
+      "inspectia calitatii",
+      "sistemul de asigurare a calitatii",
+      "controlul calitatii",
+      "sistemul de management al calitatii"
+    ],
+    correct: 1
+  },
+  {
+    q: "Accentul pus pe controlul fluxului tehnologic in scopul identificarii aparitiei defectelor si pe folosirea metodelor de control statistic se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "inspectia calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "sistemul de management al calitatii",
+      "managementul calitatii totale (TQM)"
+    ],
+    correct: 1
+  },
+  {
+    q: "Accentul pus pe prevenirea defectelor si oferirea increderii atat propriei conduceri a firmei, cat si clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "sistemul de management al calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "inspectia calitatii",
+      "managementul calitatii totale (TQM)"
+    ],
+    correct: 2
+  },
+  {
+    q: "Accentul pus pe imbunatatirea continua a performantelor firmei se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "sistemul de management al calitatii",
+      "managementul calitatii totale (TQM)",
+      "sistemul de asigurare a calitatii",
+      "inspectia calitatii",
+      "controlul calitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "Accentul pus pe depasirea asteptarilor clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "sistemul de management al calitatii calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "inspectia calitatii",
+      "managementul calitatii totale (TQM)"
+    ],
+    correct: 4
+  },
+  {
+    q: "Nu reprezinta un principiu al managementului calitatii:",
+    options: [
+      "implicarea personalului",
+      "abordarea sistemica a managementului",
+      "imbunatatirea continua",
+      "orientarea catre client",
+      "monitorizarea eficientei auditarii sistemului de management al calitatii"
+    ],
+    correct: 4
+  },
+  {
+    q: "Cunoasterea trebuintelor actuale si potentiale ale clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "relatii reciproc avantajoase cu furnizorii",
+      "abordarea sistemica a managementului",
+      "imbunatatirea continua",
+      "orientarea catre client",
+      "abordarea faptica pentru luarea deciziei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Satisfacerea si depasirea asteptarilor clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "orientarea catre client",
+      "abordarea sistemica a managementului",
+      "imbunatatirea continua",
+      "orientarea catre client",
+      "abordarea procesuala"
+    ],
+    correct: 0
+  },
+  {
+    q: "Faptul ca echipa de conducere trebuie sa stabileasca o unitate intre obiectivele propuse si orientarile organizatiei si trebuie sa creeze si sa mentina un mediu intern in care personalul sa poata fi total implicat in realizarea obiectivelor organizatiei se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "imbunatatirea continua",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "orientarea catre client",
+      "abordarea procesuala"
+    ],
+    correct: 2
+  },
+  {
+    q: "Implicarea totala a personalului de la toate nivelurile se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "imbunatatirea continua",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "orientarea catre client",
+      "implicarea personalului"
+    ],
+    correct: 4
+  },
+  {
+    q: "Faptul ca toate activitatile sunt conduse ca un proces, cu intrari si iesiri se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "imbunatatirea continua",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "abordarea procesuala",
+      "abordarea faptica pentru luarea deciziei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Faptul ca identificarea si conducerea principalelor activitati referitoare la calitate trebuie sa fie integrate si corelate in cadrul unui sistem coerent se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "orientarea catre client",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "abordarea procesuala",
+      "abordarea faptica pentru luarea deciziei"
+    ],
+    correct: 1
+  },
+  {
+    q: "Faptul ca imbunatatirea performantelor globale ale unei organizatii ar trebui sa fie un obiectiv permanent al conducerii se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "orientarea catre client",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "abordarea procesuala",
+      "imbunatatirea continua"
+    ],
+    correct: 4
+  },
+  {
+    q: "Faptul ca deciziile eficiente se bazeaza pe analiza datelor si a informatiilor obtinute de la toate locurile de munca se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "abordarea faptica pentru luarea deciziei",
+      "abordarea sistemica a managementului",
+      "orientarea catre client",
+      "abordarea procesuala",
+      "imbunatatirea continua"
+    ],
+    correct: 0
+  },
+  {
+    q: "Relatiile dintre o organizatie si furnizorii sai, care maresc capabilitatea de a crea valoare, se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "leadership",
+      "abordarea sistemica a managementului",
+      "relatii reciproc avantajoase cu furnizorii",
+      "abordarea procesuala",
+      "imbunatatirea continua"
+    ],
+    correct: 2
+  },
+  {
+    q: "Standardele din familia ISO 9000 sunt standarde de:",
+    options: [
+      "management de mediu",
+      "management al sanatatii si securitatii in munca",
+      "auditare a sistemelor de management",
+      "management al calitatii",
+      "etica si responsabilitate sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Standardele din familia ISO 14000 sunt standarde de:",
+    options: [
+      "management al calitatii",
+      "management al sanatatii si securitatii in munca",
+      "auditare a sistemelor de management",
+      "management de mediu",
+      "etica si responsabilitate sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Standardele din familia ISO 45000 sunt standarde de:",
+    options: [
+      "management al calitatii",
+      "etica si responsabilitate sociala",
+      "auditare a sistemelor de management",
+      "management de mediu",
+      "management al sanatatii si securitatii in munca"
+    ],
+    correct: 4
+  },
+  {
+    q: "Standardul ISO 9001 se refera la:",
+    options: [
+      "sistemul de management al calitatii",
+      "sistemul de management al sanatatii si securitatii in munca",
+      "auditarea sistemelor de management",
+      "sistemul de management de mediu",
+      "etica si responsabilitatea sociala"
+    ],
+    correct: 0
+  },
+  {
+    q: "Standardul ISO 14001 se refera la:",
+    options: [
+      "sistemul de management al calitatii",
+      "sistemul de management al sanatatii si securitatii in munca",
+      "auditarea sistemelor de management",
+      "sistemul de management de mediu",
+      "etica si responsabilitatea sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Standardul ISO 45001 se refera la:",
+    options: [
+      "sistemul de management al calitatii",
+      "sistemul de management al sanatatii si securitatii in munca",
+      "auditarea sistemelor de management",
+      "sistemul de management de mediu",
+      "etica si responsabilitatea sociala"
+    ],
+    correct: 1
+  },
+  {
+    q: "Sistemul de management al calitatii are drept referential standardul:",
+    options: [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 45001",
+      "ISO 19011",
+      "ISO 26001"
+    ],
+    correct: 0
+  },
+  {
+    q: "Sistemul de management de mediu are drept referential standardul:",
+    options: [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 45001",
+      "ISO 19011",
+      "ISO 26001"
+    ],
+    correct: 1
+  },
+  {
+    q: "Sistemul de management al sanatatii si securitatii in munca are drept referential standardul:",
+    options: [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 45001",
+      "ISO 19011",
+      "ISO 26001"
+    ],
+    correct: 2
+  },
+  {
+    q: "Actiunea unei terte parti care dovedeste existenta increderii ca un produs, proces sau serviciu este in conformitate cu un standard sau cu un alt document normativ poarta denumirea de:",
+    options: [
+      "garantarea calitatii",
+      "certificarea conformitatii",
+      "acreditarea organismelor de certificare",
+      "marcarea reglementata",
+      "standardizare"
+    ],
+    correct: 1
+  },
+  {
+    q: "Printre avantajele implementarii sistemului de management al calitatii intr-o firma regasim:",
+    options: [
+      "cresterea gradului de satisfacere a clientilor",
+      "imbunatatirea perceptiei consumatorilor asupra organizatiei",
+      "imbunatatirea performantelor produselor/serviciilor",
+      "cresterea productivitatii si eficacitatii",
+      "toate cele de mai sus"
+    ],
+    correct: 4
+  },
+  {
+    q: "Procesul de evaluare sistematica a elementelor specifice sistemului de management al calitatii pentru a vedea daca respecta cerintele prescrise poarta denumirea de:",
+    options: [
+      "acreditare",
+      "omologare",
+      "imbunatatire continua",
+      "auditare",
+      "standardizare"
+    ],
+    correct: 3
+  },
+  {
+    q: "Documentul principal pentru elaborarea si implementarea sistemului de management al calitatii intr-o organizatie este:",
+    options: [
+      "manualul calitatii",
+      "declaratia de politica in domeniul calitatii",
+      "standardul calitatii",
+      "planul calitatii",
+      "procedura calitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "In ce tara regasim Premiul Juran pentru calitate:",
+    options: [
+      "Romania",
+      "Japonia",
+      "Statele Unite ale Americii",
+      "Australia",
+      "Franta"
+    ],
+    correct: 0
+  },
+  {
+    q: "Modelul european de excelenta in domeniul managementului calitatii poarta denumirea:",
+    options: [
+      "Malcolm Baldridge",
+      "Juran",
+      "Deming",
+      "EFQM",
+      "Ishikawa"
+    ],
+    correct: 3
+  },
+  {
+    q: "Premiul national pentru calitate din Statele Unite ale Americii poarta denumirea:",
+    options: [
+      "Juran",
+      "Malcolm Baldridge",
+      "Deming",
+      "EFQM",
+      "Ishikawa"
+    ],
+    correct: 1
+  },
+  {
+    q: "Premiul Deming pentru calitate se acorda in:",
+    options: [
+      "Romania",
+      "Statele Unite ale Americii",
+      "Japonia",
+      "Australia",
+      "Franta"
+    ],
+    correct: 2
+  },
+  {
+    q: "Fazele si calendarul misiunii de consultanta in managementul calitatii, detaliate pe baza planului de actiune, fac parte din:",
+    options: [
+      "propunerea de consultanta",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "raportul de expertiza",
+      "misiunea de audit"
+    ],
+    correct: 0
+  },
+  {
+    q: "Obiectivele si natura misiunii de consultanta, cu precizarea rolului consultantului, al rezultatului asteptat de la misiune si al angajamentului consultantului referitor la acest rezultat, fac parte din:",
+    options: [
+      "misiunea de audit",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "raportul de expertiza",
+      "propunerea de consultanta"
+    ],
+    correct: 4
+  },
+  {
+    q: "Un rezumat al analizei diagnostic, insotit de concluziile consultantului si de definirea problemei, fac parte din:",
+    options: [
+      "misiunea de audit",
+      "propunerea de consultanta",
+      "planul de afaceri",
+      "raportul de expertiza",
+      "planul strategic de marketing"
+    ],
+    correct: 1
+  },
+  {
+    q: "Etapele, activitatile si planificarea lor din cadrul misiunii de consultanta fac parte din:",
+    options: [
+      "raportul de expertiza",
+      "raportul de audit",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "planul de actiune"
+    ],
+    correct: 4
+  },
+  {
+    q: "Contributia fiecarui partener, responsabilitatile si conditiile de realizare din cadrul misiunii de consultanta fac parte din:",
+    options: [
+      "raportul de expertiza",
+      "planul de actiune",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "raportul de audit"
+    ],
+    correct: 1
+  },
+  {
+    q: "Activitatea de elaborare a unor proiecte, in care consultantul colaboreaza indeaproape cu clientul la formularea unor recomandari si la implementarea acestora poarta denumirea de:",
+    options: [
+      "analiza diagnostic",
+      "consultanta procesuala",
+      "audit intern",
+      "expertiza economica",
+      "certificarea conformitatii"
+    ],
+    correct: 1
+  },
+  {
+    q: "Introducerea unei viziuni independente in abordarea unor probleme mai greu de perceput pentru manageri, care sunt prea implicati in situatie si „nu vad padurea din cauza copacilor\" reprezinta un avantaj al:",
+    options: [
+      "consultantei procesuale",
+      "analizei diagnostic",
+      "auditului intern",
+      "expertizei economice",
+      "certificarii conformitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "Faptul de a contribui la intelegerea elementelor practice, concrete, ale problemelor care risca sa scape intelegerii intr-o abordare prea teoretica reprezinta un avantaj al:",
+    options: [
+      "certificarii conformitatii",
+      "analizei diagnostic",
+      "auditului intern",
+      "expertizei economice",
+      "consultantei procesuale"
+    ],
+    correct: 4
+  },
+  {
+    q: "Faptul ca asigura o legatura coerenta intre consultant si client reprezinta un avantaj al:",
+    options: [
+      "certificarii conformitatii",
+      "analizei diagnostic",
+      "consultantei procesuale",
+      "expertizei economice",
+      "auditului intern"
+    ],
+    correct: 2
+  },
+  {
+    q: "Faptul ca stimuleaza sentimentul de proprietate si angajamentul consultantului printr-o mai mare implicare in aplicarea unor metode si idei noi reprezinta un avantaj al:",
+    options: [
+      "certificarii conformitatii",
+      "consultantei procesuale",
+      "analizei diagnostic",
+      "expertizei economice",
+      "auditului intern"
+    ],
+    correct: 1
+  }
+];
+
+    // --- VARIABILE GLOBALE ---
+    let currentQuestionIndex = 0;
+    const userAnswers = new Array(allQuestions.length).fill(null); // Stochează răspunsurile utilizatorului
+
+    const flashcardContainer = document.getElementById('flashcard-container');
+    const questionCounter = document.getElementById('questionCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    /**
+     * Afișează întrebarea curentă și opțiunile.
+     */
+    function renderFlashcard() {
+        const question = allQuestions[currentQuestionIndex];
+        let html = `<div class="question-container">
+                        <div class="question-header">${currentQuestionIndex + 1}. ${question.q}</div>
+                        <div class="answers" id="answers-container">`;
+
+        question.options.forEach((optionText, index) => {
+            const letter = String.fromCharCode(97 + index);
+            html += `<div class="option" data-index="${index}">${letter}) ${optionText}</div>`;
+        });
+
+        html += `   </div>
+                    <button id="resetBtn" class="reset-btn" style="display: none;">🔄 Resetează</button>
+                  </div>`;
+        
+        flashcardContainer.innerHTML = html;
+
+        // Adaugă event listener pentru fiecare opțiune
+        const options = flashcardContainer.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('click', handleAnswerSelection);
+        });
+
+        // Adaugă event listener pentru butonul de reset
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', resetCurrentQuestion);
+        }
+
+        // Verifică dacă s-a răspuns deja la această întrebare
+        if (userAnswers[currentQuestionIndex] !== null) {
+            showStoredAnswer();
+        }
+
+        updateNavigation();
+    }
+
+    /**
+     * Gestionează click-ul pe o variantă de răspuns.
+     * @param {Event} e - Evenimentul de click.
+     */
+    function handleAnswerSelection(e) {
+        const selectedOption = e.target;
+        const selectedAnswerIndex = parseInt(selectedOption.dataset.index, 10);
+        const question = allQuestions[currentQuestionIndex];
+
+        // Salvează răspunsul utilizatorului
+        userAnswers[currentQuestionIndex] = selectedAnswerIndex;
+
+        // Marchează opțiunea selectată
+        selectedOption.classList.add('selected');
+
+        // Blochează celelalte opțiuni
+        const answersContainer = document.getElementById('answers-container');
+        answersContainer.classList.add('answered');
+
+        // Verifică dacă răspunsul este corect
+        if (selectedAnswerIndex === question.correct) {
+            selectedOption.classList.add('correct');
+        } else {
+            selectedOption.classList.add('wrong');
+            // Afișează și răspunsul corect
+            const correctOption = answersContainer.querySelector(`[data-index="${question.correct}"]`);
+            correctOption.classList.add('correct');
+        }
+
+        // Afișează butonul de reset
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+            resetBtn.style.display = 'inline-block';
+        }
+    }
+
+    /**
+     * Reface starea vizuală dacă utilizatorul a răspuns deja la întrebare.
+     */
+    function showStoredAnswer() {
+        const storedAnswerIndex = userAnswers[currentQuestionIndex];
+        if (storedAnswerIndex === null) return;
+
+        const answersContainer = document.getElementById('answers-container');
+        answersContainer.classList.add('answered');
+
+        const selectedOption = answersContainer.querySelector(`[data-index="${storedAnswerIndex}"]`);
+        const question = allQuestions[currentQuestionIndex];
+
+        selectedOption.classList.add('selected');
+
+        if (storedAnswerIndex === question.correct) {
+            selectedOption.classList.add('correct');
+        } else {
+            selectedOption.classList.add('wrong');
+            const correctOption = answersContainer.querySelector(`[data-index="${question.correct}"]`);
+            correctOption.classList.add('correct');
+        }
+
+        // Afișează butonul de reset și după ce se reface starea
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+            resetBtn.style.display = 'inline-block';
+        }
+    }
+
+    /**
+     * Resetează întrebarea curentă
+     */
+    function resetCurrentQuestion() {
+        // Șterge răspunsul salvat
+        userAnswers[currentQuestionIndex] = null;
+        
+        // Re-randează întrebarea (aceasta va fi în stare curată)
+        renderFlashcard();
+    }
+
+    /**
+     * Actualizează butoanele de navigație și contorul.
+     */
+    function updateNavigation() {
+        // Contor
+        questionCounter.textContent = `Întrebarea ${currentQuestionIndex + 1} din ${allQuestions.length}`;
+
+        // Butoane
+        prevBtn.disabled = currentQuestionIndex === 0;
+        nextBtn.disabled = currentQuestionIndex === allQuestions.length - 1;
+
+        // Bară de progres
+        const progressPercentage = ((currentQuestionIndex + 1) / allQuestions.length) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+    }
+
+    // --- INIȚIALIZARE ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // Amestecă întrebările la fiecare încărcare pentru o nouă experiență
+        shuffle(allQuestions);
+        
+        renderFlashcard();
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                // Reset automat la navigație - șterge răspunsul anterior
+                userAnswers[currentQuestionIndex] = null;
+                renderFlashcard();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < allQuestions.length - 1) {
+                currentQuestionIndex++;
+                // Reset automat la navigație - șterge răspunsul următor
+                userAnswers[currentQuestionIndex] = null;
+                renderFlashcard();
+            }
+        });
+    });
+
+    /**
+     * Funcție de amestecare a elementelor unui array (algoritmul Fisher-Yates)
+     */
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+</script>
+</body>
+</html>
