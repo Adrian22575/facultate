@@ -208,7 +208,7 @@
             </div>
             
             <div class="menu-buttons">
-                <button onclick="startFlashcards()">📚 Învață cu Flashcards</button>
+                <button onclick="goToInteractive()">🧩 Modul Interactiv (feedback instant)</button>
                 <button onclick="startStudyMode()">📖 Studiază Întrebările</button>
                 <button onclick="startTest()">🎯 Testează-te</button>
             </div>
@@ -548,9 +548,8 @@
             updateProgress();
         }
 
-        function startFlashcards() {
-            // Redirect către pagina de flashcards (va fi creată ulterior)
-            alert('Funcționalitatea Flashcards va fi disponibilă în curând!');
+        function goToInteractive() {
+        window.location.href = 'managementul-calitatii-interactiv.html';
         }
 
         function startStudyMode() {
