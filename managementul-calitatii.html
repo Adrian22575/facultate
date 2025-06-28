@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test – Managementul calității</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test – Managementul Calitatii</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -11,7 +11,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             max-width: 720px;
-            margin: 30px auto;
+            margin: 20px auto;
+            padding: 0 15px;
             background: #f7f9fc;
             color: #333;
             line-height: 1.6;
@@ -23,14 +24,31 @@
             padding: 24px 30px;
         }
         h1 {
-            text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #1250b1;
+            text-align: center;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #1250b1;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+            margin-bottom: 20px;
+        }
+        .btn-back:hover,
+        .btn-back:focus {
+            background: #0c3879;
+            transform: translateY(-2px);
         }
         .question {
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 1px solid #f0f0f0;
+            text-align: left;
         }
         .question:last-child {
             border-bottom: none;
@@ -46,20 +64,23 @@
             display: block;
             margin-bottom: 8px;
             cursor: pointer;
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 8px;
-            transition: background-color 0.2s;
+            border: 1px solid #e0e0e0;
+            transition: background-color 0.2s, border-color 0.2s;
         }
         .answers label:hover {
             background-color: #f5f9ff;
+            border-color: #1250b1;
         }
         .answers input[type="radio"] {
             margin-right: 10px;
+            transform: translateY(1px);
         }
         #startBtn, button[type="submit"], .restart-btn {
             display: block;
             width: fit-content;
-            margin: 30px auto 0;
+            margin: 20px auto 0;
             background: #1250b1;
             color: #fff;
             padding: 12px 35px;
@@ -79,10 +100,12 @@
             border-radius: 10px;
             padding: 20px;
             margin-top: 25px;
+            text-align: left;
         }
         .result h2 {
             text-align: center;
             margin-top: 0;
+            color: #1250b1;
         }
         .result .score {
             text-align: center;
@@ -104,494 +127,945 @@
             color: #555;
         }
         .show-correct b {
-             color: #28a745;
+            color: #28a745;
+        }
+        select {
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+            min-width: 180px;
+            background-color: #fff;
+        }
+        .selector-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .selector-container label {
+            font-weight: 600;
         }
         .donation-section {
-            text-align: center;
-            margin: 40px 0 30px 0;
-            padding: 25px 15px;
+            margin-top: 30px;
+            padding: 20px;
             background-color: #f5f9ff;
+            border: 1px solid #d1e3ff;
             border-radius: 10px;
-            border: 1px solid #e0e8f3;
+            text-align: center;
         }
         .donation-section h3 {
-            margin-top: 0;
             color: #1250b1;
-        }
-        .donation-section p {
-            font-size: 0.95em;
-            color: #444;
-            max-width: 500px;
-            margin: 0 auto 20px auto;
+            margin-top: 0;
         }
         .donation-content {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 20px;
-        }
-        .donation-content img {
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
         .revolut-button {
             display: inline-block;
-            background-color: #0075c9;
+            padding: 10px 20px;
+            background-color: #0075FF;
             color: white;
-            padding: 12px 22px;
-            border-radius: 8px;
             text-decoration: none;
+            border-radius: 8px;
             font-weight: bold;
             transition: background-color 0.2s;
         }
         .revolut-button:hover {
-            background-color: #005a9e;
-        }
-        .btn-back {
-          display: inline-block;
-          padding: 12px 24px;
-          background: #1250b1;
-          color: #fff;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: 600;
-          transition: background 0.2s, transform 0.2s;
-        }
-        .btn-back:hover,
-        .btn-back:focus {
-          background: #0c3879;
-          transform: translateY(-2px);
-        }
-        .btn-back:focus {
-          outline: 2px dashed var(--primary);
-          outline-offset: 4px;
+            background-color: #005fcc;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="btn-back">Înapoi la meniu</a>
-        <h1>Test – Managementul calității</h1>
+    <div class="container" id="container">
+        <h1>Test – Managementul Calitatii</h1>
         <div id="mainContent">
-            <div style="text-align:center;">
-                <p>Testul conține 10 întrebări selectate aleatoriu dintr-un set de 60.</p>
-                <p>Fiecare răspuns corect valorează 1 punct. Mult succes!</p>
-            </div>
-            <button id="startBtn">Începe testul</button>
+            <!-- Conținutul inițial al testului va fi generat de JavaScript -->
         </div>
     </div>
+
 <script>
-// Toate cele 60 de întrebări din fișierul PDF au fost adăugate mai jos.
-const questions = [
-    {
-        q: "Modul in care un ansamblu de caracteristici intrinseci ale unui produs sau serviciu satisfac cerintele clientului poarta denumirea de:",
-        options: ["a) valoare de intrebuintare (utilitate)", "b) standardizare", "c) calitate", "d) valoare psihosenzoriala", "e) valoare de piata"],
-        correct: 2
-    },
-    {
-        q: "Printre factorii care determina caracterul dinamic al calitatii nu regasim:",
-        options: ["a) progresul tehnic", "b) progresul stiintific", "c) exigentele crescande ale consumatorilor", "d) concurenta", "e) publicitatea"],
-        correct: 4
-    },
-    {
-        q: "Masurarea si estimarea calitatii produselor si serviciilor este obiectul de studiu al:",
-        options: ["a) calimetriei", "b) calitologiei", "c) merceologiei", "d) managementului calitatii", "e) publicitatea"],
-        correct: 0
-    },
-    {
-        q: "Indicatorul care reflecta aportul caracteristicilor produselor, ponderate dupa importanta si exprimate fie cantitativ (numeric), fie atributiv (notional) poarta denumirea de:",
-        options: ["a) indicatorul noncalitatii", "b) indicatorul complex (sintetic) al calitatii", "c) indicatorul cauza-efect", "d) indicatorul optim al calitatii", "e) indicatorul standard al calitatii"],
-        correct: 1
-    },
-    {
-        q: "Ce ipostaza a calitatii are ponderea cea mai mare (circa 70%) in obtinerea unui produs de calitate?",
-        options: ["a) calitatea proiectata", "b) calitatea contractata", "c) calitatea reala", "d) calitatea prescrisa", "e) calitatea omologata"],
-        correct: 0
-    },
-    {
-        q: "Calitatea specificata in standarde poarta denumirea de:",
-        options: ["a) calitatea proiectata", "b) calitatea contractata", "c) calitatea reala", "d) calitatea prescrisa", "e) calitatea omologata"],
-        correct: 3
-    },
-    {
-        q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
-        options: ["a) cercetarea si proiectarea", "b) transportul", "c) standardele", "d) managementul calitatii", "e) calificarea profesionala a lucratorilor"],
-        correct: 1
-    },
-    {
-        q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
-        options: ["a) cercetarea si proiectarea", "b) calificarea profesionala a lucratorilor", "c) standardele", "d) managementul calitatii", "e) ambalarea"],
-        correct: 4
-    },
-    {
-        q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
-        options: ["a) managementul calitatii", "b) calificarea profesionala a lucratorilor", "c) pastrarea", "d) cercetarea si proiectarea", "e) standardele"],
-        correct: 2
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) materiile prime si materialele", "b) transportul", "c) ambalarea", "d) pastrarea", "e) depozitarea"],
-        correct: 0
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) cercetarea si proiectarea", "b) transportul", "c) ambalarea", "d) pastrarea", "e) depozitarea"],
-        correct: 0
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) ambalarea", "b) transportul", "c) procesul tehnologic", "d) pastrarea", "e) depozitarea"],
-        correct: 2
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) ambalarea", "b) calificarea profesionala a lucratorilor", "c) transportul", "d) pastrarea", "e) depozitarea"],
-        correct: 1
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) transportul", "b) pastrarea", "c) ambalarea", "d) managementul calitatii", "e) depozitarea"],
-        correct: 3
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) transportul", "b) pastrarea", "c) ambalarea", "d) standardele", "e) depozitarea"],
-        correct: 3
-    },
-    {
-        q: "Activitatile coordonate pentru a orienta si controla o organizatie in ceea ce priveste calitatea reprezinta o definitie a:",
-        options: ["a) managementului", "b) merceologiei", "c) calitologiei", "d) calimetriei", "e) managementului calitatii"],
-        correct: 4
-    },
-    {
-        q: "Totalitatea activitatilor desfasurate pentru obtinerea calitatii, activitati ce se regasesc in toate etapele realizarii produsului/serviciului reprezinta o definitie a:",
-        options: ["a) managementului calitatii", "b) merceologiei", "c) calitologiei", "d) calimetriei", "e) managementului"],
-        correct: 0
-    },
-    {
-        q: "In cadrul evolutiei organizarii activitatii privind calitatea intr-o firma, modalitatea ce tinde catre excelenta si care integreaza toate conceptele anterioare se numeste:",
-        options: ["a) managementul calitatii totale (TQM)", "b) inspectia calitatii", "c) controlul calitatii", "d) sistemul de asigurare a calitatii", "e) sistemul de management al calitatii"],
-        correct: 0
-    },
-    {
-        q: "Accentul pus pe verificarea produsului finit, cu rol pasiv, de depistare a greselilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) managementul calitatii totale (TQM)", "b) inspectia calitatii", "c) sistemul de asigurare a calitatii", "d) controlul calitatii", "e) sistemul de management al calitatii"],
-        correct: 1
-    },
-    {
-        q: "Accentul pus pe controlul fluxului tehnologic in scopul identificarii aparitiei defectelor si pe folosirea metodelor de control statistic se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) inspectia calitatii", "b) controlul calitatii", "c) sistemul de asigurare a calitatii", "d) sistemul de management al calitatii", "e) managementul calitatii totale (TQM)"],
-        correct: 1
-    },
-    {
-        q: "Accentul pus pe prevenirea defectelor si oferirea increderii atat propriei conduceri a firmei, cat si clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) sistemul de management al calitatii", "b) controlul calitatii", "c) sistemul de asigurare a calitatii", "d) inspectia calitatii", "e) managementul calitatii totale (TQM)"],
-        correct: 2
-    },
-    {
-        q: "Accentul pus pe imbunatatirea continua a performantelor firmei se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) sistemul de management al calitatii", "b) managementul calitatii totale (TQM)", "c) sistemul de asigurare a calitatii", "d) inspectia calitatii", "e) controlul calitatii"],
-        correct: 0
-    },
-    {
-        q: "Accentul pus pe depasirea asteptarilor clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) sistemul de management al calitatii calitatii", "b) controlul calitatii", "c) sistemul de asigurare a calitatii", "d) inspectia calitatii", "e) managementul calitatii totale (TQM)"],
-        correct: 4
-    },
-    {
-        q: "Nu reprezinta un principiu al managementului calitatii:",
-        options: ["a) implicarea personalului", "b) abordarea sistemica a managementului", "c) imbunatatirea continua", "d) orientarea catre client", "e) monitorizarea eficientei auditarii sistemului de management al calitatii"],
-        correct: 4
-    },
-    {
-        q: "Cunoasterea trebuintelor actuale si potentiale ale clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) relatii reciproc avantajoase cu furnizorii", "b) abordarea sistemica a managementului", "c) imbunatatirea continua", "d) orientarea catre client", "e) abordarea faptica pentru luarea deciziei"],
-        correct: 3
-    },
-    {
-        q: "Satisfacerea si depasirea asteptarilor clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) orientarea catre client", "b) abordarea sistemica a managementului", "c) imbunatatirea continua", "d) orientarea catre client", "e) abordarea procesuala"],
-        correct: 0
-    },
-    {
-        q: "Faptul ca echipa de conducere trebuie sa stabileasca o unitate intre obiectivele propuse si orientarile organizatiei si trebuie sa creeze si sa mentina un mediu intern in care personalul sa poata fi total implicat in realizarea obiectivelor organizatiei se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) imbunatatirea continua", "b) abordarea sistemica a managementului", "c) leadership", "d) orientarea catre client", "e) abordarea procesuala"],
-        correct: 2
-    },
-    {
-        q: "Implicarea totala a personalului de la toate nivelurile se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) imbunatatirea continua", "b) abordarea sistemica a managementului", "c) leadership", "d) orientarea catre client", "e) implicarea personalului"],
-        correct: 4
-    },
-    {
-        q: "Faptul ca toate activitatile sunt conduse ca un proces, cu intrari si iesiri se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) imbunatatirea continua", "b) abordarea sistemica a managementului", "c) leadership", "d) abordarea procesuala", "e) abordarea faptica pentru luarea deciziei"],
-        correct: 3
-    },
-    {
-        q: "Faptul ca identificarea si conducerea principalelor activitati referitoare la calitate trebuie sa fie integrate si corelate in cadrul unui sistem coerent se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) orientarea catre client", "b) abordarea sistemica a managementului", "c) leadership", "d) abordarea procesuala", "e) abordarea faptica pentru luarea deciziei"],
-        correct: 1
-    },
-    {
-        q: "Faptul ca imbunatatirea performantelor globale ale unei organizatii ar trebui sa fie un obiectiv permanent al conducerii se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) orientarea catre client", "b) abordarea sistemica a managementului", "c) leadership", "d) abordarea procesuala", "e) imbunatatirea continua"],
-        correct: 4
-    },
-    {
-        q: "Faptul ca deciziile eficiente se bazeaza pe analiza datelor si a informatiilor obtinute de la toate locurile de munca se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) abordarea faptica pentru luarea deciziei", "b) abordarea sistemica a managementului", "c) orientarea catre client", "d) abordarea procesuala", "e) imbunatatirea continua"],
-        correct: 0
-    },
-    {
-        q: "Relatiile dintre o organizatie si furnizorii sai, care maresc capabilitatea de a crea valoare, se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) leadership", "b) abordarea sistemica a managementului", "c) relatii reciproc avantajoase cu furnizorii", "d) abordarea procesuala", "e) imbunatatirea continua"],
-        correct: 2
-    },
-    {
-        q: "Standardele din familia ISO 9000 sunt standarde de:",
-        options: ["a) management de mediu", "b) management al sanatatii si securitatii in munca", "c) auditare a sistemelor de management", "d) management al calitatii", "e) etica si responsabilitate sociala"],
-        correct: 3
-    },
-    {
-        q: "Standardele din familia ISO 14000 sunt standarde de:",
-        options: ["a) management al calitatii", "b) management al sanatatii si securitatii in munca", "c) auditare a sistemelor de management", "d) management de mediu", "e) etica si responsabilitate sociala"],
-        correct: 3
-    },
-    {
-        q: "Standardele din familia ISO 45000 sunt standarde de:",
-        options: ["a) management al calitatii", "b) etica si responsabilitate sociala", "c) auditare a sistemelor de management", "d) management de mediu", "e) management al sanatatii si securitatii in munca"],
-        correct: 4
-    },
-    {
-        q: "Standardul ISO 9001 se refera la:",
-        options: ["a) sistemul de management al calitatii", "b) sistemul de management al sanatatii si securitatii in munca", "c) auditarea sistemelor de management", "d) sistemul de management de mediu", "e) etica si responsabilitatea sociala"],
-        correct: 0
-    },
-    {
-        q: "Standardul ISO 14001 se refera la:",
-        options: ["a) sistemul de management al calitatii", "b) sistemul de management al sanatatii si securitatii in munca", "c) auditarea sistemelor de management", "d) sistemul de management de mediu", "e) etica si responsabilitatea sociala"],
-        correct: 3
-    },
-    {
-        q: "Standardul ISO 45001 se refera la:",
-        options: ["a) sistemul de management al calitatii", "b) sistemul de management al sanatatii si securitatii in munca", "c) auditarea sistemelor de management", "d) sistemul de management de mediu", "e) etica si responsabilitatea sociala"],
-        correct: 1
-    },
-    {
-        q: "Sistemul de management al calitatii are drept referential standardul:",
-        options: ["a) ISO 9001", "b) ISO 14001", "c) ISO 45001", "d) ISO 19011", "e) ISO 26001"],
-        correct: 0
-    },
-    {
-        q: "Sistemul de management de mediu are drept referential standardul:",
-        options: ["a) ISO 9001", "b) ISO 14001", "c) ISO 45001", "d) ISO 19011", "e) ISO 26001"],
-        correct: 1
-    },
-    {
-        q: "Sistemul de management al sanatatii si securitatii in munca are drept referential standardul:",
-        options: ["a) ISO 9001", "b) ISO 14001", "c) ISO 45001", "d) ISO 19011", "e) ISO 26001"],
-        correct: 2
-    },
-    {
-        q: "Actiunea unei terte parti care dovedeste existenta increderii ca un produs, proces sau serviciu este in conformitate cu un standard sau cu un alt document normativ poarta denumirea de:",
-        options: ["a) garantarea calitatii", "b) certificarea conformitatii", "c) acreditarea organismelor de certificare", "d) marcarea reglementata", "e) standardizare"],
-        correct: 1
-    },
-    {
-        q: "Printre avantajele implementarii sistemului de management al calitatii intr-o firma regasim:",
-        options: ["a) cresterea gradului de satisfacere a clientilor", "b) imbunatatirea perceptiei consumatorilor asupra organizatiei", "c) imbunatatirea performantelor produselor/serviciilor", "d) cresterea productivitatii si eficacitatii", "e) toate cele de mai sus"],
-        correct: 4
-    },
-    {
-        q: "Procesul de evaluare sistematica a elementelor specifice sistemului de management al calitatii pentru a vedea daca respecta cerintele prescrise poarta denumirea de:",
-        options: ["a) acreditare", "b) omologare", "c) imbunatatire continua", "d) auditare", "e) standardizare"],
-        correct: 3
-    },
-    {
-        q: "Documentul principal pentru elaborarea si implementarea sistemului de management al calitatii intr-o organizatie este:",
-        options: ["a) manualul calitatii", "b) declaratia de politica in domeniul calitatii", "c) standardul calitatii", "d) planul calitatii", "e) procedura calitatii"],
-        correct: 0
-    },
-    {
-        q: "In ce tara regasim Premiul Juran pentru calitate:",
-        options: ["a) Romania", "b) Japonia", "c) Statele Unite ale Americii", "d) Australia", "e) Franta"],
-        correct: 0
-    },
-    {
-        q: "Modelul european de excelenta in domeniul managementului calitatii poarta denumirea:",
-        options: ["a) Malcolm Baldridge", "b) Juran", "c) Deming", "d) EFQM", "e) Ishikawa"],
-        correct: 3
-    },
-    {
-        q: "Premiul national pentru calitate din Statele Unite ale Americii poarta denumirea:",
-        options: ["a) Juran", "b) Malcolm Baldridge", "c) Deming", "d) EFQM", "e) Ishikawa"],
-        correct: 1
-    },
-    {
-        q: "Premiul Deming pentru calitate se acorda in:",
-        options: ["a) Romania", "b) Statele Unite ale Americii", "c) Japonia", "d) Australia", "e) Franta"],
-        correct: 2
-    },
-    {
-        q: "Fazele si calendarul misiunii de consultanta in managementul calitatii, detaliate pe baza planului de actiune, fac parte din:",
-        options: ["a) propunerea de consultanta", "b) analiza diagnostic", "c) planul de afaceri", "d) raportul de expertiza", "e) misiunea de audit"],
-        correct: 0
-    },
-    {
-        q: "Obiectivele si natura misiunii de consultanta, cu precizarea rolului consultantului, al rezultatului asteptat de la misiune si al angajamentului consultantului referitor la acest rezultat, fac parte din:",
-        options: ["a) misiunea de audit", "b) analiza diagnostic", "c) planul de afaceri", "d) raportul de expertiza", "e) propunerea de consultanta"],
-        correct: 4
-    },
-    {
-        q: "Un rezumat al analizei diagnostic, insotit de concluziile consultantului si de definirea problemei, fac parte din:",
-        options: ["a) misiunea de audit", "b) propunerea de consultanta", "c) planul de afaceri", "d) raportul de expertiza", "e) planul strategic de marketing"],
-        correct: 1
-    },
-    {
-        q: "Etapele, activitatile si planificarea lor din cadrul misiunii de consultanta fac parte din:",
-        options: ["a) raportul de expertiza", "b) raportul de audit", "c) analiza diagnostic", "d) planul de afaceri", "e) planul de actiune"],
-        correct: 4
-    },
-    {
-        q: "Contributia fiecarui partener, responsabilitatile si conditiile de realizare din cadrul misiunii de consultanta fac parte din:",
-        options: ["a) raportul de expertiza", "b) planul de actiune", "c) analiza diagnostic", "d) planul de afaceri", "e) raportul de audit"],
-        correct: 1
-    },
-    {
-        q: "Activitatea de elaborare a unor proiecte, in care consultantul colaboreaza indeaproape cu clientul la formularea unor recomandari si la implementarea acestora poarta denumirea de:",
-        options: ["a) analiza diagnostic", "b) consultanta procesuala", "c) audit intern", "d) expertiza economica", "e) certificarea conformitatii"],
-        correct: 1
-    },
-    {
-        q: "Introducerea unei viziuni independente in abordarea unor probleme mai greu de perceput pentru manageri, care sunt prea implicati in situatie si „nu vad padurea din cauza copacilor\" reprezinta un avantaj al:",
-        options: ["a) consultantei procesuale", "b) analizei diagnostic", "c) auditului intern", "d) expertizei economice", "e) certificarii conformitatii"],
-        correct: 0
-    },
-    {
-        q: "Faptul de a contribui la intelegerea elementelor practice, concrete, ale problemelor care risca sa scape intelegerii intr-o abordare prea teoretica reprezinta un avantaj al:",
-        options: ["a) certificarii conformitatii", "b) analizei diagnostic", "c) auditului intern", "d) expertizei economice", "e) consultantei procesuale"],
-        correct: 4
-    },
-    {
-        q: "Faptul ca asigura o legatura coerenta intre consultant si client reprezinta un avantaj al:",
-        options: ["a) certificarii conformitatii", "b) analizei diagnostic", "c) consultantei procesuale", "d) expertizei economice", "e) auditului intern"],
-        correct: 2
-    },
-    {
-        q: "Faptul ca stimuleaza sentimentul de proprietate si angajamentul consultantului printr-o mai mare implicare in aplicarea unor metode si idei noi reprezinta un avantaj al:",
-        options: ["a) certificarii conformitatii", "b) consultantei procesuale", "c) analizei diagnostic", "d) expertizei economice", "e) auditului intern"],
-        correct: 1
-    }
+    // --- BAZA DE DATE CU ÎNTREBĂRI ---
+    // NOTĂ: Literele (a, b, c) au fost scoase din textul opțiunilor.
+    // Ele vor fi adăugate dinamic în cod.
+    const allQuestions = [
+  {
+    q: "Modul in care un ansamblu de caracteristici intrinseci ale unui produs sau serviciu satisfac cerintele clientului poarta denumirea de:",
+    options: [
+      "valoare de intrebuintare (utilitate)",
+      "standardizare",
+      "calitate",
+      "valoare psihosenzoriala",
+      "valoare de piata"
+    ],
+    correct: 2
+  },
+  {
+    q: "Printre factorii care determina caracterul dinamic al calitatii nu regasim:",
+    options: [
+      "progresul tehnic",
+      "progresul stiintific",
+      "exigentele crescande ale consumatorilor",
+      "concurenta",
+      "publicitatea"
+    ],
+    correct: 4
+  },
+  {
+    q: "Masurarea si estimarea calitatii produselor si serviciilor este obiectul de studiu al:",
+    options: [
+      "calimetriei",
+      "calitologiei",
+      "merceologiei",
+      "managementului calitatii",
+      "publicitatea"
+    ],
+    correct: 0
+  },
+  {
+    q: "Indicatorul care reflecta aportul caracteristicilor produselor, ponderate dupa importanta si exprimate fie cantitativ (numeric), fie atributiv (notional) poarta denumirea de:",
+    options: [
+      "indicatorul noncalitatii",
+      "indicatorul complex (sintetic) al calitatii",
+      "indicatorul cauza-efect",
+      "indicatorul optim al calitatii",
+      "indicatorul standard al calitatii"
+    ],
+    correct: 1
+  },
+  {
+    q: "Ce ipostaza a calitatii are ponderea cea mai mare (circa 70%) in obtinerea unui produs de calitate?",
+    options: [
+      "calitatea proiectata",
+      "calitatea contractata",
+      "calitatea reala",
+      "calitatea prescrisa",
+      "calitatea omologata"
+    ],
+    correct: 0
+  },
+  {
+    q: "Calitatea specificata in standarde poarta denumirea de:",
+    options: [
+      "calitatea proiectata",
+      "calitatea contractata",
+      "calitatea reala",
+      "calitatea prescrisa",
+      "calitatea omologata"
+    ],
+    correct: 3
+  },
+  {
+    q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+    options: [
+      "cercetarea si proiectarea",
+      "transportul",
+      "standarde",
+      "managementul calitatii",
+      "calificarea profesionala a lucratorilor"
+    ],
+    correct: 1
+  },
+  {
+    q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+    options: [
+      "cercetarea si proiectarea",
+      "calificarea profesionala a lucratorilor",
+      "standarde",
+      "managementul calitatii",
+      "ambalarea"
+    ],
+    correct: 4
+  },
+  {
+    q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+    options: [
+      "managementul calitatii",
+      "calificarea profesionala a lucratorilor",
+      "pastrarea",
+      "cercetarea si proiectarea",
+      "standarde"
+    ],
+    correct: 2
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "materiile prime si materialele",
+      "transportul",
+      "ambalarea",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 0
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "cercetarea si proiectarea",
+      "transportul",
+      "ambalarea",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 0
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "ambalarea",
+      "transportul",
+      "procesul tehnologic",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 2
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "ambalarea",
+      "calificarea profesionala a lucratorilor",
+      "transportul",
+      "pastrarea",
+      "depozitarea"
+    ],
+    correct: 1
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "transportul",
+      "pastrarea",
+      "ambalarea",
+      "managementul calitatii",
+      "depozitarea"
+    ],
+    correct: 3
+  },
+  {
+    q: "In categoria factorilor care determina calitatea marfurilor regasim:",
+    options: [
+      "transportul",
+      "pastrarea",
+      "ambalarea",
+      "standarde",
+      "depozitarea"
+    ],
+    correct: 3
+  },
+  {
+    q: "Activitatile coordonate pentru a orienta si controla o organizatie in ceea ce priveste calitatea reprezinta o definitie a:",
+    options: [
+      "managementului",
+      "merceologiei",
+      "calitologiei",
+      "calimetriei",
+      "managementului calitatii"
+    ],
+    correct: 4
+  },
+  {
+    q: "Totalitatea activitatilor desfasurate pentru obtinerea calitatii, activitati ce se regasesc in toate etapele realizarii produsului/serviciului reprezinta o definitie a:",
+    options: [
+      "managementului calitatii",
+      "merceologiei",
+      "calitologiei",
+      "calimetriei",
+      "managementului"
+    ],
+    correct: 0
+  },
+  {
+    q: "In cadrul evolutiei organizarii activitatii privind calitatea intr-o firma, modalitatea ce tinde catre excelenta si care integreaza toate conceptele anterioare se numeste:",
+    options: [
+      "managementul calitatii totale (TQM)",
+      "inspectia calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "sistemul de management al calitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "Accentul pus pe verificarea produsului finit, cu rol pasiv, de depistare a greselilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "managementul calitatii totale (TQM)",
+      "inspectia calitatii",
+      "sistemul de asigurare a calitatii",
+      "controlul calitatii",
+      "sistemul de management al calitatii"
+    ],
+    correct: 1
+  },
+  {
+    q: "Accentul pus pe controlul fluxului tehnologic in scopul identificarii aparitiei defectelor si pe folosirea metodelor de control statistic se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "inspectia calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "sistemul de management al calitatii",
+      "managementul calitatii totale (TQM)"
+    ],
+    correct: 1
+  },
+  {
+    q: "Accentul pus pe prevenirea defectelor si oferirea increderii atat propriei conduceri a firmei, cat si clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "sistemul de management al calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "inspectia calitatii",
+      "managementul calitatii totale (TQM)"
+    ],
+    correct: 2
+  },
+  {
+    q: "Accentul pus pe imbunatatirea continua a performantelor firmei se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "sistemul de management al calitatii",
+      "managementul calitatii totale (TQM)",
+      "sistemul de asigurare a calitatii",
+      "inspectia calitatii",
+      "controlul calitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "Accentul pus pe depasirea asteptarilor clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+    options: [
+      "sistemul de management al calitatii calitatii",
+      "controlul calitatii",
+      "sistemul de asigurare a calitatii",
+      "inspectia calitatii",
+      "managementul calitatii totale (TQM)"
+    ],
+    correct: 4
+  },
+  {
+    q: "Nu reprezinta un principiu al managementului calitatii:",
+    options: [
+      "implicarea personalului",
+      "abordarea sistemica a managementului",
+      "imbunatatirea continua",
+      "orientarea catre client",
+      "monitorizarea eficientei auditarii sistemului de management al calitatii"
+    ],
+    correct: 4
+  },
+  {
+    q: "Cunoasterea trebuintelor actuale si potentiale ale clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "relatii reciproc avantajoase cu furnizorii",
+      "abordarea sistemica a managementului",
+      "imbunatatirea continua",
+      "orientarea catre client",
+      "abordarea faptica pentru luarea deciziei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Satisfacerea si depasirea asteptarilor clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "orientarea catre client",
+      "abordarea sistemica a managementului",
+      "imbunatatirea continua",
+      "orientarea catre client",
+      "abordarea procesuala"
+    ],
+    correct: 0
+  },
+  {
+    q: "Faptul ca echipa de conducere trebuie sa stabileasca o unitate intre obiectivele propuse si orientarile organizatiei si trebuie sa creeze si sa mentina un mediu intern in care personalul sa poata fi total implicat in realizarea obiectivelor organizatiei se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "imbunatatirea continua",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "orientarea catre client",
+      "abordarea procesuala"
+    ],
+    correct: 2
+  },
+  {
+    q: "Implicarea totala a personalului de la toate nivelurile se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "imbunatatirea continua",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "orientarea catre client",
+      "implicarea personalului"
+    ],
+    correct: 4
+  },
+  {
+    q: "Faptul ca toate activitatile sunt conduse ca un proces, cu intrari si iesiri se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "imbunatatirea continua",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "abordarea procesuala",
+      "abordarea faptica pentru luarea deciziei"
+    ],
+    correct: 3
+  },
+  {
+    q: "Faptul ca identificarea si conducerea principalelor activitati referitoare la calitate trebuie sa fie integrate si corelate in cadrul unui sistem coerent se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "orientarea catre client",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "abordarea procesuala",
+      "abordarea faptica pentru luarea deciziei"
+    ],
+    correct: 1
+  },
+  {
+    q: "Faptul ca imbunatatirea performantelor globale ale unei organizatii ar trebui sa fie un obiectiv permanent al conducerii se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "orientarea catre client",
+      "abordarea sistemica a managementului",
+      "leadership",
+      "abordarea procesuala",
+      "imbunatatirea continua"
+    ],
+    correct: 4
+  },
+  {
+    q: "Faptul ca deciziile eficiente se bazeaza pe analiza datelor si a informatiilor obtinute de la toate locurile de munca se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "abordarea faptica pentru luarea deciziei",
+      "abordarea sistemica a managementului",
+      "orientarea catre client",
+      "abordarea procesuala",
+      "imbunatatirea continua"
+    ],
+    correct: 0
+  },
+  {
+    q: "Relatiile dintre o organizatie si furnizorii sai, care maresc capabilitatea de a crea valoare, se incadreaza la urmatorul principiu al managementului calitatii:",
+    options: [
+      "leadership",
+      "abordarea sistemica a managementului",
+      "relatii reciproc avantajoase cu furnizorii",
+      "abordarea procesuala",
+      "imbunatatirea continua"
+    ],
+    correct: 2
+  },
+  {
+    q: "Standardele din familia ISO 9000 sunt standarde de:",
+    options: [
+      "management de mediu",
+      "management al sanatatii si securitatii in munca",
+      "auditare a sistemelor de management",
+      "management al calitatii",
+      "etica si responsabilitate sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Standardele din familia ISO 14000 sunt standarde de:",
+    options: [
+      "management al calitatii",
+      "management al sanatatii si securitatii in munca",
+      "auditare a sistemelor de management",
+      "management de mediu",
+      "etica si responsabilitate sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Standardele din familia ISO 45000 sunt standarde de:",
+    options: [
+      "management al calitatii",
+      "etica si responsabilitate sociala",
+      "auditare a sistemelor de management",
+      "management de mediu",
+      "management al sanatatii si securitatii in munca"
+    ],
+    correct: 4
+  },
+  {
+    q: "Standardul ISO 9001 se refera la:",
+    options: [
+      "sistemul de management al calitatii",
+      "sistemul de management al sanatatii si securitatii in munca",
+      "auditarea sistemelor de management",
+      "sistemul de management de mediu",
+      "etica si responsabilitatea sociala"
+    ],
+    correct: 0
+  },
+  {
+    q: "Standardul ISO 14001 se refera la:",
+    options: [
+      "sistemul de management al calitatii",
+      "sistemul de management al sanatatii si securitatii in munca",
+      "auditarea sistemelor de management",
+      "sistemul de management de mediu",
+      "etica si responsabilitatea sociala"
+    ],
+    correct: 3
+  },
+  {
+    q: "Standardul ISO 45001 se refera la:",
+    options: [
+      "sistemul de management al calitatii",
+      "sistemul de management al sanatatii si securitatii in munca",
+      "auditarea sistemelor de management",
+      "sistemul de management de mediu",
+      "etica si responsabilitatea sociala"
+    ],
+    correct: 1
+  },
+  {
+    q: "Sistemul de management al calitatii are drept referential standardul:",
+    options: [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 45001",
+      "ISO 19011",
+      "ISO 26001"
+    ],
+    correct: 0
+  },
+  {
+    q: "Sistemul de management de mediu are drept referential standardul:",
+    options: [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 45001",
+      "ISO 19011",
+      "ISO 26001"
+    ],
+    correct: 1
+  },
+  {
+    q: "Sistemul de management al sanatatii si securitatii in munca are drept referential standardul:",
+    options: [
+      "ISO 9001",
+      "ISO 14001",
+      "ISO 45001",
+      "ISO 19011",
+      "ISO 26001"
+    ],
+    correct: 2
+  },
+  {
+    q: "Actiunea unei terte parti care dovedeste existenta increderii ca un produs, proces sau serviciu este in conformitate cu un standard sau cu un alt document normativ poarta denumirea de:",
+    options: [
+      "garantarea calitatii",
+      "certificarea conformitatii",
+      "acreditarea organismelor de certificare",
+      "marcarea reglementata",
+      "standardizare"
+    ],
+    correct: 1
+  },
+  {
+    q: "Printre avantajele implementarii sistemului de management al calitatii intr-o firma regasim:",
+    options: [
+      "cresterea gradului de satisfacere a clientilor",
+      "imbunatatirea perceptiei consumatorilor asupra organizatiei",
+      "imbunatatirea performantelor produselor/serviciilor",
+      "cresterea productivitatii si eficacitatii",
+      "toate cele de mai sus"
+    ],
+    correct: 4
+  },
+  {
+    q: "Procesul de evaluare sistematica a elementelor specifice sistemului de management al calitatii pentru a vedea daca respecta cerintele prescrise poarta denumirea de:",
+    options: [
+      "acreditare",
+      "omologare",
+      "imbunatatire continua",
+      "auditare",
+      "standardizare"
+    ],
+    correct: 3
+  },
+  {
+    q: "Documentul principal pentru elaborarea si implementarea sistemului de management al calitatii intr-o organizatie este:",
+    options: [
+      "manualul calitatii",
+      "declaratia de politica in domeniul calitatii",
+      "standardul calitatii",
+      "planul calitatii",
+      "procedura calitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "In ce tara regasim Premiul Juran pentru calitate:",
+    options: [
+      "Romania",
+      "Japonia",
+      "Statele Unite ale Americii",
+      "Australia",
+      "Franta"
+    ],
+    correct: 0
+  },
+  {
+    q: "Modelul european de excelenta in domeniul managementului calitatii poarta denumirea:",
+    options: [
+      "Malcolm Baldridge",
+      "Juran",
+      "Deming",
+      "EFQM",
+      "Ishikawa"
+    ],
+    correct: 3
+  },
+  {
+    q: "Premiul national pentru calitate din Statele Unite ale Americii poarta denumirea:",
+    options: [
+      "Juran",
+      "Malcolm Baldridge",
+      "Deming",
+      "EFQM",
+      "Ishikawa"
+    ],
+    correct: 1
+  },
+  {
+    q: "Premiul Deming pentru calitate se acorda in:",
+    options: [
+      "Romania",
+      "Statele Unite ale Americii",
+      "Japonia",
+      "Australia",
+      "Franta"
+    ],
+    correct: 2
+  },
+  {
+    q: "Fazele si calendarul misiunii de consultanta in managementul calitatii, detaliate pe baza planului de actiune, fac parte din:",
+    options: [
+      "propunerea de consultanta",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "raportul de expertiza",
+      "misiunea de audit"
+    ],
+    correct: 0
+  },
+  {
+    q: "Obiectivele si natura misiunii de consultanta, cu precizarea rolului consultantului, al rezultatului asteptat de la misiune si al angajamentului consultantului referitor la acest rezultat, fac parte din:",
+    options: [
+      "misiunea de audit",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "raportul de expertiza",
+      "propunerea de consultanta"
+    ],
+    correct: 4
+  },
+  {
+    q: "Un rezumat al analizei diagnostic, insotit de concluziile consultantului si de definirea problemei, fac parte din:",
+    options: [
+      "misiunea de audit",
+      "propunerea de consultanta",
+      "planul de afaceri",
+      "raportul de expertiza",
+      "planul strategic de marketing"
+    ],
+    correct: 1
+  },
+  {
+    q: "Etapele, activitatile si planificarea lor din cadrul misiunii de consultanta fac parte din:",
+    options: [
+      "raportul de expertiza",
+      "raportul de audit",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "planul de actiune"
+    ],
+    correct: 4
+  },
+  {
+    q: "Contributia fiecarui partener, responsabilitatile si conditiile de realizare din cadrul misiunii de consultanta fac parte din:",
+    options: [
+      "raportul de expertiza",
+      "planul de actiune",
+      "analiza diagnostic",
+      "planul de afaceri",
+      "raportul de audit"
+    ],
+    correct: 1
+  },
+  {
+    q: "Activitatea de elaborare a unor proiecte, in care consultantul colaboreaza indeaproape cu clientul la formularea unor recomandari si la implementarea acestora poarta denumirea de:",
+    options: [
+      "analiza diagnostic",
+      "consultanta procesuala",
+      "audit intern",
+      "expertiza economica",
+      "certificarea conformitatii"
+    ],
+    correct: 1
+  },
+  {
+    q: "Introducerea unei viziuni independente in abordarea unor probleme mai greu de perceput pentru manageri, care sunt prea implicati in situatie si „nu vad padurea din cauza copacilor\" reprezinta un avantaj al:",
+    options: [
+      "consultantei procesuale",
+      "analizei diagnostic",
+      "auditului intern",
+      "expertizei economice",
+      "certificarii conformitatii"
+    ],
+    correct: 0
+  },
+  {
+    q: "Faptul de a contribui la intelegerea elementelor practice, concrete, ale problemelor care risca sa scape intelegerii intr-o abordare prea teoretica reprezinta un avantaj al:",
+    options: [
+      "certificarii conformitatii",
+      "analizei diagnostic",
+      "auditului intern",
+      "expertizei economice",
+      "consultantei procesuale"
+    ],
+    correct: 4
+  },
+  {
+    q: "Faptul ca asigura o legatura coerenta intre consultant si client reprezinta un avantaj al:",
+    options: [
+      "certificarii conformitatii",
+      "analizei diagnostic",
+      "consultantei procesuale",
+      "expertizei economice",
+      "auditului intern"
+    ],
+    correct: 2
+  },
+  {
+    q: "Faptul ca stimuleaza sentimentul de proprietate si angajamentul consultantului printr-o mai mare implicare in aplicarea unor metode si idei noi reprezinta un avantaj al:",
+    options: [
+      "certificarii conformitatii",
+      "consultantei procesuale",
+      "analizei diagnostic",
+      "expertizei economice",
+      "auditului intern"
+    ],
+    correct: 1
+  }
 ];
 
 
-let selectedQuestions = [];
-let userAnswers = [];
-const mainContent = document.getElementById('mainContent');
-const container = document.querySelector('.container');
+    // --- VARIABILE GLOBALE ---
+    let currentQuestions = []; // Întrebările selectate pentru testul curent
+    const mainContent = document.getElementById('mainContent');
+    const container = document.getElementById('container');
 
-/**
- * Amestecă un array folosind algoritmul Fisher-Yates.
- * @param {Array} array - Array-ul care trebuie amestecat.
- * @returns {Array} - Array-ul amestecat.
- */
-function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    // --- FUNCȚII PRINCIPALE ---
+
+    /**
+     * Funcție de amestecare a elementelor unui array (algoritmul Fisher-Yates)
+     * @param {Array} array - Array-ul care trebuie amestecat.
+     */
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
     }
-    return array;
-}
 
-/**
- * Inițiază testul: selectează 10 întrebări aleatoriu și le afișează.
- */
-function startTest() {
-    selectedQuestions = shuffle([...questions]).slice(0, 10);
-    userAnswers = Array(10).fill(null);
-    renderQuestions();
-}
+    /**
+     * Inițiază și afișează ecranul de start al testului.
+     */
+    function showStartScreen() {
+        mainContent.innerHTML = `
+            <div class="selector-container">
+                <label for="numQuestions">Alege numărul de întrebări:</label>
+                <select id="numQuestions">
+                    <option value="10">10 întrebări</option>
+                    <option value="20">20 întrebări</option>
+                    <option value="all" selected>Toate întrebările (${allQuestions.length})</option>
+                </select>
+            </div>
+            <div class="selector-container">
+                <label for="difficultyLevel">Alege nivelul de dificultate:</label>
+                <select id="difficultyLevel">
+                    <option value="1" selected>1 - Normal</option>
+                    <option value="2">2 - Ordine răspunsuri aleatorie</option>
+                    <option value="3">3 - Răspunsuri mixate (dificil)</option>
+                </select>
+            </div>
+            <button id="startBtn">Începe testul</button>
+        `;
+        document.getElementById('startBtn').addEventListener('click', startTest);
+    }
 
-/**
- * Generează și afișează HTML-ul pentru întrebările selectate.
- */
-function renderQuestions() {
-    let html = `<form id="quizForm">`;
-    selectedQuestions.forEach((q, idx) => {
-        html += `<div class="question"><strong>${idx + 1}. ${q.q}</strong>
-        <div class="answers">`;
-        q.options.forEach((opt, i) => {
-            html += `<label>
-                <input type="radio" name="q${idx}" value="${i}" required>
-                ${opt}
-            </label>`;
+    /**
+     * Pregătește și pornește testul pe baza selecțiilor utilizatorului.
+     */
+    function startTest() {
+        const numSelect = document.getElementById('numQuestions').value;
+        const difficultyLevel = document.getElementById('difficultyLevel').value;
+
+        let questionsToUse = [...allQuestions];
+        shuffle(questionsToUse); 
+
+        let count = (numSelect === 'all') ? questionsToUse.length : parseInt(numSelect, 10);
+        currentQuestions = questionsToUse.slice(0, count);
+
+        prepareQuestionOptions(difficultyLevel);
+        
+        renderQuestions();
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /**
+     * Generează opțiunile de răspuns pentru fiecare întrebare conform nivelului de dificultate.
+     * @param {string} difficultyLevel - Nivelul de dificultate ('1', '2', sau '3').
+     */
+    function prepareQuestionOptions(difficultyLevel) {
+        currentQuestions.forEach(q => {
+            let options = q.options.map((opt, index) => ({
+                text: opt,
+                isCorrect: index === q.correct
+            }));
+
+            if (difficultyLevel === '1') {
+                q.optionsToShow = options;
+            } else if (difficultyLevel === '2') {
+                shuffle(options);
+                q.optionsToShow = options;
+            } else if (difficultyLevel === '3') {
+                const correctAnswer = options.find(opt => opt.isCorrect);
+                
+                let wrongAnswersPool = [];
+                allQuestions.forEach(otherQ => {
+                    if (otherQ.q !== q.q) {
+                        otherQ.options.forEach((opt, index) => {
+                            if (index !== otherQ.correct) {
+                                wrongAnswersPool.push({ text: opt, isCorrect: false });
+                            }
+                        });
+                    }
+                });
+
+                shuffle(wrongAnswersPool);
+                
+                const finalOptions = [correctAnswer];
+                const optionsCount = q.options.length > 1 ? q.options.length - 1 : 3;
+                finalOptions.push(...wrongAnswersPool.slice(0, optionsCount));
+                
+                shuffle(finalOptions);
+                q.optionsToShow = finalOptions;
+            }
         });
-        html += `</div></div>`;
-    });
-    html += `<button type="submit">Vezi rezultatele</button></form>`;
-    mainContent.innerHTML = html;
+    }
 
-    // Adaugă event listener pentru submit-ul formularului
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Colectarea răspunsurilor într-un mod compatibil cu toate browserele
-        for (let i = 0; i < selectedQuestions.length; i++) {
-            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
-            userAnswers[i] = selectedOption ? parseInt(selectedOption.value) : null;
-        }
-        showResults();
-    });
-}
+    /**
+     * Afișează formularul cu întrebările testului.
+     */
+    function renderQuestions() {
+        let html = `<form id="quizForm">`;
+        currentQuestions.forEach((q, idx) => {
+            html += `<div class="question"><strong>${idx + 1}. ${q.q}</strong><div class="answers">`;
+            q.optionsToShow.forEach((opt, optIdx) => {
+                // Adaugă dinamic litera (a, b, c...) în fața opțiunii
+                const letter = String.fromCharCode(97 + optIdx);
+                html += `
+                    <label>
+                        <input type="radio" name="q${idx}" value="${optIdx}" required>
+                        ${letter}) ${opt.text}
+                    </label>
+                `;
+            });
+            html += `</div></div>`;
+        });
+        html += `<button type="submit">Vezi rezultatele</button></form>`;
+        mainContent.innerHTML = html;
 
-/**
- * Calculează și afișează rezultatele testului.
- */
-function showResults() {
-    // Derulează la începutul containerului pentru a afișa nota
-    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('quizForm').addEventListener('submit', e => {
+            e.preventDefault();
+            showResults();
+        });
+    }
 
-    let correctCount = userAnswers.filter((ans, i) => ans === selectedQuestions[i].correct).length;
-    let html = `<div class="result">
-                    <h2>Rezultate</h2>
-                    <p class="score">Ai răspuns corect la <b>${correctCount}</b> din 10 întrebări.</p>
-                    <p class="score"><b>Nota: ${correctCount}</b></p>
-                    <hr>`;
-    selectedQuestions.forEach((q, idx) => {
-        const userAnswerIndex = userAnswers[idx];
-        const isCorrect = userAnswerIndex === q.correct;
-        html += `<div class="question">
-            <strong>${idx + 1}. ${q.q}</strong><br>
-            <span class="${isCorrect ? 'correct' : 'wrong'}">
-                Răspunsul tău: ${userAnswerIndex !== null ? q.options[userAnswerIndex] : 'Fără răspuns'}
-            </span>`;
-        if (!isCorrect) {
-            html += `<span class="show-correct">(Corect: <b>${q.options[q.correct]}</b>)</span>`;
-        }
-        html += `</div>`;
-    });
+    /**
+     * Calculează și afișează rezultatele testului.
+     */
+    function showResults() {
+        let correctCount = 0;
+        const form = document.getElementById('quizForm');
 
-    // Secțiunea pentru donații
-    html += `<div class="donation-section">
+        currentQuestions.forEach((q, idx) => {
+            const selectedOption = form.querySelector(`input[name="q${idx}"]:checked`);
+            if (selectedOption) {
+                const answerIndex = parseInt(selectedOption.value, 10);
+                q.userAnswerIndex = answerIndex;
+                if (q.optionsToShow[answerIndex].isCorrect) {
+                    correctCount++;
+                }
+            } else {
+                q.userAnswerIndex = null;
+            }
+        });
+
+        let total = currentQuestions.length;
+        let html = `
+            <div class="result">
+                <h2>Rezultate</h2>
+                <p class="score">Ai răspuns corect la <b>${correctCount}</b> din ${total} întrebări.</p>
+                <p class="score"><b>Nota: ${correctCount}</b></p>
+                <hr>
+        `;
+
+        currentQuestions.forEach((q, idx) => {
+            const userAnsweredOption = (q.userAnswerIndex !== null) ? q.optionsToShow[q.userAnswerIndex] : null;
+            const correctAnswerOption = q.optionsToShow.find(opt => opt.isCorrect);
+            const isCorrect = userAnsweredOption ? userAnsweredOption.isCorrect : false;
+
+            html += `<div class="question">
+                <strong>${idx + 1}. ${q.q}</strong><br>`;
+
+            if (userAnsweredOption) {
+                // Adaugă dinamic litera pentru răspunsul utilizatorului
+                const userLetter = String.fromCharCode(97 + q.userAnswerIndex);
+                html += `<span class="${isCorrect ? 'correct' : 'wrong'}">
+                    Răspunsul tău: ${userLetter}) ${userAnsweredOption.text}
+                </span>`;
+            } else {
+                html += `<span class="wrong">Fără răspuns</span>`;
+            }
+            
+            if (!isCorrect) {
+                // Adaugă dinamic litera pentru răspunsul corect
+                const correctOptionIndex = q.optionsToShow.findIndex(opt => opt.isCorrect);
+                const correctLetter = String.fromCharCode(97 + correctOptionIndex);
+                html += `<span class="show-correct">(Corect: <b>${correctLetter}) ${correctAnswerOption.text}</b>)</span>`;
+            }
+            html += `</div>`;
+        });
+
+        html += `<button class="restart-btn">Refă testul</button></div>`;
+        
+        html += `
+            <div class="donation-section">
                 <h3>Apreciezi acest proiect?</h3>
                 <p>Dacă acest test gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
                 <div class="donation-content">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut" title="Scanează pentru a dona prin Revolut">
                     <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
                 </div>
             </div>`;
 
-    html += `<button class="restart-btn">Generează un alt test</button></div>`;
-    mainContent.innerHTML = html;
+        mainContent.innerHTML = html;
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    // Adaugă event listener pentru butonul de restart
-    mainContent.querySelector('.restart-btn').addEventListener('click', startTest);
-}
+        mainContent.querySelector('.restart-btn').addEventListener('click', showStartScreen);
+    }
 
-// Adaugă event listener pentru butonul de start
-document.getElementById('startBtn').addEventListener('click', startTest);
+    // --- INIȚIALIZARE ---
+    document.addEventListener('DOMContentLoaded', showStartScreen);
+
 </script>
 </body>
 </html>
