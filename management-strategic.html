@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Test – Managementul Strategic</title>
     <style>
         html {
@@ -21,9 +21,9 @@
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
             padding: 24px 30px;
+            text-align: center;
         }
         h1 {
-            text-align: center;
             margin-bottom: 30px;
             color: #1250b1;
         }
@@ -31,6 +31,7 @@
             margin-bottom: 25px;
             padding-bottom: 15px;
             border-bottom: 1px solid #f0f0f0;
+            text-align: left;
         }
         .question:last-child {
             border-bottom: none;
@@ -59,7 +60,7 @@
         #startBtn, button[type="submit"], .restart-btn {
             display: block;
             width: fit-content;
-            margin: 30px auto 0;
+            margin: 20px auto 0;
             background: #1250b1;
             color: #fff;
             padding: 12px 35px;
@@ -79,6 +80,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-top: 25px;
+            text-align: left;
         }
         .result h2 {
             text-align: center;
@@ -104,85 +106,62 @@
             color: #555;
         }
         .show-correct b {
-             color: #28a745;
+            color: #28a745;
         }
-        .donation-section {
-            text-align: center;
-            margin: 40px 0 30px 0;
-            padding: 25px 15px;
-            background-color: #f5f9ff;
-            border-radius: 10px;
-            border: 1px solid #e0e8f3;
+        .scroll-top-container {
+            margin-bottom: 15px;
         }
-        .donation-section h3 {
-            margin-top: 0;
-            color: #1250b1;
+        select {
+            font-size: 1rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
         }
-        .donation-section p {
-            font-size: 0.95em;
-            color: #444;
-            max-width: 500px;
-            margin: 0 auto 20px auto;
-        }
-        .donation-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        .donation-content img {
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
-        .revolut-button {
-            display: inline-block;
-            background-color: #0075c9;
-            color: white;
-            padding: 12px 22px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        .revolut-button:hover {
-            background-color: #005a9e;
-        }
-        .btn-back {
-          display: inline-block;
-          padding: 12px 24px;
-          background: #1250b1;
-          color: #fff;
-          border-radius: 8px;
-          text-decoration: none;
-          font-weight: 600;
-          transition: background 0.2s, transform 0.2s;
-        }
-        .btn-back:hover,
-        .btn-back:focus {
-          background: #0c3879;
-          transform: translateY(-2px);
-        }
-        .btn-back:focus {
-          outline: 2px dashed var(--primary);
-          outline-offset: 4px;
-        }
+		.btn-back {
+    display: inline-block;
+    padding: 12px 24px;
+    background: #1250b1;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.2s;
+    margin-bottom: 20px;
+}
+.btn-back:hover,
+.btn-back:focus {
+    background: #0c3879;
+    transform: translateY(-2px);
+}
+.btn-back:focus {
+    outline: 2px dashed #1250b1;
+    outline-offset: 4px;
+}
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="management-strategic-study.html" class="btn-back">Înapoi</a>
+    <div class="container" id="container">
         <h1>Test – Managementul Strategic</h1>
+		<a href="management-strategic-study.html" class="btn-back">Înapoi</a>
+
         <div id="mainContent">
-            <div style="text-align:center;">
-                <p>Testul conține 10 întrebări selectate aleatoriu dintr-un set de 60.</p>
-                <p>Fiecare răspuns corect valorează 1 punct. Mult succes!</p>
+            <div class="scroll-top-container">
+                <label for="numQuestions">Alege numărul de întrebări:</label>
+                <select id="numQuestions">
+                    <option value="10" selected>10 întrebări</option>
+                    <option value="20">20 întrebări</option>
+                    <option value="all">Toate întrebările</option>
+                </select>
             </div>
+
             <button id="startBtn">Începe testul</button>
         </div>
     </div>
+
 <script>
-// Toate cele 60 de întrebări din fișierul PDF au fost adăugate mai jos.
-const questions = [
+    const questions = [
   {
     q: "Principalele teorii care au marcat etapele dezvoltarii managementului strategic au fost:",
     options: [
@@ -624,113 +603,100 @@ const questions = [
   }
 ];
 
+    let selectedQuestions = [];
+    let userAnswers = [];
+    const mainContent = document.getElementById('mainContent');
+    const container = document.getElementById('container');
 
-let selectedQuestions = [];
-let userAnswers = [];
-const mainContent = document.getElementById('mainContent');
-const container = document.querySelector('.container');
-
-/**
- * Amestecă un array folosind algoritmul Fisher-Yates.
- * @param {Array} array - Array-ul care trebuie amestecat.
- * @returns {Array} - Array-ul amestecat.
- */
-function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
     }
-    return array;
-}
 
-/**
- * Inițiază testul: selectează 10 întrebări aleatoriu și le afișează.
- */
-function startTest() {
-    selectedQuestions = shuffle([...questions]).slice(0, 10);
-    userAnswers = Array(10).fill(null);
-    renderQuestions();
-}
+    function startTest() {
+        const numSelect = document.getElementById('numQuestions').value;
+        let count;
+        if (numSelect === 'all') {
+            count = questions.length;
+        } else {
+            count = parseInt(numSelect, 10);
+            if (count > questions.length) count = questions.length;
+        }
+        selectedQuestions = shuffle([...questions]).slice(0, count);
+        userAnswers = Array(count).fill(null);
+        renderQuestions();
 
-/**
- * Generează și afișează HTML-ul pentru întrebările selectate.
- */
-function renderQuestions() {
-    let html = `<form id="quizForm">`;
-    selectedQuestions.forEach((q, idx) => {
-        html += `<div class="question"><strong>${idx + 1}. ${q.q}</strong>
-        <div class="answers">`;
-        q.options.forEach((opt, i) => {
-            html += `<label>
-                <input type="radio" name="q${idx}" value="${i}" required>
-                ${opt}
-            </label>`;
+        // Scroll sus când începe testul
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderQuestions() {
+        let html = `<form id="quizForm">`;
+        selectedQuestions.forEach((q, idx) => {
+            html += `<div class="question"><strong>${idx + 1}. ${q.q}</strong>
+            <div class="answers">`;
+            q.options.forEach((opt, i) => {
+                html += `<label>
+                    <input type="radio" name="q${idx}" value="${i}" required>
+                    ${opt}
+                </label>`;
+            });
+            html += `</div></div>`;
         });
-        html += `</div></div>`;
-    });
-    html += `<button type="submit">Vezi rezultatele</button></form>`;
-    mainContent.innerHTML = html;
+        html += `<button type="submit">Vezi rezultatele</button></form>`;
+        mainContent.innerHTML = html;
 
-    // Adaugă event listener pentru submit-ul formularului
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Colectarea răspunsurilor într-un mod compatibil cu toate browserele
-        for (let i = 0; i < selectedQuestions.length; i++) {
-            const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
-            userAnswers[i] = selectedOption ? parseInt(selectedOption.value) : null;
-        }
-        showResults();
-    });
-}
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            for (let i = 0; i < selectedQuestions.length; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                userAnswers[i] = selectedOption ? parseInt(selectedOption.value) : null;
+            }
+            showResults();
+        });
+    }
 
-/**
- * Calculează și afișează rezultatele testului.
- */
-function showResults() {
-    // Derulează la începutul containerului pentru a afișa nota
-    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    function showResults() {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    let correctCount = userAnswers.filter((ans, i) => ans === selectedQuestions[i].correct).length;
-    let html = `<div class="result">
-                    <h2>Rezultate</h2>
-                    <p class="score">Ai răspuns corect la <b>${correctCount}</b> din 10 întrebări.</p>
-                    <p class="score"><b>Nota: ${correctCount}</b></p>
-                    <hr>`;
-    selectedQuestions.forEach((q, idx) => {
-        const userAnswerIndex = userAnswers[idx];
-        const isCorrect = userAnswerIndex === q.correct;
-        html += `<div class="question">
-            <strong>${idx + 1}. ${q.q}</strong><br>
-            <span class="${isCorrect ? 'correct' : 'wrong'}">
-                Răspunsul tău: ${userAnswerIndex !== null ? q.options[userAnswerIndex] : 'Fără răspuns'}
-            </span>`;
-        if (!isCorrect) {
-            html += `<span class="show-correct">(Corect: <b>${q.options[q.correct]}</b>)</span>`;
-        }
-        html += `</div>`;
-    });
+        let correctCount = userAnswers.filter((ans, i) => ans === selectedQuestions[i].correct).length;
+        let total = selectedQuestions.length;
+        let html = `<div class="result">
+                        <h2>Rezultate</h2>
+                        <p class="score">Ai răspuns corect la <b>${correctCount}</b> din ${total} întrebări.</p>
+                        <p class="score"><b>Nota: ${correctCount}</b></p>
+                        <hr>`;
+        selectedQuestions.forEach((q, idx) => {
+            const userAnswerIndex = userAnswers[idx];
+            const isCorrect = userAnswerIndex === q.correct;
+            html += `<div class="question">
+                <strong>${idx + 1}. ${q.q}</strong><br>
+                <span class="${isCorrect ? 'correct' : 'wrong'}">
+                    Răspunsul tău: ${userAnswerIndex !== null ? q.options[userAnswerIndex] : 'Fără răspuns'}
+                </span>`;
+            if (!isCorrect) {
+                html += `<span class="show-correct">(Corect: <b>${q.options[q.correct]}</b>)</span>`;
+            }
+            html += `</div>`;
+        });
 
-    // Secțiunea pentru donații
-    html += `<div class="donation-section">
-                <h3>Apreciezi acest proiect?</h3>
-                <p>Dacă acest test gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
-                <div class="donation-content">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut">
-                    <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
-                </div>
-            </div>`;
+        html += `<button class="restart-btn">Refă testul</button></div>`;
+        mainContent.innerHTML = html;
 
-    html += `<button class="restart-btn">Generează un alt test</button></div>`;
-    mainContent.innerHTML = html;
+        const restartBtn = mainContent.querySelector('.restart-btn');
+        restartBtn.addEventListener('click', () => {
+            // refacem testul cu aceleași setări
+            startTest();
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
 
-    // Adaugă event listener pentru butonul de restart
-    mainContent.querySelector('.restart-btn').addEventListener('click', startTest);
-}
-
-// Adaugă event listener pentru butonul de start
-document.getElementById('startBtn').addEventListener('click', startTest);
+    document.getElementById('startBtn').addEventListener('click', startTest);
 </script>
 </body>
 </html>
