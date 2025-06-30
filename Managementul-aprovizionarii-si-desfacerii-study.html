@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Învățare – Managementul Strategic</title>
+    <title>Învățare – Managementul Approvizionarii si desfacerii</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -200,7 +200,7 @@
 <body>
     <div class="container">
         <a href="index.html" class="btn-back">Înapoi la meniu</a>
-        <h1>Managementul Strategic</h1>
+        <h1>Managementul Aprovizionarii si Desfacerii</h1>
         
         <div id="menuContent">
             <div style="text-align:center; margin-bottom: 30px;">
@@ -208,7 +208,7 @@
             </div>
             
             <div class="menu-buttons">
-                <button onclick="startFlashcards()">📚 Învață cu Flashcards</button>
+                <button onclick="goToInteractive()">🧩 Modul Interactiv (feedback instant)</button>
                 <button onclick="startStudyMode()">📖 Studiază Întrebările</button>
                 <button onclick="startTest()">🎯 Testează-te</button>
             </div>
@@ -236,306 +236,501 @@
     <script>
         // Doar 3 întrebări ca exemplu - vei adăuga restul
         const questions = [
-    {
-        q: "Modul in care un ansamblu de caracteristici intrinseci ale unui produs sau serviciu satisfac cerintele clientului poarta denumirea de:",
-        options: ["a) valoare de intrebuintare (utilitate)", "b) standardizare", "c) calitate", "d) valoare psihosenzoriala", "e) valoare de piata"],
-        correct: 2
-    },
-    {
-        q: "Printre factorii care determina caracterul dinamic al calitatii nu regasim:",
-        options: ["a) progresul tehnic", "b) progresul stiintific", "c) exigentele crescande ale consumatorilor", "d) concurenta", "e) publicitatea"],
-        correct: 4
-    },
-    {
-        q: "Masurarea si estimarea calitatii produselor si serviciilor este obiectul de studiu al:",
-        options: ["a) calimetriei", "b) calitologiei", "c) merceologiei", "d) managementului calitatii", "e) publicitatea"],
-        correct: 0
-    },
-    {
-        q: "Indicatorul care reflecta aportul caracteristicilor produselor, ponderate dupa importanta si exprimate fie cantitativ (numeric), fie atributiv (notional) poarta denumirea de:",
-        options: ["a) indicatorul noncalitatii", "b) indicatorul complex (sintetic) al calitatii", "c) indicatorul cauza-efect", "d) indicatorul optim al calitatii", "e) indicatorul standard al calitatii"],
-        correct: 1
-    },
-    {
-        q: "Ce ipostaza a calitatii are ponderea cea mai mare (circa 70%) in obtinerea unui produs de calitate?",
-        options: ["a) calitatea proiectata", "b) calitatea contractata", "c) calitatea reala", "d) calitatea prescrisa", "e) calitatea omologata"],
-        correct: 0
-    },
-    {
-        q: "Calitatea specificata in standarde poarta denumirea de:",
-        options: ["a) calitatea proiectata", "b) calitatea contractata", "c) calitatea reala", "d) calitatea prescrisa", "e) calitatea omologata"],
-        correct: 3
-    },
-    {
-        q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
-        options: ["a) cercetarea si proiectarea", "b) transportul", "c) standardele", "d) managementul calitatii", "e) calificarea profesionala a lucratorilor"],
-        correct: 1
-    },
-    {
-        q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
-        options: ["a) cercetarea si proiectarea", "b) calificarea profesionala a lucratorilor", "c) standardele", "d) managementul calitatii", "e) ambalarea"],
-        correct: 4
-    },
-    {
-        q: "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
-        options: ["a) managementul calitatii", "b) calificarea profesionala a lucratorilor", "c) pastrarea", "d) cercetarea si proiectarea", "e) standardele"],
-        correct: 2
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) materiile prime si materialele", "b) transportul", "c) ambalarea", "d) pastrarea", "e) depozitarea"],
-        correct: 0
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) cercetarea si proiectarea", "b) transportul", "c) ambalarea", "d) pastrarea", "e) depozitarea"],
-        correct: 0
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) ambalarea", "b) transportul", "c) procesul tehnologic", "d) pastrarea", "e) depozitarea"],
-        correct: 2
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) ambalarea", "b) calificarea profesionala a lucratorilor", "c) transportul", "d) pastrarea", "e) depozitarea"],
-        correct: 1
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) transportul", "b) pastrarea", "c) ambalarea", "d) managementul calitatii", "e) depozitarea"],
-        correct: 3
-    },
-    {
-        q: "In categoria factorilor care determina calitatea marfurilor regasim:",
-        options: ["a) transportul", "b) pastrarea", "c) ambalarea", "d) standardele", "e) depozitarea"],
-        correct: 3
-    },
-    {
-        q: "Activitatile coordonate pentru a orienta si controla o organizatie in ceea ce priveste calitatea reprezinta o definitie a:",
-        options: ["a) managementului", "b) merceologiei", "c) calitologiei", "d) calimetriei", "e) managementului calitatii"],
-        correct: 4
-    },
-    {
-        q: "Totalitatea activitatilor desfasurate pentru obtinerea calitatii, activitati ce se regasesc in toate etapele realizarii produsului/serviciului reprezinta o definitie a:",
-        options: ["a) managementului calitatii", "b) merceologiei", "c) calitologiei", "d) calimetriei", "e) managementului"],
-        correct: 0
-    },
-    {
-        q: "In cadrul evolutiei organizarii activitatii privind calitatea intr-o firma, modalitatea ce tinde catre excelenta si care integreaza toate conceptele anterioare se numeste:",
-        options: ["a) managementul calitatii totale (TQM)", "b) inspectia calitatii", "c) controlul calitatii", "d) sistemul de asigurare a calitatii", "e) sistemul de management al calitatii"],
-        correct: 0
-    },
-    {
-        q: "Accentul pus pe verificarea produsului finit, cu rol pasiv, de depistare a greselilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) managementul calitatii totale (TQM)", "b) inspectia calitatii", "c) sistemul de asigurare a calitatii", "d) controlul calitatii", "e) sistemul de management al calitatii"],
-        correct: 1
-    },
-    {
-        q: "Accentul pus pe controlul fluxului tehnologic in scopul identificarii aparitiei defectelor si pe folosirea metodelor de control statistic se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) inspectia calitatii", "b) controlul calitatii", "c) sistemul de asigurare a calitatii", "d) sistemul de management al calitatii", "e) managementul calitatii totale (TQM)"],
-        correct: 1
-    },
-    {
-        q: "Accentul pus pe prevenirea defectelor si oferirea increderii atat propriei conduceri a firmei, cat si clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) sistemul de management al calitatii", "b) controlul calitatii", "c) sistemul de asigurare a calitatii", "d) inspectia calitatii", "e) managementul calitatii totale (TQM)"],
-        correct: 2
-    },
-    {
-        q: "Accentul pus pe imbunatatirea continua a performantelor firmei se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) sistemul de management al calitatii", "b) managementul calitatii totale (TQM)", "c) sistemul de asigurare a calitatii", "d) inspectia calitatii", "e) controlul calitatii"],
-        correct: 0
-    },
-    {
-        q: "Accentul pus pe depasirea asteptarilor clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
-        options: ["a) sistemul de management al calitatii calitatii", "b) controlul calitatii", "c) sistemul de asigurare a calitatii", "d) inspectia calitatii", "e) managementul calitatii totale (TQM)"],
-        correct: 4
-    },
-    {
-        q: "Nu reprezinta un principiu al managementului calitatii:",
-        options: ["a) implicarea personalului", "b) abordarea sistemica a managementului", "c) imbunatatirea continua", "d) orientarea catre client", "e) monitorizarea eficientei auditarii sistemului de management al calitatii"],
-        correct: 4
-    },
-    {
-        q: "Cunoasterea trebuintelor actuale si potentiale ale clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) relatii reciproc avantajoase cu furnizorii", "b) abordarea sistemica a managementului", "c) imbunatatirea continua", "d) orientarea catre client", "e) abordarea faptica pentru luarea deciziei"],
-        correct: 3
-    },
-    {
-        q: "Satisfacerea si depasirea asteptarilor clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) orientarea catre client", "b) abordarea sistemica a managementului", "c) imbunatatirea continua", "d) orientarea catre client", "e) abordarea procesuala"],
-        correct: 0
-    },
-    {
-        q: "Faptul ca echipa de conducere trebuie sa stabileasca o unitate intre obiectivele propuse si orientarile organizatiei si trebuie sa creeze si sa mentina un mediu intern in care personalul sa poata fi total implicat in realizarea obiectivelor organizatiei se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) imbunatatirea continua", "b) abordarea sistemica a managementului", "c) leadership", "d) orientarea catre client", "e) abordarea procesuala"],
-        correct: 2
-    },
-    {
-        q: "Implicarea totala a personalului de la toate nivelurile se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) imbunatatirea continua", "b) abordarea sistemica a managementului", "c) leadership", "d) orientarea catre client", "e) implicarea personalului"],
-        correct: 4
-    },
-    {
-        q: "Faptul ca toate activitatile sunt conduse ca un proces, cu intrari si iesiri se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) imbunatatirea continua", "b) abordarea sistemica a managementului", "c) leadership", "d) abordarea procesuala", "e) abordarea faptica pentru luarea deciziei"],
-        correct: 3
-    },
-    {
-        q: "Faptul ca identificarea si conducerea principalelor activitati referitoare la calitate trebuie sa fie integrate si corelate in cadrul unui sistem coerent se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) orientarea catre client", "b) abordarea sistemica a managementului", "c) leadership", "d) abordarea procesuala", "e) abordarea faptica pentru luarea deciziei"],
-        correct: 1
-    },
-    {
-        q: "Faptul ca imbunatatirea performantelor globale ale unei organizatii ar trebui sa fie un obiectiv permanent al conducerii se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) orientarea catre client", "b) abordarea sistemica a managementului", "c) leadership", "d) abordarea procesuala", "e) imbunatatirea continua"],
-        correct: 4
-    },
-    {
-        q: "Faptul ca deciziile eficiente se bazeaza pe analiza datelor si a informatiilor obtinute de la toate locurile de munca se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) abordarea faptica pentru luarea deciziei", "b) abordarea sistemica a managementului", "c) orientarea catre client", "d) abordarea procesuala", "e) imbunatatirea continua"],
-        correct: 0
-    },
-    {
-        q: "Relatiile dintre o organizatie si furnizorii sai, care maresc capabilitatea de a crea valoare, se incadreaza la urmatorul principiu al managementului calitatii:",
-        options: ["a) leadership", "b) abordarea sistemica a managementului", "c) relatii reciproc avantajoase cu furnizorii", "d) abordarea procesuala", "e) imbunatatirea continua"],
-        correct: 2
-    },
-    {
-        q: "Standardele din familia ISO 9000 sunt standarde de:",
-        options: ["a) management de mediu", "b) management al sanatatii si securitatii in munca", "c) auditare a sistemelor de management", "d) management al calitatii", "e) etica si responsabilitate sociala"],
-        correct: 3
-    },
-    {
-        q: "Standardele din familia ISO 14000 sunt standarde de:",
-        options: ["a) management al calitatii", "b) management al sanatatii si securitatii in munca", "c) auditare a sistemelor de management", "d) management de mediu", "e) etica si responsabilitate sociala"],
-        correct: 3
-    },
-    {
-        q: "Standardele din familia ISO 45000 sunt standarde de:",
-        options: ["a) management al calitatii", "b) etica si responsabilitate sociala", "c) auditare a sistemelor de management", "d) management de mediu", "e) management al sanatatii si securitatii in munca"],
-        correct: 4
-    },
-    {
-        q: "Standardul ISO 9001 se refera la:",
-        options: ["a) sistemul de management al calitatii", "b) sistemul de management al sanatatii si securitatii in munca", "c) auditarea sistemelor de management", "d) sistemul de management de mediu", "e) etica si responsabilitatea sociala"],
-        correct: 0
-    },
-    {
-        q: "Standardul ISO 14001 se refera la:",
-        options: ["a) sistemul de management al calitatii", "b) sistemul de management al sanatatii si securitatii in munca", "c) auditarea sistemelor de management", "d) sistemul de management de mediu", "e) etica si responsabilitatea sociala"],
-        correct: 3
-    },
-    {
-        q: "Standardul ISO 45001 se refera la:",
-        options: ["a) sistemul de management al calitatii", "b) sistemul de management al sanatatii si securitatii in munca", "c) auditarea sistemelor de management", "d) sistemul de management de mediu", "e) etica si responsabilitatea sociala"],
-        correct: 1
-    },
-    {
-        q: "Sistemul de management al calitatii are drept referential standardul:",
-        options: ["a) ISO 9001", "b) ISO 14001", "c) ISO 45001", "d) ISO 19011", "e) ISO 26001"],
-        correct: 0
-    },
-    {
-        q: "Sistemul de management de mediu are drept referential standardul:",
-        options: ["a) ISO 9001", "b) ISO 14001", "c) ISO 45001", "d) ISO 19011", "e) ISO 26001"],
-        correct: 1
-    },
-    {
-        q: "Sistemul de management al sanatatii si securitatii in munca are drept referential standardul:",
-        options: ["a) ISO 9001", "b) ISO 14001", "c) ISO 45001", "d) ISO 19011", "e) ISO 26001"],
-        correct: 2
-    },
-    {
-        q: "Actiunea unei terte parti care dovedeste existenta increderii ca un produs, proces sau serviciu este in conformitate cu un standard sau cu un alt document normativ poarta denumirea de:",
-        options: ["a) garantarea calitatii", "b) certificarea conformitatii", "c) acreditarea organismelor de certificare", "d) marcarea reglementata", "e) standardizare"],
-        correct: 1
-    },
-    {
-        q: "Printre avantajele implementarii sistemului de management al calitatii intr-o firma regasim:",
-        options: ["a) cresterea gradului de satisfacere a clientilor", "b) imbunatatirea perceptiei consumatorilor asupra organizatiei", "c) imbunatatirea performantelor produselor/serviciilor", "d) cresterea productivitatii si eficacitatii", "e) toate cele de mai sus"],
-        correct: 4
-    },
-    {
-        q: "Procesul de evaluare sistematica a elementelor specifice sistemului de management al calitatii pentru a vedea daca respecta cerintele prescrise poarta denumirea de:",
-        options: ["a) acreditare", "b) omologare", "c) imbunatatire continua", "d) auditare", "e) standardizare"],
-        correct: 3
-    },
-    {
-        q: "Documentul principal pentru elaborarea si implementarea sistemului de management al calitatii intr-o organizatie este:",
-        options: ["a) manualul calitatii", "b) declaratia de politica in domeniul calitatii", "c) standardul calitatii", "d) planul calitatii", "e) procedura calitatii"],
-        correct: 0
-    },
-    {
-        q: "In ce tara regasim Premiul Juran pentru calitate:",
-        options: ["a) Romania", "b) Japonia", "c) Statele Unite ale Americii", "d) Australia", "e) Franta"],
-        correct: 0
-    },
-    {
-        q: "Modelul european de excelenta in domeniul managementului calitatii poarta denumirea:",
-        options: ["a) Malcolm Baldridge", "b) Juran", "c) Deming", "d) EFQM", "e) Ishikawa"],
-        correct: 3
-    },
-    {
-        q: "Premiul national pentru calitate din Statele Unite ale Americii poarta denumirea:",
-        options: ["a) Juran", "b) Malcolm Baldridge", "c) Deming", "d) EFQM", "e) Ishikawa"],
-        correct: 1
-    },
-    {
-        q: "Premiul Deming pentru calitate se acorda in:",
-        options: ["a) Romania", "b) Statele Unite ale Americii", "c) Japonia", "d) Australia", "e) Franta"],
-        correct: 2
-    },
-    {
-        q: "Fazele si calendarul misiunii de consultanta in managementul calitatii, detaliate pe baza planului de actiune, fac parte din:",
-        options: ["a) propunerea de consultanta", "b) analiza diagnostic", "c) planul de afaceri", "d) raportul de expertiza", "e) misiunea de audit"],
-        correct: 0
-    },
-    {
-        q: "Obiectivele si natura misiunii de consultanta, cu precizarea rolului consultantului, al rezultatului asteptat de la misiune si al angajamentului consultantului referitor la acest rezultat, fac parte din:",
-        options: ["a) misiunea de audit", "b) analiza diagnostic", "c) planul de afaceri", "d) raportul de expertiza", "e) propunerea de consultanta"],
-        correct: 4
-    },
-    {
-        q: "Un rezumat al analizei diagnostic, insotit de concluziile consultantului si de definirea problemei, fac parte din:",
-        options: ["a) misiunea de audit", "b) propunerea de consultanta", "c) planul de afaceri", "d) raportul de expertiza", "e) planul strategic de marketing"],
-        correct: 1
-    },
-    {
-        q: "Etapele, activitatile si planificarea lor din cadrul misiunii de consultanta fac parte din:",
-        options: ["a) raportul de expertiza", "b) raportul de audit", "c) analiza diagnostic", "d) planul de afaceri", "e) planul de actiune"],
-        correct: 4
-    },
-    {
-        q: "Contributia fiecarui partener, responsabilitatile si conditiile de realizare din cadrul misiunii de consultanta fac parte din:",
-        options: ["a) raportul de expertiza", "b) planul de actiune", "c) analiza diagnostic", "d) planul de afaceri", "e) raportul de audit"],
-        correct: 1
-    },
-    {
-        q: "Activitatea de elaborare a unor proiecte, in care consultantul colaboreaza indeaproape cu clientul la formularea unor recomandari si la implementarea acestora poarta denumirea de:",
-        options: ["a) analiza diagnostic", "b) consultanta procesuala", "c) audit intern", "d) expertiza economica", "e) certificarea conformitatii"],
-        correct: 1
-    },
-    {
-        q: "Introducerea unei viziuni independente in abordarea unor probleme mai greu de perceput pentru manageri, care sunt prea implicati in situatie si „nu vad padurea din cauza copacilor\" reprezinta un avantaj al:",
-        options: ["a) consultantei procesuale", "b) analizei diagnostic", "c) auditului intern", "d) expertizei economice", "e) certificarii conformitatii"],
-        correct: 0
-    },
-    {
-        q: "Faptul de a contribui la intelegerea elementelor practice, concrete, ale problemelor care risca sa scape intelegerii intr-o abordare prea teoretica reprezinta un avantaj al:",
-        options: ["a) certificarii conformitatii", "b) analizei diagnostic", "c) auditului intern", "d) expertizei economice", "e) consultantei procesuale"],
-        correct: 4
-    },
-    {
-        q: "Faptul ca asigura o legatura coerenta intre consultant si client reprezinta un avantaj al:",
-        options: ["a) certificarii conformitatii", "b) analizei diagnostic", "c) consultantei procesuale", "d) expertizei economice", "e) auditului intern"],
-        correct: 2
-    },
-    {
-        q: "Faptul ca stimuleaza sentimentul de proprietate si angajamentul consultantului printr-o mai mare implicare in aplicarea unor metode si idei noi reprezinta un avantaj al:",
-        options: ["a) certificarii conformitatii", "b) consultantei procesuale", "c) analizei diagnostic", "d) expertizei economice", "e) auditului intern"],
-        correct: 1
-    }
+  {
+    "q": "In structura activitatilor componente ale managementului aprovizionarii se incadreaza:",
+    "options": [
+      "stabilirea volumului si structurii materiale si energetice necesare unitatii economice pentru realizarea activitatii de ansamblu a acesteia",
+      "alegerea furnizorilor a caror oferta prezinta cele mai avantajoase conditii economice",
+      "extinderea relatiilor de vânzare pe baza de comenzi, conventii si contracte comerciale",
+      "controlul sistematic al evolutiei stocurilor efective de materiale in raport cu limitele estimate",
+      "selectarea si angajarea personalului de specialitate in structura profesionala specifica a subsistemului aprovizionare"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In structura activitatilor componente ale managementului aprovizionarii se incadreaza:",
+    "options": [
+      "identificarea structurii materiale necesare desfasurarii activitatii de ansamblu a unitatii economice",
+      "elaborarea de bilanturi materiale",
+      "prospectarea pietei de furnizare de resurse materiale si echipament tehnic",
+      "extinderea si modernizarea retelei proprii de service",
+      "stabilirea anticipata a spatiilor de depozitare a resurselor materiale si dotarea lor cu mobilier adecvat"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Managementul aprovizionarii integreaza intr-un tot unitar fluxul si controlul resurselor materiale de la:",
+    "options": [
+      "studiul pietei de furnizare pâna la trecerea in consum a acestora",
+      "fundamentarea programelor de aprovizionare pâna la controlul utilizarii resurselor in consum",
+      "dimensionarea stocurilor pâna la alimentarea sectiilor de productie",
+      "alegerea furnizorilor pâna la eliberarea pentru consum a resurselor materiale",
+      "momentul initierii procesului de asigurare a lor si pâna la transformarea acestora in produse vandabile"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "In structura activitatilor de aprovizionare pentru a caror realizare se impune o atentie sporita in economia de piata se incadreaza:",
+    "options": [
+      "urmarirea derularii contractelor de aprovizionare",
+      "alimentarea ritmica a consumului",
+      "organizarea rationala a primirii-receptiei loturilor de materiale sosite de la furnizor",
+      "selectarea si testarea credibilitatii furnizorilor",
+      "fundamentarea programelor de aprovizionare"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Aprovizionarea directa este avantajoasa in cazul resurselor materiale, produselor care fac obiectul cumpararii - vânzarii in cantitati mari. Care sunt avantajele care se pot obtine in astfel de situatii?\n1) preturi avantajoase la achizitie;\n2) cheltuieli mari de transport;\n3) rabaturi comerciale/bonificatii;\n4) usureaza munca producatorilor si consumatorilor pentru studierea pietei;\n5) cheltuieli de transport mai mici.",
+    "options": [
+      "1,2,3",
+      "1,3,5",
+      "2,4,5",
+      "2,3,4",
+      "1,3,4"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Stocul de productie cuprinde:",
+    "options": [
+      "stocul curent, de siguranta, de conditionare, in curs de fabricatie, de iarna",
+      "stocul curent, in curs de transport, speculativ, de conditionare, pentru transport intern, de iarna",
+      "stocul curent, in curs de transport, de siguranta, de desfacere, pentru transport intern, de iarna",
+      "stocul curent, in curs de transport, de siguranta, de conditionare, de livrare, pentru transport intern",
+      "stocul curent, in curs de transport, de siguranta, de conditionare, de iarna, pentru transport intern"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Inregistrarea fenomenului de lipsa de resursa materiala in stoc implica stabilirea unor decizii de genul:",
+    "options": [
+      "impulsionarea furnizorilor pentru respectarea termenelor de livrare prestabilite, sau livrarea cu anticipatie a resurselor",
+      "reconstituirea urgenta a stocului indiferent de efortul necesar si sursa de provenienta a materialelor",
+      "aprobarea consumului din stocul de siguranta",
+      "formarea de stocuri anticipate",
+      "acceptarea lipsei de stoc"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Stocul curent asigura:",
+    "options": [
+      "alimentarea cererilor de consum pe timpul conditionarii materialelor",
+      "alimentarea cererilor de consum pe timpul deplasarii materialelor de la furnizor la consumator",
+      "alimentarea cererilor de consum pe timpul deplasarii resurselor de la depozitul central la subunitatile de consum ale intreprinderii",
+      "alimentarea cererilor pentru consum pe intervalul dintre doua aprovizionari succesive",
+      "alimentarea cererilor de consum pe perioada de intrerupere a livrarilor de la furnizor"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Aprovizionarea prin tranzit organizat cât si prin tranzit achitat, prezinta unele avantaje. Precizati textul considerat neadevarat:",
+    "options": [
+      "scurteaza perioada de timp in care se realizeaza contactul dintre producatorii si consumatorii anumitor produse",
+      "usureaza munca producatorilor si consumatorilor pentru studierea pietei",
+      "pot face negocierile mai usoare, deoarece cunosc mai bine caracteristicile pietei de furnizare",
+      "promoveaza produse noi realizate de anumiti producatori",
+      "pot influenta realizarea contractelor a caror incheiere o inlesnesc"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Cauzele care determina formarea unor stocuri neeconomice (lipsa de stoc, suprastocarea, stocuri cu miscare lenta si fara miscare) sunt in cea mai mare parte de ordin subiectiv, dependente sau nu de unitatea la care se constituie si anume:",
+    "options": [
+      "livrarea de catre furnizori a unor materiale in sortimente, dimensiuni, calitati diferite de cele prevazute in comenzile clientilor",
+      "supradimensionarea necesarului de resurse materiale ca urmare a folosirii in calculele de fundamentare a unor norme de consum specifice si indici de consum mai mari",
+      "cumpararea de catre agentul de aprovizionare a unor materiale care concorda cantitativ si structural cu cerintele de consum ale unitatii pe care o reprezinta",
+      "livrarea de catre furnizori a materialelor comandate, contractate la alte termene decât cele initial stabilite cu partenerii sai",
+      "incetarea fabricatiei unor produse comandate sau contractate pentru care s-au facut renuntari sau rezilieri de contracte din partea anumitor clienti"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Analizând continutul managementului desfacerii productiei, se poate concluziona ca aceasta activitate asigura:",
+    "options": [
+      "baza motivationala pentru organizarea si desfasurarea fabricatiei de produse",
+      "studierea pietei de furnizare, a furnizorilor reali si potentiali",
+      "elaborarea strategiilor in achizitionarea de resurse materiale si echipamente tehnice, ca si in domeniul gestiunii stocurilor",
+      "negocierea conditiilor de vânzare-cumparare, de comercializare in general si finalizarea actiunii, in cea mai mare masura, pe baza de contracte comerciale",
+      "urmarirea evolutiei pietei de furnizare, a structurii si potentialului de resurse"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa elementele componente ale resurselor materiale si energetice, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materii prime de baza;\n3) norma de consum de aprovizionare;\n4) norme de consum pentru materiale auxiliare;\n5) norme de consum pentru carburanti.",
+    "options": [
+      "2,4",
+      "1,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Managementul desfacerii productiei industriale are ca obiectiv vânzarea produselor din profilul propriu de fabricatie in conditii de eficienta. In acest scop se desfasoara mai multe activitati specifice. Precizati activitatea neadevarata.",
+    "options": [
+      "elaborarea studiilor de marketing, in vederea asigurarii portofoliului de comenzi si a contractelor comerciale",
+      "colectarea comenzilor emise de clienti si constituirea portofoliului de comenzi",
+      "dimensionarea pe baza de documentatie tehnico-economica a consumurilor materiale si energetice (elaborarea de norme de consumuri)",
+      "elaborarea planului strategic si a programelor de livrare-vânzare a produselor contractate pe sortimente si pe caile de distributie-vânzare stabilite",
+      "urmarirea stadiului executiei produselor in procesele de fabricatie, prevenirea realizarii de produse necorespunzatoare calitativ"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Etapa de elaborare propriu-zisa a nomenclatorului de materiale presupune urmatoarele momente de lucru. Precizati textul considerat neadevarat:",
+    "options": [
+      "intocmirea listei centralizatoare a tuturor resurselor materiale necesare intreprinderii de productie",
+      "restructurarea si rearanjarea articolelor de grupe, subgrupe, familii, clase etc.",
+      "strângerea purtatorilor de informatii care servesc la definirea continutului nomenclatorului de materiale",
+      "codificarea materialelor incluse in nomenclator",
+      "nominalizarea furnizorilor pentru fiecare articol din nomenclator"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "La alegerea formei de aprovizionare se va avea in vedere ca optiunea sa asigure:",
+    "options": [
+      "acces usor la servire",
+      "satisfacerea prompta, in conditii economice avantajoase, a intregii structuri de produse necesare si la momentele dorite",
+      "cumpararea si aducerea resurselor materiale la destinatie la preturi de aprovizionare cât mai mici",
+      "suprastocarea de resurse materiale pe perioade lungi de timp",
+      "afectarea unor spatii de depozitare mai reduse pentru stocarea resurselor aprovizionate in cantitati mai mici, la intervale mai scurte de timp"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Obiectivul principal al desfacerii il reprezinta:",
+    "options": [
+      "elaborarea studiilor de marketing",
+      "realizarea schimbului de produse",
+      "vânzarea produselor din profilul propriu de fabricatie in conditii de eficienta",
+      "prestarea de servicii in baza unui contract",
+      "repartizarea produselor"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Analiza continutului managementului desfacerii productiei conduce la concluzia ca aceasta activitate este importanta prin faptul ca asigura:",
+    "options": [
+      "baza motivationala pentru organizarea si desfasurarea fabricatiei de produse",
+      "elementele pentru fundamentarea programelor de fabricatie",
+      "conditiile in care urmeaza a se exploata sau utiliza produsele fabricate",
+      "spatiul de derulare a activitatilor de marketing",
+      "cerintele pe care trebuie sa le satisfaca productia pentru a raspunde comenzii sociale"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Precizati raspunsul corect ce se refera la: „managementul aprovizionarii integreaza intr-un tot unitar fluxul si controlul resurselor materiale din momentul”:",
+    "options": [
+      "initierii procesului de asigurare si pâna la transformarea acestora in produse vandabile",
+      "fundamentarii programelor de aprovizionare pâna la controlul utilizarii resurselor in consum",
+      "dimensionarii stocurilor pâna la alimentarea sectiilor de productie",
+      "alegerii furnizorilor pâna la eliberarea pentru consum a resurselor materiale",
+      "identificarii pe structura a resurselor materiale necesare firmei pana la controlul utilizarii acestora in consum"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Identificati care dintre formularile de mai jos nu se constituie in indicator de consum si valorificare:",
+    "options": [
+      "normele de consum (consumurile specifice)",
+      "coeficientii tehnici de utilizare productiva a resurselor materiale",
+      "coeficientii de valorificare a resurselor materiale noi si refolosibile",
+      "coeficientii produs - material",
+      "coeficientii de masa neta si specifica a produselor"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Identificati in textele de mai jos pe cel care se refera la rolul stocurilor:",
+    "options": [
+      "efectele negative ale uzurii morale a materialelor stocate",
+      "infaptuirea unor ritmuri ridicate de dezvoltare economica",
+      "asigura conditii optime pentru desfasurarea, dupa un sistem rational, a activitatii firmelor",
+      "prelungirea duratei vietii produselor",
+      "utilizarea resurselor secundare rezultate din procesul de productie si din consum"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Identificati in cadrul formularilor de mai jos pe cea care nu se refera la un criteriu de clasificare a normelor de consum:",
+    "options": [
+      "dupa elementele componente",
+      "dupa destinatia de consum",
+      "dupa locul ocupat in cadrul circuitului productiv",
+      "dupa natura resurselor materiale",
+      "dupa orizontul de timp de aplicare sau perioada de valabilitate"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Precizati modul corect de exprimare a stocurilor continut de enunturile urmatoare:",
+    "options": [
+      "in unitati conventionale, calitative",
+      "in unitati de productie, cantitative",
+      "in unitati de masura proprii",
+      "in unitati naturale, unitati valorice, zile",
+      "in unitati de masa si volum"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Identificati in textele de mai jos formularea care nu reprezinta consecinte ale detinerii stocurile fara miscare in firma:",
+    "options": [
+      "cheltuieli mari pentru intretinerea, depozitarea si conservarea materialelor",
+      "supradimensionarea necesarului de materii prime si materiale",
+      "dobânzi penalizatoare pentru creditele acordate",
+      "blocarea spatiilor de depozitare",
+      "degradarea sau demodarea materialelor depozitate o perioada mai indelungata de timp"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Formele de aprovizionare care pot fi folosite de unitatile consumatoare de resurse materiale sunt:",
+    "options": [
+      "aprovizionarea directa de la producatori - furnizori",
+      "prin tranzit organizat",
+      "prin tranzit achitat",
+      "de la depozitul angrosistului",
+      "prin tranzit neachitat"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Iesirea micilor consumatori de sub incidenta formei directe de aprovizionare (când nu le este avantajoasa) se asigura prin orientarea catre intermediarii comerciali, care, prin pozitia pe piata, au posibilitatea:\n1) comandarii produselor direct de la producatori;\n2) onorarea oricaror comenzi, indiferent de marime;\n3) practicarea unor adaosuri comerciale mari, care sa conduca la preturi de revânzare si mai mari;\n4) comandarii produselor indirect de la producatori;\n5) practicarea unor adaosuri comerciale rezonabile, care sa conduca la preturi de revânzare accesibile.",
+    "options": [
+      "1,2,5",
+      "2,3,4",
+      "3,4,5",
+      "1,3,4",
+      "2,4,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Pentru realizarea trecerii materialelor si produselor de la producator la consumator se constituie canale de aprovizionare pe care le vom prezenta in textele de mai jos. Precizati care dintre afirmatii nu se incadreaza la tipuri de canale de aprovizionare.",
+    "options": [
+      "canale scurte",
+      "canale medii",
+      "canale lungi",
+      "canale cu intermediari",
+      "canale de furnizori"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Aprovizionarea de la depozitele intermediarilor comerciali prezinta mai multe avantaje. Precizati varianta neadevarata:",
+    "options": [
+      "cresterea gradului de certitudine in asigurarea micilor consumatori cu o structura materiala si de produse extinsa",
+      "cresterea fondurilor financiare antrenate in cumpararea si stocarea de resurse materiale la un moment dat",
+      "reducerea substantiala a stocurilor la consumatori",
+      "degajarea producatorilor de un numar prea mare de clienti si simplificarea activitatii de desfacere a produselor la nivelul lor",
+      "promovarea produselor noi realizate de anumiti producatori"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Stocul in curs de transport:",
+    "options": [
+      "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Stocul de siguranta:",
+    "options": [
+      "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Stocul de pregatire sau de conditionare:",
+    "options": [
+      "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de materiale care se acumuleaza si este stationata o perioada de timp in spatii special amenajate, in vederea aducerii resurselor respective, prin operatii de conditionare, la parametrii fizico-chimici care sa permita prelucrarea lor corespunzator conditiilor impuse de normele tehnologice",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Stocul de iarna:",
+    "options": [
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de materiale care se acumuleaza si este stationata o perioada de timp in spatii special amenajate, in vederea aducerii resurselor respective, prin operatii de conditionare, la parametrii fizico-chimici care sa permita prelucrarea lor corespunzator conditiilor impuse de normele tehnologice",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Stocul pentru transport intern:",
+    "options": [
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de materiale care se acumuleaza si este stationata o perioada de timp in spatii special amenajate, in vederea aducerii resurselor respective, prin operatii de conditionare, la parametrii fizico-chimici care sa permita prelucrarea lor corespunzator conditiilor impuse de normele tehnologice",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa destinatia de consum a resurselor materiale si energetice, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materii prime de baza;\n3) norma de consum de aprovizionare;\n4) norme de consum pentru materiale auxiliare;\n5) norme de consum pentru carburanti.",
+    "options": [
+      "2,4",
+      "1,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa natura resurselor materiale, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materiale si produse chimice;\n3) norme de consum pentru carburanti;\n4) norme de consum pentru materiale auxiliare;\n5) norme de consum pentru carburanti.",
+    "options": [
+      "2,4",
+      "2,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Dupa orizontul de timp de aplicare sau perioada de valabilitate, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materiale si produse chimice;\n3) norme de consum pentru carburanti;\n4) norme de consum pe termen scurt;\n5) norme de consum de perspectiva.",
+    "options": [
+      "2,4",
+      "2,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Dupa modul de grupare si nivelul de agregare, normele de consum se clasifica astfel:\n1) norme de consum individuale;\n2) norme de consum pentru materiale si produse chimice;\n3) norme de consum pentru carburanti;\n4) norme de consum grupate pe material sau familia de materiale, pe produs sau grupa de produse;\n5) norme de consum de perspectiva.",
+    "options": [
+      "2,4",
+      "2,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Principalele metode de determinare a normelor de consum de materiale sunt:\n1) metoda bazata pe calculul tehnico-analitic;\n2) metoda minim - maxim;\n3) metoda experimentala;\n4) metoda statistica;\n5) metoda arborelui decizional.",
+    "options": [
+      "1,3,4",
+      "2,3,4",
+      "3,4,5",
+      "1,2,3",
+      "2,4,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Pentru ca nomenclatorul de resurse materiale si echipamente tehnice sa fie de utilitate practica, sa raspunda scopului esential pentru care se elaboreaza, acesta trebuie sa raspunda urmatoarelor cerinte:\n1) sa fie fundamentat stiintific;\n2) sa fie complet, adica sa cuprinda toate articolele de care are nevoie intreprinderea;\n3) sa prevada pozitii de rezerva pentru includerea ulterioara in cadrul acestuia a noi articole neprevazute sau neidentificate initial;\n4) sa cuprinda fiecare articol distinct la o singura pozitie si sa ii corespunda un singur cod;\n5) sa fie completat la zi cu noile informatii care impun actiunea.",
+    "options": [
+      "1,2,3,4",
+      "2,3,4,5",
+      "1,3,4,5",
+      "1,2,3,5",
+      "1,2,4,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Principalele metode care au rolul de a preveni suprastocarea sau formarea stocurilor cu miscare lenta sau fara miscare sunt:\n1) metode bazate pe calculul tehnico-analitic;\n2) metoda minim - maxim;\n3) sistemul ABC;\n4) metoda statistica;\n5) metoda arborelui decizional.",
+    "options": [
+      "1,3",
+      "2,3",
+      "3,4",
+      "1,2",
+      "2,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Principalele metode de calcul al necesitatilor de materiale si echipamente tehnice sunt:\n1) metoda de calcul direct;\n2) metoda minim - maxim;\n3) metoda indicelui global de consum la un milion de lei productie nominalizata;\n4) metoda coeficientilor dinamici;\n5) metoda arborelui decizional.",
+    "options": [
+      "1,3,4",
+      "2,3,4",
+      "3,4,5",
+      "1,2,3",
+      "2,4,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nomenclatorul de resurse materiale si echipamente trebuie sa raspunda unor cerinte. Identificati in textele de mai jos formularea ce nu reprezinta cerinta.",
+    "options": [
+      "sa cuprinda toate articolele de care are nevoie firma, pe toate subsistemele componente, pe intreaga perioada de gestiune",
+      "sa prevada pozitii de rezerva pentru includerea ulterioara in cadrul acestuia a noi articole neprevazute sau neidentificate initial",
+      "sa asigure o ordonare stricta a materiilor prime si materialelor",
+      "sa cuprinda fiecare articol distinct la o singura pozitie si sa ii corespunda un singur numar de cod",
+      "sa fie completat la zi"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Precizati care din textele de mai jos nu se incadreaza la activitatea operativa de desfacere a produselor:",
+    "options": [
+      "organizarea minutioasa a operatiunilor de pregatire a produselor pentru livrare",
+      "formarea loturilor complete si complexe, unitare pentru livrare",
+      "intocmirea documentelor de expeditie",
+      "pregatirea pietei cu privire la aparitia unor noi produse",
+      "derularea propriu-zisa a actiunii"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Care din variantele enumerate, nu este etapa in organizarea si concretizarea relatiilor comerciale de aprovizionare-desfacere:",
+    "options": [
+      "studierea pietei de materiale si produse",
+      "alegerea furnizorului in baza conditiilor precizate in oferte sau rezultate din alte investigatii",
+      "primirea si receptionarea produselor finite",
+      "testarea credibilitatii furnizorilor, dupa caz si pozitie, a clientilor",
+      "negocierea conditiilor viitoare de vânzare-cumparare"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Dupa forma in care se concretizeaza, contractele economice pot fi:\n1) contracte scrise;\n2) pentru executarea de lucrari (de reparatii, de constructii-montaj s.a.);\n3) contracte verbale;\n4) pentru prestarea de servicii (de transport, de informatica, de asistenta tehnica s.a.);\n5) contracte pe termen scurt.",
+    "options": [
+      "1,3",
+      "3,5",
+      "1,2",
+      "3,4",
+      "1,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa obiect, contractele economice pot fi:\n1) de vânzare-cumparare de bunuri materiale;\n2) pentru executarea de lucrari (de reparatii, de constructii-montaj s.a.);\n3) contracte verbale;\n4) pentru prestarea de servicii (de transport, de informatica, de asistenta tehnica s.a.);\n5) contracte pe termen scurt.",
+    "options": [
+      "1,2,3",
+      "3,4,5",
+      "1,2,4",
+      "2,3,4",
+      "1,3,5"
+    ],
+    "correct": 2
+  }
 ];
         
         let viewedQuestions = new Set();
@@ -548,9 +743,8 @@
             updateProgress();
         }
 
-        function startFlashcards() {
-            // Redirect către pagina de flashcards (va fi creată ulterior)
-            alert('Funcționalitatea Flashcards va fi disponibilă în curând!');
+        function goToInteractive() {
+        window.location.href = 'Managementul-aprovizionarii-si-desfacerii-interactive.html';
         }
 
         function startStudyMode() {
@@ -562,7 +756,7 @@
 
         function startTest() {
             // Redirect către pagina de test existentă
-            window.location.href = 'Managementul-aprovizionarii-si-desfacerii.html';
+            window.location.href = 'managementul-calitatii.html';
         }
 
         function renderStudyQuestions() {
