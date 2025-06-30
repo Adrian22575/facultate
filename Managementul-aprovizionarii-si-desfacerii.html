@@ -1,69 +1,906 @@
-<!-- placeholder.html -->
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test [Nume Materie]</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --primary: #1250b1; --bg: #f7f9fc; --white: #fff; }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
-    .container {
-      background: var(--white);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
-    }
-    h1 {
-      font-size: 1.75rem;
-      color: var(--primary);
-      margin-bottom: 16px;
-    }
-    p {
-      color: #555;
-      margin-bottom: 24px;
-      font-size: 1rem;
-    }
-    .btn-back {
-      display: inline-block;
-      padding: 12px 24px;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .btn-back:hover,
-    .btn-back:focus {
-      background: #0c3879;
-      transform: translateY(-2px);
-    }
-    .btn-back:focus {
-      outline: 2px dashed var(--primary);
-      outline-offset: 4px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test – Approvizionarii si Desfacerii</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 720px;
+            margin: 20px auto;
+            padding: 0 15px;
+            background: #f7f9fc;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+            padding: 24px 30px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #1250b1;
+            text-align: center;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #1250b1;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+            margin-bottom: 20px;
+        }
+        .btn-back:hover,
+        .btn-back:focus {
+            background: #0c3879;
+            transform: translateY(-2px);
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: left;
+        }
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 5px;
+        }
+        .question strong {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        .answers label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .answers label:hover {
+            background-color: #f5f9ff;
+            border-color: #1250b1;
+        }
+        .answers input[type="radio"] {
+            margin-right: 10px;
+            transform: translateY(1px);
+        }
+        #startBtn, button[type="submit"], .restart-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto 0;
+            background: #1250b1;
+            color: #fff;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 9px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+        #startBtn:hover, button[type="submit"]:hover, .restart-btn:hover {
+            background: #0c3879;
+            transform: translateY(-2px);
+        }
+        .result {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+        }
+        .result h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #1250b1;
+        }
+        .result .score {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .result .correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .result .wrong {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .show-correct {
+            font-size: 0.9em;
+            margin-left: 8px;
+            color: #555;
+        }
+        .show-correct b {
+            color: #28a745;
+        }
+        select {
+            font-size: 1rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+            min-width: 180px;
+            background-color: #fff;
+        }
+        .selector-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .selector-container label {
+            font-weight: 600;
+        }
+        .donation-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f5f9ff;
+            border: 1px solid #d1e3ff;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .donation-section h3 {
+            color: #1250b1;
+            margin-top: 0;
+        }
+        .donation-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .revolut-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0075FF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .revolut-button:hover {
+            background-color: #005fcc;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Managementul aprovizionarii si desfacerii</h1>
-    <p>🚧 Testul pentru această materie este momentan în lucru și va fi disponibil în curând.</p>
-    <a href="index.html" class="btn-back">Înapoi la meniu</a>
-  </div>
+    <div class="container" id="container">
+        <h1>Test – Managementul Approvizionarii si Desfacerii</h1>
+        <div id="mainContent">
+            <!-- Conținutul inițial al testului va fi generat de JavaScript -->
+        </div>
+    </div>
+
+<script>
+    // --- BAZA DE DATE CU ÎNTREBĂRI ---
+    // NOTĂ: Literele (a, b, c) au fost scoase din textul opțiunilor.
+    // Ele vor fi adăugate dinamic în cod.
+    const allQuestions = [
+  {
+    "q": "In structura activitatilor componente ale managementului aprovizionarii se incadreaza:",
+    "options": [
+      "stabilirea volumului si structurii materiale si energetice necesare unitatii economice pentru realizarea activitatii de ansamblu a acesteia",
+      "alegerea furnizorilor a caror oferta prezinta cele mai avantajoase conditii economice",
+      "extinderea relatiilor de vânzare pe baza de comenzi, conventii si contracte comerciale",
+      "controlul sistematic al evolutiei stocurilor efective de materiale in raport cu limitele estimate",
+      "selectarea si angajarea personalului de specialitate in structura profesionala specifica a subsistemului aprovizionare"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In structura activitatilor componente ale managementului aprovizionarii se incadreaza:",
+    "options": [
+      "identificarea structurii materiale necesare desfasurarii activitatii de ansamblu a unitatii economice",
+      "elaborarea de bilanturi materiale",
+      "prospectarea pietei de furnizare de resurse materiale si echipament tehnic",
+      "extinderea si modernizarea retelei proprii de service",
+      "stabilirea anticipata a spatiilor de depozitare a resurselor materiale si dotarea lor cu mobilier adecvat"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Managementul aprovizionarii integreaza intr-un tot unitar fluxul si controlul resurselor materiale de la:",
+    "options": [
+      "studiul pietei de furnizare pâna la trecerea in consum a acestora",
+      "fundamentarea programelor de aprovizionare pâna la controlul utilizarii resurselor in consum",
+      "dimensionarea stocurilor pâna la alimentarea sectiilor de productie",
+      "alegerea furnizorilor pâna la eliberarea pentru consum a resurselor materiale",
+      "momentul initierii procesului de asigurare a lor si pâna la transformarea acestora in produse vandabile"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "In structura activitatilor de aprovizionare pentru a caror realizare se impune o atentie sporita in economia de piata se incadreaza:",
+    "options": [
+      "urmarirea derularii contractelor de aprovizionare",
+      "alimentarea ritmica a consumului",
+      "organizarea rationala a primirii-receptiei loturilor de materiale sosite de la furnizor",
+      "selectarea si testarea credibilitatii furnizorilor",
+      "fundamentarea programelor de aprovizionare"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Aprovizionarea directa este avantajoasa in cazul resurselor materiale, produselor care fac obiectul cumpararii - vânzarii in cantitati mari. Care sunt avantajele care se pot obtine in astfel de situatii?\n1) preturi avantajoase la achizitie;\n2) cheltuieli mari de transport;\n3) rabaturi comerciale/bonificatii;\n4) usureaza munca producatorilor si consumatorilor pentru studierea pietei;\n5) cheltuieli de transport mai mici.",
+    "options": [
+      "1,2,3",
+      "1,3,5",
+      "2,4,5",
+      "2,3,4",
+      "1,3,4"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Stocul de productie cuprinde:",
+    "options": [
+      "stocul curent, de siguranta, de conditionare, in curs de fabricatie, de iarna",
+      "stocul curent, in curs de transport, speculativ, de conditionare, pentru transport intern, de iarna",
+      "stocul curent, in curs de transport, de siguranta, de desfacere, pentru transport intern, de iarna",
+      "stocul curent, in curs de transport, de siguranta, de conditionare, de livrare, pentru transport intern",
+      "stocul curent, in curs de transport, de siguranta, de conditionare, de iarna, pentru transport intern"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Inregistrarea fenomenului de lipsa de resursa materiala in stoc implica stabilirea unor decizii de genul:",
+    "options": [
+      "impulsionarea furnizorilor pentru respectarea termenelor de livrare prestabilite, sau livrarea cu anticipatie a resurselor",
+      "reconstituirea urgenta a stocului indiferent de efortul necesar si sursa de provenienta a materialelor",
+      "aprobarea consumului din stocul de siguranta",
+      "formarea de stocuri anticipate",
+      "acceptarea lipsei de stoc"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Stocul curent asigura:",
+    "options": [
+      "alimentarea cererilor de consum pe timpul conditionarii materialelor",
+      "alimentarea cererilor de consum pe timpul deplasarii materialelor de la furnizor la consumator",
+      "alimentarea cererilor de consum pe timpul deplasarii resurselor de la depozitul central la subunitatile de consum ale intreprinderii",
+      "alimentarea cererilor pentru consum pe intervalul dintre doua aprovizionari succesive",
+      "alimentarea cererilor de consum pe perioada de intrerupere a livrarilor de la furnizor"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Aprovizionarea prin tranzit organizat cât si prin tranzit achitat, prezinta unele avantaje. Precizati textul considerat neadevarat:",
+    "options": [
+      "scurteaza perioada de timp in care se realizeaza contactul dintre producatorii si consumatorii anumitor produse",
+      "usureaza munca producatorilor si consumatorilor pentru studierea pietei",
+      "pot face negocierile mai usoare, deoarece cunosc mai bine caracteristicile pietei de furnizare",
+      "promoveaza produse noi realizate de anumiti producatori",
+      "pot influenta realizarea contractelor a caror incheiere o inlesnesc"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Cauzele care determina formarea unor stocuri neeconomice (lipsa de stoc, suprastocarea, stocuri cu miscare lenta si fara miscare) sunt in cea mai mare parte de ordin subiectiv, dependente sau nu de unitatea la care se constituie si anume:",
+    "options": [
+      "livrarea de catre furnizori a unor materiale in sortimente, dimensiuni, calitati diferite de cele prevazute in comenzile clientilor",
+      "supradimensionarea necesarului de resurse materiale ca urmare a folosirii in calculele de fundamentare a unor norme de consum specifice si indici de consum mai mari",
+      "cumpararea de catre agentul de aprovizionare a unor materiale care concorda cantitativ si structural cu cerintele de consum ale unitatii pe care o reprezinta",
+      "livrarea de catre furnizori a materialelor comandate, contractate la alte termene decât cele initial stabilite cu partenerii sai",
+      "incetarea fabricatiei unor produse comandate sau contractate pentru care s-au facut renuntari sau rezilieri de contracte din partea anumitor clienti"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Analizând continutul managementului desfacerii productiei, se poate concluziona ca aceasta activitate asigura:",
+    "options": [
+      "baza motivationala pentru organizarea si desfasurarea fabricatiei de produse",
+      "studierea pietei de furnizare, a furnizorilor reali si potentiali",
+      "elaborarea strategiilor in achizitionarea de resurse materiale si echipamente tehnice, ca si in domeniul gestiunii stocurilor",
+      "negocierea conditiilor de vânzare-cumparare, de comercializare in general si finalizarea actiunii, in cea mai mare masura, pe baza de contracte comerciale",
+      "urmarirea evolutiei pietei de furnizare, a structurii si potentialului de resurse"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa elementele componente ale resurselor materiale si energetice, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materii prime de baza;\n3) norma de consum de aprovizionare;\n4) norme de consum pentru materiale auxiliare;\n5) norme de consum pentru carburanti.",
+    "options": [
+      "2,4",
+      "1,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Managementul desfacerii productiei industriale are ca obiectiv vânzarea produselor din profilul propriu de fabricatie in conditii de eficienta. In acest scop se desfasoara mai multe activitati specifice. Precizati activitatea neadevarata.",
+    "options": [
+      "elaborarea studiilor de marketing, in vederea asigurarii portofoliului de comenzi si a contractelor comerciale",
+      "colectarea comenzilor emise de clienti si constituirea portofoliului de comenzi",
+      "dimensionarea pe baza de documentatie tehnico-economica a consumurilor materiale si energetice (elaborarea de norme de consumuri)",
+      "elaborarea planului strategic si a programelor de livrare-vânzare a produselor contractate pe sortimente si pe caile de distributie-vânzare stabilite",
+      "urmarirea stadiului executiei produselor in procesele de fabricatie, prevenirea realizarii de produse necorespunzatoare calitativ"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Etapa de elaborare propriu-zisa a nomenclatorului de materiale presupune urmatoarele momente de lucru. Precizati textul considerat neadevarat:",
+    "options": [
+      "intocmirea listei centralizatoare a tuturor resurselor materiale necesare intreprinderii de productie",
+      "restructurarea si rearanjarea articolelor de grupe, subgrupe, familii, clase etc.",
+      "strângerea purtatorilor de informatii care servesc la definirea continutului nomenclatorului de materiale",
+      "codificarea materialelor incluse in nomenclator",
+      "nominalizarea furnizorilor pentru fiecare articol din nomenclator"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "La alegerea formei de aprovizionare se va avea in vedere ca optiunea sa asigure:",
+    "options": [
+      "acces usor la servire",
+      "satisfacerea prompta, in conditii economice avantajoase, a intregii structuri de produse necesare si la momentele dorite",
+      "cumpararea si aducerea resurselor materiale la destinatie la preturi de aprovizionare cât mai mici",
+      "suprastocarea de resurse materiale pe perioade lungi de timp",
+      "afectarea unor spatii de depozitare mai reduse pentru stocarea resurselor aprovizionate in cantitati mai mici, la intervale mai scurte de timp"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Obiectivul principal al desfacerii il reprezinta:",
+    "options": [
+      "elaborarea studiilor de marketing",
+      "realizarea schimbului de produse",
+      "vânzarea produselor din profilul propriu de fabricatie in conditii de eficienta",
+      "prestarea de servicii in baza unui contract",
+      "repartizarea produselor"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Analiza continutului managementului desfacerii productiei conduce la concluzia ca aceasta activitate este importanta prin faptul ca asigura:",
+    "options": [
+      "baza motivationala pentru organizarea si desfasurarea fabricatiei de produse",
+      "elementele pentru fundamentarea programelor de fabricatie",
+      "conditiile in care urmeaza a se exploata sau utiliza produsele fabricate",
+      "spatiul de derulare a activitatilor de marketing",
+      "cerintele pe care trebuie sa le satisfaca productia pentru a raspunde comenzii sociale"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Precizati raspunsul corect ce se refera la: „managementul aprovizionarii integreaza intr-un tot unitar fluxul si controlul resurselor materiale din momentul”:",
+    "options": [
+      "initierii procesului de asigurare si pâna la transformarea acestora in produse vandabile",
+      "fundamentarii programelor de aprovizionare pâna la controlul utilizarii resurselor in consum",
+      "dimensionarii stocurilor pâna la alimentarea sectiilor de productie",
+      "alegerii furnizorilor pâna la eliberarea pentru consum a resurselor materiale",
+      "identificarii pe structura a resurselor materiale necesare firmei pana la controlul utilizarii acestora in consum"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Identificati care dintre formularile de mai jos nu se constituie in indicator de consum si valorificare:",
+    "options": [
+      "normele de consum (consumurile specifice)",
+      "coeficientii tehnici de utilizare productiva a resurselor materiale",
+      "coeficientii de valorificare a resurselor materiale noi si refolosibile",
+      "coeficientii produs - material",
+      "coeficientii de masa neta si specifica a produselor"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Identificati in textele de mai jos pe cel care se refera la rolul stocurilor:",
+    "options": [
+      "efectele negative ale uzurii morale a materialelor stocate",
+      "infaptuirea unor ritmuri ridicate de dezvoltare economica",
+      "asigura conditii optime pentru desfasurarea, dupa un sistem rational, a activitatii firmelor",
+      "prelungirea duratei vietii produselor",
+      "utilizarea resurselor secundare rezultate din procesul de productie si din consum"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Identificati in cadrul formularilor de mai jos pe cea care nu se refera la un criteriu de clasificare a normelor de consum:",
+    "options": [
+      "dupa elementele componente",
+      "dupa destinatia de consum",
+      "dupa locul ocupat in cadrul circuitului productiv",
+      "dupa natura resurselor materiale",
+      "dupa orizontul de timp de aplicare sau perioada de valabilitate"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Precizati modul corect de exprimare a stocurilor continut de enunturile urmatoare:",
+    "options": [
+      "in unitati conventionale, calitative",
+      "in unitati de productie, cantitative",
+      "in unitati de masura proprii",
+      "in unitati naturale, unitati valorice, zile",
+      "in unitati de masa si volum"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Identificati in textele de mai jos formularea care nu reprezinta consecinte ale detinerii stocurile fara miscare in firma:",
+    "options": [
+      "cheltuieli mari pentru intretinerea, depozitarea si conservarea materialelor",
+      "supradimensionarea necesarului de materii prime si materiale",
+      "dobânzi penalizatoare pentru creditele acordate",
+      "blocarea spatiilor de depozitare",
+      "degradarea sau demodarea materialelor depozitate o perioada mai indelungata de timp"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Formele de aprovizionare care pot fi folosite de unitatile consumatoare de resurse materiale sunt:",
+    "options": [
+      "aprovizionarea directa de la producatori - furnizori",
+      "prin tranzit organizat",
+      "prin tranzit achitat",
+      "de la depozitul angrosistului",
+      "prin tranzit neachitat"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Iesirea micilor consumatori de sub incidenta formei directe de aprovizionare (când nu le este avantajoasa) se asigura prin orientarea catre intermediarii comerciali, care, prin pozitia pe piata, au posibilitatea:\n1) comandarii produselor direct de la producatori;\n2) onorarea oricaror comenzi, indiferent de marime;\n3) practicarea unor adaosuri comerciale mari, care sa conduca la preturi de revânzare si mai mari;\n4) comandarii produselor indirect de la producatori;\n5) practicarea unor adaosuri comerciale rezonabile, care sa conduca la preturi de revânzare accesibile.",
+    "options": [
+      "1,2,5",
+      "2,3,4",
+      "3,4,5",
+      "1,3,4",
+      "2,4,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Pentru realizarea trecerii materialelor si produselor de la producator la consumator se constituie canale de aprovizionare pe care le vom prezenta in textele de mai jos. Precizati care dintre afirmatii nu se incadreaza la tipuri de canale de aprovizionare.",
+    "options": [
+      "canale scurte",
+      "canale medii",
+      "canale lungi",
+      "canale cu intermediari",
+      "canale de furnizori"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Aprovizionarea de la depozitele intermediarilor comerciali prezinta mai multe avantaje. Precizati varianta neadevarata:",
+    "options": [
+      "cresterea gradului de certitudine in asigurarea micilor consumatori cu o structura materiala si de produse extinsa",
+      "cresterea fondurilor financiare antrenate in cumpararea si stocarea de resurse materiale la un moment dat",
+      "reducerea substantiala a stocurilor la consumatori",
+      "degajarea producatorilor de un numar prea mare de clienti si simplificarea activitatii de desfacere a produselor la nivelul lor",
+      "promovarea produselor noi realizate de anumiti producatori"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Stocul in curs de transport:",
+    "options": [
+      "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Stocul de siguranta:",
+    "options": [
+      "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Stocul de pregatire sau de conditionare:",
+    "options": [
+      "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de materiale care se acumuleaza si este stationata o perioada de timp in spatii special amenajate, in vederea aducerii resurselor respective, prin operatii de conditionare, la parametrii fizico-chimici care sa permita prelucrarea lor corespunzator conditiilor impuse de normele tehnologice",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Stocul de iarna:",
+    "options": [
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de materiale care se acumuleaza si este stationata o perioada de timp in spatii special amenajate, in vederea aducerii resurselor respective, prin operatii de conditionare, la parametrii fizico-chimici care sa permita prelucrarea lor corespunzator conditiilor impuse de normele tehnologice",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 4
+  },
+  {
+    "q": "Stocul pentru transport intern:",
+    "options": [
+      "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
+      "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
+      "reprezinta cantitatea de materiale acumulata in depozitul consumatorului, fiind destinata asigurarii continuitatii consumului când stocul curent a fost epuizat si intârzie reintregirea lui",
+      "reprezinta cantitatea de materiale care se acumuleaza si este stationata o perioada de timp in spatii special amenajate, in vederea aducerii resurselor respective, prin operatii de conditionare, la parametrii fizico-chimici care sa permita prelucrarea lor corespunzator conditiilor impuse de normele tehnologice",
+      "reprezinta cantitatea de materiale care se acumuleaza in depozitele unitatilor in scopul alimentarii continue a consumului pe perioada de intrerupere a exploatarii si/sau transportului unor resurse, ca urmare a conditiilor naturale si de clima"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa destinatia de consum a resurselor materiale si energetice, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materii prime de baza;\n3) norma de consum de aprovizionare;\n4) norme de consum pentru materiale auxiliare;\n5) norme de consum pentru carburanti.",
+    "options": [
+      "2,4",
+      "1,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa natura resurselor materiale, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materiale si produse chimice;\n3) norme de consum pentru carburanti;\n4) norme de consum pentru materiale auxiliare;\n5) norme de consum pentru carburanti.",
+    "options": [
+      "2,4",
+      "2,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Dupa orizontul de timp de aplicare sau perioada de valabilitate, normele de consum se clasifica astfel:\n1) norma de consum tehnologic;\n2) norme de consum pentru materiale si produse chimice;\n3) norme de consum pentru carburanti;\n4) norme de consum pe termen scurt;\n5) norme de consum de perspectiva.",
+    "options": [
+      "2,4",
+      "2,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Dupa modul de grupare si nivelul de agregare, normele de consum se clasifica astfel:\n1) norme de consum individuale;\n2) norme de consum pentru materiale si produse chimice;\n3) norme de consum pentru carburanti;\n4) norme de consum grupate pe material sau familia de materiale, pe produs sau grupa de produse;\n5) norme de consum de perspectiva.",
+    "options": [
+      "2,4",
+      "2,3",
+      "4,5",
+      "1,4",
+      "3,5"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Principalele metode de determinare a normelor de consum de materiale sunt:\n1) metoda bazata pe calculul tehnico-analitic;\n2) metoda minim - maxim;\n3) metoda experimentala;\n4) metoda statistica;\n5) metoda arborelui decizional.",
+    "options": [
+      "1,3,4",
+      "2,3,4",
+      "3,4,5",
+      "1,2,3",
+      "2,4,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Pentru ca nomenclatorul de resurse materiale si echipamente tehnice sa fie de utilitate practica, sa raspunda scopului esential pentru care se elaboreaza, acesta trebuie sa raspunda urmatoarelor cerinte:\n1) sa fie fundamentat stiintific;\n2) sa fie complet, adica sa cuprinda toate articolele de care are nevoie intreprinderea;\n3) sa prevada pozitii de rezerva pentru includerea ulterioara in cadrul acestuia a noi articole neprevazute sau neidentificate initial;\n4) sa cuprinda fiecare articol distinct la o singura pozitie si sa ii corespunda un singur cod;\n5) sa fie completat la zi cu noile informatii care impun actiunea.",
+    "options": [
+      "1,2,3,4",
+      "2,3,4,5",
+      "1,3,4,5",
+      "1,2,3,5",
+      "1,2,4,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Principalele metode care au rolul de a preveni suprastocarea sau formarea stocurilor cu miscare lenta sau fara miscare sunt:\n1) metode bazate pe calculul tehnico-analitic;\n2) metoda minim - maxim;\n3) sistemul ABC;\n4) metoda statistica;\n5) metoda arborelui decizional.",
+    "options": [
+      "1,3",
+      "2,3",
+      "3,4",
+      "1,2",
+      "2,5"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Principalele metode de calcul al necesitatilor de materiale si echipamente tehnice sunt:\n1) metoda de calcul direct;\n2) metoda minim - maxim;\n3) metoda indicelui global de consum la un milion de lei productie nominalizata;\n4) metoda coeficientilor dinamici;\n5) metoda arborelui decizional.",
+    "options": [
+      "1,3,4",
+      "2,3,4",
+      "3,4,5",
+      "1,2,3",
+      "2,4,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nomenclatorul de resurse materiale si echipamente trebuie sa raspunda unor cerinte. Identificati in textele de mai jos formularea ce nu reprezinta cerinta.",
+    "options": [
+      "sa cuprinda toate articolele de care are nevoie firma, pe toate subsistemele componente, pe intreaga perioada de gestiune",
+      "sa prevada pozitii de rezerva pentru includerea ulterioara in cadrul acestuia a noi articole neprevazute sau neidentificate initial",
+      "sa asigure o ordonare stricta a materiilor prime si materialelor",
+      "sa cuprinda fiecare articol distinct la o singura pozitie si sa ii corespunda un singur numar de cod",
+      "sa fie completat la zi"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Precizati care din textele de mai jos nu se incadreaza la activitatea operativa de desfacere a produselor:",
+    "options": [
+      "organizarea minutioasa a operatiunilor de pregatire a produselor pentru livrare",
+      "formarea loturilor complete si complexe, unitare pentru livrare",
+      "intocmirea documentelor de expeditie",
+      "pregatirea pietei cu privire la aparitia unor noi produse",
+      "derularea propriu-zisa a actiunii"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Care din variantele enumerate, nu este etapa in organizarea si concretizarea relatiilor comerciale de aprovizionare-desfacere:",
+    "options": [
+      "studierea pietei de materiale si produse",
+      "alegerea furnizorului in baza conditiilor precizate in oferte sau rezultate din alte investigatii",
+      "primirea si receptionarea produselor finite",
+      "testarea credibilitatii furnizorilor, dupa caz si pozitie, a clientilor",
+      "negocierea conditiilor viitoare de vânzare-cumparare"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Dupa forma in care se concretizeaza, contractele economice pot fi:\n1) contracte scrise;\n2) pentru executarea de lucrari (de reparatii, de constructii-montaj s.a.);\n3) contracte verbale;\n4) pentru prestarea de servicii (de transport, de informatica, de asistenta tehnica s.a.);\n5) contracte pe termen scurt.",
+    "options": [
+      "1,3",
+      "3,5",
+      "1,2",
+      "3,4",
+      "1,5"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Dupa obiect, contractele economice pot fi:\n1) de vânzare-cumparare de bunuri materiale;\n2) pentru executarea de lucrari (de reparatii, de constructii-montaj s.a.);\n3) contracte verbale;\n4) pentru prestarea de servicii (de transport, de informatica, de asistenta tehnica s.a.);\n5) contracte pe termen scurt.",
+    "options": [
+      "1,2,3",
+      "3,4,5",
+      "1,2,4",
+      "2,3,4",
+      "1,3,5"
+    ],
+    "correct": 2
+  }
+];
+
+
+    // --- VARIABILE GLOBALE ---
+    let currentQuestions = []; // Întrebările selectate pentru testul curent
+    const mainContent = document.getElementById('mainContent');
+    const container = document.getElementById('container');
+
+    // --- FUNCȚII PRINCIPALE ---
+
+    /**
+     * Funcție de amestecare a elementelor unui array (algoritmul Fisher-Yates)
+     * @param {Array} array - Array-ul care trebuie amestecat.
+     */
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    /**
+     * Inițiază și afișează ecranul de start al testului.
+     */
+    function showStartScreen() {
+        mainContent.innerHTML = `
+            <div class="selector-container">
+                <label for="numQuestions">Alege numărul de întrebări:</label>
+                <select id="numQuestions">
+                    <option value="10" selected>10 întrebări</option>
+                    <option value="20">20 întrebări</option>
+                    <option value="all">Toate întrebările (${allQuestions.length})</option>
+                </select>
+            </div>
+            <div class="selector-container">
+                <label for="difficultyLevel">Alege nivelul de dificultate:</label>
+                <select id="difficultyLevel">
+                    <option value="1" selected>1 - Normal</option>
+                    <option value="2">2 - Ordine răspunsuri aleatorie</option>
+                    <option value="3">3 - Răspunsuri mixate (dificil)</option>
+                </select>
+            </div>
+            <button id="startBtn">Începe testul</button>
+        `;
+        document.getElementById('startBtn').addEventListener('click', startTest);
+    }
+
+    /**
+     * Pregătește și pornește testul pe baza selecțiilor utilizatorului.
+     */
+    function startTest() {
+        const numSelect = document.getElementById('numQuestions').value;
+        const difficultyLevel = document.getElementById('difficultyLevel').value;
+
+        let questionsToUse = [...allQuestions];
+        shuffle(questionsToUse); 
+
+        let count = (numSelect === 'all') ? questionsToUse.length : parseInt(numSelect, 10);
+        currentQuestions = questionsToUse.slice(0, count);
+
+        prepareQuestionOptions(difficultyLevel);
+        
+        renderQuestions();
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /**
+     * Generează opțiunile de răspuns pentru fiecare întrebare conform nivelului de dificultate.
+     * @param {string} difficultyLevel - Nivelul de dificultate ('1', '2', sau '3').
+     */
+    function prepareQuestionOptions(difficultyLevel) {
+        currentQuestions.forEach(q => {
+            let options = q.options.map((opt, index) => ({
+                text: opt,
+                isCorrect: index === q.correct
+            }));
+
+            if (difficultyLevel === '1') {
+                q.optionsToShow = options;
+            } else if (difficultyLevel === '2') {
+                shuffle(options);
+                q.optionsToShow = options;
+            } else if (difficultyLevel === '3') {
+                const correctAnswer = options.find(opt => opt.isCorrect);
+                
+                let wrongAnswersPool = [];
+                allQuestions.forEach(otherQ => {
+                    if (otherQ.q !== q.q) {
+                        otherQ.options.forEach((opt, index) => {
+                            if (index !== otherQ.correct) {
+                                wrongAnswersPool.push({ text: opt, isCorrect: false });
+                            }
+                        });
+                    }
+                });
+
+                shuffle(wrongAnswersPool);
+                
+                const finalOptions = [correctAnswer];
+                const optionsCount = q.options.length > 1 ? q.options.length - 1 : 3;
+                finalOptions.push(...wrongAnswersPool.slice(0, optionsCount));
+                
+                shuffle(finalOptions);
+                q.optionsToShow = finalOptions;
+            }
+        });
+    }
+
+    /**
+     * Afișează formularul cu întrebările testului.
+     */
+    function renderQuestions() {
+        let html = `<form id="quizForm">`;
+        currentQuestions.forEach((q, idx) => {
+            html += `<div class="question"><strong>${idx + 1}. ${q.q}</strong><div class="answers">`;
+            q.optionsToShow.forEach((opt, optIdx) => {
+                // Adaugă dinamic litera (a, b, c...) în fața opțiunii
+                const letter = String.fromCharCode(97 + optIdx);
+                html += `
+                    <label>
+                        <input type="radio" name="q${idx}" value="${optIdx}" required>
+                        ${letter}) ${opt.text}
+                    </label>
+                `;
+            });
+            html += `</div></div>`;
+        });
+        html += `<button type="submit">Vezi rezultatele</button></form>`;
+        mainContent.innerHTML = html;
+
+        document.getElementById('quizForm').addEventListener('submit', e => {
+            e.preventDefault();
+            showResults();
+        });
+    }
+
+    /**
+     * Calculează și afișează rezultatele testului.
+     */
+    function showResults() {
+        let correctCount = 0;
+        const form = document.getElementById('quizForm');
+
+        currentQuestions.forEach((q, idx) => {
+            const selectedOption = form.querySelector(`input[name="q${idx}"]:checked`);
+            if (selectedOption) {
+                const answerIndex = parseInt(selectedOption.value, 10);
+                q.userAnswerIndex = answerIndex;
+                if (q.optionsToShow[answerIndex].isCorrect) {
+                    correctCount++;
+                }
+            } else {
+                q.userAnswerIndex = null;
+            }
+        });
+
+        let total = currentQuestions.length;
+        let html = `
+            <div class="result">
+                <h2>Rezultate</h2>
+                <p class="score">Ai răspuns corect la <b>${correctCount}</b> din ${total} întrebări.</p>
+                <p class="score"><b>Nota: ${correctCount}</b></p>
+                <hr>
+        `;
+
+        currentQuestions.forEach((q, idx) => {
+            const userAnsweredOption = (q.userAnswerIndex !== null) ? q.optionsToShow[q.userAnswerIndex] : null;
+            const correctAnswerOption = q.optionsToShow.find(opt => opt.isCorrect);
+            const isCorrect = userAnsweredOption ? userAnsweredOption.isCorrect : false;
+
+            html += `<div class="question">
+                <strong>${idx + 1}. ${q.q}</strong><br>`;
+
+            if (userAnsweredOption) {
+                // Adaugă dinamic litera pentru răspunsul utilizatorului
+                const userLetter = String.fromCharCode(97 + q.userAnswerIndex);
+                html += `<span class="${isCorrect ? 'correct' : 'wrong'}">
+                    Răspunsul tău: ${userLetter}) ${userAnsweredOption.text}
+                </span>`;
+            } else {
+                html += `<span class="wrong">Fără răspuns</span>`;
+            }
+            
+            if (!isCorrect) {
+                // Adaugă dinamic litera pentru răspunsul corect
+                const correctOptionIndex = q.optionsToShow.findIndex(opt => opt.isCorrect);
+                const correctLetter = String.fromCharCode(97 + correctOptionIndex);
+                html += `<span class="show-correct">(Corect: <b>${correctLetter}) ${correctAnswerOption.text}</b>)</span>`;
+            }
+            html += `</div>`;
+        });
+
+        html += `<button class="restart-btn">Refă testul</button></div>`;
+        
+        html += `
+            <div class="donation-section">
+                <h3>Apreciezi acest proiect?</h3>
+                <p>Dacă acest test gratuit te-a ajutat să te pregătești pentru examen, poți susține efortul cu o mică donație. Orice contribuție este apreciată! Mulțumesc!</p>
+                <div class="donation-content">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=http://revolut.me/anghel7h2q&qzone=1&margin=0" alt="QR Code Donație Revolut" title="Scanează pentru a dona prin Revolut">
+                    <a href="http://revolut.me/anghel7h2q" target="_blank" class="revolut-button">Donează prin Revolut</a>
+                </div>
+            </div>`;
+
+        mainContent.innerHTML = html;
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        mainContent.querySelector('.restart-btn').addEventListener('click', showStartScreen);
+    }
+
+    // --- INIȚIALIZARE ---
+    document.addEventListener('DOMContentLoaded', showStartScreen);
+
+</script>
 </body>
 </html>
