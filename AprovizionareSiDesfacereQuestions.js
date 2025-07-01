@@ -1,6 +1,6 @@
 const allQuestions = [
 {
-    q: "1. In structura activitatilor componente ale managementului aprovizionarii se incadreaza. Precizati activitatea neadevarata.",
+    q: "In structura activitatilor componente ale managementului aprovizionarii se incadreaza. Precizati activitatea neadevarata.",
     options: [
       "stabilirea volumului si structurii materiale si energetice necesare unitatii economice pentru realizarea activitatii de ansamblu a acesteia",
       "alegerea furnizorilor a caror oferta prezinta cele mai avantajoase conditii economice",
@@ -11,7 +11,7 @@ const allQuestions = [
     correct: 2
   },
   {
-    q: "2. In structura activitatilor componente ale managementului aprovizionarii se incadreaza. Precizati activitatea neadevarata.",
+    q: "In structura activitatilor componente ale managementului aprovizionarii se incadreaza. Precizati activitatea neadevarata.",
     options: [
       "identificarea structurii materiale necesare desfasurarii activitatii de ansamblu a unitatii economice",
       "elaborarea de bilanturi materiale",
@@ -22,7 +22,7 @@ const allQuestions = [
     correct: 3
   },
   {
-    q: "3. Managementul aprovizionarii integreaza intr-un \"tot unitar\" fluxul si controlul resurselor materiale de la. Precizati textul considerat adevarat.",
+    q: "Managementul aprovizionarii integreaza intr-un \"tot unitar\" fluxul si controlul resurselor materiale de la. Precizati textul considerat adevarat.",
     options: [
       "studiul pietei de furnizare pâna la trecerea in consum a acestora",
       "fundamentarea programelor de aprovizionare pâna la controlul utilizarii resurselor in consum",
@@ -33,7 +33,7 @@ const allQuestions = [
     correct: 4
   },
   {
-    q: "4. In structura activitatilor de aprovizionare pentru a caror realizare se impune o atentie sporita in economia de piata se incadreaza. Precizati activitatea care raspunde corect afirmatiei.",
+    q: "In structura activitatilor de aprovizionare pentru a caror realizare se impune o atentie sporita in economia de piata se incadreaza. Precizati activitatea care raspunde corect afirmatiei.",
     options: [
       "urmarirea derularii contractelor de aprovizionare",
       "alimentarea ritmica a consumului",
@@ -44,7 +44,7 @@ const allQuestions = [
     correct: 3
   },
   {
-    q: `5. Aprovizionarea directa este avantajoasa in cazul resurselor materiale, produselor care fac obiectul cumpararii - vânzarii in cantitati mari. Care sunt avantajele care se pot obtine in astfel de situatii?
+    q: `Aprovizionarea directa este avantajoasa in cazul resurselor materiale, produselor care fac obiectul cumpararii - vânzarii in cantitati mari. Care sunt avantajele care se pot obtine in astfel de situatii?
 1) preturi avantajoase la achizitie;
 2) cheltuieli mari de transport;
 3) rabaturi comerciale/bonificatii;
@@ -61,7 +61,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: "6. Stocul de productie cuprinde. Precizati combinatia integral adevarata.",
+    q: "Stocul de productie cuprinde. Precizati combinatia integral adevarata.",
     options: [
       "stocul curent, de siguranta, de conditionare, in curs de fabricatie, de iarna",
       "stocul curent, in curs de transport, speculativ, de conditionare, pentru transport intern, de iarna",
@@ -72,7 +72,7 @@ Precizati varianta corecta.`,
     correct: 4
   },
   {
-    q: "7. Inregistrarea fenomenului de lipsa de resursa materiala in stoc implica stabilirea unor decizii de genul. Precizati textul considerat neadevarat.",
+    q: "Inregistrarea fenomenului de lipsa de resursa materiala in stoc implica stabilirea unor decizii de genul. Precizati textul considerat neadevarat.",
     options: [
       "impulsionarea furnizorilor pentru respectarea termenelor de livrare prestabilite, sau livrarea cu anticipatie a resurselor",
       "reconstituirea urgenta a stocului indiferent de efortul necesar si sursa de provenienta a materialelor",
@@ -83,7 +83,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "8. Stocul curent asigura. Precizati textul considerat integral adevarat.",
+    q: "Stocul curent asigura. Precizati textul considerat integral adevarat.",
     options: [
       "alimentarea cererilor de consum pe timpul conditionarii materialelor",
       "alimentarea cererilor de consum pe timpul deplasarii materialelor de la furnizor la consumator",
@@ -94,7 +94,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "9. Aprovizionarea prin tranzit organizat cât si prin tranzit achitat, prezinta unele avantaje. Precizati textul considerat neadevarat.",
+    q: "Aprovizionarea prin tranzit organizat cât si prin tranzit achitat, prezinta unele avantaje. Precizati textul considerat neadevarat.",
     options: [
       "scurteaza perioada de timp in care se realizeaza contactul dintre producatorii si consumatorii anumitor produse",
       "usureaza munca producatorilor si consumatorilor pentru studierea pietei",
@@ -105,7 +105,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "10. Cauzele care determina formarea unor stocuri neeconomice (lipsa de stoc, suprastocarea, stocuri cu miscare lenta si fara miscare) sunt in cea mai mare parte de ordin subiectiv, dependente sau nu de unitatea la care se constituie si anume. Precizati textul considerat neadevarat.",
+    q: "Cauzele care determina formarea unor stocuri neeconomice (lipsa de stoc, suprastocarea, stocuri cu miscare lenta si fara miscare) sunt in cea mai mare parte de ordin subiectiv, dependente sau nu de unitatea la care se constituie si anume. Precizati textul considerat neadevarat.",
     options: [
       "livrarea de catre furnizori a unor materiale in sortimente, dimensiuni, calitati diferite de cele prevazute in comenzile clientilor",
       "supradimensionarea necesarului de resurse materiale ca urmare a folosirii in calculele de fundamentare a unor norme de consum specifice si indici de consum mai mari",
@@ -116,7 +116,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "11. Analizând continutul managementului desfacerii productiei, se poate concluziona ca aceasta activitate asigura. Precizati activitatea care raspunde corect afirmatiei.",
+    q: "Analizând continutul managementului desfacerii productiei, se poate concluziona ca aceasta activitate asigura. Precizati activitatea care raspunde corect afirmatiei.",
     options: [
       "baza motivationala pentru organizarea si desfasurarea fabricatiei de produse",
       "studierea pietei de furnizare, a furnizorilor reali si potentiali",
@@ -127,7 +127,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: `12. Dupa elementele componente ale resurselor materiale si energetice, normele de consum se clasifica astfel:
+    q: `Dupa elementele componente ale resurselor materiale si energetice, normele de consum se clasifica astfel:
 1) norma de consum tehnologic;
 2) norme de consum pentru materii prime de baza;
 3) norma de consum de aprovizionare;
@@ -144,7 +144,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: "13. Managementul desfacerii productiei industriale are ca obiectiv vânzarea produselor din profilul propriu de fabricatie in conditii de eficienta. In acest scop se desfasoara mai multe activitati specifice. Precizati activitatea neadevarata.",
+    q: "Managementul desfacerii productiei industriale are ca obiectiv vânzarea produselor din profilul propriu de fabricatie in conditii de eficienta. In acest scop se desfasoara mai multe activitati specifice. Precizati activitatea neadevarata.",
     options: [
       "elaborarea studiilor de marketing, in vederea asigurarii portofoliului de comenzi si a contractelor comerciale",
       "colectarea comenzilor emise de clienti si constituirea portofoliului de comenzi",
@@ -155,7 +155,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "14. Etapa de elaborare propriu-zisa a nomenclatorului de materiale presupune urmatoarele momente de lucru. Precizati textul considerat neadevarat.",
+    q: "Etapa de elaborare propriu-zisa a nomenclatorului de materiale presupune urmatoarele momente de lucru. Precizati textul considerat neadevarat.",
     options: [
       "intocmirea listei centralizatoare a tuturor resurselor materiale necesare intreprinderii de productie",
       "restructurarea si rearanjarea articolelor de grupe, subgrupe, familii, clase etc.",
@@ -166,7 +166,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "15. La alegerea formei de aprovizionare se va avea in vedere ca optiunea sa asigure. Precizati activitatea neadevarata.",
+    q: "La alegerea formei de aprovizionare se va avea in vedere ca optiunea sa asigure. Precizati activitatea neadevarata.",
     options: [
       "acces usor la servire",
       "satisfacerea prompta, in conditii economice avantajoase, a intregii structuri de produse necesare si la momentele dorite",
@@ -177,7 +177,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "16. Obiectivul principal al desfacerii il reprezinta. Identificati obiectivul principal al activitatii de desfacere.",
+    q: "Obiectivul principal al desfacerii il reprezinta. Identificati obiectivul principal al activitatii de desfacere.",
     options: [
       "elaborarea studiilor de marketing",
       "realizarea schimbului de produse",
@@ -188,7 +188,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
 {
-    q: "17. Analiza continutului managementului desfacerii productiei conduce la concluzia ca aceasta activitate este importanta prin faptul ca asigura. Identificati formularea ce nu reprezinta un element atribuit importantei activitatii de desfacere.",
+    q: "Analiza continutului managementului desfacerii productiei conduce la concluzia ca aceasta activitate este importanta prin faptul ca asigura. Identificati formularea ce nu reprezinta un element atribuit importantei activitatii de desfacere.",
     options: [
       "baza motivationala pentru organizarea si desfasurarea fabricatiei de produse",
       "elementele pentru fundamentarea programelor de fabricatie",
@@ -199,7 +199,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "18. Precizati raspunsul corect ce se refera la: managementul aprovizionarii integreaza intr-un tot unitar fluxul si controlul resurselor materiale din momentul.",
+    q: "Precizati raspunsul corect ce se refera la: managementul aprovizionarii integreaza intr-un tot unitar fluxul si controlul resurselor materiale din momentul.",
     options: [
       "initierii procesului de asigurare si pâna la transformarea acestora in produse vandabile",
       "fundamentarii programelor de aprovizionare pâna la controlul utilizarii resurselor in consum",
@@ -210,7 +210,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: "19. Identificati care dintre formularile de mai jos nu se constituie in indicator de consum si valorificare.",
+    q: "Identificati care dintre formularile de mai jos nu se constituie in indicator de consum si valorificare.",
     options: [
       "normele de consum (consumurile specifice)",
       "coeficientii tehnici de utilizare productiva a resurselor materiale",
@@ -221,7 +221,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "20. Identificati in textele de mai jos pe cel care se refera la rolul stocurilor.",
+    q: "Identificati in textele de mai jos pe cel care se refera la rolul stocurilor.",
     options: [
       "efectele negative ale uzurii morale a materialelor stocate",
       "infaptuirea unor ritmuri ridicate de dezvoltare economica",
@@ -232,7 +232,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "21. Identificati in cadrul formularilor de mai jos pe cea care nu se refera la un criteriu de clasificare a normelor de consum.",
+    q: "Identificati in cadrul formularilor de mai jos pe cea care nu se refera la un criteriu de clasificare a normelor de consum.",
     options: [
       "dupa elementele componente",
       "dupa destinatia de consum",
@@ -243,7 +243,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "22. Precizati modul corect de exprimare a stocurilor continut de enunturile urmatoare.",
+    q: "Precizati modul corect de exprimare a stocurilor continut de enunturile urmatoare.",
     options: [
       "in unitati conventionale, calitative",
       "in unitati de productie, cantitative",
@@ -254,7 +254,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "23. Identificati in textele de mai jos formularea care nu reprezinta consecinte ale detinerii stocurilor fara miscare in firma.",
+    q: "Identificati in textele de mai jos formularea care nu reprezinta consecinte ale detinerii stocurilor fara miscare in firma.",
     options: [
       "cheltuieli mari pentru intretinerea, depozitarea si conservarea materialelor",
       "supradimensionarea necesarului de materii prime si materiale",
@@ -265,7 +265,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: "24. Formele de aprovizionare care pot fi folosite de unitatile consumatoare de resurse materiale sunt. Precizati varianta neadevarata.",
+    q: "Formele de aprovizionare care pot fi folosite de unitatile consumatoare de resurse materiale sunt. Precizati varianta neadevarata.",
     options: [
       "aprovizionarea directa de la producatori - furnizori",
       "prin tranzit organizat",
@@ -276,7 +276,7 @@ Precizati varianta corecta.`,
     correct: 4
   },
   {
-    q: `25. Iesirea micilor consumatori de sub incidenta formei directe de aprovizionare (când nu le este avantajoasa) se asigura prin orientarea catre intermediarii comerciali, care, prin pozitia pe piata, au posibilitatea:
+    q: `Iesirea micilor consumatori de sub incidenta formei directe de aprovizionare (când nu le este avantajoasa) se asigura prin orientarea catre intermediarii comerciali, care, prin pozitia pe piata, au posibilitatea:
 1) comandarii produselor direct de la producatori;
 2) onorarea oricaror comenzi, indiferent de marime;
 3) practicarea unor adaosuri comerciale mari, care sa conduca la preturi de revânzare si mai mari;
@@ -293,7 +293,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: "26. Pentru realizarea trecerii materialelor si produselor de la producator la consumator se constituie canale de aprovizionare. Precizati care dintre afirmatii nu se incadreaza la tipuri de canale de aprovizionare.",
+    q: "Pentru realizarea trecerii materialelor si produselor de la producator la consumator se constituie canale de aprovizionare. Precizati care dintre afirmatii nu se incadreaza la tipuri de canale de aprovizionare.",
     options: [
       "canale scurte",
       "canale medii",
@@ -304,7 +304,7 @@ Precizati varianta corecta.`,
     correct: 4
   },
   {
-    q: "27. Aprovizionarea de la depozitele intermediarilor comerciali prezinta mai multe avantaje. Precizati varianta neadevarata.",
+    q: "Aprovizionarea de la depozitele intermediarilor comerciali prezinta mai multe avantaje. Precizati varianta neadevarata.",
     options: [
       "cresterea gradului de certitudine in asigurarea micilor consumatori cu o structura materiala si de produse extinsa",
       "cresterea fondurilor financiare antrenate in cumpararea si stocarea de resurse materiale la un moment dat",
@@ -315,7 +315,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: "28. Stocul in curs de transport. Precizati textul considerat corect.",
+    q: "Stocul in curs de transport. Precizati textul considerat corect.",
     options: [
       "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
       "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
@@ -326,7 +326,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: "29. Stocul de siguranta. Precizati textul considerat corect.",
+    q: "Stocul de siguranta. Precizati textul considerat corect.",
     options: [
       "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
       "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
@@ -337,7 +337,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "30. Stocul de pregatire sau de conditionare. Precizati textul considerat corect.",
+    q: "Stocul de pregatire sau de conditionare. Precizati textul considerat corect.",
     options: [
       "reprezinta cantitatea de materii prime si materiale noi si refolosibile, de combustibili si lubrifianti, de piese de schimb, subansamble etc. care se acumuleaza in depozitele si magaziile unei unitati economice",
       "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
@@ -348,7 +348,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "31. Stocul de iarna. Precizati textul considerat corect.",
+    q: "Stocul de iarna. Precizati textul considerat corect.",
     options: [
       "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
       "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
@@ -359,7 +359,7 @@ Precizati varianta corecta.`,
     correct: 4
   },
   {
-    q: "32. Stocul pentru transport intern. Precizati textul considerat corect.",
+    q: "Stocul pentru transport intern. Precizati textul considerat corect.",
     options: [
       "reprezinta cantitatea de resurse materiale care se acumuleaza in depozitele si magaziile subunitatilor de consum (sectii sau ateliere de fabricatie) in scopul acoperirii cererilor pentru consum pe durata eliberarii si transportului materialelor de la depozitul central (comun) la destinatiile de folosire",
       "reprezinta cantitatea de resurse materiale care se gaseste in mijloacele de transport pe timpul deplasarii acestora de la sursele de furnizare la depozitele destinatarilor",
@@ -370,7 +370,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: `33. Dupa destinatia de consum a resurselor materiale si energetice, normele de consum se clasifica astfel:
+    q: `Dupa destinatia de consum a resurselor materiale si energetice, normele de consum se clasifica astfel:
 1) norma de consum tehnologic;
 2) norme de consum pentru materii prime de baza;
 3) norma de consum de aprovizionare;
@@ -387,7 +387,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: `34. Dupa natura resurselor materiale, normele de consum se clasifica astfel:
+    q: `Dupa natura resurselor materiale, normele de consum se clasifica astfel:
 1) norma de consum tehnologic;
 2) norme de consum pentru materiale si produse chimice;
 3) norme de consum pentru carburanti;
@@ -404,7 +404,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: `35. Dupa orizontul de timp de aplicare sau perioada de valabilitate, normele de consum se clasifica astfel:
+    q: `Dupa orizontul de timp de aplicare sau perioada de valabilitate, normele de consum se clasifica astfel:
 1) norma de consum tehnologic;
 2) norme de consum pentru materiale si produse chimice;
 3) norme de consum pentru carburanti;
@@ -421,7 +421,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: `36. Dupa modul de grupare si nivelul de agregare, normele de consum se clasifica astfel:
+    q: `Dupa modul de grupare si nivelul de agregare, normele de consum se clasifica astfel:
 1) norme de consum individuale;
 2) norme de consum pentru materiale si produse chimice;
 3) norme de consum pentru carburanti;
@@ -438,7 +438,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: `37. Principalele metode de determinare a normelor de consum de materiale sunt:
+    q: `Principalele metode de determinare a normelor de consum de materiale sunt:
 1) metoda bazata pe calculul tehnico-analitic;
 2) metoda minim - maxim;
 3) metoda experimentala;
@@ -455,7 +455,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: `38. Pentru ca nomenclatorul de resurse materiale si echipamente tehnice sa fie de utilitate practica, sa raspunda scopului esential pentru care se elaboreaza, acesta trebuie sa raspunda urmatoarelor cerinte:
+    q: `Pentru ca nomenclatorul de resurse materiale si echipamente tehnice sa fie de utilitate practica, sa raspunda scopului esential pentru care se elaboreaza, acesta trebuie sa raspunda urmatoarelor cerinte:
 1) sa fie fundamentat stiintific;
 2) sa fie complet, adica sa cuprinda toate articolele de care are nevoie intreprinderea;
 3) sa prevada pozitii de rezerva pentru includerea ulterioara in cadrul acestuia a noi articole neprevazute sau neidentificate initial;
@@ -472,7 +472,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: `39. Principalele metode care au rolul de a preveni suprastocarea sau formarea stocurilor cu miscare lenta sau fara miscare sunt:
+    q: `Principalele metode care au rolul de a preveni suprastocarea sau formarea stocurilor cu miscare lenta sau fara miscare sunt:
 1) metode bazate pe calculul tehnico-analitic;
 2) metoda minim - maxim;
 3) sistemul ABC;
@@ -489,7 +489,7 @@ Precizati varianta corecta.`,
     correct: 1
   },
   {
-    q: `40. Principalele metode de calcul al necesitatilor de materiale si echipamente tehnice sunt:
+    q: `Principalele metode de calcul al necesitatilor de materiale si echipamente tehnice sunt:
 1) metoda de calcul direct;
 2) metoda minim - maxim;
 3) metoda indicelui global de consum la un milion de lei productie nominalizata;
@@ -506,7 +506,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: "41. Nomenclatorul de resurse materiale si echipamente trebuie sa raspunda unor cerinte. Identificati formularea ce nu reprezinta cerinta.",
+    q: "Nomenclatorul de resurse materiale si echipamente trebuie sa raspunda unor cerinte. Identificati formularea ce nu reprezinta cerinta.",
     options: [
       "sa cuprinda toate articolele de care are nevoie firma, pe toate subsistemele componente, pe intreaga perioada de gestiune",
       "sa prevada pozitii de rezerva pentru includerea ulterioara in cadrul acestuia a noi articole neprevazute sau neidentificate initial",
@@ -517,7 +517,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: "42. Precizati care din textele de mai jos nu se incadreaza la activitatea operativa de desfacere a produselor.",
+    q: "Precizati care din textele de mai jos nu se incadreaza la activitatea operativa de desfacere a produselor.",
     options: [
       "organizarea minutioasa a operatiunilor de pregatire a produselor pentru livrare",
       "formarea loturilor complete si complexe, unitare pentru livrare",
@@ -528,7 +528,7 @@ Precizati varianta corecta.`,
     correct: 3
   },
   {
-    q: "43. Care din variantele enumerate, nu este etapa in organizarea si concretizarea relatiilor comerciale de aprovizionare-desfacere.",
+    q: "Care din variantele enumerate, nu este etapa in organizarea si concretizarea relatiilor comerciale de aprovizionare-desfacere.",
     options: [
       "studierea pietei de materiale si produse",
       "alegerea furnizorului in baza conditiilor precizate in oferte sau rezultate din alte investigatii",
@@ -539,7 +539,7 @@ Precizati varianta corecta.`,
     correct: 2
   },
   {
-    q: `44. Dupa forma in care se concretizeaza, contractele economice pot fi:
+    q: `Dupa forma in care se concretizeaza, contractele economice pot fi:
 1) contracte scrise;
 2) pentru executarea de lucrari (de reparatii, de constructii-montaj s.a.);
 3) contracte verbale;
@@ -556,7 +556,7 @@ Precizati varianta corecta.`,
     correct: 0
   },
   {
-    q: `45. Dupa obiect, contractele economice pot fi:
+    q: `Dupa obiect, contractele economice pot fi:
 1) de vânzare-cumparare de bunuri materiale;
 2) pentru executarea de lucrari (de reparatii, de constructii-montaj s.a.);
 3) contracte verbale;
