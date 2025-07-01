@@ -1,4 +1,4 @@
-const allQuestions = [
+window.allQuestions = [
 {
     q: "In structura activitatilor componente ale managementului aprovizionarii se incadreaza. Precizati activitatea neadevarata.",
     options: [
