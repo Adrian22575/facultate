@@ -1,1 +1,62 @@
 
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studiu</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
+
+    <h1 id="title">Mod Studiu</h1>
+
+    <div class="study-intro">
+      <h3>📖 Mod Studiu</h3>
+      <p>Studiază toate întrebările, cu răspunsurile corecte evidențiate.</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div id="progressText" style="font-weight:700; color:#555;">Progres: 0 din 0 întrebări vizualizate</div>
+    </div>
+
+    <div id="questionsRoot"></div>
+  </div>
+
+  <script>
+    function getParam(name) {
+      return new URLSearchParams(location.search).get(name);
+    }
+
+    function normalizeQuestions(raw) {
+      const arr = Array.isArray(raw) ? raw : (raw.questions || []);
+      return arr.map((q, idx) => ({
+        id: q.id ?? (idx + 1),
+        text: q.text ?? q.q ?? "",
+        answers: q.answers ?? q.options ?? [],
+        correctIndex: (q.correctIndex ?? q.correct),
+        difficulty: q.difficulty ?? 1
+      })).filter(q => q.text && Array.isArray(q.answers) && q.answers.length && Number.isInteger(q.correctIndex));
+    }
+
+    async function init() {
+      const subjectId = getParam("subject");
+      if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
+
+      document.getElementById("backLink").href = `subject.html?subject=${encodeURIComponent(subjectId)}`;
+
+      const sRes = await fetch("data/subjects.json", { cache: "no-store" });
+      if (!sRes.ok) throw new Error("Nu pot încărca data/subjects.json");
+      const sData = await sRes.json();
+
+      const subject = (sData.subjects || []).find(s => s.id === subjectId);
+      if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
+
+      document.title = `Stേഴ്
+::contentReference[oaicite:0]{index=0}
