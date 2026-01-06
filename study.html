@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -58,5 +57,68 @@
       const subject = (sData.subjects || []).find(s => s.id === subjectId);
       if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
 
-      document.title = `Stേഴ്
-::contentReference[oaicite:0]{index=0}
+  const qRes = await fetch(subject.questionsFile, { cache: "no-store" });
+  if (!qRes.ok) throw new Error("Nu pot încărca întrebările: " + subject.questionsFile);
+  const rawQ = await qRes.json();
+
+  const questions = normalizeQuestions(rawQ);
+  if (!questions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
+
+  const root = document.getElementById("questionsRoot");
+  root.innerHTML = "";
+
+  // render list
+  questions.forEach((q, idx) => {
+    const card = document.createElement("div");
+    card.className = "question-study";
+    card.dataset.index = String(idx);
+
+    const h = document.createElement("h3");
+    h.textContent = `${idx + 1}. ${q.text}`;
+    card.appendChild(h);
+
+    const ul = document.createElement("ul");
+    ul.className = "options-study";
+
+    q.answers.forEach((ans, i) => {
+      const li = document.createElement("li");
+      li.textContent = ans;
+      if (i === q.correctIndex) li.classList.add("correct");
+      ul.appendChild(li);
+    });
+
+    card.appendChild(ul);
+    root.appendChild(card);
+  });
+
+  // progress by scroll (când intră în viewport)
+  const seen = new Set();
+  const fill = document.getElementById("progressFill");
+  const txt = document.getElementById("progressText");
+
+  function updateProgress() {
+    const total = questions.length;
+    const viewed = seen.size;
+    const pct = total ? Math.round((viewed / total) * 100) : 0;
+    fill.style.width = pct + "%";
+    txt.textContent = `Progres: ${viewed} din ${total} întrebări vizualizate`;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        seen.add(e.target.dataset.index);
+        updateProgress();
+      }
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll(".question-study").forEach(el => observer.observe(el));
+  updateProgress();
+}
+
+init().catch(err => {
+  console.error(err);
+  document.getElementById("questionsRoot").innerHTML =
+    `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
+});
