@@ -1,1 +1,424 @@
+/* styles.css */
 
+/* ===== Theme ===== */
+:root{
+  --primary:#1250b1;
+  --primary-dark:#0c3879;
+  --bg:#f7f9fc;
+  --text:#222;
+  --muted:#555;
+
+  --white:#fff;
+  --border:#e6e6e6;
+  --shadow:0 6px 20px rgba(0,0,0,0.07);
+
+  --radius:12px;
+  --radius-sm:8px;
+
+  --container: 760px;
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  padding:20px;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  font-family:'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* doar pentru index (meniu) ca să fie centrat pe ecran */
+body.menu-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ===== Layout ===== */
+.container{
+  width:100%;
+  max-width:var(--container);
+  margin: 20px auto;
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:24px 30px;
+}
+
+/* index-ul tău folosește menu-container în varianta veche; îl suportăm și aici */
+.menu-container{
+  width:100%;
+  max-width:480px;
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:40px;
+  text-align:center;
+}
+
+h1{
+  margin:0 0 20px 0;
+  color:var(--primary);
+  text-align:center;
+}
+
+h2, h3{
+  margin-top:0;
+  color:var(--primary);
+}
+
+/* ===== Buttons / Links ===== */
+.btn-back{
+  display:inline-block;
+  padding:12px 24px;
+  background:var(--primary);
+  color:#fff;
+  border-radius:var(--radius-sm);
+  text-decoration:none;
+  font-weight:700;
+  transition: transform .2s, background .2s;
+  margin-bottom:20px;
+}
+.btn-back:hover,
+.btn-back:focus{
+  background:var(--primary-dark);
+  transform:translateY(-2px);
+}
+.btn-back:focus{
+  outline:2px dashed var(--primary);
+  outline-offset:4px;
+}
+
+/* butoane standard (folosite în pagini prin selectorii existenți) */
+button,
+#startBtn,
+button[type="submit"],
+.restart-btn{
+  background:var(--primary);
+  color:#fff;
+  padding:12px 35px;
+  border:none;
+  border-radius:9px;
+  font-size:1.05rem;
+  font-weight:800;
+  cursor:pointer;
+  transition: transform .2s, background .2s;
+}
+button:hover,
+#startBtn:hover,
+button[type="submit"]:hover,
+.restart-btn:hover{
+  background:var(--primary-dark);
+  transform:translateY(-2px);
+}
+
+/* buton back to menu (study) */
+.back-to-menu{
+  display:none;
+  margin:30px auto 0;
+  background:#6c757d;
+  color:#fff;
+  padding:10px 30px;
+  border:none;
+  border-radius:8px;
+  font-size:1rem;
+  cursor:pointer;
+  transition: background .2s;
+}
+.back-to-menu:hover{ background:#5a6268; }
+
+/* buton reset (interactiv) */
+.reset-btn{
+  background:#dc3545;
+  color:#fff;
+  padding:8px 15px;
+  border:none;
+  border-radius:6px;
+  font-size:0.9rem;
+  cursor:pointer;
+  margin-top:15px;
+  transition: transform .2s, background .2s;
+}
+.reset-btn:hover{
+  background:#c82333;
+  transform:translateY(-1px);
+}
+
+/* ===== Index menu list ===== */
+.test-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+@media(min-width:480px){
+  .test-list{ grid-template-columns:1fr 1fr; }
+}
+.test-link{
+  display:block;
+  padding:12px 20px;
+  background:var(--primary);
+  color:#fff;
+  border-radius:var(--radius-sm);
+  text-decoration:none;
+  font-size:1.05rem;
+  font-weight:800;
+  transition: transform .2s, background .2s;
+  text-align:center;
+}
+.test-link:hover,
+.test-link:focus{
+  background:var(--primary-dark);
+  transform:translateY(-2px);
+}
+.test-link:focus{
+  outline:2px dashed var(--primary);
+  outline-offset:4px;
+}
+
+/* ===== Subject menu buttons (din study page) ===== */
+.menu-buttons{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  margin-bottom:30px;
+  align-items:center;
+}
+.menu-buttons button{
+  min-width:250px;
+}
+
+/* ===== Quiz (Test) ===== */
+.selector-container{
+  margin-bottom:20px;
+  text-align:center;
+}
+.selector-container label{ font-weight:700; }
+
+select{
+  font-size:1rem;
+  padding:8px 12px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  margin-left:10px;
+  min-width:180px;
+  background-color:#fff;
+}
+
+.question{
+  margin-bottom:25px;
+  padding-bottom:15px;
+  border-bottom:1px solid #f0f0f0;
+  text-align:left;
+}
+.question:last-child{
+  border-bottom:none;
+  margin-bottom:0;
+  padding-bottom:5px;
+}
+.question strong{
+  display:block;
+  margin-bottom:12px;
+  font-size:1.05em;
+}
+
+.answers label{
+  display:block;
+  margin-bottom:8px;
+  cursor:pointer;
+  padding:10px 15px;
+  border-radius:8px;
+  border:1px solid #e0e0e0;
+  transition: background-color .2s, border-color .2s;
+}
+.answers label:hover{
+  background-color:#f5f9ff;
+  border-color:var(--primary);
+}
+.answers input[type="radio"]{
+  margin-right:10px;
+  transform:translateY(1px);
+}
+
+/* ===== Results ===== */
+.result{
+  background:#fff;
+  border-radius:10px;
+  padding:20px;
+  margin-top:25px;
+  text-align:left;
+}
+.result h2{
+  text-align:center;
+  margin-top:0;
+  color:var(--primary);
+}
+.result .score{
+  text-align:center;
+  font-size:1.2em;
+  font-weight:800;
+  margin-bottom:20px;
+}
+.result .correct{ color:#28a745; font-weight:800; }
+.result .wrong{ color:#dc3545; font-weight:800; }
+.show-correct{
+  font-size:0.9em;
+  margin-left:8px;
+  color:#555;
+}
+.show-correct b{ color:#28a745; }
+
+/* ===== Study mode ===== */
+.study-content{ display:none; }
+
+.study-intro{
+  text-align:center;
+  margin-bottom:30px;
+  padding:20px;
+  background:#e3f2fd;
+  border-radius:10px;
+  border:1px solid #bbdefb;
+}
+.study-intro p{ margin:10px 0; color:var(--muted); }
+
+.progress-bar{
+  width:100%;
+  height:6px;
+  background:#e9ecef;
+  border-radius:3px;
+  margin:20px 0;
+}
+.progress-fill{
+  height:100%;
+  background:#28a745;
+  border-radius:3px;
+  width:0%;
+  transition: width .3s ease;
+}
+
+.question-study{
+  margin-bottom:30px;
+  padding:20px;
+  background:#f8f9fa;
+  border-radius:10px;
+  border-left:4px solid var(--primary);
+}
+.question-study h3{
+  margin:0 0 15px 0;
+  color:var(--primary);
+  font-size:1.1em;
+}
+.options-study{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.options-study li{
+  padding:8px 12px;
+  margin-bottom:5px;
+  border-radius:6px;
+  background:#fff;
+  border:1px solid #e9ecef;
+}
+.options-study li.correct{
+  background:#d4edda;
+  border-color:#c3e6cb;
+  color:#155724;
+  font-weight:800;
+}
+.options-study li.correct::before{
+  content:"✓ ";
+  color:#28a745;
+  font-weight:800;
+}
+
+/* ===== Interactive module (feedback instant) ===== */
+.progress-bar-container{
+  width:100%;
+  background-color:#e0e0e0;
+  border-radius:10px;
+  margin-bottom:20px;
+}
+.progress-bar-interactive{
+  width:0%;
+  height:10px;
+  background-color:var(--primary);
+  border-radius:10px;
+  transition: width .3s ease-in-out;
+}
+
+/* păstrăm și varianta ta: .answers .option */
+.answers .option{
+  display:block;
+  margin-bottom:10px;
+  padding:12px 15px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  cursor:pointer;
+  transition: all .2s;
+}
+.answers .option:hover{
+  background-color:#f5f9ff;
+  border-color:var(--primary);
+}
+.answers.answered .option{
+  cursor:default;
+  pointer-events:none;
+}
+.answers.answered .option:not(.selected){
+  opacity:0.6;
+}
+.answers .option.correct{
+  background-color:#d4edda;
+  border-color:#28a745;
+  color:#155724;
+  font-weight:800;
+}
+.answers .option.wrong{
+  background-color:#f8d7da;
+  border-color:#dc3545;
+  color:#721c24;
+  font-weight:800;
+}
+
+/* ===== Donation ===== */
+.donation-section{
+  margin-top:30px;
+  padding:20px;
+  background-color:#f5f9ff;
+  border:1px solid #d1e3ff;
+  border-radius:10px;
+  text-align:center;
+}
+.donation-section h3{
+  color:var(--primary);
+  margin-top:0;
+}
+.donation-content{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+  margin-top:15px;
+  flex-wrap:wrap;
+}
+.revolut-button{
+  display:inline-block;
+  padding:10px 20px;
+  background-color:#0075FF;
+  color:white;
+  text-decoration:none;
+  border-radius:8px;
+  font-weight:800;
+  transition: background-color .2s, transform .2s;
+}
+.revolut-button:hover{
+  background-color:#005fcc;
+  transform:translateY(-1px);
+}
