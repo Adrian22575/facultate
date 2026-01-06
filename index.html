@@ -1,89 +1,51 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meniu Teste Facultate</title>
-  <!-- Font Nunito -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #1250b1;
-      --primary-dark: #0c3879;
-      --bg: #f7f9fc;
-      --white: #fff;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--bg);
-      color: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .menu-container {
-      background: var(--white);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
-      text-align: center;
-      max-width: 480px;
-      width: 100%;
-    }
-    .menu-container h1 {
-      margin-bottom: 24px;
-      font-size: 1.75rem;
-      color: var(--primary);
-    }
-    .menu-container p.description {
-      font-size: 1rem;
-      margin-bottom: 32px;
-      color: #555;
-    }
-    .test-list {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    @media(min-width: 480px) {
-      .test-list { grid-template-columns: 1fr 1fr; }
-    }
-    .test-link {
-      display: block;
-      padding: 12px 20px;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 1.05rem;
-      font-weight: 600;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .test-link:hover,
-    .test-link:focus {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-    }
-    .test-link:focus {
-      outline: 2px dashed var(--primary);
-      outline-offset: 4px;
-    }
+    :root { --primary:#1250b1; --primary-dark:#0c3879; --bg:#f7f9fc; --white:#fff; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Nunito, sans-serif; background:var(--bg); color:#222; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; }
+    .menu-container { background:var(--white); padding:40px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.07); text-align:center; max-width:480px; width:100%; }
+    h1 { margin-bottom:24px; font-size:1.75rem; color:var(--primary); }
+    p.description { font-size:1rem; margin-bottom:32px; color:#555; }
+    .test-list { list-style:none; display:grid; grid-template-columns:1fr; gap:16px; }
+    @media(min-width:480px){ .test-list{ grid-template-columns:1fr 1fr; } }
+    .test-link { display:block; padding:12px 20px; background:var(--primary); color:var(--white); border-radius:8px; text-decoration:none; font-size:1.05rem; font-weight:600; transition:transform .2s, background .2s; }
+    .test-link:hover,.test-link:focus { background:var(--primary-dark); transform:translateY(-2px); }
   </style>
 </head>
 <body>
   <div class="menu-container">
     <h1>Teste Facultate</h1>
     <p class="description">Alege materia la care vrei să te testezi:</p>
-    <ul class="test-list">
-      <li><a href="managementul-calitatii-study.html" class="test-link">Managementul calității</a></li>
-      <li><a href="management-strategic-study.html" class="test-link">Management Strategic</a></li>
-      <li><a href="Managementul-aprovizionarii-si-desfacerii-study.html" class="test-link">Managementul aprovizionarii si desfacerii</a></li>
-      <!-- Adaugă aici alte materii -->
-    </ul>
+    <ul class="test-list" id="subjectsList"></ul>
   </div>
+
+  <script>
+    async function loadSubjects() {
+      const res = await fetch("data/subjects.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Nu pot încărca subjects.json");
+      const data = await res.json();
+
+      const list = document.getElementById("subjectsList");
+      list.innerHTML = "";
+
+      data.subjects.forEach(s => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">${s.title}</a>`;
+        list.appendChild(li);
+      });
+    }
+
+    loadSubjects().catch(err => {
+      console.error(err);
+      document.getElementById("subjectsList").innerHTML =
+        `<li style="color:#b00020;">Eroare la încărcarea materiilor. Verifică data/subjects.json</li>`;
+    });
+  </script>
 </body>
 </html>
