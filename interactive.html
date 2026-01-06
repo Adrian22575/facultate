@@ -162,13 +162,16 @@
 
       updateTopUI();
 
-      // Afișează donația doar când toate întrebările sunt răspunse
-const { answered } = computeStats();
-if (answered === questions.length) {
-  document.getElementById('donation').innerHTML = getDonationHTML();
-} else {
-  document.getElementById('donation').innerHTML = '';
-}
+      // Afișează donația și butonul de restart la ultima întrebare răspunsă
+      if (currentIndex === questions.length - 1 && userAnswers[currentIndex] !== null) {
+        document.getElementById('donation').innerHTML = `
+          <div class="center" style="margin-top: 20px;">
+            <button class="restart-btn" onclick="location.reload()">🔄 Ia-o de la capăt</button>
+          </div>
+        ` + getDonationHTML();
+      } else {
+        document.getElementById('donation').innerHTML = '';
+      }
     }
 
     async function init() {
