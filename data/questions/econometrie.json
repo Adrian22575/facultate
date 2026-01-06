@@ -1,0 +1,459 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Econometria este:",
+      "answers": [
+        "o ramură particulară a ştiinţelor economice, ramură care urmăreşte aplicarea metodelor statistice şi analizei matematice în economie, urmărind să introducă mai multa rigoare în demersul economic;",
+        "ansamblul activităţilor umane desfăşurate în sfera producţiei, distribuţiei şi consumului bunurilor şi serviciilor;",
+        "o mărime ce poate fi masurată numai în bani sau alte unităţi valorice;",
+        "un mecanism care transformă o categorie de obiecte economice ale căror semnale înregistrate constituie o mulţime de date, într-o altă categorie de obiecte economice ale căror semnale observate formează o altă mulţime de date."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 2,
+      "text": "Cel care a introdus termenul de econometrie şi a delimitat câmpul de cercetare manifestându-se public prin constituirea Societăţii de Econometrie în anul 1930 este:",
+      "answers": [
+        "economistul britanic John Maynard Keynes;",
+        "economiştii Jan Tinbergen şi Lawrance Klein;",
+        "economistul norvegian Ragner Frisch;",
+        "matematicianul rus Wassily Leontief."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 3,
+      "text": "Printre instrumentele statistice folosite în econometrie se numară:",
+      "answers": [
+        "analiza grupurilor, studiul ecosistemelor, dialogul euristic;",
+        "regresia multiplă, metoda discriminantului, analiza factorială;",
+        "evaluarea riscului, ecuaţiile de stare;",
+        "analiza multicriterială, simularea numerică, controlul sistemelor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 4,
+      "text": "Modelele econometrice trebuie să fie:",
+      "answers": [
+        "lineare şi uşor de aplicat;",
+        "exprimate prin eroarea medie absolută;",
+        "compatibile cu modelele de activitate;",
+        "soluţia optimă a problemelor manageriale."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 5,
+      "text": "Măsurarea relaţiilor din economie presupune studierea:",
+      "answers": [
+        "conexiunilor de tip cauză-efect;",
+        "parametrilor cuantificabili;",
+        "caracterului legăturii dintre variabile;",
+        "efectului intensităţii modificării unei variabile asupra alteia"
+      ],
+      "correctIndex": 2
+    },
+
+    {
+      "id": 6,
+      "text": "Funcția liniară este de forma:",
+      "answers": [
+        "o funcție polinomială de gradul unu, definită prin relația: f : R → R, f(x) = ax + b",
+        "de forma f : R → R, f(x) = ax^2 + bx + c;",
+        "o funcție de ajustare de forma f : R → R, f(x) = a·h·x + b√(x + c);",
+        "o funcție constantă de forma f : R → R, f(x) = ax^2y + by^2"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 7,
+      "text": "În ce constă metoda celor mai mici pătrate?",
+      "answers": [
+        "rezolvarea unui sistem de ecuaţii cu metoda Gauss-Jordan",
+        "este o metodă matematică de a obţine o soluţie a unui sistem de ecuaţii supradeterminat. Cele mai mici pătrate înseamnă că soluţia obţinută minimizează suma pătratelor abaterilor faţă de valorile ecuaţiilor.",
+        "determinarea estimatorilor de maximă verosimilitate, deplasaţi şi eficienţi;",
+        "determinarea estimatorilor regresiei unifactoriale"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 8,
+      "text": "Pentru determinarea intensității legăturilor dintre variabile este necesar să se calculeze coeficientul de corelație. În cazul regresiei liniare simple acesta reprezintă media produselor abaterilor normale normate, iar în practică se folosește expresia:",
+      "answers": [
+        "r(x,y) = [ n * Σ(i=1..n) (x_i * y_i) - (Σ(i=1..n) x_i) * (Σ(i=1..n) y_i) ] / sqrt( [ n * Σ(i=1..n) x_i^2 - (Σ(i=1..n) x_i)^2 ] * [ n * Σ(i=1..n) y_i^2 - (Σ(i=1..n) y_i)^2 ] )",
+        "u_N = Σ(i=1..N) [ f(x_i) + g(x_i) ]",
+        "r(x,y) = [ n * Σ(i=1..n) (x_i * y_i) + (Σ(i=1..n) x_i) * (Σ(i=1..n) y_i) ] / sqrt( [ n * Σ(i=1..n) x_i^2 - (Σ(i=1..n) x_i)^2 ] * [ n * Σ(i=1..n) y_i^2 - (Σ(i=1..n) y_i)^2 ] )",
+        "u_N = Σ(i=1..N) [ f(x_i) - a_i g(x_i) ]"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 9,
+      "text": "Analiza de regresie reprezintă:",
+      "answers": [
+        "variabila cunoscută, estimată şi folosită pentru a previziona valoarea unei alte variabile necunoscute;",
+        "o tehnică econometrică ce stabileşte o legatură între variabile, un model cauzal de previziune în care, din datele istorice se stabileşte o relaţie funcţională folosită apoi pentru a previziona valorile dependente ale variabilelor;",
+        "o reprezentare grafică pentru a vizualiza legatura dintre mai multe serii statistice;",
+        "determinarea funcţiei de extrapolare."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 10,
+      "text": "Forma liniarizată a funcţiei: y = α·e^(βx); α, β > 0 este:",
+      "answers": [
+        "y = α + βx ;",
+        "y = ln (α + βx);",
+        "ln y = ln α + β ln x;",
+        "ln y = ln α + βx ;"
+      ],
+      "correctIndex": 2
+    },
+
+    {
+      "id": 11,
+      "text": "În analiza proceselor economice media variabilei aleatoare ce caracterizează fenomenul respectiv se numeşte:",
+      "answers": [
+        "speranţa matematică a realizării procesului respectiv;",
+        "gradul de împrăştiere a variabilei respective;",
+        "dispersia valorilor variabilei respective;",
+        "estimaţia sau ajustarea variabilei respective."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "text": "Coeficienţii de inegalitate Theil sunt:",
+      "answers": [
+        "un grup de mărimi folosite pentru evaluarea prognozelor ex-ante;",
+        "elemente de comparaţie între diferitele modele;",
+        "exprimaţi prin eroarea medie absolută ;",
+        "un grup de mărimi folosite pentru evaluarea prognozelor ex-post."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 13,
+      "text": "În construirea unui model economico-matematic se are în vedere capacitatea acestuia de a:",
+      "answers": [
+        "reflecta structura sistemică a elementelor componente ale fenomenului real;",
+        "putea fi rezolvat cu eforturi de timp şi costuri rezonabile;",
+        "explica fidel toate intercondiţionările şi relaţiile cauza-efect ale proceselor observate;",
+        "evidenţia acelaşi tip de transformări şi evoluţii ca acelea manifestate de fenomenul real studiat."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 14,
+      "text": "Dacă fenomenul economic descris de modelul economico-matematic este în concordanţă cu ipotezele fundamentale, atunci estimatorii βj îndeplinesc următoarele proprietăţi:",
+      "answers": [
+        "de dispersie minimă;",
+        "nedeplasaţi, eficienţi, consistenţi;",
+        "asimptotic eficienţi;",
+        "de dispersie nulă"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 15,
+      "text": "Unde este utilizată metoda corelaţiei?",
+      "answers": [
+        "Metoda corelaţiei, specifică statisticii, este utilizată pentru studierea legăturilor statistice dintre caracteristicile variabilelor."
+      ],
+      "correctIndex": 0
+    },
+
+    {
+      "id": 16,
+      "text": "Care este semnificaţia termenului eroare sau rezidual?",
+      "answers": [
+        "este o eroare care nu poate fi estimată;",
+        "termenul eroare este forma de reprezentare a inexactităţii datelor observate;",
+        "termenul eroare este o valoare care nu trebuie luată în considerare la analiza modelului;",
+        "termenul eroare este diferenţa dintre nivelul real al variabilei endogene şi nivelul estimat pe baza ecuaţiei de regresie."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 17,
+      "text": "Ecuaţia de regresie multiplă nu poate cuprinde:",
+      "answers": [
+        "variabile endogene;",
+        "variabile exogene;",
+        "principiul dualismului;",
+        "variabile de întârziere."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 18,
+      "text": "Coeficientul de corelaţie liniară are următoarea semnificaţie:",
+      "answers": [
+        "permite formularea unei concluzii statistice cu privire la nivelul de autocorelare a variantelor termenului de eroare;",
+        "oferă o informaţie utilă pentru a aprecia intensitatea interdependenţei dintre două variabile reprezentate în modelul liniar;",
+        "oferă o informaţie cu privire la modul în care termenul rezidual se distribuie conform legii de repartiţie normală;",
+        "permite o apreciere corectă a stării de heteroscedasticitate."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 19,
+      "text": "Care este semnificaţia statistică a raportului de corelaţie?",
+      "answers": [
+        "dimensionează gradul de modificare al variabilei independente în raport cu variabila dependentă;",
+        "exprimă intensitatea corelaţiei dintre două sau mai multe variabile;",
+        "exprimă viteza de modificare a variabilei endogene;",
+        "dimensionează raportul statistic dintre doi indicatori."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 20,
+      "text": "Care este testul statistic cu ajutorul căruia se verifică semnificaţia parametrilor unei ecuaţii de regresie?",
+      "answers": [
+        "Statistica F, care se conformează legii de repartiţie Fisher;",
+        "Statistica Durbin-Watson;",
+        "repartiţia χ^2;",
+        "Statistica t, care se conformează legii de repartiţie Student."
+      ],
+      "correctIndex": 3
+    },
+
+    {
+      "id": 21,
+      "text": "Erorile de specificare ale modelului multifactorial de regresie liniară pot apare datorită faptului că:",
+      "answers": [
+        "au fost omise unele variabile explicative importante sau au fost incluse variabile nerelevante;",
+        "variabilele exogene sunt aleatoare;",
+        "variabila eroare urmează o distribuție normală;",
+        "cov(x_t ; u_t) ≠ 0, adică x_t și u_t nu sunt independente."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 22,
+      "text": "Prezenţa multicoliniarităţii în modelele econometrice multifactoriale poate fi pusă în evidenţă de:",
+      "answers": [
+        "valorile apropiate de +-1 ale coeficienţilor de corelatie pentru variabilele factoriale luate două câte două;",
+        "valorile negative ale statisticii t-Student",
+        "prin aplicarea statisticii Durbin-Watson;",
+        "valoarea coeficientului de determinare R^2 este apropiată de cea a coeficientului de corelaţie."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Eliminarea fenomenului de multicoliniaritate se realizează prin:",
+      "answers": [
+        "modificarea formei matematice a modelului;",
+        "estimarea parametrilor ecuaţiei de regresie cu ajutorul metodei mediilor mobile;",
+        "estimarea parametrilor ecuaţiei de regresie cu ajutorul metodei celor mai mici pătrate;",
+        "eliminarea din model a unor variabilelor susceptibile de a produce multicoliniaritate, sau înlocuirea datelor primare exprimate în unităţi naturale sau valorice cu valori rezultate din prelucrarea acestora (indici, sporuri, logaritmare, etc)."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 24,
+      "text": "Fenomenul de multicoliniaritate este specific:",
+      "answers": [
+        "modelelor econometrice unifactoriale;",
+        "modelelor econometrice multifactoriale.",
+        "modelelor econometrice care nu sunt atestate cu Testul F;",
+        "seriilor statistice de date asimetrice."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Fenomenul de multicoliniaritate este atunci când:",
+      "answers": [
+        "modelul econometric este viabil;",
+        "variabilele exogene se corelează între ele;",
+        "numărul observaţiilor este suficient de mare;",
+        "corelaţia dintre variabilele unui model econometric este de o intensitate foarte mare."
+      ],
+      "correctIndex": 1
+    },
+
+    {
+      "id": 26,
+      "text": "O motivaţie a introducerii variabilelor calitative în modelul matematic econometric derivă din:",
+      "answers": [
+        "legea lui Pareto;",
+        "alegerea criteriului de decizie complex;",
+        "imposibilitatea reproducerii tehnice a fenomenului economic;",
+        "rolul lor important sau din efectele de natură calitativă care prezinta interes pentru studiul unui fenomen economic."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 27,
+      "text": "Exprimarea variabilei calitative se poate face:",
+      "answers": [
+        "în mod direct;",
+        "atribuirea de valori numerice;",
+        "în orice tip de model econometric.",
+        "prin substituţie cu alte variabile cantitative."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 28,
+      "text": "Variabilele calitative pot fi utilizate:",
+      "answers": [
+        "numai în modele econometrice unifactoriale;",
+        "numai în modele econometrice multifactoriale;",
+        "în orice tip de model econometric."
+      ],
+      "correctIndex": 2
+    },
+
+    {
+      "id": 29,
+      "text": "Ipotezele care stau la baza modelarii seriilor de timp sunt:",
+      "answers": [
+        "evoluţia în timp a unui fenomen socio-economic este rezultatul acţiunii unui singur factor;",
+        "legea de evoluţie în timp a unui fenomen socio-economic nu poate fi determinată decât prin analiza trecutului şi prezentului acestuia;",
+        "evoluţia unui proces socio-economic este generată de acţiunea factorilor sezonieri;",
+        "seriile de date nu au o distribuţie normală."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 30,
+      "text": "Când o serie de timp este staţionară?",
+      "answers": [
+        "covarinaţa este independentă de timp;",
+        "varianta seriei se modifică pe perioada considerată;",
+        "proprietăţile statistice ale seriei de timp (media, varianta, autocorelaţia şi dispersia) nu se modifică în timp;",
+        "invalidarea unor rezultate referitoare la testele statistice."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 31,
+      "text": "Stabilirea caracterului stationar al unei serii de timp se realizează prin:",
+      "answers": [
+        "aplicarea testului ADF (Augmented Dickey-Fuller) sau a testului PP (Phillips-Perron);",
+        "utilizarea modelului ARMA;",
+        "metodologia Box-Jenkins;",
+        "utilizarea modelelor tip ARIMA;"
+      ],
+      "correctIndex": 0
+    },
+
+    {
+      "id": 32,
+      "text": "Care este semnificaţia stării de heteroscedasticitate?",
+      "answers": [
+        "variabila dependentă nu prezintă o egală împrăştiere în raport cu valorile variabilei independente;",
+        "variabila reziduală se distribuie conform legii de repartiţie normală;",
+        "proprietatea erorile de a nu avea o dispersie constantă;",
+        "variabilele statistice care formează un sistem interdependent se autocorelează."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 33,
+      "text": "Care sunt consecinţele ignorării fenomenului de heteroscedasticitate a erorilor?",
+      "answers": [
+        "Testul t Student aplicat pentru analiza semnificaţiei estimatorilor este valid;",
+        "estimatorii parametrilor au proprietatea de maximă verosimilitate;",
+        "estimatorii calculaţi pentru dispersia şi covarianţa parametrilor sunt deplasaţi;",
+        "estimatorii parametrilor din model sunt nedeplasaţi, consistenţi şi nu sunt eficenţi."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 34,
+      "text": "Testarea heteroscedasticității cu ajutorul testului White se bazează pe două teste statistice de verificare a ipotezelor statistice:",
+      "answers": [
+        "Statistica W = nR^2 și distribuția χ^2 (W urmează asimptotic o distribuție χ^2 cu gradele de libertate de numărul de regresori din ecuația auxiliară);",
+        "Testul t-Student și Statistica Z;",
+        "Testul Jarque-Bera și Statistica Durbin-Watson;",
+        "Testul Klein și Statistica Durbin-Watson."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 35,
+      "text": "Testul White se referă la:",
+      "answers": [
+        "testarea seriilor statistice asimetrice;",
+        "numărul total al unităţilor statistice care sunt supuse cercetării;",
+        "o ecuaţie de regresie auxiliară care are ca variabilă dependentă pătratul valorilor reziduale;",
+        "excluderea din model a variabilelor susceptibile de multicoliniaritate."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 36,
+      "text": "Cele mai cunoscute teste statistice utilizate în identificarea fenomenului de heteroscedasticitate sunt:",
+      "answers": [
+        "Testul Lagrange;",
+        "Testul Golgfeld-Quandt, testul Breusch-Pagan Godfrey, testul White şi testul Glejser;",
+        "Procedura Hildreth – Lu;",
+        "Testul Jarque-Bera."
+      ],
+      "correctIndex": 1
+    },
+
+    {
+      "id": 37,
+      "text": "Consecintele autocorelării erorilor sunt:",
+      "answers": [
+        "estimatorii parametrilor din model sunt nedeplasaţi şi consistenţi, dar nu sunt eficienţi;",
+        "Testul t statistic (Student) aplicat pentru analiza semnificaţiei estimatorilor este valid;",
+        "abaterea standard a erorilor este subpradimensionată;",
+        "disperia erorilor nu este subestimată."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 38,
+      "text": "Testarea autocorelării erorilor se realizează cu ajutorul:",
+      "answers": [
+        "Testului Glejer;",
+        "Testului “F”;",
+        "Testul Durbin – Watson sau Testul Lagrange;",
+        "Testul Jarque-Bera."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 39,
+      "text": "Atenuarea fenomenului de autocorelare a erorilor se poate realiza prin utilizarea:",
+      "answers": [
+        "Testului Runs;",
+        "Procedurii Cochrane – Orcutt sau procedurii Hildreth – Lu;",
+        "Testului lagrange;",
+        "Statisticii t – Student."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 40,
+      "text": "Care este semnificaţia coeficientului statistic Durbin–Watson ?",
+      "answers": [
+        "indică autocorelaţia de ordinul întâi a erorilor din modelele de regresie;",
+        "măsoară nivelul relativ al influenţei variabilei reziduale asupra modificării variabilei independente;",
+        "măsoară intensitatea corelaţiei dintre două variabile;",
+        "măsoară semnificaţia raportului de corelaţie."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 41,
+      "text": "Coeficientul statistic Durbin-Watson se calculează pe baza relației:",
+      "answers": [
+        "dw = sqrt( [ Σ(t=0..n) (y_t - ȳ_t)^2 ] / n );",
+        "dw = sqrt( [ Σ(t=0..n) (y_t - ŷ_t)^2 ] / (n - k) );",
+        "dw = [ Σ(t=0..n) (x_t - x̄_t)^2 ] / (n - 1);",
+        "dw = [ Σ(t=2..n) (u_t - u_{t-1})^2 ] / [ Σ(t=1..n) (u_t)^2 ];"
+      ],
+      "correctIndex": 3
+    }
+  ]
+}
