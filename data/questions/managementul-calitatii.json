@@ -1,1 +1,16 @@
-
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Modul în care un ansamblu de caracteristici intrinseci ... poartă denumirea de:",
+      "answers": [
+        "valoare de întrebuințare (utilitate)",
+        "standardizare",
+        "calitate",
+        "valoare psihosenzorială",
+        "valoare de piață"
+      ],
+      "correctIndex": 2
+    }
+  ]
+}
