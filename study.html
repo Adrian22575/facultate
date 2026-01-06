@@ -15,6 +15,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+  left: 20px;
   height: 50px;
   padding: 0 20px;
   border-radius: 25px;
@@ -34,17 +35,15 @@
 }
 .nav-toggle:hover {
   background: var(--primary-dark, #0c3879);
-  transform: scale(1.05);
 }
 .nav-toggle:active {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
-.nav-toggle-text {
-  display: none;
-}
+    /* Desktop - buton mai mic în dreapta */
 @media (min-width: 600px) {
-  .nav-toggle-text {
-    display: inline;
+    .nav-toggle {
+    left: auto;
+    width: auto;
   }
 }
 
@@ -94,6 +93,7 @@
   margin: 0;
   font-size: 1.1rem;
   color: #333;
+  white-space: nowrap;
 }
 .nav-close {
   background: none;
@@ -222,7 +222,7 @@
   <!-- Buton floating pentru navigare -->
   <button class="nav-toggle" id="navToggle" title="Navigare rapidă">
     <span>📋</span>
-    <span class="nav-toggle-text">Navigare rapidă</span>
+    <span>Navigare rapidă</span>
   </button>
 
   <!-- Overlay + Panel navigare -->
