@@ -16,6 +16,13 @@
   --radius-sm:8px;
 
   --container: 760px;
+  
+  /* Touch-friendly sizes */
+  --touch-target: 44px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
 }
 
 *{ box-sizing:border-box; }
@@ -28,6 +35,8 @@ body{
   color:var(--text);
   line-height:1.6;
   font-family:'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* doar pentru index (meniu) ca să fie centrat pe ecran */
@@ -36,6 +45,7 @@ body.menu-page{
   display:flex;
   align-items:center;
   justify-content:center;
+  padding: 16px;
 }
 
 /* ===== Layout ===== */
@@ -64,11 +74,13 @@ h1{
   margin:0 0 20px 0;
   color:var(--primary);
   text-align:center;
+  word-wrap: break-word;
 }
 
 h2, h3{
   margin-top:0;
   color:var(--primary);
+  word-wrap: break-word;
 }
 
 /* ===== Buttons / Links ===== */
@@ -82,6 +94,8 @@ h2, h3{
   font-weight:700;
   transition: transform .2s, background .2s;
   margin-bottom:20px;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
 }
 .btn-back:hover,
 .btn-back:focus{
@@ -91,6 +105,9 @@ h2, h3{
 .btn-back:focus{
   outline:2px dashed var(--primary);
   outline-offset:4px;
+}
+.btn-back:active {
+  transform: translateY(0);
 }
 
 /* butoane standard (folosite în pagini prin selectorii existenți) */
@@ -107,6 +124,8 @@ button[type="submit"],
   font-weight:800;
   cursor:pointer;
   transition: transform .2s, background .2s;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
 }
 button:hover,
 #startBtn:hover,
@@ -128,6 +147,7 @@ button[type="submit"]:hover,
   font-size:1rem;
   cursor:pointer;
   transition: background .2s;
+  min-height: var(--touch-target);
 }
 .back-to-menu:hover{ background:#5a6268; }
 
@@ -142,6 +162,8 @@ button[type="submit"]:hover,
   cursor:pointer;
   margin-top:15px;
   transition: transform .2s, background .2s;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
 }
 .reset-btn:hover{
   background:#c82333;
@@ -161,8 +183,10 @@ button[type="submit"]:hover,
   .test-list{ grid-template-columns:1fr 1fr; }
 }
 .test-link{
-  display:block;
-  padding:12px 20px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  padding:14px 20px;
   background:var(--primary);
   color:#fff;
   border-radius:var(--radius-sm);
@@ -171,6 +195,8 @@ button[type="submit"]:hover,
   font-weight:800;
   transition: transform .2s, background .2s;
   text-align:center;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
 }
 .test-link:hover,
 .test-link:focus{
@@ -181,6 +207,9 @@ button[type="submit"]:hover,
   outline:2px dashed var(--primary);
   outline-offset:4px;
 }
+.test-link:active {
+  transform: translateY(0);
+}
 
 /* ===== Subject menu buttons (din study page) ===== */
 .menu-buttons{
@@ -190,8 +219,11 @@ button[type="submit"]:hover,
   margin-bottom:30px;
   align-items:center;
 }
-.menu-buttons button{
+.menu-buttons button,
+.menu-buttons .test-link {
   min-width:250px;
+  width: 100%;
+  max-width: 320px;
 }
 
 /* ===== Quiz (Test) ===== */
@@ -199,16 +231,29 @@ button[type="submit"]:hover,
   margin-bottom:20px;
   text-align:center;
 }
-.selector-container label{ font-weight:700; }
+.selector-container label{ 
+  font-weight:700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
 
 select{
-  font-size:1rem;
-  padding:8px 12px;
+  font-size:16px; /* Previne zoom pe iOS */
+  padding:12px 16px;
   border-radius:6px;
   border:1px solid #ccc;
-  margin-left:10px;
   min-width:180px;
   background-color:#fff;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
 }
 
 .question{
@@ -226,24 +271,35 @@ select{
   display:block;
   margin-bottom:12px;
   font-size:1.05em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .answers label{
   display:block;
-  margin-bottom:8px;
+  margin-bottom:10px;
   cursor:pointer;
-  padding:10px 15px;
+  padding:14px 16px;
   border-radius:8px;
   border:1px solid #e0e0e0;
   transition: background-color .2s, border-color .2s;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .answers label:hover{
   background-color:#f5f9ff;
   border-color:var(--primary);
 }
+.answers label:active {
+  background-color: #e8f0ff;
+}
 .answers input[type="radio"]{
   margin-right:10px;
   transform:translateY(1px);
+  width: 18px;
+  height: 18px;
 }
 
 /* ===== Results ===== */
@@ -313,6 +369,8 @@ select{
   margin:0 0 15px 0;
   color:var(--primary);
   font-size:1.1em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .options-study{
   list-style:none;
@@ -320,11 +378,13 @@ select{
   margin:0;
 }
 .options-study li{
-  padding:8px 12px;
-  margin-bottom:5px;
+  padding:12px 14px;
+  margin-bottom:8px;
   border-radius:6px;
   background:#fff;
   border:1px solid #e9ecef;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .options-study li.correct{
   background:#d4edda;
@@ -344,6 +404,7 @@ select{
   background-color:#e0e0e0;
   border-radius:10px;
   margin-bottom:20px;
+  overflow: hidden;
 }
 .progress-bar-interactive{
   width:0%;
@@ -356,16 +417,23 @@ select{
 /* păstrăm și varianta ta: .answers .option */
 .answers .option{
   display:block;
-  margin-bottom:10px;
-  padding:12px 15px;
+  margin-bottom:12px;
+  padding:14px 16px;
   border-radius:8px;
   border:1px solid #ccc;
   cursor:pointer;
   transition: all .2s;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .answers .option:hover{
   background-color:#f5f9ff;
   border-color:var(--primary);
+}
+.answers .option:active {
+  background-color: #e8f0ff;
 }
 .answers.answered .option{
   cursor:default;
@@ -417,6 +485,7 @@ select{
   border-radius:8px;
   font-weight:800;
   transition: background-color .2s, transform .2s;
+  min-height: var(--touch-target);
 }
 .revolut-button:hover{
   background-color:#005fcc;
@@ -425,12 +494,16 @@ select{
 
 
 /* ===== Interactive extra ===== */
-.question-container { flex-grow: 1; }
+.question-container { 
+  flex-grow: 1; 
+}
 
 .question-header{
   font-weight: 800;
   font-size: 1.1em;
   margin-bottom: 15px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .question-counter{
@@ -443,31 +516,40 @@ select{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap: 12px;
   margin-top:20px;
   padding-top:20px;
   border-top:1px solid #f0f0f0;
+  flex-wrap: wrap;
 }
 
 .nav-btn{
   background: var(--primary);
   color:#fff;
-  padding:10px 25px;
+  padding:12px 20px;
   border:none;
   border-radius:8px;
   font-size:1rem;
   font-weight:800;
   cursor:pointer;
   transition: background .2s, transform .2s;
+  min-height: var(--touch-target);
+  touch-action: manipulation;
+  flex: 1;
+  min-width: 100px;
+  max-width: 150px;
 }
 
 .nav-btn:hover{ background: var(--primary-dark); transform: translateY(-2px); }
 .nav-btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+.nav-btn:active:not(:disabled) { transform: translateY(0); }
 
 .stats{
   text-align:center;
   color:#555;
   font-weight:700;
   margin:10px 0 16px;
+  font-size: 0.95rem;
 }
 
 /* ===== Utilities ===== */
@@ -492,53 +574,6 @@ select{
   align-items:center;
   gap:12px;
   margin-top:16px;
-}
-
-/* ===== Mobile Responsive ===== */
-@media (max-width: 768px) {
-  .container {
-    padding: 16px 20px;
-    margin: 10px auto;
-  }
-  
-  select {
-    min-width: 140px;
-    font-size: 16px; /* Previne zoom pe iOS */
-  }
-  
-  .selector-container {
-    margin-bottom: 16px;
-  }
-  
-  button,
-  #startBtn,
-  .restart-btn {
-    padding: 14px 28px;
-    font-size: 1rem;
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .quiz-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  .quiz-actions {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .quiz-actions button {
-    width: 100%;
-  }
-  
-  .answers label {
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-  }
 }
 
 /* ===== Progress Bar ===== */
@@ -592,22 +627,370 @@ select:focus,
   outline-offset: 2px;
 }
 
-/* ===== Form Elements Mobile ===== */
-@media (max-width: 480px) {
+/* ===== MOBILE RESPONSIVE ===== */
+
+/* Tablet și mai jos */
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+  
   .container {
-    padding: 14px 16px;
+    padding: 16px 18px;
+    margin: 10px auto;
+    border-radius: 10px;
+  }
+  
+  .menu-container {
+    padding: 24px 20px;
   }
   
   h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     margin-bottom: 16px;
   }
   
-  .question strong {
+  select {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .selector-container {
+    margin-bottom: 16px;
+  }
+  
+  .selector-container label {
+    margin-left: 0;
+  }
+  
+  button,
+  #startBtn,
+  .restart-btn {
+    padding: 14px 28px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .quiz-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .quiz-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .quiz-actions button {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .answers label {
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+  }
+  
+  .navigation {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .nav-btn {
+    flex: 1;
+    max-width: none;
+    padding: 14px 16px;
+  }
+  
+  .question-counter {
+    order: -1;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .stats {
+    font-size: 0.9rem;
+  }
+  
+  .btn-back {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+  
+  .test-link {
+    padding: 16px 20px;
+  }
+  
+  .study-intro {
+    padding: 16px;
+  }
+  
+  .question-study {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .question-study h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Telefoane mici */
+@media (max-width: 480px) {
+  body {
+    padding: 8px;
+  }
+  
+  body.menu-page {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+  
+  .container {
+    padding: 14px 14px;
+    margin: 8px auto;
+    border-radius: 8px;
+  }
+  
+  .menu-container {
+    padding: 20px 16px;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+  
+  h3 {
     font-size: 1rem;
   }
   
-  select {
-    margin-left: 8px;
+  .question strong,
+  .question-header {
+    font-size: 1rem;
+    line-height: 1.5;
   }
+  
+  select {
+    font-size: 16px;
+    padding: 14px 16px;
+    width: 100%;
+    max-width: none;
+  }
+  
+  button,
+  #startBtn,
+  .restart-btn {
+    padding: 16px 24px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: none;
+  }
+  
+  .btn-back {
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    width: auto;
+  }
+  
+  .test-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .test-link {
+    padding: 16px 16px;
+    font-size: 1rem;
+  }
+  
+  .menu-buttons .test-link {
+    min-width: auto;
+    max-width: none;
+  }
+  
+  .answers label {
+    padding: 16px 14px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .answers .option {
+    padding: 16px 14px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .navigation {
+    gap: 10px;
+    padding-top: 16px;
+    margin-top: 16px;
+  }
+  
+  .nav-btn {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+    min-width: 80px;
+  }
+  
+  .question-counter {
+    font-size: 0.9rem;
+    padding: 0 4px;
+  }
+  
+  .stats {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .result {
+    padding: 16px;
+  }
+  
+  .result .score {
+    font-size: 1.1rem;
+  }
+  
+  .study-intro {
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .study-intro h3 {
+    font-size: 1.1rem;
+  }
+  
+  .question-study {
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .question-study h3 {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+  
+  .options-study li {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .progress-bar-container {
+    margin: 12px 0 20px 0;
+  }
+  
+  .description {
+    font-size: 0.95rem;
+  }
+  
+  /* Quiz meta pe mobil */
+  .quiz-meta {
+    font-size: 0.85rem;
+  }
+  
+  /* Donation section */
+  .donation-section {
+    padding: 16px;
+  }
+  
+  .donation-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* Telefoane foarte mici (sub 360px) */
+@media (max-width: 360px) {
+  body {
+    padding: 6px;
+  }
+  
+  .container {
+    padding: 12px 10px;
+  }
+  
+  .menu-container {
+    padding: 16px 12px;
+  }
+  
+  h1 {
+    font-size: 1.2rem;
+  }
+  
+  .btn-back {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+  
+  .test-link {
+    padding: 14px 12px;
+    font-size: 0.95rem;
+  }
+  
+  .nav-btn {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+  
+  .answers label,
+  .answers .option {
+    padding: 14px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .question strong,
+  .question-header {
+    font-size: 0.95rem;
+  }
+}
+
+/* ===== Landscape mode pe telefon ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  body.menu-page {
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+  
+  .container {
+    margin: 10px auto;
+  }
+  
+  .navigation {
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+}
+
+/* ===== iOS Safe Areas ===== */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+/* ===== Prevent text selection on buttons ===== */
+button,
+.btn-back,
+.test-link,
+.nav-btn,
+.reset-btn {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ===== Smooth scrolling for iOS ===== */
+.container,
+.menu-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ===== Prevent pull-to-refresh interference ===== */
+html {
+  overscroll-behavior-y: contain;
 }
