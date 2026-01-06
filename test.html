@@ -151,6 +151,9 @@
     function renderQuestion() {
       const q = testQuestions[current];
       const chosen = answers[current];
+      // Update progress bar
+      const progressPercent = ((current + 1) / testQuestions.length) * 100;
+      document.getElementById("progressBar").style.width = progressPercent + "%";
 
       metaLeft.textContent = `${current + 1} / ${testQuestions.length}`;
       metaRight.textContent = `Răspunse: ${answers.filter(a => a !== null).length}/${testQuestions.length}`;
