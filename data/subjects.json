@@ -5,11 +5,12 @@
       "title": "Managementul calității",
       "questionsFile": "data/questions/managementul-calitatii.json"
     },
-    {
-      "id": "management-strategic",
-      "title": "Management Strategic",
-      "questionsFile": "data/questions/management-strategic.json"
-    },
+{
+  "id": "econometrie",
+  "title": "Econometrie",
+  "questionsFile": "data/questions/econometrie.json"
+}
+,
     {
       "id": "aprovizionare-desfacere",
       "title": "Managementul aprovizionării și desfacerii",
