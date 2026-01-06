@@ -469,3 +469,28 @@ select{
   font-weight:700;
   margin:10px 0 16px;
 }
+
+/* ===== Utilities ===== */
+.hidden { display: none !important; }
+.center { text-align: center; }
+
+/* ===== Test screens ===== */
+.quiz-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:10px 0 16px;
+  color:#555;
+  font-weight:700;
+}
+
+.quiz-actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:16px;
+}
+
