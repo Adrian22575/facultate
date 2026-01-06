@@ -1,1 +1,64 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Materie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary:#1250b1; --primary-dark:#0c3879; --bg:#f7f9fc; --white:#fff; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Nunito, sans-serif; background:var(--bg); display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; }
+    .card { background:var(--white); padding:40px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.07); text-align:center; max-width:720px; width:100%; }
+    h1 { color:var(--primary); margin-bottom:12px; }
+    .btn { display:inline-block; margin:10px 0; padding:12px 22px; background:var(--primary); color:#fff; border-radius:8px; text-decoration:none; font-weight:700; }
+    .btn:hover { background:var(--primary-dark); }
+    .top { display:flex; justify-content:flex-start; margin-bottom:20px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <a class="btn" href="index.html">Înapoi la meniu</a>
+    </div>
 
+    <h1 id="title">Materie</h1>
+    <p style="margin: 12px 0 28px; color:#555;">Alege modul de învățare:</p>
+
+    <div id="links"></div>
+  </div>
+
+  <script>
+    function getParam(name) {
+      return new URLSearchParams(location.search).get(name);
+    }
+
+    async function init() {
+      const subjectId = getParam("subject");
+      if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
+
+      const res = await fetch("data/subjects.json", { cache: "no-store" });
+      const data = await res.json();
+      const subject = data.subjects.find(s => s.id === subjectId);
+
+      if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
+
+      document.title = subject.title;
+      document.getElementById("title").textContent = subject.title;
+
+      const q = encodeURIComponent(subjectId);
+      document.getElementById("links").innerHTML = `
+        <a class="btn" href="interactive.html?subject=${q}">🧩 Modul Interactiv (feedback instant)</a><br/>
+        <a class="btn" href="study.html?subject=${q}">📖 Studiază Întrebările</a><br/>
+        <a class="btn" href="test.html?subject=${q}">🎯 Testează-te</a>
+      `;
+    }
+
+    init().catch(err => {
+      console.error(err);
+      document.getElementById("title").textContent = "Eroare";
+      document.getElementById("links").innerHTML = `<p style="color:#b00020;">${err.message}</p>`;
+    });
+  </script>
+</body>
+</html>
