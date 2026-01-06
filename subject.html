@@ -3,23 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Materia</title>
+  <title>Studiu</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- IMPORTANT: dacă styles.css e în root -->
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <div class="container">
-    <a class="btn-back" href="index.html">Înapoi la meniu</a>
+    <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
 
-    <h1 id="pageTitle">Materia</h1>
-    <p class="description" style="text-align:center;">Alege modul:</p>
+    <h1 id="title">Mod Studiu</h1>
 
-    <div class="menu-buttons" id="modeLinks"></div>
+    <div class="study-intro">
+      <h3>📖 Mod Studiu</h3>
+      <p>Studiază toate întrebările, cu răspunsurile corecte evidențiate.</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div id="progressText" style="font-weight:700; color:#555;">Progres: 0 din 0 întrebări vizualizate</div>
+    </div>
+
+    <div id="questionsRoot"></div>
   </div>
 
   <script>
@@ -27,33 +33,117 @@
       return new URLSearchParams(location.search).get(name);
     }
 
+    function normalizeQuestions(raw) {
+      const arr = Array.isArray(raw) ? raw : (raw.questions || []);
+      return arr.map((q, idx) => ({
+        id: q.id ?? (idx + 1),
+        text: q.text ?? q.q ?? "",
+        answers: q.answers ?? q.options ?? [],
+        correctIndex: (q.correctIndex ?? q.correct),
+        difficulty: q.difficulty ?? 1
+      })).filter(q =>
+        q.text &&
+        Array.isArray(q.answers) &&
+        q.answers.length &&
+        Number.isInteger(q.correctIndex)
+      );
+    }
+
     async function init() {
-      const subjectId = getParam("subject");
-      if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
+      // 1) subjectId din URL, fallback la ultima materie (ca să nu rămâi blocat)
+      let subjectId = getParam("subject") || localStorage.getItem("lastSubjectId");
+      const backEl = document.getElementById("backLink");
 
-      const res = await fetch("data/subjects.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("Nu pot încărca data/subjects.json");
+      if (subjectId) {
+        // salvează mereu ultima materie folosită
+        localStorage.setItem("lastSubjectId", subjectId);
+        backEl.href = `subject.html?subject=${encodeURIComponent(subjectId)}`;
+      } else {
+        // fallback: dacă nu știm materia, încearcă history.back()
+        backEl.href = "#";
+        backEl.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (history.length > 1) history.back();
+          else location.href = "index.html";
+        });
+        throw new Error("Lipsește parametrul ?subject= (și nu există lastSubjectId).");
+      }
 
-      const data = await res.json();
-      const subject = (data.subjects || []).find(s => s.id === subjectId);
+      // 2) ia titlul + fișierul de întrebări
+      const sRes = await fetch("data/subjects.json", { cache: "no-store" });
+      if (!sRes.ok) throw new Error("Nu pot încărca data/subjects.json");
+      const sData = await sRes.json();
+
+      const subject = (sData.subjects || []).find(s => s.id === subjectId);
       if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
 
-      document.title = subject.title;
-      document.getElementById("pageTitle").textContent = subject.title;
+      document.title = `Studiu — ${subject.title}`;
+      document.getElementById("title").textContent = `Mod Studiu — ${subject.title}`;
 
-      const q = encodeURIComponent(subjectId);
-      document.getElementById("modeLinks").innerHTML = `
-        <a class="test-link" href="interactive.html?subject=${q}">🧩 Modul Interactiv</a>
-        <a class="test-link" href="study.html?subject=${q}">📖 Studiază</a>
-        <a class="test-link" href="test.html?subject=${q}">🎯 Test</a>
-      `;
+      const qRes = await fetch(subject.questionsFile, { cache: "no-store" });
+      if (!qRes.ok) throw new Error("Nu pot încărca întrebările: " + subject.questionsFile);
+      const rawQ = await qRes.json();
+
+      const questions = normalizeQuestions(rawQ);
+      if (!questions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
+
+      // 3) render
+      const root = document.getElementById("questionsRoot");
+      root.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const card = document.createElement("div");
+        card.className = "question-study";
+        card.dataset.index = String(idx);
+
+        const h = document.createElement("h3");
+        h.textContent = `${idx + 1}. ${q.text}`;
+        card.appendChild(h);
+
+        const ul = document.createElement("ul");
+        ul.className = "options-study";
+
+        q.answers.forEach((ans, i) => {
+          const li = document.createElement("li");
+          li.textContent = ans;
+          if (i === q.correctIndex) li.classList.add("correct");
+          ul.appendChild(li);
+        });
+
+        card.appendChild(ul);
+        root.appendChild(card);
+      });
+
+      // 4) progres pe scroll
+      const seen = new Set();
+      const fill = document.getElementById("progressFill");
+      const txt = document.getElementById("progressText");
+
+      function updateProgress() {
+        const total = questions.length;
+        const viewed = seen.size;
+        const pct = total ? Math.round((viewed / total) * 100) : 0;
+        fill.style.width = pct + "%";
+        txt.textContent = `Progres: ${viewed} din ${total} întrebări vizualizate`;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            seen.add(e.target.dataset.index);
+            updateProgress();
+          }
+        });
+      }, { threshold: 0.6 });
+
+      document.querySelectorAll(".question-study").forEach(el => observer.observe(el));
+      updateProgress();
     }
 
     init().catch(err => {
       console.error(err);
-      document.getElementById("pageTitle").textContent = "Eroare";
-      document.getElementById("modeLinks").innerHTML =
-        `<div style="color:#b00020; text-align:center; font-weight:700;">${err.message}</div>`;
+      document.getElementById("questionsRoot").innerHTML =
+        `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
     });
   </script>
 </body>
