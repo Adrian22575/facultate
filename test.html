@@ -216,7 +216,7 @@
           <button class="restart-btn" id="restartBtn">Reîncepe</button>
         </div>
       `;
-
+      resultScreen.innerHTML += getDonationHTML();
       document.getElementById("restartBtn").addEventListener("click", () => {
         resultScreen.classList.add("hidden");
         quizScreen.classList.add("hidden");
@@ -305,5 +305,6 @@
         `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
     });
   </script>
+  <script src="assets/donation.js"></script>
 </body>
 </html>
