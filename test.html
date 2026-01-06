@@ -17,9 +17,7 @@
     <h1 id="title">Test</h1>
 
     <!-- Setup screen -->
-    <div id="setu
-::contentReference[oaicite:0]{index=0}
-pScreen">
+    <div id="setupScreen">
       <div class="selector-container">
         <label>
           Alege numărul de întrebări:
@@ -34,12 +32,11 @@ pScreen">
 
       <div class="selector-container">
         <label>
-          Alege nivelul de dificultate:
+          Alege modul:
           <select id="diffSelect">
-            <option value="all" selected>Toate</option>
-            <option value="1">1 - Normal</option>
-            <option value="2">2 - Mediu</option>
-            <option value="3">3 - Greu</option>
+            <option value="1" selected>1 - În ordine (ca în curs)</option>
+            <option value="2">2 - Întrebări amestecate</option>
+            <option value="3">3 - Întrebări + răspunsuri mixate</option>
           </select>
         </label>
       </div>
@@ -86,9 +83,41 @@ pScreen">
         id: q.id ?? (idx + 1),
         text: q.text ?? q.q ?? "",
         answers: q.answers ?? q.options ?? [],
-        correctIndex: (q.correctIndex ?? q.correct),
-        difficulty: q.difficulty ?? 1
+        correctIndex: (q.correctIndex ?? q.correct)
       })).filter(q => q.text && Array.isArray(q.answers) && q.answers.length && Number.isInteger(q.correctIndex));
+    }
+
+    function buildAnswerBank(questions) {
+      const set = new Set();
+      questions.forEach(q => (q.answers || []).forEach(a => set.add(a)));
+      return Array.from(set).filter(Boolean);
+    }
+
+    function mixAnswersForHardMode(questions, answerBank) {
+      return questions.map(q => {
+        const correctText = q.answers[q.correctIndex];
+        const optionCount = Math.max(2, (q.answers || []).length);
+
+        if (!correctText) return q;
+
+        const opts = [correctText];
+        const candidates = answerBank.filter(a => a !== correctText);
+
+        while (opts.length < optionCount && candidates.length) {
+          const pick = candidates[Math.floor(Math.random() * candidates.length)];
+          if (!opts.includes(pick)) opts.push(pick);
+        }
+
+        // dacă nu avem destule opțiuni, păstrăm întrebarea originală
+        if (opts.length < optionCount) return q;
+
+        shuffle(opts);
+        return {
+          ...q,
+          answers: opts,
+          correctIndex: opts.indexOf(correctText)
+        };
+      });
     }
 
     let allQuestions = [];
@@ -181,7 +210,6 @@ pScreen">
       `;
 
       document.getElementById("restartBtn").addEventListener("click", () => {
-        // back to setup
         resultScreen.classList.add("hidden");
         quizScreen.classList.add("hidden");
         setupScreen.classList.remove("hidden");
@@ -214,25 +242,29 @@ pScreen">
       if (!allQuestions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
 
       startBtn.addEventListener("click", () => {
-        const diff = diffSelect.value;
+        const mode = diffSelect.value;     // "1" | "2" | "3"
         const countVal = countSelect.value;
 
-        let pool = allQuestions.slice();
+        // copiem întrebările ca să nu stricăm allQuestions
+        let pool = allQuestions.map(q => ({ ...q, answers: [...q.answers] }));
 
-        if (diff !== "all") {
-          const d = Number(diff);
-          pool = pool.filter(q => (q.difficulty ?? 1) === d);
+        // 1 = în ordine, 2/3 = amestecate
+        if (mode === "2" || mode === "3") {
+          shuffle(pool);
         }
 
-        if (!pool.length) {
-          alert("Nu există întrebări pentru filtrul ales.");
-          return;
-        }
+        const take = (countVal === "all")
+          ? pool.length
+          : Math.min(Number(countVal), pool.length);
 
-        shuffle(pool);
-
-        const take = (countVal === "all") ? pool.length : Math.min(Number(countVal), pool.length);
         testQuestions = pool.slice(0, take);
+
+        // 3 = răspunsuri mixate din bancă (dar include corectul)
+        if (mode === "3") {
+          const bank = buildAnswerBank(allQuestions);
+          testQuestions = mixAnswersForHardMode(testQuestions, bank);
+        }
+
         answers = new Array(testQuestions.length).fill(null);
         current = 0;
 
@@ -252,7 +284,6 @@ pScreen">
           current++;
           renderQuestion();
         } else {
-          // finalizează
           quizScreen.classList.add("hidden");
           resultScreen.classList.remove("hidden");
           showResults();
