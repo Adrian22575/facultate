@@ -1,1 +1,20 @@
-
+// Aici adaug materiile
+{
+  "subjects": [
+    {
+      "id": "managementul-calitatii",
+      "title": "Managementul calității",
+      "questionsFile": "data/questions/managementul-calitatii.json"
+    },
+    {
+      "id": "management-strategic",
+      "title": "Management Strategic",
+      "questionsFile": "data/questions/management-strategic.json"
+    },
+    {
+      "id": "aprovizionare-desfacere",
+      "title": "Managementul aprovizionării și desfacerii",
+      "questionsFile": "data/questions/aprovizionare-desfacere.json"
+    }
+  ]
+}
