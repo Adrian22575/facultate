@@ -161,6 +161,14 @@
       }
 
       updateTopUI();
+
+      // Afișează donația doar când toate întrebările sunt răspunse
+const { answered } = computeStats();
+if (answered === questions.length) {
+  document.getElementById('donation').innerHTML = getDonationHTML();
+} else {
+  document.getElementById('donation').innerHTML = '';
+}
     }
 
     async function init() {
