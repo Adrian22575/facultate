@@ -9,6 +9,195 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    /* Buton navigare rapidă - floating */
+    .nav-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--primary, #1250b1);
+      color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .nav-toggle:hover {
+      background: var(--primary-dark, #0c3879);
+      transform: scale(1.05);
+    }
+    .nav-toggle:active {
+      transform: scale(0.95);
+    }
+
+    /* Overlay/Modal */
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1001;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .nav-overlay.active {
+      display: flex;
+    }
+
+    /* Panel */
+    .nav-panel {
+      background: #fff;
+      width: 100%;
+      max-width: 500px;
+      max-height: 70vh;
+      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    /* Header panel */
+    .nav-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .nav-panel-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .nav-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+      padding: 4px 8px;
+    }
+
+    /* Căutare */
+    .nav-search {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+    .nav-search:focus {
+      outline: none;
+      border-color: var(--primary, #1250b1);
+    }
+
+    /* Grid numere */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 400px) {
+      .nav-grid {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+    @media (min-width: 500px) {
+      .nav-grid {
+        grid-template-columns: repeat(10, 1fr);
+      }
+    }
+
+    .nav-grid-btn {
+      aspect-ratio: 1;
+      border: none;
+      border-radius: 8px;
+      background: #f0f0f0;
+      color: #333;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 40px;
+    }
+    .nav-grid-btn:hover {
+      background: var(--primary, #1250b1);
+      color: #fff;
+    }
+    .nav-grid-btn:active {
+      transform: scale(0.95);
+    }
+    .nav-grid-btn.viewed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    /* Rezultate căutare */
+    .search-results {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .search-result-item {
+      padding: 12px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border-left: 3px solid var(--primary, #1250b1);
+      transition: background 0.2s;
+    }
+    .search-result-item:hover {
+      background: #e9ecef;
+    }
+    .search-result-item strong {
+      color: var(--primary, #1250b1);
+    }
+    .search-result-text {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Info text */
+    .nav-info {
+      text-align: center;
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+
+    /* Desktop - panel lateral în loc de bottom sheet */
+    @media (min-width: 768px) {
+      .nav-overlay {
+        align-items: center;
+      }
+      .nav-panel {
+        border-radius: 16px;
+        max-height: 80vh;
+        margin: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -27,6 +216,28 @@
 
     <div id="questionsRoot"></div>
     <div id="donation"></div>
+  </div>
+
+  <!-- Buton floating pentru navigare -->
+  <button class="nav-toggle" id="navToggle" title="Navigare rapidă">📋</button>
+
+  <!-- Overlay + Panel navigare -->
+  <div class="nav-overlay" id="navOverlay">
+    <div class="nav-panel" id="navPanel">
+      <div class="nav-panel-header">
+        <h3>🔍 Navigare rapidă</h3>
+        <button class="nav-close" id="navClose">✕</button>
+      </div>
+      
+      <input type="text" class="nav-search" id="navSearch" placeholder="Caută în întrebări...">
+      
+      <div id="searchResults" class="search-results" style="display: none;"></div>
+      
+      <div id="navGridContainer">
+        <div class="nav-grid" id="navGrid"></div>
+        <div class="nav-info">Apasă pe un număr pentru a sări la întrebare</div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -50,17 +261,19 @@
       );
     }
 
+    // Variabile globale pentru navigare
+    let questions = [];
+    let seen = new Set();
+
     async function init() {
-      // 1) subjectId din URL, fallback la ultima materie (ca să nu rămâi blocat)
+      // 1) subjectId din URL, fallback la ultima materie
       let subjectId = getParam("subject") || localStorage.getItem("lastSubjectId");
       const backEl = document.getElementById("backLink");
 
       if (subjectId) {
-        // salvează mereu ultima materie folosită
         localStorage.setItem("lastSubjectId", subjectId);
         backEl.href = `subject.html?subject=${encodeURIComponent(subjectId)}`;
       } else {
-        // fallback: dacă nu știm materia, încearcă history.back()
         backEl.href = "#";
         backEl.addEventListener("click", (e) => {
           e.preventDefault();
@@ -85,10 +298,10 @@
       if (!qRes.ok) throw new Error("Nu pot încărca întrebările: " + subject.questionsFile);
       const rawQ = await qRes.json();
 
-      const questions = normalizeQuestions(rawQ);
+      questions = normalizeQuestions(rawQ);
       if (!questions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
 
-      // 3) render
+      // 3) render întrebări
       const root = document.getElementById("questionsRoot");
       root.innerHTML = "";
 
@@ -96,6 +309,7 @@
         const card = document.createElement("div");
         card.className = "question-study";
         card.dataset.index = String(idx);
+        card.id = `question-${idx}`;
 
         const h = document.createElement("h3");
         h.textContent = `${idx + 1}. ${q.text}`;
@@ -116,7 +330,6 @@
       });
 
       // 4) progres pe scroll
-      const seen = new Set();
       const fill = document.getElementById("progressFill");
       const txt = document.getElementById("progressText");
 
@@ -126,6 +339,7 @@
         const pct = total ? Math.round((viewed / total) * 100) : 0;
         fill.style.width = pct + "%";
         txt.textContent = `Progres: ${viewed} din ${total} întrebări vizualizate`;
+        updateNavGrid();
       }
 
       const observer = new IntersectionObserver((entries) => {
@@ -139,6 +353,136 @@
 
       document.querySelectorAll(".question-study").forEach(el => observer.observe(el));
       updateProgress();
+
+      // 5) Inițializează navigarea rapidă
+      initQuickNav();
+    }
+
+    // ===== NAVIGARE RAPIDĂ =====
+    function initQuickNav() {
+      const toggle = document.getElementById("navToggle");
+      const overlay = document.getElementById("navOverlay");
+      const panel = document.getElementById("navPanel");
+      const closeBtn = document.getElementById("navClose");
+      const searchInput = document.getElementById("navSearch");
+      const searchResults = document.getElementById("searchResults");
+      const gridContainer = document.getElementById("navGridContainer");
+
+      // Generează grid-ul cu numere
+      generateNavGrid();
+
+      // Deschide panoul
+      toggle.addEventListener("click", () => {
+        overlay.classList.add("active");
+        searchInput.value = "";
+        searchResults.style.display = "none";
+        gridContainer.style.display = "block";
+        updateNavGrid();
+      });
+
+      // Închide panoul
+      function closePanel() {
+        overlay.classList.remove("active");
+      }
+
+      closeBtn.addEventListener("click", closePanel);
+      
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closePanel();
+      });
+
+      // Căutare
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.trim().toLowerCase();
+        
+        if (query.length < 2) {
+          searchResults.style.display = "none";
+          gridContainer.style.display = "block";
+          return;
+        }
+
+        const results = questions
+          .map((q, idx) => ({ ...q, idx }))
+          .filter(q => q.text.toLowerCase().includes(query))
+          .slice(0, 20); // max 20 rezultate
+
+        if (results.length > 0) {
+          searchResults.innerHTML = results.map(r => `
+            <div class="search-result-item" data-index="${r.idx}">
+              <strong>Întrebarea ${r.idx + 1}</strong>
+              <div class="search-result-text">${highlightText(r.text, query)}</div>
+            </div>
+          `).join("");
+          
+          searchResults.style.display = "block";
+          gridContainer.style.display = "none";
+
+          // Click pe rezultat
+          searchResults.querySelectorAll(".search-result-item").forEach(item => {
+            item.addEventListener("click", () => {
+              const idx = parseInt(item.dataset.index);
+              scrollToQuestion(idx);
+              closePanel();
+            });
+          });
+        } else {
+          searchResults.innerHTML = `<div style="text-align:center; color:#888; padding:20px;">Niciun rezultat găsit</div>`;
+          searchResults.style.display = "block";
+          gridContainer.style.display = "none";
+        }
+      });
+    }
+
+    function generateNavGrid() {
+      const grid = document.getElementById("navGrid");
+      grid.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "nav-grid-btn";
+        btn.textContent = idx + 1;
+        btn.dataset.index = idx;
+        
+        btn.addEventListener("click", () => {
+          scrollToQuestion(idx);
+          document.getElementById("navOverlay").classList.remove("active");
+        });
+
+        grid.appendChild(btn);
+      });
+    }
+
+    function updateNavGrid() {
+      const buttons = document.querySelectorAll(".nav-grid-btn");
+      buttons.forEach(btn => {
+        const idx = btn.dataset.index;
+        if (seen.has(idx)) {
+          btn.classList.add("viewed");
+        } else {
+          btn.classList.remove("viewed");
+        }
+      });
+    }
+
+    function scrollToQuestion(idx) {
+      const element = document.getElementById(`question-${idx}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        // Highlight temporar
+        element.style.boxShadow = "0 0 0 3px #1250b1";
+        setTimeout(() => {
+          element.style.boxShadow = "";
+        }, 2000);
+      }
+    }
+
+    function highlightText(text, query) {
+      const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+      return text.replace(regex, '<mark style="background:#fff3cd;">$1</mark>');
+    }
+
+    function escapeRegex(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     init().catch(err => {
