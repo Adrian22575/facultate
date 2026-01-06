@@ -1,1 +1,270 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
+
+    <h1 id="title">Test</h1>
+
+    <!-- Setup screen -->
+    <div id="setu
+::contentReference[oaicite:0]{index=0}
+pScreen">
+      <div class="selector-container">
+        <label>
+          Alege numărul de întrebări:
+          <select id="countSelect">
+            <option value="5">5 întrebări</option>
+            <option value="10" selected>10 întrebări</option>
+            <option value="20">20 întrebări</option>
+            <option value="all">Toate</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="selector-container">
+        <label>
+          Alege nivelul de dificultate:
+          <select id="diffSelect">
+            <option value="all" selected>Toate</option>
+            <option value="1">1 - Normal</option>
+            <option value="2">2 - Mediu</option>
+            <option value="3">3 - Greu</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="center">
+        <button id="startBtn">Începe testul</button>
+      </div>
+    </div>
+
+    <!-- Quiz screen -->
+    <div id="quizScreen" class="hidden">
+      <div class="quiz-meta">
+        <div id="metaLeft"></div>
+        <div id="metaRight"></div>
+      </div>
+
+      <div class="question" id="questionRoot"></div>
+
+      <div class="quiz-actions">
+        <button id="prevBtn">Anterioară</button>
+        <button id="nextBtn">Următoare</button>
+      </div>
+    </div>
+
+    <!-- Result screen -->
+    <div id="resultScreen" class="hidden result"></div>
+  </div>
+
+  <script>
+    function getParam(name) {
+      return new URLSearchParams(location.search).get(name);
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function normalizeQuestions(raw) {
+      const arr = Array.isArray(raw) ? raw : (raw.questions || []);
+      return arr.map((q, idx) => ({
+        id: q.id ?? (idx + 1),
+        text: q.text ?? q.q ?? "",
+        answers: q.answers ?? q.options ?? [],
+        correctIndex: (q.correctIndex ?? q.correct),
+        difficulty: q.difficulty ?? 1
+      })).filter(q => q.text && Array.isArray(q.answers) && q.answers.length && Number.isInteger(q.correctIndex));
+    }
+
+    let allQuestions = [];
+    let testQuestions = [];
+    let answers = []; // selected index per question
+    let current = 0;
+    let subjectTitle = "";
+
+    const setupScreen = document.getElementById("setupScreen");
+    const quizScreen = document.getElementById("quizScreen");
+    const resultScreen = document.getElementById("resultScreen");
+
+    const titleEl = document.getElementById("title");
+    const backLink = document.getElementById("backLink");
+
+    const countSelect = document.getElementById("countSelect");
+    const diffSelect = document.getElementById("diffSelect");
+    const startBtn = document.getElementById("startBtn");
+
+    const questionRoot = document.getElementById("questionRoot");
+    const metaLeft = document.getElementById("metaLeft");
+    const metaRight = document.getElementById("metaRight");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function renderQuestion() {
+      const q = testQuestions[current];
+      const chosen = answers[current];
+
+      metaLeft.textContent = `${current + 1} / ${testQuestions.length}`;
+      metaRight.textContent = `Răspunse: ${answers.filter(a => a !== null).length}/${testQuestions.length}`;
+
+      questionRoot.innerHTML = `
+        <strong>${current + 1}. ${q.text}</strong>
+        <div class="answers" id="ans"></div>
+      `;
+
+      const ansDiv = document.getElementById("ans");
+      q.answers.forEach((t, i) => {
+        const id = `q${current}_a${i}`;
+        const label = document.createElement("label");
+        label.innerHTML = `
+          <input type="radio" name="q${current}" id="${id}" value="${i}">
+          ${t}
+        `;
+        ansDiv.appendChild(label);
+
+        const input = label.querySelector("input");
+        input.checked = (chosen === i);
+        input.addEventListener("change", () => {
+          answers[current] = i;
+          metaRight.textContent = `Răspunse: ${answers.filter(a => a !== null).length}/${testQuestions.length}`;
+        });
+      });
+
+      prevBtn.disabled = (current === 0);
+      nextBtn.textContent = (current === testQuestions.length - 1) ? "Finalizează" : "Următoare";
+    }
+
+    function showResults() {
+      const total = testQuestions.length;
+      let correct = 0;
+
+      const rows = testQuestions.map((q, i) => {
+        const user = answers[i];
+        const ok = (user === q.correctIndex);
+        if (ok) correct++;
+
+        const userText = (user === null) ? "(fără răspuns)" : q.answers[user];
+        const corrText = q.answers[q.correctIndex];
+
+        return `
+          <div style="margin-bottom:16px;">
+            <div style="font-weight:800;">${i + 1}. ${q.text}</div>
+            <div>Răspunsul tău: <span class="${ok ? "correct" : "wrong"}">${userText}</span></div>
+            ${ok ? "" : `<div class="show-correct">Corect: <b>${corrText}</b></div>`}
+          </div>
+        `;
+      }).join("");
+
+      const scorePct = total ? Math.round((correct / total) * 100) : 0;
+
+      resultScreen.innerHTML = `
+        <h2>Rezultat</h2>
+        <div class="score">Scor: ${correct} / ${total} (${scorePct}%)</div>
+        ${rows}
+        <div class="center" style="margin-top:20px;">
+          <button class="restart-btn" id="restartBtn">Reîncepe</button>
+        </div>
+      `;
+
+      document.getElementById("restartBtn").addEventListener("click", () => {
+        // back to setup
+        resultScreen.classList.add("hidden");
+        quizScreen.classList.add("hidden");
+        setupScreen.classList.remove("hidden");
+        current = 0;
+      });
+    }
+
+    async function init() {
+      const subjectId = getParam("subject");
+      if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
+
+      backLink.href = `subject.html?subject=${encodeURIComponent(subjectId)}`;
+
+      const sRes = await fetch("data/subjects.json", { cache: "no-store" });
+      if (!sRes.ok) throw new Error("Nu pot încărca data/subjects.json");
+      const sData = await sRes.json();
+
+      const subject = (sData.subjects || []).find(s => s.id === subjectId);
+      if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
+
+      subjectTitle = subject.title;
+      titleEl.textContent = `Test — ${subjectTitle}`;
+      document.title = `Test — ${subjectTitle}`;
+
+      const qRes = await fetch(subject.questionsFile, { cache: "no-store" });
+      if (!qRes.ok) throw new Error("Nu pot încărca întrebările: " + subject.questionsFile);
+      const rawQ = await qRes.json();
+
+      allQuestions = normalizeQuestions(rawQ);
+      if (!allQuestions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
+
+      startBtn.addEventListener("click", () => {
+        const diff = diffSelect.value;
+        const countVal = countSelect.value;
+
+        let pool = allQuestions.slice();
+
+        if (diff !== "all") {
+          const d = Number(diff);
+          pool = pool.filter(q => (q.difficulty ?? 1) === d);
+        }
+
+        if (!pool.length) {
+          alert("Nu există întrebări pentru filtrul ales.");
+          return;
+        }
+
+        shuffle(pool);
+
+        const take = (countVal === "all") ? pool.length : Math.min(Number(countVal), pool.length);
+        testQuestions = pool.slice(0, take);
+        answers = new Array(testQuestions.length).fill(null);
+        current = 0;
+
+        setupScreen.classList.add("hidden");
+        resultScreen.classList.add("hidden");
+        quizScreen.classList.remove("hidden");
+
+        renderQuestion();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (current > 0) { current--; renderQuestion(); }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (current < testQuestions.length - 1) {
+          current++;
+          renderQuestion();
+        } else {
+          // finalizează
+          quizScreen.classList.add("hidden");
+          resultScreen.classList.remove("hidden");
+          showResults();
+        }
+      });
+    }
+
+    init().catch(err => {
+      console.error(err);
+      document.querySelector(".container").innerHTML =
+        `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
+    });
+  </script>
+</body>
+</html>
