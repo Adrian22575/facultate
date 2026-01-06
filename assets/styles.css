@@ -422,3 +422,50 @@ select{
   background-color:#005fcc;
   transform:translateY(-1px);
 }
+
+
+/* ===== Interactive extra ===== */
+.question-container { flex-grow: 1; }
+
+.question-header{
+  font-weight: 800;
+  font-size: 1.1em;
+  margin-bottom: 15px;
+}
+
+.question-counter{
+  font-size: 1rem;
+  font-weight: 700;
+  color: #555;
+}
+
+.navigation{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:20px;
+  padding-top:20px;
+  border-top:1px solid #f0f0f0;
+}
+
+.nav-btn{
+  background: var(--primary);
+  color:#fff;
+  padding:10px 25px;
+  border:none;
+  border-radius:8px;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+  transition: background .2s, transform .2s;
+}
+
+.nav-btn:hover{ background: var(--primary-dark); transform: translateY(-2px); }
+.nav-btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+
+.stats{
+  text-align:center;
+  color:#555;
+  font-weight:700;
+  margin:10px 0 16px;
+}
