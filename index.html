@@ -4,21 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meniu Teste Facultate</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --primary:#1250b1; --primary-dark:#0c3879; --bg:#f7f9fc; --white:#fff; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family:Nunito, sans-serif; background:var(--bg); color:#222; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:20px; }
-    .menu-container { background:var(--white); padding:40px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.07); text-align:center; max-width:480px; width:100%; }
-    h1 { margin-bottom:24px; font-size:1.75rem; color:var(--primary); }
-    p.description { font-size:1rem; margin-bottom:32px; color:#555; }
-    .test-list { list-style:none; display:grid; grid-template-columns:1fr; gap:16px; }
-    @media(min-width:480px){ .test-list{ grid-template-columns:1fr 1fr; } }
-    .test-link { display:block; padding:12px 20px; background:var(--primary); color:var(--white); border-radius:8px; text-decoration:none; font-size:1.05rem; font-weight:600; transition:transform .2s, background .2s; }
-    .test-link:hover,.test-link:focus { background:var(--primary-dark); transform:translateY(-2px); }
-  </style>
+
+  <!-- Font Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- CSS extern (pui aici tot ce era în <style>) -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+
+<!-- clasa asta păstrează exact centrările din pagina ta -->
+<body class="menu-page">
   <div class="menu-container">
     <h1>Teste Facultate</h1>
     <p class="description">Alege materia la care vrei să te testezi:</p>
@@ -29,8 +26,8 @@
     async function loadSubjects() {
       const res = await fetch("data/subjects.json", { cache: "no-store" });
       if (!res.ok) throw new Error("Nu pot încărca subjects.json");
-      const data = await res.json();
 
+      const data = await res.json();
       const list = document.getElementById("subjectsList");
       list.innerHTML = "";
 
