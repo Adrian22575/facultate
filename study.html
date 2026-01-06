@@ -15,19 +15,21 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
+      height: 50px;
+      padding: 0 20px;
+      border-radius: 25px;
       background: var(--primary, #1250b1);
       color: #fff;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       transition: transform 0.2s, background 0.2s;
     }
     .nav-toggle:hover {
@@ -36,6 +38,14 @@
     }
     .nav-toggle:active {
       transform: scale(0.95);
+    }
+    .nav-toggle-text {
+      display: none;
+    }
+    @media (min-width: 600px) {
+      .nav-toggle-text {
+        display: inline;
+      }
     }
 
     /* Overlay/Modal */
@@ -59,11 +69,12 @@
     .nav-panel {
       background: #fff;
       width: 100%;
-      max-width: 500px;
-      max-height: 70vh;
+      max-width: 600px;
+      max-height: 80vh;
       border-radius: 20px 20px 0 0;
       padding: 20px;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
       animation: slideUp 0.3s ease;
     }
     @keyframes slideUp {
@@ -77,6 +88,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
+      flex-shrink: 0;
     }
     .nav-panel-header h3 {
       margin: 0;
@@ -100,100 +112,92 @@
       font-size: 16px;
       margin-bottom: 16px;
       box-sizing: border-box;
+      flex-shrink: 0;
     }
     .nav-search:focus {
       outline: none;
       border-color: var(--primary, #1250b1);
     }
 
-    /* Grid numere */
-    .nav-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-    @media (min-width: 400px) {
-      .nav-grid {
-        grid-template-columns: repeat(7, 1fr);
-      }
-    }
-    @media (min-width: 500px) {
-      .nav-grid {
-        grid-template-columns: repeat(10, 1fr);
-      }
-    }
-
-    .nav-grid-btn {
-      aspect-ratio: 1;
-      border: none;
-      border-radius: 8px;
-      background: #f0f0f0;
-      color: #333;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-height: 40px;
-    }
-    .nav-grid-btn:hover {
-      background: var(--primary, #1250b1);
-      color: #fff;
-    }
-    .nav-grid-btn:active {
-      transform: scale(0.95);
-    }
-    .nav-grid-btn.viewed {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    /* Rezultate căutare */
-    .search-results {
-      max-height: 300px;
+    /* Lista întrebări */
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       overflow-y: auto;
+      flex-grow: 1;
     }
-    .search-result-item {
-      padding: 12px;
+    .nav-list-item {
+      padding: 12px 14px;
       border-radius: 8px;
       background: #f8f9fa;
       margin-bottom: 8px;
       cursor: pointer;
-      border-left: 3px solid var(--primary, #1250b1);
-      transition: background 0.2s;
+      border-left: 4px solid #ddd;
+      transition: all 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
     }
-    .search-result-item:hover {
+    .nav-list-item:hover {
       background: #e9ecef;
+      border-left-color: var(--primary, #1250b1);
     }
-    .search-result-item strong {
-      color: var(--primary, #1250b1);
+    .nav-list-item:active {
+      transform: scale(0.98);
     }
-    .search-result-text {
+    .nav-list-item.viewed {
+      border-left-color: #28a745;
+    }
+    .nav-list-item.viewed .nav-item-num {
+      background: #28a745;
+    }
+    
+    .nav-item-num {
+      background: var(--primary, #1250b1);
+      color: #fff;
+      min-width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .nav-item-text {
       font-size: 0.9rem;
-      color: #555;
-      margin-top: 4px;
+      color: #333;
+      line-height: 1.4;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    /* Info text */
-    .nav-info {
-      text-align: center;
-      color: #888;
-      font-size: 0.85rem;
-      margin-top: 8px;
+    /* Rezultate căutare - highlight */
+    .nav-item-text mark {
+      background: #fff3cd;
+      padding: 0 2px;
+      border-radius: 2px;
     }
 
-    /* Desktop - panel lateral în loc de bottom sheet */
+    /* Info când nu sunt rezultate */
+    .nav-no-results {
+      text-align: center;
+      color: #888;
+      padding: 40px 20px;
+    }
+
+    /* Desktop - modal centrat */
     @media (min-width: 768px) {
       .nav-overlay {
         align-items: center;
       }
       .nav-panel {
         border-radius: 16px;
-        max-height: 80vh;
+        max-height: 70vh;
         margin: 20px;
       }
     }
@@ -219,7 +223,10 @@
   </div>
 
   <!-- Buton floating pentru navigare -->
-  <button class="nav-toggle" id="navToggle" title="Navigare rapidă">📋</button>
+  <button class="nav-toggle" id="navToggle" title="Navigare rapidă">
+    <span>📋</span>
+    <span class="nav-toggle-text">Navigare rapidă</span>
+  </button>
 
   <!-- Overlay + Panel navigare -->
   <div class="nav-overlay" id="navOverlay">
@@ -231,12 +238,7 @@
       
       <input type="text" class="nav-search" id="navSearch" placeholder="Caută în întrebări...">
       
-      <div id="searchResults" class="search-results" style="display: none;"></div>
-      
-      <div id="navGridContainer">
-        <div class="nav-grid" id="navGrid"></div>
-        <div class="nav-info">Apasă pe un număr pentru a sări la întrebare</div>
-      </div>
+      <ul class="nav-list" id="navList"></ul>
     </div>
   </div>
 
@@ -339,7 +341,6 @@
         const pct = total ? Math.round((viewed / total) * 100) : 0;
         fill.style.width = pct + "%";
         txt.textContent = `Progres: ${viewed} din ${total} întrebări vizualizate`;
-        updateNavGrid();
       }
 
       const observer = new IntersectionObserver((entries) => {
@@ -362,22 +363,17 @@
     function initQuickNav() {
       const toggle = document.getElementById("navToggle");
       const overlay = document.getElementById("navOverlay");
-      const panel = document.getElementById("navPanel");
       const closeBtn = document.getElementById("navClose");
       const searchInput = document.getElementById("navSearch");
-      const searchResults = document.getElementById("searchResults");
-      const gridContainer = document.getElementById("navGridContainer");
-
-      // Generează grid-ul cu numere
-      generateNavGrid();
+      const navList = document.getElementById("navList");
 
       // Deschide panoul
       toggle.addEventListener("click", () => {
         overlay.classList.add("active");
         searchInput.value = "";
-        searchResults.style.display = "none";
-        gridContainer.style.display = "block";
-        updateNavGrid();
+        renderNavList();
+        // Focus pe search după animație
+        setTimeout(() => searchInput.focus(), 300);
       });
 
       // Închide panoul
@@ -391,76 +387,57 @@
         if (e.target === overlay) closePanel();
       });
 
+      // Escape închide panoul
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && overlay.classList.contains("active")) {
+          closePanel();
+        }
+      });
+
       // Căutare
       searchInput.addEventListener("input", (e) => {
         const query = e.target.value.trim().toLowerCase();
-        
-        if (query.length < 2) {
-          searchResults.style.display = "none";
-          gridContainer.style.display = "block";
-          return;
-        }
-
-        const results = questions
-          .map((q, idx) => ({ ...q, idx }))
-          .filter(q => q.text.toLowerCase().includes(query))
-          .slice(0, 20); // max 20 rezultate
-
-        if (results.length > 0) {
-          searchResults.innerHTML = results.map(r => `
-            <div class="search-result-item" data-index="${r.idx}">
-              <strong>Întrebarea ${r.idx + 1}</strong>
-              <div class="search-result-text">${highlightText(r.text, query)}</div>
-            </div>
-          `).join("");
-          
-          searchResults.style.display = "block";
-          gridContainer.style.display = "none";
-
-          // Click pe rezultat
-          searchResults.querySelectorAll(".search-result-item").forEach(item => {
-            item.addEventListener("click", () => {
-              const idx = parseInt(item.dataset.index);
-              scrollToQuestion(idx);
-              closePanel();
-            });
-          });
-        } else {
-          searchResults.innerHTML = `<div style="text-align:center; color:#888; padding:20px;">Niciun rezultat găsit</div>`;
-          searchResults.style.display = "block";
-          gridContainer.style.display = "none";
-        }
+        renderNavList(query);
       });
     }
 
-    function generateNavGrid() {
-      const grid = document.getElementById("navGrid");
-      grid.innerHTML = "";
+    function renderNavList(query = "") {
+      const navList = document.getElementById("navList");
+      
+      let filteredQuestions = questions.map((q, idx) => ({ ...q, idx }));
+      
+      if (query.length >= 2) {
+        filteredQuestions = filteredQuestions.filter(q => 
+          q.text.toLowerCase().includes(query)
+        );
+      }
 
-      questions.forEach((q, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "nav-grid-btn";
-        btn.textContent = idx + 1;
-        btn.dataset.index = idx;
+      if (filteredQuestions.length === 0) {
+        navList.innerHTML = `<li class="nav-no-results">Niciun rezultat găsit pentru "${query}"</li>`;
+        return;
+      }
+
+      navList.innerHTML = filteredQuestions.map(q => {
+        const isViewed = seen.has(String(q.idx));
+        const displayText = query.length >= 2 
+          ? highlightText(q.text, query) 
+          : truncateText(q.text, 80);
         
-        btn.addEventListener("click", () => {
+        return `
+          <li class="nav-list-item ${isViewed ? 'viewed' : ''}" data-index="${q.idx}">
+            <span class="nav-item-num">${q.idx + 1}</span>
+            <span class="nav-item-text">${displayText}</span>
+          </li>
+        `;
+      }).join("");
+
+      // Click pe item
+      navList.querySelectorAll(".nav-list-item").forEach(item => {
+        item.addEventListener("click", () => {
+          const idx = parseInt(item.dataset.index);
           scrollToQuestion(idx);
           document.getElementById("navOverlay").classList.remove("active");
         });
-
-        grid.appendChild(btn);
-      });
-    }
-
-    function updateNavGrid() {
-      const buttons = document.querySelectorAll(".nav-grid-btn");
-      buttons.forEach(btn => {
-        const idx = btn.dataset.index;
-        if (seen.has(idx)) {
-          btn.classList.add("viewed");
-        } else {
-          btn.classList.remove("viewed");
-        }
       });
     }
 
@@ -476,9 +453,15 @@
       }
     }
 
+    function truncateText(text, maxLength) {
+      if (text.length <= maxLength) return text;
+      return text.substring(0, maxLength).trim() + "...";
+    }
+
     function highlightText(text, query) {
       const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
-      return text.replace(regex, '<mark style="background:#fff3cd;">$1</mark>');
+      const highlighted = text.replace(regex, '<mark>$1</mark>');
+      return truncateText(highlighted, 120);
     }
 
     function escapeRegex(string) {
