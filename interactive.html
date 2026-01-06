@@ -1,1 +1,215 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mod Interactiv</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
+
+    <h1 id="title">Mod Interactiv</h1>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar-interactive" id="progressBar"></div>
+    </div>
+
+    <div class="stats" id="stats">0 / 0</div>
+
+    <div id="flashcard-container"></div>
+
+    <div class="navigation">
+      <button id="prevBtn" class="nav-btn">Anterioară</button>
+      <span id="questionCounter" class="question-counter"></span>
+      <button id="nextBtn" class="nav-btn">Următoare</button>
+    </div>
+  </div>
+
+  <script>
+    function getParam(name) {
+      return new URLSearchParams(location.search).get(name);
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function normalizeQuestions(raw) {
+      const arr = Array.isArray(raw) ? raw : (raw.questions || []);
+      return arr.map((q, idx) => ({
+        id: q.id ?? idx + 1,
+        text: q.text ?? q.q ?? "",
+        answers: q.answers ?? q.options ?? [],
+        correctIndex: (q.correctIndex ?? q.correct)
+      })).filter(q => q.text && Array.isArray(q.answers) && q.answers.length > 0 && Number.isInteger(q.correctIndex));
+    }
+
+    let subjectId = null;
+    let subjectTitle = "Mod Interactiv";
+    let questions = [];
+    let currentIndex = 0;
+    let userAnswers = [];
+
+    const titleEl = document.getElementById("title");
+    const flashcard = document.getElementById("flashcard-container");
+    const counterEl = document.getElementById("questionCounter");
+    const statsEl = document.getElementById("stats");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const progressBar = document.getElementById("progressBar");
+    const backLink = document.getElementById("backLink");
+
+    function computeStats() {
+      let answered = 0, correct = 0, wrong = 0;
+      userAnswers.forEach((a, i) => {
+        if (a === null || a === undefined) return;
+        answered++;
+        if (a === questions[i].correctIndex) correct++;
+        else wrong++;
+      });
+      return { answered, correct, wrong };
+    }
+
+    function updateTopUI() {
+      const total = questions.length;
+      counterEl.textContent = total ? `${currentIndex + 1} / ${total}` : "0 / 0";
+
+      const { answered, correct, wrong } = computeStats();
+      statsEl.textContent = `Răspunse: ${answered}/${total} · Corecte: ${correct} · Greșite: ${wrong}`;
+
+      const pct = total ? Math.round(((currentIndex + 1) / total) * 100) : 0;
+      progressBar.style.width = pct + "%";
+
+      prevBtn.disabled = (currentIndex <= 0);
+      nextBtn.disabled = (currentIndex >= total - 1);
+    }
+
+    function render() {
+      const q = questions[currentIndex];
+      const chosen = userAnswers[currentIndex];
+
+      // layout
+      const wrapper = document.createElement("div");
+      wrapper.className = "question-container";
+
+      const header = document.createElement("div");
+      header.className = "question-header";
+      header.textContent = `${currentIndex + 1}. ${q.text}`;
+      wrapper.appendChild(header);
+
+      const answers = document.createElement("div");
+      answers.className = "answers";
+      answers.id = "answers-container";
+
+      q.answers.forEach((txt, i) => {
+        const opt = document.createElement("div");
+        opt.className = "option";
+        opt.dataset.index = String(i);
+        const letter = String.fromCharCode(97 + i);
+        opt.textContent = `${letter}) ${txt}`;
+
+        opt.addEventListener("click", () => {
+          if (userAnswers[currentIndex] !== null) return; // deja răspuns
+          userAnswers[currentIndex] = i;
+          render();
+        });
+
+        answers.appendChild(opt);
+      });
+
+      wrapper.appendChild(answers);
+
+      const resetBtn = document.createElement("button");
+      resetBtn.className = "reset-btn";
+      resetBtn.textContent = "🔄 Resetează";
+      resetBtn.style.display = (chosen === null ? "none" : "inline-block");
+      resetBtn.addEventListener("click", () => {
+        userAnswers[currentIndex] = null;
+        render();
+      });
+      wrapper.appendChild(resetBtn);
+
+      // inject
+      flashcard.innerHTML = "";
+      flashcard.appendChild(wrapper);
+
+      // dacă există răspuns, marchează corect/greșit + blochează
+      if (chosen !== null) {
+        answers.classList.add("answered");
+        const selected = answers.querySelector(`[data-index="${chosen}"]`);
+        if (selected) selected.classList.add("selected");
+
+        if (chosen === q.correctIndex) {
+          if (selected) selected.classList.add("correct");
+        } else {
+          if (selected) selected.classList.add("wrong");
+          const correct = answers.querySelector(`[data-index="${q.correctIndex}"]`);
+          if (correct) correct.classList.add("correct");
+        }
+      }
+
+      updateTopUI();
+    }
+
+    async function init() {
+      subjectId = getParam("subject");
+      if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
+
+      // back link către subject page
+      backLink.href = `subject.html?subject=${encodeURIComponent(subjectId)}`;
+
+      // citește subjects.json ca să afle fișierul de întrebări
+      const res = await fetch("data/subjects.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Nu pot încărca data/subjects.json");
+      const data = await res.json();
+
+      const subject = (data.subjects || []).find(s => s.id === subjectId);
+      if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
+
+      subjectTitle = subject.title;
+      titleEl.textContent = `Mod Interactiv — ${subjectTitle}`;
+      document.title = `Interactiv — ${subjectTitle}`;
+
+      // load questions file
+      const qres = await fetch(subject.questionsFile, { cache: "no-store" });
+      if (!qres.ok) throw new Error("Nu pot încărca fișierul de întrebări: " + subject.questionsFile);
+
+      const rawQ = await qres.json();
+      questions = normalizeQuestions(rawQ);
+
+      if (!questions.length) throw new Error("Fișierul de întrebări este gol sau format greșit.");
+
+      // shuffle întrebări (ca înainte)
+      shuffle(questions);
+
+      userAnswers = new Array(questions.length).fill(null);
+      currentIndex = 0;
+
+      prevBtn.addEventListener("click", () => {
+        if (currentIndex > 0) { currentIndex--; render(); }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (currentIndex < questions.length - 1) { currentIndex++; render(); }
+      });
+
+      render();
+    }
+
+    init().catch(err => {
+      console.error(err);
+      flashcard.innerHTML = `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
+      updateTopUI();
+    });
+  </script>
+</body>
+</html>
