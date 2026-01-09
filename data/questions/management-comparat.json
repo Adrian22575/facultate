@@ -1,0 +1,334 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Obiectivul principal al managementului este:",
+      "answers": [
+        "Creșterea ierarhiei interne",
+        "Coordonarea resurselor pentru atingerea obiectivelor",
+        "Eliminarea conflictelor",
+        "Standardizarea completă a organizației"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 2,
+      "text": "Un element caracteristic al culturii organizaționale este:",
+      "answers": [
+        "Structura fizică a sediului",
+        "Sistemul de valori și credințe împărtășite",
+        "Numărul angajaților",
+        "Tipurile de produse vândute"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 3,
+      "text": "Globalizarea a dus la:",
+      "answers": [
+        "Reducerea tranzacțiilor comerciale",
+        "Creșterea interdependenței între economii",
+        "Eliminarea competiției",
+        "Scăderea mobilității capitalului"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 4,
+      "text": "Companiile multinaționale se caracterizează prin:",
+      "answers": [
+        "Activități într-o singură țară",
+        "Operațiuni în mai multe țări",
+        "Un singur tip de produs",
+        "Lipsa investițiilor externe"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 5,
+      "text": "Un stil de conducere orientat spre oameni pune accent pe:",
+      "answers": [
+        "Monitorizare strictă",
+        "Termene și indicatori",
+        "Relații, motivație și comunicare",
+        "Formalizarea procedurilor"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 6,
+      "text": "Managementul strategic se referă la:",
+      "answers": [
+        "Decizii zilnice de rutină",
+        "Planificarea pe termen lung a organizației",
+        "Activități administrative",
+        "Redactarea rapoartelor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 7,
+      "text": "Un avantaj al echipelor multiculturale este:",
+      "answers": [
+        "Gândire omogenă",
+        "Reducerea creativității",
+        "Diversitatea perspectivelor",
+        "Limitarea comunicării"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 8,
+      "text": "Cultura cu distanță mare față de putere se caracterizează prin:",
+      "answers": [
+        "Egalitate totală",
+        "Ierarhii rigide",
+        "Decizii colective",
+        "Neglijarea statutului"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "Evitarea ridicată a incertitudinii indică:",
+      "answers": [
+        "Acceptarea greșelilor",
+        "Toleranță ridicată la risc",
+        "Preferința pentru reguli și ordine",
+        "Flexibilitate maximă"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 10,
+      "text": "Leadershipul transformțional se bazează pe:",
+      "answers": [
+        "Control și sancțiuni",
+        "Motivare prin viziune și inspirație",
+        "Supraveghere strictă",
+        "Eliminarea inovației"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 11,
+      "text": "O cultură colectivistă promovează:",
+      "answers": [
+        "Autonomia individuală",
+        "Prioritatea obiectivelor personale",
+        "Identificarea cu grupul",
+        "Concurență internă"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 12,
+      "text": "Principala provocare în managementul internațional este:",
+      "answers": [
+        "Stabilitatea absolută a piețelor",
+        "Comunicarea interculturală",
+        "Lipsa diversității culturale",
+        "Eliminarea leadershipului local"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 13,
+      "text": "Un model de management participativ implică:",
+      "answers": [
+        "Decizii luate exclusiv de manager",
+        "Lipsa consultării echipei",
+        "Implicarea angajaților în procesul decizional",
+        "Ierarhii extrem de rigide"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Inovația într-o organizație este influențată de:",
+      "answers": [
+        "Teama de schimbare",
+        "Supraveghere strictă",
+        "Deschiderea la idei noi",
+        "Limitarea comunicării"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 15,
+      "text": "Companiile globale combină:",
+      "answers": [
+        "Doar strategia locală",
+        "Doar strategia centrală",
+        "Standardizare și adaptare locală",
+        "Eliminarea diferențelor culturale"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 16,
+      "text": "Etica în afaceri presupune:",
+      "answers": [
+        "Maximizarea profitului cu orice preț",
+        "Respectarea principiilor morale în activități",
+        "Evitarea responsabilităților",
+        "Minimizarea transparenței"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 17,
+      "text": "Un avantaj al standardizării globale este:",
+      "answers": [
+        "Creșterea costurilor",
+        "Incoerență între subsidiare",
+        "Economii de scară",
+        "Lipsa eficienței interne"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 18,
+      "text": "Un dezavantaj al echipelor internaționale poate fi:",
+      "answers": [
+        "Creativitate crescută",
+        "Neînțelegeri culturale",
+        "Perspective multiple",
+        "Flexibilitate ridicată"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 19,
+      "text": "Empowerment-ul angajaților înseamnă:",
+      "answers": [
+        "Limitarea libertății de decizie",
+        "Creșterea controlului managerial",
+        "Oferirea de autonomie și responsabilitate",
+        "Supraveghere continuă"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 20,
+      "text": "Trainingul intercultural are rolul de a:",
+      "answers": [
+        "Reduce costurile directe",
+        "Dezvolta abilități de comunicare între culturi",
+        "Crește rigiditatea ierarhică",
+        "Limita mobilitatea globală"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 21,
+      "text": "O strategie globală standardizată presupune:",
+      "answers": [
+        "Adaptarea totală la fiecare țară",
+        "Folosirea aceleiași abordări peste tot",
+        "Ignorarea piețelor internaționale",
+        "Eliminarea managementului local"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 22,
+      "text": "Valorile organizaționale influențează:",
+      "answers": [
+        "Doar salariile",
+        "Doar structura firmei",
+        "Comportamentele angajaților și modul de lucru",
+        "Numărul departamentelor"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 23,
+      "text": "O cultură orientată pe termen lung valorizează:",
+      "answers": [
+        "Rezultatele imediate",
+        "Tradiția, economisirea și perseverența",
+        "Competiția internă",
+        "Premii rapide"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 24,
+      "text": "Managementul prin obiective implică:",
+      "answers": [
+        "Lipsa unor ținte clare",
+        "Stabilirea de obiective comune manager–angajat",
+        "Control constant fără autonomie",
+        "Impunerea unilaterală a sarcinilor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Soft skills includ:",
+      "answers": [
+        "Cunoștințe tehnice",
+        "Abilități de comunicare și colaborare",
+        "Proceduri administrative",
+        "Norme contabile"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 26,
+      "text": "Managementul schimbării urmărește:",
+      "answers": [
+        "Menținerea status quo-ului",
+        "Rezistență la adaptare",
+        "Implementarea și gestionarea transformărilor",
+        "Evitarea inovației"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 27,
+      "text": "O cultură orientată spre performanță promovează:",
+      "answers": [
+        "Egalitatea rezultatelor indiferent de contribuție",
+        "Recunoașterea meritului și competiției",
+        "Ignorarea performanței",
+        "Promovări aleatorii"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 28,
+      "text": "Diversitatea culturală în organizații duce la:",
+      "answers": [
+        "Scăderea creativității",
+        "O perspectivă mai bogată asupra problemelor",
+        "Uniformizarea gândirii",
+        "Eliminarea conflictelor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 29,
+      "text": "Comunicarea în culturi directe este:",
+      "answers": [
+        "Implicită",
+        "Ambigua",
+        "Clară și explicită",
+        "Bazată pe tăcere"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Un lider global eficient este caracterizat prin:",
+      "answers": [
+        "Lipsa flexibilității",
+        "Ignorarea diferențelor culturale",
+        "Adaptabilitate și inteligență culturală",
+        "Control excesiv"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
