@@ -1,0 +1,724 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Sunt functiuni ale firmei:",
+      "answers": [
+        "cercetarea-dezvoltarea, comerciala, financiar-contabila, productia, de personal",
+        "antrenarea, coordonarea, cercetarea-dezvoltarea",
+        "comerciala, de personal, financiar-contabila, controlul, productia",
+        "managementul resurselor umane, financiar-contabila , productia",
+        "previziunea, organizarea, coordonarea, antrenarea, control-evaluarea"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 2,
+      "text": "Constituie ceea ce numim managementul resurselor umane:",
+      "answers": [
+        "functiile de previziune si coordonare",
+        "functiile de organizare, coordonare si antrenare",
+        "functiile de coordonare, control-evaluare si previziune",
+        "functiile de coordonare, organizare si control",
+        "functiile de previziune si evaluare"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 3,
+      "text": "Organizatia reprezinta:",
+      "answers": [
+        "o firma",
+        "o colectivitate umana care realizeaza bunuri sau presteaza servicii",
+        "o unitate sociala in care se incadreaza si se integreaza fiecare membru in scopul realizarii unor obiective prestabilite",
+        "o organizatie care desfasoara activitati ce aduc profit",
+        "o intreprindere mica sau mijlocie"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 4,
+      "text": "Functiunea de personal a firmei implica activitati de:",
+      "answers": [
+        "atragere a resurselor umane, gestionarea salariilor si a nevoii de personal a firmei",
+        "utilizare a resurselor financiare de catre oameni",
+        "mentinere a sistemului de relatii cu alte firme",
+        "utilizare a resurselor umane ale firmei pentru obtinerea de profit",
+        "relationare intre persoanele care isi desfasoara activitatea intr-o organizatie"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 5,
+      "text": "Decizia de selectare a personalului pentru o firma apartine:",
+      "answers": [
+        "managerului si salariatiilor",
+        "managerului de personal si managerului general",
+        "managerului tehnic",
+        "sefului compartimentului/departamentului de resurse umane",
+        "actionarilor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 6,
+      "text": "Specializarea organizatorica se realizeaza pe baza urmatorilor factori:",
+      "answers": [
+        "produs/proiect",
+        "regiune, proiect, produs",
+        "functiune, produs/serviciu, localizare geografica, proiect",
+        "regiune, produs, serviciu",
+        "functiune, produs, serviciu"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 7,
+      "text": "Elementele componente ale organizatiei productive sunt:",
+      "answers": [
+        "scopul, obiectivele, oamenii, structura, tehnologia, mediul extern, cultura si valorile organizationale",
+        "viziunea, misiunea, obiectivele, mijloacele, resursele, termenele",
+        "cunostintele, tehnologiile, oamenii, valorile, cultura, informatiile",
+        "scopul, obiectivele si termenele de realizare a obiectivelor",
+        "viziunea, misiunea, strategia si politicile"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 8,
+      "text": "Obiectivele planificarii resurselor umane constau în obtinerea:",
+      "answers": [
+        "timpului optim necesar efectuarii operatiilor de lucru",
+        "oamenilor potriviti, cu cunostintele, abilitatile si experienta necesare desfasurarii unei anume activitati",
+        "celor mai reduse costuri de productie",
+        "celor mai mici costuri cu manopera",
+        "profitului"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "Analiza posturilor reprezinta:",
+      "answers": [
+        "procesul de prognozare a necesarului de personal",
+        "procesul de comparare a posturilor existente cu cele nou create",
+        "procedeul prin care se determina sarcinile, activitatile, competentele si responsabilitatile specifice unui post",
+        "modul de realizare a structurii organizatorice",
+        "procesul de stabilire a categoriilor de personal ce va fi angajat"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 10,
+      "text": "Dupa modul de imbinare si raporturile care se stabilesc intre subdiviziunile organizatorice, structurile organizatorice sunt:",
+      "answers": [
+        "structura organizatorica ierarhica, functionala si ierarhic-functionala",
+        "structura organizatorica de conducere si de executie",
+        "structura organizatorica functionala si operationala",
+        "structura organiatorica tip piramida si liniara",
+        "structura organizatorica formala si informala"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 11,
+      "text": "Motivarea personalului este:",
+      "answers": [
+        "un comportament adaptat de personal in vederea atingerii scopurilor",
+        "un comportament adaptat de manager in vederea sanctionarii angajatilor",
+        "asigurarea unui climat organizational eficient",
+        "un comportament adaptat de manager in vederea motivarii angajatilor",
+        "realizarea obiectivelor individuale la locul de munca"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "text": "Performanta in munca a angajatilor depinde de:",
+      "answers": [
+        "conditiile bune de munca, experienta si dorinta de autodepasire",
+        "mediul de munca, abilitatile personalului, motivatia personalului",
+        "mediul de lucru, stimulentele, capacitatea de munca",
+        "sanatatea si securitatea muncii",
+        "capacitatea managerului de a-i motiva pe angajati"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 13,
+      "text": "Piata muncii se poate defini astfel:",
+      "answers": [
+        "mecanism complex, care asigura reglarea cererii si a ofertei de forta de munca atat prin decizii libere ale subiectilor economici cat si prin intermediul salariului nominal",
+        "negocierea permanenta intre purtatorii ofertei de munca si cei ai cererii de munca sub aspect cantitativ si structural.",
+        "spatiu economic unde se incheie tranzactii in mod liber intre detinatorii de capital in calitate de cumparatori si posesorii de forta de munca in calitate de vanzatori",
+        "piata unde se intalnesc cererea si oferta de forta de munca",
+        "spatiul unde se deruleaza activitatile economice"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Solutia la problema îmbatranirii demografice este:",
+      "answers": [
+        "mentinerea persoanelor varstnice în activitate",
+        "disponibilizarea persoanelor varstnice",
+        "pensionarea",
+        "identificarea de forta de munca tanara provenita din alte tari",
+        "incurajarea natalitatii in tara respectiva pentru a contracara efectul imbatranirii populatiei"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 15,
+      "text": "Programul de munca prin ore suplimentare presupune:",
+      "answers": [
+        "eficienta din punct de vedere al costurilor",
+        "utilizarea  personalului existent si poate fi aplicata cu minimum de preaviz sau fara",
+        "angajatul este de acord sa fie disponibil pentru a munci un anumit numar de ore in plus pe saptamana",
+        "angajatul este ineficient si de aceea sunt necesare orele suplimentare",
+        "ineficienta din punct de vedere organizatoric si al costurilor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 16,
+      "text": "In domeniul sanatatii si securitatii in munca, angajatorul este obligat sa tina seama de:",
+      "answers": [
+        "adaptarea la schimbarile tehnologice",
+        "adoptarea masurilor de protectie individuala cu prioritate fata de masurile de protectie colectiva",
+        "aducerea la cunostinta salariatilor a instructiunilor corespunzatoare de protectie la locul de munca",
+        "sedinte lunare de protectia muncii",
+        "cursuri periodice de SSM"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 17,
+      "text": "Organigramele pot fi:",
+      "answers": [
+        "de tip piramida, circular, liniar",
+        "de tip circular, liniar, pe zone geografice",
+        "de tip liniar, pe proiecte, mixte",
+        "de tip piramida, regionale",
+        "de tip ciorchine, liniare"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 18,
+      "text": "Fisa de post este:",
+      "answers": [
+        "anexa la organigrama",
+        "documentul de management al resurselor umane care sintetizeaza elementele caracteristice ale unui post si este anexa a contractului individual de munca",
+        "instrument managerial care contine numai descrierea postului",
+        "anexa la conventia de colaborare",
+        "descrierea aptitudinilor persoanei care ocupa postul"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 19,
+      "text": "Relatiile de autoritate pot fi:",
+      "answers": [
+        "ierarhice, de cooperare, de delegare",
+        "de subordonare, de control,de delegare",
+        "ierarhice, functionale, de stat major",
+        "de control, de reprezentare",
+        "de mandat, de reprezentare"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 20,
+      "text": "In orice organizatie, politica salariala urmareste:",
+      "answers": [
+        "recompensarea angajatilor pentru efortul depus, pentru loialitate, experienta si realizari",
+        "atragerea unui numar suficient de angajati",
+        "pastrarea angajatilor necalificati cu salarii mici",
+        "reducerea salariilor",
+        "cresterea salariilor angajatilor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 21,
+      "text": "Regulamentul de Organizare si Functionare este instrumentul de organizare folosit pentru:",
+      "answers": [
+        "completarea organigramei",
+        "descrierea detaliata a structurii organizatorice si stabilirea regulilor de functionare din firma",
+        "stabilirea regulilor de ordine interioara ale organizatiei",
+        "regulile dupa care functioneaza orice organizatie",
+        "statutul organizatiei"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 22,
+      "text": "Comunicarea formala verticala consta în:",
+      "answers": [
+        "transmiterea de mesaje de la nivelurile ierarhice superioare catre baza piramidei ierarhice",
+        "transmiterea de mesaje între colegi, în cadrul aceluiasi compartiment sau între persoane din diferite compartimente, aflate pe aceleasi niveluri ierarhice",
+        "transmiterea de mesaje între sefi si subalterni, atat pe cale verbala, cat si sub celelalte forme de comunicare interpersonala, de jos in sus si de sus in jos",
+        "transmiterea de mesaje in interiorul organizatiei",
+        "transmiterea de mesaje de sus in jos si de jos in sus"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 23,
+      "text": "Comunicarea formala orizontala consta în:",
+      "answers": [
+        "transmiterea de mesaje între colegi, în cadrul aceluiasi compartiment sau între persoane din diferite compartimente, aflate pe aceleasi niveluri ierarhice",
+        "transmiterea de mesaje între sefi si subalterni, atat pe cale verbala, cat si sub celelalte forme de comunicare interpersonala",
+        "transmiterea de mesaje de la nivelurile ierarhice superioare catre baza piramidei ierarhice",
+        "transmiterea de informatii catre colefii din celelalte compartimente",
+        "comunicarea intre sefi si subalterni din acelasi compartiment/departament"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 24,
+      "text": "Care sunt consecintele evaluarii personalului?",
+      "answers": [
+        "cresterea performantelor angajatului în mod sistematic si planificat, disponibilizare",
+        "elaborarea unui plan de îmbunatatire a caracterisiticilor postului, promovare sau transfer, formare profesionala pentru perfectionare",
+        "analiza salariu, transfer, relocare",
+        "formarea personalului necalificat",
+        "urmarirea traseului carierei individului"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Evaluarea conventionala reprezinta:",
+      "answers": [
+        "evaluarea continua a performantei unui angajat, facuta de seful sau direct în cursul activitatii obisnuite",
+        "evaluarea informala",
+        "evaluarea performantelor angajatului în mod sistematic si planificat",
+        "evaluarea anuala",
+        "autoevaluarea"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 26,
+      "text": "Formarea profesionala a angajatilor se poate realiza in urmatoarele moduri:",
+      "answers": [
+        "ucenicie organizata la locul de munca, invatarea prin experienta, instruirea manageriala",
+        "stagii de practica si specializare în tara si în strainatate, formare individualizata, ucenicie organizata la locul de munca;",
+        "cursuri de calificare si perfectionare derulate cu furnizori de formare acreditati",
+        "formare colectiva, stagii de adaptare profesionala la cerintele postului si ale locului de munca, delegarea sarcinilor",
+        "participarea la sesiuni interne de coaching si mentoring"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 27,
+      "text": "Consilierea profesionala poate fi descrisa ca:",
+      "answers": [
+        "un proces interactiv intre formare, monitorizare, activitati practice si interviuri personale formale",
+        "activitate in cadrul careia o persoana este ajutata sa se dezvolte si sa accepte o imagine completa despre sine",
+        "ansamblul activitatilor care ii ajuta pe participanti (clienti) sa constientizeze calificarea si abilitatile de care dispun",
+        "indrumarea profesionalizata pentru alegerea unei cariere",
+        "identificarea posibilitatilor de incadrare pe piata muncii a clientilor si sprijinirea in gasirea job-ului adecvat"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 28,
+      "text": "Promovarea personalului se face pe baza:",
+      "answers": [
+        "aplicarii unui sistem de criterii stabilite de catre managementul organizatiei",
+        "varstei salariatilor",
+        "pregatirii profesionale a salariatilor",
+        "competentelor salariatilor",
+        "in conformitate cu recomandarile managerului"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 29,
+      "text": "Sistemul de salarizare a personalului trebuie sa fie:",
+      "answers": [
+        "variabil în functie de criteriile de evaluare",
+        "flexibil, stabil, echitabil si stimulativ",
+        "fix",
+        "flexibil",
+        "permanent"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 30,
+      "text": "Etapele elaborarii structurii organizatorice sunt:",
+      "answers": [
+        "stabilirea obiectivelor , stabilirea locului ocupat de firma intre concurenti, stabilirea subdiviziunilor organizatorice, realizarea structurii organizatorice",
+        "stabilirea departamentelor si compartimentelor, elaborarea organigramei, strabilirea structurii organizatorice",
+        "definirea/redefinirea obiectivelor, analiza situatiei existente, elaborarea variantelor de strctura organizatorica, evaluarea eficientei variantelor si alegerea celei optime",
+        "stabilirea subdiviziunilor organizatorice, realizarea structurii organizatorice, stabilirea locului ocupat de firma intre concurenti",
+        "stabilirea subdiviziunilor organizatorice, realizarea organigramei"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 31,
+      "text": "Etapele formarii unei echipe eficiente conform modelului Tuckman sunt:",
+      "answers": [
+        "formarea, furtuna, normarea, eficientizarea, incheierea",
+        "formarea, existenta, dizolvarea",
+        "formarea, dezvoltarea, eficientizarea, dizolvarea",
+        "constituirea echipei, stabilirea componentei, eficienta echipei, dizolvarea",
+        "formarea, normarea, incheierea, dizolvarea"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 32,
+      "text": "Relocarea apare în situatia în care:",
+      "answers": [
+        "angajatorul nu doreste sa-si pastreze angajatii",
+        "o companie îsi deschide un sediu nou într-un alt oras si un angajat este trimis aici pentru desfasurarea activitatilor pentru care a fost angajat",
+        "desfasurarea activitatii în cadrul altei companii, pe un post diferit",
+        "schimbarea angajatorului",
+        "modificarea sediului unde isi desfasoara activitatea"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 33,
+      "text": "Transferul poate fi:",
+      "answers": [
+        "voluntar, involuntar, de pozitie",
+        "voluntar, lateral, de proba",
+        "voluntar, involuntar",
+        "in alta localitate",
+        "din perspectiva functiei"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 34,
+      "text": "Factorii demotivatori sunt:",
+      "answers": [
+        "probleme de sanatate, distanta mare pana la locul de munca, salariu scazut, conditii de munca periculoase;",
+        "nesiguranta locului de munca, nivelul scazut al salariului, tratament diferit al salariatilor, probleme personale;",
+        "lipsa bunavointei, lipsa banilor, probleme de sanatate si securitate personala;",
+        "saracia, venituri scazute, probleme personale",
+        "lipsa de resurse materiale pentru asigurarea unui trai decent"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 35,
+      "text": "Capitalul uman poate fi definit astfel:",
+      "answers": [
+        "stocul de cunostinte generale utilizate in productie",
+        "capacitatea creativa, sursa a veniturilor scontate a se obtine in viitor",
+        "capacitatea oamenilor de a produce in mod eficient bunuri materiale si servicii",
+        "capacitatea personalului organizatiei de a realiza profit",
+        "resursele umane dintr-o tara"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 36,
+      "text": "Pentru respectarea normelor de protectie a muncii se impune:",
+      "answers": [
+        "instruirea, testarea si perfectionarea profesionala a salariatilor",
+        "echipament de protectie corespunzator si materialele igienico- sanitare",
+        "neincluderea timpului afectat activitatilor de instruire in timpul de munca",
+        "perfectionarea personalului",
+        "instruire lunara pentru protectia muncii"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 37,
+      "text": "Egalitatea de sanse este conceptul potrivit caruia:",
+      "answers": [
+        "este pusa în discutie relevanta unei politici sau a unei actiuni cu privire la relatiile de gen, a egalitatii dintre femei si barbati",
+        "libertatea de realizare a aspiratiilor devine cea mai importanta",
+        "toate fiintele umane sunt libere sa-si dezvolte capacitatile personale si sa aleaga fara limitari impuse de roluri stricte",
+        "toate persoanele dintr-o societate care au aceleasi drepturi si libertati",
+        "persoanele nu au limite privind libertatea de exprimare"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "text": "Contractul individual de munca este:",
+      "answers": [
+        "rezultatul acordului de vointa dintre anagajator si angajat",
+        "cu executare imediata si forma scrisa",
+        "bilateral si gratuit",
+        "conventia civila",
+        "un contract de colaborare"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 39,
+      "text": "Organigrama de tip liniar:",
+      "answers": [
+        "distribuie persoanele in structura de sus in jos",
+        "este ordonata de la stanga spre dreapta",
+        "are personalul dispus circular in jurul top managementului care se afla in centrul cercului",
+        "este organigrama care face parte din ROF",
+        "are personalul structurat de jos in sus"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 40,
+      "text": "Dintre consecintele pozitive ale comunicarii informale fac parte:",
+      "answers": [
+        "difuzarea rapida catre concurenti a unor informatii",
+        "contributia potentiala a comunicarii informale  la formarea unor grupuri cu interese comune cu obiectivele de baza ale organizatiei",
+        "comunicarea informala întareste solidaritatea si spiritul de echipa",
+        "se practica in cadrul team-buildingurilor",
+        "este de tip ciorchine"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 41,
+      "text": "Conflictele de munca se pot clasifica în:",
+      "answers": [
+        "conflicte individuale, conflicte la nivelul unei categorii de lucratori dintr-un atelier sau specialitate profesionala , conflicte la nivelul întregii întreprinderi",
+        "conflicte colective si conflicte individuale",
+        "conflicte colective, la nivelul unei categorii de lucratori dintr-un atelier sau specialitate profesionala",
+        "conflicte intre salariati si conflicte intre salariati si manageri",
+        "conflicte in cadrul unui compartiment/departament, conflicte de ramura"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 42,
+      "text": "Criteriile de evaluare a performantelor profesionale individuale ale personalului de executie sunt:",
+      "answers": [
+        "asumarea responsabilitatii, adecvarea la complexitatea muncii, initiativa si creativitatea, rezolvarea problemelor",
+        "gradul de îndeplinire a standardelor de performanta, asumarea responsabilitatii, adecvarea la complexitatea muncii, initiativa si creativitatea",
+        "luarea deciziilor, adecvarea la complexitatea muncii, initiativa si creativitatea, rezolvarea problemelor",
+        "nivelul de pregatire profesionala, gradul de realizare a obiectivelor individuale si asumarea responsabilitatii",
+        "initiativa si creativitate in solutionarea problemelor de serviciu, competente potrivite pentru locul de munca pe care il ocupa si 100% realizarea obiectivelor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 43,
+      "text": "Ca metode de pregatire si perfectionare profesionala pot fi utilizate:",
+      "answers": [
+        "învatare programata, studii de caz, simulari cu roluri, adecvarea la complexitatea muncii, initiativa si creativitatea",
+        "prelegeri, exercitii de grup, lucru în echipa, comunicarea eficienta, adecvarea la complexitatea muncii",
+        "coaching, mentoring, antrenarea angajatilor în rezolvarea problemelor",
+        "formarea profesionala continua",
+        "initierea, calificarea si perfectionarea profesionala"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 44,
+      "text": "Costurile formarii profesionale sunt suportate de catre:",
+      "answers": [
+        "Ministerul Muncii, Familiei si Protectiei Sociale",
+        "organizatie",
+        "angajati",
+        "partial de catre firma/institutie, partial de catre angajat",
+        "AJOFM"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 45,
+      "text": "Sunt considerate modalitati de evaluare a personalului dintr-o firma:",
+      "answers": [
+        "chestionarele, discutiile cu personalul si controlul direct realizat de catre manageri",
+        "deciziile managerului de personal",
+        "organizarea activitatilor de personal",
+        "testele de evaluare sustinute la intervale prestabilite",
+        "autoevaluarea"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 46,
+      "text": "Coordonarea este functia managementului prin care:",
+      "answers": [
+        "o firma functioneaza în bune conditii",
+        "se identifica nevoile de forta de munca ale firmei si se armonizeaza deciziile si actiunile personalului pentru realizarea cu success a obiectivelor propuse",
+        "se realizeaza concentrarea eforturilor, în scopul realizarii obiectivelor previzionate",
+        "se conduce o firma/institutie",
+        "se stabilesc obiectivele pe termen lung ale organizatiei"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 47,
+      "text": "Munca reprezinta:",
+      "answers": [
+        "efortul depus pentru realizarea unui obiectiv",
+        "o activitate umana",
+        "activitatea constienta indreptata spre un anumit scop",
+        "o activitate desfasurata de oameni in scopul obtinerii de profit",
+        "efortul realizat de om pentru a obtine cele necesare traiului"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 48,
+      "text": "Varsta standard de pensionare conform legii pensiilor din Romania este in prezent:",
+      "answers": [
+        "63 de ani pentru barbati si 60 de ani pentru femei",
+        "65 de ani pentru barbati si 63 de ani pentru femei",
+        "65 de ani pentru barbati si 62 de ani pentru femei",
+        "68 de ani pentru barbati si 65 de ani pentru femei",
+        "70 de ani pentru barbati si 68 de ani pentru femei"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 49,
+      "text": "Metode de disponibilizare corecta a personalului pot fi:",
+      "answers": [
+        "concedierea pentru încalcarea disciplinei de munca, demisia",
+        "disponibilizarea amiabila, concediere fara preaviz",
+        "disponibilizarea amiabila, concediere în baza propriei cereri",
+        "disponibilizarea ca urmare reorganizarii activitatii firmei",
+        "concedierea colectiva"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 50,
+      "text": "Strategiile de personal vizeaza:",
+      "answers": [
+        "dezvoltarea resurselor umane ale organizatiei",
+        "functiunea de personal a firmei",
+        "performanta salariatilor",
+        "obiectivele firmei",
+        "coordonarea activitatii firmei"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 51,
+      "text": "Dimensiunea somajului si rata somajului sunt:",
+      "answers": [
+        "parametri cu variatii notabile in transferul fortei de munca",
+        "parametri cu grad de instabilitate ridicat",
+        "parametrii rezultativi ai pietei muncii si expresii ale starii de sanatate si functionalitate a organismului economic in ansamblu",
+        "indicatori ai pietei muncii",
+        "standarde ale pietei muncii"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 52,
+      "text": "Categoriile de actori pe piata muncii sunt:",
+      "answers": [
+        "populatia cu varsta de munca, populatia activa, populatia ocupata, somerii, populatia inactiva, populatia descurajata",
+        "populatia activa, populatia ocupata si somerii",
+        "populatia cu varsta de munca, populatia inactiva si  populatia activa",
+        "populatia activa si populatia ocupata",
+        "populatia descurajata si populatia activa"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 53,
+      "text": "Fondul Social European este o sursa importanta de finantare a:",
+      "answers": [
+        "activitatilor de remunerare a fortei de munca",
+        "activitatilor destinate dezvoltarii capacitatii de ocupare a fortei de munca si a resurselor umane",
+        "activitatilor de reducere a pericolelor la locul de munca",
+        "proiectelor cu finantare europeana",
+        "activitatilor de calificare a personalului"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 54,
+      "text": "Dintre etapele elaborarii unui sistem eficient de salarizare, se pot mentiona:",
+      "answers": [
+        "convenirea politicii de avansare",
+        "analiza rezultatelor pe termen scurt",
+        "analiza si evaluarea posturilor precum si analiza comparativa a salariilor",
+        "strategia de salarizare",
+        "stabilirea de politici de salarizare"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 55,
+      "text": "Regulamentul de Organizare si Functionare este instrumentul de organizare folosit pentru:",
+      "answers": [
+        "descrierea detaliata a structurii organizatorice si stabilirea regulilor de functionare din firma",
+        "stabilirea regulilor de ordine interioara ale organizatiei",
+        "completarea organigramei",
+        "stabilirea verigilor organizatorice",
+        "stabilirea regulamentului intern"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 56,
+      "text": "Organigrama de tip piramida:",
+      "answers": [
+        "ordonata de la stanga spre dreapta",
+        "distribuie persoanele in structura de sus in jos",
+        "are personalul dispus circular in jurul top managementului care se afla in centrul cercului",
+        "are personalul de executie la baza piramidei",
+        "are personalul de conducere dispus la baza piramidei"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 57,
+      "text": "Reprezentantii salariatilor au urmatoarele atributii principale:",
+      "answers": [
+        "sa urmareasca includerea salariatilor în asociatii",
+        "sa participe la elaborarea organigramei",
+        "sa sesizeze inspectoratul de munca cu privire la nerespectarea dispozitiilor legale si ale contractului colectiv de  munca aplicabil",
+        "sa participe la sedintele de lucru din firma",
+        "sa preia problemele personalului legate de activitatea de resurse umane si sa le solutioneze"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 58,
+      "text": "Medierea presupune:",
+      "answers": [
+        "ca terta persoana care intervine, sa-si asume un rol activ, audiind partile si propunandu-le o solutie",
+        "interventia unei comisii de conciliere, care acorda asistenta partilor atunci cand negocierile directe intra în impas",
+        "solutionarea conflictelor de munca individuale",
+        "solutionarea conflictelor de munca colective",
+        "sa negocieze cu managementul firmelor conditiile de munca ale angajatilor"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 59,
+      "text": "Principalele forme de pregatire profesionala a adultilor sunt:",
+      "answers": [
+        "initierea, calificarea, perfectionarea, specializarea, recalificarea",
+        "instruire in vederea dobandirii de aptitudini, si competente",
+        "instruire pe post (on the job), mentorat/consiliere, delegarea sarcinilor",
+        "delegarea de autoritate, calificarea personalului, recalificarea",
+        "tutorat, instruire la locul de munca, consilere si orientare"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 60,
+      "text": "Metodele de dezvoltare manageriala sunt:",
+      "answers": [
+        "instruire in vederea dobandirii de aptitudini, instruirea manageriala, invatarea prin experienta",
+        "educatia manageriala, instruirea manageriala, invatarea prin experienta",
+        "instruire si perfectionare pe baza de competente, educatia manageriala, instruirea manageriala",
+        "studii masterale in domeniul managementului, experienta la locul de munca",
+        "studii postuniversitare manageriale"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
