@@ -15,6 +15,16 @@
       "id": "aprovizionare-desfacere",
       "title": "Managementul aprovizionării și desfacerii",
       "questionsFile": "data/questions/aprovizionare-desfacere.json"
+    },
+        {
+      "id": "management-comparat",
+      "title": "Managementul comparat",
+      "questionsFile": "data/questions/management-comparat.json"
+    },
+        {
+      "id": "managementul-resurselor-umane",
+      "title": "Managementul resurselor umane",
+      "questionsFile": "data/questions/managementul-resurselor-umane.json"
     }
   ]
 }
