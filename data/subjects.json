@@ -21,6 +21,11 @@
       "title": "Managementul comparat",
       "questionsFile": "data/questions/management-comparat.json"
     },
+    {
+  "id": "managementul-investitiilor",
+  "title": "Managementul investițiilor",
+  "questionsFile": "data/questions/managementul-investitiilor.json"
+},
         {
       "id": "managementul-resurselor-umane",
       "title": "Managementul resurselor umane",
