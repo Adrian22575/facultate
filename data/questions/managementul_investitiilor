@@ -1,0 +1,724 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Ce reprezinta investitiile?",
+      "answers": [
+        "O marime a bugetelor nationale;",
+        "O cale de crestere economica;",
+        "Un venit al firmelor private;",
+        "Un venit al bugetelor locale;",
+        "O marime a bugetelor locale."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 2,
+      "text": "Ce regiuni au ocolit investitorii straini?",
+      "answers": [
+        "Zonele defavorizate;",
+        "Zonele libere;",
+        "Zonele rurale;",
+        "Zonele urbane;",
+        "Zonele transfrontaliere."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 3,
+      "text": "Ce relatie exista intre optimul si eficienta unei investitii?",
+      "answers": [
+        "De subordonare;",
+        "De ordonare;",
+        "Parte si intreg;",
+        "Teorie si practica;",
+        "Interdisciplinara."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 4,
+      "text": "Eficienta economica a investitiilor trebuie sa fie minima atunci cand:",
+      "answers": [
+        "Exista raport intre efect si efort;",
+        "Exista raport intre eforturi;",
+        "Exista raport intre efecte;",
+        "Exista raport intre creante si credite;",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 5,
+      "text": "Formula de calcul a coeficientului capitalului (Modelul Harrod) este:",
+      "answers": [
+        "C=A/K;",
+        "C=K/(A+Q);",
+        "C=I /(Q Q ); h h h-1",
+        "C=K/V;",
+        "C=(I*V)/(Q*A)."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 6,
+      "text": "Care sunt cele trei momente importante in evolutia fluxurilor de ISD inUE, in perioada 1989-2010?",
+      "answers": [
+        "1989, 2001, 2008;",
+        "1990, 1991, 2008;",
+        "1989, 2001, 2007;",
+        "1991, 2001, 2007;",
+        "1991, 2007, 2008."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 7,
+      "text": "Care sunt cele trei tari din Centrul si Estul Europei care au atras cele mai multe ISD ?",
+      "answers": [
+        "Cehia, Slovenia, Ungaria;",
+        "Slovenia, Ungaria, Polonia;",
+        "Ungaria, Polonia, Cehia;",
+        "Ungaria, Cehia, Slovacia;",
+        "Cehia, Slovacia, Polonia."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 8,
+      "text": "Care a fost relatia intre fluxurile si stocurile de ISD in Romania, in perioada de tranzitie?",
+      "answers": [
+        "Fluxuri mai mari decat Stocuri;",
+        "Fluxuri egale cu Stocurile;",
+        "Fluxurile au crescut, Stocurile au scazut;",
+        "Fluxurile mai mici decat Stocurile;",
+        "Fluxurile au scazut, Stocurile au crescut."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 9,
+      "text": "In ce an s-au inregistrat cele mai mari fluxuri de ISD in economia Romaniei, in perioada 1991-2005?",
+      "answers": [
+        "1991;",
+        "2005;",
+        "2000;",
+        "2001;",
+        "1996."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 10,
+      "text": "In ce regiune economica de dezvoltare a Romaniei au fost inregistrati cei mai putini investitori straini, in perioada 1991-2005, dintre regiunile selectate mai jos?",
+      "answers": [
+        "Nord-Est;",
+        "Sud-Est;",
+        "Sud;",
+        "Vest;",
+        "Nord-Vest."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 11,
+      "text": "Care sunt tarile extra-comunitare care au investit cel mai mult in Romania, in perioada 1993-2005 si sunt prezente in clasamentul primilor zece investitori straini?",
+      "answers": [
+        "SUA, China;",
+        "Antilele Olandeze, SUA;",
+        "SUA, Turcia;",
+        "Turcia, China;",
+        "Antilele Olandeze, Turcia."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 12,
+      "text": "Cat reprezenta stocul de ISD al Bulgariei in anul 2005?",
+      "answers": [
+        "Aproximativ 20 mld USD;",
+        "Aproximativ 10 mld USD;",
+        "Aproximativ 5 mld USD;",
+        "Aproximativ 15 mld USD.",
+        "Aproximativ 17 mld. USD."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 13,
+      "text": "Ce sector al economiei Romaniei a atras cele mai multe ISD in perioada de pre-aderare la UE?",
+      "answers": [
+        "Industria;",
+        "Comertul;",
+        "Agricultura;",
+        "Constructiile;",
+        "Serviciile."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 14,
+      "text": "Evolutia fluxului mediu pe locuitor de ISD, in Romaia, in perioada 1991-2005, a fost:",
+      "answers": [
+        "Liniara;",
+        "Convexa;",
+        "Concava;",
+        "Crescatoare;",
+        "Descrescatoare."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 15,
+      "text": "In ce regiune istorica a tarii s-au facut mai multe ISD, in perioada de preaderare la UE?",
+      "answers": [
+        "Dobrogea;",
+        "Oltenia;",
+        "Moldova;",
+        "Maramures;",
+        "Bucovina."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 16,
+      "text": "In ce regiune economica de dezvoltare s-au facut mai multe ISD, in perioada de preaderare la UE?",
+      "answers": [
+        "Sud-Est;",
+        "Sud-Vest;",
+        "Bucuresti-Ilfov;",
+        "Vest;",
+        "Centru."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 17,
+      "text": "Cati investitori straini au fost inregistrati in regiunea economica de dezvoltare Bucuresti-Ilfov, ca procent din totalul investitorilor straini directi inregistrati la nivel national?",
+      "answers": [
+        "Aproximativ 5%;",
+        "Aproximativ 10%;",
+        "Aproximativ 25%;",
+        "Aproximativ 50%;",
+        "Aproximativ 75%."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 18,
+      "text": "Precizati cauzele pentru care influxul de ISD in Romania, in perioada de tranzitie, a fost cel inregistrat statistic:",
+      "answers": [
+        "Lipsa monedei Euro;",
+        "Lipsa apartenentei la Spatiul Schengen;",
+        "Lipsa politicilor reformatoare clare si stabile;",
+        "Lipsa exporturilor;",
+        "Lipsa denominarii monedei nationale."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 19,
+      "text": "Ce forma de atitudine investitionala au manifestat investitorii straini din Romania, in perioada 2004-2005?",
+      "answers": [
+        "Ofensiva;",
+        "Defensiva;",
+        "Indiferenta;",
+        "Prudenta;",
+        "Hazardata."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 20,
+      "text": "Elemente definitorii de care investitorii trebuie sa tina cont cand investesc sunt:",
+      "answers": [
+        "PIB national;",
+        "Balanta de plati externe;",
+        "Bugetul national;",
+        "Bugetul local;",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 21,
+      "text": "Ce stat vecin al Romaniei a investit mai mult in tara noastra ?",
+      "answers": [
+        "Grecia;",
+        "Serbia;",
+        "Moldova;",
+        "Ucraina;",
+        "Ungaria."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 22,
+      "text": "Ce investitie este mai profitabila, la nivel sectorial?",
+      "answers": [
+        "In industria de morarit si panificatie;",
+        "In telecomunicatii;",
+        "In industria textila;",
+        "In turism;",
+        "Depinde de managementul firmei."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 23,
+      "text": "In ce regiune istorica a tarii s-au facut cele mai putine ISD, in perioada de preaderare la UE?",
+      "answers": [
+        "Dobrogea;",
+        "Oltenia;",
+        "Transilvania;",
+        "Maramures",
+        "Muntenia."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 24,
+      "text": "In ce regiune economica de dezvoltare s-au facut cele mai putine ISD,in perioada de preaderare la UE?",
+      "answers": [
+        "Sud-Est;",
+        "Sud-Vest;",
+        "Bucuresti-Ilfov;",
+        "Vest;",
+        "Centru."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 25,
+      "text": "Sunt societatile bancare mai profitabile decat societatile de constructii?",
+      "answers": [
+        "Da;",
+        "Nu;",
+        "Doar pe pietele din tarile slab dezvoltate;",
+        "Doar pe pietele din tarile in curs de dezvoltare;",
+        "Depinde de managementul firmei."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 26,
+      "text": "Calculati care investitie este mai profitabila:",
+      "answers": [
+        "O unitate de reparatii nave maritime in Mongolia;",
+        "O fabrica de sticla mata in Mozambic;",
+        "O firma de abatorizare porcine in Kuwait;",
+        "O fabrica de sticla mata in Europa;",
+        "Ofabrica desticlamata inSerbia; Luati inconsiderare ca: investitia initiala este aceasi in toate cele 3 cazuri si reprezinta 0,05% din PIB-ul Mongoliei in anul 2020, care a fost de circa 5 ori mai mic decat PIB-ul Mozambicului in anul 2010 (100 mld. USD) si 15 ori mai mic decat PIB-ul din Kuwait in anul 2000; populatia Kuwait-ului este de circa 2 ori mai mare decat cea a Mongoliei, care este de circa 5 de ori mai mica decat cea din Mozambic; cresterea economica medie in cele 3 tari a fost in ultimii 3 ani de: 1% in Mozambic, 1% in Mongolia, 5% in Kuwait."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 27,
+      "text": "Care din urmatoarele marci prezente pe piata romaneasca reprezinta investitie straina directa?",
+      "answers": [
+        "Lapte Milupa;",
+        "Produse lactate Meggle;",
+        "Produse Topoloveni;",
+        "Produse Boromir",
+        "Produse lactate Danone."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 28,
+      "text": "Care din urmatoarele programe ale Bancii Mondiale au sprijinit economia Romaniei, in perioada de tranzitie?",
+      "answers": [
+        "FESAN;",
+        "CORE;",
+        "FESAL;",
+        "CORDIC;",
+        "ASAL."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 29,
+      "text": "Care este valoarea Indicelui de Opacitate pentru Romania, conform studiului Price-Waterhouse-Coopers efectuat in anul 2002?",
+      "answers": [
+        "21;",
+        "35;",
+        "71;",
+        "7;",
+        "12."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Care este formula de calcul a acceleratorului, conform modelului lui Clark?",
+      "answers": [
+        "a=I /(Q Q ); h h h-1",
+        "a=I/V;",
+        "a=FA/(PNN-1);",
+        "a=(I*V)/(Q*A);",
+        "a=(PNN-PNA)/(Q-I)."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 31,
+      "text": "Calculati si alegeti care este Rata Interna de Rentabilitate in cazul uneiinvestitii inindustriaaeronautica,in Romania:",
+      "answers": [
+        "5;",
+        "15;",
+        "25;",
+        "35;",
+        "Niciuna din variante. Luati in considerare ca: Populatia Romaniei este 19,5 mil persoane; Media cresterii economice in ultimii 10 ani a fost 5%; Coeficientul de actualizare este considerat 5."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 32,
+      "text": "Care sunt principalele grupe de tari furnizoare de investitii straine directepentru Romania?",
+      "answers": [
+        "SUA si ASEAN;",
+        "OPEC si Turcia;",
+        "UE si SUA;",
+        "ASEAN si Turcia;",
+        "SUA si OPEC."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 33,
+      "text": "Ce forma de atitudine investitionala au manifestat investitorii straini din Romania in perioada 2001-2003?",
+      "answers": [
+        "Ofensiva;",
+        "Defensiva;",
+        "Prudenta;",
+        "Nicio atitudine;",
+        "Dinamica."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 34,
+      "text": "Care din urmatoarele sunt rezultatul unei investitii straine directe de",
+      "answers": [
+        "Televizoare Panasonic;",
+        "Autoturisme Dacia-Renault;",
+        "Telecomunicatii Mobifon;",
+        "Ingrasaminte chimice Oltchim;",
+        "Mobila Mobexpert."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 35,
+      "text": "Cele trei elemente definitorii de care investitorii trebuie sa tina cont sunt:",
+      "answers": [
+        "Tara, Regiunea, PIB national;",
+        "Capitalul investit, Anul cand investeste, Balanta de plati externe;",
+        "Buget national,Buget local,Datoriapublica;",
+        "Riscul asumat, Anul cand investeste, Datoria externa;",
+        "Duratainvestitiei, Riscul asumat,Eficientainvestitiei."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 36,
+      "text": "Ce sunt investitiile?",
+      "answers": [
+        "Modalitate de economisire;",
+        "Cale de crestere economica;",
+        "Venituri;",
+        "Profit;",
+        "Niciuna din varinte."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 37,
+      "text": "Tipuri majore de investitii acceptate in teoria economica:",
+      "answers": [
+        "Exceptionale si financiare;",
+        "Temporare si permanente;",
+        "Financiare si de capital;",
+        "Contabile si fiscale;",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "text": "Alegeti toate destinatiile investitiilor, cele unanim acceptate in teoria economica?",
+      "answers": [
+        "Pentru crearea, modernizarea si dezvoltarea afacerilor;",
+        "In comert, industrie si turism;",
+        "Pentru crearea de capacitati de productie noi;",
+        "Pentru crearea de capacitati noi si modernizarea celor existente;",
+        "In comert, agricultura, industrie si constructii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 39,
+      "text": "Care sunt cele mai importante investitii pentru o economie in tranzitie?",
+      "answers": [
+        "Investitiile autohtone directe pentru privatizare;",
+        "Investitiile straine directe de",
+        "Investitiile de portofoliu;",
+        "Investitii straine;",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 40,
+      "text": "Ce exprima eficienta economica a investitiilor?",
+      "answers": [
+        "O suma de cheltuieli;",
+        "Un raport intre efecte si eforturi;",
+        "O diferenta de plata;",
+        "Un raport intre cheltuieli previzionate si cheltuieli recalculate;",
+        "Un raport intre venituri realizate si venituri actualizate."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 41,
+      "text": "Care sunt sursele proprii de finantare a investitiilor?",
+      "answers": [
+        "Vanzarea de active;",
+        "Creditele;",
+        "Fondurile mutuale;",
+        "Imprumuturi participative;",
+        "Alocatii de la buget."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 42,
+      "text": "Care sunt sursele atrase/externe de finantare a investitiilor?",
+      "answers": [
+        "Fondul dedezvoltare;",
+        "Vanzareadeactive;",
+        "Imprumuturile participative;",
+        "Emiterea de actiuni/obligatiuni;",
+        "Vanzarea de actiuni/obligatiuni."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 43,
+      "text": "In ce organizatie economica se fac circa 50% din investitiile straine directe(ISD) mondiale?",
+      "answers": [
+        "UE;",
+        "SUA;",
+        "ASEAN;",
+        "TIGER;",
+        "OPEC."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 44,
+      "text": "Pe ce loc se afla Romania intre tarile in tranzitie din Europa, dupa stocul de ISD, in perioada de preaderare la UE?",
+      "answers": [
+        "4;",
+        "1;",
+        "2;",
+        "3;",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 45,
+      "text": "Cum se caracterizeaza evolutia fluxurilor de ISD in Romania, in perioada 1990-2004?",
+      "answers": [
+        "O evolutie dinamica;",
+        "O evolutie sinusoidala;",
+        "O evolutie constanta;",
+        "O evolutie constanta, usor crescatoare;",
+        "O evolutie constanta, usor descrescatoare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 46,
+      "text": "In ce ramura a economiei s-au facut cele mai mici ISD, in perioada de preaderare la UE ?",
+      "answers": [
+        "Industrie;",
+        "Comert;",
+        "Servicii;",
+        "Agricultura;",
+        "Constructii."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 47,
+      "text": "Ce forma de atitudine investitionala au manifestat investitorii straini inperioada 1992-2000?",
+      "answers": [
+        "Ofensiva;",
+        "Defensiva;",
+        "Prudenta;",
+        "Activa;",
+        "Toate variantele de mai sus."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 48,
+      "text": "In ce regiune economica de dezvoltare s-au investit peste 50% din ISDdin Romania, in perioada de preaderare la UE?",
+      "answers": [
+        "Centru;",
+        "Vest;",
+        "Bucuresti-Ilfov;",
+        "Sud-Est;",
+        "Nord-Vest."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 49,
+      "text": "Care au fost cele mai putin atractive regiuni economice de dezvoltare pentru investitorii straini, in perioada de preaderare la UE?",
+      "answers": [
+        "Sud-Est si Centru;",
+        "Sud-Vest si Nord-Est.",
+        "Nord-Est si Nord-Vest;",
+        "Centru si Nord-Vest;",
+        "Sud-Est si Sud-Vest."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 50,
+      "text": "Care au fost principalele tari furnizoare de ISD pentru Romania, in perioada de preaderare la UE?",
+      "answers": [
+        "SUA si Canada;",
+        "Germania, Austria si Olanda;",
+        "Tarile asiatice si tarile arabe;",
+        "Tarile asiatice si Turcia;",
+        "Tarile baltice si din balcani."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 51,
+      "text": "Cum se clasifica indicatorii de eficienta economica a investitiilor dupafactorul timp?",
+      "answers": [
+        "Analitici, Sintetici, Complecsi;",
+        "De efecte, De eforturi, De timp;",
+        "Statici si Dinamici;",
+        "Activi si Inactivi;",
+        "Mari, Mijlocii si Mici."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 52,
+      "text": "Ce loc a ocupat UE in fluxul mondial de ISD, in anii 2000 ?",
+      "answers": [
+        "1;",
+        "2;",
+        "3;",
+        "4;",
+        "5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 53,
+      "text": "Ce loc a ocupat UE in fluxul mondial de ISD, in anii 90 ?",
+      "answers": [
+        "1;",
+        "2;",
+        "3;",
+        "4;",
+        "5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 54,
+      "text": "Care sunt cei trei ani care au influentat evolutia mondiala a ISD in perioada 1989-2010 ?",
+      "answers": [
+        "1990, 1991, 1992;",
+        "1990, 2004, 2007;",
+        "1989, 1990, 1991;",
+        "1989, 2001, 2008;",
+        "2001, 2008, 2009."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 55,
+      "text": "Ce loc a ocupat SUA in fluxul mondial de ISD, in anii 90?",
+      "answers": [
+        "1;",
+        "2;",
+        "3;",
+        "4;",
+        "10"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 56,
+      "text": "Ce formula are Factorul de fructificare folosit in Tehnica actualizarii ?",
+      "answers": [
+        "Y=x*(1+e)h",
+        "Y=x*(1+e2)h",
+        "Y=x*1/(1+e)h",
+        "Y=x*1/(1+e2)h",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 57,
+      "text": "Ce formula are Factorul de actualizare folosit in Tehnica actualizarii ?",
+      "answers": [
+        "Y=x*(1+e)h",
+        "Y=x*(1+e2)h",
+        "Y=x*1/(1+e)h",
+        "Y=x*1/(1+e2)h",
+        "Niciuna din variante."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 58,
+      "text": "Care sunt cele trei etape folosite in metodologia BM in analiza eficientei economice a unui proiect investitional ?",
+      "answers": [
+        "Analiza teoretica, Analiza practica, Verificarea;",
+        "Etapa proiectarii, Etapa consultarii, Etapa receptiei;",
+        "Analiza indicatorilor statici, Analiza indicatorilor dinamici, Analiza BM;",
+        "Analiza pietei, Analiza teoriei, Analiza concurentei;",
+        "Etapa initiala, Etapa intermediara, Etapa finala."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 59,
+      "text": "Care din urmatorii este indicator static ?",
+      "answers": [
+        "Cheltuieli recalculate;",
+        "Marimea imobilizarilor;",
+        "Efectul economic al imobilizarilor;",
+        "Efectul economic al imobilizarilor recalculate;",
+        "Randamentul actualizat."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 60,
+      "text": "Care din urmatorii este indicator dinamic ?",
+      "answers": [
+        "Investitia totala;",
+        "Cheltuieli recalculate;",
+        "Investitia specifica;",
+        "Coeficientul de eficienta economica;",
+        "Investitia totala actualizata."
+      ],
+      "correctIndex": 4
+    }
+  ]
+}
