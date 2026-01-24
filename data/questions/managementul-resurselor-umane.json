@@ -226,7 +226,7 @@
         "de control, de reprezentare",
         "de mandat, de reprezentare"
       ],
-      "correctIndex": 0
+      "correctIndex": 2
     },
     {
       "id": 20,
@@ -238,7 +238,7 @@
         "reducerea salariilor",
         "cresterea salariilor angajatilor"
       ],
-      "correctIndex": 1
+      "correctIndex": 0
     },
     {
       "id": 21,
@@ -250,7 +250,7 @@
         "regulile dupa care functioneaza orice organizatie",
         "statutul organizatiei"
       ],
-      "correctIndex": 2
+      "correctIndex": 1
     },
     {
       "id": 22,
