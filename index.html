@@ -32,10 +32,16 @@
       list.innerHTML = "";
 
       data.subjects.forEach(s => {
-        const li = document.createElement("li");
-        li.innerHTML = `<a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">${s.title}</a>`;
-        list.appendChild(li);
-      });
+  const li = document.createElement("li");
+
+  if (s.id === "licenta-exam") {
+    li.innerHTML = `<a class="test-link" href="licenta-exam.html">${s.title}</a>`;
+  } else {
+    li.innerHTML = `<a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">${s.title}</a>`;
+  }
+
+  list.appendChild(li);
+});
     }
 
     loadSubjects().catch(err => {
