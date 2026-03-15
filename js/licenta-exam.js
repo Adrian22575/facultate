@@ -27,9 +27,9 @@ async function loadAllQuestions() {
     loadingEl.textContent = "Se citesc materiile...";
 
     const subjectsResponse = await fetch(SUBJECTS_FILE);
-    if (!jectsResponse.ok) {
-      throw new Error(`Nu pot citi ${SUBJECTS_FILE}`);
-    }
+    if (!subjectsResponse.ok) {
+  throw new Error(`Nu pot citi ${SUBJECTS_FILE}`);
+}
 
     const subjectsData = await subjectsResponse.json();
     const subjects = subjectsData.subjects || [];
