@@ -84,10 +84,6 @@
       "id": "management-comparat",
       "title": "Management comparat",
       "questionsFile": "data/questions/management-comparat.json"
-    },
-    {
-      "id": "licenta-exam",
-      "title": "Examen Licență (toate materiile)"
     }
   ]
 }
