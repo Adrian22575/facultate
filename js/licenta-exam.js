@@ -1,4 +1,4 @@
-const SUBJECTS_FILE = "data/subjects-licenta.json";
+const SUBJECTS_FILE = "data/subjects.json";
 const QUESTIONS_PER_TEST = 30;
 
 let allQuestions = [];
@@ -27,7 +27,7 @@ async function loadAllQuestions() {
     loadingEl.textContent = "Se citesc materiile...";
 
     const subjectsResponse = await fetch(SUBJECTS_FILE);
-    if (!subjectsResponse.ok) {
+    if (!jectsResponse.ok) {
       throw new Error(`Nu pot citi ${SUBJECTS_FILE}`);
     }
 
