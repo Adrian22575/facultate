@@ -1,6 +1,11 @@
 {
   "subjects": [
     {
+      "id": "managementul-serviciilor",
+      "title": "Managementul serviciilor",
+      "questionsFile": "data/questions/managementul-serviciilor.json"
+    },
+    {
       "id": "managementul-calitatii",
       "title": "Managementul calității",
       "questionsFile": "data/questions/managementul-calitatii.json"
@@ -11,19 +16,9 @@
       "questionsFile": "data/questions/econometrie.json"
     },
     {
-      "id": "aprovizionare-desfacere",
-      "title": "Managementul aprovizionării și desfacerii",
-      "questionsFile": "data/questions/aprovizionare-desfacere.json"
-    },
-    {
-      "id": "management-comparat",
-      "title": "Managementul comparat",
-      "questionsFile": "data/questions/management-comparat.json"
-    },
-    {
-      "id": "managementul-investitiilor",
-      "title": "Managementul investițiilor",
-      "questionsFile": "data/questions/managementul-investitiilor.json"
+      "id": "managementul-proiectelor",
+      "title": "Managementul proiectelor",
+      "questionsFile": "data/questions/managementul-proiectelor.json"
     },
     {
       "id": "managementul-resurselor-umane",
@@ -31,9 +26,64 @@
       "questionsFile": "data/questions/managementul-resurselor-umane.json"
     },
     {
-      "id": "licenta-grile",
-      "title": "Examen Licență – Toate grilele",
-      "questionsFile": "data/questions/licenta-grile.json"
+      "id": "comportament-organizational",
+      "title": "Comportament organizațional",
+      "questionsFile": "data/questions/comportament-organizational.json"
+    },
+    {
+      "id": "managementul-investitiilor",
+      "title": "Managementul investițiilor",
+      "questionsFile": "data/questions/managementul-investitiilor.json"
+    },
+    {
+      "id": "management-international",
+      "title": "Management internațional",
+      "questionsFile": "data/questions/management-international.json"
+    },
+    {
+      "id": "managementul-aprovizionarii-si-desfacerii",
+      "title": "Managementul aprovizionării și desfacerii",
+      "questionsFile": "data/questions/managementul-aprovizionarii-si-desfacerii.json"
+    },
+    {
+      "id": "managementul-productiei",
+      "title": "Managementul producției",
+      "questionsFile": "data/questions/managementul-productiei.json"
+    },
+    {
+      "id": "management-strategic",
+      "title": "Management strategic",
+      "questionsFile": "data/questions/management-strategic.json"
+    },
+    {
+      "id": "analiza-economico-financiara",
+      "title": "Analiză economico-financiară",
+      "questionsFile": "data/questions/analiza-economico-financiara.json"
+    },
+    {
+      "id": "management-financiar",
+      "title": "Management financiar",
+      "questionsFile": "data/questions/management-financiar.json"
+    },
+    {
+      "id": "audit",
+      "title": "Audit",
+      "questionsFile": "data/questions/audit.json"
+    },
+    {
+      "id": "baze-de-date-pentru-management",
+      "title": "Baze de date pentru management",
+      "questionsFile": "data/questions/baze-de-date-pentru-management.json"
+    },
+    {
+      "id": "economia-intreprinderii",
+      "title": "Economia întreprinderii",
+      "questionsFile": "data/questions/economia-intreprinderii.json"
+    },
+    {
+      "id": "management-comparat",
+      "title": "Management comparat",
+      "questionsFile": "data/questions/management-comparat.json"
     }
   ]
 }
