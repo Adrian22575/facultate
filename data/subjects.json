@@ -5,31 +5,35 @@
       "title": "Managementul calității",
       "questionsFile": "data/questions/managementul-calitatii.json"
     },
-{
-  "id": "econometrie",
-  "title": "Econometrie",
-  "questionsFile": "data/questions/econometrie.json"
-}
-,
+    {
+      "id": "econometrie",
+      "title": "Econometrie",
+      "questionsFile": "data/questions/econometrie.json"
+    },
     {
       "id": "aprovizionare-desfacere",
       "title": "Managementul aprovizionării și desfacerii",
       "questionsFile": "data/questions/aprovizionare-desfacere.json"
     },
-        {
+    {
       "id": "management-comparat",
       "title": "Managementul comparat",
       "questionsFile": "data/questions/management-comparat.json"
     },
     {
-  "id": "managementul-investitiilor",
-  "title": "Managementul investițiilor",
-  "questionsFile": "data/questions/managementul-investitiilor.json"
-},
-        {
+      "id": "managementul-investitiilor",
+      "title": "Managementul investițiilor",
+      "questionsFile": "data/questions/managementul-investitiilor.json"
+    },
+    {
       "id": "managementul-resurselor-umane",
       "title": "Managementul resurselor umane",
       "questionsFile": "data/questions/managementul-resurselor-umane.json"
+    },
+    {
+      "id": "licenta-grile",
+      "title": "Examen Licență – Toate grilele",
+      "questionsFile": "data/questions/licenta-grile.json"
     }
   ]
 }
