@@ -1,0 +1,604 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Ce este comportamentul organizational?",
+      "answers": [
+        "este un aspect important al functionarii firmei;",
+        "disciplina ce se ocupa de cercetarea cauzelor, formelor si consecintelor comportamentului persoanelor intr-o organizatie;",
+        "este disciplina ce cuprinde analiza de intelegere a comportamentului uman la locul de munca si coordonarea lor pentru a munci eficace;",
+        "disciplina care studiaza modul in care se deruleaza procesele de business in cadrul organizatiei;",
+        "este modul in care personalul se comporta la lucru."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 2,
+      "text": "Aspectele cheie ale comportamentului organizational sunt:",
+      "answers": [
+        "comportamentul individual, comportamentul de grup, structura organizationala, cultura organizationala, managementul, schimbarea organizationala, satisfactia angajatilor, rezolvarea conflictelor;",
+        "comportamentul individual si de grup, managementul, structura organizationala;",
+        "structura si cultura organizationala, analiza modului de interactiune a persoanelor dintr-o organizatie;",
+        "structura organizationala, managementul organizatiei, consilierea in cariera a angajatului, medierea conflictelor;",
+        "comportamentul angajatului si al sefului la locul de munca."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "text": "Obiectivele studiului comportamentului organizational",
+      "answers": [
+        "cunostintele, studiul comportamentului angajatului, satisfactia angajatului, instrumente pentru gestionarea conflictelor, adaptabilitatea;",
+        "intelegerea comportamentului, cresterea satisfactiei angajatilor, gestionarea conflictelor, adaptarea la schimbare;",
+        "identificarea problemelor, eficienta si rentabilitatea organizatiei, cresterea loialitatii persoanelor, fluctuatia personalului;",
+        "studiul comportamentului conducatorilor si executantilor intr-o organizatie;",
+        "eliminarea fluctuatiei personalului si cresterea adaptabilitatii salariatilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 4,
+      "text": "Abordarile comportamentului organizational",
+      "answers": [
+        "abordarea umanista, abordarea structuralista, abordarea tehnica;",
+        "abordarea clasica, abordarea umanista, abordarea structuralista, abordarea contingenta, abordarea comportamentala, aboordarea sistemica, abordarea etica, aboradarea empirica, abordarea calitativa;",
+        "abordarea complexitatii, abordarea strategica, abordarea longitudinala;",
+        "abordarea psihologica, sociologica, strategica si organizationala;",
+        "abordare calitativa si cantitativa."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 5,
+      "text": "Ce implica Modelul SOBC?",
+      "answers": [
+        "un model ce arata comportamentul organizational;",
+        "model teoretico-metodologic de comportament organizational;",
+        "model stimulent-organism-comportament-consecinte;",
+        "un model cu ajutorul caruia se organizeaza activitatea firmei;",
+        "model sistemic."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 6,
+      "text": "Domeniile de aplicabilitate pentru modelul SOBC sunt:",
+      "answers": [
+        "comportament organizational, managementul resurselor umane, educatie, psihologie organizationala, ssm, marketing si publicitate;",
+        "cercetare organizationala, managementul resurselor umane, educatie, psihologie clinica si terapie;",
+        "ssm, managementul resurselor umane, psihologie, marketing, educatie;",
+        "finante si contabilitate;",
+        "educatie si formare profesionala continua."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 7,
+      "text": "La baza studiului comportamentului organizational stau:",
+      "answers": [
+        "psihologia, sociologia, economia, neurostiintele, statistica;",
+        "marketing, psihologia sociologia, cercetarea, etica;",
+        "psihologia, economia, sociologia, antropologia, managementul, teroria sistemelor, comunicarea, neurostiinta, statistica si cercetarea, etica si filosofia;",
+        "antropologia si neurostiinta;",
+        "marketingul, finantele, statistica si etica."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 8,
+      "text": "Definiti organizatia:",
+      "answers": [
+        "organizatia este orice entitate cu scop patrimonial;",
+        "organizatia este orice entitate economica, sociala sau politica cu scop specific ce implica un grup de persoane fizice avand patrimoniu propriu si organizare juridica;",
+        "organizatia este orice entitate care prezinta o structura organizatorica si organizare juridica;",
+        "organizatia este un grup de persoane cae functioneaza dupa anumite reguli;",
+        "organizatia este o entitate juridica care implica resurse umane, financiare, materiale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "La ce contribuie Comportamentul Organizational?",
+      "answers": [
+        "comportamentul organizational contribuie la eficienta si eficacitatea entitatilor economice;",
+        "comportamentul organizational contribuie la competitivitatea economica, cultura organizationala, gestiunea financiara si a resurselor umane;",
+        "comportamentul organizational contribuie la eficienta organizationala, competitivitatea in piata, gestionarea resurselor umane, cultura organizationala, inovare si creativitate, managementul conflictelor, responsabilitate sociala, adaptarea la schimbare;",
+        "comportamentul organizational contribuie la gestionarea eficienta a oricarui tip de entitate economica;",
+        "comportamentul organizational este modul in care actioneaza indivizii la locul de munca."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 10,
+      "text": "Relatia dintre organizatie si comportamentul organizational este data de:",
+      "answers": [
+        "cultura organizationala, impactul satisfactiei angajatilor, managementul organizatiei;",
+        "motivatie, productivitate, colaborare;",
+        "politici, conflicte, colaborare, comunicare;",
+        "nivel de salarizare, conditii de munca, satisfactia angajatilor;",
+        "motivatie, strategie de personal, modalitatea de comunicare;"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 11,
+      "text": "Influenta oamenilor asupra comportamentului organizational depinde de:",
+      "answers": [
+        "personalitatea, individualitatea, experienta, abilitatile si motivatia;",
+        "cultura organizationala, satisfactia angajatilor;",
+        "variabilitatea indivizilor atat comportamentala cat si personala;",
+        "tipul de personalitate, stilul de conducere, modul de interactiune cu membrii organizatiei;",
+        "coeziunea de grup."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "text": "Nivelurile de comportament organizational sunt:",
+      "answers": [
+        "nivel personal, nivel de grup, nivel de lider, nivel de firma;",
+        "nivel individual, nivelul grupurilor si echipelor, nivel managerial, nivel organizational, nivel interorganizational, nivel societal;",
+        "nivel individual, nivel organizational, nivel societal, nivel managerial;",
+        "nivel organizatoric, nivel individual, nivel social;",
+        "nivel de grup/echipa de lucru, nivel de conducere."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 13,
+      "text": "Factorii personali ce influenteaza comportamentul angajatilor la locul de munca",
+      "answers": [
+        "personalitate, motivatie, perceptie, atitudine, stres, abilitati, experienta, valori si etica, satisfactie in munca;",
+        "personalitate, cultura, aptitudini, experienta;",
+        "personalitate, valori si etica, satisfactie in munca;",
+        "motivatie, valori, capacitate de lucru;",
+        "etica si cultura organizationala, educatia si competentele."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 14,
+      "text": "Caracteristicile personale ale angajatilor",
+      "answers": [
+        "harnicie, motivare, dorinta de a munci;",
+        "extrovertire si introvertire, constiinciozitate, stabilitate emotionala, amabilitate, nivel de ambitie;",
+        "extrovertire si introvertire;",
+        "amabilitate, nivel de educatie si de competente;",
+        "constiinciozitate si harnicie."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 15,
+      "text": "Comportamentul la nivel de grup de lucru este influentat de urmatorii factori:",
+      "answers": [
+        "schimbarile organizationale, comunicarea, intelegerea clara a misiunii organizatiei, resursele disponibile;",
+        "comunicarea, dinamica de grup, liderul de grup, obiectivele grupului, resursele, diversitatea grupului, evaluarea performantei, misiunea si scopul grupului;",
+        "formarea grupului, dinamica de grup, liderul de grup, obiectivele si sarcinile grupului;",
+        "fluctuatia personalului in cadrul grupului;",
+        "liderul de grup si stilul de conducere."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 16,
+      "text": "Etapele modelului Tuckman cunoscut ca ,,Modelul dezvoltarii echipelor’’ sunt:",
+      "answers": [
+        "formarea, conflictul, normarea, performanta, dizolvarea;",
+        "formarea, normarea, dizolvarea;",
+        "formarea, conflictul, normarea, dizolvarea;",
+        "formarea, evolutia, dizolvarea;",
+        "formarea, functionarea performanta, dizolvarea."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 17,
+      "text": "Managementul organizatiei influenteaza comportamentul organizational prin:",
+      "answers": [
+        "managementul resurselor umane, leadership, adoptarea deciziilor;",
+        "comunicare si comportamentul angajatilor;",
+        "coordonarea, gestionarea oamenilor si resurselor;",
+        "modul de relationare intre indivizi si conducatori;",
+        "stilul de conducere si tipurile de manageri."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 18,
+      "text": "Coordonarea echipelor eficiente de lucru se face prin:",
+      "answers": [
+        "sistemul decizional, sistemul de comunicare, sistemul de evaluare;",
+        "stabilire de obiective clare, delegare de autoritate, management participativ, motivatia;",
+        "obiective, responsabilitati, invatare continua;",
+        "motivatie, comunicare, evaluare;",
+        "stabilirea sistemului de obiective specific si individuale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 19,
+      "text": "Ce este cultura organizationala?",
+      "answers": [
+        "modul in care actioneaza angajatii in cadrul firmei;",
+        "politicile si procedurile organizationale;",
+        "setul de valori, norme, obiceiuri si credinte care caracterizeaza o organizatie;",
+        "urmarea elaborarii strategiei organizationale;",
+        "modalitatea de interactiune a indivizilor in cadrul organizatiei."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 20,
+      "text": "Tipurile de cultura organizationala sunt:",
+      "answers": [
+        "cultura puterii, cultura rolului, cultura sarcinilor, cultura suportului, cultura realizarii, cultura inovarii, cultura sigurantei, cultura diversitatii si incluziunii;",
+        "cultura puteri, cultura incluziunii, cultura realizarii, cultura inovarii;",
+        "cultura personala, cultura rolului, cultura realizarii, cultura diversitatii;",
+        "cultura puterii, cultura increderii si sigurantei;",
+        "cultura diversitatii si incluziunii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 21,
+      "text": "Influenta culturii organizationale asupra angajatilor este data de:",
+      "answers": [
+        "valori, norme, reguli, traditii, obiceiuri, cultura diversitatii;",
+        "valori si etica, norme si reguli de conduita, motivatie si angajament, comunicare, recrutarea si retentia angajatilor, raspunderea sociala;",
+        "setul de valori, obiceiuri si credinte, cultura personala, cultura realizarii;",
+        "modul de insusire a valorilor organizationale;",
+        "modul de interactiune a conducerii cu angajatii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 22,
+      "text": "Structura organizationala influenteaza actiunile angajatilor la locul de munca:",
+      "answers": [
+        "ierarhia si puterea, decizii si control, comunicare si informati, specializarea, flexibilitate si adaptabilitate, cultura organizationala, grupuri si echipe de lucru;",
+        "ierarhie, centralizare, fluxuri de informatii, flexibilitate, coeziune, colaborare;",
+        "comportamentul angajatilor, puterea si autoritatea, decizii, descentralizare, comunicare, grupuri si echipe de lucru;",
+        "regulamentul de organizare si functionare si politicile de personal;",
+        "modul de organizare si coordonare a activitatii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Ce reprezinta invatarea organizationala",
+      "answers": [
+        "procesul prin care o organizatie dobandeste cunostine, experienta si abilitati noi pentru a se adapta la schimbarile din mediul sau;",
+        "procesul de dobandire de cunostinte, feedback, cultura invatarii, adaptare si rezilienta;",
+        "procesul de schimbare a paradigmei de gandire si transferul de cunostinte precum si imbunatatirea procesului de invatare;",
+        "procesul de formare profesionala continua;",
+        "procesul de mentorat."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 24,
+      "text": "Impactul tehnologiei asupra culturii organizationale implica:",
+      "answers": [
+        "schimbari tehnologice, transfer tehnologic;",
+        "schimbarea modului de lucru, flexibilitate in lucrul la distanta, inovatie, securitate informationala, cresterea competitivitatii;",
+        "inovare, flexibilitate tehnologica, comunicare, competitivitate;",
+        "facilitarea proceselor tehnologice si de munca;",
+        "utilizarea celor mai modern tehnologii in domeniul de activitate al organizatiei."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Nivelul de motivatie influenteaza comportamentul organizational al individului astfel:",
+      "answers": [
+        "creste productivitatea, implicarea, calitatea muncii, colaborare, inovare si creativitate;",
+        "absenteism si rata de retentie, comunicare si colaborare;",
+        "luarea deciziilor, dezvoltare profesionala;",
+        "creste profitul organizatiei;",
+        "cresc veniturile organizatiei si salariile angajatior."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 26,
+      "text": "Comunicarea orizontala:",
+      "answers": [
+        "cuprinde fluxuri de informatii (mesaje) generate de managerii de la nivelurile cele mai inalte ale organizatiei si adresate celor de la nivelurile inferioare;",
+        "se stabileste intre conducere si subordonati, fiind caracterizata de fluxuri de informatii orientate „de jos in sus” in cadrul unei organizatii, pe verticala sistemului de management;",
+        "apare intre persoane care ocupa pozitii situate la acelasi nivel ierarhic in sistemul de management, intre care exista relatii organizatorice de cooperare;",
+        "apare, de obicei intre persoane ce ocupa posturi situate pe niveluri ierarhice diferite, fara ca intre acestea sa existe relatii de autoritate de tip ierarhic;",
+        "se stabileste intre conducere si subordonati, fiind caracterizata de fluxuri de informatii orientate „de sus in jos” in cadrul unei organizatii, pe verticala sistemului de management."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 27,
+      "text": "Limbajele, sloganurile, povestirile si miturile prin care se vehiculeaza mesaje esentiale ale culturii unei organizatii apartin produselor artificiale:",
+      "answers": [
+        "verbale;",
+        "orale;",
+        "scrise;",
+        "traditionale;",
+        "de prestigiu."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 28,
+      "text": "Care din urmatoarele sunt componente ale culturii organizationale:",
+      "answers": [
+        "micromediul si macromediul;",
+        "produsele artificiale, actorii, eroii, valorile;",
+        "valorile interne, influentele externe, clientii;",
+        "clientii, concurenta, furnizorii;",
+        "stilul de management, leaderii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 29,
+      "text": "Convingerile exprimate prin propozitii generale privind functionarea mediului in care evolueaza grupul reprezinta:",
+      "answers": [
+        "cutume;",
+        "obiceiuri;",
+        "credinte;",
+        "convingeri;",
+        "certitudini."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Care din urmatoarele caracteristici apartin culturii de tip paianjen:",
+      "answers": [
+        "influenta se exercita de la centru catre exterior;",
+        "influenta se exercita de la exterior catre centru;",
+        "are forma unei retele concentrice, cu mai multe centre de autoritate;",
+        "fiecare nod al retelei este un centru de autoritate;",
+        "are forma circulara cu influenta exercitata in toate sensurile."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 31,
+      "text": "Ansamblul produselor artificiale, a valorilor si conceptiilor de baza, a modurilor de gândire si comportament acceptate in general intr-o organizatie ca baza comuna de actiune, defineste:",
+      "answers": [
+        "comportamentul organizational;",
+        "cultura organizationala;",
+        "managementul performant;",
+        "leadershipul;",
+        "stilul de management."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 32,
+      "text": "Procesul de alegere a unei cai de actiune din mai multe posibile in vederea realizarii unor obiective a carei aplicare influenteaza activitatea si/sau comportamentul a cel putin unei alte persoane decât decidentul, defineste:",
+      "answers": [
+        "dispozitia de management;",
+        "comportamentul managerial;",
+        "varianta de lucru;",
+        "sarcina zilnica a unui manager;",
+        "decizia de management."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 33,
+      "text": "Deciziile care se fundamenteaza si se elaboreaza la intervale foarte mari de timp si greu de anticipat sau de cele mai multe ori se regasesc o singura data in cadrul firmei, reprezinta:",
+      "answers": [
+        "decizii aleatorii;",
+        "decizii sezoniere;",
+        "decizii rare;",
+        "decizii unice;",
+        "decizii dificile."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 34,
+      "text": "Individul sau multimea de indivizi care urmeaza sa aleaga varianta cea mai avantajoasa din mai multe posibile, defineste:",
+      "answers": [
+        "decidentul;",
+        "leaderul;",
+        "managerul;",
+        "decizia;",
+        "abilitatea de conducere."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 35,
+      "text": "Deciziile caracterizate prin: manifestarea cu o anumita probabilitate ce poate fi determinata obiectiv, mai multe stari ale conditiilor obiective care influenteaza nivelul consecintelor variantelor decizionale sunt decizii:",
+      "answers": [
+        "zilnice;",
+        "rare;",
+        "manageriale;",
+        "de risc;",
+        "generale."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 36,
+      "text": "Care din urmatoarele elemente reprezinta forte externe care exercita presiune asupra organizatiei pentru schimbare:",
+      "answers": [
+        "schimbari majore in tehnologie, tendinta de globalizare a competitiei, uzura morala accelerata a produselor;",
+        "ciclul de viata al produselor, aria pietei;",
+        "concurenta, preturile si extinderea pietei organizatiei;",
+        "produsul, pretul, distributia si promovarea;",
+        "mediul intern, micromediul si macromediul."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 37,
+      "text": "Ansamblul legaturilor care se stabilesc intre componentele structurii, instituite prin reglementari oficiale reprezinta:",
+      "answers": [
+        "relatiile ierarhice;",
+        "relatiile organizatorice;",
+        "organigrama;",
+        "circuitul intern al documentelor;",
+        "relatiile de colaborare."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 38,
+      "text": "Procesul prin care se stabilesc reguli si proceduri de desfasurare a activitatilor si de functionare a intregii firme, defineste:",
+      "answers": [
+        "reglementarea;",
+        "regularizarea;",
+        "functionarea;",
+        "standardizarea;",
+        "formalizarea."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 39,
+      "text": "Procesul de oficializare prin documente scrise, a regulilor, procedurilor, instructiunilor din cadrul organizatiei, defineste:",
+      "answers": [
+        "reglementarea;",
+        "regularizarea;",
+        "functionarea;",
+        "standardizarea;",
+        "formalizarea."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 40,
+      "text": "Selectati din urmatoarele deficiente, elementele care compun suprainformarea:",
+      "answers": [
+        "scurtcircuitarea, sistemul informational;",
+        "filtrajul;",
+        "redundanta, supraincarcarea canalelor de informatii;",
+        "fluxul informational, procedura informationala;",
+        "data, informatia."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 41,
+      "text": "Ansamblul elementelor prin care se stabilesc si se utilizeaza modalitatile de culegere, inregistrare, prelucrare si transmitere a informatiilor cuprinse in anumite circuite si fluxuri informationale, defineste:",
+      "answers": [
+        "filtrajul;",
+        "procedura informationala;",
+        "sistemul informational;",
+        "frecventa;",
+        "distorsiunea."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 42,
+      "text": "Ansamblul operatiilor de transmitere si primire a simbolurilor cu intelesurile atasate lor, defineste procesul de:",
+      "answers": [
+        "comunicare;",
+        "distributie;",
+        "promovare;",
+        "predare-primire;",
+        "simbolism."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 43,
+      "text": "Procesul de selectie, orientare si mentinere a comportamentului uman in functie de anumite nevoi si aspiratii defineste:",
+      "answers": [
+        "vointa;",
+        "putinta;",
+        "motivatia;",
+        "selectia;",
+        "comportamentul."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 44,
+      "text": "Componentele motivatiei resimtite ca expresie a nevoilor si asteptarile umane, personale, interne si care de regula, creeaza anumite tensiuni sunt:",
+      "answers": [
+        "principale;",
+        "secundare;",
+        "motivele;",
+        "cauzele;",
+        "scopurile."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 45,
+      "text": "Procesul de alterare a comportamentului uman generat de dificultatile in realizarea obiectivelor individuale, defineste:",
+      "answers": [
+        "nereusita;",
+        "demotivatia;",
+        "pozitia negativa,",
+        "lipsa motivatiei;",
+        "lipsa obiectivelor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 46,
+      "text": "Conform lui Maslow, nevoi de auto-actualizare sunt:",
+      "answers": [
+        "compensatiile, planul de pensionare, conditiile sigure de munca, echipament de protectie;",
+        "salariu minim, conditii de munca optime, pauze de lucru, masa gratuita;",
+        "prietenii profesionale, organizarea unor intruniri la nivel de organizatie;",
+        "marirea salariului, lauda, birou propriu, titlu si rang, premii;",
+        "posibilitati de performanta, incurajarea creativitatii, responsabilitate, avansare, autonomie."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 47,
+      "text": "Cele trei nevoi din modelul ERG dezvoltat de Alderfer sunt:",
+      "answers": [
+        "existentiale, relationale si dezvoltare;",
+        "afiliere, putere si realizare;",
+        "fiziologice, securitate si sociale;",
+        "fiziologice, securitate si stima;",
+        "igienice, motivatorii si autorealizare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 48,
+      "text": "Teoria asteptarilor pleaca de la premisa ca:",
+      "answers": [
+        "intensitatea efortului depus de individ intr-o activitate depinde de valoare recompensei pe care se asteapta sa o primeasca in schimb;",
+        "angajatii, membri oricarui grup, isi compara efortul depus la locul de munca, cu efortul altora, respectiv recompensele pe care le obtin in urma depunerii acestui efort, cu cele pe care altii le obtin;",
+        "oamenii sunt interesati nu numai de valoarea recompenselor primite si de obtinerea acestora, cât de justetea acordarii acestora in comparatie cu ceea ce li se ofera altora;",
+        "reperul de comparatie folosit de individ este foarte important in contextul teoriei echitatii;",
+        "starea de tensiune negativa generata de perceperea unei inechitati motiveaza oamenii sa actioneze in directia restabilirii echitatii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 49,
+      "text": "Teoria echitatii a lui Adams precizeaza:",
+      "answers": [
+        "angajatii, membri oricarui grup, isi compara efortul depus la locul de munca, cu efortul altora, respectiv recompensele pe care le obtin in urma depunerii acestui efort, cu cele pe care altii le obtin;",
+        "in orice situatie, omul este interesat de maximizarea câstigului si minimalizarea pierderilor;",
+        "oamenii iau decizii prin selectarea si evaluarea alternativelor dinainte cunoscute care le ofera cele mai mari avantaje;",
+        "intensitatea efortului depus de individ intr-o activitate depinde de valoare recompensei pe care se asteapta sa o primeasca in schimb;",
+        "pentru a fi motivat sa desfasoare o anumita activitate, omul trebuie sa valorizeze recompensa asociata, sa creada ca poate indeplini respectiva activitate si sa dispuna de indiciile potrivit carora performanta sa in activitate va fi rasplatita."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 50,
+      "text": "Care este o cauza obiectiva ce genereaza disfunctionalitati in utilizarea timpului managerului:",
+      "answers": [
+        "insuficienta cunostintelor, calitatilor si aptitudinilor manageriale sau, ceea ce este mai grav, incompetenta unor manageri;",
+        "evitarea asumai unor responsabilitat “fuga de raspundere”, respectiv tendint de a transmite rezolvarea unor problem pe verticala sistemului de management;",
+        "lipsa listei de prioritati in abordarea decizionala si operationala a problemelor cu care se confrunta domeniul condus;",
+        "contactarea managerilor amplasati in pozitii ierarhice superioare in rezolvarea problemelor specifice postului ocupat;",
+        "folosirea necorespunzaaoare a instrumentarului managerial."
+      ],
+      "correctIndex": 2
+    }
+  ]
+}

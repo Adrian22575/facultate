@@ -1,0 +1,724 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Avantajele vederilor (views) sunt: 1) Partajarea datelor; 2) Securitatea datelor; 3) Viteza returnarii datelor; 4) Economie a spatiului de stocare; 5) nici un raspuns corect Selectati raspunsul corect:",
+      "answers": [
+        "1;",
+        "1+2;",
+        "2+3+4;",
+        "1+2+3+4;",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 2,
+      "text": "Care din instructiunile de mai jos returneaza produsul cartezian al inregistrarilor din doua tabele?",
+      "answers": [
+        "UNION;",
+        "FULL OUTER JOIN;",
+        "INNER JOIN;",
+        "MINUS;",
+        "SELECT * FROM nume_tabela1, nume_tabela2."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 3,
+      "text": "Dupa instructiunea de grupare GROUP BY putem folosi clauzele:",
+      "answers": [
+        "WHERE;",
+        "LIKE;",
+        "HAVING;",
+        "IN;",
+        "OUT."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 4,
+      "text": "Instructiunea urmatoare sterge structura unei tabele:",
+      "answers": [
+        "DELETE FROM TABLE;",
+        "ROLLBACK;",
+        "COMMIT;",
+        "ALTER;",
+        "DROP TABLE."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 5,
+      "text": "Sunt metode de proiectare urmatoarele: 1) prin normalizare; 2) modelarea entitatilor si asocierilor; 3) modelarea ortogonala. Selectati varianta corecta:",
+      "answers": [
+        "1;",
+        "2+3;",
+        "c;",
+        "1+2+3;",
+        "1+2"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 6,
+      "text": "Metodele CRUD sunt urmatoarele: 1) CREATE; 2) DELETE; 3) UPDATE; 4) DELETE; 5) INSERT. Selectati varianta corecta:",
+      "answers": [
+        "1+2+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "1+3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 7,
+      "text": "Sunt operatii de algebra relationala: 1) Proiectia, Produsul cartezian; 2) Restrictia, Gruparea, Intersectia; 3) Uniunea, Scaderea; 4) Rostogolirea peste una sau mai multe dimensiuni. Selectati varianta corecta:",
+      "answers": [
+        "1+2;",
+        "2+4;",
+        "2+3+4;",
+        "1+2+3;",
+        "1+2."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 8,
+      "text": "Procedura de normalizare cuprinde urmatoarele forme: 1) Forma Normala Unu (1NF): Relatie in care la intersectia oricarei linii cu oricare coloana gasim un camp care contine exact o valoare; 2) Forma Normala Doi (2NF): O relatie este in forma normala doi, daca este in forma normala unu si fiecare atribut care nu apartine cheii primare, este total dependent functional de cheia primara; 3) Forma Normala Trei (3NF): O relatie care este in forma normala doi si nu exista nici un atribut care sa nu apartina cheii principale si care sa fie tranzitiv dependenta de cheia principal; 4) BCNF (Boyce-Codd). Selectati varianta correcta:",
+      "answers": [
+        "1;",
+        "2;",
+        "3;",
+        "1+2+3;",
+        "1+2+3+4."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 9,
+      "text": "Sunt functii de agregare urmatoarele: 1) TO_DATE; 2) AVG; 3) COUNT; 4) UPPER. Selectati varianta corecta:",
+      "answers": [
+        "1+2;",
+        "1+2+3;",
+        "1+2+3+4;",
+        "2+3+4;",
+        "2+3."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 10,
+      "text": "Tipuri de restrictii: 1) pe domenii; 2) pe valoare; 3) unicitatea cheilor; 4) referentiale. Selectati varianta corecta:",
+      "answers": [
+        "1+2;",
+        "2+3;",
+        "1+2+3;",
+        "2+3+4;",
+        "1+2+3+4."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 11,
+      "text": "O baza de date relationala este:",
+      "answers": [
+        "O colectie de date interrelationate gestionate ca o singura unitate;",
+        "Un produs software furnizat de un producator de baze de date;",
+        "O structura de date, cum ar fi un tabel, o vizualizare sau un index;",
+        "Definita in acelasi mod de toti producatorii de software;",
+        "Nici un raspuns corect."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "text": "Un Obiect al unei baze de date este:",
+      "answers": [
+        "O colectie de inregistrari inrudite, stocate ca o singura unitate;",
+        "Un produs software furnizat de un producator de baze de date;",
+        "O structura, cum ar fi un tabel, o vizualizare sau un index;",
+        "O colectie de date interrelationate gestionate ca o singura unitate;",
+        "Nici un raspuns corect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 13,
+      "text": "Care dintre urmatoarele baze de date nu este un SGBD (sistem de gestiune a bazelor de date relatioanale):",
+      "answers": [
+        "Oracle Database;",
+        "MySQL;",
+        "Excel Database;",
+        "Microsoft SQL Server;",
+        "Nici un raspuns corect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Componentele unei baze de date relationale nu includ:",
+      "answers": [
+        "Tabele;",
+        "Diagrame ERD;",
+        "Restrictii;",
+        "Relatii;",
+        "Nici un raspuns corect."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 15,
+      "text": "Normalizarea nu rezolva:",
+      "answers": [
+        "Anomalia de stergere;",
+        "Anomalia de actualizare;",
+        "Anomalia de inserare;",
+        "Anomalia de creare’",
+        "Nici un raspuns corect."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 16,
+      "text": "O cheie primara:",
+      "answers": [
+        "Poate fi compusa numai dintr-un singur atribut;",
+        "Poate fi compusa din mai multe atribute;",
+        "Poate fi compusa dintr-un singur atribut care are si valori NULL;",
+        "Poate fi compusa din zero, unul sau mai multe atribute;",
+        "Nici un raspuns corect."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 17,
+      "text": "Intre avantajele bazelor de date se numara: 1) nepartajarea datelor intre utilizatori; 2) organizarea datelor pe doua niveluri - fizic si logic; 3) gestionarea centralizata a datelor printr-un SGBD; 4) integrarea in aceeasi structura a tuturor datelor pertinente ale unui sistem informatic; 5) independenta datelor fata de programele de aplicatii. Selectati varianta corecta:",
+      "answers": [
+        "1+2+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 18,
+      "text": "O entitate se caracterizeaza prin: 1) este identificata unic printr-un nume; 2) cuprinde, in general, mai multe valori sau realizari; 3) administreaza obiecte; 4) semnifica un obiect concret sau abstract, reprezentat prin proprietatile sale; 5) semnifica o caracteristica a unui obiect concret. Selectati varianta corecta:",
+      "answers": [
+        "1+2+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 19,
+      "text": "O entitate din modelul Entitate-Asociere are urmatoarele caracteristici: 1) are o existenta proprie; 2) este intotdeauna concreta; 3) trebuie definita fara ambiguitati; 4) este intotdeauna legata de o alta entitate printr-o asociere; 5) este identificata unic prin ansamblul atributelor sale. Selectati varianta corecta:",
+      "answers": [
+        "1+2+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 20,
+      "text": "Administratorul bazei de date asigura: 1) scrierea programelor in cod-masina; b. autorizarea accesului la date; 3) realizarea obiectivelor si functiilor sistemului; 4) definirea politicii de backup si recovery; 5) crearea programelor de aplicatii. Selectati varianta corecta:",
+      "answers": [
+        "2+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 21,
+      "text": "Care dintre urmatoarele instructiuni SQL permite afisarea numarului de salariati pe fiecare compartiment care incepe cu litera ”A” din urmatorul tabel: ANGAJATI (CodAngaj, Nume, DataAngajare, Compartiment, Profesia, Salariu)?",
+      "answers": [
+        "SELECT CodAngajat, Nume, Compartiment FROM ANGAJATI WHERE Nume like A*;",
+        "SELECT COUNT(CodAngajat) AS Numar, Nume, Compartiment FROM ANGAJATI WHERE Nume like \"A*\" GROUP BY Compartiment;",
+        "SELECT CodAngajat, Nume, Compartiment FROM ANGAJATI WHERE Compartiment like A*;",
+        "SELECT COUNT(CodAngajat) AS Numar, Compartiment FROM ANGAJATI WHERE Compartiment like \"A*\" GROUP BY Compartiment;",
+        "Niciuna dintre cele de mai sus."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 22,
+      "text": "Care dintre urmatoarele instructiuni SQL are ca efect afisarea zilelor in care s-au emis mai mult de doua chitante din tabelul CHITANTE (NrChitanta, Suma, DataChitanta, NrGhiseu )?",
+      "answers": [
+        "SELECT Nrchitanta, Suma, Data FROM CHITANTE WHERE COUNT(NrChitanta)>2;",
+        "SELECT Nrchitanta, Suma, Data FROM CHITANTE HAVING COUNT(NrChitanta)>2;",
+        "SELECT CHITANTE.Data FROM CHITANTE GROUP BY Data HAVING COUNT(NrChitanta)> 2;",
+        "SELECT COUNT(Data), COUNT(NrChitanta) FROM CHITANTE WHERE Data IS Unique;",
+        "SELECT Data FROM CHITANTE WHERE COUNT(NrChitanta) > 2."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 23,
+      "text": "Se da entitatea ANGAJATI, cu urmatoarele atribute: ANGAJATI (CodAngaj, Nume, DataAngajare, compartiment, profesia, salariu). Care dintre urmatoarele instructiuni SQL permite stergerea salariatilor angajati inainte de inceputul anului 2023, cu profesia ”profesor”.",
+      "answers": [
+        "DELETE FROM Angajati WHERE DataAngajare < ”1/1/2022” AND profesia = ”profesor”;",
+        "DELETE * FROM Angajati WHERE profesia LIKE ”profesor” HAVING YEAR(DataAngajare) <2023;",
+        "DELETE Angajati WHERE DataAngajare < ”1/1/2023” AND profesia LIKE ”*profesor*”;",
+        "UPDATE Angajati SET CodAngaj = Null WHERE DataAngajare < ”1/1/2023” AND profesia = ”profesor”;",
+        "niciuna."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 24,
+      "text": "Restrictiile referentiale intre doua tabele sunt date de:",
+      "answers": [
+        "Cheile primare si cheile externe;",
+        "Coloanele commune;",
+        "Coloanele din clauza CHECK;",
+        "Coloanele din SELECT;",
+        "Chei externe."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 25,
+      "text": "Numele unei coloane dintr-un tabel: 1) trebuie sa fie unic in cadrul tabelului; 2) trebuie sa fie unic in cadrul bazei de date; 3) are asociat un index; 4) trebuie sa apara in instructiunea CREATE TABLE; 5) trebuie sa fie specificata in instructiunea ALTER TABLE. Selectati varianta corecta:",
+      "answers": [
+        "1+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 26,
+      "text": "Se dau tabelele EMPLOYEE (EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_ID, SALARY) si DEPARTMENT (DEPARTMENT_ID, DEPARTMENT_NAME) si urmatoarea interogare: SELECT e.EMPLOYEE_ID, e.LAST_NAME, e.DEPARTMENT_ID, d.DEPARTMENT_NAME FROM EMPLOYEE e, DEPARTMENT d WHERE e.DEPARTMENT_ID = d.DEPARTMENT_ID; Ce operatii implementeaza aceasta interogare?",
+      "answers": [
+        "Diferenta, proiectia si intersectia;",
+        "Selectia, proiectia si intersectia;",
+        "Selectia, intersectia si uniunea;",
+        "Intersectia, proiectia si intersectia;",
+        "Diferenta, intersectia si uniunea."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 27,
+      "text": "SGBD-ul ofera urmatoarele servicii de baza: 1) Arhivarea si dezarhivarea datelor; 2) Gestiunea accesului concurential la date; 3) Limbaj de programare visual pentru accesul la date; 4) Scanarea (citirea) datelor; 5) Optimizarea datelor. Selectati varianta corecta:",
+      "answers": [
+        "1+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 28,
+      "text": "Precizati care din serviciile de mai jos este pus la dispozitie de un DBMS relational: 1) Citirea (scanarea) datelor; 2) Analiza datelor; 3) Salvarea si refacerea bazelor de date; 4) Operativitatea datelor; 5) Optimizarea si scanarea datelor. Selectati varianta corecta:",
+      "answers": [
+        "1+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 29,
+      "text": "Obiectele dintr-o baza de date pot fi: 1) Functii pentru concatenarea datelor; 2) Operatori conjunctivi; 3) Proceduri stocate; 4) Cursoare; 5) Tabele si indecsi. Selectati varianta corecta:",
+      "answers": [
+        "1+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "1+3+5."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 30,
+      "text": "Modelul relational a fost dezvoltat de:",
+      "answers": [
+        "Pascal",
+        "Fibonacci",
+        "Bill Gates",
+        "Codd",
+        "Ajax"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 31,
+      "text": "Care din elemente pot fi componente ale bazelor de date relationale: 1) Uniuni; 2) Triggers; 3) Restrictii NOT NULL; 4) Interogari; 5) Operatori logici. Selectati varianta corecta:",
+      "answers": [
+        "1+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 32,
+      "text": "Restrictia CHECK:",
+      "answers": [
+        "Valideaza valoarea unei coloane;",
+        "Reface datele in caz de eroare;",
+        "Asigura ordonarea datelor;",
+        "Impiedica redundanta datelor;",
+        "Asigura backup-ul bazei de date."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 33,
+      "text": "Restrictia NOT NULL: 1) Permite indexarea tabelelor; 2) Impiedica folosirea valorilor nule; 3) Asigura integritatea datelor; 4) Impiedica redundanta datelor; 5)Asigura coerenta datelor. Selectati varianta corecta:",
+      "answers": [
+        "2+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 34,
+      "text": "Un tabel poate avea cel mult:",
+      "answers": [
+        "O singura cheie de tip index;",
+        "O singura cheie externa;",
+        "O singura cheie secundara;",
+        "O singura cheie primara;",
+        "O singura cheie unica."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 35,
+      "text": "Asocierile dintr-o baza de date pot fi: 1) Mixte; 2) Circulare; 3) De tipul mai multi la unu; 4) Unice; 5) Singulare. Selectati varianta corecta:",
+      "answers": [
+        "1+2+3+4;",
+        "2+3;",
+        "1+2+3+5;",
+        "2+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 36,
+      "text": "Cardinalitatea maxima poate fi:",
+      "answers": [
+        "Unu;",
+        "Unu la unu;",
+        "Unu la mai multi;",
+        "N-1;",
+        "Infinit."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 37,
+      "text": "Cardinalitatea minima poate fi:",
+      "answers": [
+        "Mai multi la unu;",
+        "Unu la unu;",
+        "Unu la mai multi;",
+        "-1;",
+        "Unu."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 38,
+      "text": "Cheia primara poate fi:",
+      "answers": [
+        "Formata din valori care se repeta;",
+        "Compusa din mai multe coloane;",
+        "De tipul unu la unu;",
+        "Folosita la salvarea datelor;",
+        "De tipul unu la N."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 39,
+      "text": "Coloanele care participa la o restrictie de unicitate:",
+      "answers": [
+        "Pot avea valori nule;",
+        "Nu pot avea valori nule;",
+        "Trebuie sa fie de tip numeric;",
+        "Trebuie sa fie de tip autonumber;",
+        "Trebuie sa fie de tip CHAR."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 40,
+      "text": "O valoare nula:",
+      "answers": [
+        "Este un spatiu liber;",
+        "Este un sir vid;",
+        "Este o valoare speciala egala cu NULL;",
+        "Trebuie sa fie de tip autonumber;",
+        "Este valoarea zero."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 41,
+      "text": "Vizualizarea (View) poate: 1) fi o tabela fizica (materializata); 2) fi o tabela cu cel mult o cheie unica; 3) fi un obiect gestionat dinamic in memorie(cache); 4) stoca date; 5) avea comportamentul unui tabel. Selectati varianta corecta:",
+      "answers": [
+        "1+2+3+4;",
+        "2+3;",
+        "1+2+3+5;",
+        "2+4;",
+        "1+3+4+5."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 42,
+      "text": "Vizualizarea (view) poate: 1) Impiedica redundanta datelor; 2) Optimiza structura tabelelor; 3) Optimiza indecsii; 4) Stoca cheile de index; 5) Masca coloanele pe care utilizatorul nu trebuie sa le vada. Selectati varianta corecta:",
+      "answers": [
+        "1+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "1+2+5."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 43,
+      "text": "Intr-o baza de date putem avea: 1) Reguli redundante; 2) Restrictii privind referentialitatea; 3) Restrictii pe domenii (de ex. tip Integer); 4) Restrictii de valoare (de ex. nu mai mult de doua caractere - CHAR); 5) Reguli de concatenare a datelor. Selectati varianta corecta:",
+      "answers": [
+        "1+4;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 44,
+      "text": "La nivel conceptual:",
+      "answers": [
+        "Datele sunt destinate utilizatorilor finali;",
+        "Structura bazei de date apare sub forma unor view-uri;",
+        "Datele sunt privite d.p.d.v. semantic (predicate);",
+        "Baza de date apare sub forma fisierelor stocate pe calculator;",
+        "Se simplifica interactiunea dintre baza de date si utilizatori."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 45,
+      "text": "Nivelurile de abstractizare a datelor pot fi: 1) Extern; 2) Intern, Referential; 3) Semantic, Extern; 4) Conceptual; 5) Fizic. Selectati varianta corecta:",
+      "answers": [
+        "1+4+5;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 46,
+      "text": "Proiectarea bazei de date prin normalizare presupune si: 1) Crearea view-rilor; 2) Optimizarea structurii tabelelor (variabile de relatie); 3) Scaderea timpului de raspuns al server-ului; 4) Optimizarea spatiului ocupat de baza de date; 5) Optimizarea asocierilor. Selectati varianta corecta:",
+      "answers": [
+        "1+4+5;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 47,
+      "text": "In structura unui tabel nu se pot regasi:",
+      "answers": [
+        "Campuri de stare;",
+        "Campuri de tip OLAP/OLTP (ex. Agregari, dimensiuni, samd.);",
+        "Campuri de legatura cu alte tabele;",
+        "Campuri de identificare;",
+        "Campuri cheie primara."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 48,
+      "text": "Procesul de normalizare poate determina: 1) Un numar mai mare de relatii decat intr-un model fara normalizare; 2) Numarul optim de campuri compuse dintr-un tabel; 3) Un numar mai mare de restrictii decat intr-un model fara normalizare; 4) Un numar mai mic de tabele decat intr-un model fara normalizare; 5) Un numar de minim 3 tabele in diagrama ERD. Selectati varianta corecta:",
+      "answers": [
+        "1+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+5;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 49,
+      "text": "Alegeti propozitia adevarata: 1) Proiectarea bazelor de date prin normalizare incepe cu optimizarea structurii; 2) Normalizarea elimina redundanta datelor; 3) Cheile candidate se mai numesc si indecsi; 4) O tabela poate avea cel putin o cheie primara; 5) Relatiile intr-o baza de date se refera la restrictii. Selectati varianta corecta:",
+      "answers": [
+        "1+2+3;",
+        "1+2+3+4;",
+        "1+2+3+5;",
+        "2+3+4;",
+        "2+3+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 50,
+      "text": "Prima forma normala:",
+      "answers": [
+        "Asigura eliminarea dependentelor partiale;",
+        "Asigura eliminarea dependentelor tranzitive;",
+        "Foloseste indecsi unici in relatiile m la m;",
+        "Presupune descompunerea bazei de date in minim 3 tabele;",
+        "Asigura eliminarea datelor multivaloare."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 51,
+      "text": "A doua forma normala:",
+      "answers": [
+        "Asigura eliminarea dependentelor tranzitive;",
+        "Asigura eliminarea restrictiilor referentiale;",
+        "Presupune descompunerea bazei de date in minim 3 tabele;",
+        "Asigura eliminarea dependentelor partiale;",
+        "Asigura coerenta datelor multivaloare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 52,
+      "text": "A treia forma normala:",
+      "answers": [
+        "Asigura eliminarea restrictiei NOT NULL;",
+        "Asigura eliminarea dependentelor tranzitive;",
+        "Presupune descompunerea bazei de date in minim 3 tabele;",
+        "Asigura optimizarea spatiului ocupat pe disc de baza de date;",
+        "Asigura partajarea datelor multivaloare."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 53,
+      "text": "A doua forma normala se aplica:",
+      "answers": [
+        "Numai relatiilor care au identificatoare unice formate din atribute multiple;",
+        "Numai in cazul relatiilor de tip unu la mai multi;",
+        "Numai daca baza de date are minim trei tabele;",
+        "Numai pentru relatiile care folosesc indecsi unici;",
+        "Numai pentru coloanele multivaloare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 54,
+      "text": "O relatie este in a doua forma normala daca cel putin:",
+      "answers": [
+        "Relatiile care au identificatoare unice formate din atribute multiple sunt limitate la 1;",
+        "Toate relatiile sunt de tipul unu la mai multi;",
+        "Toate atributele non-cheie sunt dependente functional de identificatorul unic, luat ca intreg;",
+        "Folosim indecsi unici;",
+        "Coloanele multivaloare sunt indexate cu chei externe."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 55,
+      "text": "O relatie este in a treia forma normala daca cel putin:",
+      "answers": [
+        "Relatiile care au identificatoare unice formate din atribute multiple sunt limitate la 2;",
+        "Toate relatiile sunt de tipul mai multi la unu;",
+        "Toate relatiile de tipul m la n au fost descompuse in relatii de tipul unu la unu;",
+        "Toate atributele non-cheie depind numai de identificatorul unic;",
+        "Coloanele multivaloare sunt indexate cu chei externe."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 56,
+      "text": "Reducerea redundantei datelor poate asigura:",
+      "answers": [
+        "Eliminarea anomaliilor de stergere;",
+        "Eliminarea anomaliilor de inserare;",
+        "Eliminarea restrictiilor CHECK;",
+        "Eliminarea atributelor non-cheie;",
+        "Eliminarea campurilor obtinute prin calcul pe baza campurilor atomice."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 57,
+      "text": "Limbajul SQL:",
+      "answers": [
+        "Este un limbaj potrivit pentru programarea generala a aplicatiilor;",
+        "Este un limbaj declarativ;",
+        "Este un limbaj procedural;",
+        "Este un limbaj pentru dezvoltarea aplicatiilor web;",
+        "Este un limbaj structurat."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 58,
+      "text": "Folosind Baza de date COMENZI care contine tabelele: PERSOANE (IdPersoana, Nume, Prenume, Oras) si COMENZI (IdComanda, Valoare, IdPersoana) precizati codul SQL care genereaza o interogare ce afiseaza IdPersoana si Valoarea totala a comenzilor efectuate de fiecare persoana.",
+      "answers": [
+        "SELECT Comenzi.IdPersoana, AVG(Comenzi.Valoare) FROM Comenzi GROUP BY Comenzi.IdPersoana;",
+        "SELECT Comenzi.IdPersoana, AVG(Comenzi.Valoare) FROM Comenzi ORDER BY Comenzi.IdPersoana;",
+        "SELECT Comenzi.IdPersoana, SUM(Comenzi.Valoare) FROM Comenzi ORDER BY Comenzi.IdPersoana;",
+        "SELECT Comenzi.IdPersoana, SUM(Comenzi.Valoare) FROM Comenzi GROUP BY Comenzi.IdPersoana;",
+        "SELECT Comenzi.IdPersoana, SUM(Comenzi.Valoare) FROM Comenzi;"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 59,
+      "text": "Alegeti instructiunea corecta care afiseaza fiecare cod de gen, impreuna cu numarul de filme asociate fiecarui cod:",
+      "answers": [
+        "SELECT Movie_Genre_Code, SUM(Pret_Dvd) AS Nr_Filme_Cod FROM Movie GROUP BY Movie_Genre_Code;",
+        "SELECT Movie_Genre_Code, COUNT(*) AS Nr_Filme_Cod FROM Movie ORDER BY Movie_Genre_Code;",
+        "SELECT Movie_Genre_Code, COUNT(*) AS Nr_Filme_Cod FROM Movie GROUP BY Movie_Genre_Code;",
+        "SELECT COUNT(*) AS Nr_Filme_Cod FROM Movie ORDER BY Movie_Genre_Code;",
+        "SELECT Movie_Genre_Code, Sum(Id_Film) AS Nr_Filme_Cod FROM Movie ORDER BY Movie_Genre_Code;"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 60,
+      "text": "Instructiunea SELECT PERSON_FAMILY_NAME AS NUME FROM PERSON WHERE SUBSTRING (PERSON_FAMILY_NAME,1,1)='B'",
+      "answers": [
+        "Afiseaza numele de familie folosind pseudonimul PERSON pentru persoanele al caror nume incepe cu „B\" sau „b\"",
+        "Afiseaza numele de familie folosind pseudonimul NUME pentru persoanele al caror nume incepe cu „B\" sau „b\"",
+        "Afiseaza numele de familie folosind pseudonimul NUME pentru persoanele al caror nume incepe numai cu „B\"",
+        "Afiseaza numele de familie folosind pseudonimul NUME pentru persoanele al caror nume incepe numai cu „b\"",
+        "Afiseaza numele de familie folosind pseudonimul NUME pentru persoanele al caror nume contine litera „B\" sau „b\""
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

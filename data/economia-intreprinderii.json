@@ -1,0 +1,724 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Agentii economici: 1. sunt persoane sau grupuri de persoane fizice si/sau juridice; 2. se identifica cu subiectii de proprietate; 3. au ca obiectiv principal obtinerea de profit.",
+      "answers": [
+        "1+2;",
+        "1+3;",
+        "2+3;",
+        "1+2+3;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 2,
+      "text": "Intreprinderea economica: 1. utilizeaza un complex de resurse in vederea realizarii obiectivelor; 2. functioneaza ca un sistem inchis; 3. prezinta o dimensiune tehnico-materiala.",
+      "answers": [
+        "1+3;",
+        "2+3;",
+        "1+2;",
+        "1+2+3;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "text": "In functie de criteriul apartenentei nationale, intreprinderile pot fi: 1. industriale; 2. comerciale; 3. multinationale; 4. mixte.",
+      "answers": [
+        "1+2+3;",
+        "1+2;",
+        "3+4;",
+        "1+4;",
+        "1+3."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 4,
+      "text": "Inceputul anilor ’60 a fost marcat de dezvoltarea:",
+      "answers": [
+        "intreprinderilor mijlocii;",
+        "intreprinderilor mari;",
+        "intreprinderilor mici;",
+        "microintreprinderilor;",
+        "tuturor intreprinderilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 5,
+      "text": "Macromediul organizatiei cuprinde:",
+      "answers": [
+        "mediul economic;",
+        "furnizorii;",
+        "clientii;",
+        "firmele concurente;",
+        "organismele publice."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "text": "Micromediul intreprinderii include: 1) organismele publice; 2) mediul cultural; 3) clientii; 4. mediul tehnologic.",
+      "answers": [
+        "1+2+3;",
+        "1+3;",
+        "2+4;",
+        "1+2+3+4;",
+        "1+2+4."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 7,
+      "text": "Dimensiunile primare ale unei intreprinderi se refera la:",
+      "answers": [
+        "controlul fluxului muncii;",
+        "concentrarea autoritatii;",
+        "structura activitatilor;",
+        "procedurile formalizate ale organizatiei;",
+        "numarul legaturilor din mediu."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 8,
+      "text": "Dimensiunile fundamentale ale intreprinderii sunt:",
+      "answers": [
+        "standardizarea;",
+        "organizarea generala;",
+        "structura activitatilor;",
+        "specializarea;",
+        "calitatea."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 9,
+      "text": "In mediul schimbator:",
+      "answers": [
+        "schimbarile se produc la intervale mari de timp;",
+        "se pot prevedea, in general, modificarile;",
+        "isi desfasoara activitatea in prezent un numar redus de organizatii;",
+        "functioneaza numai firmele din ramurile de vârf;",
+        "influenteaza numai firmele mari."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 10,
+      "text": "Intreprinderea are urmatoarele roluri: 1) cultural; 2) social; 3) politic; 4) economic.",
+      "answers": [
+        "1+2+3;",
+        "2+4;",
+        "1+3;",
+        "2+3;",
+        "1+4."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 11,
+      "text": "Rolul economic al intreprinderii se refera la: 1) implinirea profesionala a salariatilor; 2) atragerea si combinarea factorilor de productie; 3) finalizarea activitatii desfasurate prin producerea de bunuri si servicii; 4) satisfacerea preferintelor consumatorilor.",
+      "answers": [
+        "1+2+3;",
+        "2+3;",
+        "1+2+4;",
+        "1+4;",
+        "2+4."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 12,
+      "text": "Performanta unei intreprinderi prezinta o dimensiune: 1) materiala; 2) economica; 3) tehnica; 4) culturala.",
+      "answers": [
+        "2+3;",
+        "1+2+3;",
+        "1+4;",
+        "1+3+4;",
+        "1+2+3+4."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 13,
+      "text": "Functiunile intreprinderii:",
+      "answers": [
+        "nu sunt notiuni abstracte;",
+        "au un caracter specific;",
+        "prezinta ponderi diferite in functie de specificul activitatii desfasurate;",
+        "sunt prezente doar in anumite intreprinderi;",
+        "prezinta ponderi egale in cadrul intreprinderilor."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Functiunea de cercetare-dezvoltare:",
+      "answers": [
+        "vizeaza si introducerea unor noi metode si tehnici cu caracter organizatoric;",
+        "se regaseste in toate organizatiile;",
+        "nu este corelata cu functiunea de productie;",
+        "comensureaza veniturile si cheltuielile;",
+        "presupune activitati care nu utilizeaza resurse."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 15,
+      "text": "Functiunea financiar-contabila: 1) presupune activitati care utilizeaza resurse financiare; 2) nu prezinta un caracter corectiv; 3) comensureaza veniturile si cheltuielile.",
+      "answers": [
+        "1+2;",
+        "1+3;",
+        "2+3;",
+        "1+2+3;",
+        "nici o varianta corecta."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 16,
+      "text": "Functiunea de productie:",
+      "answers": [
+        "nu are in vedere pregatirea productiei;",
+        "se manifesta diferit, in functie de profilul organizatiei;",
+        "se manifesta egal, indiferent de profilul organizatiei;",
+        "nu include activitatea de aprovizionare tehnico-materiala;",
+        "prezinta o importanta majora in firmele comerciale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 17,
+      "text": "Functiunea comerciala:",
+      "answers": [
+        "cuprinde si activitatea de marketing;",
+        "nu include activitatea de aprovizionare tehnico-materiala;",
+        "vizeaza introducerea unor noi produse si tehnologii;",
+        "are in vedere activitatea de evidenta financiara",
+        "presupune activitati care nu utilizeaza resurse."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 18,
+      "text": "Functiunea de personal:",
+      "answers": [
+        "incepe cu activitatea de selectie a personalului;",
+        "are in vedere motivarea, perfectionarea si promovarea resurselor umane;",
+        "se manifesta egal, indiferent de profilul organizatiei;",
+        "presupune activitati care nu utilizeaza resurse;",
+        "nu presupune protectia salariatilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 19,
+      "text": "Structura organizatorica este influentata de:",
+      "answers": [
+        "dimensiunea intreprinderii;",
+        "sistemul informational bancar;",
+        "ponderea salariatilor tineri in cadrul firmei;",
+        "sistemul monetar bancar;",
+        "nu presupune protectia salariatilor."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 20,
+      "text": "Structura functionala:",
+      "answers": [
+        "nu este sinonima cu structura de conducere;",
+        "cuprinde structura de productie si conceptie;",
+        "este parte componenta a structurii organizatorice.",
+        "nici o varianta corecta.",
+        "nu presupune protectia salariatilor."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 21,
+      "text": "Printre componentele structurii functionale se regasesc: 1) postul; 2) locul de munca; 3) atelierul de productie; 4) compartimentul.",
+      "answers": [
+        "1+2+3",
+        "1+4",
+        "2+3+4",
+        "2+3",
+        "1+3+4"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 22,
+      "text": "Organigrama: 1) constituie o expresie a organizarii informale; 2) se realizeaza pe baza unor reguli specifice; 3) este o reprezentare grafica a structurii organizatorice.",
+      "answers": [
+        "2+3",
+        "1+2",
+        "1+3",
+        "1+2+3",
+        "nici o varianta corecta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Organizarea informala:",
+      "answers": [
+        "nu are conexiuni cu organizarea formala;",
+        "prezinta un caracter oficial;",
+        "este paralela cu organizarea formala.",
+        "nici o varianta corecta;",
+        "se refera la organizarea resurselor intreprinderii."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 24,
+      "text": "Functia de previziune a managementului unei intreprinderi:",
+      "answers": [
+        "vizeaza identificarea resurselor necesare realizarii obiectivelor intreprinderii;",
+        "urmareste alocarea resurselor pe activitati;",
+        "nici o varianta corecta;",
+        "intarirea autocontrolului pentru fiecare angajat in parte;",
+        "are in vedere organizarea resurselor intreprinderii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 25,
+      "text": "Activitatea de organizare:",
+      "answers": [
+        "cuprinde numai organizarea productiei;",
+        "are in vedere antrenarea resurselor umane in adoptarea deciziilor;",
+        "reuneste trei componente de baza ale intreprinderii;",
+        "nici o varianta corecta;",
+        "urmareste alocarea resurselor pe activitati."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 26,
+      "text": "Exercitarea functiei de comanda presupune:",
+      "answers": [
+        "motivarea salariatilor in indeplinirea sarcinilor;",
+        "sincronizarea in timp si spatiu a deciziilor si actiunilor managerilor si angajatilor;",
+        "intarirea autocontrolului pentru fiecare angajat in parte;",
+        "nici o varianta corecta;",
+        "o serie de aspecte ce au in vedere activitatea de aprovizionare tehnico- materiala"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 27,
+      "text": "Deciziile strategice:",
+      "answers": [
+        "se adopta la nivelul esaloanelor manageriale inferioare/ de jos;",
+        "au in vedere un orizont redus de timp;",
+        "vizeaza activitatea de ansamblu a intreprinderii;",
+        "se adopta la nivelul esaloanelor manageriale medii;",
+        "nici o varianta corecta,"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 28,
+      "text": "Deciziile tactico-operative:",
+      "answers": [
+        "se refera la o perioada mai scurta de timp;",
+        "sunt sinonime cu deciziile-cadru;",
+        "se refera la o perioada mai lungi de timp;",
+        "se adopta la nivelul superior al conducerii;",
+        "nici o varianta corecta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 29,
+      "text": "Sistemul informational: 1) este parte componenta a sistemului informatic; 2) furnizeaza informatii sistemului decizional; 3) trebuie sa asigure tratarea unitara a informatiilor; 4) trebuie sa asigure tratarea neunitara a informatiilor; 5) nici o varianta corecta.",
+      "answers": [
+        "2+3",
+        "5",
+        "1+2+3",
+        "1+2",
+        "2+4"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 30,
+      "text": "Dintre functiile sistemului informational, mentionam: 1) functia operationala; 2) functia organizatorica; 3) functia documentara.",
+      "answers": [
+        "1+3",
+        "1+2",
+        "2+3",
+        "1+2+3",
+        "nicio varianta corecta"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 31,
+      "text": "Managerul care promoveaza un stil de conducere persuasiv:",
+      "answers": [
+        "adopta decizii fara a tine cont de opiniile salariatilor;",
+        "isi consulta colaboratorii in procesul decizional;",
+        "incearca sa obtina adeziunea subordonatilor inainte de momentul aplicarii deciziei;",
+        "nicio varianta corecta;",
+        "conduce prin intermediul altor persoane"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 32,
+      "text": "In functie de scopul urmarit, exista urmatoarele tipuri de strategii: 1) strategii de consolidare; 2) strategii inovationale; 3) strategii de dezvoltare; 4) strategii de produs.",
+      "answers": [
+        "2+4",
+        "1+2+3+4",
+        "3+4",
+        "1+2",
+        "1+4"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 33,
+      "text": "Dupa sfera de cuprindere, strategiile economice pot fi: 1) de redresare; 2) partiale; 3) globale.",
+      "answers": [
+        "1+2+3",
+        "2+3",
+        "1+3",
+        "1+2",
+        "nicio varianta corecta"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 34,
+      "text": "Planificarea: 1) este o functiune de baza a managementului; 2) se realizeaza in mod obligatoriu pe termen lung; 3) poate fi strategica si tactica.",
+      "answers": [
+        "1+3",
+        "1+2",
+        "2+3",
+        "1+2+3",
+        "nicio varianta corecta"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 35,
+      "text": "Planul economic: 1) nu are in vedere activitatea de comert exterior; 2) constituie un instrument esential in activitatea de conducere; 3) concretizeaza prevederile strategiei economice.",
+      "answers": [
+        "2+3",
+        "1+3",
+        "1+2",
+        "1+2+3",
+        "nicio varianta corecta"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 36,
+      "text": "Mediul extern al intreprinderii determina o serie de efecte asupra intreprinderii, efecte referitoare, de exemplu, la: 1) adoptarea de structuri organizatorice rigide, adecvate frecventei, complexitatii si amplitudinii schimbarilor; 2) multiplicarea „punctelor de contact” intre intreprindere si mediul ei extern, astfel incat sa poata fi sesizate operativ si corect schimbarile; 3) diferentierea modului de definire a atributiilor in cadrul activitatilor, in functie de gradul de afectare a acestora la schimbarile mediului; 4) scaderea importantei activitatilor de prognoza a schimbarilor.",
+      "answers": [
+        "1+2+4",
+        "2+3",
+        "1+3",
+        "1+4",
+        "1+2+3"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 37,
+      "text": "Rolul economic al intreprinderii se poate concretiza in urmatoarele directii: 1) atragerea si combinarea factorilor de productie, urmarindu-se obtinerea unor rezultate bune, la costuri reduse. In acest scop, in cadrul intreprinderii se actioneaza pentru optimizarea factorilor de productie de care se dispune; 2) finalitatea activitatii desfasurate ramane producerea de bunuri si servicii. In acest scop, se urmareste sa se produca la costuri maxime, realizandu-se, reinnoindu-se si combinandu-se in permanenta factorii de productie, in functie de cerintele pietei; 3) distribuirea veniturilor, acest lucru corespunzand actiunilor specializate de remunerare a factorilor de productie utilizati. O asemenea repartitie se face deci catre personalul angajat (sub forma salariilor), stat (impozite si taxe), creditori (dobanzi, comisioane), organisme sociale (cotizatii cu caracter social), asociati (dividende) si intreprindere (autofinantare).",
+      "answers": [
+        "1+2+3",
+        "1+2",
+        "2+3",
+        "1+3",
+        "nicio varianta corecta"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 38,
+      "text": "In functie de modificarea componentelor mediului, de natura raporturilor dintre acestea si de efectele declansate, mediul extern al firmei cunoaste trei forme de existenta: 1) instabil, in cadrul caruia miscarile sunt rare, de mica amploare si usor previzibile, un mediu specific unor perioade relativ limitate; 2) schimbator, instabil, un mediu in care schimbarile sunt frecvente, de o amploare variata, acesta fiind tipul obisnuit de mediu cu care se confrunta intreprinderile din aproape toate sectoarele de activitate; 3) tulburent, unde schimbarile sunt foarte frecvente, de amploare, cu incidente profunde asupra activitatii firmei si greu de anticipat, un mediu „ostil” acesteia.",
+      "answers": [
+        "1+2+3",
+        "1+2",
+        "2+3",
+        "1+3",
+        "nicio varianta corecta"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 39,
+      "text": "Din combinarea dimensiuni primare ale structurii (specializarea, adica diviziunea muncii in cadrul firmei, standardizarea, respectiv procedurile formalizate ale firmei, formalizarea, care are in vedere gradul de extindere a procedurilor, regulilor si comunicatiilor scrise in cadrul firmei, configuratia, care se refera la organizarea generala a firmei, traditionalismul, adica ponderea procedurilor standardizate, dar nescrise) rezulta dimensiunile fundamentale ale intreprinderii, respectiv: 1) structura activitatilor; 2) concentrarea autoritatii; 3) controlul fluxului informatiilor; 4) dimensiunea relatiei activitatilor auxiliare si functionale din cadrul intreprinderii.",
+      "answers": [
+        "1+2+3",
+        "2+3+4",
+        "1+3+4",
+        "1+2+4",
+        "1+2+3+4"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 40,
+      "text": "Volumul total al activitatilor functiunii de productie este influentat de o serie de factori precum: 1) pregatirea managerilor, 2) inzestrarea tehnica, 3) materiile prime folosite, 4) complexitatea produselor",
+      "answers": [
+        "1+2+3",
+        "2+3+4",
+        "1+3+4",
+        "1+2+4",
+        "1+2+3+4"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 41,
+      "text": "Scopurile intreprinderii reprezinta rezultatele pe care aceasta si l-a propus si pe care incearca sa le atinga. Gradul de realizare a scopului propus defineste performanta intreprinderii. O asemenea performanta trebuie privita din trei unghiuri de vedere: 1) performanta tehnica – aceasta privind utilizarea eficace a resurselor disponibile, fiind masurata prin productivitatea obtinuta. Deci cresterea performantei tehnice este rezultatul sporirii productivitatii muncii, dar si a unei cat mai bune organizari a productiei 2) ca performanta economica – aceasta vizand obtinerea unui cat mai mare venit posibil si exprimand o cerinta de rentabilitate 3) ca performanta sociala – aceasta vizand, mai intai, satisfacerea nevoilor consumatorilor, in sensul oferirii de produse bune sub raport tehnic, la un pret rezonabil, iar apoi si sa raspunda asteptarilor propriilor lucratori 4) ca performanta institutionala",
+      "answers": [
+        "1+2+3",
+        "2+3+4",
+        "1+3+4",
+        "1+2+4",
+        "1+2+3+4"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 42,
+      "text": "In functie de forma de proprietate a capitalului, intreprinderile se pot structura in:",
+      "answers": [
+        "intreprinderi comerciale",
+        "intreprinderi multinationale",
+        "intreprinderi cu capital privat",
+        "intreprinderi financiar-bancare",
+        "intreprinderi de productie"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 43,
+      "text": "Printre caracteristicile conceptului de functiune nu se numara:",
+      "answers": [
+        "functiunea este o notiune matematica",
+        "functiunea are un caracter general",
+        "functiunile au ponderi variabile de la o intreprindere la alta",
+        "functiunile au ponderi egale de la o intreprindere la alta",
+        "functiunile varieaza ca numar la nivelul intreprinderilor"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 44,
+      "text": "In functie de natura si modul de manifestare a competentelor si responsabilitatilor, intr-o intreprindere se intalnesc urmatoarele tipuri de relatii: 1) relatii de autoritate 2) relatii de cooperare 3) relatii de subzistenta 4) relatii de reprezentare 5) relatii de reglementare",
+      "answers": [
+        "1+4+5",
+        "2+3+4",
+        "1+2+4+5",
+        "1+2+4",
+        "1+3+4+5"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 45,
+      "text": "Principalele grupuri care constituie organizarea informala sunt: 1) grupuri orizontale 2) grupuri simetrice 3) grupuri verticale 4) grupuri mixte 5) grupuri publice",
+      "answers": [
+        "1+2+4",
+        "1+2+3+5",
+        "1+2+3+4+5",
+        "1+3+4",
+        "2+3+5"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 46,
+      "text": "Organizarea informala: 1) are o anumita instabilitate 2) presupune constituirea unor grupuri diferite de oameni asociati intr- un mediu de munca. 3) poate fi controlata oficial de conducatori in aceeasi masura cu organizarea formala; 4) imbunatateste comunicarea 5) incurajeaza atitudinile pozitive",
+      "answers": [
+        "2+4+5",
+        "1+3+4",
+        "1+2+4",
+        "3+4+5",
+        "1+2+5"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 47,
+      "text": "Printre avantajele organizarii informale se numara: 1) usureaza sarcinile de munca ale managerului, incurajând cooperarea 2) produce zvonuri nedorite in intreprindere 3)ofera stabilitate si satisfactie grupurilor de munca 4) conduce la conflicte interpersonale si de grup, acestea fiind daunatoare organizatiei 5) respinge, izoleaza si tracaseaza pe cei care nu fac parte din grup;",
+      "answers": [
+        "1+2+3",
+        "1+2+5",
+        "1+4",
+        "1+3",
+        "1+2"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 48,
+      "text": "Printre cerintele la care trebuie sa raspunda o decizie, se numara: 1) sa fie adoptata la timp 2) sa fie formulata clar si concis 3) sa fie fundamentata stiintific 4) sa nu fie corelata cu deciziile luate anterior 5) sa fie adoptata la momentul oportun",
+      "answers": [
+        "1+2+3+4",
+        "1+3+4+5",
+        "1+2+3+5",
+        "1+2+3+4+5",
+        "2+3+4+5"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 49,
+      "text": "In functie de nivelul de informare al decidentului, deciziile pot fi:",
+      "answers": [
+        "individuale, cu un grad ridicat de specializare",
+        "decizii luate in conditii de ignoranta",
+        "decizii strategice",
+        "decizii colective",
+        "decizii individuale"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 50,
+      "text": "Principalele stiluri de conducere sunt: 1) autocratic 2) pesimist 3) consultativ 4) democratic",
+      "answers": [
+        "1+2+4",
+        "1+3+4",
+        "1+2+3",
+        "1+2+3+4",
+        "2+3+5"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 51,
+      "text": "In functie de dinamica obiectivelor propuse intalnim:",
+      "answers": [
+        "strategii de produs",
+        "strategii integrate",
+        "strategii de consolidare",
+        "strategii adoptate la nivelul intreprinderii",
+        "strategii adoptate la nivelul managerilorintreprinderii"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 52,
+      "text": "Printre cerintele carora intreprinderea trebuie sa le faca fata, pentru atingerea performantei nu se numara:",
+      "answers": [
+        "o cerinta de tehnicitate",
+        "cerinta de competitivitate;",
+        "o cerinta de legitimitate",
+        "o cerinta de lichiditate",
+        "o cerinta de"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 53,
+      "text": "Abordarea performantei unei intreprinderi se poate face prin trei metode de performante. Care sunt acelea? 1) eficacitate 2) economicitate 3) eficienta 4) efectivitate 5) eligibilitate",
+      "answers": [
+        "1+2+3",
+        "1+4+5",
+        "1+3+4",
+        "1+2+4",
+        "2+3+4"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 54,
+      "text": "Pentru obtinerea rezultatelor asteptate, un post de munca trebuie sa indeplineasca urmatoarele conditii: 1) autoritatea informala 2) autoritatea formala 3) competenta profesionala 4) regularitatea 5) responsabilitatea",
+      "answers": [
+        "2+3+4",
+        "1+2+4",
+        "1+4",
+        "2+4+5",
+        "1+3+5"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 55,
+      "text": "In functie de natura si volumul atributiilor si a nivelului de delegare a autoritatii, compartimentele pot fi: 1) de baza 2) secundar 3) complex 4) mixt 5) financiar",
+      "answers": [
+        "1+4+5",
+        "2+5",
+        "1+3",
+        "2+4",
+        "1+3+5"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 56,
+      "text": "Organigrama ierarhica pleaca de la câteva principii de baza ale activitatii administrative, printre care se numara: 1) principiul diviziunii muncii 2) principiul echitatii sociale 3) principiul disciplinei 4) principiul unitatii de comanda 5) principiul echilibrului",
+      "answers": [
+        "1+2+4",
+        "1+3+4+5",
+        "1+2+5",
+        "1+3+4",
+        "2+3+4"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 57,
+      "text": "Printre etapele adoptarii unei decizii se numara: 1) Etapa conceptuala a deciziei 2) Etapa logica a deciziei 3) Formularea liniilor posibile de actiune 4) Etapa preliminara deciziei 5)Aplicarea si urmarirea rezultatelor deciziei",
+      "answers": [
+        "1+4+5",
+        "2+4+5",
+        "1+3+5",
+        "1+2+4",
+        "1+3+4"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 58,
+      "text": "Managerul care adopta un stil de conducere autocratic:",
+      "answers": [
+        "adopta decizii explicând subordonatilor scopul lor si incercând sa obtina astfel adeziunea acestora;",
+        "angajeaza discutii cu subordonatii si colaboreaza cu ei in legatura cu continutul si modul de aplicare a deciziei;",
+        "adopta o decizie prin intelegere reciproca sau consens cu colaboratorii si/sau subordonatii sai;",
+        "adopta decizii fara a tine seama de parerea, de propunerile subordonatilor;",
+        "adopta decizii impreuna cu colaboratorii"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 59,
+      "text": "Printre functiile sistemului informational detinute intr-o intreprindere se numara: 1) functia productiva 2) functia decizionala 3) functia operationala 4) functia organizatorica 5) functia documentara",
+      "answers": [
+        "1+4+5",
+        "2+3+4",
+        "1+2+5",
+        "2+3+5",
+        "1+3+5"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 60,
+      "text": "Sistemul informational al intreprinderii trebuie sa respecte mai multe principii. Alegeti varianta incorecta.",
+      "answers": [
+        "sa fie conceput si sa functioneze in concordanta cu obiectivele intreprinderii;",
+        "sa se asigurare informatii cât mai incomplete, prin prelucrarea datelor;",
+        "asigurarea flexibilitatii si a eficientei sistemului informational;",
+        "tratarea informatiilor sa fie facuta in mod unitar din punct de vedere metodologic;",
+        "informatiile sa fie transmise la timp si corect"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

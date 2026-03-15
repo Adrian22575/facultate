@@ -1,0 +1,604 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Managerul de proiect trebuie sa urmareasca permanent urmatoarele aspecte; care dintre cele enumerate mai jos nu se coreleaza cu enuntul anterior?",
+      "answers": [
+        "identificarea responsabilitatilor functionale care vor asigura succesul tuturor activitatilor finalizate;",
+        "minimizarea nevoii de a se intocmi rapoarte aproape continuu, referitor la activitatile derulate;",
+        "identificarea necesarului de timp pentru buna planificare a agendei de proiect;",
+        "identificarea institutiei de credit care va garanta cofinantarea;",
+        "masurarea permanenta a indicatorilor principali ai proiectului (financiari, timp, resurse atrase) si evaluarea intermediara a utilizarii tuturor resurselor pe care proiectul le-a folosit pentru finalizarea proiectului."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 2,
+      "text": "In planul proiectului pot aparea o serie de riscuri; care este enuntul gresit dintre cele de mai jos?",
+      "answers": [
+        "obiective nefezabile;",
+        "inexistenta unui plan detaliat care sa ia in considerare toate cele 4 elemente caracteristice unui proiect (timp, buget, calitate, asteptarile participantilor);",
+        "nu exista planuri de contingenta (actiunile care vor fi intreprinse in cazul de manifestare a unor evenimente nedorite);",
+        "schimbarea managerului de proiect;",
+        "nu este specificat bugetul pentru fiecare activitate."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "text": "Managementul de proiect implica actiuni legate de planificare si monitorizare. Care este enuntul gresit dintre cele de mai jos?",
+      "answers": [
+        "planificarea de proiect;",
+        "definirea cerintelor de efort/activitate (define work requirements);",
+        "definirea cantitatii si calitatii de efort care trebuie intreprins;",
+        "urmarirea evolutiei proiectului (tracking progress);",
+        "urmarirea fluxurilor financiare derulate intre parteneri si finantator."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 4,
+      "text": "In abordare generala, proiectul este alcatuit din:",
+      "answers": [
+        "prezentare financiara a unei investitii pe termen lung care necesita finantare multianuala;",
+        "dintr-o suma de activitati, a caror finalitate contribuie la realizarea unui scop;",
+        "solicitare scrisa pentru o anumita suma de bani, adresata unei autoritati de management;",
+        "proiectul tehnic al unei investitii, realizat si avizat de catre Ordinul Arhitectilor din Romania;",
+        "diagrama Gantt si bugetul unei cladiri care va face obiectul unui spatiu de productie."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 5,
+      "text": "Identificati raspunsul corect in formularea urmatoare: Pasii de urmat pentru pregatirea unei propuneri de proiect sunt:",
+      "answers": [
+        "stabilirea ideii de proiect;",
+        "colectarea de informatii;",
+        "monitorizarea informatiilor;",
+        "participarea la seminarii;",
+        "utilizarea de retele de informare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "text": "Identificati formularea care nu face parte din categoria factorilor situationali cu influenta asupra stilului de conducere:",
+      "answers": [
+        "caracteristicile personale;",
+        "deciziile de grup;",
+        "tendinta de a forta norocul;",
+        "sursele de putere ale conducatorului;",
+        "structura sarcinilor."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 7,
+      "text": "Riscurile in proiecte apar inca de la conceptia initiala a proiectului, fiind de obicei generatoare de respingere a finantarii. Acestea se pot materializa in:",
+      "answers": [
+        "armonizarea obiectivelor proiectului cu cele ale programului de finantare;",
+        "grupuri-tinta alese gresit;",
+        "constructie eronata a bugetului;",
+        "beneficii necuantificate corespunzator;",
+        "echipa de proiect fara calificarile sau experienta. Alegeti raspunsul incorect."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 8,
+      "text": "Factorii de succes ai proiectului sunt:",
+      "answers": [
+        "nivelul de salarizare al echipei de proiect;",
+        "numarul partenerilor din administratia centrala;",
+        "maturitatea organizationala a managementului proiectului si practica managementului;",
+        "rambursarea facuta la termen;",
+        "aplicarea procedurilor personalizate ale controlului intern."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "In cererea de finantare trebuie facuta o scurta descriere a proiectului care cuprinde planul de actiuni si metode de realizare. Care este elementul gresit?",
+      "answers": [
+        "planul actiunilor si termenele de realizare;",
+        "persoanele responsabile de implementare;",
+        "metodele concrete de realizare a activitatilor;",
+        "informatii specifice proiectelor privind mass-media (tiraj, numar editii, aria de acoperire, frecventa, ora de difuzare, nr. de abonati etc);",
+        "comunitatile straine beneficiare."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 10,
+      "text": "Dintre procesele ajutatoare ale controlului in proiecte recunoastem:",
+      "answers": [
+        "controlul si verificarea managerului de proiect;",
+        "controlul timpului;",
+        "controlului costului si al calitatii;",
+        "controlul standardelor IT;",
+        "controlul relatiilor de munca si comunicarile la REVISAL."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 11,
+      "text": "Pe parcursul initializarii si derularii proiectelor au fost identificate momente de incertitudine si riscuri. Dintre enunturile de mai jos alegeti varianta gresita:",
+      "answers": [
+        "variatiile legate de costul ratei inflatiei;",
+        "modificari sau schimbari specifice;",
+        "conditii si situatii neasteptate, dificile;",
+        "activitatile dureaza mai mult decat se preconiza;",
+        "demisia unuia dintre coordonatori."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 12,
+      "text": "Atributele ce caracterizeaza un proiect se pot materializa in:",
+      "answers": [
+        "scop;",
+        "ciclul de viata;",
+        "experienta;",
+        "unicitate;",
+        "conflict. Alegeti raspunsul incorect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 13,
+      "text": "Conform principiului managerul si echipa de proiect:",
+      "answers": [
+        "managerul de proiect este numit de finantator si el poate sa aleaga membrii echipei de proiect;",
+        "proiectul este condus de un singur manager de proiect; fiecare membru al echipei de proiect raspunde pentru propriile decizii in fata managerului;",
+        "managerul comanda si membrii echipei de proiect care executa dispopozitiile primite;",
+        "managerul de proiect deleaga competentele catre responsabilul financiar;",
+        "actul conducerii poate fi realizat de catre orice persoana desemnata de finantator."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 14,
+      "text": "Alegeti varianta incorecta de raspuns: Pierderea poate lua, in cazul unui proiect, urmatoarele forme:",
+      "answers": [
+        "produsele finale au o calitate indoielnica sau inferioara celei proiectate initial;",
+        "intervalul de timp dintre faza de planificare si faza de executie este mai extins;",
+        "resursele nu au fost exploatate in mod eficient, sunt epuizate sau deteriorate;",
+        "termenul pentru livrarea produsului final si pentru inchiderea proiectului a fost depasit;",
+        "proiectul este un esec total."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 15,
+      "text": "Conceptia integrata asupra managementului proiectelor ia in considerare 4 elemente de baza ale unui proiect:",
+      "answers": [
+        "Timpul, Bugetul (resurse), Calitatea, Asteptarile participantilor;",
+        "Bugetul, Numarul membrilor echipei, Managementul calitatii, Numarul partenerilor;",
+        "Calitatea, Asteptarile partenerilor, Respectarea Termenelor, Buget;",
+        "Locatia, Beneficiarii, Bugetul, Autorizatiile obtinute;",
+        "Locatia, Calitatea, Respectarea legislatiei, Distanta dintre finantator si beneficiari."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 16,
+      "text": "Ce se intelege prin resurse in cadrul unui proiect? Care este enuntul gresit?",
+      "answers": [
+        "oameni - operatorii, functionarii si conducatorii reprezinta tot atatea categorii de personal angajat al organizatiei care dezvolta proiectele;",
+        "bani - mijloacele financiare reprezinta resursa cea mai generala cu ajutorul careia se poate achizitiona oricare alta resursa umana, tehnica etc.;",
+        "echipamente - utilajele reprezinta resurse in conditiile in care isi aduc un aport la dezvoltarea proiectului;",
+        "timp - includerea timpului in categoria resurselor reprezinta un demers total dar justificat prin influenta pe care o are asupra proiectului;",
+        "mijloacele de transport - numarul si tipul masinilor care asigura deplasarea membrilor echipei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 17,
+      "text": "Identificati formularea ce reprezinta regula pentru sporirea increderii in interiorul echipelor de proiect:",
+      "answers": [
+        "competenta de a-si perfectiona propriul stil de conducere;",
+        "competenta de a identifica problemele si variabilele-cheie;",
+        "competenta de a administra grupul in situatii conflictuale interne;",
+        "sa fie corect fata de echipa;",
+        "competenta de a efectua transformarea subordonatilor profesionisti in profesionisti."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 18,
+      "text": "Etapele de planificare, executie si control fac parte din:",
+      "answers": [
+        "cererea de finantare;",
+        "ciclul de viata al unui proiect;",
+        "anexele la bugetul proiectului;",
+        "matricea logica a proiectului;",
+        "nota de fundamentare a bugetului."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 19,
+      "text": "Managerul de proiect trebuie sa urmareasca permanent urmatoarele aspecte:",
+      "answers": [
+        "masurarea permanenta a indicatorilor principali ai proiectului (financiari, timp, resurse atrase) si evaluarea intermediara a utilizarii tuturor resurselor pe care proiectul le-a folosit pentru finalizarea proiectului;",
+        "verificarea lunara a extraselor de cont pentru a avea o imagine detaliata a platilor;",
+        "corectitudinea intocmirii rapoartelor de activitate lunare ale membrilor echipei;",
+        "verificarea saptamanala a foilor de parcurs a masinilor aflate la dispozitia echipei de proiect;",
+        "prezenta la locul de munca si intocmirea pontajelor."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 20,
+      "text": "Strategiile optime de raspuns pentru reducerea riscurilor in cadrul proiectelor pot fi:",
+      "answers": [
+        "acceptarea riscurilor;",
+        "evitarea riscurilor;",
+        "monitorizarea riscului si pregatirea planului pentru situatii imprevizibile;",
+        "transferul riscurilor;",
+        "majorarea sistematica a riscurilor. Alegeti raspunsul incorect."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 21,
+      "text": "Alegeti varianta incorecta de raspuns: Proiectul este …",
+      "answers": [
+        "un ansamblu de procese;",
+        "un efort de munca finit;",
+        "un efort temporar;",
+        "un set de multimi logice;",
+        "un set bine definit de activitati ce utilizeaza resurse (bani, oameni, materiale, motivatii etc.) la atingerea scopurilor si obiectivelor."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 22,
+      "text": "Care este momentul considerat ca a lansat managementul prin proiecte la mijlocul secolului XX?",
+      "answers": [
+        "infrangerea Germaniei si noul cadru de putere aparut dupa cel de al doilea Razboi Mondial;",
+        "punerea in aplicare la nivel european a Planului Marshall;",
+        "semnarea actului de infiintarea a Uniunii Europene la 25 martie 1957, in Capitoliul roman (Campodoglio);",
+        "dezvoltarea fortelor de productie, a diviziunii mondiale a muncii si a specializarii internationale in productie, in conditiile revolutiei stiintifico-tehnice;",
+        "prin punerea in aplicare a prevederilor aprobate in Statutul Europei din"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 23,
+      "text": "Care dintre enunturile de mai jos apartinand lui Seneca, referitoare la functiile principale ale managementului proiectului este adevarat:",
+      "answers": [
+        "planificarea diferitelor activitati care trebuie sa fie realizate intr-o perioada determinata, mentionand mijloacele materiale si umane care trebuie disponibilizate pentru a realiza proiectul;",
+        "suma investitiilor alocate pentru realizarea obiectivelor;",
+        "structurarea tuturor activitatilor dupa un anumit program in cadrul proiectelor, scurteaza timpul de executie;",
+        "controlul, calcularea abaterilor si analiza acestora sunt obligatorii, astfel incat sa se poata asigura realizarea proiectului;",
+        "coordonarea etapelor proiectului trebuie realizata de catre o singura persoana."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 24,
+      "text": "Ciclul de viata al proiectului reprezinta o secventa de actiuni bazata pe trei etape principale:",
+      "answers": [
+        "inceput, desfasurare si incheiere;",
+        "scriere, implementare, evaluare;",
+        "etapa planificarii strategice, etapa implementarii, etapa evaluarii;",
+        "identificarea nevoilor la nivelul comunitatii, intocmirea bugetului, plata partenerilor;",
+        "identificarea partenerilor, crearea cadrului institutional si a bazei legale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Fazele unui proiect sunt:",
+      "answers": [
+        "conceperea proiectului, formarea echipei, executia bugetara;",
+        "scrierea cererii de finantare, derularea proiectului, diseminarea in media a rezultatelor proiectului;",
+        "concepere, planificare, implementare, evaluare, control;",
+        "planificare, gestionare resurse, implementare, efectuare plati;",
+        "identificare parteneri, scriere proiect, derulare proiect, inchidere proiect."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 26,
+      "text": "Dintre sarcinile prioritare, managementul de proiect de succes implica indeplinirea unor obiective. Care este enuntul gresit dintre cele de mai jos?",
+      "answers": [
+        "indeplinirea obiectivelor prin incadrarea in timp;",
+        "indeplinirea obiectivelor prin incadrarea in costurile planificate;",
+        "plata salariilor echipei de proiect la termenele stabilite prin contract;",
+        "indeplinirea obiectivelor prin incadrarea in nivelul de performanta planificat;",
+        "acceptarea rezultatelor de catre client sub forma beneficiilor potentiale de pe urma folosirii managementului de proiect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 27,
+      "text": "Managementul proiectelor are in vedere abordarea integrata a mai multor tipuri de management. Care este enuntul gresit?",
+      "answers": [
+        "managementul calitatii si managementul costului;",
+        "managementul resurselor umane;",
+        "managementul energiilor regenerabile;",
+        "managementul riscului si managementul integrarii proiectelor;",
+        "managementul timpului."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 28,
+      "text": "Dupa castigarea unei finantari nerambursabile (grant) trebuie urmati o serie de pasi. Care este enuntul gresit?",
+      "answers": [
+        "se semneaza contractul de finantare;",
+        "se acorda prima transa din suma totala acordata ca finantare nerambursabila;",
+        "beneficiarul realizeaza rapoarte periodice, care sunt remise spre analiza si aprobare finantatorului;",
+        "in urma aprobarii rapoartelor periodice, sunt acordate celelalte transe din suma totala;",
+        "dupa finalul proiectului, se realizeaza evaluarea finala a acestuia; la aceasta activitate participa beneficiarul, finantatorul, reprezentantul Ministerului de Finante si Media."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 29,
+      "text": "Pentru implementarea abordarii, ca proces a sistemului de managementul calitatii, se poate aplica urmatoarea metodologie:",
+      "answers": [
+        "identificarea proceselor din organizatie pentru intregul sistem;",
+        "planificarea proceselor;",
+        "implementarea, managementul si masurarea proceselor;",
+        "analiza proceselor altor proiecte asemanatoare;",
+        "actiuni corective, actiuni preventive si imbunatatirea proceselor. Alegeti raspunsul incorect."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 30,
+      "text": "Identificati formularea ce nu face parte din factorii de influenta ai structurii interne a proiectului:",
+      "answers": [
+        "tipul proiectului;",
+        "marimea proiectului;",
+        "afectatii de derularea rezultatelor proiectului;",
+        "importanta proiectului;",
+        "legislatia in vigoare."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 31,
+      "text": "Identificati formularea ce nu se refera la activitatile prin care se realizeaza controlul:",
+      "answers": [
+        "verificarea progreselor realizate;",
+        "evaluarea personalului;",
+        "reactii diverse la postcontrol;",
+        "controlul input-urilor;",
+        "schimbarea personalului."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 32,
+      "text": "In raport de obiectivele de specialitate propuse, proiectele pot fi clasificate astfel:",
+      "answers": [
+        "proiecte de investitii;",
+        "elaborarea unui software;",
+        "proiecte de cercetare-dezvoltare;",
+        "proiecte de organizare;",
+        "niciuna din variantele de mai sus. Identificati formularea care nu se refera la tipologia proiectelor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 33,
+      "text": "Tehnicile de planificare ofera posibilitatea fundamentarii stiintifice a planurilor si programelor. Cele generale sunt:",
+      "answers": [
+        "Tehnica Brainstorming;",
+        "Tehnica grupului nominal;",
+        "Metoda drumului critic;",
+        "Tehnica Delphi;",
+        "Tehnica Brainwriting. Alegeti raspunsul incorect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 34,
+      "text": "Proiectul poate fi definit ca:",
+      "answers": [
+        "un ansamblu de actiuni care se fundamenteaza pe garantia unor linii de finantare externe;",
+        "o activitate unica, ce urmareste realizarea intregului produs, avand un termen de incepere a activitatii si un termen de incheiere a activitatii iar toate operatiile trebuie sa fie ordonate in acest interval;",
+        "schita tehnica a unei cladiri care va adaposti spatii de birouri;",
+        "planul de actiune al unei companii intr-un interval de timp;",
+        "desenul tehnic avizat de o persoana autorizata sa execute lucrari cadastrale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 35,
+      "text": "Investitia intr-un proiect trebuie realizata cu:",
+      "answers": [
+        "autoritatile locale care au departamente specializate;",
+        "organizatii neguvernamentale care au avut executie bugetara in care au fost evidentiate profiturile;",
+        "societati private care au reinvestit profitul anului anterior;",
+        "autoritatea de management din aria administrativa a aplicantului;",
+        "parteneri care au activitati previzibile, care functioneaza pe o piata previzibila, cu evaluarea si minimizarea riscurilor."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 36,
+      "text": "Care sunt fondurile care prin programe specializate pot asigura finantare de proiecte?",
+      "answers": [
+        "Fonduri de reconversie ale Directiilor de Asistenta Sociala;",
+        "Fonduri la dispozitia Secretariatului General al Guvernului;",
+        "ISPA, PHARE, SAPARD, Fonduri structurale;",
+        "Fondurile proiectelor culturale ale ambasadelor;",
+        "Fondurile de urgenta."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 37,
+      "text": "Identificati formularea care nu face parte din fazele de derulare a proiectului:",
+      "answers": [
+        "studiul de detaliu;",
+        "implementarea proiectului;",
+        "initiativa de proiect;",
+        "organizarea proceselor;",
+        "studiul principal."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 38,
+      "text": "Identificati formularea care se refera la efectele furnizarii la timp a rapoartelor detaliate de audit:",
+      "answers": [
+        "note subiective;",
+        "planificarea mai realista;",
+        "rapoarte – indicatori indirecti;",
+        "caracterizari verbale;",
+        "strangerea de noi informatii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 39,
+      "text": "In managementul proiectului prin prezumtii (ipoteze– cele pozitive sau riscuri - cele negative) se inteleg:",
+      "answers": [
+        "viitoarele evenimente politice care ar avea influenta asupra desfasurarii proiectului in etapa de implementare a acestuia;",
+        "vointa finantatorului de a acorda sau nu finantarea pentru proiectul propus;",
+        "factori care se afla in afara ariei de influenta a proiectului, dar care il influenteaza (pozitiv sau negativ);",
+        "anticiparea unor riscuri si modul de a le preintampina;",
+        "ipotezele de lucru care anticipeaza intarzieri/erori in executia bugetului."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 40,
+      "text": "Managementul de proiect de succes implica indeplinirea obiectivelor legate de o serie de factori. Identificati raspunsul gresit:",
+      "answers": [
+        "indeplinirea obiectivelor prin incadrarea in timp;",
+        "indeplinirea obiectivelor prin incadrarea in costurile planificate;",
+        "indeplinirea obiectivelor prin incadrarea in nivelul de performanta planificat;",
+        "achizitia instrumentelor IT numai prin contracte care au durata echivalenta cu cea a proiectului;",
+        "acceptarea rezultatelor de catre client sub forma beneficiilor potentiale de pe urma folosirii managementului de proiect."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 41,
+      "text": "Alegeti varianta incorecta de raspuns: In cadrul managementului proiectului, obiectivele principale ale procesului de control se pot materializa in:",
+      "answers": [
+        "controlul de tip merge;",
+        "administrarea resurselor alocate proiectului;",
+        "controlul cibernetic;",
+        "postcontrolul;",
+        "controlul de tip nu merge."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 42,
+      "text": "In managementul proiectelor, un obiectiv trebuie sa fie SMART. Care dintre atributele de mai jos este corect?",
+      "answers": [
+        "selectiv sa mentioneze clar ce vom obtine;",
+        "masurabil din puntul de vedere al obiectivelor propuse;",
+        "adaptabil la eventualele schimbari;",
+        "referitor la proiect;",
+        "transferabil in viitor si la alte proiecte."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 43,
+      "text": "In ce consta produsul final al proiectului ?",
+      "answers": [
+        "o multitudine de solutii tehnice si logistice;",
+        "o noua directie generala intr-un minister;",
+        "transferul de Know-how dintr-o alta tara;",
+        "o tema de cercetare internationala;",
+        "schimbarea legislatiei intr-un domeniu."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 44,
+      "text": "Managementul proiectelor trebuie permanent corelat cu informatii si cunostinte teoretice si practice din:",
+      "answers": [
+        "management general, drept, economie, informatica;",
+        "drept, geografie, securitate regionala, ecologie;",
+        "protectia mediului, agronomie, politica si etica;",
+        "informatica, ecoturism, contencios administrativ, matematici economice;",
+        "protectia mediului, dezvoltare regionala, teorii educationale."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 45,
+      "text": "Identificati formularea ce reprezinta avantaj al organizarii matriceale:",
+      "answers": [
+        "abordarea sistemica este mai usor de realizat;",
+        "fenomenul dublei subordonari;",
+        "conflicte de competente si resurse;",
+        "aparitia unor conflicte;",
+        "coordonarea in raport de obiectivele urmarite este dificila."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 46,
+      "text": "Procesele planificarii proiectului sunt:",
+      "answers": [
+        "procese de identificare si raportare;",
+        "procese de analiza si ajustare;",
+        "procese fundamentale si procese ajutatoare;",
+        "procese de studiu si cercetare;",
+        "procese de reglementare si legiferare."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 47,
+      "text": "Pentru identificarea riscurilor, orice manager de proiect trebuie sa isi puna urmatoarele intrebari. Care dintre intrebari nu este in contextul riscului de proiect?",
+      "answers": [
+        "ce reprezinta riscul pentru proiectul in curs?;",
+        "ce reprezinta riscul pentru o anumita activitate a proiectului?;",
+        "care sunt riscurile care pot aparea?;",
+        "care este riscul de imbolnavire al echipei?;",
+        "care este probabilitatea lor de manifestare?."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 48,
+      "text": "Identificati formularea ce nu reprezinta o functie a comunicarii:",
+      "answers": [
+        "functia de codificare a mesajului;",
+        "functia de informare;",
+        "functia de comanda si instruire;",
+        "functia de motivare;",
+        "functia de instruire."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 49,
+      "text": "Identificati raspunsul incorect in formularea urmatoare: Elementele esentiale care se au in vedere pentru solicitarea unei finantari nerambursabile se pot constitui in:",
+      "answers": [
+        "bugete si cheltuieli;",
+        "verificarea criteriilor de eligibilitate;",
+        "procedura de evaluare a cererii de credit;",
+        "verificarea conditiilor oferite.",
+        "documentatia solicitata."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 50,
+      "text": "In cazul proiectelor mari, de anvergura, aceste vor fi divizate in componente mai usor de coordonat, numite:",
+      "answers": [
+        "componente structurale;",
+        "subdiviziuni;",
+        "subproiecte;",
+        "structuri profesionale;",
+        "subdiviziuni finantate structural."
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

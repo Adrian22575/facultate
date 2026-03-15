@@ -1,0 +1,604 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Profitul pe o actiune se calculeaza conform relatiei:",
+      "answers": [
+        "dividend pe o actiune/cursul actiunilor;",
+        "profitul net anual/numarul actiunilor emise;",
+        "volumul total de dividende platite anual/profitul net anual;",
+        "dividend pe o actiune/numarul actiunilor emise;",
+        "profit net – divident."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 2,
+      "text": "Decizia de investire, ca parte componenta a politicii generale a intreprinderii, este:",
+      "answers": [
+        "o decizie financiara strategica, pentru ca vizeaza cresterea economica pentru o perioada indelungata;",
+        "o decizie financiara tactica, intrucât urmareste obtinerea de profit;",
+        "o decizie manageriala, deoarece presupune o imobilizare de capital in prezent, in speranta unei rentabilitati viitoare;",
+        "o decizie financiara tactica si strategica;",
+        "o decizie financiara manageriala curenta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "text": "Grupa activelor imobilizate, adica acele bunuri achizitionate care sunt utilizate o perioada mai lunga de un an si se transforma mai greu in bani, nu cuprinde:",
+      "answers": [
+        "grupa 1: teren si constructii (cladiri si constructii finalizate);",
+        "grupa 2: linii tehnologice; instalatii de comanda electronica pentru linii tehnologice, cantare si alte aparate de masura si control, calculatoarele electronice; autovehiculele; animale si plantatii;",
+        "grupa 3: mobilier, centrale telefonice, aparate fax, aparate de copiat, alte obiecte de birotica;",
+        "stocuri de materii prime, materiale, produse, ambalaje;",
+        "active corporale si necorporale realizate pentru nevoi proprii si capitalizate."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 4,
+      "text": "Marja comerciala se calculeaza astfel:",
+      "answers": [
+        "cifra de afaceri minus valoarea de cumparare a marfurilor vândute;",
+        "cheltuielile de exploatare minus cheltuielile de desfacere;",
+        "cheltuielile de exploatare minus cheltuielile generale cu administratia;",
+        "cheltuielile de exploatare plus alte venituri de exploatare;",
+        "cheltuielile de exploatare minus ajustari de valoare privind activele corporale si necorporale."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 5,
+      "text": "Profitul net se calculeaza, astfel:",
+      "answers": [
+        "venituri din exploatare minus cheltuieli pentru exploatare;",
+        "total venituri minus total cheltuieli;",
+        "profit brut minus impozit pe profit;",
+        "venituri financiare minus cheltuieli financiare;",
+        "venituri financiare minus impozit pe profit."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 6,
+      "text": "Intrarile si iesirile de numerar se inregistreaza in:",
+      "answers": [
+        "contul de profit si pierderi;",
+        "activul din bilant;",
+        "pasivul din bilant;",
+        "situatia veniturilor si cheltuielilor;",
+        "situatia fluxului de numerar."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 7,
+      "text": "Tabloul de finantare cuprinde una din urmatoarele resurse:",
+      "answers": [
+        "imprumuturi bancare pe termen mai mare de 1 an;",
+        "fond de rulment, când variatia fondului de rulment este negativa;",
+        "achizitii de imobilizari;",
+        "fluxuri de numerar din afara exploatarii;",
+        "majorare de capital."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 8,
+      "text": "Pragul de rentabilitate al cifrei de afaceri este atunci când:",
+      "answers": [
+        "cifra de afaceri este mai mica decât costul vânzarilor;",
+        "cifra de afaceri egaleaza cheltuielile variabile;",
+        "cifra de afaceri egaleaza cheltuielile fixe;",
+        "cifra de afaceri este egala cu productia exercitiulu;",
+        "cifra de afaceri egaleaza costurile totale si nu avem nici profit, nici pierdere."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 9,
+      "text": "Principalele obiective ale managementului financiar sunt: 1. sa asigure un echilibru intre lichiditatea activelor si exigibilitatea pasivelor; 2. sa asigure un echilibru functional intre nevoile de consum economic si resurse; 3. sa asigure o corelatie globala intre resursele consumate si randamentul intrebuintarii lor; 4. sa cuantifice efectele obiectivelor fixate.",
+      "answers": [
+        "1, 2, 4;",
+        "2, 3, 4;",
+        "1, 3, 4;",
+        "1, 2, 3;",
+        "1, 2, 3, 4"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 10,
+      "text": "Care din modalitatile de crestere a capitalului propriu vor influenta pozitiv trezoreria intreprinderii:",
+      "answers": [
+        "emisiunile de noi actiuni;",
+        "aporturile in natura de catre vechii actionari;",
+        "incorporarea rezervelor;",
+        "convertirea datoriilor in actiuni;",
+        "convertirea obligatiunilor in actiuni."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 11,
+      "text": "Comportamentul rational al tuturor operatorilor economici se caracterizeaza prin: 1. maximizarea eficientei utilizarii resurselor materiale si energetice; 2. inclinatia pentru a realiza profit; 3. aversiunea fata de risc; 4. maximizarea valorii proprietatii operatorului economic.",
+      "answers": [
+        "1, 2;",
+        "2;",
+        "3, 4;",
+        "1, 2, 3;",
+        "1, 2, 3, 4."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 12,
+      "text": "Managementul financiar presupune parcurgerea a 4 pasi de lucru. Care nu se cuprinde in procedura:",
+      "answers": [
+        "planificarea: planificarea programului, planificarea operatiilor, planificarea investitiilor;",
+        "implementarea: planurilor financiare, finantarile, controlul administratorilor;",
+        "evaluarea performantelor: sistemul informational managerial, analiza financiara;",
+        "auditarea: controlul financiar specific;",
+        "aprovizionarea cu resurse materiale."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 13,
+      "text": "Responsabilitatea deciziilor privind modalitatea de finantare a activelor unei intreprinderi apartine:",
+      "answers": [
+        "compartimentului financiar-contabil;",
+        "directorului tehnic;",
+        "managementului societatii;",
+        "actionarilor sau asociatilor;",
+        "conducerii sindicatului salariatilor din intreprindere."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Functia de control a managementului operatorilor economici nu are drept scop:",
+      "answers": [
+        "fiecare contribuabil este interesat de modul in care se cheltuiesc banii publici;",
+        "cresterea rentabilitatii si eficientei utilizarii resurselor;",
+        "respectarea legislatiei economico-financiare si fiscale;",
+        "apararea integritatii patrimoniului;",
+        "prevenirea pierderilor."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 15,
+      "text": "Prin utilizarea mijloacelor fixe - ca resursa- se calculeaza cheltuiala cu amortizarea- care este: 1. o cheltuiala interna a organizatiei care se retine din venituri pentru a prevedea utilizarea sau deteriorarea progresiva a activelor fixe utilizate in procesul de transformare a resurselor; 2. o notiune inteleasa ca fiind atribuita oricarui obiect care are o durata de functionare mai mare de un an; 3. o notiune care se refera la un obiect care are o valoare suficient de mare (stabilita prin norme ale Ministerului Finantelor Publice); 4. o notiune atribuita unui obiect care isi transfera valoarea asupra costului produselor sau serviciilor create de un operator economic in cote anuale (egale sau inegale) in functie de politica de amortizare adoptata.",
+      "answers": [
+        "1, 2, 3;",
+        "1, 2, 3, 4;",
+        "4;",
+        "2;",
+        "1, 3."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 16,
+      "text": "Managementul finanaciar are urmatoarele functii:",
+      "answers": [
+        "functia de identificare si masurare a disfunctionalitatilor si corectia acestora;",
+        "functia de utilizare eficienta a patrimoniulu si capitalului;",
+        "functia de realizare a conexiunii cu sistemul bancar, cu sistemul fiscal si cu operatorii parteneri;",
+        "functia de audit financiar-contabil;",
+        "toate cele de mai sus."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 17,
+      "text": "Cu privire la fondul de rulment una din afirmatiile urmatoare nu este adevarata:",
+      "answers": [
+        "este puterea financiara a operatorului economic de a plati obligatiile la timp;",
+        "se mai numeste necesar de fond de rulment;",
+        "reflecta lichiditatea si pe de alta parte este o sursa de investire in active circulante;",
+        "se calculeaza: Active curente minus Datorii curente;",
+        "se calculeaza: Capitalul permanent minus Active imobilizate."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 18,
+      "text": "Cu privire la nevoia de fond de rulment una din afirmatiile urmatoare nu este adevarata:",
+      "answers": [
+        "se calculeaza: Stocuri plus Creante minus Obligatii curente nefinanciare;",
+        "este fluxul de numerar de care trebuie sa dispuna un operator economic peste cel necesar finantarii imobilizarilor pentru a functiona normal;",
+        "se mai numeste capital de lucru;",
+        "reprezinta una din componentele echilibrului financiar;",
+        "este unul din principalele instrumente utilizate de managementul unui operator economic pentru luarea deciziilor in scopul realizarii obiectivelor programate."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 19,
+      "text": "Una din urmatoarele calcule nu se refera la lichiditatea unei operator economic:",
+      "answers": [
+        "active curente raportat la datorii curente;",
+        "disponibilitati banesti (casa si contura la banci si respectiv investitii pe termen scurt) plus creante raportat la datorii curente;",
+        "stocuri plus creante plus disponibilitati banesti raportat la datorii curente;",
+        "costul bunurilor vândute raportat la stocul mediu;",
+        "disponibilitati banesti raportat la datorii curente."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 20,
+      "text": "Care este perioada de timp considerata in previziunea activitatii unei operator economic ca fiind \"pe termen mediu\":",
+      "answers": [
+        "sub 1 an;",
+        "1 an;",
+        "1-3 ani;",
+        "3-5 ani;",
+        "5-10 ani."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 21,
+      "text": "Infiintarea si cresterea valorii unui operator economic nu este posibila fara:",
+      "answers": [
+        "investitii;",
+        "plata dividendelor;",
+        "concedierea unor salariati;",
+        "schimbarea managementului;",
+        "schimbarea sediului organizatiei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 22,
+      "text": "Indicati care din riscurile enumerate mai jos este un risc intern asociat investitiei:",
+      "answers": [
+        "risc de operare, de dotare, de manipulare, de constructie, de management;",
+        "risc de tara;",
+        "risc de piata;",
+        "risc de schimb valutar;",
+        "forta majora."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Leasing-ul este: 1. sursa de finantare a investitiilor; 2. o operatiune de creditare; 3. o operatiune de inchiriere; 4. un mijloc de plata.",
+      "answers": [
+        "2, 3;",
+        "1, 2;",
+        "1;",
+        "1, 2, 3, 4;",
+        "1, 2, 3."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 24,
+      "text": "Cheltuielile aferente activitatii economice se clasifica dupa natura lor in urmatoarele categorii:",
+      "answers": [
+        "fixe sau conventional constante si variabile;",
+        "de exploatare si financiare;",
+        "directe si financiare;",
+        "variabile, indirecte si extraordinare;",
+        "directe, indirecte, de desfacere si generale de administratie."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Cheltuielile aferente activitatii economice de exploatare se clasifica dupa destinatie in urmatoarele categorii:",
+      "answers": [
+        "fixe sau conventional constante si variabile;",
+        "de exploatare si financiare;",
+        "directe si financiare;",
+        "variabile, indirecte si extraordinare;",
+        "directe, indirecte, de desfacere si generale de administratie."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 26,
+      "text": "Se cunoaste urmatoarea situatie: Denumirea indicatorilor Mii lei Notatii 1- Cifra de afaceri 4.000 CA 2- Cheltuieli totale aferente cifrei de afaceri, din care: 3.500 C - cheltuieli variabile 3.000 CV - cheltuieli fixe 500 CF Pragul de rentabilitate pentru cifra de afaceri este:",
+      "answers": [
+        "5.000 mii. lei;",
+        "4.000 mii. lei;",
+        "3.000 mii. lei;",
+        "2.000 mii. lei;",
+        "2.500 mii. lei"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 27,
+      "text": "Se cunoaste urmatoarea situatie: Denumirea indicatorilor Mii lei Notatii 1- Cifra de afaceri 4.000 CA 2- Cheltuieli totale aferente cifrei de afaceri, din care: 3.500 C - cheltuieli variabile 3.000 CV - cheltuieli fixe 500 CF Marimea cifrei de afaceri care trebuie realizata pentru a obtine o rata a rentabilitatii comerciale de 15% este:",
+      "answers": [
+        "5.000 mii. lei;",
+        "4.000 mii. lei;",
+        "3.000 mii. lei;",
+        "2.000 mii. lei;",
+        "2.500 mii. lei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 28,
+      "text": "Capitalul angajat este format din:",
+      "answers": [
+        "fondul de rulment;",
+        "capitalul propriu si capitalul imprumutat;",
+        "activele imobilizate si activele circulante;",
+        "capitalul subscris si varsat;",
+        "patrimoniul regiei."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 29,
+      "text": "Datoriile curente sunt constituite din:",
+      "answers": [
+        "sumele care trebuie platite intr-o perioada de pâna la un an si cheltuieli in avans;",
+        "sumele care trebuie platite intr-o perioada de pâna la un an si activele circulante nete;",
+        "sumele care trebuie platite intr-o perioada de pâna la un an, provizioanele (constituite pentru perioade de pâna la un an) si veniturile in avans reprezentate prin sumele de reluat intr-o perioada de pâna la un an;",
+        "datoriile totale si provizioanele;",
+        "activele circulante si capitalul subscris nevarsat."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Rata finantarii activelor imobilizate = 1 obilizateActive im  permanentCapitalul , semnifica:",
+      "answers": [
+        "un risc de insolvabilitate scazut;",
+        "o incapacitate de plata;",
+        "o stare financiara echilibrata;",
+        "un fond de rulment pozitiv;",
+        "un dezechilibru financiar."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 31,
+      "text": "Cresterea fondului de rulment poate avea loc prin:",
+      "answers": [
+        "cresterea capitalului propriu;",
+        "achizitionarea unor mijloace fixe;",
+        "contractarea unui credit pentru finantarea unor nevoi curente;",
+        "reducerea stocurilor de materii prime si materiale consumabile;",
+        "cresterea productivitatii muncii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 32,
+      "text": "Marimea ratei lichiditatii reduse („Testul acid”) este considerata ca fiind corespunzatoare atunci când:",
+      "answers": [
+        "creantele, investitiile pe termen scurt, disponibilitatile banesti din casa si conturi la banci si cheltuielile in avans pentru sume de reluat intr-o perioada de pâna la un an sunt cel putin egale cu suma datoriilor curente;",
+        "disponibilitatile banesti din casa si conturi la banci pot asigura achitarea datoriilor exigibile;",
+        "disponibilitatile banesti din conturile deschise la banci si valoarea stocului de produse finite sunt cel putin egale cu datoriile totale;",
+        "datoriile totale sunt egale cu activele circulante;",
+        "datoriile catre furnizori sunt acoperite de disponibilitatile existente in casa si conturi la banci."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 33,
+      "text": "Bilantul unei societati comerciale pune in evidenta urmatoarele informatii: - valoarea activului total este de 100.000 mii lei, finantata in proportie de 30% din capitaluri proprii, 40% din datorii ce trebuie platite intr-o perioada mai mare de un an si restul de 30% din datorii curente. Rata activelor curente (proportia activelor curente in activul total) este de 55%. In aceste conditii, rata lichiditatii generale (Rlg) va fi:",
+      "answers": [
+        "1,833;",
+        "b) 0,545;",
+        "c) 3,333;",
+        "d) 0,785;",
+        "e) 1,550"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 34,
+      "text": "Se cunosc urmatoarele date, prezentate in bilantul incheiat la 31 decembrie: Denumirea indicatorilor Valoare (mii lei) 1- Active imobilizate 3.500 2- Stocuri 1.600 3- Creante 900 4- Casa si conturi la banci 100 5- Fondul de rulment financiar 400 6- Necesarul de fond de rulment 800 7- Credite pentru nevoi curente 500 8- Datorii: sumele care trebuie platite intr-o perioada mai mare de un an Rata activelor imobilizate (proportia activelor imobilizate in totalul activelor), rata autonomiei financiare generale (proportia capitalului propriu in totalul pasivelor) si rata lichiditatii generale inregistreaza urmatoarele valori:",
+      "answers": [
+        "57,4%; 59,0%; 118,2%",
+        "57,4%; 69,0%; 118,2%",
+        "77,4%; 59,0%; 128,2%",
+        "57,4%; 65,0%; 128,2%",
+        "67,4%; 79,0%; 118,2%"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 35,
+      "text": "Rata rentabilitatii economice exprima raportul dintre:",
+      "answers": [
+        "profitul net si capitalul propriu;",
+        "profitul net si numarul mediu al personalului;",
+        "cifra de afaceri si valoarea medie a mijloacelor fixe;",
+        "cifra de afaceri si valoarea medie a activelor circulante;",
+        "profitul net si totalul activului contabil."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 36,
+      "text": "Se cunoaste urmatoarea situatie: Indicatori Notatii Perioada de baza Perioada de calcul 1– Cifra de afaceri ( lei) CA 620.000 740.000 2– Valoarea medie a activelor circulante (lei) Ac 60.800 65.370 3– Numarul de zile al perioadei Z 360 360 Cresterea cifrei de afaceri a determinat modificarea duratei medii in zile a unei rotatii a activelor circulante cu:",
+      "answers": [
+        "+ 3,50 zile pe o rotatie;",
+        "– 6,15 zile pe o rotatie;",
+        "– 5,72 zile pe o rotatie;",
+        "+ 2,03 zile pe o rotatie;",
+        "– 2,70 zile pe o rotatie."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 37,
+      "text": "Se cunoaste urmatoarea situatie: Indicatori Notatii Perioada de baza Perioada de calcul 1– Cifra de afaceri ( lei) CA 620.000 740.000 2– Valoarea medie a activelor circulante (lei) Ac 60.800 65.370 3– Numarul de zile al perioadei Z 360 360 Cresterea valorii medii a activelor circulante a fost influentata de modi- ficarea vitezei de rotatie a activelor circulante exprimata prin durata medie in zile a unei rotatii cu:",
+      "answers": [
+        "+ 8.100 lei;",
+        "– 10.100 lei;",
+        "– 7.198 lei;",
+        "– 5.123 lei;",
+        "+ 4.160 lei."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "text": "Pe baza relatiei: 100Σ ΣΣ100Σ ΣΣ 0101 −−− cq cqpq cq cqpq , se determina:",
+      "answers": [
+        "influenta modificarii preturilor de livrare asupra ratei rentabilitatii resurselor consumate pentru cifra de afaceri,",
+        "influenta modificarii costurilor unitare complete asupra ratei rentabilitatii resurselor consumate pentru cifra de afaceri,",
+        "influenta modificarii structurii fizice a cifrei de afaceri asupra ratei rentabilitatii financiare,",
+        "influenta modificarii structurii fizice a cifrei de afaceri asupra ratei rentabilitatii resurselor consumate pentru cifra de afaceri,",
+        "influenta modificarii structurii fizice a cifrei de afaceri asupra cheltuielilor la 1000 lei cifra de afaceri."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 39,
+      "text": "Se cunoaste urmatoarea situatie: Denumirea indicatorilor Perioada de baza Perioada de calcul 1- Capitalul propriu (mii lei) 75.000 80.000 2- Datorii totale 58.000 65.000 Rata autonomiei financiare )(Raf s-a modificat cu:",
+      "answers": [
+        "− 3,70 puncte procentuale;",
+        "+4,22 puncte procentuale;",
+        "− 2,54 puncte procentuale;",
+        "+2,75 puncte procentuale;",
+        "+3,92 puncte procentuale."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 40,
+      "text": "Una din urmatoarele afirmatii cu privire la ratele finanaciare si analiza acestora nu este corecta:",
+      "answers": [
+        "conduce la o mai buna intelegere si informare asupra sanatatii financiare si starii unui operator economic;",
+        "permite evaluarea a ceea ce a fost realizat fata de ce a fost programat sau ceea ce este normal sa se intâmple;",
+        "permite gasirea unor noi clienti si cucerirea unor noi piete de vânzare a produselor si serviciilor;",
+        "poate da informatii utile asupra impactului si contributiei diferitelor departamente asupra intregii activitati;",
+        "arata performanta operatorului economic."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 41,
+      "text": "Care dintre urmatoarele elemente se includ in valoarea adaugata: 1) cheltuielile cu personalul; 2) cheltuielile cu serviciile telefonice; 3) rezultatul (profitul) din exploatare aferent indicatorului pe baza caruia s-a calculat valoarea adaugata; 4) valoarea marfurilor vândute; 5) ajustari de valoare privind imobilizarile corporale si necorporale 6) cheltuieli cu alte impozite, taxe si varsaminte asimilate 7) costul marfurilor vândute.",
+      "answers": [
+        "2, 4;",
+        "2, 4, 5, 6;",
+        "4, 5;",
+        "1, 2, 3, 4, 5, 6, 7;",
+        "1, 3, 5, 6"
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 42,
+      "text": "Cifra de afaceri reprezinta:",
+      "answers": [
+        "veniturile din exploatare si financiare obtinute de un agent economic;",
+        "eficienta utilizaii activelor de care dispune un agent economic;",
+        "productia marfa fabricata si veniturile reprezentate de productia stocata si imobilizata;",
+        "veniturile din vânzarea de produse si furnizarea de servicii, care se inscriu in activitatea curenta a entitatii, dupa deducerea reducerilor comerciale si a taxei pe valoarea adaugata, precum si a altor taxe legate direct de cifra de afaceri;",
+        "profitul net al exercitiului financiar inregistrat de un agent economic, la sfârsitul anului."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 43,
+      "text": "Sa se calculeze cifra de afaceri neta pe baza urmatoarelor date de informare contabila: - venituri din vânzarea produselor finite:580 mii lei - venituri din vânzarea semifabricatelor: 100 mii lei - venituri din vânzarea produselor reziduale: 20 mii lei - venituri din servicii prestate: 50 mii lei - venituri din studii de cercetare: 50 mii lei - venituri din redevente, locatii de gestiune si chirii: 80 mii lei - venituri din vânzarea marfurilor: 100 mii lei - venituri din subventii de exploatare aferente cifrei de afaceri: 50 mii lei - venituri din subventii pentru plata personalului: 40 mii lei - venituri din subventii pentru investitii: 50 mii lei - venituri din titluri de participare: 10 mii lei - cheltuieli cu personalul: 45 mii lei Care este varianta de raspuns corecta?",
+      "answers": [
+        "Cifra de afaceri neta = 800 mii lei",
+        "Cifra de afaceri neta = 1030 mii lei",
+        "Cifra de afaceri neta = 600 mii lei",
+        "Cifra de afaceri neta = 900 mii lei",
+        "Cifra de afaceri neta = 780 mii lei"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 44,
+      "text": "Metoda lanturilor Markov este utilizata pentru:",
+      "answers": [
+        "analiza sezonalitatii activitatilor economice;",
+        "analiza dinamicii indicatorilor economico-financiari;",
+        "analiza corelatiilor dintre indicatorii economico-financiari;",
+        "analiza modificarii si previziunii structurii indicatorilor complecsi;",
+        "calculul influentei factorilor care explica modificarea unui indicator complcs."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 45,
+      "text": "Indicele de dinamica a cifrei de afaceri: CAI = 108% Indicele de dinamica a productivitatii muncii: wI = 98% Indicele de dinamica a profitului aferent cifrei de afaceri: ReI = 105% Rezulta:",
+      "answers": [
+        "s-a redus numarul mediu al personalului, a crescut productivitatea muncii si cheltuielile de exploatare aferente cifrei de afaceri;",
+        "s-au redus numarul mediu al personalului, productivitate muncii si cheltuielile de exploatare aferente cifrei de afaceri;",
+        "a crescut numarul mediu al personalului, s-a redus productivitatea muncii si a crescut proportia cheltuielilor de exploatare aferente cifrei de afaceri in cifra de afaceri;",
+        "a crescut cifra de afaceri si s-au redus cheltuielile de exploatare aferente cifrei de afaceri;",
+        "s-au redus productivitate muncii si proportia cheltuielilor de exploatare aferente cifrei de afaceri in cifra de afaceri."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 46,
+      "text": "Indicele de dinamica a productiei exercitiului: QI = 102% Indicele de dinamica a valorii adaugate: VAI = 105% Indicele de dinamica a numarului mediu al personalului: NI = 96% A rezultat:",
+      "answers": [
+        "cresterea productivitatii muncii si reducerea ponderii consumurilor intermediare in productia exercitiului;",
+        "scaderea productivitatii muncii si reducerea ponderii consumurilor intermediare in productia exercitiului;",
+        "scaderea productivitatii muncii si cresterea ponderii consumurilor intermediare in productia exercitiului;",
+        "sporirea productivitatii muncii si cresterea ponderii consumurilor intermediare in productia exercitiului;",
+        "scaderea numarului mediu al personalului si a productivitatii muncii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 47,
+      "text": "Cu ajutorul urmatoarei relatii de calcul:    , Δ 01010111 cqpqcqpq  −−−=  se determina modificarea absoluta a rezultatului din exploatare aferent cifrei de afaceri, datorita:",
+      "answers": [
+        "modificarii preturilor de livrare;",
+        "modificarii numarului mediu al personalului;",
+        "modificarii volumului fizic al cifrei de afaceri;",
+        "modificarii costurilor unitare complete;",
+        "modificarii eficientei utilizarii activelor circulante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 48,
+      "text": "Daca VAI > QI si QI < WI Cunoscând ca: VAI  = indicele de dinamica al valorii adaugate QI  = indicele de dinamica al productiei exercitiului WI  = indicele de dinamica al productivitatii muncii atunci:",
+      "answers": [
+        "creste eficienta utilizarii mijloacelor fixe in conditiile unei valorificari necorespunzatoare a materiilor prime;",
+        "scade productivitatea muncii si creste productia in curs de executie;",
+        "se reduce ponderea consumurilor provenite de la terti (consumurilor intermediare) in volumul total al productiei exercitiului si scade numarul mediu al personalului;",
+        "este o valorificare slaba a resurselor materiale, desi s-a utilizat bine timpul maxim disponibil;",
+        "creste gradul de valorificare a productiei exercitiului si proportia stocurilor de produse finite si semifabricate destinate vânzarii in productia marfa fabricata."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 49,
+      "text": "Cresterea costurilor complete pe unitatea de produs are ca efect:",
+      "answers": [
+        "- cresterea cheltuielilor la 1000 lei cifra de afaceri,",
+        "- cresterea rezultatului (profitului) din exploatare aferent cifrei de afaceri,",
+        "- cresterea productivitatii muncii,",
+        "- cresterea cifrei de afaceri,",
+        "- cresterea ratei rentabilitatii vânzarilor."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 50,
+      "text": "Prin care din urmatoarele metode se formeaza fondurile proprii ale intreprinderii:",
+      "answers": [
+        "metoda provizioanelor;",
+        "metoda creditarii;",
+        "metoda autofinantarii si metoda aportului in bani si natura;",
+        "metoda veniturilor in avans;",
+        "metoda Parteneriatului Public Privat."
+      ],
+      "correctIndex": 2
+    }
+  ]
+}

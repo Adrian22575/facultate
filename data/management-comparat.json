@@ -1,0 +1,604 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Afirmatia „ambitia reprezinta forta motrice a actiunii” caracterizeaza culturile:",
+      "answers": [
+        "masculine;",
+        "individualiste;",
+        "cu grad ridicat de evitare a incertitudinii;",
+        "colectiviste;",
+        "cu distanta redusa fata de putere."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 2,
+      "text": "Identificati dintre urmatoarele afirmatii pe cele care descriu o cultura cu un grad ridicat de evitare a incertitudinii: 1) Performanta este cea care conteaza in viata; 2) Se manifesta admiratie fata de realizatori de succes; 3) Misiunea autoritatilor este de a servi interesele cetatenilor; 4) Se manifesta incredere in experti si in cunostintele acestora; 5) Se manifesta de regula o puternica nevoie de consens; 6) Comportamentul agresiv este respins.",
+      "answers": [
+        "1, 2, 4;",
+        "4, 5, 6;",
+        "2, 3, 4;",
+        "3, 4, 5;",
+        "2, 5, 6."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 3,
+      "text": "Descrierea, explicarea si interpretarea practicilor manageriale din cadrul anumitor culturi specifice reprezinta obiectul studiilor:",
+      "answers": [
+        "policentrice;",
+        "comparative;",
+        "parohiale;",
+        "etnocentrice;",
+        "sinergetice."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 4,
+      "text": "In componenta veniturilor directorilor de companii din SUA intra:",
+      "answers": [
+        "salarii, dividende, prime de sarbatori;",
+        "salarii, actiuni ale firmei acordate gratuit, comisioane din vânzari;",
+        "salarii, prime, sume special prevazute in planurile de stimulare;",
+        "dividende, premii, asigurari medicale;",
+        "doar salarii si prime."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 5,
+      "text": "Din punctul de vedere al abordarii multidimensionale a lui Hofstede, cultura si managementul din SUA se caracterizeaza prin:",
+      "answers": [
+        "distanta redusa fata de putere;",
+        "colectivism;",
+        "tendinta foarte ridicata de evitare a incertitudinii;",
+        "valoare medie a dimensiunii masculinitate – feminitate;",
+        "statut câstigat, nu atribuit."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "text": "Studiile de management comparat prezinta o serie de pucte slabe, intre care se pot enumera: 1) aparitia unor discrepante intre cercetarile teoretico-metodologice si cele empirice; 2) predominanta abordarilor descriptiviste; 3) manifestarea unor puternice tendinte de abstractizare si generalizare; 4) apelarea frecventa la studii empirice si mai putin la cele stiintifice; 5) utilizarea pe scara larga a unor abordari de management comparat unilaterale.",
+      "answers": [
+        "1+2+5;",
+        "1+3+4;",
+        "4+5+6;",
+        "3+4+6;",
+        "2+3+5."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 7,
+      "text": "Imprimarea unui caracter anticipativ conducerii este o tendinta in managementul firmelor pe plan mondial care consta in: 1. larga proliferare a strategiilor si politicilor; 2. fundamentarea ansamblului proceselor si relatiilor manageriale ale firmei pe numeroase metode economice, juridice, matematice, informatice, psihologice, etc.; 3. conturarea in cadrul culturii organizationale a unei mentalitati de tip previzional; 4. incurajarea unor abordari si comportamente cu un pronuntat caracter inovational; 5. axarea pe obtinerea avantajului competitiv; Se refera la:",
+      "answers": [
+        "2+3+5;",
+        "1+3+5;",
+        "3+4+5;",
+        "2+3+4;",
+        "1+3+4."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 8,
+      "text": "In firmele americane, structurile organizatorice predominante sunt:",
+      "answers": [
+        "structura pe domenii sau functiuni, structura pe produs, structura geografica;",
+        "structura divizionala internationala, structura functionala globala si structura functionala regionala;",
+        "structura divizionala, structura functionala si structura ierarhica;",
+        "structura divizionala, structura matriceala si structura de tip retea;",
+        "structura familiala, structura regionala si structura globala."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 9,
+      "text": "Scoala dezvoltarii economice cuprinde urmatoarea caracteristica:",
+      "answers": [
+        "identificarea si analiza credintelor, sistemelor de valori si ierarhiilor necesare in management ce predomina intr-o societate data;",
+        "accentuarea rolului factorilor externi managementului;",
+        "neglijarea aproape totala a managementului la nivelul firmei;",
+        "sistematizarea riguroasa a demersurilor teoretico-metodologice;",
+        "fenomenele de management sunt studiate si investigate la nivel microsocial."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 10,
+      "text": "Printre particularitatile studiilor de management comparat se numara: 1) abordare standardizata; 2) volum de munca mare si divers; 3) flexibilitate; 4) costuri ridicate; 5) asigurarea echivalentei.",
+      "answers": [
+        "1+2+3;",
+        "1+3+4;",
+        "2+3+5;",
+        "2+4+5;",
+        "3+4+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 11,
+      "text": "Tratarea unilaterala a managementului, aproape in exclusivitate prin prisma factorilor economici, este o limita a scolii:",
+      "answers": [
+        "mediului (environmentalista);",
+        "dezvoltarii economice;",
+        "behavioriste;",
+        "sistemelor deschise;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 12,
+      "text": "Scoala mediului (environmentalista) are urmatoarea caracteristica:",
+      "answers": [
+        "Identificarea si analiza credintelor, sistemelor de valori si a ierarhiilor de management ce predomina intr-o societate data;",
+        "Conceptualizarea managementului ca sistem organic integrat in organizatie si aflat in multiple relatii cu mediul;",
+        "Accentuarea rolului factorilor externi managementului si organizatiei;",
+        "Luarea in considerare a unui numar mare de variabile (de mediu, organizationale, culturale);",
+        "Acordarea unui accent major efectelor sinergice ale mediului si ale culturilor specifice acestuia."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 13,
+      "text": "Angajarea pe viata a personalului are o serie de dezavantaje, intre care: 1. rigiditatea si inflexibilitatea sistemului de recrutare a personalului calificat; 2. dificultatea stabilirii si armonizarii curbei salariilor de care beneficiaza angajatii de-a lungul perioadei de angajare; 3. insuficienta stimulare pentru perfectionare si dezvoltare a salariatilor; 4. generarea de puternice presiuni pentru amplificarea volumului activitatilor intreprinderii; 5. managementul organizatiei tinde sa acorde prea putina atentie utilizarii la maximum a timpului de lucru; 6. obligativitatea pastrarii unor angajati care nu corespund standardelor organizatiei.",
+      "answers": [
+        "1, 2, 4;",
+        "2, 3, 5;",
+        "1, 3, 4;",
+        "3, 4, 5;",
+        "2, 5, 6."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Identificarea elementelor de universalitate pornind de la similaritatile transnationale este o caracteristica a studiilor:",
+      "answers": [
+        "parohiale;",
+        "sinergetice;",
+        "comparative;",
+        "etnocentrice;",
+        "geocentrice."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 15,
+      "text": "Printre particularitatile inovatiei in management care limiteaza intensificarea caracterului inovational al managementului se numara: 1) obiectul inovatiei in management il constituie activitatea oamenilor; 2) inovatia in management este adesea rezultatul muncii unei singure persoane; 3) inovatia in management imbraca forme diferite de la o intreprindere la alta; 4) inovatia in management este limitata de instrumentarul metodologico-managerial; 5) ritmul crescut de uzura morala.",
+      "answers": [
+        "1+3+5;",
+        "1+2+3;",
+        "1+4+5;",
+        "2+3+5;",
+        "2+4+5."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 16,
+      "text": "„Amae” semnifica:",
+      "answers": [
+        "o relatie formala de subordonare dintre doi angajati, vizibila in organigrama;",
+        "o caracteristica esentiala a managerului nipon;",
+        "o stare de dependenta si intrajutorare intre componentii unei organizatii;",
+        "o modalitate specifica de rezolvare a unui conflict intre grupurile din cadrul unei organizatii;",
+        "un termen ce desemneaza marile grupuri industriale."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 17,
+      "text": "Contributia scolii comportiste la dezvoltarea managementului comparat se refera la:",
+      "answers": [
+        "luarea in considerare a unui evantai mult mai larg de variabile ale mediului organizatiei;",
+        "acordarea unui accent major efectelor sinergice ale mediului si ale culturilor specifice lui;",
+        "ocolirea aspectelor microsociale si a ca urmare, a subiectivismului in abordarea fenomenelor de management;",
+        "evidentierea rolului major pe care factorul uman il are in fenomenele de management intr-o abordare transnationala;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 18,
+      "text": "Identificati varianta falsa dintre urmatoarele afirmatii referitoare la managementul american:",
+      "answers": [
+        "acorda o atentie tot mai mare valorilor manageriale si culturii organizationale;",
+        "manifesta apreciere fata de importanta deciziilor si actiunile guvernului, fata de parteneriatul intre sectorul public si cel privat;",
+        "pune accentul pe robotizarea activitatilor de executie;",
+        "managerul sau directorul general reprezinta principalul agent al schimbarilor.",
+        "un element esential al managementului si culturii americane este asa- numitul paternalism, grupism sau familiarism."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 19,
+      "text": "Un factor major de influenta asupra managementului intreprinderilor la nivel international este:",
+      "answers": [
+        "imprimarea unui management anticipativ conducerii;",
+        "limitarea implicarii statului in economie;",
+        "scaderea numarului de specialisti in diverse domenii;",
+        "ritmul rapid de uzura morala a cunostintelor si know-how-lui;",
+        "cresterea accesibilitatii resurselor."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 20,
+      "text": "Una dintre limitele scolii sistemelor deschise este:",
+      "answers": [
+        "definirea doar aproximativa a unei parti a variabilelor considerate, mai ales a celor culturale;",
+        "atribuirea unui rol pasiv organizatiei, de receptare a influentelor mediului;",
+        "insuficienta adaptare si validare a instrumentelor cercetarii la cerintele investigatiilor transnationale;",
+        "absenta investigatiilor care sa cuantifice intensitatea corelatiei dintre mediu si management;",
+        "evitarea aspectelor microsociale."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 21,
+      "text": "O societate de tip feminin se poate descrie prin:",
+      "answers": [
+        "interdependenta reprezinta un ideal;",
+        "se experimenteaza un stress usor si mai putin intens;",
+        "exista o armonie latenta intre persoanele care detin puterea si ceilalti;",
+        "performanta este ceea ce conteaza in viata;",
+        "se manifesta sentimente precumpanitor pozitive fata de tineri."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 22,
+      "text": "O societate cu o distanta mare fata de putere se caracterizeaza prin: 1) modalitatea de a schimba un sistem social se refera la detronarea detinatorilor puterii; 2) fiecare persoana are dreptul la o viata privata si opinii personale; 3) exista o stare conflictuala latenta intre detinatorii puterii si ceilalti; 4) barbatii ar trebui sa domine in societate; 5) inegalitatea in societate este necesar sa fie reglementata, fiecarei persoane; repartizându-i-se un loc si fiind protejata indiferent de rang; 6) se manifesta o puternica necesitate pentru reglementari si reguli scrise.",
+      "answers": [
+        "1, 3, 5;",
+        "1, 4, 5;",
+        "2, 3, 6;",
+        "4, 5, 6;",
+        "1, 2, 4."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Printre modalitatile manageriale de iesire din criza practicate in managementul nipon, se numara:",
+      "answers": [
+        "apelarea la cercurile de calitate, rotatia posturilor, reproiectarea structurii organizatorice;",
+        "perfectionare continua, apelarea la sisteme de motivare complexa a personalului, diminuarea birocratizarii;",
+        "descentralizarea sistemului managerial, reconceperea partiala a prioritatilor managerilor, diminuarea numarului de subdiviziuni organizatorice;",
+        "cresterea profitului si a eficientei, imbunatatirea comunicatiilor, accelerarea procesului decizional;",
+        "tratarea angajatilor in functie de productivitatea obtinuta, auditarea activitatii organizatiei, accentuarea dimensiunii prospective."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 24,
+      "text": "Extrema primei parti (individualism) a dimensiunii individualism/colectivism formulate de Hofstede se caracterizeaza prin: 1) exista o stare conflictuala latenta intre detinatorii puterii si ceilalti; 2) independenta afectiva a indivizilor fata de organizatii; 3) implicarea individului in organizatie se bazeaza pe calcule; 4) timpul este considerat ca neavând valoare; 5) interdependenta reprezinta un ideal; 6) aceleasi standarde de valoare sociala ar trebui sa se aplice pentru toti.",
+      "answers": [
+        "1, 2, 3;",
+        "2, 3, 4;",
+        "1, 2, 6;",
+        "2, 3, 6;",
+        "3, 4, 6."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 25,
+      "text": "Intre etapele elaborarii unui studiu complex de management comparat se numara: 1) stabilirea scopurilor studiului; 2) traducerea materialelor implicate; 3) masurarea si instrumentalizarea fenomenelor manageriale; 4) urmarirea atingerii obiectivelor; 5) implementarea rezultatelor studiului; 6) generalizarea.",
+      "answers": [
+        "3, 4, 5;",
+        "1, 2, 6;",
+        "1, 2, 5;",
+        "3, 5, 6;",
+        "1, 2, 3."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 26,
+      "text": "Identificati variantele care indica rolurile interpersonale ale managerului american: 1) rolul de leader; 2) rolul de monitor; 3) rolul de diseminator de informatii; 4) rolul de reprezentare; 5) rolul de contactor de persoane.",
+      "answers": [
+        "1+2+3;",
+        "2+3+4;",
+        "3+4+5;",
+        "1+4+5;",
+        "1+3+5."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 27,
+      "text": "„Accentul de pune pe initiativa si realizarea individuala; exercitarea unei pozitii manageriale este un ideal pentru multe persoane”. Aceasta afirmatie caracterizeaza o societate:",
+      "answers": [
+        "masculina;",
+        "individualista;",
+        "cu distanta redusa fata de putere;",
+        "cu un grad ridicat de evitare a incertitudinii;",
+        "cu o distanta ridicata fata de putere."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 28,
+      "text": "Studiile proiectate sa identifice similaritatile si diferentele in cadrul a doua sau mai multe culturi, pornind de la ipoteza ca nu exista o cultura dominanta poarta denumirea de studii:",
+      "answers": [
+        "geocentrice;",
+        "etnocentrice;",
+        "generale;",
+        "parohiale;",
+        "comparative."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 29,
+      "text": "Intre modalitatile de integrare a noilor salariati in cadrul managementului japonez nu se numara:",
+      "answers": [
+        "participarea la tabere de sport si munca agricola;",
+        "exercitii de meditatie de tip „zen”;",
+        "rotirea periodica pe posturi;",
+        "testarea repetata a aptitudinilor profesionale si personale;",
+        "vizite la muzee istorice si baze militare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 30,
+      "text": "Conceptia conform careia persoanele si ideile ce reprezinta deviatii de la standarde sunt considerate periculoase, manifestându-se intoleranta fata de acestea, este specifica unei societati:",
+      "answers": [
+        "masculine;",
+        "colectiviste;",
+        "cu distanta mare fata de putere;",
+        "cu un grad ridicat de evitare a incertitudinii;",
+        "individualiste."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 31,
+      "text": "Intre optiunile strategice predilecte in cadrul managementului american nu se numara:",
+      "answers": [
+        "robotizarea activitatilor de executie;",
+        "plasarea firmelor in zonele rurale;",
+        "intelectualizarea si informatizarea intreprinderilor;",
+        "extinderea activitatii prin fuziuni si achizitii;",
+        "dezvoltarea puternica a IMM-urilor."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 32,
+      "text": "Studiile sinergetice:",
+      "answers": [
+        "se concentreaza asupra intelegerii interactiunilor dintre persoane apartinând diferitelor culturi si nu descrierii culturilor;",
+        "extind rezultatele cercetarilor asupra managementului dintr-o tara si asupra altor tari;",
+        "servesc drept contrapondere studiilor etnocentrice;",
+        "presupune existenta universalitatii in abordarile de management transnationale;",
+        "pornesc de la ideea ca nici o modalitate manageriala de atingere a unui obiectiv, specifica unei culturi, nu este superioara alteia (relativitate culturala)."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 33,
+      "text": "Studiile parohiale de management comparat sunt acele studii prin care:",
+      "answers": [
+        "se investigheaza o singura cultura, aceasta fiind abordata ca o constanta;",
+        "se verifica daca o teorie valabila pentru cultura A este valabila si pentru cultura B;",
+        "se identifica similaritatile si diferentele in cadrul a doua sau mai multe culturi;",
+        "se analizeaza legitatile ce guverneaza interactiunea si managementul persoanelor ce apartin diferitelor culturi;",
+        "se investigheaza corporatiile multinationale."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 34,
+      "text": "Afirmatia „persoanele plasate in diferitele straturi ale puterii se simt mai putin amenintate, si cele mai multe sunt pregatite sa aiba incredere in oameni” caracterizeaza o cultura:",
+      "answers": [
+        "cu un grad redus de evitare a incertitudinii;",
+        "feminina;",
+        "colectivista;",
+        "cu o distanta redusa fata de putere;",
+        "cu o abordare pe termen scurt."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 35,
+      "text": "Orientarea teoretico-abstracta a cercetarilor si studiilor de management comparat se caracterizeaza prin:",
+      "answers": [
+        "abordari axate pe conceptualizare si abordari axate pe sintetizarea informatiilor;",
+        "abordarea unidimensionala si cea multidimensionala;",
+        "abordarea clasica si abordarea multidisciplinara;",
+        "abordarea axata pe sintetizare si cea axata pe analiza;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 36,
+      "text": "Printre punctele forte ale studiilor manageriale internationale se numara:",
+      "answers": [
+        "obtinerea unor rezultate apreciabile, mai ales in cercetarile cu caracter empiric;",
+        "predominanta abordarilor descriptive;",
+        "manifestarea unor puternice tendinte de abstractizare si generalizare;",
+        "eliminarea discrepantelor intre cercetarile teoretico-metodologice si cele empirice;",
+        "nici o varianta corecta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 37,
+      "text": "Firmele emergente sunt o manifestare specifica a unor evolutii specifice managementului:",
+      "answers": [
+        "japonez;",
+        "românesc;",
+        "american si japonez;",
+        "american;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 38,
+      "text": "„Obsesia” salariatilor firmei nipone pentru actualizarea si amplificarea informatiilor si abilitatilor implicate de activitatile economice ale firmei se traduce in:",
+      "answers": [
+        "constituirea de echipe de munca multiculturale eficace;",
+        "neacceptarea ambiguitatii si haosului;",
+        "acceptarea cuprinzatoare a elementelor de tehnice, economice etc. care nu provin din firma;",
+        "abordarea complexa a nevoilor clientilor, in vederea satisfacerii complete a cerintelor si preferintelor acestora;",
+        "nicio varianta corecta."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 39,
+      "text": "Pozitionarea tehnico-economica a firmelor emergente in cadrul unui mediu cu un pronuntat dinamism presupune o serie de decizii strategice. Identificati intre variantele de mai jos afirmatia care nu reprezinta una dintre aceste decizii strategice:",
+      "answers": [
+        "stabilirea prioritatilor acordate actiunilor de dezvoltare-inovare;",
+        "dimensionarea tehnologiei si pietelor pe care se axeaza firma;",
+        "organizarea structurala a proceselor de executie;",
+        "armonizarea temporala a tuturor deciziilor;",
+        "determinarea gradului de externalizare a activitatilor."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 40,
+      "text": "O forma specifica de management centrat pe activitatile de productie conturate in SUA este managementul integrat al productiei, care reuneste trei abordari manageriale ale activitatilor de productie:",
+      "answers": [
+        "sistem de recompense cu valente motivationale, managementul calitatii totale si operationalizarea productiei;",
+        "managementul calitatii totale, operationalizarea productiei si dezvoltarea de relatii sinergetice;",
+        "dezvoltarea de relatii sinergetice, tehnologice si de prelucrare avansata;",
+        "reconsiderarea factorului uman, informatizarea activitatilor si managementul calitatii totale;",
+        "tehnologie de prelucrare avansata, managementul calitatii totale si gestiunea stocurilor in timp real."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 41,
+      "text": "Repetarea investigatiilor initial proiectate si realizate in cadrul unei culturi intr-o a doua cultura este o caracteristica a studiilor:",
+      "answers": [
+        "comparative;",
+        "sinergetice;",
+        "geocentrice;",
+        "polycentric;",
+        "etnocentrice."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 42,
+      "text": "In cadrul etapei de precizare a tematicii a elaborarii unui studiu de management comparat, trebuie indeplinite o parte din urmatoarele cerinte: 1) importanta subiectului sa fie egala in fiecare cultura investigata; 2) subiectul trebuie enuntat sintetic, intr-o formulare cât mai concisa si limpede; 3) specificitatea subiectului sa fie egala in cadrul culturilor considerate; 4) subiectul sa fie echivalent; 5) subiectul trebuie formulat astfel incât sa permita evitarea „confuziei ecologice”.",
+      "answers": [
+        "1+3+4;",
+        "1+2+3;",
+        "2+3+5;",
+        "1+4+5;",
+        "2+3+4."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 43,
+      "text": "Descoperirea similaritatilor culturilor in cadrul carora opereaza corporatiile multinationale reprezinta obiectul studiilor:",
+      "answers": [
+        "geocentrice;",
+        "parohiale;",
+        "sinergetice;",
+        "etnocentrice;",
+        "comparative."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 44,
+      "text": "Printre factorii ale caror evolutii sunt defavorizante cresterii eficientei managementului se numara:",
+      "answers": [
+        "intensificarea concurentei la nivel global;",
+        "trecerea la economia de piata;",
+        "dezvoltarea sistemelor informatice;",
+        "interventia statului in economie;",
+        "cresterea volumului de informatii de prelucrat."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 45,
+      "text": "Printre caracteristicile relatiilor managementului american cu sindicatele nu se numara:",
+      "answers": [
+        "negocierile se desfasoara la doua niveluri, la nivel de ramura si subramura (sau domenii);",
+        "negocierile au un caracter adversial;",
+        "relatiile management-sindicate sunt incordate datorita poderii din ce in ce mai ridicate a sindicatelor;",
+        "dau adesea nastere unor conflicte de munca;",
+        "se recurge frecvent la actiuni intense de protest, inclusiv la greve de lunga durata."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 46,
+      "text": "Printre rolurile decizionale ale managerilor intr-o organizatie americana nu se numara rolul de:",
+      "answers": [
+        "intreprinzator;",
+        "alocator de resurse;",
+        "negociator;",
+        "purtator de cuvânt;",
+        "mânuitor de disfunctionalitati."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 47,
+      "text": "Cel mai larg utilizate tipuri de structuri organizatorice in intreprinderile japoneze sunt:",
+      "answers": [
+        "ierarhice, functionale si pe proiecte;",
+        "ierarhice pe produs, pe functiuni, geografica si de tip retea;",
+        "pe divizii, tip retea si de tip familial;",
+        "functionale, pe divizii si matriceale;",
+        "divizionala pe produs, cu „umbrela” locala si functionala regionala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 48,
+      "text": "Conform incadrarii cvadridimensionale a lui Hofstede, cultura japoneza se caracterizeaza prin:",
+      "answers": [
+        "grad ridicat al masculinitatii;",
+        "individualism.",
+        "distanta fata de putere concomitent mare si foarte mica;",
+        "grad redus de evitare a incertitudinii;",
+        "grad ridicat al feminitatii;"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 49,
+      "text": "Luarea deciziilor prin consens, in cadrul managementului nipon, are o serie de caracteristici. Alegeti varianta care nu reprezinta una dintre aceste caracteristici:",
+      "answers": [
+        "frecvente implicari ale cadrelor de conducere pe parcursul procesului decizional;",
+        "rolul limitat in realizarea consensului pe care il au managerii de nivel mediu;",
+        "imbinarea comunicarii formale cu cea informala;",
+        "grad ridicat de complexitate;",
+        "consum mare de timp."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 50,
+      "text": "Printre fazele adoptarii deciziilor prin consens in cadrul managementului japonez nu se numara:",
+      "answers": [
+        "vehicularea si dezbaterea propunerii decizionale;",
+        "identificarea mai multor alternative decizionale ce vor fi supuse discutiei;",
+        "aprobarea deciziei;",
+        "aplicarea deciziei;",
+        "formularea propunerii decizionale."
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

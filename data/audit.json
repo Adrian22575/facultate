@@ -1,0 +1,483 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Precizati afirmatia corecta:",
+      "answers": [
+        "CAPI (Comitetul pentru Audit Public Intern) este o structura in cadrul Ministerului Economiei si Finantelor;",
+        "CAPI este condusa de un subsecretar de stat din cadrul Guvernului;",
+        "CAPI este organism independent, functioneaza pe langa Parlament si da asigurari si consiliere ministerelor din structura Guvernului;",
+        "nici una"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 2,
+      "text": "Auditul intern reprezinta:",
+      "answers": [
+        "activitatea de examinare obiectiva a ansamblului activitatilor entitatii in scopul furnizarii unei evaluari independente a managementului riscului, controlului si proceselor de conducere a acestuia;",
+        "activitatea de control financiar a ansamblului activitatilor entitatii in scopul furnizarii unei evaluari generale a managementului riscului,controlului si proceselor de conducere a acestuia;",
+        "activitatea de examinare externa a ansamblului activitatilor entitatii in scopul furnizarii unei evaluari independente a riscului,controlului conturilor anuale si a proceselor de conducere a acestuia;",
+        "activitatea de management al sistemelor de control intern;",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "text": "Care afirmatie e corecta?",
+      "answers": [
+        "planul de audit intern se intocmeste anual si este aporobat de conducerea unitatii;",
+        "planul de audit intern se intocmeste anual si este aporobat de actionari;",
+        "planul de audit intern se intocmeste trimestrial si anual si este aprobat de directorul economic;",
+        "planul de audit intern se refera doar la misiuni de asigurare;",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 4,
+      "text": "Planul anual de audit intern aprobat poate fi modificat la propunerea:",
+      "answers": [
+        "ANAF;",
+        "sefului compartimentului de audit intern sau la initiativa directorului economic;",
+        "sefului compartimentului de audit intern sau la initiativa conducatorilor departamentelor functionale;",
+        "sefului compartimentului de audit intern sau la initiativa conducatorului entitatii;",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 5,
+      "text": "Care din urmatoarele afirmatii cu privire la atributiile Compartimentului de audit public intern sunt false:",
+      "answers": [
+        "elaboreaza proiectul planului anual;",
+        "raporteaza periodic asupra constatarilor, concluziilor si recomandarilor rezultate din activitatile sale de audit;",
+        "raporteaza iregularitatile rezultate din activitatile sale de audit;",
+        "in cazul constatarii unor iregularitati raporteaza Curtii de Conturi;",
+        "intocmeste raportul anual de audit."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 6,
+      "text": "Auditarea activitatilor desfasurate intr-o entitate publica, se desfasoara:",
+      "answers": [
+        "anual;",
+        "la 2 ani;",
+        "cel putin la 3 ani;",
+        "cel putin la 5 ani;",
+        "cel putin la 4 ani."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 7,
+      "text": "In notificarea adresata structurii auditate, se precizeaza:",
+      "answers": [
+        "planul misiunii de audit;",
+        "analiza riscurilor;",
+        "scopul, principalele obiective si durata misiunii;",
+        "calendarul intalnirilor;",
+        "conflictele de interese."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 8,
+      "text": "Punctele de vedere ale structurii auditate la proiectul de raport se transmit echipei de audit in urmatoarele termene:",
+      "answers": [
+        "in maxim 15 zile de la primirea proiectului de raport;",
+        "dupa 15 zile de la primirea proiectului de raport;",
+        "in maxim 10 zile de la primirea proiectului de raport;",
+        "in maxim 5 zile de la primiea proiectului de raport;",
+        "nu exista un termen stabilit in Legea nr. 672/2002 privind auditul public intern."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 9,
+      "text": "Reuniunea de conciliere cu structura auditata se organizeaza in termen de:",
+      "answers": [
+        "5 zile de la primirea punctelor de vedere",
+        "10 zile de la primirea punctelor de vedere",
+        "15 zile de la primirea punctelor de vedere",
+        "imediat ce s-au primit punctele de vedere",
+        "nu exista un termen stabilit prin lege"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 10,
+      "text": "Obiectivele compartimentului de audit public intern sunt urmatoarele, mai putin una:",
+      "answers": [
+        "sa efectueze controlul intern;",
+        "sa asigure o mai buna administrare si pastrare a patrimoniului;",
+        "sa asigure o mai buna monitorizare a conformitatii cu regulile si procedurile existente;",
+        "sa asigure o evidenta contabila si un management informatic fiabile si corecte;",
+        "sa asigure consiliere conducatorului entitatii/structurii auditate"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 11,
+      "text": "Initierea auditului –nu presupune:",
+      "answers": [
+        "intocmirea ordinului de serviciu",
+        "intocmirea declaratiei de independenta",
+        "intocmirea notificarii privind declansarea misiunii de audit public intern",
+        "intocmirea minutei sedintei de deschidere",
+        "inaintarea notificarii structurii auditate"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 12,
+      "text": "Ordinea de zi a sedintei de deschidere nu va cuprinde:",
+      "answers": [
+        "prezentarea auditorilor;",
+        "prezentarea obiectivelor misiunii de audit;",
+        "asigurarea conditiilor materiale necesare derularii misiunii",
+        "intocmirea Fiselor de identificare si analiza a problemelor(FIAP)",
+        "prezentarea scopului misiunii"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 13,
+      "text": "Compartimentul de audit public intern nu notifica entitatea/ structura auditata:",
+      "answers": [
+        "cu 15 zile inainte de declansarea misiunii de audit public intern",
+        "despre scopul, principalele obiective, durata acesteia",
+        "despre faptul ca pe parcursul misiunii vor avea loc interventii la fata locului",
+        "asupra programului stabilit de catre auditor",
+        "despre durata misiunii"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 14,
+      "text": "Care din elementele metionate mai jos nu reprezinta reguli de conduita ale auditorului:",
+      "answers": [
+        "integritatea;",
+        "independenta;",
+        "confidentialitatea",
+        "subiectivitatea",
+        "obiectivitate"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 15,
+      "text": "Proiectul planului de audit public intern:",
+      "answers": [
+        "se elaboreaza de catre compartimentul de audit public intern al entitatii publice de la nivelul ierarhic imediat superior;",
+        "se elaboreaza pe baza evaluarii riscului asociat diferitelor structuri, activitati, programe/proiecte sau operatiuni;",
+        "este intocmit pana la 20 decembrie a anului precedent;",
+        "nu necesita referat de justificare.",
+        "se transmite spre avizare la organul ierarhic superior"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 16,
+      "text": "Notificarea structurii care va fi auditata precizeaza urmatoarele, cu exceptia:",
+      "answers": [
+        "scopul si principalele obiective ale misiunii de audit;",
+        "durata misiunii de audit;",
+        "tematica in detaliu;",
+        "programul stabilit exclusiv de catre auditor.",
+        "componenta echipei de audit"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 17,
+      "text": "Proiectul de raport de audit public intern:",
+      "answers": [
+        "se transmite la Unitatea Centrala de Armonizare a Auditului Public Intern pentru analiza si avizare;",
+        "este insotit de documente justificative;",
+        "informeaza conducatorul entitatii auditate asupra modului de implementare a recomandarilor;",
+        "se transmite unitatii auditate numai dupa analiza si avizare de catre conducatorul entitatii publice care a aprobat misiunea.",
+        "este documentul pe baza caruia se intocmesc FIAP-urile"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 18,
+      "text": "Auditorii interni:",
+      "answers": [
+        "trebuie sa-si indeplineasca atributiile in mod obiectiv si independent, cu profesionalism si integritate",
+        "raspund pentru masurile luate in urma analizarii recomandarilor prezentate in rapoartele de audit;",
+        "participa la elaborarea si implementarea sistemelor de control intern;",
+        "nu sunt responsabili de protectia documentelor referitoare la auditul public intern desfasurat la o entitate publica.",
+        "sunt in excusivitate ai ASE"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 19,
+      "text": "Principalele tipuri de audit sunt urmatoarele, cu exceptia:",
+      "answers": [
+        "audit de sistem;",
+        "audit de baza;",
+        "audit de regularitate;",
+        "auditul performantei;",
+        "numai cele mentionate la literele a., c., si d."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 20,
+      "text": "Interventia la fata locului presupune:",
+      "answers": [
+        "efectuarea controlului intern;",
+        "constatarea si raportarea iregularitatilor;",
+        "elaborarea raportului final;",
+        "urmarirea recomandarilor;",
+        "stabilirea unor termene ferme de implementare a recomandarilor"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 21,
+      "text": "Care din afirmatiile de mai jos nu corespunde realitatii:",
+      "answers": [
+        "masurarea riscurilor depinde de probabilitatea de aparitie si de gravitatea consecintelor evenimentului;",
+        "masurarea riscurilor utilizeaza drept instrumente de masurare criteriile de apreciere;",
+        "masurarea riscurilor depine de persoana care le calculeaza.",
+        "probabilitatea de aparitie a riscului este exprimata pe o scara de valori pe trei nivele:mica, medie, mare;",
+        "criteriile utilizate pentru masurarea probabilitatii de aparitie a riscului sunt aprecierea vulnerabilitatii entitatii si a controlului intern;"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 22,
+      "text": "Principalele tehnici de audit sunt:",
+      "answers": [
+        "chestionarul de control intern;",
+        "chestionarul lista de verificare;",
+        "fisa de identificare si analiza problemelor;",
+        "verificarea, observarea fizica, interviul si analiza;",
+        "pista de audit."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 23,
+      "text": "Nu se au in vedere la intocmirea planului de audit al misiunii urmatoarele elemente:",
+      "answers": [
+        "respectarea periodicitatii de auditare",
+        "evaluarea riscului asociat diferitelor activitati",
+        "sugestiile conducatorului entitatii publice",
+        "sugestiile clientilor",
+        "recomandarile Curtii de Conturi"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 24,
+      "text": "Proiectul planului de audit public intern se intocmeste pana la data de:",
+      "answers": [
+        "15 noiembrie an precedent",
+        "30 noiembrie an precedent",
+        "20 decembrie an precedent",
+        "1 ianuarie an in curs",
+        "15 decembrie an precedent"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Nu este instrument de audit intern:",
+      "answers": [
+        "Chestionarul de control intern",
+        "Chestionarul lista de verificare",
+        "Pista de audit",
+        "Interviul",
+        "FIAP"
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 26,
+      "text": "Dosarul permanent cuprinde urmatoarele documente, cu exceptia:",
+      "answers": [
+        "ordinul de serviciu;",
+        "copii xerox ale documentelor justificative;",
+        "proiectul raportului de audit.",
+        "extrase din documente, legi, reglementari.",
+        "notificarea"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 27,
+      "text": "Verificarea respectarii normelor , instructiunilor si a Codului privind conduita etica a auditorilor interni de catre Unitatea Centrala de Armonizare a Auditului Public Intern se face:",
+      "answers": [
+        "anual;",
+        "o data la 2 ani;",
+        "cel putin o data la 5 ani;",
+        "cel putin o data la 3 ani;",
+        "la sfarsitul fiecarei misiuni"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 28,
+      "text": "Urmarirea implemetarii recomandarilor formulate in raportul de audit revine:",
+      "answers": [
+        "compartimentului de audit;",
+        "conducerii institutiei;",
+        "structurii auditate si conducerii institutiei;",
+        "compartimentului juridic",
+        "compartimentul financiar-contabil"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 29,
+      "text": "Obiectivele controlului intern sunt urmatoarele, cu exceptia:",
+      "answers": [
+        "eficacitatea si eficienta functionarii institutiei;",
+        "fiabilitatea informatiilor interne si externe;",
+        "elaborarea de programe de dezvoltare;",
+        "conformitatea cu legile;",
+        "conformitatea cu reglementarile si politicile interne."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Aplicarea metodologiei –cadru de proiectare si implementare a sistemului de control nu necesita parcurgerea etapei de:",
+      "answers": [
+        "evaluarea instrumentelor generale de control intern;",
+        "evaluarea instrumentelor specifice de control intern la nivelul fiecarei activitati;",
+        "intocmirea fiselor posturilor;",
+        "elaborarea si aprobarea programului de implementare a noului sistem de control.",
+        "analiza raportului intre costurile suplimentare si efectele asteptate"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 31,
+      "text": "Standardele de control subsumate performantei si managementului riscului nu cuprind:",
+      "answers": [
+        "monitorizarea performantelor",
+        "managementul riscurilor",
+        "atributiile",
+        "reevaluarile",
+        "coordonarea"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 32,
+      "text": "Care din urmatoarele afirmatii este corecta?",
+      "answers": [
+        "auditul intern este o activitate independenta si obiectiva , care da unei organizatii asigurari in cea ce priveste gradul de control detinut asupra operatiunilor , o indruma pentru a-i imbunatatii operatiunile si contribuie la adaugarea unui plus de valoare.",
+        "auditul intern este o activitate independenta care da unei organizatii asigurari in cea ce priveste intocmirea situatiilor financiare , o indruma pentru a-i imbunatatii operatiunile financiare si contribuie la adaugarea unui plus de valoare.",
+        "auditul intern este o activitate independenta si obiectiva , care da unei organizatii asigurari in cea ce priveste gradul de control detinut asupra operatiunilor si o indruma pentru a-i imbunatatii operatiunile.",
+        "auditul intern este o activitate care da unei organizatii asigurari in cea ce priveste gradul de control detinut asupra operatiunilor si o indruma pentru a-i imbunatatii operatiunile.",
+        "auditul intern este o activitate care da unei organizatii asigurari in cea ce priveste elaborarea bugetului"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 33,
+      "text": "Auditul de sistem:",
+      "answers": [
+        "auditeaza realizarile in raport cu atingerea obiectivelor entitatii auditate si auditul impactului real al activitatilor comparativ cu impactul dorit;",
+        "reprezinta o evaluare de profunzime a sistemelor de conducere si control intern,cu scopul de a stabili daca acestea functioneaza in conditii de economicitate, eficacitate si eficienta;",
+        "se refera la maximizarea rezultatelor unei activitati in raport cu resursele de sistem utilizate;",
+        "se refera la auditul controlului intern si a functiilor acestuia",
+        "nici un raspuns corect"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 34,
+      "text": "Precizati afirmatia corecta:",
+      "answers": [
+        "UCAAPI (Unitatea Centrala de Armonizare pentru Audit Public Intern) este structura constituita in cadrul Curtii de Conturi;",
+        "UCAAPI functioneaza in cadrul Ministerului Administratiei si Internelor;",
+        "UCAAPI este condusa de un secretar de stat din cadrul Guvernului numit de primul ministru.",
+        "UCAAPI functioneaza in cadrul Corpului de Control al Primului Ministru.",
+        "nici una"
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 35,
+      "text": "„O sarcina particulara a auditului intern este aceea de a monitoriza sistemele manageriale de control, de a raporta despre punctele slabe si de a da recomandari de imbunatatire a acestuia.” Completati cu raspunsul corect:",
+      "answers": [
+        "comitetului director;",
+        "conducerii auditului intern;",
+        "managementului;",
+        "sefului departamentului de audit",
+        "compartimentului contabilitate"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 36,
+      "text": "Ce fel de control este auditul intern?",
+      "answers": [
+        "monopost",
+        "ex-monopost",
+        "ex.post",
+        "ex-ante",
+        "inopinat"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 37,
+      "text": "Un auditor a descoperit fapte ce pot fi interpretate ca indicii ale unor activitati ilegale realizate de catre departamentul auditat. Auditorul decide sa nu informeze conducerea in legatura cu aceste fapte deoarece el nu poate dovedi ca s-a produs un act ilegal. Dar este hotarât ca, in cazul in care i se vor adresa intrebari legate de aceasta chestiune sa dea raspunsuri complete. Actionând astfel, auditorul:",
+      "answers": [
+        "nu a incalcat Codul etic sau Standardele deoarece confidentialitatea primeaza asupra tuturor celorlalte standarde;",
+        "nu a incalcat Codul etic sau Standardele deoarece auditorul are intentia sa dea toate detaliile atunci când va fi intrebat;",
+        "a incalcat Standardele deoarece orice indicii de frauda sau acte ilegale ar fi trebuit raportate de catre auditor autoritatilor competente din cadrul organizatiei.",
+        "a incalcat Codul etic deoarece era obligat sa descopere toate fraudele",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "text": "Care dintre urmatoarele activitati credeti ca ar afecta obiectivitatea departamentului de audit intern?",
+      "answers": [
+        "un auditor intern a fost abordat de seful departamentului de salarizare in timpul auditarii acestui departament. Seful departamentului i-a spus ca el are o si o afacere proprie pentru care are nevoie de un contabil care sa-i intocmeasca situatiile financiare. Auditorul intern a fost de acord sa se ocupe el de acest lucru dupa orele de serviciu, contra unei sume de bani.",
+        "In timpul auditarii departamentului de marketing, seful adjunct al departamentului i-a dat auditorului o cana cu logo-ul companiei. Astfel de cani au fost distribuite tuturor angajatilor prezenti in ziua respectiva.",
+        "Dupa revizuirea instalarii unui sistem de procesare a datelor, auditorul a recomandat standarde de control. La trei luni de la aceasta activitate, acelasi departament a solicitat auditorului sa revizuiasca conformitatea anumitor proceduri. Auditorul a acceptat si a efectuat revizuirea.",
+        "A fost solicitata participarea auditorului in cadrul unei echipe de interventie care sa actioneze in sensul reducerii pierderilor de stocuri ale companiei datorate furtului si manevrarii incorecte a stocurilor. Rolul auditorului va fi consilierea echipei de interventie asupra tehnicilor de control ce ar putea fi introduse.",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 39,
+      "text": "O companie si-a desfiintat departamentul de audit intern si a recurs la externalizarea functiei in incercarea de a reduce costurile. Unul dintre auditorii interni, ramas fara loc de munca, s-a angajat la o alta companie din acelasi sector de activitate. Care dintre urmatoarele informatii furnizate de auditor noului sau angajator reprezinta o incalcare a codului etic?",
+      "answers": [
+        "auditorul si-a convins noii colegi sa treaca la auditul intern bazat pe riscuri, abordare pe care o folosea si la vechiul sau loc de munca;",
+        "auditorul a constatat ca departamentul de audit intern al noului sau angajator nu foloseste o anumita tehnica de esantionare pe care el o folosea la vechiul sau loc de munca si care, a considerat el ca ar prezenta numeroase avantaje pentru auditurile realizate de noul sau angajator. In consecinta, auditorul a organizat cursuri in cadrul departamentului si si-a invatat noii colegi sa aplice metoda de esantionare la fel cum era aplicata si la vechiul sau loc de munca;",
+        "in timpul activitatii desfasurate la vechiul sau angajator, auditorul si-a concentrat eforturile catre definirea si recomandarea unor „celor mai bune practici” pentru gestionarea functiei de resurse umane ca parte a auditului acelei companii. Intrucât auditorul pastrase acasa copii dupa planurile realizate cu acea ocazie, el s-a folosit de ele pentru a realiza auditul functiei de resurse umane la noul angajator;",
+        "auditorul a utilizat check-listurile pe care le concepuse cand lucra la vechiul sau loc de munca;",
+        "nici una dintre situatiile de mai sus nu reprezinta o incalcare a Codului Etic."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 40,
+      "text": "Standardele de control subsumate performantei si managementului riscului nu cuprind:",
+      "answers": [
+        "monitorizarea evaluarilor",
+        "managementul resurselor umane",
+        "atributiile",
+        "reevaluarile",
+        "dezvoltarea"
+      ],
+      "correctIndex": 2
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "files": {
+    "analiza-economico-financiara.json": 80,
+    "audit.json": 40,
+    "baze-de-date-pentru-management.json": 60,
+    "comportament-organizational.json": 50,
+    "econometrie.json": 70,
+    "economia-intreprinderii.json": 60,
+    "management-comparat.json": 50,
+    "management-financiar.json": 50,
+    "management-international.json": 87,
+    "management-strategic.json": 40,
+    "managementul-aprovizionarii-si-desfacerii.json": 45,
+    "managementul-calitatii.json": 60,
+    "managementul-investitiilor.json": 60,
+    "managementul-productiei.json": 40,
+    "managementul-proiectelor.json": 50,
+    "managementul-resurselor-umane.json": 60,
+    "managementul-serviciilor.json": 60
+  },
+  "totalQuestions": 962
+}

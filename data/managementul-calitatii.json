@@ -1,0 +1,724 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Modul in care un ansamblu de caracteristici intrinseci ale unui produs sau serviciu satisfac cerintele clientului poarta denumirea de:",
+      "answers": [
+        "valoare de intrebuintare (utilitate);",
+        "standardizare;",
+        "calitate;",
+        "valoare psihosenzoriala;",
+        "valoare de piata."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 2,
+      "text": "Printre factorii care determina caracterul dinamic al calitatii nu regasim:",
+      "answers": [
+        "progresul tehnic;",
+        "progresul stiintific;",
+        "exigentele crescande ale consumatorilor;",
+        "concurenta;",
+        "publicitatea."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 3,
+      "text": "Masurarea si estimarea calitatii produselor si serviciilor este obiectul de studiu al:",
+      "answers": [
+        "calimetriei;",
+        "calitologiei;",
+        "merceologiei;",
+        "managementului calitatii;",
+        "publicitatea."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 4,
+      "text": "Indicatorul care reflecta aportul caracteristicilor produselor, ponderate dupa importanta si exprimate fie cantitativ (numeric), fie atributiv (notional) poarta denumirea de:",
+      "answers": [
+        "indicatorul noncalitatii;",
+        "indicatorul complex (sintetic) al calitatii;",
+        "indicatorul cauza-efect;",
+        "indicatorul optim al calitatii;",
+        "indicatorul standard al calitatii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 5,
+      "text": "Ce ipostaza a calitatii are ponderea cea mai mare (circa 70%) in obtinerea unui produs de calitate?",
+      "answers": [
+        "calitatea proiectata;",
+        "calitatea contractata;",
+        "calitatea reala;",
+        "calitatea prescrisa;",
+        "calitatea omologata."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "text": "Calitatea specificata in standarde poarta denumirea de:",
+      "answers": [
+        "calitatea proiectata;",
+        "calitatea contractata;",
+        "calitatea reala;",
+        "calitatea prescrisa;",
+        "calitatea omologata."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 7,
+      "text": "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+      "answers": [
+        "cercetarea si proiectarea;",
+        "transportul;",
+        "standardele;",
+        "managementul calitatii;",
+        "calificarea profesionala a lucratorilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 8,
+      "text": "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+      "answers": [
+        "cercetarea si proiectarea;",
+        "calificarea profesionala a lucratorilor;",
+        "standardele;",
+        "managementul calitatii;",
+        "ambalarea."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 9,
+      "text": "In categoria factorilor care influenteaza calitatea reala a marfurilor regasim:",
+      "answers": [
+        "managementul calitatii;",
+        "calificarea profesionala a lucratorilor;",
+        "pastrarea;",
+        "cercetarea si proiectarea;",
+        "standardele."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 10,
+      "text": "In categoria factorilor care determina calitatea marfurilor regasim:",
+      "answers": [
+        "materiile prime si materialele;",
+        "transportul;",
+        "ambalarea;",
+        "pastrarea;",
+        "depozitarea."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 11,
+      "text": "In categoria factorilor care determina calitatea marfurilor regasim:",
+      "answers": [
+        "cercetarea si proiectarea;",
+        "transportul;",
+        "ambalarea;",
+        "pastrarea;",
+        "depozitarea."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "text": "In categoria factorilor care determina calitatea marfurilor regasim:",
+      "answers": [
+        "ambalarea;",
+        "transportul;",
+        "procesul tehnologic;",
+        "pastrarea;",
+        "depozitarea."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 13,
+      "text": "In categoria factorilor care determina calitatea marfurilor regasim:",
+      "answers": [
+        "ambalarea;",
+        "calificarea profesionala a lucratorilor;",
+        "transportul;",
+        "pastrarea;",
+        "depozitarea."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 14,
+      "text": "In categoria factorilor care determina calitatea marfurilor regasim:",
+      "answers": [
+        "transportul;",
+        "pastrarea;",
+        "ambalarea;",
+        "managementul calitatii;",
+        "depozitarea."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 15,
+      "text": "In categoria factorilor care determina calitatea marfurilor regasim:",
+      "answers": [
+        "transportul;",
+        "pastrarea;",
+        "ambalarea;",
+        "standardele;",
+        "depozitarea."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 16,
+      "text": "Activitatile coordonate pentru a orienta si controla o organizatie in ceea ce priveste calitatea reprezinta o definitie a:",
+      "answers": [
+        "managementului;",
+        "merceologiei;",
+        "calitologiei;",
+        "calimetriei;",
+        "managementului calitatii."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 17,
+      "text": "Totalitatea activitatilor desfasurate pentru obtinerea calitatii, activitati ce se regasesc in toate etapele realizarii produsului/serviciului reprezinta o definitie a:",
+      "answers": [
+        "managementului calitatii;",
+        "merceologiei;",
+        "calitologiei;",
+        "calimetriei;",
+        "managementului."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 18,
+      "text": "In cadrul evolutiei organizarii activitatii privind calitatea intr-o firma, modalitatea ce tinde catre excelenta si care integreaza toate conceptele anterioare se numeste:",
+      "answers": [
+        "managementul calitatii totale (TQM);",
+        "inspectia calitatii;",
+        "controlul calitatii;",
+        "sistemul de asigurare a calitatii;",
+        "sistemul de management al calitatii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 19,
+      "text": "Accentul pus pe verificarea produsului finit, cu rol pasiv, de depistare a greselilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+      "answers": [
+        "managementul calitatii totale (TQM);",
+        "inspectia calitatii;",
+        "sistemul de asigurare a calitatii;",
+        "controlul calitatii;",
+        "sistemul de management al calitatii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 20,
+      "text": "Accentul pus pe controlul fluxului tehnologic in scopul identificarii aparitiei defectelor si pe folosirea metodelor de control statistic se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+      "answers": [
+        "inspectia calitatii;",
+        "controlul calitatii;",
+        "sistemul de asigurare a calitatii;",
+        "sistemul de management al calitatii;",
+        "managementul calitatii totale (TQM)."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 21,
+      "text": "Accentul pus pe prevenirea defectelor si oferirea increderii atat propriei conduceri a firmei, cat si clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+      "answers": [
+        "sistemul de management al calitatii;",
+        "controlul calitatii;",
+        "sistemul de asigurare a calitatii;",
+        "inspectia calitatii;",
+        "managementul calitatii totale (TQM)."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 22,
+      "text": "Accentul pus pe imbunatatirea continua a performantelor firmei se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+      "answers": [
+        "sistemul de management al calitatii;",
+        "managementul calitatii totale (TQM);",
+        "sistemul de asigurare a calitatii;",
+        "inspectia calitatii;",
+        "controlul calitatii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Accentul pus pe depasirea asteptarilor clientilor se incadreaza in urmatoarea modalitate de organizare a calitatii in firme de-a lungul timpului:",
+      "answers": [
+        "sistemul de management al calitatii calitatii;",
+        "controlul calitatii;",
+        "sistemul de asigurare a calitatii;",
+        "inspectia calitatii;",
+        "managementul calitatii totale (TQM)."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 24,
+      "text": "Nu reprezinta un principiu al managementului calitatii:",
+      "answers": [
+        "implicarea personalului;",
+        "abordarea sistemica a managementului;",
+        "imbunatatirea continua;",
+        "orientarea catre client;",
+        "monitorizarea eficientei auditarii sistemului de management al calitatii."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 25,
+      "text": "Cunoasterea trebuintelor actuale si potentiale ale clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "relatii reciproc avantajoase cu furnizorii;",
+        "abordarea sistemica a managementului;",
+        "imbunatatirea continua;",
+        "orientarea catre client;",
+        "abordarea faptica pentru luarea deciziei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 26,
+      "text": "Satisfacerea si depasirea asteptarilor clientilor se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "orientarea catre client;",
+        "abordarea sistemica a managementului;",
+        "imbunatatirea continua;",
+        "orientarea catre client;",
+        "abordarea procesuala."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 27,
+      "text": "Faptul ca echipa de conducere trebuie sa stabileasca o unitate intre obiectivele propuse si orientarile organizatiei si trebuie sa creeze si sa mentina un mediu intern in care personalul sa poata fi total implicat in realizarea obiectivelor organizatiei se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "imbunatatirea continua;",
+        "abordarea sistemica a managementului;",
+        "leadership;",
+        "orientarea catre client;",
+        "abordarea procesuala."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 28,
+      "text": "Implicarea totala a personalului de la toate nivelurile se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "imbunatatirea continua;",
+        "abordarea sistemica a managementului;",
+        "leadership;",
+        "orientarea catre client;",
+        "implicarea personalului."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 29,
+      "text": "Faptul ca toate activitatile sunt conduse ca un proces, cu intrari si iesiri se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "imbunatatirea continua;",
+        "abordarea sistemica a managementului;",
+        "leadership;",
+        "abordarea procesuala;",
+        "abordarea faptica pentru luarea deciziei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 30,
+      "text": "Faptul ca identificarea si conducerea principalelor activitati referitoare la calitate trebuie sa fie integrate si corelate in cadrul unui sistem coerent se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "orientarea catre client;",
+        "abordarea sistemica a managementului;",
+        "leadership;",
+        "abordarea procesuala;",
+        "abordarea faptica pentru luarea deciziei."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 31,
+      "text": "Faptul ca imbunatatirea performantelor globale ale unei organizatii ar trebui sa fie un obiectiv permanent al conducerii se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "orientarea catre client;",
+        "abordarea sistemica a managementului;",
+        "leadership;",
+        "abordarea procesuala;",
+        "imbunatatirea continua."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 32,
+      "text": "Faptul ca deciziile eficiente se bazeaza pe analiza datelor si a informatiilor obtinute de la toate locurile de munca se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "abordarea faptica pentru luarea deciziei;",
+        "abordarea sistemica a managementului;",
+        "orientarea catre client;",
+        "abordarea procesuala;",
+        "imbunatatirea continua."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 33,
+      "text": "Relatiile dintre o organizatie si furnizorii sai, care maresc capabilitatea de a crea valoare, se incadreaza la urmatorul principiu al managementului calitatii:",
+      "answers": [
+        "leadership;",
+        "abordarea sistemica a managementului;",
+        "relatii reciproc avantajoase cu furnizorii;",
+        "abordarea procesuala;",
+        "imbunatatirea continua."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 34,
+      "text": "Standardele din familia ISO 9000 sunt standarde de:",
+      "answers": [
+        "management de mediu;",
+        "management al sanatatii si securitatii in munca;",
+        "auditare a sistemelor de management;",
+        "management al calitatii;",
+        "etica si responsabilitate sociala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 35,
+      "text": "Standardele din familia ISO 14000 sunt standarde de:",
+      "answers": [
+        "management al calitatii;",
+        "management al sanatatii si securitatii in munca;",
+        "auditare a sistemelor de management;",
+        "management de mediu;",
+        "etica si responsabilitate sociala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 36,
+      "text": "Standardele din familia ISO 45000 sunt standarde de:",
+      "answers": [
+        "management al calitatii;",
+        "etica si responsabilitate sociala;",
+        "auditare a sistemelor de management;",
+        "management de mediu;",
+        "management al sanatatii si securitatii in munca."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 37,
+      "text": "Standardul ISO 9001 se refera la:",
+      "answers": [
+        "sistemul de management al calitatii;",
+        "sistemul de management al sanatatii si securitatii in munca;",
+        "auditarea sistemelor de management;",
+        "sistemul de management de mediu;",
+        "etica si responsabilitatea sociala."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 38,
+      "text": "Standardul ISO 14001 se refera la:",
+      "answers": [
+        "sistemul de management al calitatii;",
+        "sistemul de management al sanatatii si securitatii in munca;",
+        "auditarea sistemelor de management;",
+        "sistemul de management de mediu;",
+        "etica si responsabilitatea sociala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 39,
+      "text": "Standardul ISO 45001 se refera la:",
+      "answers": [
+        "sistemul de management al calitatii;",
+        "sistemul de management al sanatatii si securitatii in munca;",
+        "auditarea sistemelor de management;",
+        "sistemul de management de mediu;",
+        "etica si responsabilitatea sociala."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 40,
+      "text": "Sistemul de management al calitatii are drept referential standardul:",
+      "answers": [
+        "ISO 9001;",
+        "ISO 14001;",
+        "ISO 45001;",
+        "ISO 19011;",
+        "ISO 26001."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 41,
+      "text": "Sistemul de management de mediu are drept referential standardul:",
+      "answers": [
+        "ISO 9001;",
+        "ISO 14001;",
+        "ISO 45001;",
+        "ISO 19011;",
+        "ISO 26001."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 42,
+      "text": "Sistemul de management al sanatatii si securitatii in munca are drept referential standardul:",
+      "answers": [
+        "ISO 9001;",
+        "ISO 14001;",
+        "ISO 45001;",
+        "ISO 19011;",
+        "ISO 26001."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 43,
+      "text": "Actiunea unei terte parti care dovedeste existenta increderii ca un produs, proces sau serviciu este in conformitate cu un standard sau cu un alt document normativ poarta denumirea de:",
+      "answers": [
+        "garantarea calitatii;",
+        "certificarea conformitatii;",
+        "acreditarea organismelor de certificare;",
+        "marcarea reglementata;",
+        "standardizare."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 44,
+      "text": "Printre avantajele implementarii sistemului de management al calitatii intr-o firma regasim:",
+      "answers": [
+        "cresterea gradului de satisfacere a clientilor;",
+        "imbunatatirea perceptiei consumatorilor asupra organizatiei;",
+        "imbunatatirea performantelor produselor/serviciilor;",
+        "cresterea productivitatii si eficacitatii;",
+        "toate cele de mai sus."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 45,
+      "text": "Procesul de evaluare sistematica a elementelor specifice sistemului de management al calitatii pentru a vedea daca respecta cerintele prescrise poarta denumirea de:",
+      "answers": [
+        "acreditare;",
+        "omologare;",
+        "imbunatatire continua;",
+        "auditare;",
+        "standardizare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 46,
+      "text": "Documentul principal pentru elaborarea si implementarea sistemului de management al calitatii intr-o organizatie este:",
+      "answers": [
+        "manualul calitatii;",
+        "declaratia de politica in domeniul calitatii;",
+        "standardul calitatii;",
+        "planul calitatii;",
+        "procedura calitatii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 47,
+      "text": "In ce tara regasim Premiul Juran pentru calitate:",
+      "answers": [
+        "Romania;",
+        "Japonia;",
+        "Statele Unite ale Americii;",
+        "Australia;",
+        "Franta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 48,
+      "text": "Modelul european de excelenta in domeniul managementului calitatii poarta denumirea:",
+      "answers": [
+        "Malcolm Baldridge;",
+        "Juran;",
+        "Deming;",
+        "EFQM;",
+        "Ishikawa."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 49,
+      "text": "Premiul national pentru calitate din Statele Unite ale Americii poarta denumirea:",
+      "answers": [
+        "Juran;",
+        "Malcolm Baldridge;",
+        "Deming;",
+        "EFQM;",
+        "Ishikawa."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 50,
+      "text": "Premiul Deming pentru calitate se acorda in:",
+      "answers": [
+        "Romania;",
+        "Statele Unite ale Americii;",
+        "Japonia;",
+        "Australia;",
+        "Franta."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 51,
+      "text": "Fazele si calendarul misiunii de consultanta in managementul calitatii, detaliate pe baza planului de actiune, fac parte din:",
+      "answers": [
+        "propunerea de consultanta;",
+        "analiza diagnostic;",
+        "planul de afaceri;",
+        "raportul de expertiza;",
+        "misiunea de audit."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 52,
+      "text": "Obiectivele si natura misiunii de consultanta, cu precizarea rolului consultantului, al rezultatului asteptat de la misiune si al angajamentului consultantului referitor la acest rezultat, fac parte din:",
+      "answers": [
+        "misiunea de audit;",
+        "analiza diagnostic;",
+        "planul de afaceri;",
+        "raportul de expertiza;",
+        "propunerea de consultanta."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 53,
+      "text": "Un rezumat al analizei diagnostic, insotit de concluziile consultantului si de definirea problemei, fac parte din:",
+      "answers": [
+        "misiunea de audit;",
+        "propunerea de consultanta;",
+        "planul de afaceri;",
+        "raportul de expertiza;",
+        "planul strategic de marketing."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 54,
+      "text": "Etapele, activitatile si planificarea lor din cadrul misiunii de consultanta fac parte din:",
+      "answers": [
+        "raportul de expertiza;",
+        "raportul de audit;",
+        "analiza diagnostic;",
+        "planul de afaceri;",
+        "planul de actiune."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 55,
+      "text": "Contributia fiecarui partener, responsabilitatile si conditiile de realizare din cadrul misiunii de consultanta fac parte din:",
+      "answers": [
+        "raportul de expertiza;",
+        "planul de actiune;",
+        "analiza diagnostic;",
+        "planul de afaceri;",
+        "raportul de audit."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 56,
+      "text": "Activitatea de elaborare a unor proiecte, in care consultantul colaboreaza indeaproape cu clientul la formularea unor recomandari si la implementarea acestora poarta denumirea de:",
+      "answers": [
+        "analiza diagnostic;",
+        "consultanta procesuala;",
+        "audit intern;",
+        "expertiza economica;",
+        "certificarea conformitatii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 57,
+      "text": "Introducerea unei viziuni independente in abordarea unor probleme mai greu de perceput pentru manageri, care sunt prea implicati in situatie si „nu vad padurea din cauza copacilor” reprezinta un avantaj al:",
+      "answers": [
+        "consultantei procesuale;",
+        "analizei diagnostic;",
+        "auditului intern;",
+        "expertizei economice;",
+        "certificarii conformitatii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 58,
+      "text": "Faptul de a contribui la intelegerea elementelor practice, concrete, ale problemelor care risca sa scape intelegerii intr-o abordare prea teoretica reprezinta un avantaj al:",
+      "answers": [
+        "certificarii conformitatii;",
+        "analizei diagnostic;",
+        "auditului intern;",
+        "expertizei economice;",
+        "consultantei procesuale."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 59,
+      "text": "Faptul ca asigura o legatura coerenta intre consultant si client reprezinta un avantaj al:",
+      "answers": [
+        "certificarii conformitatii;",
+        "analizei diagnostic;",
+        "consultantei procesuale;",
+        "expertizei economice;",
+        "auditului intern."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 60,
+      "text": "Faptul ca stimuleaza sentimentul de proprietate si angajamentul consultantului printr-o mai mare implicare in aplicarea unor metode si idei noi reprezinta un avantaj al:",
+      "answers": [
+        "certificarii conformitatii;",
+        "consultantei procesuale;",
+        "analizei diagnostic;",
+        "expertizei economice;",
+        "auditului intern."
+      ],
+      "correctIndex": 1
+    }
+  ]
+}

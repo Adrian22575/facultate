@@ -1,0 +1,1047 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Exportul nu se refera la:",
+      "answers": [
+        "vanzarea de bunuri sau servicii in strainatate;",
+        "o modalitate de intrare pe pietele straine;",
+        "cumpararea de bunuri sau servicii din strainatate;",
+        "o metoda de internationalizare;",
+        "acordarea de credite pe pietele internationale."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 2,
+      "text": "Contractul de baza, cel care guverneaza tranzactia de comert exterior este:",
+      "answers": [
+        "contractul de transport (contract of carriage);",
+        "polita de asigurare;",
+        "acreditivul documentar;",
+        "contractul international de vanzare-cumparare;",
+        "AWB, MAWB"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 3,
+      "text": "In cadrul strategiilor “cand“ sau strategiilor momentului de actiune nu intra:",
+      "answers": [
+        "strategia faptului implinit;",
+        "strategia rasturnarii pozitiei;",
+        "strategia surprizei;",
+        "strategia disocierii,",
+        "strategia schimbarii nivelelor."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 4,
+      "text": "Cand in contractul de comert exterior apare clauza “neto”, atunci:",
+      "answers": [
+        "vanzatorul nu pretinde nimic pentru ambalaj, costul acestuia fiind cuprins in pretul marfii;",
+        "vanzatorul calculeaza separat costul ambalajului;",
+        "ambalajul are un pret fixat de normele vamale;",
+        "ambalajul va fi calculat la pretul unitar al marfii;",
+        "ambalajul e returnabil catre vanzator."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 5,
+      "text": "Productia in lohn se defineste ca:",
+      "answers": [
+        "tehnica de afaceri economice internationale ce consta intr-o tranzactie desfasurata pe baza contractuala intre doua firme din tari diferite, in care una (executant) executa un produs la comanda, dupa modelele, desenele si sub marca celeilalte firme (ordonator) care isi pastreaza dreptul de a comercializa produsul respectiv;",
+        "cumpararea si revanzarea unei marfi in scopul obtinerii unei diferente intre pretul de cumparare si cel de vanzare, care sa acopere cheltuielile ocazionte de derularea operatiilor respective si sa asigure un beneficiu pentru intreprinzator sau in scopul promovarii relatiilor comerciale cu diferite tari;",
+        "intrepatrundere a tranzactiilor comerciale cu o serie de operatiuni financiar-valutare in vederea transformarii unor disponibilitati in clearing, in devize libere (sau in disponibilitati in alte clearing-uri) sau a schimbului unor fonduri libere in rezerve de clearing;",
+        "un export-import realizat prin licitatie internationala;",
+        "productie destinata exclusiv pietei interne."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "text": "Tranzactiile comerciale internationale includ:",
+      "answers": [
+        "acordarea/primirea de credite pe termen scurt, mediu si lung;",
+        "plasamente in valorile mobiliare primare (actiuni, obligatiuni, etc.) sau derivate (futures, options, etc.);",
+        "operatiuni pe pietele valutare;",
+        "operatiuni internationale in sfera comertului si operatiuni internationale in sfera productiei;",
+        "ISD."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 7,
+      "text": "Dupa tehnicile de comercializare, preturile internationale sunt:",
+      "answers": [
+        "curente si constante;",
+        "de monopol, de oligopol;",
+        "ale produselor, ale serviciilor;",
+        "de tranzactie, cotatii bursiere, preturi de licitatie;",
+        "de monopson, de oligopson."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 8,
+      "text": "In functie de gradul de prelucrare suplimentara realizata de catre intreprinderea exportatoare, exista:",
+      "answers": [
+        "reexporturi care au drept scop testarea unor piete noi;",
+        "reexporturi de marfuri asupra carora s-a intervenit prin operatiuni de ambalare, marcare, etichetare;",
+        "reexporturi ce tranziteaza teritoriul tarii reexportatoare;",
+        "reexporturi efectuate in vederea promovarii unor relatii comerciale reciproce;",
+        "reexporturi in cadrul acordurilor de clearing."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "Taxa vamala este:",
+      "answers": [
+        "Valoarea in vama a marfii;",
+        "Pretul de export al marfii;",
+        "Pretul de import al marfii;",
+        "Valoarea adaugata marfii de catre cheltuielile cu exportul;",
+        "Un impozit perceput de catre stat atunci cand marfurile trec frontiera vamala a tarii respective."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 10,
+      "text": "Tariful vamal este:",
+      "answers": [
+        "Pretul serviciilor ce fac obiectul tranzactiilor internationale;",
+        "Pretul serviciilor necesare desfasurarii operatiunilor de export-import (transport, servicii de expeditii, servicii vamale);",
+        "Tariful practicat de transportatori pentru a deplasa marfa dintr-o tara in alta;",
+        "Suma tuturor cheltuielilor ocazionate de trecerea frontierei vamale a unei tari;",
+        "Un nomenclator (catalog) ce cuprinde toate taxele vamale percepute de un stat atat la export cat si la import dar si la tranzit, pe marfuri si grupe de marfuri, pe categorii de origine, pe acorduri bi sau mutilaterale in domeniul comertului international (reduceri sau scutiri de taxe)."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 11,
+      "text": "Comertul exterior, in sens restrans, se refera la:",
+      "answers": [
+        "aliante strategice;",
+        "comertul international cu bunuri si servicii si operatiunile combinate;",
+        "implantari in strainatate;",
+        "investitii si cooperari in strainatate;",
+        "fuziuni si achizitii de firme."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 12,
+      "text": "Tranzactiile financiar-valutare internationale includ:",
+      "answers": [
+        "plasamente in valorile mobiliare primare (actiuni, obligatiuni, etc.) sau derivate (futures, options, etc.);",
+        "tranzactii internationale in sfera comertului;",
+        "investitii straine directe;",
+        "operatiuni internationale in sfera productiei;",
+        "investitii straine de portofoliu."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 13,
+      "text": "Importul se refera la:",
+      "answers": [
+        "vanzarea de bunuri sau servicii in strainatate;",
+        "cumpararea de bunuri sau servicii din strainatate;",
+        "aliantele strategice;",
+        "cooperarea internationala;",
+        "plasamente pe pietele de capital."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 14,
+      "text": "La derularea operatiunilor de export-import, pe langa partile contractante (exportator, importator) participa:",
+      "answers": [
+        "transportatorul, expeditionarul, comisionarul vamal, asiguratorul, banca, autoritatile vamale, ministere sau departamente cu atributii in domeniul comertului exterior, camere de comert;",
+        "transportatorul, asiguratorul, comisionari;",
+        "expeditionarul, comisionarul vamal, banca, agenti reprezentanti;",
+        "ministere sau departamente cu atributii in domeniul comertului exterior, ministerul mediului, producatorii, distribuitorii, consumatorii;",
+        "agentii vamali."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 15,
+      "text": "Intermediarii in tranzactiile de comert exterior sunt:",
+      "answers": [
+        "firmele producatoare;",
+        "exportatorii;",
+        "comisionarii si agentii reprezentanti;",
+        "firmele de comert exterior;",
+        "consumatorii."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 16,
+      "text": "In categoria documentelor generate de mecanismul operatiunilor de export-import, prin intermediul carora se realizeaza transferul drepturilor asupra marfii si plata contravalorii acestora nu se includ:",
+      "answers": [
+        "factura;",
+        "acreditivul, cambia;",
+        "declaratia vamala;",
+        "lista de colisaj, documentul de transport;",
+        "nota de receptie a marfii la destinatie."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 17,
+      "text": "Licentele de export/import sunt documente emise de:",
+      "answers": [
+        "autoritati;",
+        "exportator;",
+        "importator;",
+        "banca;",
+        "expeditionar."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 18,
+      "text": "Factura consulara si factura vamala sunt documente emise de:",
+      "answers": [
+        "autoritati;",
+        "exportator, importator;",
+        "caraus;",
+        "banca;",
+        "comandantul navei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 19,
+      "text": "Conosamentul este un document emis de:",
+      "answers": [
+        "exportator;",
+        "autoritati;",
+        "transportator;",
+        "importator;",
+        "agentul vamal."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 20,
+      "text": "Cererea de deschidere a acreditivului este emisa de:",
+      "answers": [
+        "banca;",
+        "importator;",
+        "exportator;",
+        "caraus;",
+        "autoritatea vamala din tara exportatorului."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 21,
+      "text": "Acreditivul documentar este un document emis de:",
+      "answers": [
+        "banca;",
+        "exportator;",
+        "autoritati;",
+        "transportator;",
+        "comisionarul vamal."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 22,
+      "text": "Strategia de negociere privind efectuarea unor concesii doar pentru depasirea unor impasuri se inscrie in categoria:",
+      "answers": [
+        "win-win;",
+        "strategiilor care vizeaza acordarea sau obtinerea de concesii;",
+        "strategiilor care nu vizeaza ajungerea la un acord;",
+        "strategiei actionarii in vederea incheierii acordului;",
+        "strategia asocierii."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 23,
+      "text": "In cadrul strategiilor “cum si unde“ sau ale modului si locului de actiune nu intra:",
+      "answers": [
+        "strategia asocierii;",
+        "strategia intersectarii;",
+        "strategia schimbarii nivelelor;",
+        "strategia simulacrului;",
+        "strategia disocierii."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 24,
+      "text": "In cadrul strategiilor “cum si unde“ sau ale modului si locului de actiune nu intra:",
+      "answers": [
+        "strategia rationamentului „la rece“;",
+        "strategia hazardului;",
+        "strategia stabilirii unui interval;",
+        "strategia participarii;",
+        "strategia Salami."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 25,
+      "text": "In cadrul strategiilor “cand“ sau ale momentului de actiune nu intra:",
+      "answers": [
+        "strategia limitei;",
+        "strategia retragerii;",
+        "strategia acoperirii unei arii largi de probleme (strategia „paturii”);",
+        "strategia rasturnarii pozitiei;",
+        "strategia surprizei."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 26,
+      "text": "Atunci cand unul din partenerii de negociere incepe prin a sublinia aspectele de concordanta intre cele doua parti, incercand sa scoata in evidenta scopul comun si faptul ca diferentele de opinii decurg in principal din modalitatile de a atinge acest scop, el foloseste tactica:",
+      "answers": [
+        "propunerilor de tip “win-win“;",
+        "propunerilor de incercare;",
+        "dezbaterii;",
+        "“Secretul lui Socrate”;",
+        "tactica de solicitare a reciprocitatii."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 27,
+      "text": "Atunci cand unul din partenerii de negociere face o oferta sau o contraoferta considerata nenegociabila, cand in realitate sunt negociabile, sau cand ameninta partenerul cu o consecinta nefavorabila daca va refuza termenii propusi, in conditiile in care stie bine ca nu poate pune in aplicare respectiva amenintare, el foloseste tactica:",
+      "answers": [
+        "bluff-ului;",
+        "efectuarii propunerilor de incercare;",
+        "“focus and down plan”;",
+        "folosirii impasului;",
+        "solicitarii unei intreruperi."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 28,
+      "text": "Atunci cand un negociator schimba subiectul, amana luarea deciziei, creeaza confuzie, el foloseste tehnica:",
+      "answers": [
+        "“scurt-circuitarii”;",
+        "abaterii atentiei;",
+        "negocierii sterile;",
+        "obosirii partenerului;",
+        "mandatului limitat."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 29,
+      "text": "Atunci cand un negociator face o oferta de instalatii fara piese de schimb, asistenta de specialitate, service, etc., sau de cladire fara terenul de sub ea, pentru care se negociaza ulterior, separat de pretul discutat initial, el foloseste tehnica:",
+      "answers": [
+        "negocierii in spirala;",
+        "negocierii sterile;",
+        "“ostatecului”;",
+        "ultimatumului;",
+        "obosirii partenerului."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Daca un negociator conditioneaza continuarea tratativelor de acceptarea de catre partenerul de discutii a unor termeni sau propuneri, atunci el utilizeaza tehnica:",
+      "answers": [
+        "ultimatumului;",
+        "mandatului limitat;",
+        "obosirii partenerului;",
+        "“scurt-circuitarii”;",
+        "abaterii atentiei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 31,
+      "text": "Cand in contractul de comert exterior apare clauza “neto plus ambalajul”, atunci:",
+      "answers": [
+        "vanzatorul nu pretinde nimic pentru ambalaj, costul acestuia fiind cuprins in pretul marfii;",
+        "vanzatorul calculeaza separat costul ambalajului;",
+        "ambalajul are un pret fixat de normele vamale;",
+        "ambalajul va fi calculat la pretul unitar al marfii;",
+        "amabalajul ramane in proprietatea vanzatorului si se returneaza la acesta."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 32,
+      "text": "Cand in contractul de comert exterior apare clauza “bruto per neto”, atunci:",
+      "answers": [
+        "vanzatorul nu pretinde nimic pentru ambalaj, costul acestuia fiind cuprins in pretul marfii;",
+        "vanzatorul calculeaza separat costul ambalajului;",
+        "ambalajul are un pret fixat de normele vamale;",
+        "ambalajul va fi calculat la pretul unitar al marfii;",
+        "amabalajul se returneaza la vanzator."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 33,
+      "text": "Se considera ca exportatorul si-a respectat obligatia de a livra marfa in conditiile contractuale cand:",
+      "answers": [
+        "a livrat o cantitate peste sau sub toleranta prevazuta in mod express in contract;",
+        "a livrat marfa prevazuta in contract, in cantitatea, calitatea si termenul prevazute in contract;",
+        "a livrat alta marfa, neconforma cu mostra sau modelul prezentate cumparatorului;",
+        "a livrat o marfa care nu poseda calitatile necesare pentru utilizarea comerciala;",
+        "a livrat marfa in alt loc decat cel prevazut in contract."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 34,
+      "text": "Dupa etapele afacerii de comert exterior, preturile internationale sunt:",
+      "answers": [
+        "de catalog, de oferta, contractuale, de facturare;",
+        "nominale si reale;",
+        "formate prin negocieri directe, cursuri de bursa, preturi de licitatie;",
+        "de cartel, de acord comercial si de cooperare economica internationala;",
+        "de monopol si de oligopol."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 35,
+      "text": "Intre titlurile de credit pe termen scurt folosite in comertul international nu se regaseste:",
+      "answers": [
+        "cambia;",
+        "ordinul de plata;",
+        "biletul la ordin;",
+        "cecul;",
+        "acreditivul documentar."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 36,
+      "text": "Intre modalitatile de plata internationale nu se regaseste:",
+      "answers": [
+        "cecul;",
+        "creditul documentar;",
+        "incasso-ul documentar;",
+        "ordinul de plata;",
+        "cambia."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 37,
+      "text": "Acreditivul documentar nu este:",
+      "answers": [
+        "un angajament prin care o banca, actionand la cererea si in conformitate cu instructiunile clientului sau , se obliga sa efectueze o plata catre o terta persoana sau sa plateasca, ori sa accepte, ca urmare a ordinului dat de beneficiarul acreditivului, cambii care au fost trase de catre beneficiar, sau sa autorizeze o alta banca sa efectueze o plata catre beneficiar, sa accepte ori sa negocieze cambii;",
+        "o promisiune irevocabila, de plata din partea unei banci, conditionata de prezentarea de catre el, intr-un anumit termen, a setului de documente care atesta expeditia marfii;",
+        "un mijloc de siguranta relativa care nu asigura pe vanzator ca va incasa contravaloarea marfurilor livrate, daca a efectuat livrarea in termenii si conditiile stabilite de cumparator;",
+        "o dispozitie de plata irevocabila, in favoarea exportatorului, conditionata de prezentarea de catre beneficiar la banca sa a documentelor;",
+        "revocabil si irevocabil."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "text": "Ordinul de plata in afacerile economice internationale:",
+      "answers": [
+        "este irevocabil;",
+        "este revocabil, putand fi anulat de catre ordonator inainte de a fi incasat de catre beneficiar, deoarece pana in momentul platii sumele se afla la dispozitia ordonatorului;",
+        "este cea mai sigura modalitate de plata;",
+        "este cel mai des utilizata modalitate de plata;",
+        "nu poate fi anulat de catre ordonator."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 39,
+      "text": "Intre tehnicile, mecanismele si instrumentele destinate finantarii afacerilor economice internationale nu se numara:",
+      "answers": [
+        "scontarea si forfetarea;",
+        "factoringul si creditul revolving;",
+        "cofinantarea;",
+        "avalizarea;",
+        "creditarea."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 40,
+      "text": "Barterul este:",
+      "answers": [
+        "compensatie globala, realizata la nivel de grupe de intreprinderi, ramuri sau sectoare economice realizata in baza unor acorduri incheiate intre ministere din tari diferite si chiar la nivel interguvernamental;",
+        "o compensatie globala privind schimbul reciproc de marfurii si servicii intre doua sau mai multe tari;",
+        "o compensatie individuala simpla care se incheie intre intreprinderi din doua tari, fiecare dintre ele aparand atat in calitate de exportator, cat si de importator, valorile celor doua partizi de marfuri fiind egale si compensandu-se reciproc;",
+        "o compensatie individuala progresiva sub forma compensatiilor bilaterale largite, triunghiulare si multiple in lant;",
+        "o operatiune de productie la comanda."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 41,
+      "text": "In cazul clearingului nu este valabila afirmatia:",
+      "answers": [
+        "reprezinta o compensatie globala privind schimbul reciproc de marfuri si servicii intre doua sau mai multe tari;",
+        "plata exportatorilor nationali se va face in limitele disponibilitatilor bancii, constituite din varsamintele importatorilor nationali;",
+        "calculul de compensatie se efectueaza in mod global la sfarsitul anului, iar eventualul sold urmeaza a fi compensat de partea debitoare intr-un mod convenit in prealabil de catre doua parti;",
+        "intre cele doua tari partenere la clearing se efectueaza schimburi de bunuri si servicii insotite de un schimb de devize;",
+        "intre cele doua tari partenere la clearing se efectueaza schimburi de bunuri si servicii, fara a fi insotite de un schimb de devize ."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 42,
+      "text": "In cazul operatiunilor paralele nu este valabila afirmatia:",
+      "answers": [
+        "valoarea celor doua partizi de marfuri nu trebuie sa fie egala si de regula, nu este egala, ceea ce inseamna ca numai o parte din valoarea importului este acoperita printr-un export concomitent, restul urmand sa fie acoperit prin plata in devize libere;",
+        "intre cele doua tari se efectueaza numai schimburi, fara a fi insotite si de un schimb de devize;",
+        "contravalorile celor doua partizi de marfuri sunt decontate in valuta, utilizindu-se una din modalitatile de plata cunoscute: acreditiv sau incasso;",
+        "numarul partenerilor din cele doua tari care participa la operatiune nu este egal, el fiind diferit de la o tara la alta, in functie de intreprinderile antrenate in realizarea operatiunilor;",
+        "se mai numesc operatiuni conexate, conjugate sau de reciprocitate."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 43,
+      "text": "Formula romaneasca de cooperare industriala se inscrie in categoria:",
+      "answers": [
+        "cumparare de produse rezultate („buy-back”, „achat en retour”);",
+        "operatiuni iunctimate sau adresate (compensatii inverse, rezerve concurentiale);",
+        "achizitionari (cumpararile) legate;",
+        "barter;",
+        "prelucrare in lohn."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 44,
+      "text": "Reexportul se defineste ca:",
+      "answers": [
+        "tehnica de afaceri economice internationale ce consta intr-o tranzactie desfasurata pe baza contractuala intre doua firme din tari diferite, in care una (executant) executa un produs la comanda, dupa modelele, desenele si sub marca celeilalte firme (ordonator) care isi pastreaza dreptul de a comercializa produsul respectiv;",
+        "cumpararea si revanzarea unei marfi in scopul obtinerii unei diferente intre pretul de cumparare si cel de vanzare, care sa acopere cheltuielile ocazionte de derularea operatiilor respective si sa asigure un beneficiu pentru intreprinzator sau in scopul promovarii relatiilor comerciale cu diferite tari;",
+        "intrepatrundere a tranzactiilor comerciale cu o serie de operatiuni financiar-valutare in vederea transformarii unor disponibilitati in clearing, in devize libere (sau in disponibilitati in alte clearing-uri) sau a schimbului unor fonduri libere in rezerve de clearing;",
+        "un export-import realizat prin licitatie internationala;",
+        "un export realizatprin intermediul tranzactiilor bursiere."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 45,
+      "text": "Switch-ul se defineste ca:",
+      "answers": [
+        "tehnica de afaceri economice internationale ce consta intr-o tranzactie desfasurata pe baza contractuala intre doua firme din tari diferite, in care una (executant) executa un produs la comanda, dupa modelele, desenele si sub marca celeilalte firme (ordonator) care isi pastreaza dreptul de a comercializa produsul respectiv;",
+        "cumpararea si revanzarea unei marfi in scopul obtinerii unei diferente intre pretul de cumparare si cel de vanzare, care sa acopere cheltuielile ocazionte de derularea operatiilor respective si sa asigure un beneficiu pentru intreprinzator sau in scopul promovarii relatiilor comerciale cu diferite tari;",
+        "intrepatrundere a tranzactiilor comerciale cu o serie de operatiuni financiar-valutare in vederea transformarii unor disponibilitati in clearing, in devize libere (sau in disponibilitati in alte clearing-uri) sau a schimbului unor fonduri libere in rezerve de clearing;",
+        "un export-import realizat prin licitatie internationala;",
+        "un tip de tranzactie bursiera."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 46,
+      "text": "Inchirierea de containere fie pe o perioada data, fie pe calatorie, de catre expeditorii de marfuri si carausi, in anumite situatii, se numeste:",
+      "answers": [
+        "leasing back;",
+        "time-sharing;",
+        "leasing experimental;",
+        "master leasing;",
+        "leasing actionar."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 47,
+      "text": "Leasing-ul functional:",
+      "answers": [
+        "presupune ca in perioada de baza sa se realizeze doar o parte din pretul de export al obiectului contractului, societatea de leasing asumandu-si riscurile uzurii morale si raspunzand de service-ul si de plata diverselor taxe si impozite;",
+        "presupune ca in perioada de inchiriere de baza (prima inchiriere) sa se realizeze intregul pret de export al obiectului contractat, inclusiv costurile auxiliare, precum si un beneficiu;",
+        "cuprinde in ratele sale pretul de vanzare al marfii, cheltuielile de intretinere, service si reparatii, instruirea si specializarea personalului clientului;",
+        "cuprinde in ratele sale numai pretul de export al obiectului de inchiriat;",
+        "presupune inchirierea pe timpi partajati, simultan de mai multe intreprinderi."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 48,
+      "text": "Leasing-ul financiar:",
+      "answers": [
+        "presupune ca in perioada de baza sa se realizeze doar o parte din pretul de export al obiectului contractului, societatea de leasing asumandu-si riscurile uzurii morale si raspunzand de service-ul si de plata diverselor taxe si impozite;",
+        "presupune ca in perioada de inchiriere de baza (prima inchiriere) sa se realizeze intregul pret de export al obiectului contractat, inclusiv costurile auxiliare, precum si un beneficiu;",
+        "cuprinde in ratele sale pretul de vanzare al marfii, cheltuielile de intretinere, service si reparatii, instruirea si specializarea personalului clientului;",
+        "cuprinde in ratele sale numai pretul de export al obiectului de inchiriat;",
+        "presupune inchirierea pe timpi partajati, simultan de mai multe intreprinderi."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 49,
+      "text": "Leasing-ul brut:",
+      "answers": [
+        "presupune ca in perioada de baza sa se realizeze doar o parte din pretul de export al obiectului contractului, societatea de leasing asumandu-si riscurile uzurii morale si raspunzand de service-ul si de plata diverselor taxe si impozite;",
+        "presupune ca in perioada de inchiriere de baza (prima inchiriere) sa se realizeze intregul pret de export al obiectului contractat, inclusiv costurile auxiliare, precum si un beneficiu;",
+        "cuprinde in ratele sale pretul de vanzare al marfii, cheltuielile de intretinere, service si reparatii, instruirea si specializarea personalului clientului;",
+        "cuprinde in ratele sale numai pretul de export al obiectului de inchiriat;",
+        "presupune ca in perioada de baza sa se realizeze doar o parte din pretul de export al obiectului contractului, societatea de leasing asumandu-si riscurile uzurii morale si raspunzand de service-ul si de plata diverselor taxe si impozite."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 50,
+      "text": "Leasing-ul net:",
+      "answers": [
+        "presupune ca in perioada de baza sa se realizeze doar o parte din pretul de export al obiectului contractului, societatea de leasing asumandu-si riscurile uzurii morale si raspunzand de service-ul si de plata diverselor taxe si impozite;",
+        "presupune ca in perioada de inchiriere de baza (prima inchiriere) sa se realizeze intregul pret de export al obiectului contractat, inclusiv costurile auxiliare, precum si un beneficiu;",
+        "cuprinde in ratele sale pretul de vanzare al marfii, cheltuielile de intretinere, service si reparatii, instruirea si specializarea personalului clientului;",
+        "cuprinde in ratele sale numai pretul de export al obiectului de inchiriat;",
+        "cuprinde operatiunile pe care proprietarul unei afaceri, avand urgent nevoie de fonduri banesti, isi vinde afacerea unei societati de leasing si apoi o inchiriaza printr-un contract obisnuit."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 51,
+      "text": "Operatiunea de franchising se defineste ca:",
+      "answers": [
+        "licenta contractuala cedata de o persoana numita franchisor (cedent) unei alte persoane numita franchiser (cesionar sau beneficiar), care permite sau cere franchiserului sa desfasoare in perioada de valabilitate o anumita afacere, folosind un nume specificat apartinand franchisorului sau in legatura cu acesta;",
+        "licenta contractuala cedata de o persoana numita franchiser (cesionar sau beneficiar) unei alte persoane numita franchisor (cedent), care permite sau cere franchisorului sa desfasoare in perioada de valabilitate o anumita afacere, folosind un nume specificat apartinand franchisorului sau in legatura cu acesta;",
+        "un acord legal de a desfasura o anumita afacere pe un anumit teritoriu;",
+        "un acord legal de a desfasura o anumita afacere pe o perioada determinata de timp;",
+        "cumpararea si revanzarea unei marfi in scopul obtinerii unei diferente intre pretul de cumparare si cel de vanzare, care sa acopere cheltuielile ocazionte de derularea operatiilor respective si sa asigure un beneficiu pentru intreprinzator sau in scopul promovarii relatiilor comerciale cu diferite tari."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 52,
+      "text": "Know-how-ul nu se defineste ca:",
+      "answers": [
+        "inventie brevetata;",
+        "inventie nebrevetabila;",
+        "inventie brevetabila dar nebrevetata;",
+        "un drept de proprietate industriala;",
+        "abilitatea tehnica, experienta tehnica, cunostintele tehnice si procedeele."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 53,
+      "text": "Licenta exclusiva absoluta:",
+      "answers": [
+        "presupune ca licentiarul acorda licentiatului dreptul de exploatare a inventiei brevetate, dar isi rezerva dreptul de a acorda licenta in cauza si altor beneficiari;",
+        "presupune ca licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor;",
+        "licentiarul se obliga in afara faptului ca nu va acorda alte licente, sa renunte el insusi la orice exploatare a inventiei, obiect al contractului;",
+        "licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor, dar isi pastreaza dreptul sa foloseasca in nume si pe cont propriu inventia;",
+        "licentiarul acorda mai multor licentiati dreptul egal de folosire a inventiei."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 54,
+      "text": "Licenta exclusiva atenuata:",
+      "answers": [
+        "presupune ca licentiarul acorda licentiatului dreptul de exploatare a inventiei brevetate, dar isi rezerva dreptul de a acorda licenta in cauza si altor beneficiari;",
+        "presupune ca licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor;",
+        "licentiarul se obliga in afara faptului ca nu va acorda alte licente, sa renunte el insusi la orice exploatare a inventiei, obiect al contractului;",
+        "licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor, dar isi pastreaza dreptul sa foloseasca in nume si pe cont propriu inventia;",
+        "licentiarul acorda mai multor licentiati dreptul egal de folosire a inventiei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 55,
+      "text": "Licenta exclusiva:",
+      "answers": [
+        "presupune ca licentiarul acorda licentiatului dreptul de exploatare a inventiei brevetate, dar isi rezerva dreptul de a acorda licenta in cauza si altor beneficiari;",
+        "presupune ca licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor;",
+        "licentiarul se obliga in afara faptului ca nu va acorda alte licente, sa renunte el insusi la orice exploatare a inventiei, obiect al contractului;",
+        "licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor, dar isi pastreaza dreptul sa foloseasca in nume si pe cont propriu inventia;",
+        "licentiarul acorda mai multor licentiati dreptul egal de folosire a inventiei in schimbul unor avantaje diferite.."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 56,
+      "text": "Licenta simpla:",
+      "answers": [
+        "presupune ca licentiarul acorda licentiatului dreptul de exploatare a inventiei brevetate, dar isi rezerva dreptul de a acorda licenta in cauza si altor beneficiari;",
+        "presupune ca licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor;",
+        "licentiarul se obliga in afara faptului ca nu va acorda alte licente, sa renunte el insusi la orice exploatare a inventiei, obiect al contractului;",
+        "licentiarul acorda licentiatului dreptul exclusiv de utilizare a inventiei, renuntand la concedarea unor drepturi indentice tertilor, dar isi pastreaza dreptul sa foloseasca in nume si pe cont propriu inventia;",
+        "licentiarul foloseste in mod exclusiv dreptul asupra licentei fara a o conceda unor licentiate."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 57,
+      "text": "Transferul international de creativitate si tehnologii nu se refera la:",
+      "answers": [
+        "licentierea brevetelor de inventii;",
+        "transferul de know-how;",
+        "serviciile de consulting-engineering;",
+        "vanzarea internationala de bunuri tangibile;",
+        "serviciile de asistenta tehnica."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 58,
+      "text": "In cadrul licitatiilor de vanzare (de export) pretul se poate forma:",
+      "answers": [
+        "prin negociere directa;",
+        "pornind de la pretul minim de strigare care reprezinta minimul la care vanzatorul este dispus sa-si ofere marfa, conducand la suprasolicitarea cumparatorului;",
+        "prin comparatie cu pretul pietei;",
+        "in functie de evaluarea pe care o face vanzatorul;",
+        "pretul nu este negociabil."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 59,
+      "text": "In cazul licitatiilor de cumparare ( de import), una din urmatoarele afirmatii nu este valabila:",
+      "answers": [
+        "nu necesita depunerea unor garantii bancare pentru participare;",
+        "sunt cunoscute si sub denumirea de tratative de concurenta sau adjudecari;",
+        "ofertele participantilor se intocmesc pe baza unui caiet de sarcini elaborat de organizatori, care are functia unei cereri de oferta;",
+        "adjudecarea se face printr-o procedura specifica concretizata in reglementari de valabilitate mai larga emise de organisme internationale sau de catre state, precum si in regulamentele licitatiilor;",
+        "sunt initiate de importatori."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 60,
+      "text": "Din punct de vedere al realizarii tranzactiilor de bursa, cotatiile sunt:",
+      "answers": [
+        "medii, limita si de lichidare;",
+        "efective si nominale;",
+        "oficiale si neoficiale;",
+        "la vedere si la termen;",
+        "subevaluate si supraevaluate."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 61,
+      "text": "In tranzactiile de bursa, Basis Price reprezinta:",
+      "answers": [
+        "pretul intr-un contract de bursa, stabilit la inchiderea zilei;",
+        "pretul tuturor contractelor stabilit la incheierea zilei;",
+        "pretul curent al pietei pentru un produs cu termen de livrare identic cu termenul la care se vinde operatiunea;",
+        "pretul fixat de casa de clearing pentru facturarea livrarilor in executarea in natura a unui contract de bursa, dar si pretul la care contractul de bursa este decontat cu ocazia livrarii;",
+        "pretul pentru fiecare livrare determinat prin strigari sau controlul presedintelui."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 62,
+      "text": "In tranzactiile de bursa, Closing Price reprezinta:",
+      "answers": [
+        "pretul intr-un contract de bursa, stabilit la inchiderea zilei;",
+        "pretul tuturor contractelor stabilit la incheierea zilei;",
+        "pretul curent al pietei pentru un produs cu termen de livrare identic cu termenul la care se vinde operatiunea;",
+        "pretul fixat de casa de clearing pentru facturarea livrarilor in executarea in natura a unui contract de bursa, dar si pretul la care contractul de bursa este decontat cu ocazia livrarii;",
+        "pretul pentru fiecare livrare determinat prin strigari sau controlul presedintelui."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 63,
+      "text": "In tranzactiile de bursa, Closing Range reprezinta:",
+      "answers": [
+        "pretul intr-un contract de bursa, stabilit la inchiderea zilei;",
+        "pretul tuturor contractelor stabilit la incheierea zilei;",
+        "pretul curent al pietei pentru un produs cu termen de livrare identic cu termenul la care se vinde operatiunea;",
+        "pretul fixat de casa de clearing pentru facturarea livrarilor in executarea in natura a unui contract de bursa, dar si pretul la care contractul de bursa este decontat cu ocazia livrarii;",
+        "pretul pentru fiecare livrare determinat prin strigari sau controlul presedintelui."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 64,
+      "text": "In tranzactiile de bursa, Delivery Price reprezinta:",
+      "answers": [
+        "pretul intr-un contract de bursa, stabilit la inchiderea zilei;",
+        "pretul tuturor contractelor stabilit la incheierea zilei;",
+        "pretul curent al pietei pentru un produs cu termen de livrare identic cu termenul la care se vinde operatiunea;",
+        "pretul fixat de casa de clearing pentru facturarea livrarilor in executarea in natura a unui contract de bursa, dar si pretul la care contractul de bursa este decontat cu ocazia livrarii;",
+        "pretul pentru fiecare livrare determinat prin strigari sau controlul presedintelui."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 65,
+      "text": "In tranzactiile de bursa, Gall Price reprezinta:",
+      "answers": [
+        "pretul intr-un contract de bursa, stabilit la inchiderea zilei;",
+        "pretul tuturor contractelor stabilit la incheierea zilei;",
+        "pretul pentru fiecare livrare determinat prin strigari sau controlul presedintelui;",
+        "pretul fixat de casa de clearing pentru facturarea livrarilor in executarea in natura a unui contract de bursa, dar si pretul la care contractul de bursa este decontat cu ocazia livrarii;",
+        "pretul curent al pietei pentru un produs cu termen de livrare identic cu termenul la care se vinde operatiunea."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 66,
+      "text": "Operatiunea bursiera “a la hausse”:",
+      "answers": [
+        "consta in faptul ca initiatorul acesteia cumpara marfa la o anumita data(t0), iar livrarea/plata se va face ulterior(t1); el spera ca in intervalul t0-t1 (de la cumparare pana la livrare) pretul va creste. Daca previziunea se realizeaza, el revinde marfa in momentul livrarii (t1) la pretul mai mare al zilei, inregistrand astfel un castig;",
+        "consta in faptul ca operatorul vinde marfa la o anumita data (t0), cu termen de livrare ulterior (t1); el estimeaza o scadere a pretului in acest interval. Daca previziunea se indeplineste, speculantul va castiga, intrucat se poate aproviziona cu marfa la pretul cel mai mic din perioada livrarii (t1);",
+        "se caracterizeaza prin faptul ca vanzatorul sau cumparatorul isi rezerva dreptul de a realiza contractul, achitand o suma de bani, numita prima, in cazul in care previziunea referitoare la evolutia pretului nu s-a indeplinit;",
+        "presupune preluarea marfii la termenul stabilit si punerea ei in gaj pentru obtinerea de credite pentru plata sau mobilizarea propriilor fonduri, speculantul asteptand in continuare cresterea preturilor;",
+        "consta in faptul ca cele doua parti contractante convin sa-si indeplineasca fara rezerve, dupa o anumita perioada de timp obligatiile asumate prin contract."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 67,
+      "text": "Operatiunea bursiera “a la baisse”:",
+      "answers": [
+        "consta in faptul ca initiatorul acesteia cumpara marfa la o anumita data(t0), iar livrarea/plata se va face ulterior(t1); el spera ca in intervalul t0-t1 (de la cumparare pana la livrare) pretul va creste. Daca previziunea se realizeaza, el revinde marfa in momentul livrarii (t1) la pretul mai mare al zilei, inregistrand astfel un castig;",
+        "consta in accea ca operatorul vinde marfa la o anumita data (t0), cu termen de livrare ulterior (t1); el estimeaza o scadere a pretului in acest interval. Daca previziunea se indeplineste, speculantul va castiga, intrucat se poate aproviziona cu marfa la pretul cel mai mic din perioada livrarii (t1);",
+        "se caracterizeaza prin faptul ca vanzatorul sau cumparatorul isi rezerva dreptul de a realiza contractul, achitand o suma de bani, numita prima, in cazul in care previziunea referitoare la evolutia pretului nu s-a indeplinit;",
+        "presupune preluarea marfii la termenul stabilit si punerea ei in gaj pentru obtinerea de credite pentru plata sau mobilizarea propriilor fonduri, speculantul asteptand in continuare cresterea preturilor,",
+        "consta in faptul ca cele doua parti contractante convin sa-si indeplineasca fara rezerve, dupa o anumita perioada de timp obligatiile asumate prin contract."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 68,
+      "text": "Operatiunea de headging:",
+      "answers": [
+        "se inscrie in sfera engineering-ului;",
+        "este o imbinare a doua contracte futures opuse, presupunand luarea simultana sau la date apropiate de pozitii contrabalansate de cumparare si de vanzare;",
+        "consta in imbinarea unor tranzactii de sens opus (vanzare/cumparare) in scopul reducerii sau eliminarii riscului de pret si presupune stabilirea unei pozitii viitoare la bursa, pozitie inversa celei detinute pe piata fizica, dar pe aceeasi baza de pret;",
+        "nu urmareste acoperirea fata de riscurile de pret;",
+        "se inscrie in categoria ISD."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 69,
+      "text": "Operatiunea de spreading:",
+      "answers": [
+        "se inscrie in categoria reexporturilor;",
+        "consta in imbinarea unor tranzactii de sens opus (vanzare/cumparare) in scopul reducerii sau eliminarii riscului de pret si presupune stabilirea unei pozitii viitoare la bursa, pozitie inversa celei detinute pe piata fizica, dar pe aceeasi baza de pret;",
+        "este o imbinare a doua contracte futures opuse, presupunand luarea simultana sau la date apropiate de pozitii contrabalansate de cumparare si de vanzare;",
+        "nu urmaresc acoperirea fata de riscurile de pret.;",
+        "se inscrie in categoria licitatii internationale."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 70,
+      "text": "Prelucrarea in lohn, ca tehnica de afaceri economice internationale, consta:",
+      "answers": [
+        "in executarea unui produs la comanda dupa modelele si desenele si cu materialele si sub numele ordonatorului-importator;",
+        "o tranzactie desfasurata pe baza contractuala in care exportatorul vinde un produs fabricat de un producator conational;",
+        "in executarea unui produs la comanda dupa instructiunile importatorului, dar sub marca producatorului;",
+        "in executarea unui produs la comanda dupa modelele si desenele si cu materialele si sub numele ordonatorului, iar dreptul de comercializare pe pietele externe ii apartine exportatorului-executant;",
+        "in cumpararea si revanzarea unei marfi in scopul obtinerii unei diferente intre pretul de cumparare si cel de vanzare, care sa acopere cheltuielile ocazionte de derularea operatiilor respective si sa asigure un beneficiu pentru intreprinzator sau in scopul promovarii relatiilor comerciale cu diferite tari."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 71,
+      "text": "Leasingul nu este:",
+      "answers": [
+        "o forma de comert si de finantare prin locatie de catre societati specializate, de catre institutii financiare sau chiar de catre producatori a unor masini, utilaje, echipamente si a altor bunuri unor intreprinderi care au o motivatie sa recurga la aceasta tehnica de comert;",
+        "o forma de privatizare;",
+        "o inchiriere;",
+        "o forma de comert exterior utilizata in tranzactiile cu marfuri in vrac;",
+        "un tip de afacere internationala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 72,
+      "text": "Conceptul de proprietate industriala nu se refera la:",
+      "answers": [
+        "brevete de inventii, marci de fabrica, de comert sau servicii, know-how;",
+        "documentatia de infiintare a firmelor;",
+        "consulting, engineering;",
+        "indicatiile de provenienta sau denumirile de origine;",
+        "drepturile privind operele literare, artistice si stiintifice."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 73,
+      "text": "Pe piata internationala a tehnologiilor, cele mai importante sunt:",
+      "answers": [
+        "tranzactiile cu drepturi de autor;",
+        "vanzarile de software;",
+        "tranzactiile cu masini si echipamente complexe, comertul cu brevete, know-how, operatiunile de consulting-engineering;",
+        "schimbul de informatii tehnico-stiintifice;",
+        "vanzarile de hardware."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 74,
+      "text": "Licenta exclusiva se refera la:",
+      "answers": [
+        "faptul ca licentiarul acorda dreptul de exploatare a inventiei brevetate mai multor beneficiari in conditii diferite;",
+        "faptul ca licentiarul acorda dreptul de exploatare a inventiei brevetate unui singur beneficiar, renuntand la concedarea unor drepturi identice tertilor;",
+        "incurajarea concurentei in domeniul la care se refera brevetul obiect al contractului;",
+        "un singur licentiar si doi sau mai multi licentiati;",
+        "licentiarul pastreaza pentru sine dreptul de utilizare a licentei."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 75,
+      "text": "Principalele elemente componente ale know-how-ului:",
+      "answers": [
+        "sunt brevetate si complet transmisibile;",
+        "pot circula sub forma licentelor simple;",
+        "sunt complet superpozabile secretului de fabricatie;",
+        "sunt abilitatea tehnica, experienta tehnica, cunostintele tehnice si procedeele;",
+        "sunt abilitatea tehnica si secretul de fabricatie."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 76,
+      "text": "Dupa obiectul de activitate, bursele pot fi:",
+      "answers": [
+        "burse generale si burse specializate;",
+        "burse de marfuri, burse de valori, burse de devize;",
+        "burse private si burse publice;",
+        "burse cu participare nelimitata si burse cu participare limitata;",
+        "burse nationale si burse internationale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 77,
+      "text": "Una din particularitatile de mai jos nu apartine licitatiilor de import:",
+      "answers": [
+        "ofertele participantilor se intocmesc pe baza unui caiet de sarcini elaborat de organizatori, care are functia unei cereri de oferta;",
+        "adjudecarea se face printr-o procedura specifica;",
+        "sunt initiate de exportatori;",
+        "pentru importatori prezinta avantajul de a obtine un numar mare de oferte care pot fi comparate intr-un interval de timp scurt;",
+        "sunt cunoscute sub denumirea de tratative de concurenta sau adjudecari."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 78,
+      "text": "Originea marfurilor, un element important in aplicarea politicii vamale, nu are incidenta in:",
+      "answers": [
+        "tratarea diferentiata a marfurilor care patrund pe teritoriul vamal al unui stat sau uniuni vamale;",
+        "determinarea nivelului taxelor vamale aplicabile la import;",
+        "aplicarea reglementarilor specifice si masurilor de politica comerciala;",
+        "cazul reexportului; e ) aplicarea preferintelor vamale."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 79,
+      "text": "Regimul vamal comun:",
+      "answers": [
+        "are ca efect suspendarea platii anumitor taxe vamale;",
+        "se aplica automat, in conformitate cu legea vamala si priveste toate marfurile de export si import;",
+        "presupune suspendarea aplicarii unor masuri de control;",
+        "se acorda la solicitarea expresa a titularului operatiunii comerciale, pentru o perioada determinata;",
+        "permite transportul marfurilor fara transbordari."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 80,
+      "text": "Reexportul nu are ca scop:",
+      "answers": [
+        "obtinerea de profit din diferentele de pret pe diverse piete;",
+        "promovarea relatiilor comerciale reciproce in conditii deosebite;",
+        "completarea anumitor exporturi;",
+        "patrunderea pe noi piete a unor firme concurente, producatoare ale produselor reexportate;",
+        "sporirea masei profitului."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 81,
+      "text": "Franchisingul nu:",
+      "answers": [
+        "este o licenta contractuala cedata de un cedent (franchisor) unui cesionar (beneficiar);",
+        "este o licenta contractuala cedata de un cesionar (beneficiar) unui cedent (franchisor);",
+        "permite sau cere franchiserului sa desfasoare in perioada de valabilitate o anumita afacere, folosind numele cedentului;",
+        "da dreptul franchisorului de a exercita pe parcursul contractului un control continuu asupra activitatii cesionarului si il obliga pe primul sa ii acorde asistenta in desfasurarea activitatii celui de-al doilea;",
+        "este o tehnica de afaceri comerciale internationale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 82,
+      "text": "Conceptul de proprietate intelectuala nu se refera la:",
+      "answers": [
+        "operele literare, artistice si stiintifice;",
+        "descoperirile stiintifice;",
+        "abilitatea personalului productiv;",
+        "activitatea intelectuala in domeniul industrial, stiintific, literar si artistic;",
+        "drepturile asupra emisiunilor radio si tv."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 83,
+      "text": "Care din afirmatiile referitoare la brevetul de inventie este falsa:",
+      "answers": [
+        "are valabilitate nelimitata;",
+        "garanteaza titularului dreptul de proprietate asupra inventiei;",
+        "faciliteaza transferul dreptului de proprietate a inventiei;",
+        "obliga titularul la plata anuitatilor;",
+        "este un titlu eliberat de stat care atesta caractetrul de inventie."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 84,
+      "text": "Contrafacerea se refera la:",
+      "answers": [
+        "producerea materiala unui produs brevetat sau utilizarea unui procedeu brevetat, fara detinere de licenta",
+        "crearea unor confuzii cu privire la provenienta unor marfuri",
+        "reclama comparativa critica",
+        "divulgarea unor secrete de fabrica prin care se aduc prejudicii celor care beneficiaza de dreptul exclusiv de exploatare a inventiei",
+        "tranzactionarea de licente false."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 85,
+      "text": "Caietul de sarcini sau de conditii, documentul cel mai important al mecanismului unei licitatii de import cuprinde:",
+      "answers": [
+        "conditii tehnice, comerciale si generale;",
+        "oferta tehnica, oferta comerciala, oferta generala;",
+        "garantia bancara de participare si garantia de onoare pentru pozitia castigatoare;",
+        "criteriile de determinare a ofertei celei mai avantajoase;",
+        "principalele etape ale organizarii licitatiei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 86,
+      "text": "Valoarea vamala la export se calculeaza:",
+      "answers": [
+        "pentru cale maritima: FOB port de expeditie;",
+        "pentru cale aeriana: franco aeroport de destinatie;",
+        "pentru cale rutiera: EXW loc numit de imbarcare;",
+        "pentru cale feroviara: DAF frontiera tarii importatoare;",
+        "pentru cale fluviala: CIP port de destinatie."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 87,
+      "text": "Regimul vamal suspensiv:",
+      "answers": [
+        "se aplica automat, in conformitate cu legea vamala;",
+        "priveste toate marfurile de export si import;",
+        "se acorda pe o perioada nelimitata;",
+        "se acorda la solicitarea expresa a titularului operatiunii comerciale, pentru o perioada determinata;",
+        "este permanent."
+      ],
+      "correctIndex": 3
+    }
+  ]
+}

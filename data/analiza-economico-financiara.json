@@ -1,0 +1,964 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Indicele capitalului propriu = 112%; indicele capitalului permanent = 108%; indicele activelor imobilizate = 118%. Aceasta semnifica:",
+      "answers": [
+        "cresterea ratei rentabilitatii financiare si scaderea fondului de rulment;",
+        "cresterea fondului de rulment si scaderea ratei rentabilitatii financiare;",
+        "reducerea ponderii resurselor proprii in capitalul permanent;",
+        "cresterea ponderii resurselor proprii in capitalul permanent;",
+        "scaderea fondului de rulment si cresterea ponderii surselor proprii in capitalul permanent."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 2,
+      "text": "Cifra de afaceri reprezinta:",
+      "answers": [
+        "veniturile totale obtinute de un agent economic;",
+        "eficienta utilizaii activelor de care dispune un agent economic;",
+        "productia marfa fabricata si veniturile reprezentate de productia stocata si imobilizata;",
+        "veniturile din productia vanduta, prestarea de servicii si veniturile din vanzarea marfurilor, care se inscriu in activitatea curenta a entitatii;",
+        "profitul net al exercitiului financiar inregistrat de un agent economic, la sfarsitul anului."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 3,
+      "text": "Indicele de dinamica a productiei exercitiului: 108%; Indicele de dinamica a valorii adaugate: 105%; Indicele de dinamica a productivitatii muncii anuale (calculata pe baza productiei exercitiului): 97%. Aceste rezultate au urmatoarea semnificatie:",
+      "answers": [
+        "cresterea numarului mediu al personalului si reducerea ponderii consumului intermediar in productia exercitiului;",
+        "scaderea numarului mediu al personalului si reducerea ponderii consumului intermediar in productia exercitiului;",
+        "cresterea numarului mediu al personalului si a ponderii consumului intermediar in productia exercitiului;",
+        "cresterea productivitatii muncii si reducerea stocurilor de produse finite si semifabricate destinate vanzarii;",
+        "scaderea numarului mediu al personalului si cresterea cheltuielilor de exploatare."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 4,
+      "text": "Influenta cu semnul plus a modificarii structurii fizice a cifrei de afaceri asupra modificarii rezultatului (profitului sau pierderii) din exploatare aferent cifrei de afaceri semnifica:",
+      "answers": [
+        "cresterea ponderii sortimentelor vandute la care rentabilitatea este mai mare decat media inregistrata pe totalul cifrei de afaceri;",
+        "cresterea ponderii sortimentelor vandute la care rentabilitatea este mai mica decat media inregistrata pe totalul cifrei de afaceri;",
+        "reducerea ponderii sortimentelor vandute pentru care cheltuielile cu materiile prime sunt mai mici;",
+        "cresterea rentabilitatii unitare la toate categoriile de produse vandute;",
+        "cresterea ponderii sortimentelor vandute la care pretul de vanzare este mai mare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 5,
+      "text": "Daca cifra de afaceri creste cu 8%, iar eficienta utilizarii mijloacelor fixe, calculata pe baza cifrei de afaceri, creste cu 4%, se apreciaza ca:",
+      "answers": [
+        "au scazut cheltuielile cu amortizarea mijloacelor fixe;",
+        "s-au diminuat cheltuielile de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri;",
+        "a crescut valoarea medie a mijloacelor fixe;",
+        "a crescut rata rentabilitatii economice;",
+        "a crescut gradul de inzestrare tehnica a muncii."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 6,
+      "text": "Indicele de dinamica a cheltuielilor cu personalul: 96%; Indicele de dinamica a productivitatii muncii: 98%; Indicele de dinamica a cifrei de afaceri: 88%; Aceste rezultate au urmatoarea semnificatie:",
+      "answers": [
+        "a scazut productivitatea muncii, si a crescut numarul mediu al personalului;",
+        "s-a redus numarul mediu al personalului si au crescut cheltuielile cu pesonalul la 1000 lei cifra de afaceri;",
+        "a scazut salariul mediu si profitul sau pierderea bruta a exercitiului;",
+        "au crescut cheltuielile efectuate cu resursele materiale si energetice si s-a redus gradul inzestrarii tehnice a muncii;",
+        "a crescut productivitatea muncii si au scazut cheltuielile cu pesonalul la 1000 lei cifra de afaceri."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 7,
+      "text": "Cresterea preturilor de vanzare are ca efect:",
+      "answers": [
+        "cresterea cheltuielilor de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri;",
+        "reducerea cheltuielilor de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri;",
+        "cresterea cheltuielilor de exploatare cu amortizarea activelor imobilizate corporale si necorporale;",
+        "reducerea profitului din exploatare aferent cifrei de afaceri;",
+        "scaderea ratei rentabilitatii vanzarilor (comerciale)."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 8,
+      "text": "Scaderea costurilor unitare complete are ca efect:",
+      "answers": [
+        "cresterea cheltuielilor de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri;",
+        "reducerea cheltuielilor de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri;",
+        "cresterea productivitatii muncii;",
+        "reducerea rezultatului din exploatare aferent cifrei de afaceri;",
+        "scaderea ratei rentabilitatii vanzarilor (comerciale)."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "Influenta cu semnul minus a modificarii preturilor de vanzare asupra cheltuielilor de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri are urmatoarea semnificatie:",
+      "answers": [
+        "scaderea cheltuielilor la 1000 lei cifra de afaceri;",
+        "cresterea costurilor unitare complete;",
+        "diminuarea preturilor de vanzare;",
+        "cresterea cheltuielilor de exploatare cu amortizarea activelor corporale si necorporale;",
+        "scaderea profitului din exploatare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 10,
+      "text": "Influenta cu semnul plus a modificarii structurii fizice a cifrei de afaceri asupra cheltuielilor de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri, semnifica:",
+      "answers": [
+        "cresterea ponderii vanzarilor din categoriile de produse care au un nivel al costului mai mic comparativ cu media aferenta intregii cifrei de afaceri;",
+        "cresterea ponderii vanzarilor din categoriile de produse care au un nivel al costului mai mare comparativ cu media aferenta intregii cifrei de afaceri;",
+        "reducerea ponderii vanzarilor din categoriile de produse care au in structura costului unitar cheltuieli cu personalul mai mari;",
+        "reducerea ponderii vanzarilor din categoriile de produse care au un nivel al costului mai mare comparativ cu media aferenta intregii cifrei de afaceri;",
+        "cresterea volumului fizic al vanzarilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 11,
+      "text": "Cheltuielile variabile pe unitatea de produs se modifica odata cu modificarea volumului de activitate, astfel:",
+      "answers": [
+        "cresc odata cu cresterea volumului de activitate;",
+        "scad odata cu cresterea volumului de activitate;",
+        "scad odata cu reducerea volumului de activitate;",
+        "cresc odata cu reducerea volumului de activitate;",
+        "au un nivel relativ constant."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 12,
+      "text": "Cheltuielile fixe (conventional constante) pe unitatea de produs se modifica odata cu modificarea volumului de activitate, astfel:",
+      "answers": [
+        "cresc odata cu cresterea volumului de activitate;",
+        "scad odata cu cresterea cheltuielilor cu personalul;",
+        "scad odata cu reducerea volumului de activitate;",
+        "cresc odata cu reducerea volumului de activitate;",
+        "au un nivel relativ constant."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 13,
+      "text": "Cresterea costurilor complete pe unitatea de produs are ca efect:",
+      "answers": [
+        "cresterea cheltuielilor la 1000 lei cifra de afaceri;",
+        "cresterea rezultatului (profitului) din exploatare aferent cifrei de afaceri;",
+        "reducerea cheltuielilor cu personalul;",
+        "cresterea cifrei de afaceri;",
+        "cresterea ratei rentabilitatii vanzarilor."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 14,
+      "text": "Indicele de dinamica a cifrei de afaceri = 110%; Indicele de dinamica a cheltuielilor de exploatare aferente cifrei de afaceri = 111%. Pe baza acestor date se considera ca:",
+      "answers": [
+        "a crescut rezultatul (profitul) net al exercitiului financiar;",
+        "a crescut rata rentabilitatii economice;",
+        "s-a diminuat rezultatul (profitul) curent al exercitiului;",
+        "s-a diminuat profitul din exploatare aferent cifrei de afaceri;",
+        "au crescut cheltuielile financiare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 15,
+      "text": "Se cunosc urmatoarele date: - cantitatea de produse fabricata (q = 100 buc.), - pretul de vanzare unitar (p = 2.000 lei), - suma totala a cheltuielilor fixe (CF = 50.000 lei). Care este marimea costului variabil unitar pentru a se obtine un profit de 40.000 lei, (Re = 40.000 lei)?",
+      "answers": [
+        "1.100 lei;",
+        "1.600 lei;",
+        "2.100 lei;",
+        "950 lei;",
+        "1.200 lei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 16,
+      "text": "Se cunosc urmatoarele date: Tipul produselor vandute Cantitatea (bucati) Pretul de vanzare (mii lei/buc.) Costul complet unitar (mii lei/buc.) Cheltuielile fixe totale (mii lei) A 2.000 5 4 3.000 B 1.500 10 9 4.500 Total 7.500 Cunoscand ca totalul activelor este de 10.000 mil. lei, nivelul cifrei de afaceri care permite obtinerea unei rate a rentabilitatii economice de 20,0% este:",
+      "answers": [
+        "21.591 mii lei;",
+        "11.691 mii lei;",
+        "22.891 mii lei;",
+        "25.591 mii lei;",
+        "20.291 mii lei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 17,
+      "text": "Rata rentabilitatii cheltuielilor de exploatare aferente cifrei de afaceri este influentata de modificarea urmatorilor factori directi, in urmatoarea ordine:",
+      "answers": [
+        "volumul fizic al cifrei de afaceri, costurile unitare complete, preturile de vanzare;",
+        "structura volumului fizic al cifrei de afaceri, volumul fizic al cifrei de afaceri, preturile de vanzare, costurile unitare complete;",
+        "costurile unitare complete, preturile de vanzare, volumul fizic al cifrei de afaceri;",
+        "structura volumului fizic al cifrei de afaceri, productivitatea muncii, rezultatul din exploatare pe unitatea de produs;",
+        "structura volumului fizic al cifrei de afaceri, costurile unitare complete, preturile de vanzare."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 18,
+      "text": "Indicele de dinamica a capitalului propriu: 108%; Indicele de dinamica a capitalului permanent: 107%; Indicele de dinamica a valorii activelor imobilizate: 110%. Indicele de dinamica a rezultatului (profitului) net al exercitiului financiar: 106%. Aceste rezultate au urmatoarea semnificatie:",
+      "answers": [
+        "cresterea fondului de rulment si reducerea ratei rentabilitatii economice;",
+        "scaderea ponderii surselor proprii in capitalul permanent si reducerea ratei rentabilitatii financiare;",
+        "scaderea proportiei fondului de rulment in capitalul permanent si a ratei rentabilitatii financiare;",
+        "cresterea ratei rentabilitatii comerciale si cresterea ponderii surselor atrase in totalul pasivului contabil;",
+        "cresterea ratei rentabilitatii financiare si a fondului de rulment."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 19,
+      "text": "Rata finantarii activelor imobilizate = eimobilizat Active permanent Capitalul  , semnifica:",
+      "answers": [
+        "un risc de insolvabilitate scazut;",
+        "o incapacitate de plata;",
+        "o stare financiara echilibrata;",
+        "un fond de rulment negativ;",
+        "un grad scazut de profitabilitate."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 20,
+      "text": "Coeficientul de determinatie arata: 1. daca exista legatura intre doua fenomene economice; 2. intensitatea legaturii intre doua fenomene economice; 3. semnul legaturii",
+      "answers": [
+        "1, 2, 3;",
+        "1;",
+        "2;",
+        "1, 2;",
+        "1, 3."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 21,
+      "text": "Cresterea ponderii produselor cu rentabilitate mai mare, in totalul cifrei de afaceri, are ca efect:",
+      "answers": [
+        "cresterea cheltuielilor la 1000 lei cifra de afaceri;",
+        "reducerea cheltuielilor la 1000 lei cifra de afaceri;",
+        "cresterea productivitatii muncii;",
+        "reducerea profitului din exploatare aferent cifrei de afaceri;",
+        "cresterea preturilor de vanzare ale produselor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 22,
+      "text": "Marimea ratei lichiditatii reduse Testul acid este considerata ca fiind corespunzatoare atunci cand:",
+      "answers": [
+        "creantele, investitiile pe termen scurt, disponibilitatile banesti din casa si conturi la banci sunt cel putin egale cu suma datoriilor curente;",
+        "disponibilitatile banesti din casa si conturi la banci pot asigura achitarea datoriilor exigibile;",
+        "disponibilitatile banesti din conturile deschise la banci si valoarea stocului de produse finite sunt cel putin egale cu datoriile totale;",
+        "datoriile totale sunt egale cu activele circulante;",
+        "datoriile catre furnizori sunt acoperite de disponibilitatile existente in casa si conturi la banci."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Rata autonomiei financiare reprezinta:",
+      "answers": [
+        "modalitatea de finantare a circuitului economic;",
+        "independenta financiara;",
+        "gradul de eficienta a utilizarii datoriilor financiare;",
+        "toate variantele enumerate;",
+        "nici una din variante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 24,
+      "text": "Se cunosc urmatoarele informatii: - indicele de dinamica a veniturilor totale ( )VtI : 112%, - indicele de dinamica a activelor totale ( )ActI : 110%, - indicele de dinamica a ratei rentabilitatii economice a activelor totale ( )RreI : 106%. Rezulta ca:",
+      "answers": [
+        "s-a accelerat viteza de rotatie a activelor totale si a scazut rata rentabilitatii veniturilor;",
+        "s-a accelerat viteza de rotatie a activelor totale si a crescut rata rentabilitatii veniturilor;",
+        "s-a incetinit viteza de rotatie a activelor totale si a crescut rata rentabilitatii comerciale;",
+        "s-au diminuat veniturile totale si a crescut rata rentabilitatii comerciale;",
+        "a scazut valoarea activelor totale si a crescut rata rentabilitatii comerciale."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Pe baza relatiei: Σ ΣΣ Σ ΣΣ 0101  − − − cq cqpq cq cqpq , se determina:",
+      "answers": [
+        "influenta modificarii preturilor de livrare asupra ratei rentabilitatii resurselor consumate pentru cifra de afaceri;",
+        "influenta modificarii costurilor unitare complete asupra ratei rentabilitatii resurselor consumate pentru cifra de afaceri;",
+        "influenta modificarii structurii fizice a cifrei de afaceri asupra ratei rentabilitatii financiare;",
+        "influenta modificarii structurii fizice a cifrei de afaceri asupra ratei rentabilitatii resurselor consumate pentru cifra de afaceri;",
+        "influenta modificarii structurii fizice a cifrei de afaceri asupra cheltuielilor la 1000 lei cifra de afaceri."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 26,
+      "text": "In ce conditii rata rentabilitatii vanzarilor (rata rentabilitatii comerciale) este devansata de rata rentabilitatii resurselor consumate (cheltuielilor) pentru cifra de afaceri:",
+      "answers": [
+        "atunci cand se constata o crestere a valorii adaugate;",
+        "atunci cand se practica preturi de vanzare mai mici;",
+        "atunci cand cresc cheltuielile variabile la 1000 lei cifra de afaceri;",
+        "atunci cand se micsoreaza cheltuielile de exploatare aferente cifrei de afaceri la 1000 lei cifra de afaceri;",
+        "atunci cand creste cifra de afaceri."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 27,
+      "text": "Daca productia exercitiului creste cu 10%, iar valoarea adaugata creste cu 20%, se poate aprecia ca:",
+      "answers": [
+        "au crescut stocurile de produse finite;",
+        "a scazut proportia consumului intermediar in productia exercitiului;",
+        "au crescut productia realizata de entitate pentru scopurile sale proprii si capitalizata;",
+        "s-au redus stocurile de productie in curs de executie;",
+        "s-a incetinit viteza de rotatie a activelor circulante."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 28,
+      "text": "Daca cifra de afaceri creste cu 3%, iar productia marfa fabricata creste cu 5%, se poate aprecia ca:",
+      "answers": [
+        "au scazut stocurile de produse finite;",
+        "a crescut proportia stocurilor de produse finite si semifabricate destinate vanzarii in productia marfa fabricata;",
+        "a crescut soldul facturilor neincasate;",
+        "a crescut rata rentabilitatii financiare;",
+        "s-au redus cheltuielile cu prestatiile externe."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 29,
+      "text": "Daca cifra de afaceri creste cu 10%, iar numarul mediu al personalului creste cu 8%, se apreciaza ca:",
+      "answers": [
+        "a scazut rezultatul din exploatare aferent cifrei de afaceri;",
+        "au crescut cheltuielile la 1000 lei cifra de afaceri;",
+        "a crescut productivitatea muncii;",
+        "a crescut viteza de rotatie a activelor circulante;",
+        "a crescut rata trentabilitatii comerciale."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 30,
+      "text": "Daca cifra de afaceri creste cu 8%, iar valoarea medie a mijloacelor fixe creste cu 10%, se apreciaza ca:",
+      "answers": [
+        "a scazut eficienta utilizarii mijloacelor fixe;",
+        "au scazut cheltuielile la 1000 lei cifra de afaceri;",
+        "mijloacele fixe vor fi amortizate intr-o perioada mai lunga de timp;",
+        "a crescut productivitatea muncii;",
+        "s-a diminuat numarul mediu al personalului."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 31,
+      "text": "Cu ajutorul urmatoarei relatii de calcul:    ,cq pqcq pq Δ 00000101  −−−=  se determina modificarea absoluta a rezultatului din exploatare aferent cifrei de afaceri, datorita:",
+      "answers": [
+        "modificarii preturilor de livrare;",
+        "modificarii numarului mediu al personalului;",
+        "modificarii volumului fizic al cifrei de afaceri;",
+        "modificarii costurilor unitare complete;",
+        "modificarii eficientei utilizarii activelor circulante."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 32,
+      "text": "Dinamica cheltuielilor cu forta de munca la 1000 lei cifra de afaceri este influentata de modificarea urmatorilor factori:",
+      "answers": [
+        "productivitatea muncii si costurile unitare complete;",
+        "productivitatea muncii si viteza de rotatie a activelor circulante;",
+        "productivitatea muncii si cheltuielile cu forta de munca care revin la un salariat;",
+        "valoarea medie a mijloacelor fixe si productivitatea muncii;",
+        "cheltuielile cu resursele materiale si energetice."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 33,
+      "text": "Rata rentabilitatii financiare exprima raportul dintre:",
+      "answers": [
+        "profitul net si capitalul propriu;",
+        "profitul net si numarul mediu al personalului;",
+        "cifra de afaceri si valoarea medie a mijloacelor fixe;",
+        "cifra de afaceri si valoarea medie a activelor circulante;",
+        "profitul brut si cifra de afaceri."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 34,
+      "text": "Viteza de rotatie a activelor circulante este un indicator care exprima:",
+      "answers": [
+        "stocul mediu al produselor finite si semifabricatelor destinate vanzarii;",
+        "eficienta utilizarii activelor circulante;",
+        "viteza cu care sunt diminuate creantele;",
+        "durata medie in care sunt incasate facturile emise;",
+        "durata medie de stocare a productiei in curs de executie."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 35,
+      "text": "Viteza de rotatie a activelor circulante exprimata prin durata medie in zile a unei rotatii, d, se calculeaza pe baza urmatoarei relatii:",
+      "answers": [
+        "w AcZd = ;",
+        "VA AcZd = ;",
+        "Ac CAd = ;",
+        "CA Acd = ;",
+        "CA AcZd = ."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 36,
+      "text": "Viteza de rotatie a activelor circulante exprimata prin numarul mediu de rotatii, n, se calculeaza pe baza urmatoarei relatii:",
+      "answers": [
+        "w AcZn = ;",
+        "VA AcZn = ;",
+        "Ac CAn = ;",
+        "CA Acn = ;",
+        "CA AcZn ="
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 37,
+      "text": "Modificarea rezultatului (profitul sau pierderea) din exploatare aferent cifrei de afaceri ca urmare a influentei modificarii numarului mediu de rotatii al activelor circulante, )Δ(n , se calculeaza pe baza urmatoarei relatii:",
+      "answers": [
+        "1)()Δ( 01 NAcAcn −= ;",
+        "1)()Δ( 01 wAcAcn −= ;",
+        "101 )()Δ( Acnnn −= ;",
+        "0101 )()( RrvAcnnn −= ;",
+        "01)Δ( nnn −= ."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 38,
+      "text": "Indicele numarului mediu al personalului: NI = 94% Indicele valorii medii anuale a mijloacelor fixe: MfI = 104% Indicele productiei exercitiului: QI = 106% Indicele cifrei de afaceri: CAI = 109% Rezulta:",
+      "answers": [
+        "cresterea gradului de inzestrare tehnica a fortei de munca, a productivitatii muncii si a gradului de valorificare a productiei exercitiului;",
+        "cresterea productivitatii muncii si scaderea gradului de inzestrare tehnica a muncii si a gradului de valorificare a productiei;",
+        "cresterea productivitatii muncii si a gradului de inzestrare tehnica a muncii si scaderea gradului de valorificare a productiei exercitiului;",
+        "cresterea gradului de valorificare a productiei exercitiului si scaderea productivitatii muncii;",
+        "sporirea gradului de inzestrare tehnica a muncii si scaderea gradului de valorificare a productiei exercitiului."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 39,
+      "text": "Indicele cifrei de afaceri: CAI = 108% Indicele productivitatii muncii: wI = 98% Indicele profitului aferent cifrei de afaceri: ReI = 105% Rezulta:",
+      "answers": [
+        "s-a redus numarul mediu al personalului, a crescut productivitatea muncii si costurile;",
+        "s-au redus numarul mediu al personalului, productivitate muncii si costurile;",
+        "a crescut numarul mediu al personalului, s-a redus productivitatea muncii si au crescut costurile;",
+        "a crescut cifra de afaceri si s-au redus costurile;",
+        "s-au redus productivitate muncii si costurile."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 40,
+      "text": "Indicele rezultatului exploatarii: ReI = 104% Indicele cifrei de afaceri: CAI = 107% Indicele numarului mediu al personalului: NI = 98% Rezulta:",
+      "answers": [
+        "cresterea productivitatii muncii si a costurilor;",
+        "scaderea productivitatii muncii si a costurilor;",
+        "scaderea productivitatii muncii si cresterea preturilor de vanzare;",
+        "sporirea productivitatii muncii si cresterea ponderii consumurilor intermediare in cifra de afaceri;",
+        "scaderea numarului mediu al personalului si a productivitatii muncii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 41,
+      "text": "Indicele cifrei de afaceri: CAI = 104% Indicele productivitatii muncii anuale: wI = 107% Indicele productivitatii muncii zilnice: wzI = 109% Indicele productivitatii muncii orare: whI = 112% Rezulta:",
+      "answers": [
+        "s-au redus numarul mediu al personalului, zilele lucrate de un salariat, in medie, pe an si numarul mediu de ore lucrate de un salariat intr-o zi;",
+        "a crescut numarul mediu de zile lucrate de un salariat pe an, durata medie a zilei de lucru si numarul mediu al personalului;",
+        "s-a redus numarul mediu al personalului si a crescut durata medie a zilei de lucru;",
+        "au crescut numarul mediu de zile lucrate de un salariat pe an si durata medie a zilei de lucru;",
+        "s-a diminuat productivitatea muncii orara si durata medie a zilei de lucru dar a crescut numarul mediu de zile lucrate de un salariat pe an."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 42,
+      "text": "Indicele productiei exercitiului: QI = 102% Indicele valorii adaugate: VAI = 105% Indicele numarului mediu al personalului: NI = 96% A rezultat:",
+      "answers": [
+        "cresterea productivitatii muncii si reducerea ponderii consumurilor intermediare in productia exercitiului;",
+        "scaderea productivitatii muncii si reducerea ponderii consumurilor intermediare in productia exercitiului;",
+        "scaderea productivitatii muncii si cresterea ponderii consumurilor intermediare in productia exercitiului;",
+        "sporirea productivitatii muncii si cresterea ponderii consumurilor intermediare in productia exercitiului;",
+        "scaderea numarului mediu al personalului si a productivitatii muncii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 43,
+      "text": "Modificarea rezultatului (profitul sau pierderea) din exploatare aferent cifrei de afaceri ca urmare a influentei modificarii ratei rentabilitatii vanzarilor (rentabilitatii comerciale), )Δ(Rrv , se calculeaza pe baza urmatoarei relatii:",
+      "answers": [
+        "1)()Δ( 01 NAcAcRrv −= ;",
+        "1)()Δ( 01 RrvAcAcRrv −= ;",
+        "101 )()Δ( AcRrvRrvRrv −= ;",
+        "0101 )()Δ( RrvAcnnRrv −= ;",
+        ")()Δ( 0111 RrvRrvAcRrv n −=  ."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 44,
+      "text": "Cu ajutorul urmatoarei relatii de calcul:    ,cq pqcq pq Δ 01010111  −−−=  se determina modificarea absoluta a rezultatului din exploatare aferent cifrei de afaceri, datorita:",
+      "answers": [
+        "modificarii preturilor de livrare;",
+        "modificarii numarului mediu al personalului;",
+        "modificarii volumului fizic al cifrei de afaceri;",
+        "modificarii costurilor unitare complete;",
+        "modificarii eficientei utilizarii activelor circulante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 45,
+      "text": "Cu ajutorul urmatoarei relatii de calcul:    ,cq pqcq pq Δ 01111111  −−−=  se determina modificarea absoluta a rezultatului din exploatare aferent cifrei de afaceri, datorita:",
+      "answers": [
+        "modificarii preturilor de livrare;",
+        "modificarii numarului mediu al personalului;",
+        "modificarii volumului fizic al cifrei de afaceri;",
+        "modificarii costurilor unitare complete;",
+        "modificarii eficientei utilizarii activelor circulante."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 46,
+      "text": "Rata rentabilitatii economice exprima raportul dintre:",
+      "answers": [
+        "profitul net si capitalul propriu;",
+        "profitul net si numarul mediu al personalului;",
+        "cifra de afaceri si valoarea medie a mijloacelor fixe;",
+        "cifra de afaceri si valoarea medie a activelor circulante;",
+        "profitul net si totalul activului contabil."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 47,
+      "text": "Cheltuielile aferente activitatii economice de exploatare se clasifica dupa destinatie in urmatoarele categorii:",
+      "answers": [
+        "fixe sau conventional constante si variabile;",
+        "de exploatare, financiare si extraordinare;",
+        "directe si financiare;",
+        "variabile, indirecte si extraordinare;",
+        "directe, indirecte, de desfacere si generale de administratie."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 48,
+      "text": "Capitalul angajat este format din:",
+      "answers": [
+        "fondul de rulment;",
+        "capitalul propriu si capitalul imprumutat;",
+        "activele imobilizate si activele circulante;",
+        "capitalul subscris si varsat;",
+        "patrimoniul regiei."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 49,
+      "text": "Datoriile curente sunt constituite din:",
+      "answers": [
+        "sumele care trebuie platite intr-o perioada de pana la un an si cheltuieli in avans;",
+        "sumele care trebuie platite intr-o perioada de pana la un an si activele circulante nete;",
+        "sumele care trebuie platite intr-o perioada de pana la un an, provizioanele si venituri inregistrate in avans;",
+        "datoriile totale si provizioanele;",
+        "activele circulante si capitalul subscris nevarsat."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 50,
+      "text": "Cheltuielile aferente activitatii economice se clasifica dupa natura lor in urmatoarele categorii:",
+      "answers": [
+        "fixe sau conventional constante si variabile;",
+        "de exploatare, financiare si extraordinare;",
+        "directe si financiare;",
+        "variabile, indirecte si extraordinare;",
+        "directe, indirecte, de desfacere si generale de administratie."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 51,
+      "text": "Indicele valorii medii anuale a mijloacelor fixe: MfI = 103% Indicele cifrei de afaceri la 1000 lei mijloace fixe: MfCAI / = 104% Indicele rezultatului din exploatare aferent cifrei de afaceri: ReI = 108% Rezulta:",
+      "answers": [
+        "au crescut valoarea medie anuala a mijloacelor fixe si cheltuielile de exploatare aferente cifrei de afaceri;",
+        "au crescut eficienta utilizarii mijloacelor fixe si cheltuielile de exploatare aferente cifrei de afaceri;",
+        "s-a diminuat eficienta utilizarii mijloacelor fixe si au crescut cheltuielile de exploatare aferente cifrei de afaceri;",
+        "s-au redus valoarea medie anuala a mijloacelor fixe si eficienta utilizarii mijloacelor fixe;",
+        "a crescut cifra de afaceri si s-au redus cheltuielile de exploatare aferente cifrei de afaceri."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 52,
+      "text": "Indicele valorii medii anuale a mijloacelor fixe: MfI = 103% Indicele cifrei de afaceri la 1000 lei mijloace fixe: MfCAI / = 104% Indicele rezultatului din exploatare aferent cifrei de afaceri: ReI = 108% Rezulta:",
+      "answers": [
+        "au crescut valoarea medie anuala a mijloacelor fixe si cheltuielile de exploatare aferente cifrei de afaceri;",
+        "au crescut eficienta utilizarii mijloacelor fixe si cheltuielile de exploatare aferente cifrei de afaceri;",
+        "s-a diminuat eficienta utilizarii mijloacelor fixe si au crescut cheltuielile de exploatare aferente cifrei de afaceri;",
+        "s-au redus valoarea medie anuala a mijloacelor fixe si eficienta utilizarii mijloacelor fixe;",
+        "a crescut cifra de afaceri si s-au redus cheltuielile de exploatare aferente cifrei de afaceri."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 53,
+      "text": "Daca indicele de dinamica al cheltuielilor medii efectuate cu un salariat este mai mare comparativ cu indicele de dinamica al productivitatii muncii, se apreciaza ca:",
+      "answers": [
+        "au crescut cheltuielile efectuate cu forta de munca la 1000 lei cifra de afaceri si s-a diminuat rezultatul din exploatare aferent cifrei de afaceri;",
+        "s-au redus cheltuielile la 1000 lei cifra de afaceri;",
+        "a scazut ponderea cheltuielilor cu personalul in valoarea adaugata;",
+        "a crescut valoarea adaugata;",
+        "a crescut eficienta utilizarii activelor circulante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 54,
+      "text": "Factorii care influenteaza, in mod direct, modificarea cheltuielilor materiale la 1000 lei cifra de afaceri, sunt dimensionti, in baza procedeului substituirilor succesive, in urmatoarea ordine:",
+      "answers": [
+        "cifra de afaceri, pretul unitar de aprovizionare al resurselor materiale si structura valorica a vanzarilor;",
+        "structura fizica a cifrei de afaceri, preturile unitare de vanzare si cheltuielile materiale pe unitatea de produs;",
+        "cheltuielile materiale efectuate la 1 leu cifra de afaceri, pretul de aprovizionare al resurselor materiale si pretul unitar de vanzare;",
+        "structura cheltuielilor materiale, pretul de aprovizionare al resurselor materiale si cheltuielile materiale pe unitatea de produs;",
+        "volumul fizic al productiei, structura valorica a cifrei de afaceri pe feluri de produse si cheltuielile materiale pe unitatea de produs."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 55,
+      "text": "Indicele valorii medii a activelor circulante: AcI = 111%. Indicele cifrei de afaceri: CAI = 115% Indicele rezultatului din exploatare aferent cifrei de afaceri: ReI = 119% Rezulta:",
+      "answers": [
+        "s-a accelerat viteza de rotatie a activelor circulante si a crescut rentabilitatea activelor imobilizate;",
+        "s-a accelerat viteza de rotatie a activelor circulante si s-a redus rata rentabilitatii economice;",
+        "s-a accelerat viteza de rotatie a activelor circulante si a crescut rata rentabilitatii vanzarilor;",
+        "s-a incetinit viteza de rotatie a activelor circulante si a crescut rata rentabilitatii financiare;",
+        "a crescut valoarea medie a activului contabil si viteza de rotatie a a activelor circulante s-a incetinit."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 56,
+      "text": "Solvabilitatea unei firme presupune:",
+      "answers": [
+        "capacitatea firmei de a-si achita datoriile la scadenta;",
+        "capacitatea firmei de a-si transforma activele in disponibilitati;",
+        "capacitatea firmei de a-si onora obligatiile fata de stat;",
+        "capacitatea firmei de a plati furnizorii de materiale;",
+        "capacitatea firmei de a-si onora obligatiile bancare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 57,
+      "text": "Cifra de afaceri reprezinta:",
+      "answers": [
+        "veniturile din exploatare;",
+        "suma totala a veniturilor din vanzarea marfurilor si produselor intr-o perioada determinata;",
+        "incasari din vanzari de marfuri si produse;",
+        "productia marfa vanduta si incasata din activitatea de baza si alte activitati;",
+        "productia livrata din activitatea de baza."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 58,
+      "text": "Indicele productiei exercitiului = 104%; Indicele valorii adaugate = 102%; Indicele cifrei de afaceri = 106%. Inseamna ca:",
+      "answers": [
+        "s-au redus consumurile intermediare si stocul de produse finite;",
+        "s-a redus stocul de productie in curs de executie si a crescut stocul de produse finite;",
+        "a crescut ponderea consumurilor intermediare si s-a redus stocul de produse finite de la sfarsitul perioadei;",
+        "a crescut ponderea consumurilor intermediare si s-a redus stocul de produse finite de la sfarsitul perioadei;",
+        "a crescut cifra de afaceri si s-a redus stocul de produse finite."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 59,
+      "text": "Influenta modificarii structurii productiei exercitiului asupra valorii adaugate este de „+ 10.000 lei”. Aceasta situatie semnifica:",
+      "answers": [
+        "cresterea ponderii produselor cu valoare adaugata la 1 leu productie mai mare decat media valorii adaugate la 1 leu productie pe intreprindere;",
+        "scaderea valorii adaugate pe produs;",
+        "cresterea ponderii produselor cu valoare adaugata la 1 leu productie mai mica fata de media valorii adaugate pe intreprindere;",
+        "scaderea ponderii produsului cu valoare adaugata la 1 leu productie sub media efectiva pe intreprindere;",
+        "cresterea ponderii produselor cu valoare adaugata unitara mai mica decat media valorii adaugate pe intreprindere."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 60,
+      "text": "Pe baza relatiei valoare adaugata/cifra de afaceri se determina:",
+      "answers": [
+        "contributia factorului uman la formarea cifrei de afaceri;",
+        "contributia factorului uman la formarea valorii adaugate;",
+        "gradul de folosire a capacitatii de productie;",
+        "gradul de integrare pe verticala;",
+        "gradul de valorificare a productiei fabricate."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 61,
+      "text": "Indicele productiei exercitiului (Qe) = 102%; Indicele valorii adaugate (Qa) = 105%; Indicele numarului de personal (Ns) = 98%. Rezulta:",
+      "answers": [
+        "cresterea productivitatii muncii si reducerea ponderii consumurilor intermediare (cumparatorilor);",
+        "scaderea productivitatii muncii si reducerea ponderii consumurilor intermediare;",
+        "scaderea productivitatii muncii si cresterea ponderii consumurilor intermediare;",
+        "sporirea productivitatii muncii si cresterea ponderii consumurilor intermediare;",
+        "scaderea numarului de personal si a productivitatii muncii."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 62,
+      "text": "Indicele cifrei de afaceri este de 130%, iar indicele stocurilor de produse finite 112%. Aceasta reprezinta:",
+      "answers": [
+        "cresterea stocurilor si incetinirea vitezei de rotatie a stocurilor;",
+        "reducerea volumului de activitate, fapt care genereaza sporirea stocurilor;",
+        "cresterea volumului vanzarilor prin reducerea stocurilor;",
+        "cresterea stocurilor ca urmare a supra-aprovizionarii;",
+        "cresterea stocurilor si accelerarea vitezei de rotatie a acestora."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 63,
+      "text": "Factorii directi de influenta a cheltuielilor materiale la 1000 lei cifra de afaceri in ordinea de analiza sunt:",
+      "answers": [
+        "cifra de afaceri, structura si pretul materialelor;",
+        "structura si pretul de vanzare, cheltuielile materiale pe unitate de produs;",
+        "structura si pretul de vanzare, cheltuielile materiale la 1 leu cifra de afaceri;",
+        "structura, cheltuielile materiale pe produs, pretul materialelor;",
+        "volumul productiei, costul materialelor, pretul de vanzare"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 64,
+      "text": "Influenta modificarii costurilor unitare asupra cheltuielilor la 1.000 lei cifra de afaceri fata de nivelul prevazut este „– 15 lei”. Aceasta reprezinta:",
+      "answers": [
+        "situatie pozitiva, datorita cresterii preturilor produselor fata de nivelul prevazut;",
+        "situatie negativa, datorita modificarii costurilor unitare in functie de oferta de pe piata a materiilor prime;",
+        "situatie pozitiva, datorita scaderii costurilor unitare fata de nivelul prevazut;",
+        "situatie negativa, datorita scaderii costurilor unitare la majoritatea produselor fata de nivelul prevazut;",
+        "situatie pozitiva, datorita cresterii costurilor unitare fata de nivelul prevazut."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 65,
+      "text": "Indicele cheltuielilor medii cu personalul este mai mare decat indicele productivitatii muncii. Aceasta reprezinta:",
+      "answers": [
+        "consecinte nefavorabile ale utilizarii timpului de munca;",
+        "cresterea cheltuielilor de exploatare pe seama salariilor;",
+        "cresterea cheltuielilor variabile cu salariile la 1000 lei cifra de afaceri;",
+        "ineficienta utilizarii factorului munca;",
+        "sporirea eficientei utilizarii factorului munca."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 66,
+      "text": "Indicele cheltuielilor medii cu personalul este mai mic decat indicele productivitatii muncii. Aceasta inseamna:",
+      "answers": [
+        "consecinte nefavorabile ale utilizarii timpului de munca;",
+        "cresterea cheltuielilor de exploatare pe seama salariilor;",
+        "cresterea cheltuielilor variabile cu salariile la 1000 lei cifra de afaceri;",
+        "ineficienta utilizarii factorului munca;",
+        "sporirea eficientei utilizarii factorului munca."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 67,
+      "text": "Raportul dintre capitalul permanent si activele imobilizate este supraunitar. Aceasta situatie are urmatoarea semnificatie:",
+      "answers": [
+        "un dezechilibru financiar;",
+        "o incapacitate de plata;",
+        "un risc de insolvabilitate scazut;",
+        "o capacitate de autofinantare sporita;",
+        "un fond de rulment pozitiv."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 68,
+      "text": "Rata stocurilor se calculeaza astfel:",
+      "answers": [
+        "ca raport intre stoc si pasivul total;",
+        "ca raport intre stocul productiei neterminate si activul total;",
+        "ca raport intre stocul de materii prime si activul total;",
+        "ca raport intre stoc si activul total;",
+        "ca raport intre stocul de produse finite si activul total."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 69,
+      "text": "Raportul dintre capitalul permanent si activele imobilizate este subunitar. Aceasta situatie are urmatoarea semnificatie:",
+      "answers": [
+        "o incapacitate de plata;",
+        "o capacitate de autofinantare sporita;",
+        "un risc de insolvabilitate scazut;",
+        "un fond de rulment negativ;",
+        "un dezechilibru financiar."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 70,
+      "text": "Rata stocurilor se calculeaza astfel:",
+      "answers": [
+        "ca raport intre stoc si activele circulante;",
+        "ca raport intre stoc si activul total;",
+        "ca raport intre stoc si pasivul total;",
+        "ca raport intre stocul de produse finite si activul total;",
+        "ca raport intre stocul de materii prime si activul total."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 71,
+      "text": "Ratele financiare, ca instrument de masurare a fenomenului economico-financiar privind performanta, sunt:",
+      "answers": [
+        "rate de eficienta;",
+        "rate de structura;",
+        "rate de gestiune;",
+        "rate de acoperire financiara;",
+        "rate de rotatie."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 72,
+      "text": "Rata lichiditatii imediate, cunoscuta si sub denumirea de rata capacitatii de plata imediate, masoara:",
+      "answers": [
+        "capacitatea firmei de rambursare a datoriilor, utilizand activele imobilizate;",
+        "capacitatea firmei de rambursare a datoriilor curente, utilizand disponibilitatile existente;",
+        "capacitatea firmei de rambursare a datoriilor, utilizand creantele existente;",
+        "capacitatea firmei de rambursare a datoriilor, utilizand stocurile existente;",
+        "banii din banca ai firmei."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 73,
+      "text": "Rata rentabilitatii comerciale caracterizeaza:",
+      "answers": [
+        "eficienta vanzarilor firmei, determinandu-se ca raport intre profitul obtinut si cifra de afaceri;",
+        "rezultatele obtinute de firma in comparatie cu nivelul consumurilor considerate necesare;",
+        "performantele capitalului investit in activitatea unei firme;",
+        "eficienta capitalurilor proprii ale firmei in functie de profitul net realizat;",
+        "eficienta firmelor de productie."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 74,
+      "text": "Din Situatiile financiare anuale ale firmei ABCD SRL au fost extrase informatii in baza carora s-a determinat evolutia urmatorilor indicatori: indicele datoriilor totale = 110 %, indicele activelor totale = 116 % si indicele capitalurilor permanente = 106 %. Activitatea firmei ABCD SRL este caracterizata prin:",
+      "answers": [
+        "cresterea gradului de indatorare si scaderea stabilitatii financiare;",
+        "scaderea gradului de indatorare si cresterea stabilitatii financiare;",
+        "scaderea lichiditatii la vedere si cresterea gradului de indatorare pe termen scurt;",
+        "scaderea lichiditatii imediate si cresterea gradului de indatorare pe termen lung;",
+        "nu se poate stabili situatia in care se afla firma."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 75,
+      "text": "Cresterea in anul N comparativ cu anul N-1 a activelor circulante cu 13% si a datoriilor pe termen scurt cu 7% reprezinta:",
+      "answers": [
+        "scaderea ratei lichiditatii generale;",
+        "cresterea ratei solvabilitatii patrimoniale;",
+        "cresterea gradului de indatorare a firmei;",
+        "cresterea ratei autonomiei financiare;",
+        "cresterea ratei lichiditatii curente."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 76,
+      "text": "Cresterea in anul N comparativ cu anul N-1 a activelor totale cu 14% si a datoriilor totale cu 8% semnifica:",
+      "answers": [
+        "cresterea ratei lichiditatii curente;",
+        "cresterea fondului de rulment;",
+        "cresterea necesarului de fond de rulment;",
+        "scaderea ratei lichiditatii generale;",
+        "cresterea ratei solvabilitatii generale."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 77,
+      "text": "Distribuirea de dividende asociatilor firmei Global SRL va avea ca efect:",
+      "answers": [
+        "cresterea ratei rentabilitatii financiare;",
+        "scaderea ratei rentabilitatii comerciale;",
+        "cresterea ratei rentabilitatii resurselor consumate;",
+        "cresterea excedentului brut din exploatare;",
+        "scaderea ratei rentabilitatii financiare."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 78,
+      "text": "Majorarea capitalului social al firmei Global SRL va avea ca efect:",
+      "answers": [
+        "cresterea ratei rentabilitatii financiare;",
+        "cresterea ratei lichiditatii imediate;",
+        "cresterea ratei rentabilitatii resurselor consumate;",
+        "scaderea excedentului brut din exploatare;",
+        "scaderea ratei rentabilitatii financiare."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 79,
+      "text": "Din Situatiile financiare anuale ale firmei ABCD SRL au fost extrase informatii in baza carora s-a determinat evolutia urmatorilor indicatori: indicele profitului brut – 115%, indicele profitului net – 107%, indicele activelor totale – 104%, indicele capitalurilor proprii – 111%. Activitatea firmei ABCD SRL este caracterizata prin:",
+      "answers": [
+        "cresterea ratei rentabilitatii financiare si scadererea ratei rentabilitatii economice;",
+        "cresterea ratei rentabilitatii comerciale si scadererea ratei rentabilitatii resurselor consumate;",
+        "scadererea ratei rentabilitatii comerciale si cresterea ratei rentabilitatii resurselor consumate;",
+        "scadererea ratei rentabilitatii financiare si cresterea ratei rentabilitatii economice;",
+        "scadererea ratei rentabilitatii financiare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 80,
+      "text": "Din Situatiile financiare anuale ale firmei ABCD SRL au fost extrase informatii in baza carora s-a determinat evolutia urmatorilor indicatori: indicele capitalului propriu - 104 %, indicele activelor totale = 108 % si indicele activelor imobilizate = 102 %. Activitatea firmei ABCD SRL este caracterizata prin:",
+      "answers": [
+        "cresterea ratei autonomiei globale si scaderea ponderii activelor imobilizate in total active;",
+        "scaderea ratei autonomiei globale si cresterea ponderii activelor imobilizate in total active;",
+        "scaderea ratei autonomiei globale si scaderea ponderii activelor circulante in total active",
+        "cresterea gradului de indatorare pe termen scurt si scaderea ponderii activelor circulante in total active;",
+        "mentinerea stabilitatii financiare. a"
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

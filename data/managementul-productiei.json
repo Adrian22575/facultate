@@ -1,0 +1,484 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Dintre urmatoarele elemente, unul nu sta la baza elaborarii unei strategii economice:",
+      "answers": [
+        "obiectivul;",
+        "scopul;",
+        "politicile;",
+        "aria de cuprindere;",
+        "regulile de aplicare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 2,
+      "text": "Misiunea se concretizeaza prin definirea:",
+      "answers": [
+        "tehnologiilor utilizate;",
+        "gradului de specializare a intreprinderii;",
+        "relatiilor de cooperare ale intreprinderii;",
+        "produselor care urmeaza a fi executate;",
+        "gradului de utilizare a resurselor alocate."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 3,
+      "text": "Nu este etapa in elaborarea strategiei de dezvoltare:",
+      "answers": [
+        "formularea misiunii;",
+        "stabilirea obiectivelor si a optiunilor strategice;",
+        "fezabilitatea;",
+        "evidentierea punctelor slabe si forte;",
+        "formularea strategiei de dezvoltare."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 4,
+      "text": "In functie de continutul activitatii de planificare la nivel de intreprindere, exista:",
+      "answers": [
+        "planificare tehnico-economica;",
+        "planificare de perspectiva;",
+        "planificare operativa;",
+        "planificare formala;",
+        "planificare informala."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 5,
+      "text": "Nu este stoc de productie neterminata:",
+      "answers": [
+        "stocul de ciclu;",
+        "stocul normal;",
+        "stocul curent;",
+        "stocul de circulatie;",
+        "stocul de siguranta."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 6,
+      "text": "Poate fi criteriu de alegere a verigii conducatoare:",
+      "answers": [
+        "suprafata de productie a verigii de productie;",
+        "numarul de utilaje existente in cadrul acesteia;",
+        "ponderea manoperei verigii de productie in total manopera a intreprinderii;",
+        "gradul de specializare a verigii de productie;",
+        "volumul productiei fabricate in cadrul verigii de productie."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 7,
+      "text": "Nu este etapa specifica a activitatii de asigurare a calitatii:",
+      "answers": [
+        "asigurarea calitatii prin control;",
+        "asigurarea calitatii prin organizare structurala;",
+        "asigurarea calitatii prin metode statistica;",
+        "asigurarea calitatii prin motivarea personalului;",
+        "concepte integratoare de asigurarea calitatii."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 8,
+      "text": "Nu sunt cheltuieli comune de sectie:",
+      "answers": [
+        "cheltuielile cu intretinerea si functionarea utilajelor;",
+        "cheltuielile general de sectie;",
+        "cheltuielile de interes general;",
+        "cheltuielile administrativ-gospodaresti;",
+        "cheltuielile neproductive."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 9,
+      "text": "Nu este efect economic in urma aplicarii unei masuri tehnico- organizatorice:",
+      "answers": [
+        "reducerea cheltuielilor materiale;",
+        "economiile la fondul de salarii;",
+        "reducerea numarului de schimburi lucratoare;",
+        "reducerea cheltuielilor indirecte;",
+        "cresterea volumului de productie."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 10,
+      "text": "Nu este atributie a compartimentului CTC:",
+      "answers": [
+        "coordonarea analizelor de calitate;",
+        "pregatirea produselor in vederea certificarii;",
+        "coordonarea auditurilor interne;",
+        "coordonarea auditurilor externe;",
+        "coordonarea activitatilor de instruire in domeniul calitatii."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 11,
+      "text": "Graficul de analiza detailata se intocmeste pentru urmarirea:",
+      "answers": [
+        "unui produs sau piesa;",
+        "a unui muncitor;",
+        "a unui utilaj;",
+        "a unei suprafete de productie;",
+        "niciuna din variante."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 12,
+      "text": "Nu este mod de abordare a procesului de conducere strategica:",
+      "answers": [
+        "modul de abordare antreprenorial;",
+        "modul de abordare anticipativ;",
+        "modul de abordare adaptiv;",
+        "modul de abordare planificat;",
+        "niciuna din variante."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 13,
+      "text": "In functie de nivelul ierarhic la care se executa activitatea de planificare, aceasta poate fi:",
+      "answers": [
+        "planificare formala;",
+        "planificare de perspectiva;",
+        "planificare operativa;",
+        "planificare de corporatie;",
+        "planificare informala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 14,
+      "text": "Nu sunt unitati de masura a volumului productiei:",
+      "answers": [
+        "unitatile naturale;",
+        "unitatile conventionale-constante;",
+        "unitatile conventional-naturale;",
+        "unitatile valorice;",
+        "unitatile de timp de munca."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 15,
+      "text": "Cheltuielile materiale pentru calculul valorii adaugate nu includ:",
+      "answers": [
+        "valoarea pieselor si subansamblelor din afara;",
+        "valoarea combustibilului din afara;",
+        "cheltuieli anticipate;",
+        "valoarea cheltuielilor de interes general;",
+        "toate variantele."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 16,
+      "text": "Numarul de cod al SDV-urilor este format din:",
+      "answers": [
+        "4 cifre;",
+        "6 cifre;",
+        "8 cifre;",
+        "10 cifre;",
+        "12 cifre."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 17,
+      "text": "Din grupa posibilitatilor extensive de crestere a gradului de utilizare a capacitatii de productie fac parte:",
+      "answers": [
+        "folosirea unor metode moderne de organizare a productiei;",
+        "marirea numarului de schimburi;",
+        "reducerea rebuturilor;",
+        "cresterea calificarii muncitorilor;",
+        "automatizarea si modernizarea proceselor de productie."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 18,
+      "text": "Din grupa cheltuielilor materiale nu fac parte:",
+      "answers": [
+        "combustibilul (din afara);",
+        "apa (din afara);",
+        "cota de productie sociala;",
+        "energia din afara;",
+        "amortizarea mijloacelor fixe."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 19,
+      "text": "Nu este indicator de reducere a costului de productie marfa comparabila:",
+      "answers": [
+        "reducerea (cresterea) costului complet pe fiecare fel de produs;",
+        "reducerea (cresterea) costului pe total productie marfa comparabila reducerea (cresterea) costului tehnologic total;",
+        "reducerea (cresterea) relativa a costului complet pe fiecare produs;",
+        "reducerea (cresterea) relativa a costului complet al productiei marfa comparabila;",
+        "toate variantele."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 20,
+      "text": "Marimea cheltuielilor materiale nu este influentata de:",
+      "answers": [
+        "felul produsului;",
+        "cantitatea de produse;",
+        "norma de consum;",
+        "amortizarea utilajelor;",
+        "pretul unitar al materialelor."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 21,
+      "text": "Intreprinderea reprezinta:",
+      "answers": [
+        "veriga conductoare a economiei;",
+        "veriga de baza a economiei;",
+        "veriga secundara a economiei;",
+        "veriga prestatoare de servicii;",
+        "veriga comerciala."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 22,
+      "text": "In functie de raspunderea asociatiilor intreprinderii pot fi:",
+      "answers": [
+        "SNC;",
+        "SCS/SCA;",
+        "SA/SRL;",
+        "Nici un raspuns corect;",
+        "a+b+c."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 23,
+      "text": "Etapele proiectarii si infiintarii intreprinderii:",
+      "answers": [
+        "studierea amplasamentului si executia proiectului de ansamblu;",
+        "elaborarea proiectului de executie;",
+        "construirea propriu-zisa;",
+        "a+b;",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 24,
+      "text": "Principiile organizarii productiei sunt:",
+      "answers": [
+        "principiul proportionalitatii si principiul ritmicitatii;",
+        "principiul paralelismului si principiul liniei drepte;",
+        "principiul continuitatii;",
+        "a+b;",
+        "a+b+c."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 25,
+      "text": "In functie de natura lor procesele de productie pot fi:",
+      "answers": [
+        "procese de fabricatie a bunurilor materiale si de prestari servicii;",
+        "procese de munca;",
+        "procese chimice;",
+        "procese naturale;",
+        "procese pe baza de comanda."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 26,
+      "text": "Productia hibrida cuprinde:",
+      "answers": [
+        "productia de imbracaminte;",
+        "productia artizanala;",
+        "procese industriale si procese naturale;",
+        "procese metalurgice;",
+        "procese pe linii de fabricatie."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 27,
+      "text": "Simbolul “D” reprezinta:",
+      "answers": [
+        "operatiunea de control;",
+        "operatiunea de asteptare;",
+        "operatiunea de depozitare;",
+        "operatiunea de imobilizare corporala;",
+        "operatiunea de imobilizare necorporala."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 28,
+      "text": "Structura organizatorica a unei intreprinderi are 2 componente:",
+      "answers": [
+        "structura tehnologica si structura omogena;",
+        "structura macroeconomica si structura microeconomica;",
+        "structura economica si structura metalurgica;",
+        "structura de management si structura de productie;",
+        "structura auxiliara si de inovare."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 29,
+      "text": "Tactul reprezinta:",
+      "answers": [
+        "intervalul de timp la care linia de fabricatie livreaza un produs;",
+        "intervalul de timp la care linia de fabricatie livreaza 2 produse;",
+        "intervalul de timp la care linia de fabricatie livreaza 3 produse;",
+        "intervalul de timp la care linia de fabricatie livreaza 4 produse;",
+        "intervalul de timp la care linia de fabricatie livreaza 5 produse."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 30,
+      "text": "Legatura reprezinta:",
+      "answers": [
+        "metoda gamelor fictive;",
+        "metoda simularilor;",
+        "metoda machetelor bidimensionala;",
+        "diagrama cu fire;",
+        "deplasarea unei piese intr-o veriga."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 31,
+      "text": "Etapele necesare pentru stabilirea variantei optime de amplasare sunt:",
+      "answers": [
+        "evidentierea verigilor la fiecare proces tehnologic;",
+        "centralizarea datelor referitoare la verigi intr-o matrice;",
+        "transpunerea informatiilor la un nivel superior;",
+        "a+b;",
+        "a+b+c."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 32,
+      "text": "Având in vedere modalitatea de defectare, aceasta poate fi:",
+      "answers": [
+        "omogena;",
+        "partiala si totala;",
+        "neomogena;",
+        "vectoriala;",
+        "tangentiala."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 33,
+      "text": "In raport cu nivelul de adaptare si orizontul de timp, planificarea poate fi:",
+      "answers": [
+        "strategica;",
+        "tactica;",
+        "operationala;",
+        "toate raspunsurile corecte;",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 34,
+      "text": "Decizia, parte componenta a conducerii stiintifice, se reflecta in:",
+      "answers": [
+        "planul orizontal;",
+        "planul vectorial;",
+        "planul de actiune;",
+        "planul vertical;",
+        "planul agregat."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 35,
+      "text": "Un graf decizional se deosebeste de un graf obisnuit utilizat in ADC prin existenta:",
+      "answers": [
+        "nodurilor verticale;",
+        "nodurilor decizionale;",
+        "nodurile contractuale;",
+        "nodurile implementate;",
+        "noduri aleatoare."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 36,
+      "text": "Dintre principalele tehnici de planificare operationala amintim:",
+      "answers": [
+        "metoda graficului GANTT;",
+        "planificarea in retea si metoda ADC;",
+        "metoda drumului critic;",
+        "metoda PERT;",
+        "toate cele de mai sus."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 37,
+      "text": "Programarea productiei reprezinta:",
+      "answers": [
+        "strategia productiei;",
+        "complexitatea productiei;",
+        "repartizarea in timp si spatiu a sarcinilor productiei;",
+        "agregarea productiei;",
+        "schimbarea productiei."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 38,
+      "text": "Productia se obtine in special in perioada:",
+      "answers": [
+        "timpului exponential;",
+        "timpului de baza;",
+        "timpului calendaristic;",
+        "timpului hipocrat;",
+        "timpului calafat."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 39,
+      "text": "Lotul optim este lotul de fabricatie calculat pe baza:",
+      "answers": [
+        "obstructionarii cheltuielilor de productie;",
+        "absolutizarii cheltuielilor de productie;",
+        "maximizarii cheltuielilor de productie;",
+        "minimizarii cheltuielilor de productie;",
+        "dezvoltarii cheltuielilor de productie."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 40,
+      "text": "Diagrama Gozinto se foloseste la:",
+      "answers": [
+        "ordonantarea productiei;",
+        "angajarea reala;",
+        "graficul modular;",
+        "corelarea agregatelor;",
+        "interconectarea retelelor."
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

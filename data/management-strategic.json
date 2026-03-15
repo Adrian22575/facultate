@@ -1,0 +1,484 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "text": "Principalele teorii care au marcat etapele dezvoltarii managementului strategic au fost:",
+      "answers": [
+        "Teoria sistemica;",
+        "Teoria clasica;",
+        "Teoria avantajului comparativ;",
+        "Teoria cresterii si teoria portofoliului;",
+        "Teoria deciziei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 2,
+      "text": "B. Strategia de diferentiere are in vedere:",
+      "answers": [
+        "Obtinerea unui avantaj competitional prin crearea unui produs ce este perceput de catre consumatori ca fiind unic;",
+        "Oferirea unui cost mic si in acelasi timp, a unei calitatile apropiata de cea a mediei de pe piata;",
+        "Coordonarea competentelor si a mijloacelor necesare pentru evitarea riscului;",
+        "Ocuparea unei pozitii de neinlocuit pe un anumit segment;",
+        "Realizarea unor noi piete de desfacere."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "text": "Avantajele oferite firmei de managementului strategic sunt:",
+      "answers": [
+        "Asigura unitatea de viziune a actionarilor;",
+        "Asigura un cadru legal deciziilor managerilor;",
+        "Furnizeaza un cadru stiintific deciziilor managerilor;",
+        "Contribuie la cresterea profitului actionarilor;",
+        "Constituie forma de conducere cea mai bine adaptata pentru anticiparea problemelor viitoare."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 4,
+      "text": "Elementele de care trebuie sa tina seama un proces strategic sunt:",
+      "answers": [
+        "Marimea firmei;",
+        "Competenta tehnica, tehnologica a intreprinderii si modul de organizare a acesteia;",
+        "Sistemul de salarizare a salariatilor;",
+        "Domeniul de actiune a firmei;",
+        "Politica de perfectionare profesionala."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 5,
+      "text": "Etapa comuna a modelelor lui: W. Glueck, A. Sharplin, L.Rue si Ph.Holland si a lui A. Thompson Jr. si A. Strickland III este:",
+      "answers": [
+        "Aplicarea strategiei;",
+        "Stabilirea obiectivelor strategice;",
+        "Analiza mediului intern si extern firmei;",
+        "Evaluarea performantelor;",
+        "Compararea alternativelor strategice."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 6,
+      "text": "Matricea marii strategii evalueaza:",
+      "answers": [
+        "Factorii externi si interni;",
+        "Aria de desfacere a firmei;",
+        "Nivelul costurilor;",
+        "Doua dimensiuni: pozitia competitiva si cresterea pietei;",
+        "Gradul de inovare tehnologica a firmei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 7,
+      "text": "Realizarea unei strategii de crestere inseamna:",
+      "answers": [
+        "Integrarea vertical;",
+        "Dizolvarea firmei prin absorbtie;",
+        "Adresarea produselor catre clientii traditionali;",
+        "Sporirea volumului vânzarilor;",
+        "Integrarea orizontala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 8,
+      "text": "Strategiile de produs se refera la:",
+      "answers": [
+        "Satisfacerea cerintelor pietei;",
+        "Introducerea celor mai noi tehnologii de productie si desfacere;",
+        "Cresterea volumului activitatii;",
+        "Diversificarea productiei;",
+        "Concentrarea productiei."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 9,
+      "text": "Determinantii endogeni sunt:",
+      "answers": [
+        "Ofertantii;",
+        "Firmele juridice;",
+        "Sectorul de activitate;",
+        "Dimensiunea firmei;",
+        "Cultura economico-sociala."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 10,
+      "text": "Politicile se caracterizeaza prin:",
+      "answers": [
+        "Coerenta;",
+        "Realism;",
+        "Complementaritate;",
+        "Detaliere;",
+        "Eficienta."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 11,
+      "text": "Principalelor trasaturi ale managementului strategic asa cum era el cunoscut pâna in anii 1970 regasite in lucrarea lui Ellen-Earle Chaffee din anul 1985 sunt:",
+      "answers": [
+        "Dinamism;",
+        "Imbina gândirea conceptuala cu cea analitica;",
+        "Veridicitate;",
+        "Obiectivitate;",
+        "Adaptare cerintele clientilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 12,
+      "text": "Determinantii exogeni sunt:",
+      "answers": [
+        "Factorii demografici;",
+        "Grupurile de salariati;",
+        "Organizatii de mediu;",
+        "Factorii politici;",
+        "Piata de capital."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 13,
+      "text": "Strategiile defensive (de restrângere) se refera la:",
+      "answers": [
+        "Fuziune-sciziune;",
+        "Absorbtie;",
+        "Indatorare publica;",
+        "Imbunatatirea calitatii produselor;",
+        "Deposedare partiala de active."
+      ],
+      "correctIndex": 4
+    },
+    {
+      "id": 14,
+      "text": "Managementul strategic ca proces presupune:",
+      "answers": [
+        "Abordarea factorilor de mediu;",
+        "Confirmarea gap-ului dintre obiective;",
+        "Validarea deciziei strategice a firmei;",
+        "Elaborarea unor strategii riguroase si implementarea acestora;",
+        "Economie de scara."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 15,
+      "text": "Elementele esentiale in practica managementului japonez sunt:",
+      "answers": [
+        "Cunoaste mediul;",
+        "Fa cum este mai bine;",
+        "Orientarea catre valori a conducerii de vârf a firmei;",
+        "Realizarea de studii si analize;",
+        "Conducerea dictatoriala."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 16,
+      "text": "Ipotezele pe care se bazeaza managementul strategic din perspectiva sociologica sunt:",
+      "answers": [
+        "Rationalitate;",
+        "Maximizare profit;",
+        "Minimizare costuri;",
+        "Comportament de satisfactie;",
+        "Valorificarea resurselor umane."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 17,
+      "text": "Procesul strategic depinde de:",
+      "answers": [
+        "Vointa actionarilor;",
+        "Relatiile existente intre strategia actuala si cea dorita pentru viitor;",
+        "Evolutia mediului de afaceri;",
+        "Marimea pietei;",
+        "Cerintele clientilor."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 18,
+      "text": "Dimensiunea economica a managementului strategi se articuleaza in jurul urmatoarelor intrebari:",
+      "answers": [
+        "Care este situatia actuala a firmei ?;",
+        "Ce pot acestia face ?;",
+        "Ce se poate face cu sau impotriva lor ?;",
+        "Ce stil de motivare ?;",
+        "Care este situatia mediului?."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 19,
+      "text": "Strategiile de gasire a unei brese ecologice se refera la:",
+      "answers": [
+        "Strategia reducerii consumurilor;",
+        "Strategia protectiei mediului;",
+        "Strategia reducerii noxelor;",
+        "Strategia barierei;",
+        "Strategia eficientizarii energetice."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 20,
+      "text": "Cele patru abordari ale ale managementului strategic ale lui Whittington (2001) sunt:",
+      "answers": [
+        "Evolutionista;",
+        "Progresista;",
+        "Clasica;",
+        "Empirica;",
+        "Sociala."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 21,
+      "text": "Dimensiunea organizationala a managementului strategic se articuleaza in jurul urmatoarelor intrebari:",
+      "answers": [
+        "Ce vrea firma ?;",
+        "Ce se decide a face ?;",
+        "Care sunt stakeholderii in prezent ?;",
+        "Ce proces de control ?;",
+        "Ce va face managerul ?."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 22,
+      "text": "Procesul socio-politic (dimensiunea umana) al managementului strategic este concentrat in jurul urmatoarelor intrebari:",
+      "answers": [
+        "Ce proceduri de control ?;",
+        "Ce influenteaza actorii ?;",
+        "Ce procedure de evaluare ?;",
+        "Cum abordezi riscul ?;",
+        "Cine sunt ”actorii ?”."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 23,
+      "text": "Abordarea antreprenoriala a lui Mintzberg implica:",
+      "answers": [
+        "Concentrarea autoritatii in mâinile managerului;",
+        "Elaborarea planului firmei;",
+        "Cresterea competitivitatii firmei;",
+        "Cercetarea oportunitatilor pietei si posibilitatile firmei de a le exploata;",
+        "Stabilirea misiunii firmei."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 24,
+      "text": "In cadrul matricei SPACE pozitia strategica totala este data de:",
+      "answers": [
+        "Alegerea strategiei;",
+        "Avantajele financiare, avantajele competitive,stabilitatea mediului si punctele tari ale industriei;",
+        "Pozitia strategica externa;",
+        "Pozitia defensiva;",
+        "Pozitia strategica interna."
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 25,
+      "text": "Care din aceste strategii este o strategie de piata?",
+      "answers": [
+        "Concentrarea pe gasirea unor nise de piata;",
+        "Dezvoltarea de noi cai de comunicatie;",
+        "Cresterea nivelului salariilor angajatilor;",
+        "Mentinerea numarului de angajati;",
+        "Dezvoltarea de noi compartimente la nivelul firmei."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 26,
+      "text": "Obiectivele firmei pot fi:",
+      "answers": [
+        "Obiective fezabile;",
+        "Obiective durabile;",
+        "Obiective divizionale;",
+        "Obiective calitative;",
+        "Obiective subiective."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 27,
+      "text": "Tehnicile cantitative utilizate in planificarea strategica sunt:",
+      "answers": [
+        "Analiza SWOT;",
+        "Analiza BPEST;",
+        "Analiza decizionala;",
+        "Planificarea bugetului;",
+        "Tehnica Delphi."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 28,
+      "text": "Managementul strategic din perspectiva economica lucreaza cu urmatoarele concepte:",
+      "answers": [
+        "Estimari viitoare;",
+        "Maximizarea profitului;",
+        "Organizare piramidala;",
+        "Colaborare si armonie;",
+        "Economie de piata."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 29,
+      "text": "Dimensiunea umana a managementului strategi se concentreaza in jurul urmatoarelor intrebari:",
+      "answers": [
+        "Ce vrea sa faca ?;",
+        "Ce proces de luare a deciziilor ?;",
+        "Ce va face ?;",
+        "Ce se decide a face ?;",
+        "Ce stil de motivare ?."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 30,
+      "text": "Tehnicile calitative utilizate in planificarea strategica sunt:",
+      "answers": [
+        "Analiza de tip PIMS;",
+        "Simple proiectii calitative;",
+        "Analiza indicatorilor de tip raport;",
+        "Tehnici Delphi;",
+        "Anchete."
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 31,
+      "text": "Strategia este definita drept:",
+      "answers": [
+        "ansamblul obiectivelor majore ale organizatiei pe termen lung, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei;",
+        "ansamblul obiectivelor majore ale organizatiei pe termen scurt, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei;",
+        "ansamblul obiectivelor individuale ale resurselor umane pe termen lung, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei;",
+        "ansamblul obiectivelor individuale ale resurselor umane pe termen scurt, principalele modalitati de realizare impreuna cu resursele alocate, in vederea obtinerii avantajului competitiv potrivit misiunii organizatiei;",
+        "nici un rapuns correct."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 32,
+      "text": "Avantajul competitiv se bazeaza in prezent pe investitia in factori avansati de productie, dintre care ii retinem pe urmatorii:",
+      "answers": [
+        "abilitati deosebite ale resursei lunare",
+        "tehnologia de reciclare",
+        "sisteme avansate de management",
+        "sistemele primare de transport si telecomunicatii",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": 33,
+      "text": "Managementul strategic se refera la:",
+      "answers": [
+        "procesul prin care managerii stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales;",
+        "procesul prin care angajatii stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales;",
+        "procesul prin care furnizorii firmei stabilesc directia de evolutie pe termen scurt a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales;",
+        ") procesul prin care angajatii stabilesc directia de evolutie pe termen lung a organizatiei, stabilesc obiectivele de performanta specifice, elaboreaza strategii pentru asigurarea atingerii acestor obiective – luând in considerare variate circumstante interne si externe – si intreprind realizarea planului de decizii si de actiuni ales;",
+        "nici un raspuns corect"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 34,
+      "text": "Principalele avantajele de natura economica urmarite cu prioritate prin practicarea managementului strategic sunt: 1) concentrarea eforturilor salariatilor in scopul realizarii obiectivelor personale 2) consecventa actiunilor managementului si a celorlalti salariati ai organizatiei in vederea realizarii strategiei propuse 3) asigurarea inflexibilitatii organizationale 4) Stabilirea directiei de actiune a firmei",
+      "answers": [
+        "1+2",
+        "2+3",
+        "3+4",
+        "2+4",
+        "1+3"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 35,
+      "text": "Procesul de decizie strategica contine trei etape esentiale (conform Modelului lui S. Oréal):",
+      "answers": [
+        "alegerea obiectivelor strategice pe care le va urmari firma",
+        "formularea unei strategii locale a firmei pentru a le putea realiza",
+        "alegerea strategiilor functionale, in scopul administrarii necorespunzatoare a dezvoltarii portofoliului de activitati din firma",
+        "alegerea obiectivelor individuale pe care le va urmari firma",
+        "nici un raspuns corect."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 36,
+      "text": "Care din urmatoarele combinatii reprezinta etape ce se afla la baza modelului dinamic, conceput pentru procesul strategic desfasurat in firmele românesti: 1) identificarea si definirea problemei decizionale 2) precizarea obiectivului decizional si stabilirea criteriilor decizionale 3) stabilirea alternativelor sau variantelor decizionale 4) adoptarea variantei decizionale considerata cea mai buna 5) aplicarea deciziei si evaluarea rezultatelor aplicarii deciziei",
+      "answers": [
+        "1+2+3",
+        "3+4+5",
+        "1+4+5",
+        "2+4+5",
+        "1+2+2+4"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": 37,
+      "text": "Planificarea strategica este necesara, potrivit lui H. Mintzberg din mai multe considerente:",
+      "answers": [
+        "organizatiile trebuie sa planifice pentru a-si coordona oamenii, intrucât planurile si planificarea pot servi ca mecanisme importante pentru a reuni activitatile disparate",
+        "organizatiile trebuie sa planifice pentru a se asigura ca viitorul este corect inteles si luat in considerare",
+        "organizatiile trebuie sa planifice pentru a fi irationale, adica adaptate cerintelor pietei si conjuncturii economice",
+        ") organizatiile trebuie sa posede drept de vot in Consiliul de Administratie",
+        "nici un raspuns corect"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 38,
+      "text": "Reusita apelarii la modelarea managerial este conditionata de cunoasterea mai multor factori, in functie de care se decide asupra modelului ales. Printre cei mai importanti sunt urmatorii:",
+      "answers": [
+        "managementul vânzarii, un factor care poate avea o influenta pozitiva (dat fiind faptul ca acesta cunoaste bine “nevoile” firmei in materie de strategie), dar si negativa (daca nu este bine informat in acest domeniu)",
+        "misiunea firmei, stabilita de catre managementul sau sau de catre proprietari sau actionari, poate reprezenta un factor pozitiv, favorabil pentru alegerea celui mai adecvat model strategic decizional sau de planificare strategica",
+        "cultura, locala a regiunii care poate avea, in functie de gradul de dezvoltare si de integrare a modelarii culturii manageriale, o influenta pozitiva sau negative",
+        "managementul aprovizionarii",
+        "politica in domeniul managementului resurselor umane, stabilita de catre managementul sau sau de catre proprietari sau actionari, poate reprezenta un factor pozitiv"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": 39,
+      "text": "Cauzele trecerii de la amatorism, bazat exclusiv pe intuitie, fler, talent la un management profesionist, competent, adica una dintre cele mai actuale si complexe modificari survenite in ultimele doua decenii pe plan mondial in domeniul managementului, sunt: 1) complexitatea crescânda a activitatilor economice 2) interdependentele cultural manifestate la scara mondiala 3) dinamica nemaiintâlnita a evolutiilor din cultura 4) evolutiile recente din domeniul managementului stiintific",
+      "answers": [
+        "1+2",
+        "2+3",
+        "3+4",
+        "1+3",
+        "1+2+3+4"
+      ],
+      "correctIndex": 3
+    },
+    {
+      "id": 40,
+      "text": "Avantajele utilizarii managementului strategic la nivel comportamental sunt:",
+      "answers": [
+        "motivarea personalului de management si de executie este putin corelata cu nivelul de participare a acestuia la stabilirea obiectivelor organizatiei si la realizarea lor",
+        "cele mai bune decizii pentru organizatie sunt cele care rezulta din practicarea consecventa a managementului strategic",
+        "anticiparea de catre managementul firmei si maximizarea posibilelor consecinte negative ale nerespectarii termenelor stabilite pentru realizarea unor obiective cuprinse in strategie",
+        "golurile si suprapunerile in activitati intre diversi membri ai grupului sau intre grupuri pot fi crescute in cadrul participarii la procesul de formulare a strategiei prin clarificarea asemanarii rolurilor",
+        "nici un raspuns corect"
+      ],
+      "correctIndex": 1
+    }
+  ]
+}
