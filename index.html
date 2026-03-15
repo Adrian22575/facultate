@@ -5,50 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meniu Teste Facultate</title>
 
-  <!-- Font Nunito -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- CSS extern (pui aici tot ce era în <style>) -->
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-
-<!-- clasa asta păstrează exact centrările din pagina ta -->
 <body class="menu-page">
   <div class="menu-container">
     <h1>Teste Facultate</h1>
-    <p class="description">Alege materia la care vrei să te testezi:</p>
-    <ul class="test-list" id="subjectsList"></ul>
+    <p class="description">Alege modul în care vrei să înveți:</p>
+
+    <ul class="test-list">
+      <li>
+        <a class="test-link" href="materii.html">Teste pe materii</a>
+      </li>
+      <li>
+        <a class="test-link" href="licenta-exam.html">Simulare Examen Licență</a>
+      </li>
+    </ul>
   </div>
-
-  <script>
-    async function loadSubjects() {
-      const res = await fetch("data/subjects.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("Nu pot încărca subjects.json");
-
-      const data = await res.json();
-      const list = document.getElementById("subjectsList");
-      list.innerHTML = "";
-
-      data.subjects.forEach(s => {
-  const li = document.createElement("li");
-
-  if (s.id === "licenta-exam") {
-    li.innerHTML = `<a class="test-link" href="licenta-exam.html">${s.title}</a>`;
-  } else {
-    li.innerHTML = `<a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">${s.title}</a>`;
-  }
-
-  list.appendChild(li);
-});
-    }
-
-    loadSubjects().catch(err => {
-      console.error(err);
-      document.getElementById("subjectsList").innerHTML =
-        `<li style="color:#b00020;">Eroare la încărcarea materiilor. Verifică data/subjects.json</li>`;
-    });
-  </script>
 </body>
 </html>
