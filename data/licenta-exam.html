@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examen Licență – Toate grilele</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1250b1;
+      --primary-dark: #0c3879;
+      --bg: #f7f9fc;
+      --white: #fff;
+      --good: #1f8b4c;
+      --bad: #c62828;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: #222;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+      padding: 28px;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: #444;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    button, .btn-link {
+      border: none;
+      background: var(--primary);
+      color: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    button:hover, .btn-link:hover {
+      background: var(--primary-dark);
+    }
+
+    .secondary {
+      background: #6b7280;
+    }
+
+    .secondary:hover {
+      background: #4b5563;
+    }
+
+    .question {
+      margin: 24px 0;
+      padding: 18px;
+      border: 1px solid #e7ebf0;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .question-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .meta {
+      font-size: 0.92rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .answers label {
+      display: block;
+      margin-bottom: 8px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #f8fafc;
+      cursor: pointer;
+    }
+
+    .answers label:hover {
+      background: #eef4ff;
+    }
+
+    .answers input {
+      margin-right: 10px;
+    }
+
+    .result-box {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+    }
+
+    .correct {
+      color: var(--good);
+      font-weight: 700;
+    }
+
+    .wrong {
+      color: var(--bad);
+      font-weight: 700;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #loading {
+      margin-top: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="btn-link secondary">Înapoi la meniu</a>
+
+    <h1>Examen Licență – Toate grilele</h1>
+    <p>Pagina încarcă toate întrebările din toate fișierele JSON și generează un test mare, aleatoriu.</p>
+    <p id="summary">Se încarcă datele...</p>
+
+    <div class="top-actions">
+      <button id="startBtn">Generează test</button>
+      <button id="submitBtn" class="hidden">Vezi rezultatul</button>
+      <button id="restartBtn" class="hidden secondary">Generează alt test</button>
+    </div>
+
+    <div id="loading">Se citesc fișierele JSON...</div>
+    <div id="quizContainer"></div>
+    <div id="resultContainer"></div>
+  </div>
+
+  <script src="js/licenta-exam.js"></script>
+</body>
+</html>
