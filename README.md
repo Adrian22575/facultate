@@ -52,4 +52,4 @@ Notă:
 
 ## Context pentru agenți AI
 - Context și reguli de mentenanță: `docs/AGENT_CONTEXT.md`.
-- Istoric schimbări relevante pentru agenți: `docs/AGENT_CHANGELOG.md`.
+- Istoric schimbări relevante pentru agenți: `docs/agent_changelog.md`.

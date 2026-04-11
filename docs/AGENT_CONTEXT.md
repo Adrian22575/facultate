@@ -24,4 +24,4 @@ Aplicație web statică pentru învățare și testare la materii de facultate (
 - [ ] Dacă ai introdus pattern reutilizabil, adaugă-l în `assets/common.js`.
 - [ ] Dacă ai schimbat UX pe mobil, verifică `@media (max-width: 600px)`.
 - [ ] Dacă ai schimbat structura paginilor, actualizează secțiunea „Arhitectură rapidă” din acest fișier.
-- [ ] Dacă ai schimbat fluxuri importante, adaugă notă în `docs/AGENT_CHANGELOG.md`.
+- [ ] Dacă ai schimbat fluxuri importante, adaugă notă în `docs/agent_changelog.md`.
