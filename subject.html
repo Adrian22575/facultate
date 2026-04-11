@@ -21,22 +21,16 @@
     <div id="donation"></div>
   </div>
 
+  <script src="assets/common.js"></script>
   <script>
-    function getParam(name) {
-      return new URLSearchParams(location.search).get(name);
-    }
-
     async function init() {
-      const subjectId = getParam("subject");
+      const subjectId = AppUtils.getParam("subject");
       if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
 
       // reține ultima materie (util pentru back)
       localStorage.setItem("lastSubjectId", subjectId);
 
-      const res = await fetch("data/subjects.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("Nu pot încărca data/subjects.json");
-
-      const data = await res.json();
+      const data = await AppUtils.fetchJSON("data/subjects.json");
       const subject = (data.subjects || []).find(s => s.id === subjectId);
       if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
 
