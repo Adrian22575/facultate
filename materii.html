@@ -17,21 +17,43 @@
 
     <h1>Teste pe materii</h1>
     <p class="description">Alege materia la care vrei să te testezi:</p>
+    <input id="subjectSearch" class="input-search" type="search" placeholder="Caută materia..." autocomplete="off">
+    <span id="subjectCount" class="subject-count">Se încarcă...</span>
 
     <ul class="test-list" id="subjectsList"></ul>
   </div>
 
   <script src="assets/common.js"></script>
   <script>
-    async function loadSubjects() {
-      const data = await AppUtils.fetchJSON("data/subjects.json");
-      const list = document.getElementById("subjectsList");
-      list.innerHTML = "";
+    let allSubjects = [];
 
-      data.subjects.forEach(s => {
+    function renderSubjects(subjects) {
+      const list = document.getElementById("subjectsList");
+      const count = document.getElementById("subjectCount");
+      list.innerHTML = "";
+      count.textContent = `${subjects.length} materii afișate`;
+
+      if (!subjects.length) {
+        list.innerHTML = `<li style="color:#5e6b80;">Nu am găsit rezultate pentru căutarea ta.</li>`;
+        return;
+      }
+
+      subjects.forEach(s => {
         const li = document.createElement("li");
         li.innerHTML = `<a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">${s.title}</a>`;
         list.appendChild(li);
+      });
+    }
+
+    async function loadSubjects() {
+      const data = await AppUtils.fetchJSON("data/subjects.json");
+      allSubjects = [...(data.subjects || [])].sort((a, b) => a.title.localeCompare(b.title, "ro"));
+      renderSubjects(allSubjects);
+
+      document.getElementById("subjectSearch").addEventListener("input", (event) => {
+        const term = event.target.value.trim().toLowerCase();
+        const filtered = allSubjects.filter((subject) => subject.title.toLowerCase().includes(term));
+        renderSubjects(filtered);
       });
     }
 
@@ -39,6 +61,7 @@
       console.error(err);
       document.getElementById("subjectsList").innerHTML =
         `<li style="color:#b00020;">Eroare la încărcarea materiilor. Verifică data/subjects.json</li>`;
+      document.getElementById("subjectCount").textContent = "Eroare la încărcare";
     });
   </script>
 </body>
