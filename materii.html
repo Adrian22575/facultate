@@ -21,12 +21,10 @@
     <ul class="test-list" id="subjectsList"></ul>
   </div>
 
+  <script src="assets/common.js"></script>
   <script>
     async function loadSubjects() {
-      const res = await fetch("data/subjects.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("Nu pot încărca subjects.json");
-
-      const data = await res.json();
+      const data = await AppUtils.fetchJSON("data/subjects.json");
       const list = document.getElementById("subjectsList");
       list.innerHTML = "";
 
