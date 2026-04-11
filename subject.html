@@ -4,37 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Materia</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
-  <div class="container">
-    <a class="btn-back" href="index.html">Înapoi la meniu</a>
-
-    <h1 id="pageTitle">Materia</h1>
-    <p class="description" style="text-align:center;">Alege modul:</p>
-
-    <div class="mode-grid" aria-label="Descriere moduri">
-      <div class="mode-card">
-        <h3>🧩 Modul Interactiv</h3>
-        <p>Parcurgi întrebările una câte una și primești feedback instant.</p>
+<body class="app-page">
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-header-row">
+        <a class="btn-back" href="materii.html">Înapoi la materii</a>
+        <span class="app-kicker">Alege modul</span>
       </div>
-      <div class="mode-card">
-        <h3>📖 Studiază</h3>
-        <p>Vezi toate întrebările și răspunsurile corecte într-un format de recapitulare.</p>
-      </div>
-      <div class="mode-card">
-        <h3>🎯 Test</h3>
-        <p>Configurezi numărul de întrebări și dificultatea, apoi vezi scorul final.</p>
-      </div>
-    </div>
+      <h1 class="page-title" id="pageTitle">Materia</h1>
+      <p class="app-subtitle">Alege cum vrei să lucrezi materia acum.</p>
+    </header>
 
-    <div class="menu-buttons" id="modeLinks"></div>
-    <div id="donation"></div>
-  </div>
+    <section class="surface">
+      <div class="mode-grid" id="modeLinks" aria-label="Moduri disponibile"></div>
+      <div id="donation"></div>
+    </section>
+  </main>
 
   <script src="assets/common.js"></script>
   <script>
@@ -42,7 +29,6 @@
       const subjectId = AppUtils.getParam("subject");
       if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
 
-      // reține ultima materie (util pentru back)
       localStorage.setItem("lastSubjectId", subjectId);
 
       const data = await AppUtils.fetchJSON("data/subjects.json");
@@ -51,12 +37,22 @@
 
       document.title = subject.title;
       document.getElementById("pageTitle").textContent = subject.title;
+      AppUtils.saveLastSession(subjectId, subject.title, "Alege modul", `subject.html?subject=${encodeURIComponent(subjectId)}`);
 
       const q = encodeURIComponent(subjectId);
       document.getElementById("modeLinks").innerHTML = `
-        <a class="test-link" href="interactive.html?subject=${q}">🧩 Modul Interactiv</a>
-        <a class="test-link" href="study.html?subject=${q}">📖 Studiază</a>
-        <a class="test-link" href="test.html?subject=${q}">🎯 Test</a>
+        <a class="mode-card mode-card-link primary" href="interactive.html?subject=${q}">
+          <h3>Interactiv</h3>
+          <p>Întrebări una câte una, cu feedback imediat.</p>
+        </a>
+        <a class="mode-card mode-card-link" href="study.html?subject=${q}">
+          <h3>Studiază</h3>
+          <p>Toate întrebările și răspunsurile corecte la vedere.</p>
+        </a>
+        <a class="mode-card mode-card-link" href="test.html?subject=${q}">
+          <h3>Test</h3>
+          <p>Alegi numărul de întrebări și primești scor final.</p>
+        </a>
       `;
     }
 
@@ -64,7 +60,7 @@
       console.error(err);
       document.getElementById("pageTitle").textContent = "Eroare";
       document.getElementById("modeLinks").innerHTML =
-        `<div style="color:#b00020; text-align:center; font-weight:700;">${err.message}</div>`;
+        `<div class="error-state">${err.message}</div>`;
     });
   </script>
   <script src="assets/donation.js"></script>

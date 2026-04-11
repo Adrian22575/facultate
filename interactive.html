@@ -4,39 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mod Interactiv</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
-  <div class="container">
-    <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
-
-    <h1 id="title">Mod Interactiv</h1>
-
-    <div class="progress-bar-container">
-      <div class="progress-bar-interactive" id="progressBar"></div>
-    </div>
-
-    <div class="stats" id="stats">Răspunse: 0/0 · Corecte: 0 · Greșite: 0</div>
-
-    <div id="flashcard-container"></div>
-
-    <div class="navigation">
-      <span id="questionCounter" class="question-counter">0 / 0</span>
-      <div style="display: flex; width: 100%; justify-content: space-between; gap: 12px;">
-        <button id="prevBtn" class="nav-btn">Anterioară</button>
-        <button id="nextBtn" class="nav-btn">Următoare</button>
+<body class="app-page">
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-header-row">
+        <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
+        <span class="app-kicker">Feedback instant</span>
       </div>
-    </div>
-    <div id="donation"></div>
-  </div>
+      <h1 class="page-title" id="title">Mod Interactiv</h1>
+      <p class="app-subtitle">Răspunde pe rând și vezi imediat varianta corectă.</p>
+    </header>
+
+    <section class="surface">
+      <div class="progress-bar-container">
+        <div class="progress-bar-interactive" id="progressBar"></div>
+      </div>
+
+      <div class="status-bar">
+        <div class="stats" id="stats">Răspunse: 0/0 · Corecte: 0 · Greșite: 0</div>
+        <span id="questionCounter" class="question-counter">0 / 0</span>
+      </div>
+
+      <div id="flashcard-container"></div>
+
+      <div class="navigation">
+        <div class="nav-buttons-row">
+          <button id="prevBtn" class="nav-btn">Anterioară</button>
+          <button id="nextBtn" class="nav-btn">Următoare</button>
+        </div>
+      </div>
+      <div id="donation"></div>
+    </section>
+  </main>
 
   <script src="assets/common.js"></script>
   <script>
-
     let subjectId = null;
     let subjectTitle = "Mod Interactiv";
     let questions = [];
@@ -81,7 +85,6 @@
       const q = questions[currentIndex];
       const chosen = userAnswers[currentIndex];
 
-      // layout
       const wrapper = document.createElement("div");
       wrapper.className = "question-container";
 
@@ -102,7 +105,7 @@
         opt.textContent = `${letter}) ${txt}`;
 
         opt.addEventListener("click", () => {
-          if (userAnswers[currentIndex] !== null) return; // deja răspuns
+          if (userAnswers[currentIndex] !== null) return;
           userAnswers[currentIndex] = i;
           render();
         });
@@ -114,19 +117,17 @@
 
       const resetBtn = document.createElement("button");
       resetBtn.className = "reset-btn";
-      resetBtn.textContent = "🔄 Resetează";
-      resetBtn.style.display = (chosen === null ? "none" : "inline-block");
+      resetBtn.textContent = "Resetează răspunsul";
+      resetBtn.style.display = (chosen === null ? "none" : "inline-flex");
       resetBtn.addEventListener("click", () => {
         userAnswers[currentIndex] = null;
         render();
       });
       wrapper.appendChild(resetBtn);
 
-      // inject
       flashcard.innerHTML = "";
       flashcard.appendChild(wrapper);
 
-      // dacă există răspuns, marchează corect/greșit + blochează
       if (chosen !== null) {
         answers.classList.add("answered");
         const selected = answers.querySelector(`[data-index="${chosen}"]`);
@@ -143,15 +144,32 @@
 
       updateTopUI();
 
-      // Afișează donația și butonul de restart la ultima întrebare răspunsă
       if (currentIndex === questions.length - 1 && userAnswers[currentIndex] !== null) {
-        document.getElementById('donation').innerHTML = `
-          <div class="center" style="margin-top: 20px;">
-            <button class="restart-btn" onclick="location.reload()">🔄 Ia-o de la capăt</button>
+        const wrongQuestions = questions.filter((question, index) => userAnswers[index] !== question.correctIndex);
+        const reviewButton = wrongQuestions.length
+          ? `<button class="restart-btn" id="reviewWrongBtn">Revizuiește greșelile (${wrongQuestions.length})</button>`
+          : "";
+
+        document.getElementById("donation").innerHTML = `
+          <div class="center-actions">
+            ${reviewButton}
+            <button class="restart-btn" onclick="location.reload()">Ia-o de la capăt</button>
           </div>
         ` + getDonationHTML();
+
+        const reviewWrongBtn = document.getElementById("reviewWrongBtn");
+        if (reviewWrongBtn) {
+          reviewWrongBtn.addEventListener("click", () => {
+            questions = wrongQuestions.map(q => ({ ...q, answers: [...q.answers] }));
+            userAnswers = new Array(questions.length).fill(null);
+            currentIndex = 0;
+            document.getElementById("donation").innerHTML = "";
+            render();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        }
       } else {
-        document.getElementById('donation').innerHTML = '';
+        document.getElementById("donation").innerHTML = "";
       }
     }
 
@@ -159,10 +177,8 @@
       subjectId = AppUtils.getParam("subject");
       if (!subjectId) throw new Error("Lipsește parametrul ?subject=");
 
-      // back link către subject page
       backLink.href = `subject.html?subject=${encodeURIComponent(subjectId)}`;
 
-      // citește subjects.json ca să afle fișierul de întrebări
       const data = await AppUtils.fetchJSON("data/subjects.json");
 
       const subject = (data.subjects || []).find(s => s.id === subjectId);
@@ -171,14 +187,13 @@
       subjectTitle = subject.title;
       titleEl.textContent = `Mod Interactiv — ${subjectTitle}`;
       document.title = `Interactiv — ${subjectTitle}`;
+      AppUtils.saveLastSession(subjectId, subjectTitle, "Interactiv", `interactive.html?subject=${encodeURIComponent(subjectId)}`);
 
-      // load questions file
       const rawQ = await AppUtils.fetchJSON(subject.questionsFile);
       questions = AppUtils.normalizeQuestions(rawQ);
 
       if (!questions.length) throw new Error("Fișierul de întrebări este gol sau format greșit.");
 
-      // shuffle întrebări (ca înainte)
       AppUtils.shuffleInPlace(questions);
 
       userAnswers = new Array(questions.length).fill(null);
@@ -197,7 +212,7 @@
 
     init().catch(err => {
       console.error(err);
-      flashcard.innerHTML = `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
+      flashcard.innerHTML = `<div class="error-state">${err.message}</div>`;
       updateTopUI();
     });
   </script>

@@ -3,29 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examen Licență – Toate grilele</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Examen Licență - Toate grilele</title>
   <link rel="stylesheet" href="assets/licenta-exam.css">
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="btn-link secondary">Înapoi la meniu</a>
+  <main class="container">
+    <header class="exam-header">
+      <div class="exam-header-row">
+        <a href="index.html" class="btn-link secondary">Înapoi la meniu</a>
+        <span class="app-kicker">Simulare completă</span>
+      </div>
+      <h1>Examen Licență</h1>
+      <p>60 de întrebări aleatorii din toate materiile, cu timer de 60 de minute.</p>
+    </header>
 
-    <h1>Examen Licență – Toate grilele</h1>
-    <p>Pagina încarcă toate întrebările din toate fișierele JSON și generează un test mare, aleatoriu.</p>
-    <p id="summary">Se încarcă datele...</p>
-    <p>Simularea generează 60 de întrebări aleatorii din toate materiile și pornește un timer de 60 de minute.</p>
+    <section class="surface">
+      <p id="summary">Se încarcă datele...</p>
+      <p id="loading">Se citesc fișierele JSON...</p>
 
-    <div class="top-actions">
-      <button id="startBtn">Generează test</button>
-      <button id="submitBtn" class="hidden">Vezi rezultatul</button>
-      <button id="restartBtn" class="hidden secondary">Generează alt test</button>
-    </div>
+      <div class="top-actions">
+        <button id="startBtn">Generează test</button>
+        <button id="submitBtn" class="hidden">Vezi rezultatul</button>
+        <button id="restartBtn" class="hidden secondary">Generează alt test</button>
+      </div>
+    </section>
 
-    <div id="loading">Se citesc fișierele JSON...</div>
     <div id="quizContainer"></div>
     <div id="resultContainer"></div>
-  </div>
+  </main>
 
   <script src="assets/common.js"></script>
   <script src="js/licenta-exam.js"></script>

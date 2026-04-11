@@ -66,10 +66,47 @@
       );
   }
 
+  function saveLastSession(subjectId, subjectTitle, mode, url) {
+    if (!subjectId || !subjectTitle || !mode || !url) return;
+
+    try {
+      localStorage.setItem("lastStudySession", JSON.stringify({
+        subjectId,
+        subjectTitle,
+        mode,
+        url,
+        updatedAt: new Date().toISOString()
+      }));
+    } catch (error) {
+      console.warn("Nu pot salva ultima sesiune.", error);
+    }
+  }
+
+  function getLastSession() {
+    try {
+      const raw = localStorage.getItem("lastStudySession");
+      return raw ? JSON.parse(raw) : null;
+    } catch (error) {
+      console.warn("Nu pot citi ultima sesiune.", error);
+      return null;
+    }
+  }
+
+  function clearLastSession() {
+    try {
+      localStorage.removeItem("lastStudySession");
+    } catch (error) {
+      console.warn("Nu pot sterge ultima sesiune.", error);
+    }
+  }
+
   window.AppUtils = {
     getParam,
     shuffleInPlace,
     fetchJSON,
-    normalizeQuestions
+    normalizeQuestions,
+    saveLastSession,
+    getLastSession,
+    clearLastSession
   };
 })();

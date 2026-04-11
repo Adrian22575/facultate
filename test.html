@@ -4,55 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Test</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
-  <div class="container">
-    <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
-
-    <h1 id="title">Test</h1>
-    
-<!-- Progress Bar -->
-<div class="progress-bar-container">
-  <div class="progress-fill" id="progressBar"></div>
-</div>
-    
-    <!-- Setup screen -->
-    <div id="setupScreen">
-      <div class="selector-container">
-        <label>
-          Alege numărul de întrebări:
-          <select id="countSelect">
-            <option value="5">5 întrebări</option>
-            <option value="10" selected>10 întrebări</option>
-            <option value="20">20 întrebări</option>
-            <option value="all">Toate</option>
-          </select>
-        </label>
+<body class="app-page">
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-header-row">
+        <a class="btn-back" id="backLink" href="index.html">Înapoi</a>
+        <span class="app-kicker">Test pe materie</span>
       </div>
+      <h1 class="page-title" id="title">Test</h1>
+      <p class="app-subtitle">Alege durata testului și modul de amestecare.</p>
+    </header>
 
-      <div class="selector-container">
-        <label>
-          Alege modul:
-          <select id="diffSelect">
-            <option value="1" selected>1 - În ordine (ca în curs)</option>
-            <option value="2">2 - Întrebări amestecate</option>
-            <option value="3">3 - Întrebări + răspunsuri mixate</option>
-          </select>
-        </label>
+    <section id="setupScreen" class="surface">
+      <div class="selector-grid">
+        <div class="selector-container">
+          <label>
+            Număr de întrebări
+            <select id="countSelect">
+              <option value="5">5 întrebări</option>
+              <option value="10" selected>10 întrebări</option>
+              <option value="20">20 întrebări</option>
+              <option value="all">Toate</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="selector-container">
+          <label>
+            Mod de lucru
+            <select id="diffSelect">
+              <option value="1" selected>În ordine</option>
+              <option value="2">Întrebări amestecate</option>
+              <option value="3">Întrebări și răspunsuri mixate</option>
+            </select>
+          </label>
+        </div>
       </div>
 
       <div class="center">
         <button id="startBtn">Începe testul</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Quiz screen -->
-    <div id="quizScreen" class="hidden">
+    <section id="quizScreen" class="hidden surface">
+      <div class="progress-bar-container" aria-label="Progres test">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+
       <div class="quiz-meta">
         <div id="metaLeft"></div>
         <div id="metaRight"></div>
@@ -64,15 +64,13 @@
         <button id="prevBtn">Anterioară</button>
         <button id="nextBtn">Următoare</button>
       </div>
-    </div>
+    </section>
 
-    <!-- Result screen -->
-    <div id="resultScreen" class="hidden result"></div>
-  </div>
+    <section id="resultScreen" class="hidden result"></section>
+  </main>
 
   <script src="assets/common.js"></script>
   <script>
-
     function buildAnswerBank(questions) {
       const set = new Set();
       questions.forEach(q => (q.answers || []).forEach(a => set.add(a)));
@@ -94,7 +92,6 @@
           if (!opts.includes(pick)) opts.push(pick);
         }
 
-        // dacă nu avem destule opțiuni, păstrăm întrebarea originală
         if (opts.length < optionCount) return q;
 
         AppUtils.shuffleInPlace(opts);
@@ -108,9 +105,10 @@
 
     let allQuestions = [];
     let testQuestions = [];
-    let answers = []; // selected index per question
+    let answers = [];
     let current = 0;
     let subjectTitle = "";
+    let reviewRound = false;
 
     const setupScreen = document.getElementById("setupScreen");
     const quizScreen = document.getElementById("quizScreen");
@@ -132,7 +130,6 @@
     function renderQuestion() {
       const q = testQuestions[current];
       const chosen = answers[current];
-      // Update progress bar
       const progressPercent = ((current + 1) / testQuestions.length) * 100;
       document.getElementById("progressBar").style.width = progressPercent + "%";
 
@@ -169,20 +166,24 @@
     function showResults() {
       const total = testQuestions.length;
       let correct = 0;
+      const wrongQuestions = [];
 
       const rows = testQuestions.map((q, i) => {
         const user = answers[i];
         const ok = (user === q.correctIndex);
         if (ok) correct++;
+        else wrongQuestions.push({ ...q, answers: [...q.answers] });
 
         const userText = (user === null) ? "(fără răspuns)" : q.answers[user];
         const corrText = q.answers[q.correctIndex];
 
         return `
-          <div style="margin-bottom:16px;">
-            <div style="font-weight:800;">${i + 1}. ${q.text}</div>
-            <div>Răspunsul tău: <span class="${ok ? "correct" : "wrong"}">${userText}</span></div>
-            ${ok ? "" : `<div class="show-correct">Corect: <b>${corrText}</b></div>`}
+          <div class="choice-row">
+            <div>
+              <div class="choice-row-title">${i + 1}. ${q.text}</div>
+              <div class="choice-row-meta">Răspunsul tău: <span class="${ok ? "correct" : "wrong"}">${userText}</span></div>
+              ${ok ? "" : `<div class="show-correct">Corect: <b>${corrText}</b></div>`}
+            </div>
           </div>
         `;
       }).join("");
@@ -191,19 +192,43 @@
 
       resultScreen.innerHTML = `
         <h2>Rezultat</h2>
-        <div class="score">Scor: ${correct} / ${total} (${scorePct}%)</div>
+        <div class="score">${reviewRound ? "Revizuire" : "Scor"}: ${correct} / ${total} (${scorePct}%)</div>
         ${rows}
-        <div class="center" style="margin-top:20px;">
+        <div class="center-actions">
+          ${wrongQuestions.length ? `<button class="restart-btn" id="reviewWrongBtn">Revizuiește greșelile (${wrongQuestions.length})</button>` : ""}
           <button class="restart-btn" id="restartBtn">Reîncepe</button>
         </div>
       `;
       resultScreen.innerHTML += getDonationHTML();
+
+      const reviewWrongBtn = document.getElementById("reviewWrongBtn");
+      if (reviewWrongBtn) {
+        reviewWrongBtn.addEventListener("click", () => {
+          startQuestionSet(wrongQuestions, true);
+        });
+      }
+
       document.getElementById("restartBtn").addEventListener("click", () => {
         resultScreen.classList.add("hidden");
         quizScreen.classList.add("hidden");
         setupScreen.classList.remove("hidden");
         current = 0;
+        reviewRound = false;
       });
+    }
+
+    function startQuestionSet(questionSet, isReview = false) {
+      testQuestions = questionSet.map(q => ({ ...q, answers: [...q.answers] }));
+      answers = new Array(testQuestions.length).fill(null);
+      current = 0;
+      reviewRound = isReview;
+
+      setupScreen.classList.add("hidden");
+      resultScreen.classList.add("hidden");
+      quizScreen.classList.remove("hidden");
+
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     async function init() {
@@ -220,6 +245,7 @@
       subjectTitle = subject.title;
       titleEl.textContent = `Test — ${subjectTitle}`;
       document.title = `Test — ${subjectTitle}`;
+      AppUtils.saveLastSession(subjectId, subjectTitle, "Test", `test.html?subject=${encodeURIComponent(subjectId)}`);
 
       const rawQ = await AppUtils.fetchJSON(subject.questionsFile);
 
@@ -227,13 +253,11 @@
       if (!allQuestions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
 
       startBtn.addEventListener("click", () => {
-        const mode = diffSelect.value;     // "1" | "2" | "3"
+        const mode = diffSelect.value;
         const countVal = countSelect.value;
 
-        // copiem întrebările ca să nu stricăm allQuestions
         let pool = allQuestions.map(q => ({ ...q, answers: [...q.answers] }));
 
-        // 1 = în ordine, 2/3 = amestecate
         if (mode === "2" || mode === "3") {
           AppUtils.shuffleInPlace(pool);
         }
@@ -242,22 +266,14 @@
           ? pool.length
           : Math.min(Number(countVal), pool.length);
 
-        testQuestions = pool.slice(0, take);
+        let selectedQuestions = pool.slice(0, take);
 
-        // 3 = răspunsuri mixate din bancă (dar include corectul)
         if (mode === "3") {
           const bank = buildAnswerBank(allQuestions);
-          testQuestions = mixAnswersForHardMode(testQuestions, bank);
+          selectedQuestions = mixAnswersForHardMode(selectedQuestions, bank);
         }
 
-        answers = new Array(testQuestions.length).fill(null);
-        current = 0;
-
-        setupScreen.classList.add("hidden");
-        resultScreen.classList.add("hidden");
-        quizScreen.classList.remove("hidden");
-
-        renderQuestion();
+        startQuestionSet(selectedQuestions, false);
       });
 
       prevBtn.addEventListener("click", () => {
@@ -278,8 +294,8 @@
 
     init().catch(err => {
       console.error(err);
-      document.querySelector(".container").innerHTML =
-        `<div style="color:#b00020; font-weight:800;">${err.message}</div>`;
+      document.querySelector(".app-shell").innerHTML =
+        `<div class="error-state">${err.message}</div>`;
     });
   </script>
   <script src="assets/donation.js"></script>

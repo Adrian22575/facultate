@@ -4,24 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Materii - Teste Facultate</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body class="menu-page">
-  <div class="menu-container">
-    <a href="index.html" class="test-link" style="display:inline-block; margin-bottom:20px;">← Înapoi la meniu</a>
+<body class="app-page">
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="app-header-row">
+        <a href="index.html" class="btn-back">Înapoi la meniu</a>
+        <span class="app-kicker">17 materii</span>
+      </div>
+      <h1 class="page-title">Teste pe materii</h1>
+      <p class="app-subtitle">Caută materia și intră în modul de lucru potrivit.</p>
+    </header>
 
-    <h1>Teste pe materii</h1>
-    <p class="description">Alege materia la care vrei să te testezi:</p>
-    <input id="subjectSearch" class="input-search" type="search" placeholder="Caută materia..." autocomplete="off">
-    <span id="subjectCount" class="subject-count">Se încarcă...</span>
+    <section class="surface">
+      <div class="toolbar">
+        <input id="subjectSearch" class="input-search" type="search" placeholder="Caută materia..." autocomplete="off">
+        <span id="subjectCount" class="subject-count">Se încarcă...</span>
+      </div>
 
-    <ul class="test-list" id="subjectsList"></ul>
-  </div>
+      <ul class="action-list" id="subjectsList"></ul>
+    </section>
+  </main>
 
   <script src="assets/common.js"></script>
   <script>
@@ -34,13 +38,18 @@
       count.textContent = `${subjects.length} materii afișate`;
 
       if (!subjects.length) {
-        list.innerHTML = `<li style="color:#5e6b80;">Nu am găsit rezultate pentru căutarea ta.</li>`;
+        list.innerHTML = `<li class="empty-state">Nu am găsit rezultate pentru căutarea ta.</li>`;
         return;
       }
 
       subjects.forEach(s => {
         const li = document.createElement("li");
-        li.innerHTML = `<a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">${s.title}</a>`;
+        li.innerHTML = `
+          <a class="test-link" href="subject.html?subject=${encodeURIComponent(s.id)}">
+            ${s.title}
+            <span>Deschide modurile de învățare</span>
+          </a>
+        `;
         list.appendChild(li);
       });
     }
@@ -60,7 +69,7 @@
     loadSubjects().catch(err => {
       console.error(err);
       document.getElementById("subjectsList").innerHTML =
-        `<li style="color:#b00020;">Eroare la încărcarea materiilor. Verifică data/subjects.json</li>`;
+        `<li class="error-state">Eroare la încărcarea materiilor. Verifică data/subjects.json.</li>`;
       document.getElementById("subjectCount").textContent = "Eroare la încărcare";
     });
   </script>

@@ -76,16 +76,16 @@ function updateExamInfo() {
   const unanswered = currentQuestions.length - answered;
 
   showExamInfoBar(`
-    <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between;">
+    <div class="exam-info-row">
       <div>
-        <div style="font-weight:700; font-size:1.05rem;">Simulare examen licență</div>
-        <div style="color:#555; margin-top:4px;">
+        <div class="exam-info-title">Simulare examen licență</div>
+        <div class="exam-info-meta">
           Întrebări: <strong>${currentQuestions.length}</strong> |
           Răspunse: <strong>${answered}</strong> |
           Nerăspunse: <strong>${unanswered}</strong>
         </div>
       </div>
-      <div style="font-size:1.1rem; font-weight:800; color:#1250b1;">
+      <div class="exam-timer">
         Timp rămas: ${formatTime(remainingSeconds)}
       </div>
     </div>
@@ -250,24 +250,24 @@ function buildStatsHtml() {
       const percent = Math.round((values.correct / values.total) * 100);
       return `
         <tr>
-          <td style="padding:8px 10px; border:1px solid #e5e7eb;">${subject}</td>
-          <td style="padding:8px 10px; border:1px solid #e5e7eb; text-align:center;">${values.correct} / ${values.total}</td>
-          <td style="padding:8px 10px; border:1px solid #e5e7eb; text-align:center;">${percent}%</td>
+          <td>${subject}</td>
+          <td class="table-center">${values.correct} / ${values.total}</td>
+          <td class="table-center">${percent}%</td>
         </tr>
       `;
     })
     .join("");
 
   return `
-    <div style="margin-top:22px;">
-      <h3 style="margin-bottom:10px;">Statistici pe materii</h3>
-      <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse:collapse; background:#fff;">
+    <div class="stats-block">
+      <h3>Statistici pe materii</h3>
+      <div class="table-scroll">
+        <table>
           <thead>
             <tr>
-              <th style="padding:8px 10px; border:1px solid #e5e7eb; text-align:left;">Materia</th>
-              <th style="padding:8px 10px; border:1px solid #e5e7eb; text-align:center;">Scor</th>
-              <th style="padding:8px 10px; border:1px solid #e5e7eb; text-align:center;">Procent</th>
+              <th>Materia</th>
+              <th class="table-center">Scor</th>
+              <th class="table-center">Procent</th>
             </tr>
           </thead>
           <tbody>
@@ -303,7 +303,7 @@ function submitExam(autoSubmit = false) {
       <h2>Rezultat final</h2>
       ${
         autoSubmit
-          ? `<p style="color:#b00020; font-weight:700;">Timpul a expirat. Examenul a fost trimis automat.</p>`
+          ? `<p class="timeout-note">Timpul a expirat. Examenul a fost trimis automat.</p>`
           : ""
       }
       <p><strong>Întrebări totale:</strong> ${currentQuestions.length}</p>
@@ -311,7 +311,7 @@ function submitExam(autoSubmit = false) {
       <p><strong>Scor:</strong> ${score} / ${currentQuestions.length}</p>
       <p><strong>Procent:</strong> ${percentage}%</p>
       ${buildStatsHtml()}
-      <hr style="margin:20px 0;">
+      <hr class="result-divider">
       <h3>Corectare detaliată</h3>
   `;
 
@@ -321,9 +321,9 @@ function submitExam(autoSubmit = false) {
     const isCorrect = selectedIndex === question.correctIndex;
 
     html += `
-      <div style="margin-top:16px; padding-top:16px; border-top:1px solid #e5e7eb;">
+      <div class="result-detail">
         <div><strong>${index + 1}. ${question.text}</strong></div>
-        <div style="font-size:0.92rem; color:#666; margin:6px 0;">Materia: ${question.subjectTitle}</div>
+        <div class="result-meta">Materia: ${question.subjectTitle}</div>
         <div class="${isCorrect ? "correct" : "wrong"}">
           ${isCorrect ? "Corect" : "Greșit"}
         </div>
@@ -345,15 +345,15 @@ function submitExam(autoSubmit = false) {
   submitBtn.classList.add("hidden");
 
   showExamInfoBar(`
-    <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center; justify-content:space-between;">
+    <div class="exam-info-row">
       <div>
-        <div style="font-weight:700; font-size:1.05rem;">Examen finalizat</div>
-        <div style="color:#555; margin-top:4px;">
+        <div class="exam-info-title">Examen finalizat</div>
+        <div class="exam-info-meta">
           Scor: <strong>${score} / ${currentQuestions.length}</strong> |
           Procent: <strong>${percentage}%</strong>
         </div>
       </div>
-      <div style="font-size:1.1rem; font-weight:800; color:#1250b1;">
+      <div class="exam-timer">
         Timp rămas: ${formatTime(remainingSeconds)}
       </div>
     </div>
