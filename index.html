@@ -13,7 +13,9 @@
 </head>
 <body class="menu-page">
   <div class="menu-container">
+    <span class="app-kicker">🎓 Study App • Facultate</span>
     <h1>Teste Facultate</h1>
+    <p class="app-subtitle">Interfață optimizată pentru telefon, construită ca o aplicație rapidă de învățare.</p>
     <p class="description">Alege modul în care vrei să înveți:</p>
 
     <ul class="test-list">
@@ -25,5 +27,27 @@
       </li>
     </ul>
   </div>
+
+  <div class="version-badge" id="versionBadge" aria-label="Versiune aplicație" data-updated-utc="2026-04-11T05:50:23Z">
+    v2.2 · actualizat: se calculează ora locală...
+  </div>
+
+  <script>
+    (function () {
+      const badge = document.getElementById("versionBadge");
+      if (!badge) return;
+
+      const isoUtc = badge.dataset.updatedUtc;
+      const updatedDate = new Date(isoUtc);
+
+      const localTime = new Intl.DateTimeFormat("ro-RO", {
+        dateStyle: "short",
+        timeStyle: "medium"
+      }).format(updatedDate);
+
+      const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "local";
+      badge.textContent = `v2.2 · actualizat: ${localTime} (${userTZ})`;
+    })();
+  </script>
 </body>
 </html>

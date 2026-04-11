@@ -1,0 +1,99 @@
+:root {
+  --primary: #1250b1;
+  --primary-dark: #0c3879;
+  --bg: #f7f9fc;
+  --white: #fff;
+  --good: #1f8b4c;
+  --bad: #c62828;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: #222;
+  padding: 16px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+  padding: 20px;
+}
+
+h1 { color: var(--primary); margin-bottom: 12px; }
+p { margin-bottom: 12px; color: #444; }
+
+.top-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+button, .btn-link {
+  border: none;
+  background: var(--primary);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 700;
+  min-height: 46px;
+}
+button:hover, .btn-link:hover { background: var(--primary-dark); }
+.secondary { background: #6b7280; }
+.secondary:hover { background: #4b5563; }
+
+.question {
+  margin: 24px 0;
+  padding: 18px;
+  border: 1px solid #e7ebf0;
+  border-radius: 12px;
+  background: #fff;
+}
+.question-title { font-weight: 700; margin-bottom: 12px; }
+.meta { font-size: 0.92rem; color: #666; margin-bottom: 12px; }
+
+.answers label {
+  display: block;
+  margin-bottom: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  cursor: pointer;
+}
+.answers label:hover { background: #eef4ff; }
+.answers input { margin-right: 10px; }
+
+.result-box {
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.correct { color: var(--good); font-weight: 700; }
+.wrong { color: var(--bad); font-weight: 700; }
+.hidden { display: none; }
+#loading { margin-top: 20px; font-weight: 700; color: var(--primary); }
+
+@media (max-width: 700px) {
+  .container { padding: 14px; }
+  .top-actions {
+    position: sticky;
+    bottom: 8px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px;
+    z-index: 5;
+  }
+  button, .btn-link { width: 100%; text-align: center; }
+}
