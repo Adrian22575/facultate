@@ -11,5 +11,6 @@
 - Adăugat badge de versiune pe `index.html` în colțul din dreapta-jos, cu dată/oră update vizibile pentru verificare rapidă.
 - Badge-ul de versiune afișează acum timpul în fusul orar local al utilizatorului (nu doar UTC fix).
 - Upgrade UX/UI către experiență de tip aplicație: header mai clar pe prima pagină, căutare + filtrare materii, carduri explicative pentru modurile unei materii.
+- Adăugat `data/app-data.js` ca fallback static pentru rulare directă din `file://`, astfel încât paginile care citeau JSON prin `fetch` să funcționeze și fără server local.
 
 > Notă pentru agenți: menține acest jurnal scurt, orientat pe decizii arhitecturale/UX relevante pentru task-uri viitoare.

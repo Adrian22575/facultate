@@ -239,26 +239,8 @@
     </div>
   </div>
 
+  <script src="assets/common.js"></script>
   <script>
-    function getParam(name) {
-      return new URLSearchParams(location.search).get(name);
-    }
-
-    function normalizeQuestions(raw) {
-      const arr = Array.isArray(raw) ? raw : (raw.questions || []);
-      return arr.map((q, idx) => ({
-        id: q.id ?? (idx + 1),
-        text: q.text ?? q.q ?? "",
-        answers: q.answers ?? q.options ?? [],
-        correctIndex: (q.correctIndex ?? q.correct),
-        difficulty: q.difficulty ?? 1
-      })).filter(q =>
-        q.text &&
-        Array.isArray(q.answers) &&
-        q.answers.length &&
-        Number.isInteger(q.correctIndex)
-      );
-    }
 
     // Variabile globale pentru navigare
     let questions = [];
@@ -266,7 +248,7 @@
 
     async function init() {
       // 1) subjectId din URL, fallback la ultima materie
-      let subjectId = getParam("subject") || localStorage.getItem("lastSubjectId");
+      let subjectId = AppUtils.getParam("subject") || localStorage.getItem("lastSubjectId");
       const backEl = document.getElementById("backLink");
 
       if (subjectId) {
@@ -283,9 +265,7 @@
       }
 
       // 2) ia titlul + fișierul de întrebări
-      const sRes = await fetch("data/subjects.json", { cache: "no-store" });
-      if (!sRes.ok) throw new Error("Nu pot încărca data/subjects.json");
-      const sData = await sRes.json();
+      const sData = await AppUtils.fetchJSON("data/subjects.json");
 
       const subject = (sData.subjects || []).find(s => s.id === subjectId);
       if (!subject) throw new Error("Materia nu există în subjects.json: " + subjectId);
@@ -293,11 +273,9 @@
       document.title = `Studiu — ${subject.title}`;
       document.getElementById("title").textContent = `Mod Studiu — ${subject.title}`;
 
-      const qRes = await fetch(subject.questionsFile, { cache: "no-store" });
-      if (!qRes.ok) throw new Error("Nu pot încărca întrebările: " + subject.questionsFile);
-      const rawQ = await qRes.json();
+      const rawQ = await AppUtils.fetchJSON(subject.questionsFile);
 
-      questions = normalizeQuestions(rawQ);
+      questions = AppUtils.normalizeQuestions(rawQ);
       if (!questions.length) throw new Error("Fișierul de întrebări e gol sau format greșit.");
 
       // 3) render întrebări

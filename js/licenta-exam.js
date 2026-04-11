@@ -122,24 +122,14 @@ async function loadAllQuestions() {
   try {
     loadingEl.textContent = "Se citesc materiile...";
 
-    const subjectsResponse = await fetch(SUBJECTS_FILE, { cache: "no-store" });
-    if (!subjectsResponse.ok) {
-      throw new Error(`Nu pot citi ${SUBJECTS_FILE}`);
-    }
-
-    const subjectsData = await subjectsResponse.json();
+    const subjectsData = await AppUtils.fetchJSON(SUBJECTS_FILE);
     const subjects = (subjectsData.subjects || []).filter(
       (subject) => subject.questionsFile
     );
 
     const loadedSets = await Promise.all(
       subjects.map(async (subject) => {
-        const res = await fetch(subject.questionsFile, { cache: "no-store" });
-        if (!res.ok) {
-          throw new Error(`Nu pot citi ${subject.questionsFile}`);
-        }
-
-        const data = await res.json();
+        const data = await AppUtils.fetchJSON(subject.questionsFile);
         const questions = (data.questions || []).map((q) => ({
           ...q,
           subjectId: subject.id,

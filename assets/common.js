@@ -1,4 +1,6 @@
 (function () {
+  let staticDataPromise = null;
+
   function getParam(name) {
     return new URLSearchParams(window.location.search).get(name);
   }
@@ -12,11 +14,42 @@
   }
 
   async function fetchJSON(url, options = { cache: "no-store" }) {
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error(`Nu pot încărca ${url}`);
+    const normalizedUrl = url.replace(/^\.?\//, "");
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`Nu pot incarca ${url}`);
+      }
+      return response.json();
+    } catch (error) {
+      await loadStaticData();
+      const staticData = window.AppData && window.AppData[normalizedUrl];
+      if (staticData) {
+        return typeof structuredClone === "function"
+          ? structuredClone(staticData)
+          : JSON.parse(JSON.stringify(staticData));
+      }
+      throw error;
     }
-    return response.json();
+  }
+
+  function loadStaticData() {
+    if (window.AppData) {
+      return Promise.resolve();
+    }
+
+    if (!staticDataPromise) {
+      staticDataPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "data/app-data.js";
+        script.onload = resolve;
+        script.onerror = () => reject(new Error("Nu pot incarca data/app-data.js"));
+        document.head.appendChild(script);
+      });
+    }
+
+    return staticDataPromise;
   }
 
   function normalizeQuestions(raw) {
