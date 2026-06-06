@@ -84,6 +84,11 @@
       "id": "management-comparat",
       "title": "Management comparat",
       "questionsFile": "data/questions/management-comparat.json"
+    },
+    {
+      "id": "test",
+      "title": "test",
+      "questionsFile": "data/questions/test.json"
     }
   ]
 }

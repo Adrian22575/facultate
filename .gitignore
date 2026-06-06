@@ -1,0 +1,23 @@
+node_modules/
+.next/
+.vercel/
+.env.local
+.env.*.local
+.env
+
+# Local server/build output
+*.log
+recovery-summary.json
+
+# Local visual QA artifacts
+email-login*.png
+hero-*.png
+full-*.png
+*-check.png
+
+# Local agent/skill scratch folders
+anthropics-skills/
+awesome-codex-skills/
+
+# Local backups created during workspace cleanup
+backup/

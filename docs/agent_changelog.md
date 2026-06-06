@@ -1,19 +1,31 @@
-# Agent Changelog (Context Updates)
+# Agent Changelog
+
+Pastreaza acest jurnal scurt si orientat pe decizii care ajuta agentii viitori.
+
+## 2026-06-02
+
+- Curatat radacina repo-ului dupa migrarea la Next.js: fisierele statice legacy, logurile locale, screenshot-urile QA si repo-urile de skill-uri descarcate au fost mutate in `backup/2026-06-02-workspace-cleanup/`.
+- Adaugat `docs/agent-repo-map.md` pentru orientare rapida in structura activa.
+- Actualizate `AGENTS.md`, `README.md`, `docs/AGENT_CONTEXT.md` si `docs/agent-playbook.md` ca sa reflecte structura Next.js curenta.
+- Adaugat `npm run workspace:audit` pentru audit read-only al folderelor mari si al artefactelor locale.
+- Adaugat skill local `.codex/skills/teste-facultate-maintenance/` pentru workflow-uri repetitive de mentenanta.
+
+## 2026-05-01
+
+- Aplicatia intra prin login-first flow: `/` redirectioneaza spre `/auth/login` sau `/cont`.
+- Adaugat onboarding academic national pentru elevi si studenti in `/onboarding`.
+- Adaugata migrarea `0005_academic_communities.sql` pentru institutii, unitati academice, cohorte si memberships.
+- Testele generate sunt pregatite implicit pentru share pe cohorta.
+- `Testele mele` afiseaza atat testele proprii, cat si testele active din comunitatea utilizatorului.
+- Adaugate `AGENTS.md`, `docs/agent-playbook.md` si `docs/agent-lessons.md` pentru orientare rapida si reducerea erorilor repetabile.
+- Adaugata migrarea `0006_seed_academic_institutions.sql` cu institutii seed.
 
 ## 2026-04-11
-- Adăugat `assets/common.js` pentru logică reutilizabilă: `getParam`, `fetchJSON`, `shuffleInPlace`, `normalizeQuestions`.
-- Refactor pagini (`materii.html`, `subject.html`, `interactive.html`, `test.html`) să folosească utilitarele comune.
-- Îmbunătățiri mobile UX în `assets/styles.css`:
-  - suport `safe-area` pentru dispozitive cu notch;
-  - stil standard pentru descrieri;
-  - acțiuni quiz sticky pe mobil.
-- Mutat stilurile paginii de simulare licență în fișier dedicat `assets/licenta-exam.css` pentru organizare mai bună.
-- Adăugat badge de versiune pe `index.html` în colțul din dreapta-jos, cu dată/oră update vizibile pentru verificare rapidă.
-- Badge-ul de versiune afișează acum timpul în fusul orar local al utilizatorului (nu doar UTC fix).
-- Upgrade UX/UI către experiență de tip aplicație: header mai clar pe prima pagină, căutare + filtrare materii, carduri explicative pentru modurile unei materii.
-- Adăugat `data/app-data.js` ca fallback static pentru rulare directă din `file://`, astfel încât paginile care citeau JSON prin `fetch` să funcționeze și fără server local.
-- Refăcut UI/UX în direcție academică statică: shell comun de aplicație, liste și acțiuni mai clare, moduri de lucru aliniate vizual și fără dependențe vizuale externe.
-- Actualizat badge-ul aplicației la `v2.3` pentru refacerea UI/UX.
-- Adăugat flux mobile-first pentru `Continuă rapid` prin `localStorage` și revizuire locală a greșelilor în Test/Interactiv.
 
-> Notă pentru agenți: menține acest jurnal scurt, orientat pe decizii arhitecturale/UX relevante pentru task-uri viitoare.
+- Adaugat `assets/common.js` pentru logica reutilizabila in versiunea statica legacy.
+- Refactor pentru paginile statice `materii.html`, `subject.html`, `interactive.html`, `test.html`.
+- Imbunatatiri mobile UX in `assets/styles.css`.
+- Mutat stilurile paginii de simulare licenta in `assets/licenta-exam.css`.
+- Adaugat badge de versiune pe `index.html`.
+- Adaugat `data/app-data.js` ca fallback static pentru rulare directa din `file://`.
+- Refacut UI/UX in directie academica statica.

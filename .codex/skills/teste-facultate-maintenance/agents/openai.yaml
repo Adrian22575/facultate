@@ -1,0 +1,4 @@
+interface:
+  display_name: "Teste Facultate Maintenance"
+  short_description: "Repo maintenance workflow for Teste Facultate."
+  default_prompt: "Use this skill to orient quickly, audit workspace clutter, and verify focused changes in the Teste Facultate repo."

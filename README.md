@@ -1,107 +1,75 @@
 # Teste Facultate
 
-Aplicatie web statica pentru invatare si testare la materiile de facultate.
+Aplicatie Next.js App Router pentru invatare, testare, materiale generate, importuri de seturi pentru licenta, comunitati academice, autentificare Supabase si billing Stripe.
 
-Nu are backend, baza de date, build step sau dependinte care trebuie instalate in proiect. Fisierele HTML, CSS, JS si JSON pot fi puse direct pe GitHub.
-
-## Cum ruleaza colegii aplicatia
-
-Varianta recomandata este GitHub Pages, gratuit pentru un site static si fara domeniu cumparat.
-
-URL-ul va arata aproximativ asa:
-
-```text
-https://Adrian22575.github.io/facultate/
-```
-
-Pasii in GitHub:
-
-1. Intra in repository.
-2. Deschide `Settings`.
-3. In stanga, intra la `Pages`.
-4. La `Build and deployment`, alege `Deploy from a branch`.
-5. Alege branch-ul `main` si folderul `/ (root)`.
-6. Apasa `Save`.
-7. Dupa cateva minute, GitHub afiseaza linkul public al aplicatiei.
-
-Colegii vor putea intra pe acel link direct din browser. Nu trebuie sa instaleze nimic.
-
-## Testare locala
-
-Poti deschide `index.html` direct in browser pentru o verificare rapida.
-
-Pentru testare cat mai apropiata de GitHub Pages, foloseste un server local simplu. De exemplu, daca ai Python instalat:
+## Start rapid
 
 ```powershell
-python -m http.server 8000
+npm install
+npm run build
 ```
 
-Apoi deschide:
+Pentru dezvoltare locala:
+
+```powershell
+npm run dev
+```
+
+In acest workspace serverul local este gestionat de obicei manual din terminal. Agentii trebuie sa evite restarturile daca nu sunt cruciale pentru verificare.
+
+## Structura activa
+
+- `app/` - rute Next.js App Router, API routes si pagini.
+- `components/` - componente React client/server.
+- `lib/` - logica de produs, Supabase, billing, importuri si generare.
+- `supabase/migrations/` - schema, RLS si functii SQL.
+- `data/` - fallback local si intrebari statice ramase utile.
+- `public/` - imagini si asset-uri publice.
+- `scripts/` - verificari locale si automatizari.
+- `docs/` - context pentru agenti, setup si decizii.
+
+## Orientare pentru agenti
+
+Citeste:
+
+- `AGENTS.md`
+- `docs/agent-repo-map.md`
+- `docs/agent-playbook.md`
+- `docs/agent-lessons.md`
+
+Audit rapid:
+
+```powershell
+npm run workspace:audit
+npm run agent:check
+```
+
+Skill local pentru mentenanta:
 
 ```text
-http://localhost:8000/
+.codex/skills/teste-facultate-maintenance/SKILL.md
 ```
 
-Acest server local este doar pentru testare pe calculatorul tau. Nu este necesar pentru GitHub Pages si nu devine o dependinta a aplicatiei.
+OpenAI Developers plugin:
 
-## Structura proiect
-
-- `index.html` - meniu principal.
-- `materii.html` - lista materii din `data/subjects.json`.
-- `subject.html` - alege modul pentru o materie.
-- `study.html` - mod studiu.
-- `interactive.html` - mod interactiv.
-- `test.html` - test configurabil pe materie.
-- `licenta-exam.html` + `js/licenta-exam.js` - simulare examen licenta.
-- `assets/styles.css` - stiluri globale.
-- `assets/licenta-exam.css` - stiluri dedicate paginii de licenta.
-- `assets/common.js` - utilitare JS comune.
-- `data/app-data.js` - copia JS a datelor JSON, folosita ca fallback cand aplicatia este deschisa direct din folder.
-
-## Adaugare materie
-
-Fisierul `data/subjects.json` controleaza meniul de materii.
-
-Pentru o materie noua:
-
-1. Adauga un obiect in `subjects`.
-2. Creeaza fisierul de intrebari in `data/questions/`.
-
-Exemplu:
-
-```json
-{
-  "id": "econometrie",
-  "title": "Econometrie",
-  "questionsFile": "data/questions/econometrie.json"
-}
+```powershell
+npm run openai:check
+npm run openai:check:live
 ```
 
-## Format intrebari
+Detalii: `docs/openai-developers-plugin.md`.
 
-Fiecare fisier din `data/questions/*.json` foloseste formatul:
+Supabase plugin:
 
-```json
-{
-  "questions": [
-    {
-      "id": 1,
-      "text": "Intrebarea ...",
-      "answers": ["a) ...", "b) ...", "c) ..."],
-      "correctIndex": 2,
-      "difficulty": 1
-    }
-  ]
-}
+```powershell
+npm run supabase:check
+npm run supabase:check:live
 ```
 
-Note:
+Detalii: `docs/supabase-plugin.md`.
 
-- `correctIndex` este 0-based: `a=0`, `b=1`, `c=2`.
-- Nu folosi comentarii `//` in JSON, pentru ca JSON-ul nu le accepta.
-- Daca modifici fisierele JSON manual, actualizeaza si `data/app-data.js`, ca aplicatia sa mearga si direct din folder.
+## Note despre fisiere legacy
 
-## Context pentru agenti AI
+Versiunea statica veche cu fisiere HTML/CSS/JS la radacina a fost arhivata in `backup/` cand aplicatia a devenit Next.js. Rutele legacy sunt pastrate prin redirecturi/rute Next, nu prin fisierele HTML vechi.
 
-- Context si reguli de mentenanta: `docs/AGENT_CONTEXT.md`.
-- Istoric schimbari relevante: `docs/agent_changelog.md`.
+`backup/` este ignorat de git si trebuie tratat ca arhiva locala, nu ca sursa activa.
