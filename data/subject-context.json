@@ -1,0 +1,130 @@
+{
+  "allocations": [
+    {
+      "subjectId": "managementul-serviciilor",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "managementul-calitatii",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "econometrie",
+      "userType": "student",
+      "studyYear": 2,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "managementul-proiectelor",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "managementul-resurselor-umane",
+      "userType": "student",
+      "studyYear": 2,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "comportament-organizational",
+      "userType": "student",
+      "studyYear": 2,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "managementul-investitiilor",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "management-international",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "managementul-aprovizionarii-si-desfacerii",
+      "userType": "student",
+      "studyYear": 2,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "managementul-productiei",
+      "userType": "student",
+      "studyYear": 2,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "management-strategic",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "analiza-economico-financiara",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "management-financiar",
+      "userType": "student",
+      "studyYear": 3,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "audit",
+      "userType": "student",
+      "studyYear": 4,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "baze-de-date-pentru-management",
+      "userType": "student",
+      "studyYear": 1,
+      "semester": 2,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "economia-intreprinderii",
+      "userType": "student",
+      "studyYear": 1,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "management-comparat",
+      "userType": "student",
+      "studyYear": 4,
+      "semester": 1,
+      "schoolClass": null
+    },
+    {
+      "subjectId": "test",
+      "userType": "student",
+      "studyYear": 2,
+      "semester": 1,
+      "schoolClass": null
+    }
+  ]
+}

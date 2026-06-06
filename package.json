@@ -1,0 +1,41 @@
+{
+  "name": "app-licenta-facultate",
+  "private": true,
+  "scripts": {
+    "dev": "node --use-system-ca node_modules/next/dist/bin/next dev",
+    "dev:doctor": "powershell -ExecutionPolicy Bypass -File scripts/dev-doctor.ps1",
+    "dev:reset": "powershell -ExecutionPolicy Bypass -File scripts/dev-reset.ps1",
+    "start:reset": "powershell -ExecutionPolicy Bypass -File scripts/start-reset.ps1",
+    "auth:diagnose": "powershell -ExecutionPolicy Bypass -File scripts/auth-local-diagnose.ps1",
+    "local:probe": "powershell -ExecutionPolicy Bypass -File scripts/probe-local.ps1",
+    "server:status": "powershell -ExecutionPolicy Bypass -File scripts/server-status.ps1",
+    "server:stop": "powershell -ExecutionPolicy Bypass -File scripts/server-stop.ps1",
+    "agent:check": "powershell -ExecutionPolicy Bypass -File scripts/agent-check.ps1",
+    "backfill:ai-activity": "node scripts/backfill-ai-job-activity.mjs",
+    "openai:check": "node --use-system-ca scripts/openai-check.mjs",
+    "openai:check:live": "node --use-system-ca scripts/openai-check.mjs --live",
+    "supabase:check": "node --use-system-ca scripts/supabase-check.mjs",
+    "supabase:check:live": "node --use-system-ca scripts/supabase-check.mjs --live",
+    "vercel:preflight": "node scripts/vercel-preflight.mjs",
+    "workspace:audit": "powershell -ExecutionPolicy Bypass -File scripts/workspace-audit.ps1",
+    "build": "node --use-system-ca node_modules/next/dist/bin/next build",
+    "start": "node --use-system-ca node_modules/next/dist/bin/next start"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.105.1",
+    "lucide-react": "^1.16.0",
+    "mammoth": "^1.12.0",
+    "next": "15.5.18",
+    "openai": "^6.35.0",
+    "pdf-parse": "^2.4.5",
+    "pdfjs-dist": "^5.7.284",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "stripe": "^22.1.0",
+    "zod": "^4.4.1"
+  },
+  "overrides": {
+    "postcss": "8.5.14"
+  }
+}
