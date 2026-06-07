@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AIJobGlobalNotifier } from "@/components/ai-job-global-notifier";
 import { FeedbackLauncherServer } from "@/components/feedback-launcher-server";
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
         {children}
         <AIJobGlobalNotifier />
         <FeedbackLauncherServer />
+        <SpeedInsights />
       </body>
     </html>
   );
