@@ -81,6 +81,7 @@ Rulezi, in ordine, pentru Preview si apoi pentru Production:
 31. `supabase/migrations/0030_licenta_import_session_idempotency.sql`
 32. `supabase/migrations/0031_referral_rewards.sql`
 33. `supabase/migrations/0032_testimonial_reward_submissions.sql`
+34. `supabase/migrations/0033_admin_notification_views.sql`
 
 Pentru fluxul `AI question bank`, migratiile `0013`-`0016` sunt obligatorii.
 Migrarea `0017` este recomandata pentru logging OpenAI si audit, dar nu blocheaza procesarea joburilor.
@@ -198,6 +199,8 @@ Inainte de productie, verifica:
 16. creare materie custom fara dependenta de filesystem local
 
 ## 7. Vercel
+
+Vercel trebuie sa foloseasca Node.js `>=22.13.0`, conform `engines.node` din `package.json`. Scriptul `npm run build` ruleaza direct Next.js fara flag-uri Node specifice unei singure instalari locale.
 
 Seteaza toate env-urile atat pentru:
 
