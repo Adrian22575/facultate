@@ -68,6 +68,13 @@ npm run supabase:check:live
 
 Detalii: `docs/supabase-plugin.md`.
 
+
+## Publicare
+
+Aplicatia completa trebuie publicata pe Vercel sau pe o alta platforma care ruleaza Next.js cu Node.js runtime. GitHub Pages serveste doar fisiere statice si nu poate rula autentificarea, API routes, procesarea de materiale sau platile din aplicatie.
+
+Daca GitHub Pages afiseaza `404 File not found`, vezi `docs/github-pages.md`. Repository-ul contine `index.html` si `404.html` doar ca fallback static pentru configurari accidentale de Pages, nu ca deploy principal al aplicatiei.
+
 ## Note despre fisiere legacy
 
 Versiunea statica veche cu fisiere HTML/CSS/JS la radacina a fost arhivata in `backup/` cand aplicatia a devenit Next.js. Rutele legacy sunt pastrate prin redirecturi/rute Next, nu prin fisierele HTML vechi.

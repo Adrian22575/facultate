@@ -133,7 +133,7 @@ if (warnings.length) {
 
 console.log("");
 console.log("Manual checks still required:");
-console.log("- Supabase migrations 0001-0032 applied in the target project");
+console.log("- Supabase migrations 0001-0033 applied in the target project");
 console.log("- Supabase Auth Site URL and redirect URLs configured");
 console.log("- Supabase Storage bucket private-source-documents exists");
 console.log("- Google OAuth origins and callback URLs configured");
