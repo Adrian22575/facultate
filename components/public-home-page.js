@@ -159,7 +159,7 @@ export function PublicHomePage() {
               >
                 <span>Incepe gratuit cu Google</span>
               </GoogleSignInButton>
-              <Link className="nota5plus-btn public-home-secondary-action" href="/demo">
+              <Link className="nota5plus-btn public-home-secondary-action" href="/auth/demo-login?next=/demo">
                 Vezi demo
               </Link>
             </div>

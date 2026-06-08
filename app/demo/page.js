@@ -18,7 +18,7 @@ export default async function DemoPage() {
   const user = await getOptionalUser();
 
   if (!user) {
-    redirect("/auth/login?next=/demo");
+    redirect("/auth/demo-login?next=/demo");
   }
 
   if (!isDemoUser(user)) {
