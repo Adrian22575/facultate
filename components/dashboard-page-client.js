@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { HeaderCreditStatus } from "@/components/header-credit-status";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { SubjectsListClient } from "@/components/subjects-list-client";
 import { getLastSession } from "@/lib/session-storage";
 
@@ -114,9 +115,14 @@ export function DashboardPageClient({
               <div className="dashboard-hero-side-label">Continua de unde ai ramas</div>
               <h3>{continueTitle}</h3>
               <p>{`Ultimul mod folosit: ${continueMode}`}</p>
-              <Link href={continueUrl} className="dashboard-hero-side-btn">
+              <PendingNavigationLink
+                href={continueUrl}
+                className="dashboard-hero-side-btn"
+                pendingLabel="Se deschide sesiunea..."
+                pendingMode="replace"
+              >
                 Continua acum
-              </Link>
+              </PendingNavigationLink>
             </div>
           </div>
         </section>
@@ -162,9 +168,14 @@ export function DashboardPageClient({
                     <p>
                       60 de intrebari aleatorii din toate materiile, cu timer si ritm de examen real.
                     </p>
-                    <Link href="/licenta-exam" className="secondary-button dashboard-mode-cta">
+                    <PendingNavigationLink
+                      href="/licenta-exam"
+                      className="secondary-button dashboard-mode-cta"
+                      pendingLabel="Se porneste simularea..."
+                      pendingMode="replace"
+                    >
                       Porneste simularea
-                    </Link>
+                    </PendingNavigationLink>
                   </div>
                 </div>
               </div>

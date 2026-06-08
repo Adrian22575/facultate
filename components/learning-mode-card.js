@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 import Image from "next/image";
-import Link from "next/link";
+
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 function ModeVisual({ mode }) {
   const imageSrc = `/images/modes/${mode}.png`;
@@ -95,7 +96,11 @@ export function LearningModeCard({
   }
 
   return (
-    <Link href={href} className={sharedClassName}>
+    <PendingNavigationLink
+      href={href}
+      className={sharedClassName}
+      pendingLabel="Se deschide modul..."
+    >
       <ModeVisual mode={mode} />
       <div className="learning-mode-copy">
         {eyebrow ? <span className="learning-mode-kicker">{eyebrow}</span> : null}
@@ -115,6 +120,6 @@ export function LearningModeCard({
           </span>
         </div>
       </div>
-    </Link>
+    </PendingNavigationLink>
   );
 }

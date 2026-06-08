@@ -134,8 +134,8 @@ export default async function LoginPage({ searchParams }) {
             </h1>
 
             <p className="nota5plus-subtitle">
-              Incarci materia, iar platforma o transforma in <strong>intrebari, teste si recapitulare</strong>.
-              Repeti exact ce conteaza, fara PDF-uri pierdute si conversatii vechi.
+              Incarci materia, iar platforma o transforma in intrebari, teste si recapitulare. Repeti exact ce
+              conteaza, fara PDF-uri pierdute si conversatii vechi.
             </p>
 
             {error || !isConfigured ? (

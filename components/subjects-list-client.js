@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
+
 const YEARS = Array.from({ length: 10 }, (_, index) => index + 1);
 
 function normalizeText(value) {
@@ -191,14 +193,18 @@ export function SubjectsListClient({
         <ul className="action-list">
           {filteredSubjects.map((subject) => (
             <li key={subject.id}>
-              <Link className="test-link" href={`/materii/${subject.id}`}>
+              <PendingNavigationLink
+                className="test-link"
+                href={`/materii/${subject.id}`}
+                pendingLabel="Se deschide materia..."
+              >
                 <strong>{subject.title}</strong>
                 <span>
                   {userType === "student"
                     ? `Disponibila in Anul ${subject.allocation.studyYear} - Semestrul ${subject.allocation.semester}`
                     : `${subject.allocation.schoolClass} - Semestrul ${subject.allocation.semester}`}
                 </span>
-              </Link>
+              </PendingNavigationLink>
             </li>
           ))}
         </ul>
