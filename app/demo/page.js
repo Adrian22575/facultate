@@ -81,10 +81,7 @@ export default async function DemoPage() {
           buttonClassName="nota5plus-btn nota5plus-btn-secondary nota5plus-google-btn"
           errorClassName="nota5plus-inline-error"
         >
-          <>
-            <span className="nota5plus-google-icon">G</span>
-            Intra cu Google
-          </>
+          Intra cu Google
         </GoogleSignInButton>
       </section>
     </main>

@@ -7507,19 +7507,6 @@ td {
   font-weight: 500;
 }
 
-.nota5plus-google-icon {
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: #fff;
-  color: #4285f4;
-  font-family: Arial, sans-serif;
-  font-weight: 600;
-}
-
 .google-signin-content {
   width: 100%;
   display: inline-flex;
