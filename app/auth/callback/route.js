@@ -82,7 +82,7 @@ export async function GET(request) {
       );
     }
 
-    clearDemoSession();
+    await clearDemoSession();
 
     const {
       data: { user }
