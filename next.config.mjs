@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  outputFileTracingIncludes: {
+    "/*": ["./data/subjects.json", "./data/questions/**/*.json"]
+  },
   webpack(config, { dev }) {
     if (dev) {
       // Disable the persistent webpack cache in dev to avoid intermittent

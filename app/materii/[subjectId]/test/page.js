@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { TestPageClient } from "@/components/test-page-client";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
-import { getDemoSubject, getQuestionsForSubject } from "@/lib/data";
+import { getQuestionsForSubject } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { hasLearningModesAccess, LEARNING_MODES_LOCK_HREF } from "@/lib/learning-access";
 import { getOptionalUser } from "@/lib/supabase/guards";
@@ -31,13 +31,6 @@ export default async function TestPage({ params }) {
     academicContext = await getAcademicContext(user.id);
     if (!isAcademicContextComplete(academicContext)) {
       redirect(getOnboardingHref(`/materii/${resolvedParams.subjectId}/test`));
-    }
-  }
-
-  if (demoMode) {
-    const demoSubject = await getDemoSubject();
-    if (!demoSubject || resolvedParams.subjectId !== demoSubject.id) {
-      redirect("/demo");
     }
   }
 
