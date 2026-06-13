@@ -5481,6 +5481,24 @@ select:focus {
   margin: 0;
 }
 
+.licenta-prep-finish-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-color: rgba(37, 99, 235, 0.22);
+  background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.licenta-prep-finish-panel h2,
+.licenta-prep-finish-panel p {
+  margin: 0;
+}
+
+.licenta-prep-finish-panel .page-copy {
+  margin-top: 6px;
+}
+
 .licenta-prep-answers label {
   display: flex;
   align-items: flex-start;
@@ -6449,6 +6467,7 @@ td {
   .workspace-subject-helper,
   .workspace-modal-head,
   .licenta-prep-summary,
+  .licenta-prep-finish-panel,
   .licenta-prep-panel-head,
   .licenta-prep-result-head,
   .exam-empty-state-actions {

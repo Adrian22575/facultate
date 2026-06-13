@@ -453,9 +453,6 @@ export function ExamPageClient({ questions, subjectCount }) {
                 <button type="button" className="secondary" onClick={() => goToModes()}>
                   Inapoi la moduri
                 </button>
-                <button type="button" onClick={finishQuiz}>
-                  Vezi rezultatul
-                </button>
               </div>
             </div>
           </section>
@@ -485,6 +482,25 @@ export function ExamPageClient({ questions, subjectCount }) {
               </article>
             ))}
           </div>
+
+          <section className="surface licenta-prep-finish-panel" aria-label="Finalizeaza runda">
+            <div>
+              <span className="ui-section-label">Runda aproape gata</span>
+              <h2>Ai ajuns la finalul intrebarilor.</h2>
+              <p className="page-copy">
+                Ai raspuns la {answeredCount} din {currentQuestions.length} intrebari. Poti vedea rezultatul acum sau
+                te poti intoarce la moduri.
+              </p>
+            </div>
+            <div className="licenta-prep-actions">
+              <button type="button" className="secondary" onClick={() => goToModes()}>
+                Inapoi la moduri
+              </button>
+              <button type="button" onClick={finishQuiz}>
+                Vezi rezultatul
+              </button>
+            </div>
+          </section>
         </>
       ) : null}
 
