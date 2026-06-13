@@ -525,11 +525,22 @@ export function ExamPageClient({ questions, subjectCount }) {
                 <div className="meta">{question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}</div>
                 {isVerificationMode ? (
                   <>
-                    <div className="licenta-prep-proposed-answer">
-                      <span>Raspuns propus</span>
-                      <strong>
-                        {`${answerLabel(question.proposedIndex)}. ${question.answers[question.proposedIndex]}`}
-                      </strong>
+                    <div className="answers licenta-prep-answers licenta-prep-answers-check">
+                      {question.answers.map((answer, answerIndex) => (
+                        <div
+                          key={`${question.stableId}-verify-${answerIndex}`}
+                          className={
+                            answerIndex === question.proposedIndex
+                              ? "licenta-prep-answer-row is-proposed"
+                              : "licenta-prep-answer-row"
+                          }
+                        >
+                          <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
+                          {answerIndex === question.proposedIndex ? (
+                            <strong>Ales ca raspuns</strong>
+                          ) : null}
+                        </div>
+                      ))}
                     </div>
                     <div className="licenta-prep-truth-actions" aria-label="Alege daca raspunsul propus este corect">
                       <button

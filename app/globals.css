@@ -5515,27 +5515,28 @@ select:focus {
   margin-top: 3px;
 }
 
-.licenta-prep-proposed-answer {
-  display: grid;
-  gap: 6px;
+.licenta-prep-answers-check {
   margin-top: 14px;
-  padding: 14px;
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  border-radius: var(--radius);
+}
+
+.licenta-prep-answer-row.is-proposed {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-color: rgba(37, 99, 235, 0.42);
   background: #eff6ff;
 }
 
-.licenta-prep-proposed-answer span {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.licenta-prep-proposed-answer strong {
-  color: var(--ink);
-  line-height: 1.45;
+.licenta-prep-answer-row.is-proposed strong {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 0.74rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .licenta-prep-truth-actions {
@@ -6550,6 +6551,11 @@ td {
 
   .licenta-prep-truth-actions {
     grid-template-columns: 1fr;
+  }
+
+  .licenta-prep-answer-row.is-proposed {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .feedback-backdrop {
