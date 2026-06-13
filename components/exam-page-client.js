@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import {
   BookOpen,
   CheckCircle2,
-  GraduationCap,
   RotateCcw,
   SlidersHorizontal,
   Trophy,
@@ -17,7 +16,7 @@ import { shuffleArray } from "@/lib/quiz";
 
 const MISTAKES_STORAGE_KEY = "licenta_mistakes";
 const QUICK_QUESTION_COUNT = 5;
-const SIMULATION_QUESTION_COUNT = 30;
+const VERIFY_QUESTION_COUNT = 10;
 const CUSTOM_OPTIONS = [10, 20, 30, 40, 50, 60, 100];
 
 const MODE_COPY = {
@@ -39,11 +38,11 @@ const MODE_COPY = {
     button: "Repeta greselile",
     icon: RotateCcw
   },
-  simulation: {
-    title: "Simulare licenta",
-    description: "Fa un test apropiat de examen si vezi ce nota ai lua.",
-    button: "Incepe simularea",
-    icon: GraduationCap
+  verify: {
+    title: "Corect sau gresit",
+    description: "Primeste un raspuns deja ales si decide rapid daca este corect sau gresit.",
+    button: "Verifica raspunsuri",
+    icon: CheckCircle2
   },
   browse: {
     title: "Parcurge intrebarile",
@@ -102,6 +101,22 @@ function getResultMessage(percentage) {
 
 function answerLabel(index) {
   return String.fromCharCode(65 + index);
+}
+
+function getProposedAnswerIndex(question, index) {
+  const answers = Array.isArray(question.answers) ? question.answers : [];
+  const answerCount = answers.length;
+  const correctIndex = Number.isInteger(question.correctIndex) ? question.correctIndex : 0;
+
+  if (answerCount < 2 || index % 2 === 0) {
+    return Math.min(correctIndex, Math.max(answerCount - 1, 0));
+  }
+
+  const wrongIndexes = answers
+    .map((_, answerIndex) => answerIndex)
+    .filter((answerIndex) => answerIndex !== correctIndex);
+
+  return wrongIndexes[index % wrongIndexes.length] ?? correctIndex;
 }
 
 function scrollToTop() {
@@ -207,6 +222,32 @@ export function ExamPageClient({ questions, subjectCount }) {
     scrollToTop();
   }
 
+  function startVerifyRound() {
+    setNotice("");
+    setResultSummary(null);
+    setActiveMode("verify");
+
+    if (!preparedQuestions.length) {
+      setActiveMode(null);
+      setNotice("Nu exista intrebari disponibile momentan.");
+      setPhase("modes");
+      scrollToTop();
+      return;
+    }
+
+    const selectedQuestions = shuffleArray(preparedQuestions)
+      .slice(0, Math.min(VERIFY_QUESTION_COUNT, preparedQuestions.length))
+      .map((question, index) => ({
+        ...question,
+        proposedIndex: getProposedAnswerIndex(question, index)
+      }));
+
+    setCurrentQuestions(selectedQuestions);
+    setAnswers(new Array(selectedQuestions.length).fill(null));
+    setPhase("quiz");
+    scrollToTop();
+  }
+
   function startBrowseQuestions() {
     setNotice("");
     setResultSummary(null);
@@ -241,13 +282,27 @@ export function ExamPageClient({ questions, subjectCount }) {
     }
   }
 
+  function answerVerificationQuestion(questionIndex, userBelievesCorrect) {
+    const nextAnswers = [...answers];
+    nextAnswers[questionIndex] = userBelievesCorrect;
+    setAnswers(nextAnswers);
+  }
+
   function finishQuiz() {
     const wrongQuestions = [];
     let score = 0;
 
     currentQuestions.forEach((question, index) => {
-      const selectedIndex = answers[index];
-      const isCorrect = selectedIndex === question.correctIndex;
+      const selectedAnswer = answers[index];
+      const proposedIndex =
+        activeMode === "verify" && Number.isInteger(question.proposedIndex)
+          ? question.proposedIndex
+          : null;
+      const proposedIsCorrect = proposedIndex === question.correctIndex;
+      const isCorrect =
+        activeMode === "verify"
+          ? selectedAnswer === proposedIsCorrect
+          : selectedAnswer === question.correctIndex;
 
       if (isCorrect) {
         score += 1;
@@ -259,7 +314,9 @@ export function ExamPageClient({ questions, subjectCount }) {
 
       wrongQuestions.push({
         question,
-        selectedIndex
+        selectedIndex: activeMode === "verify" ? null : selectedAnswer,
+        selectedTruth: activeMode === "verify" ? selectedAnswer : null,
+        proposedIndex
       });
       addMistake(question);
     });
@@ -290,8 +347,8 @@ export function ExamPageClient({ questions, subjectCount }) {
       return;
     }
 
-    if (resultSummary.mode === "simulation") {
-      startQuiz(SIMULATION_QUESTION_COUNT, "simulation");
+    if (resultSummary.mode === "verify") {
+      startVerifyRound();
       return;
     }
 
@@ -349,6 +406,8 @@ export function ExamPageClient({ questions, subjectCount }) {
   }
 
   const activeModeCopy = activeMode ? MODE_COPY[activeMode] : null;
+  const isVerificationMode = activeMode === "verify";
+  const isResultVerificationMode = resultSummary?.mode === "verify";
   const answeredCount = answers.filter((answer) => answer !== null).length;
   const browseQuestion = currentQuestions[browseIndex];
 
@@ -373,7 +432,7 @@ export function ExamPageClient({ questions, subjectCount }) {
           {notice ? <div className="licenta-prep-notice">{notice}</div> : null}
 
           <div className="licenta-prep-mode-grid" aria-label="Moduri pregatire licenta">
-            {["quick", "custom", "mistakes", "simulation", "browse"].map((mode) => {
+            {["quick", "custom", "mistakes", "verify", "browse"].map((mode) => {
               const copy = MODE_COPY[mode];
               const Icon = copy.icon;
               const isBrowse = mode === "browse";
@@ -401,7 +460,7 @@ export function ExamPageClient({ questions, subjectCount }) {
                         scrollToTop();
                       }
                       if (mode === "mistakes") startQuiz(mistakeIds.length, "mistakes");
-                      if (mode === "simulation") startQuiz(SIMULATION_QUESTION_COUNT, "simulation");
+                      if (mode === "verify") startVerifyRound();
                       if (mode === "browse") startBrowseQuestions();
                     }}
                   >
@@ -446,7 +505,9 @@ export function ExamPageClient({ questions, subjectCount }) {
               <div>
                 <div className="exam-info-title">{activeModeCopy?.title || "Test licenta"}</div>
                 <div className="exam-info-meta">
-                  {`Intrebari: ${currentQuestions.length} | Raspunse: ${answeredCount} | Neraspunse: ${currentQuestions.length - answeredCount}`}
+                  {isVerificationMode
+                    ? `Intrebari: ${currentQuestions.length} | Verificate: ${answeredCount} | Neverificate: ${currentQuestions.length - answeredCount}`
+                    : `Intrebari: ${currentQuestions.length} | Raspunse: ${answeredCount} | Neraspunse: ${currentQuestions.length - answeredCount}`}
                 </div>
               </div>
               <div className="licenta-prep-actions">
@@ -462,23 +523,50 @@ export function ExamPageClient({ questions, subjectCount }) {
               <article key={`${question.stableId}-${index}`} className="question licenta-prep-question">
                 <div className="question-title">{`${index + 1}. ${question.text}`}</div>
                 <div className="meta">{question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}</div>
-                <div className="answers licenta-prep-answers">
-                  {question.answers.map((answer, answerIndex) => (
-                    <label
-                      key={`${question.stableId}-${answerIndex}`}
-                      className={answers[index] === answerIndex ? "is-selected" : ""}
-                    >
-                      <input
-                        checked={answers[index] === answerIndex}
-                        name={`licenta-q-${index}`}
-                        type="radio"
-                        value={answerIndex}
-                        onChange={() => answerQuestion(index, answerIndex)}
-                      />
-                      <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
-                    </label>
-                  ))}
-                </div>
+                {isVerificationMode ? (
+                  <>
+                    <div className="licenta-prep-proposed-answer">
+                      <span>Raspuns propus</span>
+                      <strong>
+                        {`${answerLabel(question.proposedIndex)}. ${question.answers[question.proposedIndex]}`}
+                      </strong>
+                    </div>
+                    <div className="licenta-prep-truth-actions" aria-label="Alege daca raspunsul propus este corect">
+                      <button
+                        type="button"
+                        className={answers[index] === true ? "is-selected" : ""}
+                        onClick={() => answerVerificationQuestion(index, true)}
+                      >
+                        Corect
+                      </button>
+                      <button
+                        type="button"
+                        className={answers[index] === false ? "is-selected" : ""}
+                        onClick={() => answerVerificationQuestion(index, false)}
+                      >
+                        Gresit
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="answers licenta-prep-answers">
+                    {question.answers.map((answer, answerIndex) => (
+                      <label
+                        key={`${question.stableId}-${answerIndex}`}
+                        className={answers[index] === answerIndex ? "is-selected" : ""}
+                      >
+                        <input
+                          checked={answers[index] === answerIndex}
+                          name={`licenta-q-${index}`}
+                          type="radio"
+                          value={answerIndex}
+                          onChange={() => answerQuestion(index, answerIndex)}
+                        />
+                        <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -488,8 +576,9 @@ export function ExamPageClient({ questions, subjectCount }) {
               <span className="ui-section-label">Runda aproape gata</span>
               <h2>Ai ajuns la finalul intrebarilor.</h2>
               <p className="page-copy">
-                Ai raspuns la {answeredCount} din {currentQuestions.length} intrebari. Poti vedea rezultatul acum sau
-                te poti intoarce la moduri.
+                {isVerificationMode
+                  ? `Ai verificat ${answeredCount} din ${currentQuestions.length} raspunsuri propuse. Poti vedea rezultatul acum sau te poti intoarce la moduri.`
+                  : `Ai raspuns la ${answeredCount} din ${currentQuestions.length} intrebari. Poti vedea rezultatul acum sau te poti intoarce la moduri.`}
               </p>
             </div>
             <div className="licenta-prep-actions">
@@ -590,30 +679,60 @@ export function ExamPageClient({ questions, subjectCount }) {
           </div>
 
           <hr className="result-divider" />
-          <h3>Intrebari gresite</h3>
+          <h3>{isResultVerificationMode ? "Verificari gresite" : "Intrebari gresite"}</h3>
 
           {resultSummary.wrongQuestions.length ? (
             <div className="licenta-prep-wrong-list">
-              {resultSummary.wrongQuestions.map(({ question, selectedIndex }, index) => (
+              {resultSummary.wrongQuestions.map(({ question, selectedIndex, selectedTruth, proposedIndex }, index) => (
                 <article key={`${question.stableId}-wrong-${index}`} className="result-detail">
                   <strong>{`${index + 1}. ${question.text}`}</strong>
                   <div className="result-meta">
                     {question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}
                   </div>
-                  <div>
-                    Raspunsul tau:{" "}
-                    {selectedIndex !== null && selectedIndex !== undefined
-                      ? question.answers[selectedIndex]
-                      : "Fara raspuns"}
-                  </div>
-                  <div>
-                    Raspuns corect: <strong>{question.answers[question.correctIndex]}</strong>
-                  </div>
+                  {isResultVerificationMode ? (
+                    <>
+                      <div>
+                        Raspuns propus:{" "}
+                        <strong>
+                          {proposedIndex !== null && proposedIndex !== undefined
+                            ? `${answerLabel(proposedIndex)}. ${question.answers[proposedIndex]}`
+                            : "Fara raspuns propus"}
+                        </strong>
+                      </div>
+                      <div>
+                        Ai spus:{" "}
+                        {selectedTruth === true ? "Corect" : selectedTruth === false ? "Gresit" : "Fara raspuns"}
+                      </div>
+                      <div>
+                        Raspunsul propus era:{" "}
+                        <strong>{proposedIndex === question.correctIndex ? "Corect" : "Gresit"}</strong>
+                      </div>
+                      <div>
+                        Raspuns corect: <strong>{question.answers[question.correctIndex]}</strong>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        Raspunsul tau:{" "}
+                        {selectedIndex !== null && selectedIndex !== undefined
+                          ? question.answers[selectedIndex]
+                          : "Fara raspuns"}
+                      </div>
+                      <div>
+                        Raspuns corect: <strong>{question.answers[question.correctIndex]}</strong>
+                      </div>
+                    </>
+                  )}
                 </article>
               ))}
             </div>
           ) : (
-            <p className="page-copy">Nu ai gresit nicio intrebare in aceasta runda.</p>
+            <p className="page-copy">
+              {isResultVerificationMode
+                ? "Nu ai ratat nicio verificare in aceasta runda."
+                : "Nu ai gresit nicio intrebare in aceasta runda."}
+            </p>
           )}
 
           <div className="licenta-prep-actions licenta-prep-result-actions">
