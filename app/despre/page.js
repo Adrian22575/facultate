@@ -18,6 +18,8 @@ import { hasSupabasePublicEnv } from "@/lib/env/public";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nota5plus.ro";
 const pageUrl = `${siteUrl}/despre`;
+const homeHref = "/auth/exit-demo?next=/";
+const loginHref = `/auth/exit-demo?next=${encodeURIComponent("/auth/login?next=/")}`;
 
 const audienceCards = [
   {
@@ -260,7 +262,7 @@ export default function DesprePage() {
       <AboutStructuredData />
       <div className="about-container">
         <nav className="about-nav" aria-label="Navigare pagina despre">
-          <Link className="nota5plus-brand" href="/">
+          <Link className="nota5plus-brand" href={homeHref}>
             <span className="nota5plus-brand-mark">5+</span>
             <span>Nota 5+</span>
           </Link>
@@ -271,7 +273,7 @@ export default function DesprePage() {
             <Link href="#intrebari" className="nota5plus-nav-link">
               Intrebari
             </Link>
-            <Link href="/auth/login?next=/" className="about-login-link">
+            <Link href={loginHref} className="about-login-link">
               Intra in cont
             </Link>
           </div>
