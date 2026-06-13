@@ -15,6 +15,14 @@ export const metadata = {
   authors: [{ name: "Nota 5+" }],
   creator: "Nota 5+",
   publisher: "Nota 5+",
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=2", sizes: "any" },
+      { url: "/icon.png?v=2", type: "image/png", sizes: "512x512" }
+    ],
+    shortcut: ["/favicon.ico?v=2"],
+    apple: [{ url: "/apple-icon.png?v=2", type: "image/png", sizes: "180x180" }]
+  },
   robots: {
     index: true,
     follow: true,
