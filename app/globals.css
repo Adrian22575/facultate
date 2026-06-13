@@ -5686,6 +5686,83 @@ select:focus {
   gap: 12px;
 }
 
+.licenta-prep-wrong-list .result-detail {
+  display: grid;
+  gap: 12px;
+  border-color: rgba(185, 28, 28, 0.18);
+  background: linear-gradient(135deg, #ffffff 0%, #fff7f7 100%);
+}
+
+.licenta-result-review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.licenta-result-review-item {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.licenta-result-review-item span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.licenta-result-review-item strong {
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.licenta-result-review-item.is-proposed {
+  border-color: rgba(37, 99, 235, 0.28);
+  background: #eff6ff;
+}
+
+.licenta-result-review-item.is-positive {
+  border-color: rgba(21, 128, 61, 0.28);
+  background: #ecfdf3;
+}
+
+.licenta-result-review-item.is-positive span,
+.licenta-result-review-item.is-positive strong {
+  color: #166534;
+}
+
+.licenta-result-review-item.is-negative {
+  border-color: rgba(185, 28, 28, 0.28);
+  background: #fef2f2;
+}
+
+.licenta-result-review-item.is-negative span,
+.licenta-result-review-item.is-negative strong {
+  color: #991b1b;
+}
+
+.licenta-result-review-item.is-muted {
+  border-color: var(--line);
+  background: var(--surface-soft);
+}
+
+.licenta-result-review-item.is-correct-answer {
+  grid-column: 1 / -1;
+  border-color: rgba(21, 128, 61, 0.32);
+  background: linear-gradient(135deg, #ecfdf3 0%, #f7fee7 100%);
+}
+
+.licenta-result-review-item.is-correct-answer span,
+.licenta-result-review-item.is-correct-answer strong {
+  color: #14532d;
+}
+
 .licenta-prep-result-actions {
   justify-content: flex-start;
 }
@@ -6627,6 +6704,10 @@ td {
 }
 
 @media (max-width: 560px) {
+  .licenta-result-review-grid {
+    grid-template-columns: 1fr;
+  }
+
   .licenta-prep-truth-actions {
     grid-template-columns: 1fr;
   }

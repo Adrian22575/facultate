@@ -703,39 +703,53 @@ export function ExamPageClient({ questions, subjectCount }) {
                     {question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}
                   </div>
                   {isResultVerificationMode ? (
-                    <>
-                      <div>
-                        Raspuns propus:{" "}
+                    <div className="licenta-result-review-grid">
+                      <div className="licenta-result-review-item is-proposed">
+                        <span>Raspuns ales</span>
                         <strong>
                           {proposedIndex !== null && proposedIndex !== undefined
                             ? `${answerLabel(proposedIndex)}. ${question.answers[proposedIndex]}`
                             : "Fara raspuns propus"}
                         </strong>
                       </div>
-                      <div>
-                        Ai spus:{" "}
-                        {selectedTruth === true ? "Corect" : selectedTruth === false ? "Gresit" : "Fara raspuns"}
+                      <div
+                        className={`licenta-result-review-item ${
+                          selectedTruth === true ? "is-positive" : selectedTruth === false ? "is-negative" : "is-muted"
+                        }`}
+                      >
+                        <span>Tu ai spus</span>
+                        <strong>
+                          {selectedTruth === true ? "Corect" : selectedTruth === false ? "Gresit" : "Fara raspuns"}
+                        </strong>
                       </div>
-                      <div>
-                        Raspunsul propus era:{" "}
+                      <div
+                        className={`licenta-result-review-item ${
+                          proposedIndex === question.correctIndex ? "is-positive" : "is-negative"
+                        }`}
+                      >
+                        <span>De fapt era</span>
                         <strong>{proposedIndex === question.correctIndex ? "Corect" : "Gresit"}</strong>
                       </div>
-                      <div>
-                        Raspuns corect: <strong>{question.answers[question.correctIndex]}</strong>
+                      <div className="licenta-result-review-item is-correct-answer">
+                        <span>Raspuns corect</span>
+                        <strong>{`${answerLabel(question.correctIndex)}. ${question.answers[question.correctIndex]}`}</strong>
                       </div>
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <div>
-                        Raspunsul tau:{" "}
-                        {selectedIndex !== null && selectedIndex !== undefined
-                          ? question.answers[selectedIndex]
-                          : "Fara raspuns"}
+                    <div className="licenta-result-review-grid">
+                      <div className="licenta-result-review-item is-negative">
+                        <span>Raspunsul tau</span>
+                        <strong>
+                          {selectedIndex !== null && selectedIndex !== undefined
+                            ? `${answerLabel(selectedIndex)}. ${question.answers[selectedIndex]}`
+                            : "Fara raspuns"}
+                        </strong>
                       </div>
-                      <div>
-                        Raspuns corect: <strong>{question.answers[question.correctIndex]}</strong>
+                      <div className="licenta-result-review-item is-correct-answer">
+                        <span>Raspuns corect</span>
+                        <strong>{`${answerLabel(question.correctIndex)}. ${question.answers[question.correctIndex]}`}</strong>
                       </div>
-                    </>
+                    </div>
                   )}
                 </article>
               ))}
