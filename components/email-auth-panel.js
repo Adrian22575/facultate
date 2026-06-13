@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useFormStatus } from "react-dom";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -17,6 +18,7 @@ import {
   signInWithPasswordAction,
   signUpWithEmailAction
 } from "@/app/auth/password-actions";
+import { LoadingIconText } from "@/components/loading-spinner";
 
 function normalizeInitialMode(mode) {
   return ["login", "signup", "forgot"].includes(mode) ? mode : "login";
@@ -34,6 +36,18 @@ function AuthInput({ id, label, hint = "", action = null, icon: Icon, children }
         {children}
       </span>
     </div>
+  );
+}
+
+function EmailAuthSubmitButton({ children, pendingLabel }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <button className="email-auth-primary" type="submit" disabled={pending}>
+      <LoadingIconText loading={pending} loadingLabel={pendingLabel}>
+        {children}
+      </LoadingIconText>
+    </button>
   );
 }
 
@@ -156,9 +170,7 @@ export function EmailAuthPanel({
               required
             />
           </AuthInput>
-          <button className="email-auth-primary" type="submit">
-            Intra
-          </button>
+          <EmailAuthSubmitButton pendingLabel="Se autentifica...">Intra</EmailAuthSubmitButton>
           <p className="email-auth-switch">
             Nu ai cont?{" "}
             <button className="email-auth-switch-button" type="button" onClick={() => showMode("signup")}>
@@ -256,9 +268,7 @@ export function EmailAuthPanel({
               required
             />
           </AuthInput>
-          <button className="email-auth-primary" type="submit">
-            Creeaza cont
-          </button>
+          <EmailAuthSubmitButton pendingLabel="Se creeaza contul...">Creeaza cont</EmailAuthSubmitButton>
           <button className="email-auth-secondary-button" type="button" onClick={() => setSignupStep(1)}>
             Inapoi la datele de contact
           </button>
@@ -271,9 +281,7 @@ export function EmailAuthPanel({
           <AuthInput id="forgot-email" label="Email" icon={Mail}>
             <input id="forgot-email" className="email-auth-input" type="email" name="email" autoComplete="email" required />
           </AuthInput>
-          <button className="email-auth-primary" type="submit">
-            Trimite link
-          </button>
+          <EmailAuthSubmitButton pendingLabel="Se trimite linkul...">Trimite link</EmailAuthSubmitButton>
           <button className="email-auth-secondary-button" type="button" onClick={() => showMode("login")}>
             Inapoi la autentificare
           </button>
