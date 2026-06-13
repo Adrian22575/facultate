@@ -5542,13 +5542,19 @@ select:focus {
 .licenta-prep-truth-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 6px;
+  width: min(100%, 420px);
   margin-top: 12px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--surface-soft);
 }
 
 .licenta-prep-truth-actions button {
   min-height: var(--touch-target);
-  border: 1px solid var(--line);
+  width: 100%;
+  border: 1px solid transparent;
   background: var(--surface);
   color: var(--ink);
 }
@@ -5565,8 +5571,8 @@ select:focus {
 }
 
 .licenta-prep-truth-actions .licenta-prep-truth-button.is-selected {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(23, 32, 51, 0.14);
+  transform: none;
+  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.12);
 }
 
 .licenta-prep-truth-actions .licenta-prep-truth-button.is-correct-choice.is-selected {
@@ -6579,10 +6585,6 @@ td {
     justify-content: center;
   }
 
-  .licenta-prep-truth-actions {
-    grid-template-columns: 1fr;
-  }
-
   .licenta-prep-answer-row.is-proposed {
     flex-direction: column;
     align-items: flex-start;
@@ -6625,6 +6627,10 @@ td {
 }
 
 @media (max-width: 560px) {
+  .licenta-prep-truth-actions {
+    grid-template-columns: 1fr;
+  }
+
   .dashboard-hero-title {
     font-size: 2.8rem;
   }
