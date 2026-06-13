@@ -545,14 +545,16 @@ export function ExamPageClient({ questions, subjectCount }) {
                     <div className="licenta-prep-truth-actions" aria-label="Alege daca raspunsul propus este corect">
                       <button
                         type="button"
-                        className={answers[index] === true ? "is-selected" : ""}
+                        aria-pressed={answers[index] === true}
+                        className={`secondary licenta-prep-truth-button is-correct-choice${answers[index] === true ? " is-selected" : ""}`}
                         onClick={() => answerVerificationQuestion(index, true)}
                       >
                         Corect
                       </button>
                       <button
                         type="button"
-                        className={answers[index] === false ? "is-selected" : ""}
+                        aria-pressed={answers[index] === false}
+                        className={`secondary licenta-prep-truth-button is-wrong-choice${answers[index] === false ? " is-selected" : ""}`}
                         onClick={() => answerVerificationQuestion(index, false)}
                       >
                         Gresit
