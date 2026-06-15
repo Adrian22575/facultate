@@ -91,6 +91,8 @@ export default async function SetupPage() {
   const supabaseServerReady = hasSupabaseServiceEnv();
   const stripeSecretReady = hasStripeSecretEnv();
   const stripeWebhookReady = hasStripeWebhookEnv();
+  const stripeSandboxSecretReady = hasStripeSecretEnv("sandbox");
+  const stripeSandboxWebhookReady = hasStripeWebhookEnv("sandbox");
   const openaiReady = hasOpenAIEnv();
   const telegramReady = hasTelegramNotificationEnv();
   const telegramEnvStatus = getTelegramNotificationEnvStatus();
@@ -193,6 +195,23 @@ export default async function SetupPage() {
               Necesare: <code>STRIPE_WEBHOOK_SECRET</code> pentru verificarea semnaturii
               webhook.
             </p>
+          </StepCard>
+
+          <StepCard title="Stripe sandbox admin" ready={stripeSandboxSecretReady}>
+            <p>
+              Optional pentru contul admin: <code>STRIPE_SANDBOX_SECRET_KEY</code> muta
+              checkout-ul admin pe mediul sandbox.
+            </p>
+            <div className="status-stack">
+              <DiagnosticStatusRow
+                label="Sandbox secret key"
+                ready={stripeSandboxSecretReady}
+              />
+              <DiagnosticStatusRow
+                label="Sandbox webhook secret"
+                ready={stripeSandboxWebhookReady}
+              />
+            </div>
           </StepCard>
 
           <StepCard title="Cheie procesare server" ready={openaiReady}>

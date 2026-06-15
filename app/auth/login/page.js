@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { isDemoUser } from "@/lib/demo-user";
 import { hasSupabasePublicEnv } from "@/lib/env/public";
 import { getOptionalUser } from "@/lib/supabase/guards";
@@ -15,12 +16,7 @@ export const metadata = {
 
 export default async function LoginPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  const nextPath =
-    typeof resolvedSearchParams?.next === "string" &&
-    resolvedSearchParams.next.startsWith("/") &&
-    !resolvedSearchParams.next.startsWith("//")
-      ? resolvedSearchParams.next
-      : "/";
+  const nextPath = getPostLoginNextPath(resolvedSearchParams?.next);
   const error =
     typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : undefined;
   const hasReferralInvite = resolvedSearchParams?.ref === "1";

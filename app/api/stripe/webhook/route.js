@@ -7,10 +7,30 @@ import {
   failStripeEventProcessing
 } from "@/lib/billing";
 import { assertRateLimit } from "@/lib/rate-limit";
-import { getStripe, getStripeWebhookSecret, hasStripeWebhookSecret } from "@/lib/stripe/server";
+import {
+  getAvailableStripeWebhookModes,
+  getStripe,
+  getStripeWebhookSecret
+} from "@/lib/stripe/server";
+
+function constructStripeEvent(payload, signature) {
+  const stripeModes = getAvailableStripeWebhookModes();
+  let lastError = null;
+
+  for (const stripeMode of stripeModes) {
+    try {
+      const stripe = getStripe(stripeMode);
+      return stripe.webhooks.constructEvent(payload, signature, getStripeWebhookSecret(stripeMode));
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError || new Error("Nu exista niciun webhook Stripe configurat.");
+}
 
 export async function POST(request) {
-  if (!hasStripeWebhookSecret()) {
+  if (!getAvailableStripeWebhookModes().length) {
     return NextResponse.json(
       { error: "Stripe webhook nu este configurat pe server." },
       { status: 503 }
@@ -23,7 +43,6 @@ export async function POST(request) {
   }
 
   const payload = await request.text();
-  const stripe = getStripe();
   const forwardedFor = request.headers.get("x-forwarded-for");
   const webhookSubject = forwardedFor || "stripe_webhook";
 
@@ -49,11 +68,7 @@ export async function POST(request) {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      payload,
-      signature,
-      getStripeWebhookSecret()
-    );
+    event = constructStripeEvent(payload, signature);
   } catch (error) {
     return NextResponse.json(
       {

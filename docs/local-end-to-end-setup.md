@@ -4,7 +4,7 @@ Acest ghid acopera setup-ul local complet pentru login, billing, webhook si gene
 
 ## 1. Reguli de securitate
 
-- pastreaza `OPENAI_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` si `SUPABASE_SERVICE_ROLE_KEY` doar in `.env.local` sau in env-urile server-side din platforma de deploy
+- pastreaza `OPENAI_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, cheile Stripe sandbox si `SUPABASE_SERVICE_ROLE_KEY` doar in `.env.local` sau in env-urile server-side din platforma de deploy
 - nu copia chei secrete in `app/*`, `components/*`, `lib/*`, JSON-uri, documentatie sau commit-uri
 - daca o cheie secreta a fost distribuita in chat sau in alte canale nesigure, roteste-o inainte de utilizare serioasa
 
@@ -20,6 +20,11 @@ Valorile obligatorii pentru setup local:
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `OPENAI_API_KEY`
 - `STRIPE_SECRET_KEY`
+
+Pentru ca doar contul admin sa foloseasca Stripe sandbox separat, completezi optional:
+
+- `STRIPE_SANDBOX_SECRET_KEY`
+- `STRIPE_SANDBOX_WEBHOOK_SECRET`
 
 La primul pas poti lasa:
 
@@ -131,6 +136,10 @@ stripe listen --events checkout.session.completed --forward-to http://localhost:
 Copiezi secretul `whsec_...` afisat de Stripe CLI in:
 
 - `STRIPE_WEBHOOK_SECRET`
+
+Pentru checkout-ul separat al contului admin, pornesti listener-ul pe contul sandbox folosit de cheia admin si copiezi secretul in:
+
+- `STRIPE_SANDBOX_WEBHOOK_SECRET`
 
 Pentru testarea locala nu este necesar inca un webhook public configurat in Stripe Dashboard.
 

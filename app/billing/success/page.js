@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AppHeader } from "@/components/app-header";
 import { BillingSuccessRedirect } from "@/components/billing-success-redirect";
 import { getBillingSnapshot, reconcileCheckoutSession } from "@/lib/billing";
-import { hasStripeEnv } from "@/lib/stripe/server";
+import { hasStripeEnv, resolveStripeMode } from "@/lib/stripe/server";
 
 export const metadata = {
   title: "Plata reusita | Nota 5+"
@@ -33,10 +33,11 @@ export default async function BillingSuccessPage({ searchParams }) {
     "Te trimitem automat in cateva secunde. Daca vrei, poti merge acum direct mai jos.";
 
   const sessionId = resolvedSearchParams?.session_id;
+  const stripeMode = resolveStripeMode(resolvedSearchParams?.stripe_mode);
 
-  if (typeof sessionId === "string" && sessionId && hasStripeEnv()) {
+  if (typeof sessionId === "string" && sessionId && hasStripeEnv(stripeMode)) {
     try {
-      const result = await reconcileCheckoutSession(sessionId);
+      const result = await reconcileCheckoutSession(sessionId, { stripeMode });
       targetHref = returnTo || `/cont?section=${result.section}&sync=${result.status}`;
 
       if (result.status === "applied") {

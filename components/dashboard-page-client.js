@@ -68,7 +68,7 @@ export function DashboardPageClient({
               </>
             ) : (
               <>
-                <Link href="/auth/login?next=/cont" className="dashboard-nav-btn">
+                <Link href="/auth/login?next=/" className="dashboard-nav-btn">
                   Intra in cont
                 </Link>
                 <GoogleSignInButton

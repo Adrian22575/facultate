@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { EmailAuthPanel } from "@/components/email-auth-panel";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
-import { getSafeNextPath } from "@/lib/auth/password-auth";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
@@ -14,7 +14,7 @@ export const metadata = {
 
 export default async function EmailLoginPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  const nextPath = getSafeNextPath(resolvedSearchParams?.next);
+  const nextPath = getPostLoginNextPath(resolvedSearchParams?.next);
   const user = await getOptionalUser();
 
   if (user) {

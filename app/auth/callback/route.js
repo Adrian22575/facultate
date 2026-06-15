@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getAcademicContext, isAcademicContextComplete } from "@/lib/academic/server";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { clearDemoSession } from "@/lib/demo-session";
 import { ensurePremiumGrantFromAllowlist } from "@/lib/free-access";
 import { notifyAdminUserCreated } from "@/lib/notifications/telegram";
@@ -14,14 +15,6 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 const NEW_AUTH_USER_WINDOW_MS = 10 * 60 * 1000;
-
-function getSafeInternalPath(path, fallback = "/") {
-  if (typeof path === "string" && path.startsWith("/") && !path.startsWith("//")) {
-    return path;
-  }
-
-  return fallback;
-}
 
 function isRecentlyCreatedAuthUser(user) {
   const createdAt = Date.parse(user?.created_at || "");
@@ -58,7 +51,7 @@ export async function GET(request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const nextPath = requestUrl.searchParams.get("next");
-  const safeNext = getSafeInternalPath(nextPath);
+  const safeNext = getPostLoginNextPath(nextPath);
   const referralCode = request.cookies.get(REFERRAL_COOKIE_NAME)?.value || "";
 
   if (!code) {

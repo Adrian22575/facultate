@@ -16,7 +16,7 @@ export async function GET(request, { params }) {
   const referralCode = normalizeReferralCode(resolvedParams?.code);
   const destination = new URL("/auth/login", requestUrl.origin);
 
-  destination.searchParams.set("next", "/cont");
+  destination.searchParams.set("next", "/");
 
   if (referralCode) {
     destination.searchParams.set("ref", "1");

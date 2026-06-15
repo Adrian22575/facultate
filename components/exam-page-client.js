@@ -103,6 +103,16 @@ function answerLabel(index) {
   return String.fromCharCode(65 + index);
 }
 
+function getResultSubjectMeta(question) {
+  const subjectTitle = String(question.subjectTitle || "").trim();
+
+  if (!subjectTitle || subjectTitle.toLowerCase() === "licenta generala") {
+    return "";
+  }
+
+  return `Materia: ${subjectTitle}`;
+}
+
 function getProposedAnswerIndex(question, index) {
   const answers = Array.isArray(question.answers) ? question.answers : [];
   const answerCount = answers.length;
@@ -699,9 +709,9 @@ export function ExamPageClient({ questions, subjectCount }) {
               {resultSummary.wrongQuestions.map(({ question, selectedIndex, selectedTruth, proposedIndex }, index) => (
                 <article key={`${question.stableId}-wrong-${index}`} className="result-detail">
                   <strong>{`${index + 1}. ${question.text}`}</strong>
-                  <div className="result-meta">
-                    {question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}
-                  </div>
+                  {getResultSubjectMeta(question) ? (
+                    <div className="result-meta">{getResultSubjectMeta(question)}</div>
+                  ) : null}
                   {isResultVerificationMode ? (
                     <div className="licenta-result-review-grid">
                       <div className="licenta-result-review-item is-proposed">

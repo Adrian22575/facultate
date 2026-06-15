@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 import {
-  getSafeNextPath,
+  getPostLoginNextPath,
   isValidEmail,
   normalizeEmailInput,
   normalizePhoneInput
@@ -148,7 +148,7 @@ async function profileEmailExists(email) {
 }
 
 export async function signUpWithEmailAction(formData) {
-  const nextPath = getSafeNextPath(formData.get("next"));
+  const nextPath = getPostLoginNextPath(formData.get("next"));
   const cookieStore = await cookies();
   const referralCode = cookieStore.get(REFERRAL_COOKIE_NAME)?.value || "";
   const fullName = String(formData.get("fullName") || "").trim();
@@ -289,7 +289,7 @@ export async function signUpWithEmailAction(formData) {
 }
 
 export async function signInWithPasswordAction(formData) {
-  const nextPath = getSafeNextPath(formData.get("next"));
+  const nextPath = getPostLoginNextPath(formData.get("next"));
   const email = normalizeEmailInput(formData.get("email"));
   const password = String(formData.get("password") || "");
 
@@ -353,7 +353,7 @@ export async function signInWithPasswordAction(formData) {
 }
 
 export async function forgotPasswordAction(formData) {
-  const nextPath = getSafeNextPath(formData.get("next"));
+  const nextPath = getPostLoginNextPath(formData.get("next"));
   const email = normalizeEmailInput(formData.get("email"));
 
   if (!isValidEmail(email)) {

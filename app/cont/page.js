@@ -14,12 +14,13 @@ import {
   getOnboardingHref,
   isAcademicContextComplete
 } from "@/lib/academic/server";
+import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
 import { hasSupabasePublicEnv } from "@/lib/env/public";
 import { getReferralDashboard, getReferralInvitationForUser } from "@/lib/referrals";
 import { BILLING_PLAN_LIST } from "@/lib/stripe/plans";
-import { hasStripeEnv } from "@/lib/stripe/server";
+import { hasStripeEnv, STRIPE_MODE } from "@/lib/stripe/server";
 import { getOptionalUser } from "@/lib/supabase/guards";
 import { getUserTestimonialRewardStatus } from "@/lib/testimonial-rewards";
 
@@ -364,16 +365,26 @@ export default async function AccountPage({ searchParams }) {
   const isConfigured = hasSupabasePublicEnv();
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
-  const checkoutConfigured = hasStripeEnv();
+  let adminUser = false;
+
+  if (user && !demoMode) {
+    try {
+      adminUser = await isAdminUser(user);
+    } catch (_error) {
+      adminUser = false;
+    }
+  }
+
+  const checkoutConfigured = adminUser ? hasStripeEnv(STRIPE_MODE.SANDBOX) : hasStripeEnv();
 
   if (isConfigured && !user) {
-    redirect("/auth/login?next=/cont");
+    redirect("/auth/login?next=/");
   }
 
   const academicContext = user && !demoMode ? await getAcademicContext(user.id) : null;
 
   if (user && !demoMode && !isAcademicContextComplete(academicContext)) {
-    redirect(getOnboardingHref("/cont"));
+    redirect(getOnboardingHref("/"));
   }
 
   const section = resolvedSearchParams?.section === "credits" ? "credits" : "plans";

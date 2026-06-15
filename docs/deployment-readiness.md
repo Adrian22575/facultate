@@ -6,7 +6,7 @@ Pentru un flux local end-to-end, vezi si `docs/local-end-to-end-setup.md`.
 
 Nota de securitate:
 
-- cheile `OPENAI_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` si `SUPABASE_SERVICE_ROLE_KEY` trebuie sa existe doar server-side
+- cheile `OPENAI_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, cheile Stripe sandbox si `SUPABASE_SERVICE_ROLE_KEY` trebuie sa existe doar server-side
 - daca astfel de chei au fost distribuite in chat, issue tracker sau capturi de ecran, trateaza-le ca expuse si roteste-le inainte de lansare
 
 ## 1. Variabile de mediu
@@ -20,6 +20,8 @@ Creeaza `.env.local` pornind de la `.env.example` si completeaza:
 - `OPENAI_API_KEY`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_SANDBOX_SECRET_KEY` optional, pentru checkout-ul contului admin
+- `STRIPE_SANDBOX_WEBHOOK_SECRET` optional, pentru webhook-urile checkout-ului admin
 
 Recomandare:
 
@@ -126,11 +128,14 @@ Completezi:
 
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
+- optional `STRIPE_SANDBOX_SECRET_KEY` pentru contul admin
+- optional `STRIPE_SANDBOX_WEBHOOK_SECRET` pentru webhook-ul contului admin
 
 Recomandare:
 
 - `Preview`: chei Stripe Test + webhook secret din endpoint-ul preview
 - `Production`: chei Stripe Live + webhook secret din endpoint-ul live
+- contul admin poate folosi separat `STRIPE_SANDBOX_SECRET_KEY`, chiar daca restul utilizatorilor folosesc cheia normala a mediului curent
 
 ### Webhook endpoint
 

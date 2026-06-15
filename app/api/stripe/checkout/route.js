@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { ensureStripeCustomer } from "@/lib/billing";
+import { isAdminUser } from "@/lib/admin";
 import { DEMO_USER_ID } from "@/lib/demo-user";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { getBaseUrl } from "@/lib/site";
 import { getBillingPlan } from "@/lib/stripe/plans";
-import { getStripe, hasStripeEnv } from "@/lib/stripe/server";
+import { getStripe, hasStripeEnv, STRIPE_MODE } from "@/lib/stripe/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseSetupErrorMessage } from "@/lib/supabase/setup-status";
@@ -37,17 +38,13 @@ function getSafeReturnTo(value) {
 }
 
 export async function POST(request) {
-  if (!hasStripeEnv()) {
-    return NextResponse.json({ error: "Plata nu este configurata pe server." }, { status: 503 });
-  }
-
   const supabaseAuth = await createClient();
   const {
     data: { user }
   } = await supabaseAuth.auth.getUser();
 
   if (!user) {
-    return NextResponse.redirect(new URL("/auth/login?next=/cont%3Fsection%3Dplans", request.url), {
+    return NextResponse.redirect(new URL("/auth/login?next=/", request.url), {
       status: 303
     });
   }
@@ -106,18 +103,42 @@ export async function POST(request) {
       .eq("id", user.id)
       .maybeSingle();
 
-    const customerId = await ensureStripeCustomer({
-      userId: user.id,
-      email: user.email || profile?.email || null,
-      fullName: profile?.full_name || null
-    });
+    const adminCheckout = await isAdminUser(user);
+    const stripeMode = adminCheckout ? STRIPE_MODE.SANDBOX : STRIPE_MODE.LIVE;
 
-    const stripe = getStripe();
+    if (!hasStripeEnv(stripeMode)) {
+      return NextResponse.redirect(
+        buildContUrl(
+          request,
+          targetSection,
+          adminCheckout
+            ? "Checkout-ul sandbox pentru admin nu este configurat."
+            : "Plata nu este configurata pe server."
+        ),
+        { status: 303 }
+      );
+    }
+
+    const customerEmail = user.email || profile?.email || null;
+    const customerId = adminCheckout
+      ? null
+      : await ensureStripeCustomer({
+          userId: user.id,
+          email: customerEmail,
+          fullName: profile?.full_name || null
+        });
+
+    const stripe = getStripe(stripeMode);
     const baseUrl = getBaseUrl(request);
+    const successUrl = `${baseUrl}/billing/success?session_id={CHECKOUT_SESSION_ID}&stripe_mode=${stripeMode}${
+      returnTo ? `&return_to=${encodeURIComponent(returnTo)}` : ""
+    }`;
+    const cancelUrl = `${baseUrl}/billing/cancel?stripe_mode=${stripeMode}${
+      returnTo ? `&return_to=${encodeURIComponent(returnTo)}` : ""
+    }`;
 
-    session = await stripe.checkout.sessions.create({
+    const checkoutSessionParams = {
       mode: "payment",
-      customer: customerId,
       client_reference_id: user.id,
       payment_method_types: ["card"],
       line_items: [
@@ -136,13 +157,21 @@ export async function POST(request) {
       metadata: {
         user_id: user.id,
         plan_code: plan.code,
-        family: plan.family
+        family: plan.family,
+        stripe_mode: stripeMode,
+        admin_sandbox_checkout: adminCheckout ? "true" : "false"
       },
-      success_url: `${baseUrl}/billing/success?session_id={CHECKOUT_SESSION_ID}${
-        returnTo ? `&return_to=${encodeURIComponent(returnTo)}` : ""
-      }`,
-      cancel_url: `${baseUrl}/billing/cancel${returnTo ? `?return_to=${encodeURIComponent(returnTo)}` : ""}`
-    });
+      success_url: successUrl,
+      cancel_url: cancelUrl
+    };
+
+    if (customerId) {
+      checkoutSessionParams.customer = customerId;
+    } else if (customerEmail) {
+      checkoutSessionParams.customer_email = customerEmail;
+    }
+
+    session = await stripe.checkout.sessions.create(checkoutSessionParams);
   } catch (error) {
     return NextResponse.redirect(
       buildContUrl(
