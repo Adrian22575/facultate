@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import {
+  BarChart3,
   BookOpen,
   CheckCircle2,
   RotateCcw,
   SlidersHorizontal,
   Trophy,
+  Users,
   XCircle,
   Zap
 } from "lucide-react";
@@ -129,6 +131,128 @@ function getProposedAnswerIndex(question, index) {
   return wrongIndexes[index % wrongIndexes.length] ?? correctIndex;
 }
 
+function formatRank(stats) {
+  if (!stats?.userRank || !stats?.participantCount) {
+    return "In curs";
+  }
+
+  return `${stats.userRank} / ${stats.participantCount}`;
+}
+
+function CommunityComparisonPanel({ stats, status, error }) {
+  if (status === "saving") {
+    return (
+      <section className="licenta-community-panel is-loading" aria-live="polite">
+        <div className="licenta-community-panel-head">
+          <span className="licenta-community-panel-icon" aria-hidden="true">
+            <BarChart3 />
+          </span>
+          <div>
+            <h3>Comparam rezultatul cu comunitatea ta</h3>
+            <p>Salvam runda si pregatim statisticile anonime.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <section className="licenta-community-panel is-muted" aria-live="polite">
+        <div className="licenta-community-panel-head">
+          <span className="licenta-community-panel-icon" aria-hidden="true">
+            <BarChart3 />
+          </span>
+          <div>
+            <h3>Comparatia nu este disponibila acum</h3>
+            <p>{error || "Rezultatul tau ramane calculat local. Incearca din nou la urmatoarea runda."}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!stats) {
+    return null;
+  }
+
+  return (
+    <section className="licenta-community-panel" aria-label="Comparatie cu comunitatea">
+      <div className="licenta-community-panel-head">
+        <span className="licenta-community-panel-icon" aria-hidden="true">
+          <Users />
+        </span>
+        <div>
+          <h3>Comparatie cu comunitatea ta</h3>
+          <p>
+            Date anonime din {stats.scopeLabel || "comunitatea ta"}: {stats.attemptCount} incercari de la{" "}
+            {stats.participantCount} utilizatori.
+          </p>
+        </div>
+      </div>
+
+      <div className="licenta-community-stat-grid">
+        <div>
+          <span>Scorul tau</span>
+          <strong>{`${stats.userLatestScore}%`}</strong>
+        </div>
+        <div>
+          <span>Media comunitatii</span>
+          <strong>{`${stats.averageScore}%`}</strong>
+        </div>
+        <div>
+          <span>Peste rezultate</span>
+          <strong>{Number.isInteger(stats.percentile) ? `${stats.percentile}%` : "In curs"}</strong>
+        </div>
+        <div>
+          <span>Clasare anonima</span>
+          <strong>{formatRank(stats)}</strong>
+        </div>
+      </div>
+
+      <div className="licenta-community-bars" aria-label="Distributia scorurilor">
+        {stats.distribution?.map((bucket) => (
+          <div key={bucket.key} className="licenta-community-bar-row">
+            <span>{bucket.label}</span>
+            <div className="licenta-community-bar-track">
+              <div style={{ width: `${Math.max(bucket.percent, bucket.count ? 8 : 0)}%` }} />
+            </div>
+            <strong>{bucket.count}</strong>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function buildSubjectBreakdown(summary) {
+  const subjectMap = new Map();
+  const wrongIds = new Set(summary.wrongQuestions.map(({ question }) => question.stableId));
+
+  for (const question of summary.completedQuestions) {
+    const subjectId = String(question.subjectId || "licenta").trim();
+    const title = String(question.subjectTitle || "Licenta generala").trim();
+    const current = subjectMap.get(subjectId) || {
+      subjectId,
+      title,
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+    current.total += 1;
+    if (wrongIds.has(question.stableId)) {
+      current.wrong += 1;
+    } else {
+      current.correct += 1;
+    }
+
+    subjectMap.set(subjectId, current);
+  }
+
+  return Array.from(subjectMap.values());
+}
+
 function scrollToTop() {
   if (typeof window !== "undefined") {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -158,6 +282,9 @@ export function ExamPageClient({ questions, subjectCount }) {
   const [browseIndex, setBrowseIndex] = useState(0);
   const [showBrowseAnswer, setShowBrowseAnswer] = useState(false);
   const [resultSummary, setResultSummary] = useState(null);
+  const [communityStats, setCommunityStats] = useState(null);
+  const [communityStatsStatus, setCommunityStatsStatus] = useState("idle");
+  const [communityStatsError, setCommunityStatsError] = useState("");
 
   useEffect(() => {
     const validIds = readStoredMistakeIds().filter((id) => questionById.has(id));
@@ -194,6 +321,9 @@ export function ExamPageClient({ questions, subjectCount }) {
     setCurrentQuestions([]);
     setAnswers([]);
     setResultSummary(null);
+    setCommunityStats(null);
+    setCommunityStatsStatus("idle");
+    setCommunityStatsError("");
     setNotice(message);
     scrollToTop();
   }
@@ -201,6 +331,9 @@ export function ExamPageClient({ questions, subjectCount }) {
   function startQuiz(numberOfQuestions, mode) {
     setNotice("");
     setResultSummary(null);
+    setCommunityStats(null);
+    setCommunityStatsStatus("idle");
+    setCommunityStatsError("");
     setActiveMode(mode);
 
     const sourceQuestions =
@@ -235,6 +368,9 @@ export function ExamPageClient({ questions, subjectCount }) {
   function startVerifyRound() {
     setNotice("");
     setResultSummary(null);
+    setCommunityStats(null);
+    setCommunityStatsStatus("idle");
+    setCommunityStatsError("");
     setActiveMode("verify");
 
     if (!preparedQuestions.length) {
@@ -261,6 +397,9 @@ export function ExamPageClient({ questions, subjectCount }) {
   function startBrowseQuestions() {
     setNotice("");
     setResultSummary(null);
+    setCommunityStats(null);
+    setCommunityStatsStatus("idle");
+    setCommunityStatsError("");
     setActiveMode("browse");
 
     if (!preparedQuestions.length) {
@@ -298,6 +437,48 @@ export function ExamPageClient({ questions, subjectCount }) {
     setAnswers(nextAnswers);
   }
 
+  async function saveLicentaAttempt(summary) {
+    setCommunityStatsStatus("saving");
+    setCommunityStatsError("");
+
+    try {
+      const response = await fetch("/api/licenta-exam/attempts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          mode: summary.mode,
+          score: summary.score,
+          total: summary.total,
+          percentage: summary.percentage,
+          wrongCount: summary.wrongQuestions.length,
+          unansweredCount: summary.completedAnswers.filter((answer) => answer === null).length,
+          questionIds: summary.completedQuestions.map((question) => question.stableId),
+          wrongQuestionIds: summary.wrongQuestions.map(({ question }) => question.stableId),
+          subjectBreakdown: buildSubjectBreakdown(summary)
+        })
+      });
+
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok || !payload?.ok) {
+        throw new Error(payload?.error || "Nu am putut salva rezultatul pentru comparatie.");
+      }
+
+      setCommunityStats(payload.communityStats || null);
+      setCommunityStatsStatus("ready");
+    } catch (error) {
+      setCommunityStats(null);
+      setCommunityStatsStatus("error");
+      setCommunityStatsError(
+        error instanceof Error
+          ? error.message
+          : "Nu am putut salva rezultatul pentru comparatie."
+      );
+    }
+  }
+
   function finishQuiz() {
     const wrongQuestions = [];
     let score = 0;
@@ -333,7 +514,7 @@ export function ExamPageClient({ questions, subjectCount }) {
 
     const percentage = currentQuestions.length ? Math.round((score / currentQuestions.length) * 100) : 0;
 
-    setResultSummary({
+    const nextSummary = {
       mode: activeMode,
       score,
       total: currentQuestions.length,
@@ -341,8 +522,11 @@ export function ExamPageClient({ questions, subjectCount }) {
       wrongQuestions,
       completedQuestions: currentQuestions,
       completedAnswers: answers
-    });
+    };
+
+    setResultSummary(nextSummary);
     setPhase("result");
+    void saveLicentaAttempt(nextSummary);
     scrollToTop();
   }
 
@@ -700,6 +884,12 @@ export function ExamPageClient({ questions, subjectCount }) {
               <strong>{mistakeIds.length}</strong>
             </div>
           </div>
+
+          <CommunityComparisonPanel
+            stats={communityStats}
+            status={communityStatsStatus}
+            error={communityStatsError}
+          />
 
           <hr className="result-divider" />
           <h3>{isResultVerificationMode ? "Verificari gresite" : "Intrebari gresite"}</h3>

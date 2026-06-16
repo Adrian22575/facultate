@@ -42,9 +42,14 @@ export default async function ExamPage() {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/">
-            Inapoi la dashboard
-          </Link>
+          <div className="licenta-header-actions">
+            <Link className="btn-back" href="/">
+              Inapoi la dashboard
+            </Link>
+            <Link className="btn-link secondary" href="/statistici">
+              Vezi statistici
+            </Link>
+          </div>
         }
         title="Pregatire licenta"
         subtitle="Alege cum vrei sa te pregatesti azi. Fa o runda rapida, un antrenament mai lung sau repeta doar intrebarile gresite."

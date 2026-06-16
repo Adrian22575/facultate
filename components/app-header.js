@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Home, LogOut, Shield, UserCircle } from "lucide-react";
+import { BarChart3, Home, LogOut, Shield, UserCircle } from "lucide-react";
 
 import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { isAdminUser } from "@/lib/admin";
@@ -65,6 +65,9 @@ export async function AppHeader({
             <nav className="header-shortcuts" aria-label="Navigare rapida">
               <Link className="btn-link btn-primary header-shortcut-link" href="/">
                 <IconText icon={Home}>Home</IconText>
+              </Link>
+              <Link className="btn-link secondary header-shortcut-link" href="/statistici">
+                <IconText icon={BarChart3}>Statistici</IconText>
               </Link>
               <Link className="btn-link secondary header-shortcut-link" href="/cont">
                 <IconText icon={UserCircle}>Contul meu</IconText>

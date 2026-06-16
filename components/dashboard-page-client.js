@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpenCheck, GraduationCap, PlayCircle } from "lucide-react";
+import { BarChart3, BookOpenCheck, GraduationCap, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -175,6 +175,24 @@ export function DashboardPageClient({
                       pendingMode="replace"
                     >
                       Porneste simularea
+                    </PendingNavigationLink>
+                  </div>
+
+                  <div className="dashboard-mode-card dashboard-mode-card-stats">
+                    <div className="dashboard-mode-icon is-blue">
+                      <BarChart3 size={22} strokeWidth={2.5} />
+                    </div>
+                    <h3>Statistici</h3>
+                    <p>
+                      Vezi licenta, materiile, media comunitatii si ce merita repetat mai departe.
+                    </p>
+                    <PendingNavigationLink
+                      href="/statistici"
+                      className="secondary-button dashboard-mode-cta"
+                      pendingLabel="Se deschid statisticile..."
+                      pendingMode="replace"
+                    >
+                      Vezi statistici
                     </PendingNavigationLink>
                   </div>
                 </div>
