@@ -33,6 +33,7 @@ export function TestResultPanel({
   percentage,
   wrongRows = [],
   stats = [],
+  insights = null,
   emptyMessage = "Nu ai gresit nicio intrebare in aceasta runda.",
   actions = null
 }) {
@@ -68,6 +69,8 @@ export function TestResultPanel({
           </div>
         ))}
       </div>
+
+      {insights}
 
       <hr className="result-divider" />
       <h3>Intrebari gresite</h3>

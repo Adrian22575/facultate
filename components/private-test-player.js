@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import { TestResultPanel } from "@/components/test-result-panel";
@@ -8,6 +9,7 @@ export function PrivateTestPlayer({ test, questions }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState(() => new Array(questions.length).fill(null));
   const [phase, setPhase] = useState("quiz");
+  const [answerNotice, setAnswerNotice] = useState("");
 
   const currentQuestion = questions[currentIndex];
   const answeredCount = answers.filter((answer) => answer !== null).length;
@@ -16,6 +18,22 @@ export function PrivateTestPlayer({ test, questions }) {
     const next = [...answers];
     next[currentIndex] = answerIndex;
     setAnswers(next);
+    setAnswerNotice("");
+  }
+
+  function advanceCurrentQuestion() {
+    if (answers[currentIndex] === null) {
+      setAnswerNotice("Alege un raspuns inainte sa mergi mai departe.");
+      return;
+    }
+
+    setAnswerNotice("");
+
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex((value) => value + 1);
+    } else {
+      setPhase("result");
+    }
   }
 
   if (!questions.length) {
@@ -61,16 +79,22 @@ export function PrivateTestPlayer({ test, questions }) {
         stats={[{ label: "Greseli", value: wrongRows.length }]}
         emptyMessage="Nu ai gresit nicio intrebare in aceasta runda."
         actions={
-          <button
-            type="button"
-            onClick={() => {
-              setAnswers(new Array(questions.length).fill(null));
-              setCurrentIndex(0);
-              setPhase("quiz");
-            }}
-          >
-            Reia testul
-          </button>
+          <>
+            <Link className="btn-link secondary" href="/statistici">
+              Vezi statistici
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setAnswers(new Array(questions.length).fill(null));
+                setCurrentIndex(0);
+                setAnswerNotice("");
+                setPhase("quiz");
+              }}
+            >
+              Reia testul
+            </button>
+          </>
         }
       />
     );
@@ -106,6 +130,7 @@ export function PrivateTestPlayer({ test, questions }) {
             </label>
           ))}
         </div>
+        {answerNotice ? <p className="quiz-answer-required" role="alert">{answerNotice}</p> : null}
       </div>
 
       <div className="quiz-actions">
@@ -118,13 +143,8 @@ export function PrivateTestPlayer({ test, questions }) {
         </button>
         <button
           type="button"
-          onClick={() => {
-            if (currentIndex < questions.length - 1) {
-              setCurrentIndex((value) => value + 1);
-            } else {
-              setPhase("result");
-            }
-          }}
+          className={answers[currentIndex] === null ? "is-disabled-soft" : ""}
+          onClick={advanceCurrentQuestion}
         >
           {currentIndex === questions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
         </button>

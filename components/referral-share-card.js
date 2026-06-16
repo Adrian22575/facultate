@@ -1,6 +1,16 @@
 "use client";
 
-import { CheckCircle2, Clock3, Copy, Gift, Link2, Sparkles, UserRoundCheck, UsersRound } from "lucide-react";
+import {
+  CheckCircle2,
+  ChevronDown,
+  Clock3,
+  Copy,
+  Gift,
+  Link2,
+  Sparkles,
+  UserRoundCheck,
+  UsersRound
+} from "lucide-react";
 import { useMemo, useState } from "react";
 
 const referralSteps = [
@@ -139,6 +149,7 @@ export function ReferralShareCard({
   activateAction
 }) {
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const referralUrl = useMemo(() => {
     if (typeof window === "undefined") {
       return referralPath;
@@ -158,99 +169,128 @@ export function ReferralShareCard({
   }
 
   return (
-    <section className="account-referral-panel" aria-label="Referral">
-      <aside className="account-referral-timeline">
-        <p>Cum functioneaza</p>
-        <div className="account-referral-steps">
-          {referralSteps.map((step, index) => (
-            <ReferralStep
-              key={step.title}
-              icon={step.icon}
-              title={step.title}
-              desc={step.desc}
-              isLast={index === referralSteps.length - 1}
-            />
-          ))}
+    <section className={`account-referral-panel ${expanded ? "is-expanded" : "is-collapsed"}`} aria-label="Referral">
+      <div className="account-referral-teaser">
+        <div className="account-referral-teaser-copy">
+          <span className="account-referral-teaser-kicker">
+            <Gift aria-hidden="true" size={17} strokeWidth={2.4} />
+            Invita colegi
+          </span>
+          <h2>Vrei 24h gratuite pentru invatat?</h2>
+          <p>Trimite linkul tau unui coleg. Cand isi confirma contul, iti pregatim bonusul.</p>
         </div>
-      </aside>
-
-      <div className="account-referral-main">
-        <div className="account-referral-copy">
-          <span className="account-section-label account-referral-label">Invita colegi</span>
-          <h2>Un link simplu care iti aduce timp extra pentru invatat.</h2>
-          <p>Trimite linkul colegilor. Cand colegul isi confirma contul, primesti acces extra timp de 24h.</p>
+        <div className="account-referral-teaser-meta" aria-label="Status invitatii">
+          <span>{`${readyCount} confirmate`}</span>
+          <span>{`${pendingCount} in asteptare`}</span>
+          <span>{`${rewardedCount} primite`}</span>
         </div>
-
-        <div className="account-referral-linkbox">
-          <div className="account-referral-url">
-            <Link2 aria-hidden="true" size={18} strokeWidth={2.3} />
-            <span>{referralUrl}</span>
-          </div>
-          <button type="button" className="account-referral-copy-btn" onClick={copyReferralLink}>
-            {copied ? <CheckCircle2 aria-hidden="true" size={18} /> : <Copy aria-hidden="true" size={18} />}
-            {copied ? "Copiat" : "Copiaza"}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="account-referral-expand-btn"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((value) => !value)}
+        >
+          {expanded ? "Ascunde" : readyCount > 0 ? "Vezi bonusul" : "Vezi linkul"}
+          <ChevronDown aria-hidden="true" size={18} strokeWidth={2.4} />
+        </button>
       </div>
 
-      <div className="account-referral-status-zone">
-        <div className="account-referral-reward">
-          <div className="account-referral-reward-copy">
-            <span className="account-referral-reward-icon">
-              <Gift aria-hidden="true" size={22} strokeWidth={2.3} />
-            </span>
-            <div>
-              <span>Recompensa disponibila</span>
-              <strong>24h acces</strong>
+      {expanded ? (
+        <div className="account-referral-body">
+          <aside className="account-referral-timeline">
+            <p>Cum functioneaza</p>
+            <div className="account-referral-steps">
+              {referralSteps.map((step, index) => (
+                <ReferralStep
+                  key={step.title}
+                  icon={step.icon}
+                  title={step.title}
+                  desc={step.desc}
+                  isLast={index === referralSteps.length - 1}
+                />
+              ))}
+            </div>
+          </aside>
+
+          <div className="account-referral-main">
+            <div className="account-referral-copy">
+              <span className="account-section-label account-referral-label">Invita colegi</span>
+              <h2>Un link simplu care iti aduce timp extra pentru invatat.</h2>
+              <p>Trimite linkul colegilor. Cand colegul isi confirma contul, primesti acces extra timp de 24h.</p>
+            </div>
+
+            <div className="account-referral-linkbox">
+              <div className="account-referral-url">
+                <Link2 aria-hidden="true" size={18} strokeWidth={2.3} />
+                <span>{referralUrl}</span>
+              </div>
+              <button type="button" className="account-referral-copy-btn" onClick={copyReferralLink}>
+                {copied ? <CheckCircle2 aria-hidden="true" size={18} /> : <Copy aria-hidden="true" size={18} />}
+                {copied ? "Copiat" : "Copiaza"}
+              </button>
             </div>
           </div>
-          <Sparkles aria-hidden="true" className="account-referral-sparkle" size={22} strokeWidth={2.3} />
-        </div>
 
-        <div className="account-referral-rule-note">
-          <strong>Regula bonusului</strong>
-          <span>Cand colegul isi confirma emailul si intra in cont, invitatia devine confirmata. Tu activezi cele 24h cand ai nevoie.</span>
-        </div>
+          <div className="account-referral-status-zone">
+            <div className="account-referral-reward">
+              <div className="account-referral-reward-copy">
+                <span className="account-referral-reward-icon">
+                  <Gift aria-hidden="true" size={22} strokeWidth={2.3} />
+                </span>
+                <div>
+                  <span>Recompensa disponibila</span>
+                  <strong>24h acces</strong>
+                </div>
+              </div>
+              <Sparkles aria-hidden="true" className="account-referral-sparkle" size={22} strokeWidth={2.3} />
+            </div>
 
-        <div className="account-referral-stats" aria-label="Status referral">
-          <ReferralStat icon={Clock3} label="In asteptare" value={pendingCount} />
-          <ReferralStat icon={CheckCircle2} label="Confirmate" value={readyCount} tone={readyCount ? "is-good" : ""} />
-          <ReferralStat icon={Gift} label="24h primite" value={rewardedCount} tone="is-good" />
-        </div>
+            <div className="account-referral-rule-note">
+              <strong>Regula bonusului</strong>
+              <span>Cand colegul isi confirma emailul si intra in cont, invitatia devine confirmata. Tu activezi cele 24h cand ai nevoie.</span>
+            </div>
 
-        {readyCount > 0 && activateAction ? (
-          <form action={activateAction} className="account-referral-activate-form">
-            <input type="hidden" name="returnTo" value="/cont?section=plans" />
-            <button type="submit" className="account-referral-activate-btn">
-              <Gift aria-hidden="true" size={18} strokeWidth={2.3} />
-              Activeaza 24h
-            </button>
-          </form>
-        ) : null}
-      </div>
+            <div className="account-referral-stats" aria-label="Status referral">
+              <ReferralStat icon={Clock3} label="In asteptare" value={pendingCount} />
+              <ReferralStat icon={CheckCircle2} label="Confirmate" value={readyCount} tone={readyCount ? "is-good" : ""} />
+              <ReferralStat icon={Gift} label="24h primite" value={rewardedCount} tone="is-good" />
+            </div>
 
-      <div className="account-referral-invites">
-        <div className="account-referral-invites-head">
-          <div>
-            <span className="account-section-label account-referral-label">Invitatiile tale</span>
-            <h3>Colegii care au intrat prin linkul tau</h3>
+            {readyCount > 0 && activateAction ? (
+              <form action={activateAction} className="account-referral-activate-form">
+                <input type="hidden" name="returnTo" value="/cont?section=plans" />
+                <button type="submit" className="account-referral-activate-btn">
+                  <Gift aria-hidden="true" size={18} strokeWidth={2.3} />
+                  Activeaza 24h
+                </button>
+              </form>
+            ) : null}
           </div>
-          <span>{`${referrals.length} ${referrals.length === 1 ? "invitatie" : "invitatii"}`}</span>
-        </div>
 
-        {referrals.length ? (
-          <div className="account-referral-invite-list">
-            {referrals.map((referral) => (
-              <ReferralInviteRow key={referral.id} referral={referral} />
-            ))}
+          <div className="account-referral-invites">
+            <div className="account-referral-invites-head">
+              <div>
+                <span className="account-section-label account-referral-label">Invitatiile tale</span>
+                <h3>Colegii care au intrat prin linkul tau</h3>
+              </div>
+              <span>{`${referrals.length} ${referrals.length === 1 ? "invitatie" : "invitatii"}`}</span>
+            </div>
+
+            {referrals.length ? (
+              <div className="account-referral-invite-list">
+                {referrals.map((referral) => (
+                  <ReferralInviteRow key={referral.id} referral={referral} />
+                ))}
+              </div>
+            ) : (
+              <div className="account-referral-empty">
+                <strong>Lista este goala momentan.</strong>
+                <p>Cand cineva isi face cont folosind linkul tau, apare aici cu statusul invitatiei.</p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="account-referral-empty">
-            <strong>Lista este goala momentan.</strong>
-            <p>Cand cineva isi face cont folosind linkul tau, apare aici cu statusul invitatiei.</p>
-          </div>
-        )}
-      </div>
+        </div>
+      ) : null}
     </section>
   );
 }

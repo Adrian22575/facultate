@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import {
+  getAcademicContext,
+  isAcademicContextComplete
+} from "@/lib/academic/server";
+import { getStatsScopeCandidates } from "@/lib/licenta-exam-community-stats";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseSetupIncompleteError } from "@/lib/supabase/setup-status";
@@ -66,6 +71,118 @@ function uniqueSortedIndexes(values) {
   return Array.from(new Set(values.filter((value) => Number.isInteger(value) && value >= 0))).sort(
     (left, right) => left - right
   );
+}
+
+function average(values) {
+  if (!values.length) return 0;
+  return Math.round(values.reduce((total, value) => total + value, 0) / values.length);
+}
+
+function membershipColumnForScope(scope) {
+  if (scope.key === "program") return "program_unit_id";
+  if (scope.key === "cohort") return "cohort_id";
+  return "institution_id";
+}
+
+async function fetchSubjectCommunityUserIds(admin, academicContext) {
+  const scopes = getStatsScopeCandidates(academicContext);
+  let fallback = null;
+
+  for (const scope of scopes) {
+    const { data, error } = await admin
+      .from("memberships")
+      .select("user_id")
+      .eq(membershipColumnForScope(scope), scope.id)
+      .eq("status", "active")
+      .limit(1000);
+
+    if (error) throw error;
+
+    const userIds = Array.from(new Set((data || []).map((row) => row.user_id).filter(Boolean)));
+    const candidate = { scope, userIds };
+
+    if (!fallback) {
+      fallback = candidate;
+    }
+
+    if (userIds.length >= 3) {
+      return candidate;
+    }
+  }
+
+  return fallback;
+}
+
+async function buildSubjectTestStats({ admin, user, subjectId, currentScore, previousBestScore }) {
+  const { data: personalRow, error: personalError } = await admin
+    .from("subject_progress")
+    .select("test_best_score_percent, test_last_score_percent")
+    .eq("user_id", user.id)
+    .eq("subject_id", subjectId)
+    .maybeSingle();
+
+  if (personalError && personalError.code !== "PGRST116") {
+    throw personalError;
+  }
+
+  let community = null;
+
+  try {
+    const academicContext = await getAcademicContext(user.id);
+    if (isAcademicContextComplete(academicContext)) {
+      const pickedScope = await fetchSubjectCommunityUserIds(admin, academicContext);
+      const userIds = pickedScope?.userIds || [];
+
+      if (pickedScope?.scope && userIds.length) {
+        const { data: rows, error } = await admin
+          .from("subject_progress")
+          .select("user_id, test_best_score_percent, test_last_score_percent")
+          .eq("subject_id", subjectId)
+          .in("user_id", userIds.slice(0, 1000))
+          .limit(1000);
+
+        if (error) throw error;
+
+        const scoredRows = (rows || [])
+          .map((row) => ({
+            userId: row.user_id,
+            score: Number(row.test_best_score_percent || row.test_last_score_percent || 0)
+          }))
+          .filter((row) => row.score > 0);
+        const scores = scoredRows.map((row) => row.score);
+        const participantCount = new Set(scoredRows.map((row) => row.userId).filter(Boolean)).size;
+        const peers = scoredRows.filter((row) => row.userId !== user.id);
+        const peerScores = peers.map((row) => row.score);
+        const rankedScores = [...scores].sort((left, right) => right - left);
+        const currentUserScore = Number(personalRow?.test_best_score_percent || currentScore || 0);
+        const rankIndex = rankedScores.findIndex((score) => currentUserScore >= score);
+
+        community = {
+          scopeLabel: pickedScope.scope.label,
+          participantCount,
+          averageScore: average(peerScores.length ? peerScores : scores),
+          percentile:
+            scores.length > 1
+              ? Math.round((scores.filter((score) => score <= currentScore).length / scores.length) * 100)
+              : null,
+          userRank: participantCount > 1 && rankIndex >= 0 ? rankIndex + 1 : null
+        };
+      }
+    }
+  } catch (error) {
+    console.error("subject_test_community_stats_failed", error);
+  }
+
+  const previousBest = Number.isFinite(previousBestScore) && previousBestScore > 0 ? previousBestScore : null;
+  const personalBest = Number(personalRow?.test_best_score_percent || currentScore || 0);
+
+  return {
+    currentScore,
+    personalBest,
+    previousBest,
+    deltaFromPreviousBest: previousBest !== null ? currentScore - previousBest : null,
+    community
+  };
 }
 
 export async function POST(request) {
@@ -154,6 +271,9 @@ export async function POST(request) {
       nextRow.interactive_wrong = Math.max(nextRow.interactive_wrong, payload.interactiveWrong || 0);
     }
 
+    const previousBestScore =
+      payload.mode === "test" ? Number(existing?.test_best_score_percent || 0) : null;
+
     if (payload.mode === "test") {
       nextRow.test_last_score_percent = payload.testScorePercent || 0;
       nextRow.test_best_score_percent = Math.max(
@@ -170,7 +290,18 @@ export async function POST(request) {
       throw upsertError;
     }
 
-    return NextResponse.json({ ok: true });
+    const subjectTestStats =
+      payload.mode === "test"
+        ? await buildSubjectTestStats({
+            admin,
+            user,
+            subjectId: payload.subjectId,
+            currentScore: payload.testScorePercent || 0,
+            previousBestScore
+          })
+        : null;
+
+    return NextResponse.json({ ok: true, subjectTestStats });
   } catch (error) {
     if (isSupabaseSetupIncompleteError(error)) {
       return NextResponse.json(

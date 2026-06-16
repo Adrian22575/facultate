@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { syncSubjectProgress } from "@/lib/progress-client";
@@ -66,6 +67,101 @@ function mixAnswersForHardMode(questions, answerBank) {
   });
 }
 
+function formatScoreDelta(value) {
+  if (value === null || value === undefined) {
+    return "Prima runda";
+  }
+
+  if (value > 0) {
+    return `+${value}% fata de record`;
+  }
+
+  if (value === 0) {
+    return "La nivelul recordului";
+  }
+
+  return `${value}% sub record`;
+}
+
+function SubjectTestInsight({ stats, status }) {
+  const community = stats?.community || null;
+
+  if (status === "saving") {
+    return (
+      <section className="licenta-community-panel is-loading subject-test-insight-panel" aria-live="polite">
+        <div className="licenta-community-panel-head">
+          <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
+          <div>
+            <h3>Pregatim statistica testului</h3>
+            <p>Salvam scorul si calculam comparatia cu progresul tau.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <section className="licenta-community-panel is-muted subject-test-insight-panel">
+        <div className="licenta-community-panel-head">
+          <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
+          <div>
+            <h3>Statistica testului apare dupa salvare</h3>
+            <p>Poti continua sa lucrezi, iar pagina de statistici va strange evolutia ta.</p>
+          </div>
+        </div>
+        <Link className="btn-link secondary subject-test-insight-link" href="/statistici">
+          Vezi statistici
+        </Link>
+      </section>
+    );
+  }
+
+  return (
+    <section className="licenta-community-panel subject-test-insight-panel" aria-label="Statistici test">
+      <div className="licenta-community-panel-head">
+        <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
+        <div>
+          <h3>Ce inseamna scorul asta</h3>
+          <p>
+            Un reper rapid ca sa stii daca merita sa repeti greselile sau sa treci mai departe.
+          </p>
+        </div>
+      </div>
+
+      <div className="licenta-community-stat-grid">
+        <div>
+          <span>Scor curent</span>
+          <strong>{`${stats.currentScore}%`}</strong>
+        </div>
+        <div>
+          <span>Record personal</span>
+          <strong>{`${stats.personalBest}%`}</strong>
+        </div>
+        <div>
+          <span>Evolutie</span>
+          <strong>{formatScoreDelta(stats.deltaFromPreviousBest)}</strong>
+        </div>
+        <div>
+          <span>Media colegilor</span>
+          <strong>{community ? `${community.averageScore}%` : "In curs"}</strong>
+        </div>
+      </div>
+
+      <div className="subject-test-insight-footer">
+        <p>
+          {community?.participantCount > 1
+            ? `Comunitate: ${community.scopeLabel}. ${community.participantCount} colegi cu progres salvat${community.userRank ? `, locul tau este ${community.userRank}` : ""}.`
+            : "Comparația cu ceilalti apare cand exista destule rezultate in comunitatea ta."}
+        </p>
+        <Link className="btn-link secondary subject-test-insight-link" href="/statistici">
+          Vezi toate statisticile
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export function TestPageClient({ subject, initialQuestions }) {
   const [count, setCount] = useState("10");
   const [mode, setMode] = useState("1");
@@ -74,6 +170,9 @@ export function TestPageClient({ subject, initialQuestions }) {
   const [answers, setAnswers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reviewRound, setReviewRound] = useState(false);
+  const [answerNotice, setAnswerNotice] = useState("");
+  const [resultStats, setResultStats] = useState(null);
+  const [resultStatsStatus, setResultStatsStatus] = useState("idle");
   const lastSyncedScoreRef = useRef("");
 
   const safeInitialQuestions = useMemo(() => sanitizeQuestions(initialQuestions), [initialQuestions]);
@@ -97,6 +196,9 @@ export function TestPageClient({ subject, initialQuestions }) {
     setAnswers(new Array(questionSet.length).fill(null));
     setCurrentIndex(0);
     setReviewRound(isReview);
+    setAnswerNotice("");
+    setResultStats(null);
+    setResultStatsStatus("idle");
     setPhase("quiz");
 
     if (typeof window !== "undefined") {
@@ -134,6 +236,7 @@ export function TestPageClient({ subject, initialQuestions }) {
     const nextAnswers = [...answers];
     nextAnswers[currentIndex] = answerIndex;
     setAnswers(nextAnswers);
+    setAnswerNotice("");
   }
 
   useEffect(() => {
@@ -151,13 +254,22 @@ export function TestPageClient({ subject, initialQuestions }) {
       return undefined;
     }
 
-    const timeoutId = window.setTimeout(() => {
+    const timeoutId = window.setTimeout(async () => {
       lastSyncedScoreRef.current = syncKey;
-      void syncSubjectProgress({
+      setResultStatsStatus("saving");
+      const payload = await syncSubjectProgress({
         subjectId: subject.id,
         mode: "test",
         testScorePercent: scorePercent
       });
+
+      if (payload?.subjectTestStats) {
+        setResultStats(payload.subjectTestStats);
+        setResultStatsStatus("ready");
+      } else {
+        setResultStats(null);
+        setResultStatsStatus("idle");
+      }
     }, 300);
 
     return () => window.clearTimeout(timeoutId);
@@ -238,6 +350,7 @@ export function TestPageClient({ subject, initialQuestions }) {
         percentage={scorePercent}
         wrongRows={wrongRows}
         stats={[{ label: "Greseli", value: wrongQuestions.length }]}
+        insights={<SubjectTestInsight stats={resultStats} status={resultStatsStatus} />}
         emptyMessage="Nu ai gresit nicio intrebare in aceasta runda."
         actions={
           <>
@@ -274,6 +387,24 @@ export function TestPageClient({ subject, initialQuestions }) {
   const progressPercent = testQuestions.length
     ? ((currentIndex + 1) / testQuestions.length) * 100
     : 0;
+  const hasAnsweredCurrentQuestion = answers[currentIndex] !== null;
+
+  function advanceCurrentQuestion() {
+    if (!hasAnsweredCurrentQuestion) {
+      setAnswerNotice("Alege un raspuns inainte sa mergi mai departe.");
+      return;
+    }
+
+    setAnswerNotice("");
+
+    if (currentIndex < testQuestions.length - 1) {
+      setCurrentIndex((value) => value + 1);
+    } else {
+      setResultStats(null);
+      setResultStatsStatus("saving");
+      setPhase("result");
+    }
+  }
 
   return (
     <section className="surface">
@@ -302,6 +433,7 @@ export function TestPageClient({ subject, initialQuestions }) {
             </label>
           ))}
         </div>
+        {answerNotice ? <p className="quiz-answer-required" role="alert">{answerNotice}</p> : null}
       </div>
 
       <div className="quiz-actions">
@@ -314,13 +446,8 @@ export function TestPageClient({ subject, initialQuestions }) {
         </button>
         <button
           type="button"
-          onClick={() => {
-            if (currentIndex < testQuestions.length - 1) {
-              setCurrentIndex((value) => value + 1);
-            } else {
-              setPhase("result");
-            }
-          }}
+          className={!hasAnsweredCurrentQuestion ? "is-disabled-soft" : ""}
+          onClick={advanceCurrentQuestion}
         >
           {currentIndex === testQuestions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
         </button>

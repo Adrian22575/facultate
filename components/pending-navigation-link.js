@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 
+const NAVIGATION_PENDING_EVENT = "nota5plus:navigation-pending";
+
 function shouldShowPending(event, href) {
   if (
     event.defaultPrevented ||
@@ -36,16 +38,42 @@ export function PendingNavigationLink({
 }) {
   const pathname = usePathname();
   const [pending, setPending] = useState(false);
+  const [blocked, setBlocked] = useState(false);
 
   useEffect(() => {
     setPending(false);
+    setBlocked(false);
   }, [pathname]);
 
+  useEffect(() => {
+    function handleNavigationPending(event) {
+      const nextHref = event?.detail?.href;
+      if (!nextHref || nextHref === href) {
+        return;
+      }
+
+      setBlocked(true);
+    }
+
+    window.addEventListener(NAVIGATION_PENDING_EVENT, handleNavigationPending);
+    return () => window.removeEventListener(NAVIGATION_PENDING_EVENT, handleNavigationPending);
+  }, [href]);
+
   function handleClick(event) {
+    if (blocked) {
+      event.preventDefault();
+      return;
+    }
+
     onClick?.(event);
 
     if (shouldShowPending(event, href)) {
       setPending(true);
+      window.dispatchEvent(
+        new CustomEvent(NAVIGATION_PENDING_EVENT, {
+          detail: { href }
+        })
+      );
     }
   }
 
@@ -55,6 +83,9 @@ export function PendingNavigationLink({
       href={href}
       className={className}
       aria-busy={pending ? "true" : undefined}
+      aria-disabled={blocked ? "true" : undefined}
+      tabIndex={blocked ? -1 : props.tabIndex}
+      data-navigation-blocked={blocked ? "true" : undefined}
       data-navigation-pending={pending ? "true" : undefined}
       onClick={handleClick}
     >

@@ -5297,6 +5297,14 @@ button.inline-text-action:hover {
   transform: translateY(-1px);
 }
 
+.test-link[data-navigation-blocked="true"],
+.learning-mode-card[data-navigation-blocked="true"] {
+  pointer-events: none;
+  opacity: 0.58;
+  transform: none;
+  filter: grayscale(0.18);
+}
+
 .test-link strong {
   display: block;
   font-size: 1.02rem;
@@ -5588,6 +5596,23 @@ select:focus {
   opacity: 0.56;
   cursor: not-allowed;
   transform: none;
+}
+
+.licenta-prep-actions button.is-disabled-soft,
+.quiz-actions button.is-disabled-soft {
+  opacity: 0.72;
+}
+
+.quiz-answer-required {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 14px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.4;
 }
 
 .licenta-prep-question-list {
@@ -5962,6 +5987,36 @@ select:focus {
 .licenta-community-bars {
   display: grid;
   gap: 8px;
+}
+
+.licenta-community-footer,
+.subject-test-insight-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.licenta-community-footer p,
+.subject-test-insight-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.licenta-community-stats-link,
+.subject-test-insight-link {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 0.88rem;
+}
+
+.subject-test-insight-panel .licenta-community-panel-icon {
+  font-weight: 950;
 }
 
 .licenta-community-bar-row {
@@ -9099,6 +9154,16 @@ td {
   box-shadow: 0 22px 44px rgba(20, 50, 100, 0.12);
 }
 
+.learning-mode-card[data-navigation-blocked="true"] {
+  cursor: wait;
+  border-color: #dbe5f2;
+  box-shadow: 0 12px 26px rgba(20, 50, 100, 0.06);
+}
+
+.learning-mode-card[data-navigation-blocked="true"]:hover {
+  transform: none;
+}
+
 .learning-mode-card:focus-visible {
   outline: 3px solid rgba(18, 80, 177, 0.22);
   outline-offset: 3px;
@@ -10063,13 +10128,11 @@ td {
 .account-referral-panel {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1.45fr) minmax(260px, 0.85fr);
-  gap: 22px;
-  align-items: stretch;
+  gap: 0;
   margin-bottom: 28px;
-  padding: 24px;
+  padding: 16px;
   border: 1px solid rgba(185, 204, 232, 0.68);
-  border-radius: 32px;
+  border-radius: 28px;
   background:
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 28%),
     linear-gradient(135deg, #0b367d 0%, #1250b1 56%, #1b6ee2 100%);
@@ -10087,6 +10150,112 @@ td {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   content: "";
+}
+
+.account-referral-teaser {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.account-referral-teaser-copy {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.account-referral-teaser-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: #d9e7ff;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.account-referral-teaser-copy h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.account-referral-teaser-copy p {
+  margin: 0;
+  color: #d9e7ff;
+  font-size: 0.92rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.account-referral-teaser-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.account-referral-teaser-meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.11);
+  color: #eaf2ff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.account-referral-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 15px;
+  background: #fff;
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 12px 24px rgba(4, 20, 51, 0.16);
+}
+
+.account-referral-expand-btn:hover {
+  background: #eaf2ff;
+}
+
+.account-referral-expand-btn svg {
+  transition: transform 180ms ease;
+}
+
+.account-referral-panel.is-expanded .account-referral-expand-btn svg {
+  transform: rotate(180deg);
+}
+
+.account-referral-body {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.82fr) minmax(0, 1.45fr) minmax(260px, 0.85fr);
+  gap: 22px;
+  align-items: stretch;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .account-referral-timeline,
@@ -11250,8 +11419,16 @@ td {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .account-referral-panel {
+  .account-referral-body {
     grid-template-columns: 1fr;
+  }
+
+  .account-referral-teaser {
+    grid-template-columns: 1fr;
+  }
+
+  .account-referral-teaser-meta {
+    justify-content: flex-start;
   }
 
   .account-referral-timeline,
@@ -11272,6 +11449,10 @@ td {
   }
 
   .account-referral-activate-btn {
+    width: 100%;
+  }
+
+  .account-referral-expand-btn {
     width: 100%;
   }
 

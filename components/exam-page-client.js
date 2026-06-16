@@ -168,6 +168,9 @@ function CommunityComparisonPanel({ stats, status, error }) {
             <p>{error || "Rezultatul tau ramane calculat local. Incearca din nou la urmatoarea runda."}</p>
           </div>
         </div>
+        <Link className="btn-link secondary licenta-community-stats-link" href="/statistici">
+          Vezi statistici
+        </Link>
       </section>
     );
   }
@@ -220,6 +223,12 @@ function CommunityComparisonPanel({ stats, status, error }) {
             <strong>{bucket.count}</strong>
           </div>
         ))}
+      </div>
+      <div className="licenta-community-footer">
+        <p>Urmareste evolutia, topul comunitatii si zonele slabe in pagina dedicata.</p>
+        <Link className="btn-link secondary licenta-community-stats-link" href="/statistici">
+          Vezi statistici
+        </Link>
       </div>
     </section>
   );
@@ -285,6 +294,7 @@ export function ExamPageClient({ questions, subjectCount }) {
   const [communityStats, setCommunityStats] = useState(null);
   const [communityStatsStatus, setCommunityStatsStatus] = useState("idle");
   const [communityStatsError, setCommunityStatsError] = useState("");
+  const [quizValidationMessage, setQuizValidationMessage] = useState("");
 
   useEffect(() => {
     const validIds = readStoredMistakeIds().filter((id) => questionById.has(id));
@@ -324,6 +334,7 @@ export function ExamPageClient({ questions, subjectCount }) {
     setCommunityStats(null);
     setCommunityStatsStatus("idle");
     setCommunityStatsError("");
+    setQuizValidationMessage("");
     setNotice(message);
     scrollToTop();
   }
@@ -334,6 +345,7 @@ export function ExamPageClient({ questions, subjectCount }) {
     setCommunityStats(null);
     setCommunityStatsStatus("idle");
     setCommunityStatsError("");
+    setQuizValidationMessage("");
     setActiveMode(mode);
 
     const sourceQuestions =
@@ -371,6 +383,7 @@ export function ExamPageClient({ questions, subjectCount }) {
     setCommunityStats(null);
     setCommunityStatsStatus("idle");
     setCommunityStatsError("");
+    setQuizValidationMessage("");
     setActiveMode("verify");
 
     if (!preparedQuestions.length) {
@@ -400,6 +413,7 @@ export function ExamPageClient({ questions, subjectCount }) {
     setCommunityStats(null);
     setCommunityStatsStatus("idle");
     setCommunityStatsError("");
+    setQuizValidationMessage("");
     setActiveMode("browse");
 
     if (!preparedQuestions.length) {
@@ -421,6 +435,7 @@ export function ExamPageClient({ questions, subjectCount }) {
     const nextAnswers = [...answers];
     nextAnswers[questionIndex] = answerIndex;
     setAnswers(nextAnswers);
+    setQuizValidationMessage("");
 
     if (activeMode === "mistakes") {
       if (answerIndex === question.correctIndex) {
@@ -435,6 +450,7 @@ export function ExamPageClient({ questions, subjectCount }) {
     const nextAnswers = [...answers];
     nextAnswers[questionIndex] = userBelievesCorrect;
     setAnswers(nextAnswers);
+    setQuizValidationMessage("");
   }
 
   async function saveLicentaAttempt(summary) {
@@ -480,6 +496,20 @@ export function ExamPageClient({ questions, subjectCount }) {
   }
 
   function finishQuiz() {
+    const unansweredIndexes = answers
+      .map((answer, index) => (answer === null ? index : null))
+      .filter((index) => index !== null);
+
+    if (unansweredIndexes.length) {
+      const firstUnanswered = unansweredIndexes[0] + 1;
+      setQuizValidationMessage(
+        unansweredIndexes.length === 1
+          ? `Mai ai intrebarea ${firstUnanswered} fara raspuns. Alege un raspuns inainte sa vezi rezultatul.`
+          : `Mai ai ${unansweredIndexes.length} intrebari fara raspuns. Prima este intrebarea ${firstUnanswered}.`
+      );
+      return;
+    }
+
     const wrongQuestions = [];
     let score = 0;
 
@@ -603,6 +633,7 @@ export function ExamPageClient({ questions, subjectCount }) {
   const isVerificationMode = activeMode === "verify";
   const isResultVerificationMode = resultSummary?.mode === "verify";
   const answeredCount = answers.filter((answer) => answer !== null).length;
+  const hasAnsweredAllQuestions = answeredCount === currentQuestions.length;
   const browseQuestion = currentQuestions[browseIndex];
 
   return (
@@ -787,12 +818,19 @@ export function ExamPageClient({ questions, subjectCount }) {
                   ? `Ai verificat ${answeredCount} din ${currentQuestions.length} raspunsuri propuse. Poti vedea rezultatul acum sau te poti intoarce la moduri.`
                   : `Ai raspuns la ${answeredCount} din ${currentQuestions.length} intrebari. Poti vedea rezultatul acum sau te poti intoarce la moduri.`}
               </p>
+              {quizValidationMessage ? (
+                <p className="quiz-answer-required" role="alert">{quizValidationMessage}</p>
+              ) : null}
             </div>
             <div className="licenta-prep-actions">
               <button type="button" className="secondary" onClick={() => goToModes()}>
                 Inapoi la moduri
               </button>
-              <button type="button" onClick={finishQuiz}>
+              <button
+                type="button"
+                className={!hasAnsweredAllQuestions ? "is-disabled-soft" : ""}
+                onClick={finishQuiz}
+              >
                 Vezi rezultatul
               </button>
             </div>
