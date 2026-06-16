@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { createOrAssignSubject } from "@/lib/data";
@@ -61,6 +62,11 @@ export async function POST(request) {
       schoolClass: payload.userType === "elev" ? payload.schoolClass : null,
       createdByUserId: user.id
     });
+
+    revalidatePath("/");
+    revalidatePath("/ai");
+    revalidatePath("/materiale");
+    revalidatePath("/materii");
 
     return NextResponse.json(result, { status: result.subjectCreated ? 201 : 200 });
   } catch (error) {

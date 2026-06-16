@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 
 const IMPORT_ACTIVE_STATUSES = new Set(["uploaded", "extracting", "chunking", "processing", "matching_answers"]);
@@ -149,14 +149,20 @@ export function AIWorkspaceHighlightCard({ initialJob }) {
             ? `${presentation.elapsedCaption}: ${presentation.elapsedLabel}`
             : `Astepti de ${presentation.elapsedLabel}`}
         </span>
-        <Link
+        <PendingNavigationLink
           className={job.status === "succeeded" ? "btn-link job-primary-cta" : "btn-link secondary"}
           href={href || "/materiale"}
+          pendingLabel={
+            job.status === "succeeded" || job.status === "ready_for_preview"
+              ? "Se deschid intrebarile..."
+              : "Se deschide continutul..."
+          }
+          pendingMode="replace"
         >
           {job.status === "succeeded" || job.status === "ready_for_preview"
             ? "Verifica intrebarile"
             : "Vezi continutul"}
-        </Link>
+        </PendingNavigationLink>
       </div>
     </article>
   );

@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowLeft, CheckCircle2, ExternalLink, RefreshCw, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 import { deleteQuestionBankUploadAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import {
   formatGenerationError,
   getJobPresentation
@@ -258,7 +258,12 @@ export function AIJobStatusClient({ initialJob }) {
   const timeoutRef = useRef(null);
   const inFlightRef = useRef(false);
   const deletedRef = useRef(false);
+  const jobRef = useRef(initialJob);
   const consecutiveServerErrorsRef = useRef(0);
+
+  useEffect(() => {
+    jobRef.current = job;
+  }, [job]);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => setNowMs(Date.now()), 1000);
@@ -269,13 +274,15 @@ export function AIJobStatusClient({ initialJob }) {
     let cancelled = false;
 
     async function tick() {
+      const currentJob = jobRef.current;
+
       if (
         cancelled ||
         inFlightRef.current ||
         deletedRef.current ||
-        !job ||
-        isTerminal(job) ||
-        job.status === "failed"
+        !currentJob ||
+        isTerminal(currentJob) ||
+        currentJob.status === "failed"
       ) {
         return;
       }
@@ -283,7 +290,7 @@ export function AIJobStatusClient({ initialJob }) {
       inFlightRef.current = true;
 
       try {
-        const response = await fetch(`/api/materiale/jobs/${job.id}`, {
+        const response = await fetch(`/api/materiale/jobs/${currentJob.id}`, {
           method: "GET",
           credentials: "same-origin",
           cache: "no-store",
@@ -360,7 +367,7 @@ export function AIJobStatusClient({ initialJob }) {
         window.clearTimeout(timeoutRef.current);
       }
     };
-  }, [job, router]);
+  }, [job?.id, router]);
 
   async function handleRetryFailedChunks() {
     if (!job?.canRetryFailedChunks || isRetrying) {
@@ -576,16 +583,30 @@ export function AIJobStatusClient({ initialJob }) {
 
         <div className="job-actions">
           {job.status === "succeeded" ? (
-            <Link className="btn-back job-primary-cta" href={job.reviewHref || job.resultHref}>
+            <PendingNavigationLink
+              className="btn-back job-primary-cta"
+              href={job.reviewHref || job.resultHref}
+              pendingLabel="Se deschid intrebarile..."
+              pendingMode="replace"
+            >
               <IconText icon={CheckCircle2}>Verifica intrebarile</IconText>
-            </Link>
+            </PendingNavigationLink>
           ) : null}
           {job.status === "succeeded" && job.bankStatus === "published" ? (
-            <Link className="btn-link secondary" href={job.resultHref}>
+            <PendingNavigationLink
+              className="btn-link secondary"
+              href={job.resultHref}
+              pendingLabel={
+                job.metadata?.examType === "licenta"
+                  ? "Se deschide simularea..."
+                  : "Se deschide materia..."
+              }
+              pendingMode="replace"
+            >
               <IconText icon={ExternalLink}>
                 {job.metadata?.examType === "licenta" ? "Deschide simularea" : "Deschide materia"}
               </IconText>
-            </Link>
+            </PendingNavigationLink>
           ) : null}
           {job.canRetryFailedChunks ? (
             <button type="button" className="btn-back" onClick={handleRetryFailedChunks} disabled={isRetrying}>
@@ -617,9 +638,14 @@ export function AIJobStatusClient({ initialJob }) {
               </LoadingIconText>
             </button>
           ) : null}
-          <Link className="btn-link secondary" href="/materiale">
+          <PendingNavigationLink
+            className="btn-link secondary"
+            href="/materiale"
+            pendingLabel="Se revine..."
+            pendingMode="replace"
+          >
             <IconText icon={ArrowLeft}>Inapoi</IconText>
-          </Link>
+          </PendingNavigationLink>
         </div>
       </section>
 

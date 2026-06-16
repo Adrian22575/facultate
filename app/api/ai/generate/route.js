@@ -196,6 +196,10 @@ export async function POST(request) {
     schoolClass:
       typeof formData.get("schoolClass") === "string"
         ? formData.get("schoolClass")
+        : undefined,
+    answerKeyPlacement:
+      typeof formData.get("answerKeyPlacement") === "string"
+        ? formData.get("answerKeyPlacement")
         : undefined
   };
 

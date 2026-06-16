@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AIJobStatusClient } from "@/components/ai-job-status-client";
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getQuestionBankJobSnapshot } from "@/lib/ai/question-bank-pipeline";
 import { isDemoUser } from "@/lib/demo-user";
@@ -56,9 +56,14 @@ export default async function AIJobPage({ params }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale">
+          <PendingNavigationLink
+            className="btn-back"
+            href="/materiale"
+            pendingLabel="Se revine..."
+            pendingMode="replace"
+          >
             Inapoi
-          </Link>
+          </PendingNavigationLink>
         }
         kicker="Fisierul tau"
         title="Pregatim intrebarile"

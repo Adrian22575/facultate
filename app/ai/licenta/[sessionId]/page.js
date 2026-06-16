@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { LicentaSessionWorkspaceClient } from "@/components/licenta-session-workspace-client";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getLicentaImportSessionSnapshot } from "@/lib/ai/import-pipeline";
 import { isDemoUser } from "@/lib/demo-user";
@@ -51,9 +51,14 @@ export default async function LicentaImportSessionPage({ params, searchParams })
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale">
+          <PendingNavigationLink
+            className="btn-back"
+            href="/materiale"
+            pendingLabel="Se revine..."
+            pendingMode="replace"
+          >
             Inapoi
-          </Link>
+          </PendingNavigationLink>
         }
         kicker="Import licenta"
         title="Licenta pe seturi"

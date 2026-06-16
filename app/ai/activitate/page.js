@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { AIActivityCenterClient } from "@/components/ai-activity-center-client";
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getUserImportJobs, getUserLicentaImportSessions } from "@/lib/ai/import-pipeline";
 import {
   getUserQuestionBankJobs,
@@ -101,9 +101,14 @@ export default async function AIActivityPage() {
             incarci din nou fisierele.
           </p>
         </div>
-        <Link className="btn-link secondary ai-activity-back-link" href="/materiale">
+        <PendingNavigationLink
+          className="btn-link secondary ai-activity-back-link"
+          href="/materiale"
+          pendingLabel="Se deschide uploadul..."
+          pendingMode="replace"
+        >
           <IconText icon={Upload}>Incarca alt material</IconText>
-        </Link>
+        </PendingNavigationLink>
       </section>
 
       {setupWarning ? <div className="error-state">{setupWarning}</div> : null}
@@ -122,9 +127,14 @@ export default async function AIActivityPage() {
             <p className="page-copy">
               Incarca primul material si il vei vedea aici dupa procesare.
             </p>
-            <Link className="btn-back" href="/materiale">
+            <PendingNavigationLink
+              className="btn-back"
+              href="/materiale"
+              pendingLabel="Se deschide uploadul..."
+              pendingMode="replace"
+            >
               <IconText icon={Upload}>Incarca material</IconText>
-            </Link>
+            </PendingNavigationLink>
           </article>
         </section>
       )}

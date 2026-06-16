@@ -17,6 +17,7 @@ import {
   getAdminOpenAIRequestLogs,
   getAdminSubjectsOverview,
   getAdminTestimonialRewardEntries,
+  getAdminUsageAnalyticsOverview,
   getAdminUsersOverview
 } from "@/lib/admin-center";
 
@@ -44,6 +45,7 @@ export default async function AdminPage({ searchParams }) {
     academicData,
     freeAccessData,
     testimonialRewardEntries,
+    usageAnalytics,
     failedUploads,
     notificationViews
   ] = await Promise.all([
@@ -54,6 +56,7 @@ export default async function AdminPage({ searchParams }) {
     getAdminAcademicStructureOverview(),
     getAdminFreeAccessOverview(),
     getAdminTestimonialRewardEntries(),
+    getAdminUsageAnalyticsOverview(),
     getAdminFailedUploadsOverview(),
     getAdminNotificationViews(adminUser.id)
   ]);
@@ -82,7 +85,8 @@ export default async function AdminPage({ searchParams }) {
     Number(academicData.counts?.institutions || 0) +
     Number(academicData.counts?.faculties || 0) +
     freeAccessData.rows.length +
-    testimonialRewardEntries.length;
+    testimonialRewardEntries.length +
+    Number(usageAnalytics.totalEvents || 0);
   const adminActionSummary = buildAdminActionSummary({
     testimonialRewardEntries,
     failedUploads,
@@ -152,6 +156,11 @@ export default async function AdminPage({ searchParams }) {
             <span className="status-pill is-muted">de aprobat</span>
           </article>
           <article className="admin-overview-card">
+            <span className="admin-overview-label">Analytics utilizare</span>
+            <strong>{usageAnalytics.totalEvents}</strong>
+            <span className="status-pill is-muted">30 zile</span>
+          </article>
+          <article className="admin-overview-card">
             <span className="admin-overview-label">Procesari</span>
             <strong>{openAILogs.length}</strong>
             <span className="status-pill is-muted">recente</span>
@@ -181,6 +190,7 @@ export default async function AdminPage({ searchParams }) {
             academicData={academicData}
             freeAccessData={freeAccessData}
             testimonialRewardEntries={testimonialRewardEntries}
+            usageAnalytics={usageAnalytics}
             adminActionSummary={adminActionSummary}
             currentAdminUserId={adminUser.id}
           />

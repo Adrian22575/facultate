@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { PrivateTestPlayer } from "@/components/private-test-player";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { isDemoUser } from "@/lib/demo-user";
@@ -40,16 +40,21 @@ export default async function MyTestDetailPage({ params }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/testele-mele">
-            Înapoi la testele mele
-          </Link>
+          <PendingNavigationLink
+            className="btn-back"
+            href="/testele-mele"
+            pendingLabel="Se incarca testele..."
+            pendingMode="replace"
+          >
+            Inapoi la testele mele
+          </PendingNavigationLink>
         }
         kicker="Test activ"
         title={payload.test.title}
         subtitle={
           payload.test.isCommunityShared
             ? "Parcurge un test publicat pentru comunitatea ta."
-            : "Parcurge testul tău activ exact ca într-un mod de lucru dedicat."
+            : "Parcurge testul tau activ exact ca intr-un mod de lucru dedicat."
         }
       />
       <PrivateTestPlayer test={payload.test} questions={payload.questions} />

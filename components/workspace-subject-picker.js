@@ -36,6 +36,7 @@ function getSubjectMonogram(title) {
 
 export function WorkspaceSubjectPicker({
   subjects,
+  subjectAllocations = [],
   userType,
   context,
   isContextReady,
@@ -44,6 +45,7 @@ export function WorkspaceSubjectPicker({
   disabled = false
 }) {
   const [subjectOptions, setSubjectOptions] = useState(() => sortSubjects(subjects));
+  const [allocationOptions, setAllocationOptions] = useState(() => subjectAllocations);
   const [searchValue, setSearchValue] = useState("");
   const [isListOpen, setIsListOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,17 +76,55 @@ export function WorkspaceSubjectPicker({
     [selectedSubjectId, subjectOptions]
   );
 
-  const filteredSubjects = useMemo(() => {
-    const normalizedQuery = normalizeText(searchValue.trim());
-
-    if (!normalizedQuery) {
-      return subjectOptions.slice(0, 8);
+  const contextSubjectIds = useMemo(() => {
+    if (!isContextReady) {
+      return new Set();
     }
 
-    return subjectOptions
+    const matchingAllocations = allocationOptions.filter((allocation) => {
+      if (allocation.userType !== userType) {
+        return false;
+      }
+
+      if (userType === "student") {
+        return (
+          allocation.studyYear === Number(context.studyYear) &&
+          allocation.semester === Number(context.semester)
+        );
+      }
+
+      return (
+        allocation.semester === Number(context.semester) &&
+        normalizeText(allocation.schoolClass || "") === normalizeText(context.schoolClass || "")
+      );
+    });
+
+    return new Set(matchingAllocations.map((allocation) => allocation.subjectId));
+  }, [allocationOptions, context.schoolClass, context.semester, context.studyYear, isContextReady, userType]);
+
+  const filteredSubjects = useMemo(() => {
+    const normalizedQuery = normalizeText(searchValue.trim());
+    const rankedSubjects = subjectOptions
+      .map((subject) => ({
+        ...subject,
+        isContextSubject: contextSubjectIds.has(subject.id)
+      }))
+      .sort((left, right) => {
+        if (left.isContextSubject !== right.isContextSubject) {
+          return left.isContextSubject ? -1 : 1;
+        }
+
+        return left.title.localeCompare(right.title, "ro");
+      });
+
+    if (!normalizedQuery) {
+      return rankedSubjects.slice(0, 8);
+    }
+
+    return rankedSubjects
       .filter((subject) => normalizeText(subject.title).includes(normalizedQuery))
       .slice(0, 8);
-  }, [searchValue, subjectOptions]);
+  }, [contextSubjectIds, searchValue, subjectOptions]);
 
   const pickerLocked = disabled || isSubmitting;
   const canSubmit = subjectTitle.trim().length >= 3 && !isSubmitting && isContextReady && !disabled;
@@ -96,11 +136,20 @@ export function WorkspaceSubjectPicker({
   }, [selectedSubject]);
 
   useEffect(() => {
+    setSubjectOptions(sortSubjects(subjects));
+  }, [subjects]);
+
+  useEffect(() => {
+    setAllocationOptions(subjectAllocations);
+  }, [subjectAllocations]);
+
+  useEffect(() => {
     setSearchValue("");
     setIsListOpen(false);
     setErrorMessage("");
     setSuccessMessage("");
-  }, [contextKey]);
+    onSubjectChange("");
+  }, [contextKey, onSubjectChange]);
 
   function openCreateSubject(prefillTitle = trimmedSearchValue) {
     if (pickerLocked) {
@@ -173,6 +222,16 @@ export function WorkspaceSubjectPicker({
 
         return sortSubjects([...withoutDuplicate, payload.subject]);
       });
+      if (payload.allocation) {
+        setAllocationOptions((currentAllocations) => {
+          const nextKey = JSON.stringify(payload.allocation);
+          const withoutDuplicate = currentAllocations.filter(
+            (allocation) => JSON.stringify(allocation) !== nextKey
+          );
+
+          return [...withoutDuplicate, payload.allocation];
+        });
+      }
       onSubjectChange(payload.subject.id);
       setSearchValue(payload.subject.title);
 

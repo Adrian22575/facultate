@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useFormStatus } from "react-dom";
 
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 function PublishButton({ isLicenta, blocked }) {
   const { pending } = useFormStatus();
@@ -31,7 +31,7 @@ export function ReviewPublishBar({
   publishedHref,
   publishAction
 }) {
-  const publishBlocked = !published && isLicenta && unresolvedReviewCount > 0;
+  const publishBlocked = !published && unresolvedReviewCount > 0;
 
   return (
     <section
@@ -52,16 +52,21 @@ export function ReviewPublishBar({
           {published
             ? "Modificarile tale se vad direct aici."
             : publishBlocked
-              ? `${unresolvedReviewCount} intrebari trebuie completate manual inainte de publicarea pentru licenta.`
+              ? `${unresolvedReviewCount} intrebari trebuie completate manual inainte de publicare.`
               : `${questionCount} intrebari sunt pregatite pentru publicare.`}
         </p>
       </div>
 
       <div className="review-publish-actions">
         {published ? (
-          <Link className="btn-back" href={publishedHref}>
+          <PendingNavigationLink
+            className="btn-back"
+            href={publishedHref}
+            pendingLabel={isLicenta ? "Se deschide simularea..." : "Se deschide materia..."}
+            pendingMode="replace"
+          >
             {isLicenta ? "Deschide simularea" : "Deschide materia"}
-          </Link>
+          </PendingNavigationLink>
         ) : (
           <form action={publishAction}>
             <input type="hidden" name="bankId" value={bankId} />

@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { CheckCircle2, ClipboardList, ExternalLink, FileText, Keyboard, ListPlus, Trash2, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { ImportJobStatusClient } from "@/components/import-job-status-client";
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
   AI_SOURCE_UPLOAD_MAX_BYTES,
@@ -596,9 +596,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
             <strong>Ai nevoie de o incarcare pentru finalizare</strong>
             <p>Licenta ramane salvata aici. Adauga o incarcare, apoi revii si apesi din nou pe finalizare.</p>
           </div>
-          <Link className="btn-link secondary ai-workspace-alert-link" href={creditsHref}>
+          <PendingNavigationLink
+            className="btn-link secondary ai-workspace-alert-link"
+            href={creditsHref}
+            pendingLabel="Se deschid pachetele..."
+            pendingMode="replace"
+          >
             Adauga incarcari
-          </Link>
+          </PendingNavigationLink>
         </div>
       ) : null}
 
@@ -612,9 +617,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
             </p>
           </div>
           <div className="import-next-step-actions">
-            <Link className="btn-link secondary" href="/materiale">
+            <PendingNavigationLink
+              className="btn-link secondary"
+              href="/materiale"
+              pendingLabel="Se deschide workspace-ul..."
+              pendingMode="replace"
+            >
               <IconText icon={ListPlus}>Porneste alta licenta</IconText>
-            </Link>
+            </PendingNavigationLink>
           </div>
         </section>
       ) : isCompleted ? (
@@ -631,16 +641,26 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
           </div>
           <div className="import-next-step-actions">
             {session.resultHref ? (
-              <Link className="btn-back" href={session.resultHref}>
+              <PendingNavigationLink
+                className="btn-back"
+                href={session.resultHref}
+                pendingLabel={isResultPublished ? "Se deschide simularea..." : "Se deschide publicarea..."}
+                pendingMode="replace"
+              >
                 <IconText icon={isResultPublished ? FileText : ExternalLink}>
                   {isResultPublished ? "Deschide simularea" : "Confirma publicarea"}
                 </IconText>
-              </Link>
+              </PendingNavigationLink>
             ) : null}
             {isResultPublished && session.reviewHref ? (
-              <Link className="btn-link secondary" href={session.reviewHref}>
+              <PendingNavigationLink
+                className="btn-link secondary"
+                href={session.reviewHref}
+                pendingLabel="Se deschid intrebarile..."
+                pendingMode="replace"
+              >
                 <IconText icon={ExternalLink}>Vezi intrebarile</IconText>
-              </Link>
+              </PendingNavigationLink>
             ) : null}
           </div>
         </section>
@@ -880,9 +900,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
             <button type="button" className="btn-link secondary" onClick={() => setShowSetManager((value) => !value)}>
               <IconText icon={ClipboardList}>{showSetManager ? "Ascunde seturile" : "Gestioneaza seturile"}</IconText>
             </button>
-            <Link className="btn-link secondary" href="/materiale">
+            <PendingNavigationLink
+              className="btn-link secondary"
+              href="/materiale"
+              pendingLabel="Se revine..."
+              pendingMode="replace"
+            >
               <IconText icon={FileText}>Inapoi la workspace</IconText>
-            </Link>
+            </PendingNavigationLink>
           </div>
         </section>
       )}

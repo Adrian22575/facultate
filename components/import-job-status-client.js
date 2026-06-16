@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   ArrowLeft,
   AlertTriangle,
@@ -17,6 +16,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 const TERMINAL_STATUSES = new Set([
   "ready_for_preview",
@@ -1482,14 +1482,24 @@ export function ImportJobStatusClient({
 
         <div className="inline-actions import-actions-row">
           {status.resultHref ? (
-            <Link className="btn-back" href={status.resultHref}>
+            <PendingNavigationLink
+              className="btn-back"
+              href={status.resultHref}
+              pendingLabel="Se deschide verificarea..."
+              pendingMode="replace"
+            >
               <IconText icon={ExternalLink}>Deschide verificarea</IconText>
-            </Link>
+            </PendingNavigationLink>
           ) : null}
           {!sessionMode ? (
-            <Link className="btn-link secondary" href="/materiale">
+            <PendingNavigationLink
+              className="btn-link secondary"
+              href="/materiale"
+              pendingLabel="Se revine..."
+              pendingMode="replace"
+            >
               <IconText icon={ArrowLeft}>Inapoi</IconText>
-            </Link>
+            </PendingNavigationLink>
           ) : null}
         </div>
       </section>

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
 
 import { deleteQuestionBankJobActivityAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 
 function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
@@ -146,23 +146,42 @@ export function WorkspaceJobHistoryClient({ initialJobs }) {
                 </div>
                 <div className="inline-actions ai-workspace-history-actions">
                   {job.activityState !== "deleted" ? (
-                    <Link className="btn-link secondary" href={href}>
+                    <PendingNavigationLink
+                      className="btn-link secondary"
+                      href={href}
+                      pendingLabel="Se deschide..."
+                      pendingMode="replace"
+                    >
                       Deschide
-                    </Link>
+                    </PendingNavigationLink>
                   ) : null}
                   {(job.status === "succeeded" || job.status === "ready_for_preview") && job.activityState !== "deleted" ? (
-                    <Link className="btn-back job-primary-cta" href={isImport ? href : job.reviewHref || job.resultHref}>
+                    <PendingNavigationLink
+                      className="btn-back job-primary-cta"
+                      href={isImport ? href : job.reviewHref || job.resultHref}
+                      pendingLabel={isImport ? "Se deschide importul..." : "Se deschid intrebarile..."}
+                      pendingMode="replace"
+                    >
                       {isImport ? "Verifica importul" : "Verifica intrebarile"}
-                    </Link>
+                    </PendingNavigationLink>
                   ) : null}
                   {job.status === "succeeded" &&
                   job.bankStatus === "published" &&
                   job.activityState !== "deleted" ? (
-                    <Link className="btn-link secondary" href={job.resultHref}>
+                    <PendingNavigationLink
+                      className="btn-link secondary"
+                      href={job.resultHref}
+                      pendingLabel={
+                        job.metadata?.examType === "licenta"
+                          ? "Se deschide simularea..."
+                          : "Se deschide materia..."
+                      }
+                      pendingMode="replace"
+                    >
                       {job.metadata?.examType === "licenta"
                         ? "Deschide simularea"
                         : "Deschide materia"}
-                    </Link>
+                    </PendingNavigationLink>
                   ) : null}
                   {job.activityState === "deleted" && !isImport ? (
                     <button

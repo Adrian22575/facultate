@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
+  BarChart3,
   Building2,
   CheckCircle2,
   Clock,
@@ -11,7 +12,10 @@ import {
   KeyRound,
   Lightbulb,
   MessageSquareText,
+  MonitorSmartphone,
+  MousePointerClick,
   ReceiptText,
+  Route,
   School,
   ShieldCheck,
   Sparkles,
@@ -55,7 +59,9 @@ function parseAdminStateFromSource(source = {}) {
               ? "free-access"
               : sectionParam === "testimonials"
                 ? "testimonials"
-            : "feedback";
+                : sectionParam === "analytics"
+                  ? "analytics"
+                  : "feedback";
 
   return {
     section,
@@ -290,6 +296,61 @@ function TableDate({ value }) {
   return <span className="admin-table-date-cell">{formatDate(value)}</span>;
 }
 
+function formatNumber(value) {
+  return new Intl.NumberFormat("ro-RO").format(Number(value || 0));
+}
+
+function formatUsageLabel(value) {
+  if (!value) {
+    return "-";
+  }
+
+  return String(value)
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function AnalyticsKpi({ icon: Icon, label, value, hint }) {
+  return (
+    <article className="admin-analytics-kpi">
+      <span className="admin-analytics-kpi-icon">
+        <Icon size={18} strokeWidth={2.2} aria-hidden="true" />
+      </span>
+      <span className="admin-analytics-kpi-label">{label}</span>
+      <strong>{formatNumber(value)}</strong>
+      {hint ? <span className="admin-analytics-kpi-hint">{hint}</span> : null}
+    </article>
+  );
+}
+
+function AnalyticsList({ rows = [], emptyLabel = "Nu exista date inca." }) {
+  const maxCount = Math.max(...rows.map((row) => row.count || 0), 1);
+
+  if (!rows.length) {
+    return <EmptyState title={emptyLabel} subtitle="Datele apar dupa ce utilizatorii folosesc aplicatia." />;
+  }
+
+  return (
+    <div className="admin-analytics-list">
+      {rows.map((row) => {
+        const width = `${Math.max(8, Math.round(((row.count || 0) / maxCount) * 100))}%`;
+
+        return (
+          <div className="admin-analytics-row" key={row.key}>
+            <div className="admin-analytics-row-main">
+              <span>{formatUsageLabel(row.label || row.key)}</span>
+              <strong>{formatNumber(row.count)}</strong>
+            </div>
+            <span className="admin-analytics-meter" aria-hidden="true">
+              <span style={{ width }} />
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export function AdminCenterClient({
   initialQuery = {},
   feedbackEntries,
@@ -299,6 +360,7 @@ export function AdminCenterClient({
   academicData,
   freeAccessData,
   testimonialRewardEntries = [],
+  usageAnalytics = null,
   adminActionSummary = {},
   currentAdminUserId = ""
 }) {
@@ -777,6 +839,7 @@ export function AdminCenterClient({
     feedback: feedbackCounts.all,
     billing: billingCounts.all,
     users: userCounts.all,
+    analytics: Number(usageAnalytics?.totalEvents || 0),
     subjects: subjectCounts.all,
     academic: academicCounts.all,
     freeAccess: freeAccessCount,
@@ -1036,6 +1099,7 @@ export function AdminCenterClient({
           <FilterButton active={section === "feedback"} onClick={() => setSection("feedback")} selected={section === "feedback"} icon={MessageSquareText} count={sectionCounts.feedback}>Feedback</FilterButton>
           <FilterButton active={section === "billing"} onClick={() => setSection("billing")} selected={section === "billing"} icon={CreditCard} count={sectionCounts.billing} actionCount={visibleAdminActionSummary.billing || 0}>Plati</FilterButton>
           <FilterButton active={section === "users"} onClick={() => setSection("users")} selected={section === "users"} icon={Users} count={sectionCounts.users}>Utilizatori</FilterButton>
+          <FilterButton active={section === "analytics"} onClick={() => setSection("analytics")} selected={section === "analytics"} icon={BarChart3} count={sectionCounts.analytics}>Analytics</FilterButton>
           <FilterButton active={section === "subjects"} onClick={() => setSection("subjects")} selected={section === "subjects"} icon={GraduationCap} count={sectionCounts.subjects}>Materii</FilterButton>
           <FilterButton active={section === "academic"} onClick={() => setSection("academic")} selected={section === "academic"} icon={Building2} count={sectionCounts.academic}>Structura academica</FilterButton>
           <FilterButton active={section === "free-access"} onClick={() => setSection("free-access")} selected={section === "free-access"} icon={KeyRound} count={sectionCounts.freeAccess}>Acces gratuit</FilterButton>
@@ -1289,6 +1353,124 @@ export function AdminCenterClient({
           </>
         ) : (
           <EmptyState title="Nu exista utilizatori pentru filtrul ales." subtitle="Schimba filtrul sau revino mai tarziu." />
+        )}
+      </section>
+
+      <section className={`surface admin-panel ${section === "analytics" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "analytics"}>
+        <div className="dashboard-header admin-section-intro">
+          <div>
+            <h2>Analytics utilizare</h2>
+            <p className="page-copy">Vezi ce zone sunt folosite cel mai mult, cine este activ si unde merita imbunatatit produsul.</p>
+          </div>
+          <span className="status-pill is-muted">{`${usageAnalytics?.windowDays || 30} zile`}</span>
+        </div>
+
+        {usageAnalytics?.warning ? (
+          <div className="workspace-context-summary admin-analytics-warning">
+            <strong>Nota analytics</strong>
+            <span>{usageAnalytics.warning}</span>
+          </div>
+        ) : null}
+
+        {usageAnalytics?.available === false ? (
+          <EmptyState
+            title="Analytics-ul nu este disponibil inca."
+            subtitle="Aplica migrarea noua, apoi evenimentele vor incepe sa se stranga automat."
+          />
+        ) : (
+          <>
+            <div className="admin-analytics-kpi-grid">
+              <AnalyticsKpi icon={BarChart3} label="Evenimente" value={usageAnalytics?.totalEvents} hint="total in fereastra" />
+              <AnalyticsKpi icon={Route} label="Vizualizari pagini" value={usageAnalytics?.pageViews} hint="navigari" />
+              <AnalyticsKpi icon={MousePointerClick} label="Click-uri" value={usageAnalytics?.clicks} hint="actiuni UI" />
+              <AnalyticsKpi icon={Users} label="Utilizatori" value={usageAnalytics?.uniqueUsers} hint="logati" />
+              <AnalyticsKpi icon={Clock} label="Activi azi" value={usageAnalytics?.activeToday} hint="useri sau sesiuni" />
+              <AnalyticsKpi icon={MonitorSmartphone} label="Sesiuni anonime" value={usageAnalytics?.anonymousSessions} hint="fara cont" />
+            </div>
+
+            <div className="admin-analytics-grid">
+              <TableSection title="Zone folosite" subtitle="Feature-urile cu cele mai multe evenimente." count={usageAnalytics?.topFeatures?.length || 0}>
+                <AnalyticsList rows={usageAnalytics?.topFeatures || []} />
+              </TableSection>
+
+              <TableSection title="Rute populare" subtitle="Paginile cu cele mai multe vizualizari." count={usageAnalytics?.topRoutes?.length || 0}>
+                <AnalyticsList rows={usageAnalytics?.topRoutes || []} />
+              </TableSection>
+
+              <TableSection title="Tipuri evenimente" subtitle="Separare intre navigari, click-uri si evenimente custom." count={usageAnalytics?.topEvents?.length || 0}>
+                <AnalyticsList rows={usageAnalytics?.topEvents || []} />
+              </TableSection>
+
+              <TableSection title="Device-uri" subtitle="Dimensiuni aproximative din browser." count={usageAnalytics?.deviceBreakdown?.length || 0}>
+                <AnalyticsList rows={usageAnalytics?.deviceBreakdown || []} />
+              </TableSection>
+            </div>
+
+            <TableSection title="Activitate zilnica" subtitle="Ultimele zile, agregate pe evenimente si utilizatori." count={usageAnalytics?.dailyActivity?.length || 0}>
+              <AnalyticsList
+                rows={(usageAnalytics?.dailyActivity || []).map((row) => ({
+                  key: row.date,
+                  label: `${row.date} - ${row.users} useri, ${row.sessions} sesiuni`,
+                  count: row.events
+                }))}
+                emptyLabel="Nu exista activitate zilnica inca."
+              />
+            </TableSection>
+
+            <TableSection title="Utilizatori activi" subtitle="Cei mai activi utilizatori din fereastra curenta." count={usageAnalytics?.topUsers?.length || 0}>
+              {usageAnalytics?.topUsers?.length ? (
+                <AdminTable minWidth={1100} columns={[
+                  { key: "user", label: "Utilizator" },
+                  { key: "events", label: "Evenimente" },
+                  { key: "pageViews", label: "Pagini" },
+                  { key: "clicks", label: "Click-uri" },
+                  { key: "feature", label: "Zona principala" },
+                  { key: "route", label: "Ruta principala" },
+                  { key: "lastSeen", label: "Ultima activitate" }
+                ]}>
+                  {usageAnalytics.topUsers.map((row) => (
+                    <tr key={row.user_id}>
+                      <td className="admin-table-text-cell">{row.user_email || row.user_id}</td>
+                      <td className="admin-table-count-cell">{formatNumber(row.count)}</td>
+                      <td className="admin-table-count-cell">{formatNumber(row.page_views)}</td>
+                      <td className="admin-table-count-cell">{formatNumber(row.clicks)}</td>
+                      <td>{row.top_feature || "-"}</td>
+                      <td className="admin-table-text-cell">{row.top_route || "-"}</td>
+                      <td><TableDate value={row.last_seen_at} /></td>
+                    </tr>
+                  ))}
+                </AdminTable>
+              ) : (
+                <EmptyState title="Nu exista utilizatori activi inca." subtitle="Vor aparea dupa primele evenimente cu utilizatori logati." />
+              )}
+            </TableSection>
+
+            <TableSection title="Evenimente recente" subtitle="Ultimele interactiuni salvate pentru audit rapid." count={usageAnalytics?.recentEvents?.length || 0}>
+              {usageAnalytics?.recentEvents?.length ? (
+                <AdminTable minWidth={1180} columns={[
+                  { key: "date", label: "Data" },
+                  { key: "user", label: "Utilizator" },
+                  { key: "event", label: "Eveniment" },
+                  { key: "feature", label: "Zona" },
+                  { key: "route", label: "Ruta" },
+                  { key: "device", label: "Device" }
+                ]}>
+                  {usageAnalytics.recentEvents.map((row) => (
+                    <tr key={row.id}>
+                      <td><TableDate value={row.created_at} /></td>
+                      <td className="admin-table-text-cell">{row.user_email || row.session_id || "Anonim"}</td>
+                      <td><CellPill>{formatUsageLabel(row.event_name)}</CellPill></td>
+                      <td>{row.feature || "-"}</td>
+                      <td className="admin-table-text-cell">{row.route_path || "-"}</td>
+                      <td>{formatUsageLabel(row.device_type || "unknown")}</td>
+                    </tr>
+                  ))}
+                </AdminTable>
+              ) : (
+                <EmptyState title="Nu exista evenimente recente." subtitle="Trackerul va popula tabelul dupa primele navigari." />
+              )}
+            </TableSection>
+          </>
         )}
       </section>
 

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { shuffleArray } from "@/lib/quiz";
+import { TestResultPanel } from "@/components/test-result-panel";
 
 function sanitizeQuestions(questions) {
   if (!Array.isArray(questions)) {
@@ -203,7 +204,9 @@ export function TestPageClient({ subject, initialQuestions }) {
     let correctAnswers = 0;
     const wrongQuestions = [];
 
-    const rows = testQuestions.map((question, index) => {
+    const wrongRows = [];
+
+    testQuestions.forEach((question, index) => {
       const userAnswer = answers[index];
       const isCorrect = userAnswer === question.correctIndex;
 
@@ -211,15 +214,16 @@ export function TestPageClient({ subject, initialQuestions }) {
         correctAnswers += 1;
       } else {
         wrongQuestions.push({ ...question, answers: [...question.answers] });
+        wrongRows.push({
+          id: `${question.id}-${index}`,
+          questionText: question.text,
+          selectedIndex: userAnswer,
+          selectedText: userAnswer === null ? "Fara raspuns" : question.answers[userAnswer],
+          correctIndex: question.correctIndex,
+          correctText: question.answers[question.correctIndex] || "Raspuns indisponibil",
+          explanation: question.explanation
+        });
       }
-
-      return {
-        question,
-        index,
-        isCorrect,
-        userText: userAnswer === null ? "(fara raspuns)" : question.answers[userAnswer],
-        correctText: question.answers[question.correctIndex] || "Raspuns indisponibil"
-      };
     });
 
     const scorePercent = testQuestions.length
@@ -227,33 +231,20 @@ export function TestPageClient({ subject, initialQuestions }) {
       : 0;
 
     return (
-      <section className="result">
-        <h2>Rezultat</h2>
-        <div className="score">
-          {`${reviewRound ? "Revizuire" : "Scor"}: ${correctAnswers} / ${testQuestions.length} (${scorePercent}%)`}
-        </div>
-
-        {rows.map((row) => (
-          <div key={`${row.question.id}-${row.index}`} className="choice-row">
-            <div>
-              <div className="choice-row-title">{`${row.index + 1}. ${row.question.text}`}</div>
-              <div className="choice-row-meta">
-                Raspunsul tau: <span className={row.isCorrect ? "correct" : "wrong"}>{row.userText}</span>
-              </div>
-              {row.isCorrect ? null : (
-                <div className="show-correct">
-                  Corect: <b>{row.correctText}</b>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-
-        <div className="center-actions">
+      <TestResultPanel
+        title={reviewRound ? "Rezultat revizuire" : "Rezultat final"}
+        score={correctAnswers}
+        total={testQuestions.length}
+        percentage={scorePercent}
+        wrongRows={wrongRows}
+        stats={[{ label: "Greseli", value: wrongQuestions.length }]}
+        emptyMessage="Nu ai gresit nicio intrebare in aceasta runda."
+        actions={
+          <>
           {wrongQuestions.length ? (
             <button
-              className="restart-btn"
               type="button"
+              className="secondary"
               onClick={() => startQuestionSet(wrongQuestions, true)}
             >
               {`Revizuieste greselile (${wrongQuestions.length})`}
@@ -270,8 +261,9 @@ export function TestPageClient({ subject, initialQuestions }) {
           >
             Reincepe
           </button>
-        </div>
-      </section>
+          </>
+        }
+      />
     );
   }
 

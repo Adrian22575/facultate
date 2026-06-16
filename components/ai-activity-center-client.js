@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   BookOpenCheck,
@@ -18,6 +17,7 @@ import { useMemo, useState, useTransition } from "react";
 
 import { deleteQuestionBanksAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 
 const MATERIALS_PAGE_SIZE = 8;
@@ -435,11 +435,16 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
                 <td className="admin-table-date-cell">{formatDate(material.updatedAt)}</td>
                 <td>
                   <div className="inline-actions ai-activity-table-actions">
-                    <Link className="admin-table-link" href={material.primaryHref}>
+                    <PendingNavigationLink
+                      className="admin-table-link"
+                      href={material.primaryHref}
+                      pendingLabel="Se deschide..."
+                      pendingMode="replace"
+                    >
                       <IconText icon={material.canReview ? CheckCircle2 : FileCheck2}>
                         {material.primaryActionLabel}
                       </IconText>
-                    </Link>
+                    </PendingNavigationLink>
                     <button
                       type="button"
                       className="admin-table-link secondary review-delete-btn"
@@ -605,9 +610,14 @@ function LicentaTable({ rows }) {
                   <td className="admin-table-date-cell">{formatDate(row.updatedAt || row.completedAt || row.createdAt)}</td>
                   <td>
                     <div className="inline-actions ai-activity-table-actions">
-                      <Link className="admin-table-link" href={action.href}>
+                      <PendingNavigationLink
+                        className="admin-table-link"
+                        href={action.href}
+                        pendingLabel={action.label === "Continua" ? "Se continua..." : "Se deschide..."}
+                        pendingMode="replace"
+                      >
                         <IconText icon={action.icon}>{action.label}</IconText>
-                      </Link>
+                      </PendingNavigationLink>
                     </div>
                   </td>
                 </tr>
@@ -674,11 +684,16 @@ function ActivityTable({ jobs }) {
                   <td className="admin-table-date-cell">{formatDate(job.updatedAt || job.completedAt || job.createdAt)}</td>
                   <td>
                     <div className="inline-actions ai-activity-table-actions">
-                      <Link className="admin-table-link" href={activityHref(job)}>
+                      <PendingNavigationLink
+                        className="admin-table-link"
+                        href={activityHref(job)}
+                        pendingLabel="Se deschide..."
+                        pendingMode="replace"
+                      >
                         <IconText icon={activityActionIcon(job)}>
                           {activityActionLabel(job)}
                         </IconText>
-                      </Link>
+                      </PendingNavigationLink>
                     </div>
                   </td>
                 </tr>
@@ -745,13 +760,23 @@ function TestsTable({ testGroups }) {
                   <td>
                     <div className="inline-actions ai-activity-table-actions">
                       {isActive ? (
-                        <Link className="admin-table-link" href={`/testele-mele/${test.id}`}>
+                        <PendingNavigationLink
+                          className="admin-table-link"
+                          href={`/testele-mele/${test.id}`}
+                          pendingLabel="Se deschide testul..."
+                          pendingMode="replace"
+                        >
                           <IconText icon={PlayCircle}>Rezolva</IconText>
-                        </Link>
+                        </PendingNavigationLink>
                       ) : null}
-                      <Link className="admin-table-link" href={`/materiale/drafts/${test.id}`}>
+                      <PendingNavigationLink
+                        className="admin-table-link"
+                        href={`/materiale/drafts/${test.id}`}
+                        pendingLabel="Se deschide..."
+                        pendingMode="replace"
+                      >
                         <IconText icon={Eye}>Deschide</IconText>
-                      </Link>
+                      </PendingNavigationLink>
                     </div>
                   </td>
                 </tr>
@@ -825,9 +850,14 @@ export function AIActivityCenterClient({
         actions={
           activeTab === "tests" ? (
             <div className="ai-activity-section-actions">
-              <Link className="btn-link secondary" href="/testele-mele">
+              <PendingNavigationLink
+                className="btn-link secondary"
+                href="/testele-mele"
+                pendingLabel="Se deschid testele..."
+                pendingMode="replace"
+              >
                 <IconText icon={BookOpenCheck}>Vezi toate testele</IconText>
-              </Link>
+              </PendingNavigationLink>
             </div>
           ) : null
         }

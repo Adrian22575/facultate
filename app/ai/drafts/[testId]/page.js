@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import {
   publishDraftAction,
   updateDraftMetaAction,
@@ -64,9 +64,14 @@ export default async function AIDraftPage({ params, searchParams }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale">
+          <PendingNavigationLink
+            className="btn-back"
+            href="/materiale"
+            pendingLabel="Se revine..."
+            pendingMode="replace"
+          >
             Inapoi la workspace
-          </Link>
+          </PendingNavigationLink>
         }
         kicker={test.status === "active" ? "Test activ" : "In verificare"}
         title={test.title}
@@ -102,9 +107,14 @@ export default async function AIDraftPage({ params, searchParams }) {
           <div className="inline-actions">
             <button type="submit">Salveaza titlul</button>
             {test.status === "active" ? (
-              <Link className="btn-link secondary" href={`/testele-mele/${test.id}`}>
+              <PendingNavigationLink
+                className="btn-link secondary"
+                href={`/testele-mele/${test.id}`}
+                pendingLabel="Se deschide testul..."
+                pendingMode="replace"
+              >
                 Deschide testul activ
-              </Link>
+              </PendingNavigationLink>
             ) : null}
           </div>
         </form>

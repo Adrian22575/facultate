@@ -372,6 +372,7 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
 export function LicentaImportWorkspaceClient({
   userType,
   subjects,
+  subjectAllocations = [],
   demoMode,
   setupWarning,
   billingSnapshot,
@@ -769,24 +770,46 @@ export function LicentaImportWorkspaceClient({
             <h2>Licenta sau test grila</h2>
           </div>
         </div>
-        <div className="ui-segmented-tabs import-main-tabs" role="tablist" aria-label="Tip import">
+        <div className="ai-workspace-exam-choice import-main-cards" role="radiogroup" aria-label="Tip import">
           <button
             type="button"
-            role="tab"
-            aria-selected={mainMode === "licenta"}
-            className={`ui-segmented-tab secondary ${mainMode === "licenta" ? "is-active" : ""}`}
+            role="radio"
+            aria-checked={mainMode === "licenta"}
+            className={`secondary ai-workspace-exam-card import-main-card ${
+              mainMode === "licenta" ? "is-selected" : ""
+            }`}
             onClick={() => setMainMode("licenta")}
           >
-            <IconText icon={GraduationCap}>Licenta</IconText>
+            <span className="ai-workspace-exam-icon is-licenta" aria-hidden="true">
+              <GraduationCap size={22} />
+            </span>
+            <span className="ai-workspace-exam-copy">
+              <strong>Licenta</strong>
+              <span>Construiesti o banca pentru simularea generala, pe seturi sau dintr-un fisier complet.</span>
+            </span>
+            <span className="ai-workspace-exam-mark" aria-hidden="true">
+              {mainMode === "licenta" ? "Selectat" : "Alege"}
+            </span>
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={mainMode === "test"}
-            className={`ui-segmented-tab secondary ${mainMode === "test" ? "is-active" : ""}`}
+            role="radio"
+            aria-checked={mainMode === "test"}
+            className={`secondary ai-workspace-exam-card import-main-card ${
+              mainMode === "test" ? "is-selected" : ""
+            }`}
             onClick={() => setMainMode("test")}
           >
-            <IconText icon={BookOpenCheck}>Test grila</IconText>
+            <span className="ai-workspace-exam-icon is-normal" aria-hidden="true">
+              <BookOpenCheck size={22} />
+            </span>
+            <span className="ai-workspace-exam-copy">
+              <strong>Test grila pe materie</strong>
+              <span>Urca intrebari pentru o materie, apoi le verifici si le publici ca test.</span>
+            </span>
+            <span className="ai-workspace-exam-mark" aria-hidden="true">
+              {mainMode === "test" ? "Selectat" : "Alege"}
+            </span>
           </button>
         </div>
       </section>
@@ -795,6 +818,7 @@ export function LicentaImportWorkspaceClient({
         <WorkspaceGenerateForm
           userType={userType}
           subjects={subjects}
+          subjectAllocations={subjectAllocations}
           initialExamType="normal"
           fixedExamType="normal"
           demoMode={demoMode}

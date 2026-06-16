@@ -106,6 +106,7 @@ function SparkIcon() {
 export function WorkspaceGenerateForm({
   userType,
   subjects,
+  subjectAllocations = [],
   initialExamType = "normal",
   fixedExamType = null,
   demoMode,
@@ -123,6 +124,7 @@ export function WorkspaceGenerateForm({
   const [studentYear, setStudentYear] = useState("");
   const [semester, setSemester] = useState("");
   const [schoolClass, setSchoolClass] = useState("");
+  const [answerKeyPlacement, setAnswerKeyPlacement] = useState("");
   const [selectedSubjectId, setSelectedSubjectId] = useState("");
   const [manualText, setManualText] = useState("");
   const [hasSelectedFile, setHasSelectedFile] = useState(false);
@@ -194,6 +196,7 @@ export function WorkspaceGenerateForm({
   const selectedFileHasIssue = selectedFileUnsupported || selectedFileTooLarge;
   const sourceReady =
     hasActiveSourceInput && !selectedFileHasIssue && !manualTextTooShort;
+  const answerKeyPlacementReady = Boolean(answerKeyPlacement);
   const formLocked = isSubmitting;
   const fieldControlsLocked = formLocked && sourceMode === "file";
   const submitDisabled =
@@ -201,6 +204,7 @@ export function WorkspaceGenerateForm({
     Boolean(setupWarning) ||
     billingSnapshot.aiCredits < 1 ||
     !sourceReady ||
+    !answerKeyPlacementReady ||
     (!isLicentaFlow && !selectedSubjectId) ||
     isSubmitting;
   const noCredits = billingSnapshot.aiCredits < 1;
@@ -245,6 +249,11 @@ export function WorkspaceGenerateForm({
         : sourceMode === "file"
           ? "Alege fisierul cu intrebari si raspunsuri."
           : "Lipeste textul cu intrebari si raspunsuri."
+    },
+    {
+      label: "Raspunsuri",
+      passed: answerKeyPlacementReady,
+      hint: "Alege unde sunt raspunsurile corecte in material."
     },
     {
       label: "Destinatie",
@@ -433,6 +442,23 @@ export function WorkspaceGenerateForm({
     throw new Error(responseText || "Nu am putut porni procesarea fisierului.");
   }
 
+  async function submitManualText(formSnapshot) {
+    setUploadStatus("Pornim procesarea textului...");
+
+    const generateResponse = await fetch("/api/materiale/generate", {
+      method: "POST",
+      body: formSnapshot
+    });
+
+    if (generateResponse.redirected || generateResponse.ok) {
+      window.location.assign(generateResponse.url || "/materiale");
+      return;
+    }
+
+    const responseText = await generateResponse.text().catch(() => "");
+    throw new Error(responseText || "Nu am putut porni procesarea textului.");
+  }
+
   return (
     <>
       {demoMode ? (
@@ -458,26 +484,29 @@ export function WorkspaceGenerateForm({
             return;
           }
 
+          event.preventDefault();
+          const formSnapshot = new FormData(event.currentTarget);
           submittingRef.current = true;
           setIsSubmitting(true);
           setClientError("");
           setUploadStatus("");
 
-          if (sourceMode === "file") {
-            event.preventDefault();
-            const formSnapshot = new FormData(event.currentTarget);
-            try {
+          try {
+            if (sourceMode === "file") {
               await startDirectFileUpload(formSnapshot);
-            } catch (uploadError) {
-              submittingRef.current = false;
-              setIsSubmitting(false);
-              setUploadStatus("");
-              setClientError(
-                uploadError instanceof Error
-                  ? uploadError.message
-                  : "Uploadul fisierului a esuat."
-              );
+              return;
             }
+
+            await submitManualText(formSnapshot);
+          } catch (submitError) {
+            submittingRef.current = false;
+            setIsSubmitting(false);
+            setUploadStatus("");
+            setClientError(
+              submitError instanceof Error
+                ? submitError.message
+                : "Trimiterea continutului a esuat."
+            );
           }
         }}
       >
@@ -742,6 +771,30 @@ Raspuns corect: B`}</pre>
             </div>
           )}
 
+          <div className="selector-container ai-workspace-answer-key-control">
+            <label>
+              Unde sunt raspunsurile corecte?
+              <select
+                name="answerKeyPlacement"
+                value={answerKeyPlacement}
+                disabled={formLocked}
+                required
+                onChange={(event) => setAnswerKeyPlacement(event.target.value)}
+              >
+                <option value="" disabled>
+                  Alege varianta
+                </option>
+                <option value="unknown">Nu sunt sigur</option>
+                <option value="after_each_question">Dupa fiecare intrebare</option>
+                <option value="at_end">La final, ca barem</option>
+                <option value="mixed">Amestecat in document</option>
+              </select>
+            </label>
+            <p className="micro-copy">
+              Daca raspunsurile sunt la final, folosim baremul ca reper pentru toate bucatile de procesare.
+            </p>
+          </div>
+
           <div className="workspace-checklist">
             <div className="workspace-check-row">
               <span>1</span>
@@ -786,22 +839,56 @@ Raspuns corect: B`}</pre>
               {resolvedFixedExamType ? (
                 <input type="hidden" name="examType" value={resolvedFixedExamType} />
               ) : (
-                <div className="selector-grid">
-                  <div className="selector-container">
-                    <label>
-                      Tip test
-                      <select
-                        name="examType"
-                        required
-                        value={examType}
-                        disabled={fieldControlsLocked}
-                        onChange={(event) => setExamType(event.target.value)}
-                      >
-                        <option value="normal">Test normal</option>
-                        <option value="licenta">Licenta</option>
-                      </select>
-                    </label>
-                  </div>
+                <div className="ai-workspace-exam-choice" role="radiogroup" aria-label="Tip test">
+                  <input type="hidden" name="examType" value={examType} />
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={examType === "normal"}
+                    aria-disabled={fieldControlsLocked}
+                    disabled={fieldControlsLocked}
+                    className={`secondary ai-workspace-exam-card ${
+                      examType === "normal" ? "is-selected" : ""
+                    }`}
+                    onClick={() => {
+                      if (!fieldControlsLocked) {
+                        setExamType("normal");
+                      }
+                    }}
+                  >
+                    <span className="ai-workspace-exam-icon is-normal" aria-hidden="true">T</span>
+                    <span className="ai-workspace-exam-copy">
+                      <strong>Test grila pe materie</strong>
+                      <span>Alegi anul, semestrul si materia unde intra intrebarile.</span>
+                    </span>
+                    <span className="ai-workspace-exam-mark" aria-hidden="true">
+                      {examType === "normal" ? "Selectat" : "Alege"}
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={examType === "licenta"}
+                    aria-disabled={fieldControlsLocked}
+                    disabled={fieldControlsLocked}
+                    className={`secondary ai-workspace-exam-card ${
+                      examType === "licenta" ? "is-selected" : ""
+                    }`}
+                    onClick={() => {
+                      if (!fieldControlsLocked) {
+                        setExamType("licenta");
+                      }
+                    }}
+                  >
+                    <span className="ai-workspace-exam-icon is-licenta" aria-hidden="true">L</span>
+                    <span className="ai-workspace-exam-copy">
+                      <strong>Licenta</strong>
+                      <span>Pregatesti intrebari pentru simularea generala de licenta.</span>
+                    </span>
+                    <span className="ai-workspace-exam-mark" aria-hidden="true">
+                      {examType === "licenta" ? "Selectat" : "Alege"}
+                    </span>
+                  </button>
                 </div>
               )}
 
@@ -898,6 +985,7 @@ Raspuns corect: B`}</pre>
 
                   <WorkspaceSubjectPicker
                     subjects={subjects}
+                    subjectAllocations={subjectAllocations}
                     userType={userType}
                     context={pickerContext}
                     isContextReady={isContextReady}

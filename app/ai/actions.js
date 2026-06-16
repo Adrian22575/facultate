@@ -1,5 +1,7 @@
 "use server";
 
+import crypto from "node:crypto";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -13,6 +15,7 @@ import {
   DraftQuestionFormSchema,
   PublishDraftSchema,
   PublishQuestionBankSchema,
+  QuestionBankManualItemSchema,
   QuestionBankReviewItemSchema
 } from "@/lib/ai/schema";
 import {
@@ -44,6 +47,21 @@ function readActionValues(source, key) {
   }
 
   return Array.isArray(source?.[key]) ? source[key] : [];
+}
+
+function normalizeQuestionBankHashText(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildManualQuestionBankItemHash(questionText, correctAnswer) {
+  const base = `${normalizeQuestionBankHashText(questionText)}::${normalizeQuestionBankHashText(correctAnswer)}`;
+  return crypto.createHash("sha256").update(base).digest("hex");
 }
 
 async function assertOwnedDraftTest(userId, testId) {
@@ -253,30 +271,6 @@ function getNormalSubjectIdsFromBanks(banks) {
         .filter((subjectId) => subjectId && subjectId !== "custom")
     )
   ];
-}
-
-async function expandQuestionBanksBySelectedSubjects(supabase, userId, selectedBanks) {
-  const subjectIds = getNormalSubjectIdsFromBanks(selectedBanks);
-  if (!subjectIds.length) {
-    return selectedBanks;
-  }
-
-  const { data: subjectBanks, error } = await supabase
-    .from("ai_question_banks")
-    .select("id, title, status, exam_type, subject_id, subject_name, source_document_id")
-    .eq("user_id", userId)
-    .neq("exam_type", "licenta")
-    .neq("status", "archived")
-    .in("subject_id", subjectIds);
-
-  if (error) throw error;
-
-  const bankMap = new Map(selectedBanks.map((bank) => [bank.id, bank]));
-  for (const bank of subjectBanks || []) {
-    bankMap.set(bank.id, bank);
-  }
-
-  return Array.from(bankMap.values());
 }
 
 async function deleteUnusedUserSubjectCatalogEntries(supabase, userId, deletedBanks) {
@@ -586,6 +580,65 @@ export async function updateQuestionBankItemAction(formData) {
   };
 }
 
+export async function addQuestionBankItemAction(formData) {
+  const user = await requireUser("/materiale");
+  assertNotDemo(user);
+  const answers = readActionValues(formData, "answers").map((value) => String(value || ""));
+  const parsed = QuestionBankManualItemSchema.parse({
+    bankId: readActionField(formData, "bankId"),
+    questionText: readActionField(formData, "questionText"),
+    answers,
+    correctIndex: readActionField(formData, "correctIndex"),
+    explanation: readActionField(formData, "explanation") || ""
+  });
+
+  const bank = await assertOwnedQuestionBank(user.id, parsed.bankId);
+  const supabase = createAdminClient();
+  const { data: lastItem, error: lastItemError } = await supabase
+    .from("ai_question_bank_items")
+    .select("position")
+    .eq("bank_id", parsed.bankId)
+    .order("position", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (lastItemError) throw lastItemError;
+
+  const nextPosition = Number(lastItem?.position || 0) + 1;
+  const { data: insertedItem, error } = await supabase
+    .from("ai_question_bank_items")
+    .insert({
+      bank_id: parsed.bankId,
+      position: nextPosition,
+      question_text: parsed.questionText,
+      answers: parsed.answers,
+      correct_index: parsed.correctIndex,
+      explanation: parsed.explanation,
+      normalized_hash: buildManualQuestionBankItemHash(parsed.questionText, parsed.answers[parsed.correctIndex]),
+      quality_status: "accepted",
+      metadata: {
+        manual_added: true,
+        manual_added_at: new Date().toISOString()
+      }
+    })
+    .select("id, bank_id, position, question_text, answers, correct_index, explanation, quality_status, metadata")
+    .single();
+
+  if (error) throw error;
+
+  await markJobsActivityByBankId(parsed.bankId, {
+    activityState: "modified",
+    activityMessage: "Intrebarile au fost modificate.",
+    lastKnownSubjectLabel: bank.subject_name || null
+  });
+  await revalidateQuestionBankPaths(bank);
+  return {
+    ok: true,
+    message: "Intrebarea a fost adaugata.",
+    item: insertedItem
+  };
+}
+
 export async function deleteQuestionBankItemAction(formData) {
   const user = await requireUser("/materiale");
   assertNotDemo(user);
@@ -628,19 +681,17 @@ export async function publishQuestionBankAction(formData) {
   const bank = await assertOwnedQuestionBank(user.id, parsed.bankId);
 
   const supabase = createAdminClient();
-  if (bank.exam_type === "licenta") {
-    const { count: unresolvedCount, error: unresolvedError } = await supabase
-      .from("ai_question_bank_items")
-      .select("id", { count: "exact", head: true })
-      .eq("bank_id", parsed.bankId)
-      .eq("quality_status", "needs_review");
+  const { count: unresolvedCount, error: unresolvedError } = await supabase
+    .from("ai_question_bank_items")
+    .select("id", { count: "exact", head: true })
+    .eq("bank_id", parsed.bankId)
+    .eq("quality_status", "needs_review");
 
-    if (unresolvedError) throw unresolvedError;
-    if ((unresolvedCount || 0) > 0) {
-      throw new Error(
-        `Nu poti publica licenta inca. Rezolva cele ${unresolvedCount} intrebari marcate cu atentie.`
-      );
-    }
+  if (unresolvedError) throw unresolvedError;
+  if ((unresolvedCount || 0) > 0) {
+    throw new Error(
+      `Nu poti publica inca. Rezolva cele ${unresolvedCount} intrebari marcate cu atentie.`
+    );
   }
 
   const publishedAt = new Date().toISOString();
@@ -726,7 +777,7 @@ async function deleteQuestionBanksForUser(userId, bankIds) {
     throw new Error("Nu am gasit materialele selectate pentru acest cont.");
   }
 
-  const banks = await expandQuestionBanksBySelectedSubjects(supabase, userId, selectedBanks);
+  const banks = selectedBanks;
   const bankIdSet = banks.map((bank) => bank.id);
   const sourceDocumentIds = banks.map((bank) => bank.source_document_id).filter(Boolean);
 

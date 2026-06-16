@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { Activity, CreditCard, Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { AIWorkspaceHighlightCard } from "@/components/ai-workspace-highlight-card";
 import { LicentaImportWorkspaceClient } from "@/components/licenta-import-workspace-client";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getActiveLicentaImportSession, getUserImportJobs } from "@/lib/ai/import-pipeline";
 import { getUserQuestionBankJobs } from "@/lib/ai/question-bank-pipeline";
 import {
@@ -14,7 +14,7 @@ import {
   isAcademicContextComplete
 } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
-import { getAccessibleSubjectsForUser } from "@/lib/data";
+import { getSubjectAllocations, getSubjects } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
@@ -156,11 +156,10 @@ export default async function AIWorkspacePage({ searchParams }) {
     typeof resolvedSearchParams?.error === "string" ? decodeURIComponent(resolvedSearchParams.error) : null;
   const communityLabel = academicContext ? getAcademicCommunityLabel(academicContext) : null;
   const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
-  const accessibleCatalog = await getAccessibleSubjectsForUser({
-    userId: user.id,
-    membership: academicContext?.membership,
-    userType
-  });
+  const [subjects, subjectAllocations] = await Promise.all([
+    getSubjects(),
+    getSubjectAllocations()
+  ]);
   const activityJobs = [...jobs, ...importJobs].sort(
     (left, right) => getActivityTimestamp(right) - getActivityTimestamp(left)
   );
@@ -178,13 +177,23 @@ export default async function AIWorkspacePage({ searchParams }) {
     null;
   const creditsAction =
     billingSnapshot.aiCredits < 1 ? (
-      <Link className="ai-workspace-summary-link" href="/cont?section=credits">
+      <PendingNavigationLink
+        className="ai-workspace-summary-link"
+        href="/cont?section=credits"
+        pendingLabel="Se deschid pachetele..."
+        pendingMode="replace"
+      >
         <IconText icon={CreditCard}>Adauga incarcari</IconText>
-      </Link>
+      </PendingNavigationLink>
     ) : (
-      <Link className="ai-workspace-summary-link" href="/cont?section=credits">
+      <PendingNavigationLink
+        className="ai-workspace-summary-link"
+        href="/cont?section=credits"
+        pendingLabel="Se deschid pachetele..."
+        pendingMode="replace"
+      >
         <IconText icon={CreditCard}>Vezi pachetele</IconText>
-      </Link>
+      </PendingNavigationLink>
     );
 
   return (
@@ -207,9 +216,14 @@ export default async function AIWorkspacePage({ searchParams }) {
             licenta.
           </p>
         </div>
-        <Link className="btn-link secondary ai-workspace-header-action" href="/materiale/activitate">
+        <PendingNavigationLink
+          className="btn-link secondary ai-workspace-header-action"
+          href="/materiale/activitate"
+          pendingLabel="Se deschide activitatea..."
+          pendingMode="replace"
+        >
           <IconText icon={Activity}>Vezi activitatea</IconText>
-        </Link>
+        </PendingNavigationLink>
       </section>
 
       <section className="ai-workspace-hero">
@@ -256,7 +270,8 @@ export default async function AIWorkspacePage({ searchParams }) {
       <section className="surface workspace-upload-surface ai-workspace-upload-surface">
         <LicentaImportWorkspaceClient
           userType={userType}
-          subjects={accessibleCatalog.subjects}
+          subjects={subjects}
+          subjectAllocations={subjectAllocations}
           demoMode={demoMode}
           setupWarning={setupWarning}
           billingSnapshot={billingSnapshot}

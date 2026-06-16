@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { AIQuestionBankReviewClient } from "@/components/ai-question-bank-review-client";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ReviewPublishBar } from "@/components/review-publish-bar";
 import { publishQuestionBankAction } from "@/app/ai/actions";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
@@ -124,9 +124,14 @@ export default async function AIQuestionBankReviewPage({ params, searchParams })
     <main className="app-shell review-page-shell has-review-publish-bar">
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale">
+          <PendingNavigationLink
+            className="btn-back"
+            href="/materiale"
+            pendingLabel="Se revine..."
+            pendingMode="replace"
+          >
             Inapoi la workspace
-          </Link>
+          </PendingNavigationLink>
         }
         kicker={published ? "Publicat" : "Gata de verificat"}
         title={bank.title}

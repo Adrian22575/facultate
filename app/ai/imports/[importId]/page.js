@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { ImportJobStatusClient } from "@/components/import-job-status-client";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getImportStatus } from "@/lib/ai/import-pipeline";
 import { isDemoUser } from "@/lib/demo-user";
@@ -53,9 +53,14 @@ export default async function AIImportPage({ params }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale">
+          <PendingNavigationLink
+            className="btn-back"
+            href="/materiale"
+            pendingLabel="Se revine..."
+            pendingMode="replace"
+          >
             Inapoi
-          </Link>
+          </PendingNavigationLink>
         }
         kicker="Import licenta"
         title="Pregatim intrebarile"

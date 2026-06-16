@@ -1,10 +1,11 @@
 "use client";
 
-import { CheckCircle2, Edit3, Save, Trash2, X } from "lucide-react";
+import { CheckCircle2, Edit3, Plus, Save, Trash2, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import {
+  addQuestionBankItemAction,
   deleteQuestionBankAction,
   deleteQuestionBankItemAction,
   updateQuestionBankItemAction
@@ -13,6 +14,10 @@ import { LoadingIconText } from "@/components/loading-spinner";
 import { normalizeSearchText, truncateText } from "@/lib/quiz";
 
 const REVIEW_PAGE_SIZE_OPTIONS = [5, 10, 25, 50, "all"];
+const REVIEW_FILTER_TABS = [
+  { id: "all", label: "Toate" },
+  { id: "needs_review", label: "De verificat" }
+];
 
 function answerLabel(index) {
   return String.fromCharCode(65 + index);
@@ -306,6 +311,139 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
   );
 }
 
+function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel, onSave }) {
+  const [selectedCorrectIndex, setSelectedCorrectIndex] = useState("0");
+  const [answerCount, setAnswerCount] = useState(4);
+  const answerIndexes = Array.from({ length: answerCount }, (_, index) => index);
+
+  function removeLastAnswer() {
+    setAnswerCount((current) => {
+      const nextCount = Math.max(4, current - 1);
+      if (Number(selectedCorrectIndex) >= nextCount) {
+        setSelectedCorrectIndex(String(nextCount - 1));
+      }
+      return nextCount;
+    });
+  }
+
+  return (
+    <article className="draft-card draft-card-form review-question-card review-edit-card is-editing">
+      <div className="review-editor-head">
+        <div className="review-question-index">
+          <span>{nextPosition}</span>
+        </div>
+        <div>
+          <span className="step-eyebrow">Intrebare noua</span>
+          <strong>Adauga manual o intrebare</strong>
+          <p>O poti folosi daca ai sters ceva din greseala sau vrei sa completezi banca.</p>
+        </div>
+      </div>
+
+      <form
+        className="ai-form review-edit-form"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSave(new FormData(event.currentTarget));
+        }}
+      >
+        <input type="hidden" name="bankId" value={bankId} />
+        <input type="hidden" name="correctIndex" value={selectedCorrectIndex} />
+
+        <div className="review-editor-section is-question">
+          <label>
+            <span>Intrebarea</span>
+            <textarea
+              className="textarea-input"
+              name="questionText"
+              rows="4"
+              placeholder="Scrie intrebarea aici"
+              required
+              minLength={10}
+            />
+          </label>
+        </div>
+
+        <div className="review-editor-section">
+          <div className="review-editor-section-head">
+            <span>Variante raspuns</span>
+            <div className="inline-actions">
+              {answerCount < 5 ? (
+                <button
+                  type="button"
+                  className="btn-link secondary"
+                  onClick={() => setAnswerCount((current) => Math.min(5, current + 1))}
+                  disabled={isSaving}
+                >
+                  <IconText icon={Plus}>Adauga varianta</IconText>
+                </button>
+              ) : null}
+              {answerCount > 4 ? (
+                <button type="button" className="btn-link secondary" onClick={removeLastAnswer} disabled={isSaving}>
+                  <IconText icon={X}>Scoate varianta E</IconText>
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <div className="review-editor-options">
+            {answerIndexes.map((index) => (
+              <div className={`review-editor-option ${selectedCorrectIndex === String(index) ? "is-selected" : ""}`} key={`new-answer-${index}`}>
+                <button
+                  type="button"
+                  className="review-editor-option-select"
+                  onClick={() => setSelectedCorrectIndex(String(index))}
+                  aria-label={`Alege varianta ${answerLabel(index)} ca raspuns corect`}
+                  disabled={isSaving}
+                >
+                  {answerLabel(index)}
+                </button>
+                <input
+                  className="input-search review-editor-answer-input"
+                  type="text"
+                  name="answers"
+                  placeholder={`Varianta ${answerLabel(index)}`}
+                  required
+                />
+                <button
+                  type="button"
+                  className="review-editor-correct-button"
+                  onClick={() => setSelectedCorrectIndex(String(index))}
+                  aria-pressed={selectedCorrectIndex === String(index)}
+                  disabled={isSaving}
+                >
+                  <IconText icon={CheckCircle2}>{selectedCorrectIndex === String(index) ? "Corect" : "Alege"}</IconText>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="review-editor-section">
+          <label>
+            <span>Explicatie</span>
+            <textarea
+              className="textarea-input"
+              name="explanation"
+              rows="3"
+              placeholder="Optional"
+            />
+          </label>
+        </div>
+
+        <div className="inline-actions review-edit-actions">
+          <button type="submit" disabled={isSaving}>
+            <LoadingIconText icon={Save} loading={isSaving} loadingLabel="Se adauga...">
+              Adauga intrebarea
+            </LoadingIconText>
+          </button>
+          <button type="button" className="btn-link secondary" onClick={onCancel} disabled={isSaving}>
+            <IconText icon={X}>Renunta</IconText>
+          </button>
+        </div>
+      </form>
+    </article>
+  );
+}
+
 function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   if (!confirmState) {
     return null;
@@ -356,6 +494,8 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
   const router = useRouter();
   const [items, setItems] = useState(initialItems);
   const [editingItemId, setEditingItemId] = useState(null);
+  const [isAddingItem, setIsAddingItem] = useState(false);
+  const [reviewFilter, setReviewFilter] = useState("all");
   const [pageSize, setPageSize] = useState(5);
   const [visiblePage, setVisiblePage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -373,23 +513,29 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
       })),
     [items]
   );
-  const isLicenta = bank?.exam_type === "licenta";
   const needsReviewCount = visibleItems.filter((item) => item.quality_status === "needs_review").length;
+  const filteredItems = useMemo(() => {
+    if (reviewFilter === "needs_review") {
+      return visibleItems.filter((item) => item.quality_status === "needs_review");
+    }
+
+    return visibleItems;
+  }, [reviewFilter, visibleItems]);
   const normalizedSearchQuery = normalizeSearchText(searchQuery);
   const searchActive = normalizedSearchQuery.length >= 1;
   const searchedItems = useMemo(() => {
     if (!searchActive) {
-      return visibleItems;
+      return filteredItems;
     }
 
-    return visibleItems
+    return filteredItems
       .map((item) => ({
         ...item,
         ...buildReviewSearchMatch(item, normalizedSearchQuery)
       }))
       .filter((item) => item.matchScore > 0)
       .sort((left, right) => right.matchScore - left.matchScore || left.position - right.position);
-  }, [normalizedSearchQuery, searchActive, visibleItems]);
+  }, [filteredItems, normalizedSearchQuery, searchActive]);
   const normalizedPageSize = pageSize === "all" ? searchedItems.length || 1 : Number(pageSize) || 5;
   const totalPages = Math.max(1, Math.ceil(searchedItems.length / normalizedPageSize));
   const currentPage = Math.min(visiblePage, totalPages);
@@ -413,11 +559,17 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
   function handleEdit(itemId) {
     setFeedback("");
     setErrorMessage("");
+    setIsAddingItem(false);
     setEditingItemId(itemId);
-    const itemIndex = visibleItems.findIndex((item) => item.id === itemId);
+    const itemIndex = searchedItems.findIndex((item) => item.id === itemId);
     if (itemIndex >= 0 && pageSize !== "all") {
       setVisiblePage(Math.floor(itemIndex / normalizedPageSize) + 1);
     }
+  }
+
+  function changeReviewFilter(nextFilter) {
+    setReviewFilter(nextFilter);
+    setVisiblePage(1);
   }
 
   function handleCancelEdit() {
@@ -426,6 +578,69 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
     }
 
     setEditingItemId(null);
+  }
+
+  function handleOpenAddItem() {
+    setFeedback("");
+    setErrorMessage("");
+    setEditingItemId(null);
+    setIsAddingItem(true);
+    setReviewFilter("all");
+    setSearchQuery("");
+    setVisiblePage(1);
+  }
+
+  function handleCancelAddItem() {
+    if (savingItemId === "new") {
+      return;
+    }
+
+    setIsAddingItem(false);
+  }
+
+  function handleAddItem(formData) {
+    const questionText = String(formData.get("questionText") || "");
+    const answers = formData.getAll("answers").map((value) => String(value || ""));
+    const explanation = String(formData.get("explanation") || "");
+    const correctIndex = Number(formData.get("correctIndex") || 0);
+
+    setFeedback("");
+    setErrorMessage("");
+    setSavingItemId("new");
+
+    startTransition(async () => {
+      try {
+        const result = await addQuestionBankItemAction({
+          bankId: String(formData.get("bankId") || ""),
+          questionText,
+          answers,
+          correctIndex: String(correctIndex),
+          explanation
+        });
+
+        if (!result?.ok || !result.item) {
+          throw new Error("Nu am putut adauga intrebarea.");
+        }
+
+        const nextItem = {
+          ...result.item,
+          quality_status: result.item.quality_status || "accepted",
+          metadata: result.item.metadata || {}
+        };
+        const nextCount = items.length + 1;
+        setItems((current) => [...current, nextItem]);
+        setIsAddingItem(false);
+        setReviewFilter("all");
+        setSearchQuery("");
+        setVisiblePage(pageSize === "all" ? 1 : Math.max(1, Math.ceil(nextCount / normalizedPageSize)));
+        setFeedback(result.message || "Intrebarea a fost adaugata.");
+        router.refresh();
+      } catch (error) {
+        setErrorMessage(error instanceof Error ? error.message : "Nu am putut adauga intrebarea.");
+      } finally {
+        setSavingItemId(null);
+      }
+    });
   }
 
   function handleSave(formData) {
@@ -549,57 +764,97 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
           <div>
             <h2>Intrebari extrase</h2>
             <p className="page-copy">
-              {isLicenta && needsReviewCount > 0
-                ? `${needsReviewCount} intrebari au nevoie de completare manuala inainte de publicarea pentru licenta.`
+              {needsReviewCount > 0
+                ? `${needsReviewCount} intrebari au nevoie de completare manuala inainte de publicare.`
                 : "Deschizi doar intrebarea pe care vrei sa o modifici."}
             </p>
           </div>
-          {visibleItems.length ? (
-            <div className="review-list-controls">
-              <label className="review-search-control">
-                <span>Cauta</span>
-                <input
-                  className="input-search"
-                  type="search"
-                  inputMode="search"
-                  placeholder="Numar, intrebare sau raspuns"
-                  value={searchQuery}
-                  onChange={(event) => {
-                    setSearchQuery(event.target.value);
-                    setVisiblePage(1);
-                  }}
-                />
-              </label>
-              <label>
-                <span>Afiseaza</span>
-                <select
-                  value={String(pageSize)}
-                  onChange={(event) => {
-                    const value = event.target.value === "all" ? "all" : Number(event.target.value);
-                    setPageSize(value);
-                    setVisiblePage(1);
-                  }}
-                >
-                  {REVIEW_PAGE_SIZE_OPTIONS.map((option) => (
-                    <option key={String(option)} value={String(option)}>
-                      {option === "all" ? "Toate" : `${option} intrebari`}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <span className="review-list-range">
-                {`${searchedItems.length ? visibleStart + 1 : 0}-${visibleEnd} din ${searchedItems.length}`}
-              </span>
-            </div>
-          ) : null}
+          <div className="review-list-controls">
+            <button
+              type="button"
+              className="btn-link secondary"
+              onClick={handleOpenAddItem}
+              disabled={isAddingItem || isMutating}
+            >
+              <IconText icon={Plus}>Adauga intrebare</IconText>
+            </button>
+            {visibleItems.length ? (
+              <>
+                <div className="ui-segmented-tabs review-filter-tabs" role="tablist" aria-label="Filtru intrebari">
+                  {REVIEW_FILTER_TABS.map((tab) => {
+                    const count = tab.id === "needs_review" ? needsReviewCount : visibleItems.length;
+
+                    return (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={reviewFilter === tab.id}
+                        className={`ui-segmented-tab secondary ${reviewFilter === tab.id ? "is-active" : ""}`}
+                        onClick={() => changeReviewFilter(tab.id)}
+                      >
+                        {`${tab.label} (${count})`}
+                      </button>
+                    );
+                  })}
+                </div>
+                <label className="review-search-control">
+                  <span>Cauta</span>
+                  <input
+                    className="input-search"
+                    type="search"
+                    inputMode="search"
+                    placeholder="Numar, intrebare sau raspuns"
+                    value={searchQuery}
+                    onChange={(event) => {
+                      setSearchQuery(event.target.value);
+                      setVisiblePage(1);
+                    }}
+                  />
+                </label>
+                <label>
+                  <span>Afiseaza</span>
+                  <select
+                    value={String(pageSize)}
+                    onChange={(event) => {
+                      const value = event.target.value === "all" ? "all" : Number(event.target.value);
+                      setPageSize(value);
+                      setVisiblePage(1);
+                    }}
+                  >
+                    {REVIEW_PAGE_SIZE_OPTIONS.map((option) => (
+                      <option key={String(option)} value={String(option)}>
+                        {option === "all" ? "Toate" : `${option} intrebari`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <span className="review-list-range">
+                  {`${searchedItems.length ? visibleStart + 1 : 0}-${visibleEnd} din ${searchedItems.length}`}
+                </span>
+              </>
+            ) : null}
+          </div>
         </div>
 
-        {isLicenta && needsReviewCount > 0 ? (
+        {needsReviewCount > 0 ? (
           <div className="review-required-panel">
-            <strong>Publicarea licentei este blocata temporar</strong>
+            <strong>Publicarea este blocata temporar</strong>
             <p>
               Editeaza fiecare intrebare marcata cu atentie, completeaza ce lipseste si bifeaza confirmarea din formular.
             </p>
+          </div>
+        ) : null}
+
+        {isAddingItem ? (
+          <div className="draft-list review-manual-add-list">
+            <ReviewQuestionManualCreator
+              bankId={bank.id}
+              nextPosition={visibleItems.length + 1}
+              isSaving={savingItemId === "new"}
+              onCancel={handleCancelAddItem}
+              onSave={handleAddItem}
+            />
           </div>
         ) : null}
 
@@ -626,19 +881,35 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
               )
             )}
           </div>
-        ) : (
+        ) : !isAddingItem ? (
           <div className="draft-card review-empty-card">
-            <strong>{searchActive ? "Nu am gasit intrebari pentru cautarea aceasta." : "Nu mai exista intrebari in aceasta banca."}</strong>
+            <strong>
+              {searchActive
+                ? "Nu am gasit intrebari pentru cautarea aceasta."
+                : reviewFilter === "needs_review"
+                  ? "Nu mai sunt intrebari de verificat."
+                  : "Nu mai exista intrebari in aceasta banca."}
+            </strong>
             <p className="page-copy">
               {searchActive
                 ? "Cauta dupa numarul intrebarii, un cuvant din intrebare sau un text din raspuns."
+                : reviewFilter === "needs_review"
+                  ? "Toate intrebarile marcate au fost rezolvate sau sterse."
                 : "Poti sterge fisierul sau poti incarca unul nou."}
             </p>
           </div>
-        )}
+        ) : null}
 
         {searchedItems.length > normalizedPageSize && pageSize !== "all" ? (
           <div className="review-pagination">
+            <button
+              type="button"
+              className="btn-link secondary"
+              onClick={() => setVisiblePage(1)}
+              disabled={currentPage <= 1}
+            >
+              Prima pagina
+            </button>
             <button
               type="button"
               className="btn-link secondary"
@@ -655,6 +926,14 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
               disabled={currentPage >= totalPages}
             >
               Mai multe
+            </button>
+            <button
+              type="button"
+              className="btn-link secondary"
+              onClick={() => setVisiblePage(totalPages)}
+              disabled={currentPage >= totalPages}
+            >
+              Ultima pagina
             </button>
           </div>
         ) : null}

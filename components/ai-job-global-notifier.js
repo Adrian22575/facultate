@@ -8,6 +8,7 @@ import { getJobPresentation } from "@/lib/ai/job-presentation";
 const DISMISSED_KEY = "ai_job_notifier_dismissed";
 const ACTIVE_POLL_MS = 7000;
 const PROCESS_POLL_MS = 2200;
+const PROCESS_INITIAL_DELAY_MS = 300;
 const IMPORT_ACTIVE_STATUSES = new Set(["uploaded", "extracting", "chunking", "processing", "matching_answers"]);
 
 function readDismissedIds() {
@@ -194,12 +195,10 @@ export function AIJobGlobalNotifier() {
     activeJobsRef.current = monitor.activeJobs || [];
   }, [monitor.activeJobs]);
 
-  useEffect(() => {
-    if (!isReady) {
-      return undefined;
-    }
+  const hasActiveJobs = Boolean(monitor.activeJobs?.length);
 
-    if (!activeJobsRef.current.length) {
+  useEffect(() => {
+    if (!isReady || !hasActiveJobs) {
       return undefined;
     }
 
@@ -296,7 +295,7 @@ export function AIJobGlobalNotifier() {
       }
     }
 
-    timeoutId = window.setTimeout(processActiveJob, 300);
+    timeoutId = window.setTimeout(processActiveJob, PROCESS_INITIAL_DELAY_MS);
 
     return () => {
       isCancelled = true;
@@ -304,7 +303,7 @@ export function AIJobGlobalNotifier() {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [isReady, monitor.activeJobs]);
+  }, [hasActiveJobs, isReady]);
 
   const notification = useMemo(() => {
     const activeJobs = monitor.activeJobs || [];

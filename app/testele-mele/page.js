@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import {
   getAcademicCommunityLabel,
   getAcademicContext,
@@ -17,6 +18,19 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Testele mele | Nota 5+"
 };
+
+function TestOpenLink({ href, children = "Rezolva" }) {
+  return (
+    <PendingNavigationLink
+      className="btn-back"
+      href={href}
+      pendingLabel="Se deschide testul..."
+      pendingMode="replace"
+    >
+      {children}
+    </PendingNavigationLink>
+  );
+}
 
 export default async function MyTestsPage() {
   const user = await getOptionalUser();
@@ -38,7 +52,7 @@ export default async function MyTestsPage() {
   if (!demoMode) {
     try {
       tests = await getPrivateGeneratedTests(user.id);
-    } catch (error) {
+    } catch {
       setupWarning = "Testele nu au putut fi incarcate momentan.";
     }
   }
@@ -84,13 +98,9 @@ export default async function MyTestsPage() {
                 <div className="draft-card-head">
                   <div>
                     <strong>{test.title}</strong>
-                    <p className="choice-row-meta">
-                      {`${test.total_questions} intrebari`}
-                    </p>
+                    <p className="choice-row-meta">{`${test.total_questions} intrebari`}</p>
                   </div>
-                  <Link className="btn-back" href={`/testele-mele/${test.id}`}>
-                    Rezolva
-                  </Link>
+                  <TestOpenLink href={`/testele-mele/${test.id}`} />
                 </div>
               </article>
             ))}
@@ -118,14 +128,10 @@ export default async function MyTestsPage() {
                 <div className="draft-card-head">
                   <div>
                     <strong>{test.title}</strong>
-                    <p className="choice-row-meta">
-                      {`${test.total_questions} intrebari · activ`}
-                    </p>
+                    <p className="choice-row-meta">{`${test.total_questions} intrebari - activ`}</p>
                   </div>
                   <div className="inline-actions">
-                    <Link className="btn-back" href={`/testele-mele/${test.id}`}>
-                      Rezolva
-                    </Link>
+                    <TestOpenLink href={`/testele-mele/${test.id}`} />
                     <Link className="btn-link secondary" href={`/materiale/drafts/${test.id}`}>
                       Editeaza
                     </Link>
@@ -136,9 +142,7 @@ export default async function MyTestsPage() {
           </div>
         ) : (
           <div className="empty-state">
-            {demoMode
-              ? "In modul demo nu incarcam teste active reale."
-              : "Nu ai inca teste active."}
+            {demoMode ? "In modul demo nu incarcam teste active reale." : "Nu ai inca teste active."}
           </div>
         )}
       </section>
@@ -152,9 +156,7 @@ export default async function MyTestsPage() {
                 <div className="draft-card-head">
                   <div>
                     <strong>{test.title}</strong>
-                    <p className="choice-row-meta">
-                      {`${test.total_questions} intrebari · in verificare`}
-                    </p>
+                    <p className="choice-row-meta">{`${test.total_questions} intrebari - in verificare`}</p>
                   </div>
                   <Link className="btn-link secondary" href={`/materiale/drafts/${test.id}`}>
                     Deschide
