@@ -1,4 +1,4 @@
-import { Activity, CreditCard, Upload } from "lucide-react";
+import { Activity, BookOpen, ClipboardList, CreditCard, GraduationCap, Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
@@ -88,6 +88,29 @@ function WorkspaceSummaryCard({ icon, label, value, accent, action }) {
       </div>
       {action}
     </article>
+  );
+}
+
+function WorkspaceChoiceCard({ icon: Icon, title, copy, bullets = [], href, primary = false }) {
+  return (
+    <PendingNavigationLink
+      className={`ai-workspace-choice-card${primary ? " is-primary" : ""}`}
+      href={href}
+      pendingLabel="Se deschide flow-ul..."
+    >
+      <span className="ai-workspace-choice-icon" aria-hidden="true">
+        <Icon size={22} strokeWidth={2.2} />
+      </span>
+      <div className="ai-workspace-choice-copy">
+        <strong>{title}</strong>
+        <p>{copy}</p>
+        <div>
+          {bullets.map((bullet) => (
+            <span key={bullet}>{bullet}</span>
+          ))}
+        </div>
+      </div>
+    </PendingNavigationLink>
   );
 }
 
@@ -267,7 +290,32 @@ export default async function AIWorkspacePage({ searchParams }) {
         </div>
       </section>
 
-      <section className="surface workspace-upload-surface ai-workspace-upload-surface">
+      <section className="ai-workspace-choice-grid" aria-label="Alege ce vrei sa faci">
+        <WorkspaceChoiceCard
+          icon={BookOpen}
+          title="Invata din materia ta"
+          copy="Incarca materia si primesti capitole, flashcards, test si plan de invatare."
+          bullets={["Capitole", "Flashcards", "Plan"]}
+          href="/materiale/invata"
+          primary
+        />
+        <WorkspaceChoiceCard
+          icon={ClipboardList}
+          title="Importa intrebari existente"
+          copy="Pentru grile care au deja variante si raspunsuri marcate."
+          bullets={["Review", "Materii", "Teste"]}
+          href="#workspace-import-flow"
+        />
+        <WorkspaceChoiceCard
+          icon={GraduationCap}
+          title="Pregateste licenta"
+          copy="Pentru seturi mari de licenta si simulari centralizate."
+          bullets={["Licenta", "Review", "Simulari"]}
+          href="/materiale?examType=licenta#workspace-import-flow"
+        />
+      </section>
+
+      <section className="surface workspace-upload-surface ai-workspace-upload-surface" id="workspace-import-flow">
         <LicentaImportWorkspaceClient
           userType={userType}
           subjects={subjects}
