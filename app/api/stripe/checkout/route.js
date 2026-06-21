@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { ensureStripeCustomer } from "@/lib/billing";
 import { isAdminUser } from "@/lib/admin";
+import { getSafeNextPath } from "@/lib/auth/password-auth";
 import { DEMO_USER_ID } from "@/lib/demo-user";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { getBaseUrl } from "@/lib/site";
@@ -19,34 +20,30 @@ function buildContUrl(request, section, errorMessage) {
   const url = new URL("/cont", request.url);
   url.searchParams.set("section", section);
   if (errorMessage) {
-    url.searchParams.set("error", encodeURIComponent(errorMessage));
+    url.searchParams.set("error", errorMessage);
   }
   return url;
 }
 
 function getSafeReturnTo(value) {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  const trimmed = value.trim();
-  if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.includes("\\") || trimmed.includes("\n")) {
-    return "";
-  }
-
-  return trimmed.slice(0, 300);
+  const safePath = getSafeNextPath(value);
+  return safePath === "/" && value !== "/" ? "" : safePath.slice(0, 300);
 }
 
 export async function POST(request) {
+  const requestedSection = new URL(request.url).searchParams.get("section");
+  const loginSection = requestedSection === "credits" ? "credits" : "plans";
   const supabaseAuth = await createClient();
   const {
     data: { user }
   } = await supabaseAuth.auth.getUser();
 
   if (!user) {
-    return NextResponse.redirect(new URL("/auth/login?next=/", request.url), {
-      status: 303
-    });
+    const nextPath = `/cont?section=${loginSection}`;
+    return NextResponse.redirect(
+      new URL(`/auth/login?next=${encodeURIComponent(nextPath)}`, request.url),
+      { status: 303 }
+    );
   }
 
   const formData = await request.formData();
@@ -69,7 +66,7 @@ export async function POST(request) {
       buildContUrl(
         request,
         targetSection,
-        "Checkout-ul real este dezactivat in modul demo. Intra cu Google pentru plata reala."
+        "Checkout-ul real este dezactivat in modul demo. Intra intr-un cont personal pentru plata reala."
       ),
       { status: 303 }
     );

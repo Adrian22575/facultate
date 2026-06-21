@@ -6,8 +6,13 @@ import { deleteQuestionBankJobActivityAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
+import { useDialogFocus } from "@/lib/ui/dialog";
 
 function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
+  const dialogRef = useDialogFocus(Boolean(confirmState), () => {
+    if (!isPending) onClose();
+  });
+
   if (!confirmState) {
     return null;
   }
@@ -15,6 +20,7 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   return (
     <div className="workspace-modal-backdrop" role="presentation">
       <div
+        ref={dialogRef}
         className="workspace-modal-card review-confirm-modal"
         role="dialog"
         aria-modal="true"
@@ -112,8 +118,8 @@ export function WorkspaceJobHistoryClient({ initialJobs }) {
 
   return (
     <>
-      {feedback ? <div className="success-state workspace-inline-feedback">{feedback}</div> : null}
-      {errorMessage ? <div className="error-state workspace-inline-feedback">{errorMessage}</div> : null}
+      {feedback ? <div className="success-state workspace-inline-feedback" role="status">{feedback}</div> : null}
+      {errorMessage ? <div className="error-state workspace-inline-feedback" role="alert">{errorMessage}</div> : null}
 
       {visibleJobs.length ? (
         <div className="draft-list ai-workspace-history-list">

@@ -1,82 +1,201 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
-import {
-  getAcademicContext,
-  getOnboardingHref,
-  isAcademicContextComplete
-} from "@/lib/academic/server";
-import { getBillingSnapshot } from "@/lib/billing";
+import { getAcademicContext } from "@/lib/academic/server";
 import { isDemoUser } from "@/lib/demo-user";
-import { createLearningStudySetFromText } from "@/lib/learning/study-sets";
+import {
+  deleteOwnedLearningStudySet,
+  publishLearningStudySetToCommunity,
+  reportLearningStudySet,
+  retryFailedLearningStudySet,
+  saveLearningFlashcardRating,
+  saveLearningQuizAttempt
+} from "@/lib/learning/study-sets";
 import { requireUser } from "@/lib/supabase/guards";
+import { getLearningSetupErrorMessage } from "@/lib/supabase/setup-status";
 
-function redirectWithMessage(kind, message) {
-  redirect(`/materiale/invata?${kind}=${encodeURIComponent(message)}`);
-}
-
-function parseMinutes(value) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return 30;
-  return Math.max(10, Math.min(240, Math.round(parsed)));
-}
-
-export async function createLearningStudySetAction(formData) {
-  const user = await requireUser("/materiale/invata");
+export async function saveLearningFlashcardRatingAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const flashcardId = String(payload?.flashcardId || "").trim();
+  const rating = String(payload?.rating || "").trim();
+  const user = await requireUser(studySetId ? `/materiale/invata/${studySetId}` : "/materiale/invata");
 
   if (isDemoUser(user)) {
-    redirectWithMessage("error", "Procesarea reala este dezactivata in modul demo.");
+    return { ok: false, error: "Progresul real nu este activ in modul demo." };
   }
 
-  const academicContext = await getAcademicContext(user.id);
-  if (!isAcademicContextComplete(academicContext)) {
-    redirect(getOnboardingHref("/materiale/invata"));
+  if (!studySetId || !flashcardId || !rating) {
+    return { ok: false, error: "Nu am putut salva ratingul." };
   }
 
-  const title = String(formData.get("title") || "").trim();
-  const manualText = String(formData.get("manualText") || "").trim();
-  const objective = String(formData.get("objective") || "").trim();
-  const examDate = String(formData.get("examDate") || "").trim() || null;
-  const minutesPerDay = parseMinutes(formData.get("minutesPerDay"));
-
-  if (manualText.length < 600) {
-    redirectWithMessage(
-      "error",
-      "Textul este prea scurt. Lipeste cel putin cateva paragrafe ca sa putem construi materiale utile."
-    );
-  }
-
-  if (examDate && Number.isNaN(new Date(examDate).getTime())) {
-    redirectWithMessage("error", "Data examenului nu este valida.");
-  }
-
-  const billingSnapshot = await getBillingSnapshot(user.id);
-  if (billingSnapshot.aiCredits < 1) {
-    redirectWithMessage(
-      "error",
-      "Nu ai incarcari disponibile. Adauga incarcari si incearca din nou."
-    );
-  }
-
-  let studySetId = null;
   try {
-    studySetId = await createLearningStudySetFromText({
+    const academicContext = await getAcademicContext(user.id);
+    const review = await saveLearningFlashcardRating({
+      userId: user.id,
+      studySetId,
+      flashcardId,
+      rating,
+      academicContext
+    });
+    revalidatePath(`/materiale/invata/${studySetId}`);
+    return { ok: true, review };
+  } catch (error) {
+    console.error("learning_flashcard_rating_save_failed", error);
+    return { ok: false, error: getLearningSetupErrorMessage(error) || "Nu am putut salva ratingul acum." };
+  }
+}
+
+export async function saveLearningQuizAttemptAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const chapterId = String(payload?.chapterId || "all").trim() || "all";
+  const idempotencyKey = String(payload?.idempotencyKey || "").trim();
+  const answers = Array.isArray(payload?.answers) ? payload.answers : [];
+  const user = await requireUser(studySetId ? `/materiale/invata/${studySetId}` : "/materiale/invata");
+
+  if (isDemoUser(user)) {
+    return { ok: false, error: "Progresul real nu este activ in modul demo." };
+  }
+
+  if (!studySetId || !idempotencyKey || !answers.length) {
+    return { ok: false, error: "Nu am putut salva rezultatul testului." };
+  }
+
+  try {
+    const academicContext = await getAcademicContext(user.id);
+    const result = await saveLearningQuizAttempt({
+      userId: user.id,
+      studySetId,
+      chapterId,
+      idempotencyKey,
+      answers,
+      academicContext
+    });
+    revalidatePath(`/materiale/invata/${studySetId}`);
+    return { ok: true, result };
+  } catch (error) {
+    console.error("learning_quiz_attempt_save_failed", error);
+    return { ok: false, error: getLearningSetupErrorMessage(error) || "Nu am putut salva rezultatul testului acum." };
+  }
+}
+
+export async function publishLearningStudySetAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const user = await requireUser(studySetId ? `/materiale/invata/${studySetId}` : "/materiale/invata");
+
+  if (isDemoUser(user)) {
+    return { ok: false, error: "Publicarea nu este activa in modul demo." };
+  }
+
+  if (!studySetId) {
+    return { ok: false, error: "Nu am putut identifica materialul." };
+  }
+
+  try {
+    const academicContext = await getAcademicContext(user.id);
+    const result = await publishLearningStudySetToCommunity({
       userId: user.id,
       academicContext,
-      title: title || "Materia mea",
-      text: manualText,
-      examDate,
-      minutesPerDay,
-      objective
+      studySetId
     });
+    revalidatePath(`/materiale/invata/${studySetId}`);
+    revalidatePath("/materiale/invata");
+    return { ok: true, result };
   } catch (error) {
-    console.error("learning_study_set_create_failed", error);
-    redirectWithMessage(
-      "error",
-      "Nu am putut pregati materia acum. Incearca din nou."
-    );
+    console.error("learning_study_set_publish_failed", error);
+    return {
+      ok: false,
+      error: getLearningSetupErrorMessage(error) || (error instanceof Error ? error.message : "Nu am putut publica materialul acum.")
+    };
+  }
+}
+
+export async function reportLearningStudySetAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const reason = String(payload?.reason || "content_issue").trim();
+  const detail = String(payload?.detail || "").trim();
+  const user = await requireUser(studySetId ? `/materiale/invata/${studySetId}` : "/materiale/invata");
+
+  if (isDemoUser(user)) {
+    return { ok: false, error: "Raportarea nu este activa in modul demo." };
   }
 
-  redirect(`/materiale/invata/${studySetId}`);
+  if (!studySetId) {
+    return { ok: false, error: "Nu am putut identifica materialul." };
+  }
+
+  try {
+    const academicContext = await getAcademicContext(user.id);
+    const result = await reportLearningStudySet({
+      userId: user.id,
+      academicContext,
+      studySetId,
+      reason,
+      detail
+    });
+    return { ok: true, result };
+  } catch (error) {
+    console.error("learning_study_set_report_failed", error);
+    return { ok: false, error: getLearningSetupErrorMessage(error) || "Nu am putut trimite raportarea acum." };
+  }
+}
+
+export async function retryLearningStudySetAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const user = await requireUser(studySetId ? `/materiale/invata/${studySetId}` : "/materiale/invata");
+
+  if (isDemoUser(user)) {
+    return { ok: false, error: "Retry-ul nu este activ in modul demo." };
+  }
+
+  if (!studySetId) {
+    return { ok: false, error: "Nu am putut identifica materialul." };
+  }
+
+  try {
+    const academicContext = await getAcademicContext(user.id);
+    const result = await retryFailedLearningStudySet({
+      userId: user.id,
+      studySetId,
+      academicContext
+    });
+    revalidatePath(`/materiale/invata/${studySetId}`);
+    revalidatePath("/materiale/invata");
+    return { ok: true, result };
+  } catch (error) {
+    console.error("learning_study_set_retry_failed", error);
+    return {
+      ok: false,
+      error: getLearningSetupErrorMessage(error) ||
+        (error instanceof Error ? error.message : "Nu am putut relua procesarea acum.")
+    };
+  }
+}
+
+export async function deleteLearningStudySetAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const user = await requireUser(studySetId ? `/materiale/invata/${studySetId}` : "/materiale/invata");
+
+  if (isDemoUser(user)) {
+    return { ok: false, error: "Stergerea nu este activa in modul demo." };
+  }
+
+  if (!studySetId) {
+    return { ok: false, error: "Nu am putut identifica materialul." };
+  }
+
+  try {
+    const result = await deleteOwnedLearningStudySet({ userId: user.id, studySetId });
+    revalidatePath("/materiale/invata");
+    revalidatePath("/materiale");
+    return { ok: true, result };
+  } catch (error) {
+    console.error("learning_study_set_delete_failed", error);
+    return {
+      ok: false,
+      error:
+        getLearningSetupErrorMessage(error) ||
+        (error instanceof Error ? error.message : "Nu am putut sterge materialul acum.")
+    };
+  }
 }

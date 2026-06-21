@@ -1,14 +1,18 @@
 import { NextResponse } from "next/server";
 
 import { getAcademicContext, isAcademicContextComplete } from "@/lib/academic/server";
-import { assertSourceBucketReady, uploadSourceDocument } from "@/lib/ai/storage";
+import {
+  assertSourceBucketReady,
+  deleteSourceDocumentObject,
+  uploadSourceDocument
+} from "@/lib/ai/storage";
 import { getBillingSnapshot } from "@/lib/billing";
 import { DEMO_USER_ID } from "@/lib/demo-user";
 import { hasOpenAIKey } from "@/lib/openai/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-export async function getImportRequestContext() {
+export async function getImportRequestContext({ returnTo = "/materiale" } = {}) {
   if (!hasOpenAIKey()) {
     return {
       error: NextResponse.json(
@@ -38,20 +42,47 @@ export async function getImportRequestContext() {
     };
   }
 
-  const academicContext = await getAcademicContext(user.id);
+  let academicContext = null;
+  try {
+    academicContext = await getAcademicContext(user.id);
+  } catch {
+    return {
+      error: NextResponse.json(
+        { error: "Nu am putut verifica profilul tau. Incearca din nou." },
+        { status: 503 }
+      )
+    };
+  }
   if (!isAcademicContextComplete(academicContext)) {
     return {
-      error: NextResponse.json({ error: "onboarding_required" }, { status: 403 })
+      error: NextResponse.json(
+        {
+          error: "Finalizeaza comunitatea inainte sa procesezi materiale.",
+          actionHref: `/onboarding?next=${encodeURIComponent(returnTo)}`
+        },
+        { status: 403 }
+      )
     };
   }
 
-  const billingSnapshot = await getBillingSnapshot(user.id);
+  let billingSnapshot = null;
+  try {
+    billingSnapshot = await getBillingSnapshot(user.id);
+  } catch {
+    return {
+      error: NextResponse.json(
+        { error: "Nu am putut verifica incarcarile disponibile. Incearca din nou." },
+        { status: 503 }
+      )
+    };
+  }
   if (billingSnapshot.aiCredits < 1) {
     return {
       error: NextResponse.json(
         {
           error: "Nu ai incarcari disponibile. Adauga incarcari si incearca din nou.",
-          code: "credits_required"
+          code: "credits_required",
+          actionHref: `/cont?section=credits&returnTo=${encodeURIComponent(returnTo)}`
         },
         { status: 402 }
       )
@@ -89,6 +120,10 @@ export async function createSourceDocumentForPreparedFile({ userId, preparedFile
     .single();
 
   if (error) {
+    await deleteSourceDocumentObject({
+      storageBucket: storageInfo.storageBucket,
+      storagePath: storageInfo.storagePath
+    }).catch(() => {});
     throw error;
   }
 
@@ -109,7 +144,21 @@ function toPublicImportError(error, fallback) {
     normalized.includes("quota") ||
     normalized.includes("token") ||
     normalized.includes("responses.") ||
-    normalized.includes("json schema")
+    normalized.includes("json schema") ||
+    normalized.includes("relation ") ||
+    normalized.includes("column ") ||
+    normalized.includes("duplicate key") ||
+    normalized.includes("violates") ||
+    normalized.includes("invalid input syntax") ||
+    normalized.includes("permission denied") ||
+    normalized.includes("row-level security") ||
+    normalized.includes("schema cache") ||
+    normalized.includes("pgrst") ||
+    normalized.includes("jwt") ||
+    normalized.includes("supabase") ||
+    normalized.includes("fetch failed") ||
+    normalized.includes("network") ||
+    normalized.includes("timeout")
   ) {
     return fallback;
   }
@@ -118,10 +167,12 @@ function toPublicImportError(error, fallback) {
 }
 
 export function jsonError(error, fallback = "A aparut o problema.") {
+  const publicError = toPublicImportError(error, fallback);
+  const status = error?.code === "RATE_LIMITED" ? 429 : publicError === fallback ? 500 : 400;
   return NextResponse.json(
     {
-      error: toPublicImportError(error, fallback)
+      error: publicError
     },
-    { status: 500 }
+    { status }
   );
 }

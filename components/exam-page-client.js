@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BarChart3,
   BookOpen,
@@ -14,12 +14,21 @@ import {
   Zap
 } from "lucide-react";
 
+import { buildLicentaQuestionKey } from "@/lib/licenta-exam-question-key";
 import { shuffleArray } from "@/lib/quiz";
 
 const MISTAKES_STORAGE_KEY = "licenta_mistakes";
 const QUICK_QUESTION_COUNT = 5;
 const VERIFY_QUESTION_COUNT = 10;
 const CUSTOM_OPTIONS = [10, 20, 30, 40, 50, 60, 100];
+
+function createAttemptKey() {
+  if (typeof globalThis.crypto?.randomUUID === "function") {
+    return globalThis.crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
 
 const MODE_COPY = {
   quick: {
@@ -53,28 +62,6 @@ const MODE_COPY = {
     icon: BookOpen
   }
 };
-
-function hashText(value) {
-  let hash = 0;
-  const text = String(value || "");
-
-  for (let index = 0; index < text.length; index += 1) {
-    hash = (hash << 5) - hash + text.charCodeAt(index);
-    hash |= 0;
-  }
-
-  return Math.abs(hash).toString(36);
-}
-
-function buildQuestionKey(question, index) {
-  const subjectId = question.subjectId || "licenta";
-
-  if (question.id !== undefined && question.id !== null && question.id !== "") {
-    return `${subjectId}:${question.id}`;
-  }
-
-  return `${subjectId}:text-${hashText(question.text || index)}`;
-}
 
 function readStoredMistakeIds() {
   if (typeof window === "undefined") {
@@ -268,12 +255,12 @@ function scrollToTop() {
   }
 }
 
-export function ExamPageClient({ questions, subjectCount }) {
+export function ExamPageClient({ questions, subjectCount, initialMistakeIds = [] }) {
   const preparedQuestions = useMemo(
     () =>
       questions.map((question, index) => ({
         ...question,
-        stableId: buildQuestionKey(question, index)
+        stableId: buildLicentaQuestionKey(question, index)
       })),
     [questions]
   );
@@ -295,15 +282,27 @@ export function ExamPageClient({ questions, subjectCount }) {
   const [communityStatsStatus, setCommunityStatsStatus] = useState("idle");
   const [communityStatsError, setCommunityStatsError] = useState("");
   const [quizValidationMessage, setQuizValidationMessage] = useState("");
+  const attemptKeyRef = useRef("");
+  const finishingRef = useRef(false);
 
   useEffect(() => {
-    const validIds = readStoredMistakeIds().filter((id) => questionById.has(id));
+    const validIds = Array.from(
+      new Set([...initialMistakeIds, ...readStoredMistakeIds()])
+    ).filter((id) => questionById.has(id));
     setMistakeIds(validIds);
 
     if (typeof window !== "undefined") {
       window.localStorage.setItem(MISTAKES_STORAGE_KEY, JSON.stringify(validIds));
     }
-  }, [questionById]);
+  }, [initialMistakeIds, questionById]);
+
+  function replaceMistakes(nextIds) {
+    const validIds = Array.from(new Set(nextIds || [])).filter((id) => questionById.has(id));
+    setMistakeIds(validIds);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(MISTAKES_STORAGE_KEY, JSON.stringify(validIds));
+    }
+  }
 
   function updateMistakes(updater) {
     setMistakeIds((currentIds) => {
@@ -326,6 +325,8 @@ export function ExamPageClient({ questions, subjectCount }) {
   }
 
   function goToModes(message = "") {
+    attemptKeyRef.current = "";
+    finishingRef.current = false;
     setPhase("modes");
     setActiveMode(null);
     setCurrentQuestions([]);
@@ -340,6 +341,8 @@ export function ExamPageClient({ questions, subjectCount }) {
   }
 
   function startQuiz(numberOfQuestions, mode) {
+    attemptKeyRef.current = "";
+    finishingRef.current = false;
     setNotice("");
     setResultSummary(null);
     setCommunityStats(null);
@@ -373,11 +376,14 @@ export function ExamPageClient({ questions, subjectCount }) {
 
     setCurrentQuestions(selectedQuestions);
     setAnswers(new Array(selectedQuestions.length).fill(null));
+    attemptKeyRef.current = createAttemptKey();
     setPhase("quiz");
     scrollToTop();
   }
 
   function startVerifyRound() {
+    attemptKeyRef.current = "";
+    finishingRef.current = false;
     setNotice("");
     setResultSummary(null);
     setCommunityStats(null);
@@ -403,6 +409,7 @@ export function ExamPageClient({ questions, subjectCount }) {
 
     setCurrentQuestions(selectedQuestions);
     setAnswers(new Array(selectedQuestions.length).fill(null));
+    attemptKeyRef.current = createAttemptKey();
     setPhase("quiz");
     scrollToTop();
   }
@@ -464,6 +471,7 @@ export function ExamPageClient({ questions, subjectCount }) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          idempotencyKey: summary.idempotencyKey,
           mode: summary.mode,
           score: summary.score,
           total: summary.total,
@@ -483,6 +491,9 @@ export function ExamPageClient({ questions, subjectCount }) {
       }
 
       setCommunityStats(payload.communityStats || null);
+      if (Array.isArray(payload.mistakeQuestionIds)) {
+        replaceMistakes(payload.mistakeQuestionIds);
+      }
       setCommunityStatsStatus("ready");
     } catch (error) {
       setCommunityStats(null);
@@ -496,6 +507,10 @@ export function ExamPageClient({ questions, subjectCount }) {
   }
 
   function finishQuiz() {
+    if (finishingRef.current) {
+      return;
+    }
+
     const unansweredIndexes = answers
       .map((answer, index) => (answer === null ? index : null))
       .filter((index) => index !== null);
@@ -509,6 +524,8 @@ export function ExamPageClient({ questions, subjectCount }) {
       );
       return;
     }
+
+    finishingRef.current = true;
 
     const wrongQuestions = [];
     let score = 0;
@@ -549,6 +566,7 @@ export function ExamPageClient({ questions, subjectCount }) {
       score,
       total: currentQuestions.length,
       percentage,
+      idempotencyKey: attemptKeyRef.current || createAttemptKey(),
       wrongQuestions,
       completedQuestions: currentQuestions,
       completedAnswers: answers
@@ -584,14 +602,10 @@ export function ExamPageClient({ questions, subjectCount }) {
     startQuiz(resultSummary.total, "custom");
   }
 
-  function markBrowseKnown() {
-    const question = currentQuestions[browseIndex];
-    removeMistake(question);
-  }
-
-  function markBrowseUnknown() {
-    const question = currentQuestions[browseIndex];
-    addMistake(question);
+  function goToPreviousBrowseQuestion() {
+    if (browseIndex <= 0) return;
+    setBrowseIndex((index) => index - 1);
+    setShowBrowseAnswer(false);
   }
 
   function goToNextBrowseQuestion() {
@@ -602,7 +616,6 @@ export function ExamPageClient({ questions, subjectCount }) {
 
     setBrowseIndex((index) => index + 1);
     setShowBrowseAnswer(false);
-    scrollToTop();
   }
 
   if (!preparedQuestions.length) {
@@ -872,25 +885,31 @@ export function ExamPageClient({ questions, subjectCount }) {
                 </div>
               ))}
             </div>
+            {showBrowseAnswer && browseQuestion.explanation ? (
+              <div className="study-explanation">
+                <strong>Explicatie</strong>
+                <p>{browseQuestion.explanation}</p>
+              </div>
+            ) : null}
           </article>
 
           <div className="licenta-prep-actions">
+            <button
+              type="button"
+              className="secondary"
+              disabled={browseIndex === 0}
+              onClick={goToPreviousBrowseQuestion}
+            >
+              Intrebarea anterioara
+            </button>
             {!showBrowseAnswer ? (
               <button type="button" onClick={() => setShowBrowseAnswer(true)}>
                 Arata raspunsul
               </button>
             ) : (
-              <>
-                <button type="button" className="secondary" onClick={markBrowseKnown}>
-                  Stiu asta
-                </button>
-                <button type="button" className="secondary" onClick={markBrowseUnknown}>
-                  Nu stiu asta
-                </button>
-                <button type="button" onClick={goToNextBrowseQuestion}>
-                  Urmatoarea
-                </button>
-              </>
+              <button type="button" onClick={goToNextBrowseQuestion}>
+                {browseIndex === currentQuestions.length - 1 ? "Incheie parcurgerea" : "Urmatoarea"}
+              </button>
             )}
           </div>
         </section>
@@ -989,6 +1008,12 @@ export function ExamPageClient({ questions, subjectCount }) {
                       </div>
                     </div>
                   )}
+                  {question.explanation ? (
+                    <div className="study-explanation">
+                      <strong>Explicatie</strong>
+                      <p>{question.explanation}</p>
+                    </div>
+                  ) : null}
                 </article>
               ))}
             </div>

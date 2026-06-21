@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { isAdminUser } from "@/lib/admin";
-import { normalizeEmail, parseEmailList } from "@/lib/free-access";
+import {
+  applyAllowlistGrantsForExistingUsers,
+  ensurePremiumGrantFromAllowlist,
+  normalizeEmail,
+  parseEmailList
+} from "@/lib/free-access";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -54,10 +59,22 @@ export async function POST(request) {
     return NextResponse.json({ error: "Nu am putut salva lista de acces gratuit." }, { status: 500 });
   }
 
+  let grantResult = { matchedUsers: 0, applied: 0 };
+  let warning = "";
+  try {
+    grantResult = await applyAllowlistGrantsForExistingUsers(valid);
+  } catch (grantError) {
+    console.error("[admin/free-access] Existing-user grant failed", grantError);
+    warning = "Lista a fost salvata, dar accesul nu a putut fi aplicat imediat utilizatorilor existenti.";
+  }
+
   return NextResponse.json({
     inserted: valid.length,
     total: valid.length + invalid.length,
-    invalid
+    invalid,
+    matchedUsers: grantResult.matchedUsers,
+    grantsApplied: grantResult.applied,
+    warning
   });
 }
 
@@ -77,18 +94,44 @@ export async function PATCH(request) {
   }
 
   const admin = createAdminClient();
-  const { error } = await admin
+  const { data: updatedEntry, error } = await admin
     .from("free_access_allowlist")
     .update({
       is_active: isActive,
       added_by: adminUser.id
     })
     .eq("id", id)
-    .eq("email", email);
+    .eq("email", email)
+    .select("id")
+    .maybeSingle();
 
   if (error) {
     return NextResponse.json({ error: "Nu am putut actualiza statusul." }, { status: 500 });
   }
+  if (!updatedEntry?.id) {
+    return NextResponse.json({ error: "Intrarea nu mai exista. Reincarca lista." }, { status: 404 });
+  }
 
-  return NextResponse.json({ ok: true });
+  let warning = "";
+  if (isActive) {
+    const { data: profile, error: profileError } = await admin
+      .from("profiles")
+      .select("id,email")
+      .eq("email", email)
+      .maybeSingle();
+    if (profileError) {
+      console.error("[admin/free-access] Profile lookup failed", profileError);
+      warning = "Statusul a fost salvat, dar accesul nu a putut fi aplicat imediat.";
+    }
+    if (!profileError && profile?.id) {
+      try {
+        await ensurePremiumGrantFromAllowlist({ userId: profile.id, email: profile.email });
+      } catch (grantError) {
+        console.error("[admin/free-access] Grant activation failed", grantError);
+        warning = "Statusul a fost salvat, dar accesul nu a putut fi aplicat imediat.";
+      }
+    }
+  }
+
+  return NextResponse.json({ ok: true, warning });
 }

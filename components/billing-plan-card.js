@@ -17,12 +17,17 @@ export function BillingPlanCard({
   comparisonText,
   badge,
   featured = false,
+  selected = false,
   icon = null,
   returnTo = ""
 }) {
+  const checkoutSection = plan.family === "ai_credits" ? "credits" : "plans";
+
   return (
-    <article className={`plan-card account-price-card ${featured ? "is-featured" : ""}`}>
-      {badge ? <span className="account-price-badge">{badge}</span> : null}
+    <article className={`plan-card account-price-card ${featured || selected ? "is-featured" : ""}`}>
+      {selected || badge ? (
+        <span className="account-price-badge">{selected ? "Plan ales" : badge}</span>
+      ) : null}
 
       <div className="account-price-head">
         {icon ? <span className="account-price-icon">{icon}</span> : null}
@@ -39,7 +44,11 @@ export function BillingPlanCard({
         <span>lei</span>
       </div>
 
-      <form action="/api/stripe/checkout" method="post" className="plan-card-form account-price-form">
+      <form
+        action={`/api/stripe/checkout?section=${checkoutSection}`}
+        method="post"
+        className="plan-card-form account-price-form"
+      >
         <input type="hidden" name="planCode" value={plan.code} />
         {returnTo ? <input type="hidden" name="returnTo" value={returnTo} /> : null}
         <button type="submit" disabled={disabled}>

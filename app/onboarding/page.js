@@ -12,6 +12,7 @@ import {
   isAcademicContextComplete
 } from "@/lib/academic/server";
 import { isDemoUser } from "@/lib/demo-user";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getOptionalUser } from "@/lib/supabase/guards";
 import {
@@ -59,16 +60,8 @@ function buildHref(searchParams, overrides) {
 }
 
 function getSafeNextPath(path) {
-  if (
-    typeof path === "string" &&
-    path.startsWith("/") &&
-    !path.startsWith("//") &&
-    !path.startsWith("/onboarding")
-  ) {
-    return path;
-  }
-
-  return "";
+  const safePath = getPostLoginNextPath(path);
+  return safePath !== "/" && !safePath.startsWith("/onboarding") ? safePath : "";
 }
 
 function getReturnDestinationLabel(path) {
@@ -368,10 +361,14 @@ function OnboardingStepCard({
       </div>
 
       <div className="onboarding-confirm-body">
-        <p className="onboarding-confirm-section-title">Rezumat selectie</p>
-        <OnboardingReviewPanel summaryItems={summaryItems} />
+        {summaryItems.length ? (
+          <>
+            <p className="onboarding-confirm-section-title">Rezumat selectie</p>
+            <OnboardingReviewPanel summaryItems={summaryItems} />
+          </>
+        ) : null}
 
-        <div className="onboarding-step-content">
+        <div className={`onboarding-step-content${summaryItems.length ? "" : " onboarding-step-content-first"}`}>
           <p className="onboarding-confirm-section-title">{sectionTitle}</p>
           {children}
         </div>
@@ -448,6 +445,7 @@ function OnboardingConfirmCard({
           <input type="hidden" name="userType" value={userType} />
           <input type="hidden" name="institutionId" value={institutionId} />
           <input type="hidden" name="programUnitId" value={selectedProgramUnitId} />
+          <input type="hidden" name="edit" value={isEditingCommunity ? "1" : ""} />
           <input type="hidden" name="returnTo" value={isEditingCommunity ? "/cont" : requestedNextPath || "/"} />
 
           <div className="onboarding-confirm-help">
@@ -555,7 +553,7 @@ export default async function OnboardingPage({ searchParams }) {
   const forceProgramStep = requestedStep === "program";
   const forceProfileStep = requestedStep === "profile";
   const onboardingError =
-    typeof resolvedSearchParams?.error === "string" ? decodeURIComponent(resolvedSearchParams.error) : "";
+    typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : "";
   const requestedNextPath = isEditingCommunity ? "" : getSafeNextPath(resolvedSearchParams?.next);
   const returnDestinationLabel = isEditingCommunity
     ? "Contul meu"
@@ -621,9 +619,6 @@ export default async function OnboardingPage({ searchParams }) {
           : userType === "elev"
             ? context?.membership?.program_unit_id || ""
             : "";
-
-  const selectedProgramUnitId =
-    userType === "student" ? programId : profileId === "none" ? "" : profileId;
 
   let allSearchParams = null;
 
@@ -732,16 +727,22 @@ export default async function OnboardingPage({ searchParams }) {
     profileId === "none"
       ? { id: "none", name: "Fara profil" }
       : profiles.find((item) => item.id === profileId) || null;
+  const selectedProgramUnitId =
+    userType === "student"
+      ? selectedProgram?.id || ""
+      : profileId === "none"
+        ? ""
+        : selectedProfile?.id || "";
 
   const currentStep = !userType
     ? "user-type"
-    : forceInstitutionStep || !institutionId
+    : forceInstitutionStep || !selectedInstitution
       ? "institution"
-      : userType === "student" && (forceFacultyStep || !facultyId)
+      : userType === "student" && (forceFacultyStep || !selectedFaculty)
         ? "faculty"
-        : userType === "student" && (forceProgramStep || !programId)
+        : userType === "student" && (forceProgramStep || !selectedProgram)
           ? "program"
-          : userType === "elev" && (forceProfileStep || !profileId)
+          : userType === "elev" && (forceProfileStep || !selectedProfile)
             ? "profile"
           : "confirm";
   const onboardingSteps = getOnboardingSteps(userType);
@@ -883,7 +884,7 @@ export default async function OnboardingPage({ searchParams }) {
           items={institutions.map((institution) => ({
             id: institution.id,
             title: institution.name,
-            subtitle: [institution.city, institution.county].filter(Boolean).join(" Â· "),
+            subtitle: [institution.city, institution.county].filter(Boolean).join(" - "),
             selected: institution.id === institutionId,
             href: buildHref(allSearchParams, {
               step: "",
@@ -1124,13 +1125,13 @@ export default async function OnboardingPage({ searchParams }) {
 
       {setupWarning ? (
         <section className="surface">
-          <div className="error-state">{setupWarning}</div>
+          <div className="error-state" role="alert">{setupWarning}</div>
         </section>
       ) : null}
 
       {onboardingError ? (
         <section className="surface">
-          <div className="error-state">{onboardingError}</div>
+          <div className="error-state" role="alert">{onboardingError}</div>
         </section>
       ) : null}
 

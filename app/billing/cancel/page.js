@@ -1,22 +1,15 @@
 import Link from "next/link";
 
 import { AppHeader } from "@/components/app-header";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 
 export const metadata = {
   title: "Plata anulata | Nota 5+"
 };
 
 function getSafeReturnTo(value) {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  const trimmed = value.trim();
-  if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.includes("\\") || trimmed.includes("\n")) {
-    return "";
-  }
-
-  return trimmed.slice(0, 300);
+  const safePath = getPostLoginNextPath(value);
+  return safePath === "/" && value !== "/" ? "" : safePath.slice(0, 300);
 }
 
 export default async function BillingCancelPage({ searchParams }) {
@@ -29,7 +22,7 @@ export default async function BillingCancelPage({ searchParams }) {
       <AppHeader
         action={
           <Link className="btn-back" href={targetHref}>
-            {returnTo ? "Inapoi la licenta" : "Inapoi la cont"}
+            {returnTo ? "Inapoi unde ai ramas" : "Inapoi la cont"}
           </Link>
         }
         kicker="Plata anulata"

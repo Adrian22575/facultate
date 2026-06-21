@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef } from "react";
 import { usePathname } from "next/navigation";
 
+import { sanitizeUsagePath, sanitizeUsageQuery } from "@/lib/usage-events";
+
 const SESSION_KEY = "nota5plus_usage_session_id";
 const ENDPOINT = "/api/usage/events";
 const CLICK_THROTTLE_MS = 700;
@@ -109,7 +111,9 @@ function normalizeSameOriginPath(value) {
       return "external";
     }
 
-    return `${url.pathname}${url.search}`.slice(0, 300);
+    const safePath = sanitizeUsagePath(url.pathname);
+    const safeQuery = sanitizeUsageQuery(url.search);
+    return safePath ? `${safePath}${safeQuery || ""}`.slice(0, 300) : null;
   } catch {
     return null;
   }
@@ -172,8 +176,8 @@ export function UsageTracker() {
         eventName: "page_view",
         sessionId: sessionIdRef.current,
         feature,
-        routePath: pathname,
-        routeQuery: window.location.search.slice(0, 500) || null,
+        routePath: sanitizeUsagePath(pathname),
+        routeQuery: sanitizeUsageQuery(window.location.search),
         referrerPath: normalizeSameOriginPath(document.referrer),
         deviceType: getDeviceType(),
         viewportWidth: window.innerWidth || null,
@@ -217,8 +221,8 @@ export function UsageTracker() {
         eventName,
         sessionId: sessionIdRef.current || getSessionId(),
         feature: getFeatureFromPath(pathname),
-        routePath: pathname || window.location.pathname,
-        routeQuery: window.location.search.slice(0, 500) || null,
+        routePath: sanitizeUsagePath(pathname || window.location.pathname),
+        routeQuery: sanitizeUsageQuery(window.location.search),
         deviceType: getDeviceType(),
         viewportWidth: window.innerWidth || null,
         viewportHeight: window.innerHeight || null,

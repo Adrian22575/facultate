@@ -1,4 +1,5 @@
 import { PasswordResetForm } from "@/components/password-reset-form";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,10 +14,11 @@ export default async function ResetPasswordPage({ searchParams }) {
     reset_failed: "Nu am putut schimba parola. Cere un link nou si incearca din nou."
   };
   const error = typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : "";
+  const nextPath = getPostLoginNextPath(resolvedSearchParams?.next);
 
   return (
     <main className="nota5plus-page auth-password-page">
-      <PasswordResetForm errorMessage={errorLabels[error] || ""} />
+      <PasswordResetForm errorMessage={errorLabels[error] || ""} nextPath={nextPath} />
     </main>
   );
 }

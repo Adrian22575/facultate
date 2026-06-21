@@ -6,7 +6,7 @@ import { ArrowLeft, CheckCircle2, LockKeyhole, ShieldCheck } from "lucide-react"
 import { resetPasswordAction } from "@/app/auth/password-actions";
 import { createClient } from "@/lib/supabase/client";
 
-export function PasswordResetForm({ errorMessage = "" }) {
+export function PasswordResetForm({ errorMessage = "", nextPath = "/" }) {
   const [ready, setReady] = useState(false);
   const [setupError, setSetupError] = useState("");
 
@@ -24,6 +24,14 @@ export function PasswordResetForm({ errorMessage = "" }) {
           if (error) throw error;
           url.searchParams.delete("code");
           window.history.replaceState({}, "", url.toString());
+        }
+
+        const {
+          data: { user },
+          error: userError
+        } = await supabase.auth.getUser();
+        if (userError || !user) {
+          throw userError || new Error("recovery_session_missing");
         }
 
         if (!cancelled) {
@@ -45,7 +53,7 @@ export function PasswordResetForm({ errorMessage = "" }) {
 
   return (
     <section className="auth-password-panel email-auth-panel">
-      <a className="email-auth-back" href="/auth/email-login">
+      <a className="email-auth-back" href={`/auth/email-login?next=${encodeURIComponent(nextPath)}`}>
         <ArrowLeft aria-hidden="true" size={16} />
         Inapoi la autentificare
       </a>
@@ -63,6 +71,7 @@ export function PasswordResetForm({ errorMessage = "" }) {
       ) : null}
 
       <form action={resetPasswordAction} className="auth-password-form">
+        <input type="hidden" name="next" value={nextPath} />
         <div className="email-auth-field">
           <span className="email-auth-label-row">
             <label htmlFor="reset-password">Parola noua</label>

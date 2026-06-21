@@ -7,7 +7,7 @@ import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from
 import { getBillingSnapshot } from "@/lib/billing";
 import { getAccessibleSubjectById, getDemoSubject, getSubjectById } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
-import { hasLearningModesAccess, LEARNING_MODES_LOCK_HREF } from "@/lib/learning-access";
+import { getLearningModesLockHref, hasLearningModesAccess } from "@/lib/learning-access";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export async function generateMetadata({ params }) {
@@ -52,14 +52,10 @@ export default async function SubjectPage({ params, searchParams }) {
         membership: academicContext?.membership
       });
   if (!subject) notFound();
-  const canUseLearningModes = await hasLearningModesAccess({ user, demoMode });
   if (!demoMode) {
-    try {
-      billingSnapshot = await getBillingSnapshot(user.id);
-    } catch {
-      billingSnapshot = null;
-    }
+    billingSnapshot = await getBillingSnapshot(user.id);
   }
+  const canUseLearningModes = await hasLearningModesAccess({ user, demoMode, billingSnapshot });
 
   const hasAvailableWelcomePremium =
     !demoMode && !billingSnapshot?.activePremium && billingSnapshot?.welcomePremiumStatus === "available";
@@ -81,7 +77,7 @@ export default async function SubjectPage({ params, searchParams }) {
       <ModeGrid
         subject={subject}
         locked={!canUseLearningModes}
-        lockHref={LEARNING_MODES_LOCK_HREF}
+        lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
         showWelcomePremium={hasAvailableWelcomePremium}
         welcomeReturnTo={`/materii/${subject.id}`}
         welcomeState={welcomeState}

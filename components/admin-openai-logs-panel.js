@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BarChart3, FileText, Files, ListFilter, ReceiptText } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
+import { useDialogFocus } from "@/lib/ui/dialog";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const PAGE_SIZE = 8;
 const SUMMARY_LIMIT = 180;
@@ -110,6 +112,7 @@ function SearchInput({ value, onChange, placeholder }) {
       onChange={(event) => onChange(event.target.value)}
       className="admin-search-input"
       placeholder={placeholder}
+      aria-label={placeholder}
     />
   );
 }
@@ -308,18 +311,7 @@ function CostTableSection({ title, copy, columns, children, minWidth = 820 }) {
 }
 
 function OpenAILogDetailModal({ row, onClose }) {
-  useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onClose]);
+  const dialogRef = useDialogFocus(Boolean(row), onClose);
 
   if (!row) {
     return null;
@@ -336,6 +328,7 @@ function OpenAILogDetailModal({ row, onClose }) {
       }}
     >
       <div
+        ref={dialogRef}
         className="workspace-modal-card admin-openai-modal"
         role="dialog"
         aria-modal="true"
@@ -572,7 +565,7 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
         </p>
       </div>
 
-      {warning ? <div className="error-state">{warning}</div> : null}
+      {warning ? <div className="error-state" role="alert">{warning}</div> : null}
 
       <div className="admin-cost-grid">
         <CostOverviewCard
@@ -923,11 +916,19 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
         </div>
       </div>
 
-      <AdminTabsContainer className="admin-openai-subtabs" role="tablist" aria-label="Sectiuni procesare">
+      <AdminTabsContainer
+        className="admin-openai-subtabs"
+        role="tablist"
+        aria-label="Sectiuni procesare"
+        onKeyDown={handleTablistKeyDown}
+      >
         <button
+          id="processing-tab-costs"
           type="button"
           role="tab"
           aria-selected={panelTab === "costs"}
+          aria-controls="processing-active-panel"
+          tabIndex={panelTab === "costs" ? 0 : -1}
           className={`btn-link secondary admin-main-tab ${panelTab === "costs" ? "is-active-filter" : ""}`}
           onClick={() => setPanelTab("costs")}
         >
@@ -938,9 +939,12 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
           </span>
         </button>
         <button
+          id="processing-tab-logs"
           type="button"
           role="tab"
           aria-selected={panelTab === "logs"}
+          aria-controls="processing-active-panel"
+          tabIndex={panelTab === "logs" ? 0 : -1}
           className={`btn-link secondary admin-main-tab ${panelTab === "logs" ? "is-active-filter" : ""}`}
           onClick={() => setPanelTab("logs")}
         >
@@ -952,6 +956,11 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
         </button>
       </AdminTabsContainer>
 
+      <div
+        id="processing-active-panel"
+        role="tabpanel"
+        aria-labelledby={`processing-tab-${panelTab}`}
+      >
       {panelTab === "costs" ? (
         <AdminOpenAICostsView dashboard={costDashboard} rows={rows} warning={warning} />
       ) : (
@@ -959,7 +968,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
           <div className="admin-toolbar">
             <AdminTabsContainer
               className="admin-filter-row"
-              role="tablist"
+              role="group"
               aria-label="Filtre loguri procesare"
             >
               <FilterButton active={filter === "all"} onClick={() => setFilter("all")} icon={ListFilter} count={logCounts.all}>Toate</FilterButton>
@@ -975,7 +984,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
             />
           </div>
 
-          {warning ? <div className="error-state">{warning}</div> : null}
+          {warning ? <div className="error-state" role="alert">{warning}</div> : null}
 
           {filteredRows.length ? (
             <>
@@ -1058,6 +1067,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
           <OpenAILogDetailModal row={selectedRow} onClose={() => setSelectedRow(null)} />
         </>
       )}
+      </div>
     </section>
   );
 }

@@ -11,6 +11,7 @@ import {
   AI_SOURCE_UPLOAD_MAX_LABEL
 } from "@/lib/ai/upload-limits";
 import { createClient as createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const MANUAL_TEXT_MIN_CHARS = 80;
 const AI_SOURCE_ACCEPTED_EXTENSIONS = [".pdf", ".docx", ".txt"];
@@ -208,6 +209,9 @@ export function WorkspaceGenerateForm({
     (!isLicentaFlow && !selectedSubjectId) ||
     isSubmitting;
   const noCredits = billingSnapshot.aiCredits < 1;
+  const creditPurchaseHref = `/cont?section=credits&returnTo=${encodeURIComponent(
+    isLicentaFlow ? "/materiale/licenta" : "/materiale/importa"
+  )}`;
   const creditCountLabel =
     billingSnapshot.aiCredits === 1
       ? "1 incarcare disponibila"
@@ -462,14 +466,14 @@ export function WorkspaceGenerateForm({
   return (
     <>
       {demoMode ? (
-        <div className="error-state">
+        <div className="error-state" role="status">
           In modul demo poti vedea doar interfata. Pentru procesare reala intra cu Google.
         </div>
       ) : null}
 
-      {setupWarning ? <div className="error-state">{setupWarning}</div> : null}
-      {message ? <div className="success-state">{message}</div> : null}
-      {error ? <div className="error-state">{error}</div> : null}
+      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
+      {message ? <div className="success-state" role="status">{message}</div> : null}
+      {error ? <div className="error-state" role="alert">{error}</div> : null}
       {visibleError ? <div className="error-state" role="alert">{visibleError}</div> : null}
 
       <form
@@ -580,11 +584,19 @@ Raspuns corect: B`}</pre>
             </div>
           </div>
 
-          <div className="ui-segmented-tabs ai-workspace-source-tabs" role="tablist" aria-label="Sursa continutului">
+          <div
+            className="ui-segmented-tabs ai-workspace-source-tabs"
+            role="tablist"
+            aria-label="Sursa continutului"
+            onKeyDown={handleTablistKeyDown}
+          >
             <button
+              id="workspace-source-tab-file"
               type="button"
               role="tab"
               aria-selected={sourceMode === "file"}
+              aria-controls="workspace-source-panel"
+              tabIndex={sourceMode === "file" ? 0 : -1}
               aria-disabled={formLocked}
               className={`ui-segmented-tab secondary ai-workspace-source-tab ${
                 sourceMode === "file" ? "is-active" : ""
@@ -594,9 +606,12 @@ Raspuns corect: B`}</pre>
               Urc fisier
             </button>
             <button
+              id="workspace-source-tab-text"
               type="button"
               role="tab"
               aria-selected={sourceMode === "text"}
+              aria-controls="workspace-source-panel"
+              tabIndex={sourceMode === "text" ? 0 : -1}
               aria-disabled={formLocked}
               className={`ui-segmented-tab secondary ai-workspace-source-tab ${
                 sourceMode === "text" ? "is-active" : ""
@@ -608,7 +623,12 @@ Raspuns corect: B`}</pre>
           </div>
 
           {sourceMode === "file" ? (
-            <div className="selector-container ai-workspace-source-panel">
+            <div
+              id="workspace-source-panel"
+              className="selector-container ai-workspace-source-panel"
+              role="tabpanel"
+              aria-labelledby="workspace-source-tab-file"
+            >
               <label
                 className={`ai-workspace-file-dropzone${
                   isDraggingSourceFile ? " is-dragging" : ""
@@ -707,7 +727,12 @@ Raspuns corect: B`}</pre>
               ) : null}
             </div>
           ) : (
-            <div className="selector-container ai-workspace-source-panel">
+            <div
+              id="workspace-source-panel"
+              className="selector-container ai-workspace-source-panel"
+              role="tabpanel"
+              aria-labelledby="workspace-source-tab-text"
+            >
               <label>
                 Lipeste direct banca de intrebari si raspunsuri daca nu ai fisier
                 <textarea
@@ -1003,9 +1028,9 @@ Raspuns corect: B`}</pre>
           <div className="workspace-credit-alert">
             <div>
               <strong>Nu mai ai incarcari disponibile</strong>
-              <p>Adauga o incarcare noua din zona de sus ca sa poti urca fisierul.</p>
+              <p>Alege un pachet, apoi revii automat aici ca sa continui uploadul.</p>
             </div>
-            <Link className="btn-link secondary ai-workspace-alert-link" href="/cont?section=credits">
+            <Link className="btn-link secondary ai-workspace-alert-link" href={creditPurchaseHref}>
               Adauga incarcari
             </Link>
           </div>

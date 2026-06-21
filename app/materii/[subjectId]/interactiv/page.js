@@ -6,7 +6,7 @@ import { InteractiveQuiz } from "@/components/interactive-quiz";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getQuestionsForSubject } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
-import { hasLearningModesAccess, LEARNING_MODES_LOCK_HREF } from "@/lib/learning-access";
+import { getLearningModesLockHref, hasLearningModesAccess } from "@/lib/learning-access";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export async function generateMetadata({ params }) {
@@ -36,7 +36,7 @@ export default async function InteractivePage({ params }) {
 
   const canUseLearningModes = await hasLearningModesAccess({ user, demoMode });
   if (!canUseLearningModes) {
-    redirect(LEARNING_MODES_LOCK_HREF);
+    redirect(getLearningModesLockHref(`/materii/${resolvedParams.subjectId}/interactiv`));
   }
 
   const data = await getQuestionsForSubject(

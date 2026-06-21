@@ -43,7 +43,7 @@ export default async function StatsPage() {
     <main className="app-shell">
       <AppHeader
         title="Statistici"
-        subtitle="Toate comparatiile importante intr-un singur loc: licenta, materii si invatarea care urmeaza."
+        subtitle="Progresul tau la licenta, teste pe materii si materialele de invatare, comparat cu comunitatea ta."
       />
 
       <OverallStatsDashboard stats={stats} />

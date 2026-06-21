@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   BarChart3,
+  BookOpen,
   Building2,
   CheckCircle2,
   Clock,
@@ -154,12 +155,11 @@ function userTypeLabel(value) {
   return value === "elev" ? "Elev" : "Student";
 }
 
-function FilterButton({ active, onClick, children, role = "tab", selected = false, icon: Icon = null, count = null, actionCount = 0 }) {
+function FilterButton({ active, onClick, children, icon: Icon = null, count = null, actionCount = 0 }) {
   return (
     <button
       type="button"
-      role={role}
-      aria-selected={selected}
+      aria-pressed={active}
       className={`btn-link secondary admin-filter-chip ${active ? "is-active-filter" : ""} ${actionCount > 0 ? "has-admin-action" : ""}`}
       onClick={onClick}
     >
@@ -181,6 +181,7 @@ function SearchInput({ value, onChange, placeholder }) {
       onChange={(event) => onChange(event.target.value)}
       className="admin-search-input"
       placeholder={placeholder}
+      aria-label={placeholder}
     />
   );
 }
@@ -300,6 +301,17 @@ function formatNumber(value) {
   return new Intl.NumberFormat("ro-RO").format(Number(value || 0));
 }
 
+function formatDurationMs(value) {
+  const ms = Number(value || 0);
+  if (!Number.isFinite(ms) || ms <= 0) return "-";
+  if (ms < 1000) return `${Math.round(ms)} ms`;
+  const seconds = Math.round(ms / 1000);
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return rest ? `${minutes}m ${rest}s` : `${minutes}m`;
+}
+
 function formatUsageLabel(value) {
   if (!value) {
     return "-";
@@ -308,6 +320,13 @@ function formatUsageLabel(value) {
   return String(value)
     .replace(/_/g, " ")
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function learningStatusTone(status) {
+  if (status === "ready") return "good";
+  if (status === "ready_with_warnings") return "warning";
+  if (status === "failed") return "danger";
+  return "default";
 }
 
 function AnalyticsKpi({ icon: Icon, label, value, hint }) {
@@ -361,6 +380,7 @@ export function AdminCenterClient({
   freeAccessData,
   testimonialRewardEntries = [],
   usageAnalytics = null,
+  learningAnalytics = null,
   adminActionSummary = {},
   currentAdminUserId = ""
 }) {
@@ -394,6 +414,7 @@ export function AdminCenterClient({
   const [testimonialsPage, setTestimonialsPage] = useState(initialState.testimonialsPage);
   const [freeAccessRows, setFreeAccessRows] = useState(freeAccessData.rows || []);
   const [userRows, setUserRows] = useState(usersData || []);
+  const [learningRows, setLearningRows] = useState(learningAnalytics?.recentStudySets || []);
   const [testimonialRows, setTestimonialRows] = useState(testimonialRewardEntries || []);
   const [freeAccessInput, setFreeAccessInput] = useState("");
   const [freeAccessNotes, setFreeAccessNotes] = useState("");
@@ -406,6 +427,8 @@ export function AdminCenterClient({
   const [userActionError, setUserActionError] = useState("");
   const [userActionSuccess, setUserActionSuccess] = useState("");
   const [deletingUserId, setDeletingUserId] = useState("");
+  const [depublishingStudySetId, setDepublishingStudySetId] = useState("");
+  const [learningActionMessage, setLearningActionMessage] = useState("");
   const [visibleAdminActionSummary, setVisibleAdminActionSummary] = useState(adminActionSummary);
 
   useEffect(() => {
@@ -839,7 +862,7 @@ export function AdminCenterClient({
     feedback: feedbackCounts.all,
     billing: billingCounts.all,
     users: userCounts.all,
-    analytics: Number(usageAnalytics?.totalEvents || 0),
+    analytics: Number(usageAnalytics?.totalEvents || 0) + Number(learningAnalytics?.totalStudySets || 0),
     subjects: subjectCounts.all,
     academic: academicCounts.all,
     freeAccess: freeAccessCount,
@@ -905,7 +928,8 @@ export function AdminCenterClient({
         Array.isArray(payload.invalid) && payload.invalid.length
           ? ` Emailuri invalide ignorate: ${payload.invalid.join(", ")}.`
           : "";
-      setFreeAccessSuccess(`Lista a fost salvata.${invalidPart}`);
+      const warningPart = payload?.warning ? ` ${payload.warning}` : "";
+      setFreeAccessSuccess(`Lista a fost salvata.${invalidPart}${warningPart}`);
       setFreeAccessInput("");
       setFreeAccessNotes("");
       await refreshFreeAccessRows();
@@ -941,6 +965,7 @@ export function AdminCenterClient({
       }
 
       await refreshFreeAccessRows();
+      setFreeAccessSuccess(payload?.warning || "Statusul a fost actualizat.");
     } catch {
       setFreeAccessError("A aparut o eroare la actualizarea statusului.");
     }
@@ -1001,6 +1026,56 @@ export function AdminCenterClient({
       setUserActionError("A aparut o eroare la stergerea utilizatorului.");
     } finally {
       setDeletingUserId("");
+    }
+  }
+
+  async function handleDepublishStudySet(row) {
+    if (!row?.id) return;
+
+    const confirmed = window.confirm(
+      `Scoti materialul "${row.title || "fara titlu"}" din comunitate? Materialul ramane in contul creatorului.`
+    );
+
+    if (!confirmed) return;
+
+    setLearningActionMessage("");
+    setDepublishingStudySetId(row.id);
+
+    try {
+      const response = await fetch(`/api/admin/learning-study-sets/${row.id}/depublish`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+          reason: "admin_review"
+        })
+      });
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setLearningActionMessage(payload?.error || "Nu am putut scoate materialul din comunitate.");
+        return;
+      }
+
+      setLearningRows((current) =>
+        current.map((entry) =>
+          entry.id === row.id
+            ? {
+                ...entry,
+                visibility_scope: "private",
+                published_at: null,
+                report_count: 0
+              }
+            : entry
+        )
+      );
+      setLearningActionMessage("Materialul a fost scos din comunitate.");
+    } catch {
+      setLearningActionMessage("A aparut o eroare la depublish.");
+    } finally {
+      setDepublishingStudySetId("");
     }
   }
 
@@ -1095,7 +1170,7 @@ export function AdminCenterClient({
   return (
     <>
       <section className="surface admin-section-tabs-surface">
-        <AdminTabsContainer role="tablist" aria-label="Sectiuni admin">
+        <AdminTabsContainer role="group" aria-label="Sectiuni admin">
           <FilterButton active={section === "feedback"} onClick={() => setSection("feedback")} selected={section === "feedback"} icon={MessageSquareText} count={sectionCounts.feedback}>Feedback</FilterButton>
           <FilterButton active={section === "billing"} onClick={() => setSection("billing")} selected={section === "billing"} icon={CreditCard} count={sectionCounts.billing} actionCount={visibleAdminActionSummary.billing || 0}>Plati</FilterButton>
           <FilterButton active={section === "users"} onClick={() => setSection("users")} selected={section === "users"} icon={Users} count={sectionCounts.users}>Utilizatori</FilterButton>
@@ -1117,7 +1192,7 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="tablist" aria-label="Filtre feedback">
+          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre feedback">
             <FilterButton active={feedbackFilter === "all"} onClick={() => setFeedbackFilter("all")} selected={feedbackFilter === "all"} icon={ClipboardList} count={feedbackCounts.all}>Toate</FilterButton>
             <FilterButton active={feedbackFilter === "problem"} onClick={() => setFeedbackFilter("problem")} selected={feedbackFilter === "problem"} icon={ShieldCheck} count={feedbackCounts.problem}>Probleme</FilterButton>
             <FilterButton active={feedbackFilter === "feature"} onClick={() => setFeedbackFilter("feature")} selected={feedbackFilter === "feature"} icon={Sparkles} count={feedbackCounts.feature}>Cerinte noi</FilterButton>
@@ -1170,7 +1245,7 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="tablist" aria-label="Filtre plati">
+          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre plati">
             <FilterButton active={billingFilter === "all"} onClick={() => setBillingFilter("all")} selected={billingFilter === "all"} icon={ReceiptText} count={billingCounts.all}>Toate</FilterButton>
             <FilterButton active={billingFilter === "premium"} onClick={() => setBillingFilter("premium")} selected={billingFilter === "premium"} icon={ShieldCheck} count={billingCounts.premium}>Premium</FilterButton>
             <FilterButton active={billingFilter === "credits"} onClick={() => setBillingFilter("credits")} selected={billingFilter === "credits"} icon={Upload} count={billingCounts.credits}>Incarcari</FilterButton>
@@ -1291,7 +1366,7 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="tablist" aria-label="Filtre utilizatori">
+          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre utilizatori">
             <FilterButton active={usersFilter === "all"} onClick={() => setUsersFilter("all")} selected={usersFilter === "all"} icon={Users} count={userCounts.all}>Toti</FilterButton>
             <FilterButton active={usersFilter === "students"} onClick={() => setUsersFilter("students")} selected={usersFilter === "students"} icon={GraduationCap} count={userCounts.students}>Studenti</FilterButton>
             <FilterButton active={usersFilter === "elevi"} onClick={() => setUsersFilter("elevi")} selected={usersFilter === "elevi"} icon={School} count={userCounts.elevi}>Elevi</FilterButton>
@@ -1301,8 +1376,8 @@ export function AdminCenterClient({
           <SearchInput value={usersSearch} onChange={setUsersSearch} placeholder="Cauta nume, email sau comunitate activa" />
         </div>
 
-        {userActionError ? <p className="admin-inline-error">{userActionError}</p> : null}
-        {userActionSuccess ? <p className="admin-inline-success">{userActionSuccess}</p> : null}
+        {userActionError ? <p className="admin-inline-error" role="alert">{userActionError}</p> : null}
+        {userActionSuccess ? <p className="admin-inline-success" role="status">{userActionSuccess}</p> : null}
 
         {filteredUsers.length ? (
           <>
@@ -1383,12 +1458,195 @@ export function AdminCenterClient({
               <AnalyticsKpi icon={BarChart3} label="Evenimente" value={usageAnalytics?.totalEvents} hint="total in fereastra" />
               <AnalyticsKpi icon={Route} label="Vizualizari pagini" value={usageAnalytics?.pageViews} hint="navigari" />
               <AnalyticsKpi icon={MousePointerClick} label="Click-uri" value={usageAnalytics?.clicks} hint="actiuni UI" />
+              <AnalyticsKpi icon={BookOpen} label="Actiuni invatare" value={usageAnalytics?.learningEvents} hint="modul invatare" />
               <AnalyticsKpi icon={Users} label="Utilizatori" value={usageAnalytics?.uniqueUsers} hint="logati" />
               <AnalyticsKpi icon={Clock} label="Activi azi" value={usageAnalytics?.activeToday} hint="useri sau sesiuni" />
               <AnalyticsKpi icon={MonitorSmartphone} label="Sesiuni anonime" value={usageAnalytics?.anonymousSessions} hint="fara cont" />
             </div>
 
+            {learningAnalytics?.warning ? (
+              <div className="workspace-context-summary admin-analytics-warning">
+                <strong>Nota invatare</strong>
+                <span>{learningAnalytics.warning}</span>
+              </div>
+            ) : null}
+
+            {learningAnalytics?.available === false ? (
+              <EmptyState
+                title="Analytics-ul pentru invatare nu este disponibil inca."
+                subtitle="Dupa aplicarea migrarii pentru study sets, materialele procesate vor aparea aici."
+              />
+            ) : (
+              <>
+                <div className="admin-analytics-kpi-grid">
+                  <AnalyticsKpi icon={BookOpen} label="Materiale invatare" value={learningAnalytics?.totalStudySets} hint="recente" />
+                  <AnalyticsKpi icon={CheckCircle2} label="Gata" value={learningAnalytics?.readyStudySets} hint="ready" />
+                  <AnalyticsKpi icon={Lightbulb} label="Cu atentionari" value={learningAnalytics?.warningStudySets} hint="needs review" />
+                  <AnalyticsKpi icon={XCircle} label="Esuate" value={learningAnalytics?.failedStudySets} hint="failed" />
+                  <AnalyticsKpi icon={Users} label="Publicate" value={learningAnalytics?.publishedStudySets} hint="comunitate" />
+                  <AnalyticsKpi icon={ShieldCheck} label="Private" value={learningAnalytics?.privateStudySets} hint="doar owner" />
+                  <AnalyticsKpi icon={Clock} label="Nefolosite" value={learningAnalytics?.unusedStudySets} hint="dupa procesare" />
+                  <AnalyticsKpi icon={MessageSquareText} label="Raportari" value={learningAnalytics?.pendingReports} hint="pending" />
+                  <AnalyticsKpi icon={XCircle} label="Erori recente" value={learningAnalytics?.processingErrors?.length || 0} hint="upload/procesare" />
+                  <AnalyticsKpi icon={Users} label="Reutilizari" value={learningAnalytics?.communityReuses || 0} hint="colegi fara incarcare noua" />
+                </div>
+
+                <div className="admin-analytics-grid">
+                  <TableSection title="Status invatare" subtitle="Cum arata materialele procesate recent." count={learningAnalytics?.statusBreakdown?.length || 0}>
+                    <AnalyticsList rows={learningAnalytics?.statusBreakdown || []} />
+                  </TableSection>
+
+                  <TableSection title="Surse invatare" subtitle="Tipurile de fisiere si text folosite in modul." count={learningAnalytics?.sourceBreakdown?.length || 0}>
+                    <AnalyticsList rows={learningAnalytics?.sourceBreakdown || []} />
+                  </TableSection>
+
+                  <TableSection title="Durate procesare" subtitle="Media pe etape pentru materialele recente." count={learningAnalytics?.stageDurationBreakdown?.length || 0}>
+                    <AnalyticsList rows={learningAnalytics?.stageDurationBreakdown || []} emptyLabel="Duratele apar dupa urmatoarele procesari." />
+                  </TableSection>
+                </div>
+
+                <div className="admin-analytics-grid">
+                  <TableSection title="Top materiale invatare" subtitle="Materiale cu folosire reala in teste si flashcards." count={learningAnalytics?.topStudySets?.length || 0}>
+                    {learningAnalytics?.topStudySets?.length ? (
+                      <AdminTable minWidth={760} columns={[
+                        { key: "title", label: "Material" },
+                        { key: "status", label: "Status" },
+                        { key: "users", label: "Useri" },
+                        { key: "tests", label: "Teste" },
+                        { key: "cards", label: "Flashcards" },
+                        { key: "visibility", label: "Vizibilitate" }
+                      ]}>
+                        {learningAnalytics.topStudySets.map((row) => (
+                          <tr key={row.id}>
+                            <td className="admin-table-name-cell">{row.title}</td>
+                            <td><CellPill tone={learningStatusTone(row.status)}>{formatUsageLabel(row.status)}</CellPill></td>
+                            <td>{formatNumber(row.active_user_count)}</td>
+                            <td>{formatNumber(row.attempt_count)}</td>
+                            <td>{formatNumber(row.flashcard_review_count)}</td>
+                            <td>{formatUsageLabel(row.visibility_scope)}</td>
+                          </tr>
+                        ))}
+                      </AdminTable>
+                    ) : (
+                      <EmptyState title="Nu exista materiale folosite inca." subtitle="Topul apare dupa teste sau flashcards salvate." />
+                    )}
+                  </TableSection>
+
+                  <TableSection title="Top contributori" subtitle="Autori ale caror materiale publicate sunt refolosite de colegi." count={learningAnalytics?.topContributors?.length || 0}>
+                    {learningAnalytics?.topContributors?.length ? (
+                      <AdminTable minWidth={760} columns={[
+                        { key: "user", label: "Utilizator" },
+                        { key: "published", label: "Publicate" },
+                        { key: "reuse", label: "Reutilizari" },
+                        { key: "users", label: "Useri activi" },
+                        { key: "last", label: "Ultima publicare" }
+                      ]}>
+                        {learningAnalytics.topContributors.map((row) => (
+                          <tr key={row.user_id || "unknown"}>
+                            <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                            <td>{formatNumber(row.published_count)}</td>
+                            <td>{formatNumber(row.reuse_count)}</td>
+                            <td>{formatNumber(row.active_user_count)}</td>
+                            <td><TableDate value={row.last_published_at} /></td>
+                          </tr>
+                        ))}
+                      </AdminTable>
+                    ) : (
+                      <EmptyState title="Nu exista contributori cu reutilizari inca." subtitle="Aici apar materialele publicate si folosite de colegi." />
+                    )}
+                  </TableSection>
+                </div>
+
+                <TableSection title="Erori procesare invatare" subtitle="Ultimele uploaduri sau procesari care nu au ajuns la material gata." count={learningAnalytics?.processingErrors?.length || 0}>
+                  {learningAnalytics?.processingErrors?.length ? (
+                    <AdminTable minWidth={980} columns={[
+                      { key: "date", label: "Data" },
+                      { key: "title", label: "Material" },
+                      { key: "user", label: "Utilizator" },
+                      { key: "source", label: "Sursa" },
+                      { key: "duration", label: "Durata" },
+                      { key: "error", label: "Eroare" }
+                    ]}>
+                      {learningAnalytics.processingErrors.map((row) => (
+                        <tr key={row.id}>
+                          <td><TableDate value={row.created_at} /></td>
+                          <td className="admin-table-name-cell">{row.title || "Material fara titlu"}</td>
+                          <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                          <td>{formatUsageLabel(row.source_kind)}</td>
+                          <td>{formatDurationMs(row.processing_duration_ms)}</td>
+                          <td className="admin-table-text-cell">{row.error || "Eroare necunoscuta"}</td>
+                        </tr>
+                      ))}
+                    </AdminTable>
+                  ) : (
+                    <EmptyState title="Nu exista erori recente in modulul de invatare." subtitle="Aici apar uploadurile sau procesarile care au esuat." />
+                  )}
+                </TableSection>
+
+                {learningActionMessage ? <p className="admin-inline-success" role="status">{learningActionMessage}</p> : null}
+
+                <TableSection title="Materiale de invatare recente" subtitle="Ultimele study sets generate sau publicate." count={learningAnalytics?.recentStudySets?.length || 0}>
+                  {learningRows?.length ? (
+                    <AdminTable minWidth={1280} columns={[
+                      { key: "date", label: "Data" },
+                      { key: "title", label: "Titlu" },
+                      { key: "user", label: "Utilizator" },
+                      { key: "status", label: "Status" },
+                      { key: "source", label: "Sursa" },
+                      { key: "content", label: "Continut" },
+                      { key: "processing", label: "Procesare" },
+                      { key: "usage", label: "Folosire" },
+                      { key: "visibility", label: "Vizibilitate" },
+                      { key: "reports", label: "Raportari" },
+                      { key: "actions", label: "Actiuni" }
+                    ]}>
+                      {learningRows.map((row) => (
+                        <tr key={row.id}>
+                          <td><TableDate value={row.created_at} /></td>
+                          <td className="admin-table-name-cell">{row.title || "Fara titlu"}</td>
+                          <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                          <td><CellPill tone={learningStatusTone(row.status)}>{formatUsageLabel(row.status)}</CellPill></td>
+                          <td>{formatUsageLabel(row.source_kind)}</td>
+                          <td className="admin-table-text-cell">
+                            {`${formatNumber(row.chapter_count)} capitole, ${formatNumber(row.flashcard_count)} flashcards, ${formatNumber(row.question_count)} intrebari`}
+                          </td>
+                          <td className="admin-table-text-cell">
+                            {`${formatDurationMs(row.processing_duration_ms)} · ${row.credit_consumed ? "1 incarcare" : "fara consum marcat"}`}
+                          </td>
+                          <td className="admin-table-text-cell">
+                            {`${formatNumber(row.active_user_count)} useri, ${formatNumber(row.attempt_count)} teste, ${formatNumber(row.flashcard_review_count)} flashcards`}
+                          </td>
+                          <td>{formatUsageLabel(row.visibility_scope || "private")}</td>
+                          <td><CellPill tone={row.report_count > 0 ? "warning" : "default"}>{formatNumber(row.report_count || 0)}</CellPill></td>
+                          <td>
+                            {row.published_at ? (
+                              <button
+                                type="button"
+                                className="btn-link secondary admin-toggle-btn"
+                                disabled={depublishingStudySetId === row.id}
+                                onClick={() => handleDepublishStudySet(row)}
+                              >
+                                {depublishingStudySetId === row.id ? "Se scoate..." : "Scoate din comunitate"}
+                              </button>
+                            ) : (
+                              "-"
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </AdminTable>
+                  ) : (
+                    <EmptyState title="Nu exista materiale de invatare inca." subtitle="Primele materiale apar aici dupa procesare." />
+                  )}
+                </TableSection>
+              </>
+            )}
+
             <div className="admin-analytics-grid">
+              <TableSection title="Moduri invatare folosite" subtitle="Actiunile principale din modulul Invata." count={usageAnalytics?.learningTopActions?.length || 0}>
+                <AnalyticsList rows={usageAnalytics?.learningTopActions || []} emptyLabel="Nu exista actiuni de invatare inca." />
+              </TableSection>
+
               <TableSection title="Zone folosite" subtitle="Feature-urile cu cele mai multe evenimente." count={usageAnalytics?.topFeatures?.length || 0}>
                 <AnalyticsList rows={usageAnalytics?.topFeatures || []} />
               </TableSection>
@@ -1484,7 +1742,7 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="tablist" aria-label="Filtre materii">
+          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre materii">
             <FilterButton active={subjectsFilter === "all"} onClick={() => setSubjectsFilter("all")} selected={subjectsFilter === "all"} icon={ClipboardList} count={subjectCounts.all}>Toate</FilterButton>
             <FilterButton active={subjectsFilter === "student"} onClick={() => setSubjectsFilter("student")} selected={subjectsFilter === "student"} icon={GraduationCap} count={subjectCounts.student}>Student</FilterButton>
             <FilterButton active={subjectsFilter === "elev"} onClick={() => setSubjectsFilter("elev")} selected={subjectsFilter === "elev"} icon={School} count={subjectCounts.elev}>Elev</FilterButton>
@@ -1544,7 +1802,7 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar admin-toolbar--academic">
-          <AdminTabsContainer role="tablist" aria-label="Subsectiuni structura academica">
+          <AdminTabsContainer role="group" aria-label="Subsectiuni structura academica">
             <FilterButton active={academicSubtab === "institutions"} onClick={() => setAcademicSubtab("institutions")} selected={academicSubtab === "institutions"} icon={Building2} count={academicCounts.institutions}>Institutii</FilterButton>
             <FilterButton active={academicSubtab === "faculties"} onClick={() => setAcademicSubtab("faculties")} selected={academicSubtab === "faculties"} icon={GraduationCap} count={academicCounts.faculties}>Facultati</FilterButton>
           </AdminTabsContainer>
@@ -1686,8 +1944,8 @@ export function AdminCenterClient({
             </button>
             <span className="micro-copy">Accesul se activeaza automat la primul login.</span>
           </div>
-          {freeAccessError ? <p className="admin-inline-error">{freeAccessError}</p> : null}
-          {freeAccessSuccess ? <p className="admin-inline-success">{freeAccessSuccess}</p> : null}
+          {freeAccessError ? <p className="admin-inline-error" role="alert">{freeAccessError}</p> : null}
+          {freeAccessSuccess ? <p className="admin-inline-success" role="status">{freeAccessSuccess}</p> : null}
         </form>
 
         <div className="admin-toolbar">
@@ -1756,7 +2014,7 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="tablist" aria-label="Filtre testimoniale">
+          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre testimoniale">
             <FilterButton active={testimonialsFilter === "all"} onClick={() => setTestimonialsFilter("all")} selected={testimonialsFilter === "all"} icon={Star} count={testimonialCounts.all}>Toate</FilterButton>
             <FilterButton active={testimonialsFilter === "pending"} onClick={() => setTestimonialsFilter("pending")} selected={testimonialsFilter === "pending"} icon={Clock} count={testimonialCounts.pending} actionCount={visibleAdminActionSummary.testimonials || 0}>In asteptare</FilterButton>
             <FilterButton active={testimonialsFilter === "approved"} onClick={() => setTestimonialsFilter("approved")} selected={testimonialsFilter === "approved"} icon={CheckCircle2} count={testimonialCounts.approved}>Aprobate</FilterButton>
@@ -1771,8 +2029,8 @@ export function AdminCenterClient({
           <span className="status-pill is-muted">{`${testimonialRows.length} totale`}</span>
         </div>
 
-        {testimonialActionError ? <p className="admin-inline-error">{testimonialActionError}</p> : null}
-        {testimonialActionSuccess ? <p className="admin-inline-success">{testimonialActionSuccess}</p> : null}
+        {testimonialActionError ? <p className="admin-inline-error" role="alert">{testimonialActionError}</p> : null}
+        {testimonialActionSuccess ? <p className="admin-inline-success" role="status">{testimonialActionSuccess}</p> : null}
 
         {filteredTestimonials.length ? (
           <>

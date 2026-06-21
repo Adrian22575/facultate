@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { AppHeader } from "@/components/app-header";
+import { requireAdmin } from "@/lib/admin";
 import {
   getSourceBucketStatus,
   SOURCE_BUCKET,
@@ -21,7 +22,7 @@ import { getOpenAIRequestDiagnosticsSnapshot } from "@/lib/openai/logging";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Setup · Nota 5+"
+  title: "Setup | Nota 5+"
 };
 
 function StepCard({ title, children, ready }) {
@@ -86,6 +87,8 @@ function formatTechnicalMessage(value) {
 }
 
 export default async function SetupPage() {
+  await requireAdmin("/setup");
+
   const siteUrlReady = hasSiteUrlEnv();
   const supabasePublicReady = hasSupabasePublicEnv();
   const supabaseServerReady = hasSupabaseServiceEnv();
@@ -278,7 +281,7 @@ export default async function SetupPage() {
         </div>
 
         {notificationEvents.warning ? (
-          <div className="error-state">{formatTechnicalMessage(notificationEvents.warning)}</div>
+          <div className="error-state" role="alert">{formatTechnicalMessage(notificationEvents.warning)}</div>
         ) : null}
 
         {notificationEvents.rows.length ? (
@@ -334,7 +337,7 @@ export default async function SetupPage() {
         </div>
 
         {openAIDiagnostics.warning ? (
-          <div className="error-state">{formatTechnicalMessage(openAIDiagnostics.warning)}</div>
+          <div className="error-state" role="alert">{formatTechnicalMessage(openAIDiagnostics.warning)}</div>
         ) : null}
 
         {openAIDiagnostics.rows.length ? (

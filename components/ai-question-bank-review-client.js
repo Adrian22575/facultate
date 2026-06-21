@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Edit3, Plus, Save, Trash2, X } from "lucide-react";
+import { CircleAlert, CheckCircle2, Edit3, Plus, Save, Trash2, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -12,6 +12,7 @@ import {
 } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { normalizeSearchText, truncateText } from "@/lib/quiz";
+import { useDialogFocus } from "@/lib/ui/dialog";
 
 const REVIEW_PAGE_SIZE_OPTIONS = [5, 10, 25, 50, "all"];
 const REVIEW_FILTER_TABS = [
@@ -195,6 +196,7 @@ function ReviewQuestionView({ bankId, item, searchActive, onEdit, onDelete }) {
 function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
   const needsManualResolution = item.quality_status === "needs_review";
   const [selectedCorrectIndex, setSelectedCorrectIndex] = useState(String(item.correct_index));
+  const FocusIcon = needsManualResolution ? CircleAlert : CheckCircle2;
 
   return (
     <article className="draft-card draft-card-form review-question-card review-edit-card is-editing">
@@ -210,12 +212,15 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
       </div>
 
       <div className={`review-editor-focus ${needsManualResolution ? "is-warning" : "is-ready"}`}>
-        <strong>{needsManualResolution ? "Necesita confirmare" : "Gata de modificat"}</strong>
-        <span>
-          {needsManualResolution
-            ? "Completeaza ce lipseste si confirma ca raspunsul corect este verificat."
-            : "Editeaza doar campurile care trebuie corectate."}
-        </span>
+        <FocusIcon aria-hidden="true" size={20} strokeWidth={2.2} />
+        <div className="review-editor-focus-copy">
+          <strong>{needsManualResolution ? "Necesita confirmare" : "Gata de modificat"}</strong>
+          <span>
+            {needsManualResolution
+              ? "Completeaza ce lipseste si confirma raspunsul corect."
+              : "Corecteaza doar campurile necesare."}
+          </span>
+        </div>
       </div>
 
       <form
@@ -261,6 +266,7 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
                   type="text"
                   name="answers"
                   defaultValue={answer || ""}
+                  aria-label={`Text varianta ${answerLabel(index)}`}
                 />
                 <button
                   type="button"
@@ -401,6 +407,7 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
                   type="text"
                   name="answers"
                   placeholder={`Varianta ${answerLabel(index)}`}
+                  aria-label={`Text varianta ${answerLabel(index)}`}
                   required
                 />
                 <button
@@ -445,6 +452,10 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
 }
 
 function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
+  const dialogRef = useDialogFocus(Boolean(confirmState), () => {
+    if (!isPending) onClose();
+  });
+
   if (!confirmState) {
     return null;
   }
@@ -452,6 +463,7 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   return (
     <div className="workspace-modal-backdrop" role="presentation">
       <div
+        ref={dialogRef}
         className="workspace-modal-card review-confirm-modal"
         role="dialog"
         aria-modal="true"
@@ -749,13 +761,13 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
     <>
       {feedback ? (
         <section className="surface">
-          <div className="success-state">{feedback}</div>
+          <div className="success-state" role="status">{feedback}</div>
         </section>
       ) : null}
 
       {errorMessage ? (
         <section className="surface">
-          <div className="error-state">{errorMessage}</div>
+          <div className="error-state" role="alert">{errorMessage}</div>
         </section>
       ) : null}
 
@@ -780,7 +792,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
             </button>
             {visibleItems.length ? (
               <>
-                <div className="ui-segmented-tabs review-filter-tabs" role="tablist" aria-label="Filtru intrebari">
+                <div className="ui-segmented-tabs review-filter-tabs" role="group" aria-label="Filtru intrebari">
                   {REVIEW_FILTER_TABS.map((tab) => {
                     const count = tab.id === "needs_review" ? needsReviewCount : visibleItems.length;
 
@@ -788,8 +800,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                       <button
                         key={tab.id}
                         type="button"
-                        role="tab"
-                        aria-selected={reviewFilter === tab.id}
+                        aria-pressed={reviewFilter === tab.id}
                         className={`ui-segmented-tab secondary ${reviewFilter === tab.id ? "is-active" : ""}`}
                         onClick={() => changeReviewFilter(tab.id)}
                       >

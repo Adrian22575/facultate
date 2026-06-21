@@ -8,6 +8,7 @@ import {
   prepareSourceFile,
   validateUpload
 } from "@/lib/ai/extract-text";
+import { cleanupUnusedSourceDocumentsForUser } from "@/lib/ai/source-document-cleanup";
 import { GenerateTestInputSchema } from "@/lib/ai/schema";
 import {
   assertSourceBucketReady,
@@ -27,6 +28,14 @@ import { createClient } from "@/lib/supabase/server";
 export const runtime = "nodejs";
 export const maxDuration = 300;
 const LICENTA_GENERAL_LABEL = "Licenta generala";
+const ACTIVE_PROCESSING_CAPACITY_ERROR =
+  "nu ai suficiente incarcari disponibile pentru o alta procesare activa";
+
+function isActiveProcessingCapacityError(error) {
+  return String(error?.message || "")
+    .toLowerCase()
+    .includes(ACTIVE_PROCESSING_CAPACITY_ERROR);
+}
 
 function resolveSourceFailureStatus(error) {
   const normalized = String(error?.message || "").toLowerCase();
@@ -55,7 +64,28 @@ function trimAdminErrorMessage(error) {
 }
 
 function redirectWithMessage(request, kind, message, extraParams = {}) {
-  const url = new URL("/materiale", request.url);
+  let returnPath = extraParams.examType === "licenta" ? "/materiale/licenta" : "/materiale/importa";
+  const referer = request.headers.get("referer");
+
+  if (referer) {
+    try {
+      const refererUrl = new URL(referer);
+      const requestUrl = new URL(request.url);
+      const allowedPaths = new Set([
+        "/materiale/importa",
+        "/materiale/licenta",
+        "/ai/importa",
+        "/ai/licenta"
+      ]);
+      if (refererUrl.origin === requestUrl.origin && allowedPaths.has(refererUrl.pathname)) {
+        returnPath = refererUrl.pathname.replace(/^\/ai\//, "/materiale/");
+      }
+    } catch {
+      // Use the mode-based destination when the browser does not send a valid referrer.
+    }
+  }
+
+  const url = new URL(returnPath, request.url);
   url.searchParams.set(kind, encodeURIComponent(message));
   for (const [key, value] of Object.entries(extraParams)) {
     if (value === undefined || value === null || value === "") {
@@ -81,6 +111,24 @@ function toUserSafeGenerateError(error) {
   }
 
   const normalized = error.message.toLowerCase();
+  const safeContentErrors = [
+    "fisierul selectat pare gol",
+    "fisierul depaseste limita",
+    "sunt acceptate doar fisiere",
+    "incarca un fisier acceptat",
+    "textul introdus manual este prea scurt",
+    "textul lipit depaseste limita",
+    "fisierul docx nu contine text",
+    "fisierul pptx nu contine",
+    "fisierul txt este gol",
+    "pdf-ul pare scanat",
+    "tipul fisierului nu este acceptat",
+    ACTIVE_PROCESSING_CAPACITY_ERROR
+  ];
+
+  if (error.code === "RATE_LIMITED" || safeContentErrors.some((part) => normalized.includes(part))) {
+    return error.message;
+  }
 
   if (
     normalized.includes("bucket not found") ||
@@ -104,7 +152,7 @@ function toUserSafeGenerateError(error) {
     return "PDF-ul nu a putut fi citit corect. Incarca un PDF valid, cu text selectabil.";
   }
 
-  return error.message;
+  return "Materialul nu a putut fi pregatit acum. Incearca din nou, iar daca problema continua trimite-ne feedback din pagina curenta.";
 }
 
 function resolveSubjectLabel({ parsedInput, subjects }) {
@@ -459,6 +507,14 @@ export async function POST(request) {
         status: 303
       });
     } catch (error) {
+      if (isActiveProcessingCapacityError(error)) {
+        const admin = createAdminClient();
+        await cleanupUnusedSourceDocumentsForUser(admin, user.id, [sourceDocument.id]).catch(
+          () => {}
+        );
+        throw error;
+      }
+
       await supabase
         .from("ai_source_documents")
         .update({

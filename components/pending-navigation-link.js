@@ -96,7 +96,7 @@ export function PendingNavigationLink({
       ) : (
         <>
           {children}
-          {pending ? (
+          {pending && pendingMode !== "silent" ? (
             <span className="navigation-pending-badge" aria-live="polite">
               <LoadingSpinner size={14} />
               <span>{pendingLabel}</span>

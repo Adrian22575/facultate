@@ -130,6 +130,7 @@ export function OnboardingSelectionStep({
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder={searchPlaceholder}
+                  aria-label={searchPlaceholder}
                 />
                 {normalizedQuery ? (
                   <button

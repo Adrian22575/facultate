@@ -6,6 +6,7 @@ import { ExamPageClient } from "@/components/exam-page-client";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getAllExamQuestions } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
+import { getActiveLicentaMistakeIds } from "@/lib/licenta-exam-mistakes";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export const metadata = {
@@ -37,6 +38,7 @@ export default async function ExamPage() {
       ? { userId: user.id, membership: academicContext.membership }
       : {}
   );
+  const initialMistakeIds = await getActiveLicentaMistakeIds(user.id);
 
   return (
     <main className="app-shell">
@@ -55,7 +57,11 @@ export default async function ExamPage() {
         subtitle="Alege cum vrei sa te pregatesti azi. Fa o runda rapida, un antrenament mai lung sau repeta doar intrebarile gresite."
       />
 
-      <ExamPageClient questions={questions} subjectCount={subjects.length} />
+      <ExamPageClient
+        questions={questions}
+        subjectCount={subjects.length}
+        initialMistakeIds={initialMistakeIds}
+      />
     </main>
   );
 }

@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import {
-  BookOpenCheck,
   ClipboardList,
   FileText,
   FolderOpen,
-  GraduationCap,
   HelpCircle,
   Keyboard,
   Upload
@@ -20,6 +18,8 @@ import {
   AI_SOURCE_UPLOAD_MAX_BYTES,
   AI_SOURCE_UPLOAD_MAX_LABEL
 } from "@/lib/ai/upload-limits";
+import { useDialogFocus } from "@/lib/ui/dialog";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const TERMINAL_STATUSES = new Set([
   "ready_for_preview",
@@ -28,6 +28,14 @@ const TERMINAL_STATUSES = new Set([
   "needs_review",
   "failed"
 ]);
+
+function createRequestId(prefix) {
+  const suffix =
+    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  return `${prefix}-${suffix}`;
+}
 
 const EXAMPLES = [
   {
@@ -153,9 +161,12 @@ function questionStatusLabel(status) {
 }
 
 function ExamplesModal({ onClose }) {
+  const dialogRef = useDialogFocus(true, onClose);
+
   return (
     <div className="workspace-modal-backdrop" role="presentation">
       <div
+        ref={dialogRef}
         className="workspace-modal-card import-examples-modal"
         role="dialog"
         aria-modal="true"
@@ -324,7 +335,7 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
         </article>
       </div>
 
-      {status.errorMessage ? <div className="error-state">{status.errorMessage}</div> : null}
+      {status.errorMessage ? <div className="error-state" role="alert">{status.errorMessage}</div> : null}
 
       {preview ? (
         <div className="import-preview-shell">
@@ -370,6 +381,7 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
 }
 
 export function LicentaImportWorkspaceClient({
+  fixedMode = null,
   userType,
   subjects,
   subjectAllocations = [],
@@ -380,7 +392,7 @@ export function LicentaImportWorkspaceClient({
   message,
   error
 }) {
-  const [mainMode, setMainMode] = useState("licenta");
+  const mainMode = fixedMode === "test" ? "test" : "licenta";
   const [licentaImportMode, setLicentaImportMode] = useState("set");
   const [setSourceMode, setSetSourceMode] = useState("text");
   const [contentText, setContentText] = useState("");
@@ -392,8 +404,11 @@ export function LicentaImportWorkspaceClient({
   const [activeStatus, setActiveStatus] = useState(null);
   const [preview, setPreview] = useState(null);
   const [activeError, setActiveError] = useState("");
+  const [activeErrorActionHref, setActiveErrorActionHref] = useState("");
   const [isBusy, setIsBusy] = useState(false);
   const processingRef = useRef(false);
+  const autoRequestIdRef = useRef(createRequestId("auto"));
+  const setRequestIdRef = useRef(createRequestId("set"));
   const autoFileRef = useRef(null);
   const setContentFileRef = useRef(null);
   const autoFileInputId = useId();
@@ -481,7 +496,9 @@ export function LicentaImportWorkspaceClient({
   async function readJson(response) {
     const payload = await response.json().catch(() => null);
     if (!response.ok) {
-      throw new Error(payload?.error || "Cererea nu a putut fi finalizata.");
+      const requestError = new Error(payload?.error || "Cererea nu a putut fi finalizata.");
+      requestError.actionHref = typeof payload?.actionHref === "string" ? payload.actionHref : "";
+      throw requestError;
     }
     return payload;
   }
@@ -502,7 +519,9 @@ export function LicentaImportWorkspaceClient({
       return;
     }
     setSelectedAutoFile(nextFile);
+    autoRequestIdRef.current = createRequestId("auto");
     setActiveError("");
+    setActiveErrorActionHref("");
   }
 
   function applySetFile(nextFile) {
@@ -510,7 +529,9 @@ export function LicentaImportWorkspaceClient({
       return;
     }
     setSelectedSetFile(nextFile);
+    setRequestIdRef.current = createRequestId("set");
     setActiveError("");
+    setActiveErrorActionHref("");
   }
 
   function applyDroppedAutoFiles(fileList) {
@@ -546,7 +567,9 @@ export function LicentaImportWorkspaceClient({
       return;
     }
     setSelectedAutoFile(null);
+    autoRequestIdRef.current = createRequestId("auto");
     setActiveError("");
+    setActiveErrorActionHref("");
     if (autoFileRef.current) {
       autoFileRef.current.value = "";
     }
@@ -557,7 +580,9 @@ export function LicentaImportWorkspaceClient({
       return;
     }
     setSelectedSetFile(null);
+    setRequestIdRef.current = createRequestId("set");
     setActiveError("");
+    setActiveErrorActionHref("");
     if (setContentFileRef.current) {
       setContentFileRef.current.value = "";
     }
@@ -568,7 +593,9 @@ export function LicentaImportWorkspaceClient({
       return;
     }
     setContentText("");
+    setRequestIdRef.current = createRequestId("set");
     setActiveError("");
+    setActiveErrorActionHref("");
   }
 
   async function processOnce(importJobId) {
@@ -645,9 +672,11 @@ export function LicentaImportWorkspaceClient({
 
     setIsBusy(true);
     setActiveError("");
+    setActiveErrorActionHref("");
     setPreview(null);
     try {
       const formData = new FormData();
+      formData.set("requestId", autoRequestIdRef.current);
       formData.set("sourceFile", file);
       const response = await fetch("/api/import/auto", {
         method: "POST",
@@ -658,6 +687,7 @@ export function LicentaImportWorkspaceClient({
       window.location.assign(`/materiale/imports/${payload.importJobId}`);
     } catch (err) {
       setActiveError(err instanceof Error ? err.message : "Nu am putut porni importul.");
+      setActiveErrorActionHref(err?.actionHref || "");
     } finally {
       setIsBusy(false);
     }
@@ -693,9 +723,11 @@ export function LicentaImportWorkspaceClient({
 
     setIsBusy(true);
     setActiveError("");
+    setActiveErrorActionHref("");
     setPreview(null);
     try {
       const formData = new FormData();
+      formData.set("requestId", setRequestIdRef.current);
       if (setSourceMode === "text") {
         formData.set("contentText", contentText);
       } else if (contentFile) {
@@ -711,6 +743,7 @@ export function LicentaImportWorkspaceClient({
       window.location.assign(`/materiale/licenta/${payload.licentaSessionId}?set=${payload.importJobId}`);
     } catch (err) {
       setActiveError(err instanceof Error ? err.message : "Nu am putut porni importul pe seturi.");
+      setActiveErrorActionHref(err?.actionHref || "");
     } finally {
       setIsBusy(false);
     }
@@ -755,64 +788,22 @@ export function LicentaImportWorkspaceClient({
 
   return (
     <div className="licenta-import-workspace">
-      {demoMode ? (
-        <div className="error-state">In modul demo poti vedea doar interfata. Pentru procesare reala intra cu Google.</div>
+      {mainMode === "licenta" ? (
+        <>
+          {demoMode ? (
+            <div className="error-state" role="status">In modul demo poti vedea doar interfata. Pentru procesare reala intra in cont.</div>
+          ) : null}
+          {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
+          {message ? <div className="success-state" role="status">{message}</div> : null}
+          {error ? <div className="error-state" role="alert">{error}</div> : null}
+          {activeError ? (
+            <div className="error-state" role="alert">
+              <span>{activeError}</span>
+              {activeErrorActionHref ? <Link href={activeErrorActionHref}>Continua</Link> : null}
+            </div>
+          ) : null}
+        </>
       ) : null}
-      {setupWarning ? <div className="error-state">{setupWarning}</div> : null}
-      {message ? <div className="success-state">{message}</div> : null}
-      {error ? <div className="error-state">{error}</div> : null}
-      {activeError ? <div className="error-state">{activeError}</div> : null}
-
-      <section className="workspace-form-panel ui-panel-card import-choice-panel">
-        <div className="workspace-form-head">
-          <div>
-            <span className="ui-section-label ai-workspace-step-label">Alege ce vrei sa importi</span>
-            <h2>Licenta sau test grila</h2>
-          </div>
-        </div>
-        <div className="ai-workspace-exam-choice import-main-cards" role="radiogroup" aria-label="Tip import">
-          <button
-            type="button"
-            role="radio"
-            aria-checked={mainMode === "licenta"}
-            className={`secondary ai-workspace-exam-card import-main-card ${
-              mainMode === "licenta" ? "is-selected" : ""
-            }`}
-            onClick={() => setMainMode("licenta")}
-          >
-            <span className="ai-workspace-exam-icon is-licenta" aria-hidden="true">
-              <GraduationCap size={22} />
-            </span>
-            <span className="ai-workspace-exam-copy">
-              <strong>Licenta</strong>
-              <span>Construiesti o banca pentru simularea generala, pe seturi sau dintr-un fisier complet.</span>
-            </span>
-            <span className="ai-workspace-exam-mark" aria-hidden="true">
-              {mainMode === "licenta" ? "Selectat" : "Alege"}
-            </span>
-          </button>
-          <button
-            type="button"
-            role="radio"
-            aria-checked={mainMode === "test"}
-            className={`secondary ai-workspace-exam-card import-main-card ${
-              mainMode === "test" ? "is-selected" : ""
-            }`}
-            onClick={() => setMainMode("test")}
-          >
-            <span className="ai-workspace-exam-icon is-normal" aria-hidden="true">
-              <BookOpenCheck size={22} />
-            </span>
-            <span className="ai-workspace-exam-copy">
-              <strong>Test grila pe materie</strong>
-              <span>Urca intrebari pentru o materie, apoi le verifici si le publici ca test.</span>
-            </span>
-            <span className="ai-workspace-exam-mark" aria-hidden="true">
-              {mainMode === "test" ? "Selectat" : "Alege"}
-            </span>
-          </button>
-        </div>
-      </section>
 
       {mainMode === "test" ? (
         <WorkspaceGenerateForm
@@ -824,8 +815,8 @@ export function LicentaImportWorkspaceClient({
           demoMode={demoMode}
           setupWarning={setupWarning}
           billingSnapshot={billingSnapshot}
-          message={null}
-          error={null}
+          message={message}
+          error={error}
         />
       ) : (
         <>
@@ -882,11 +873,19 @@ export function LicentaImportWorkspaceClient({
                 <h2>Alege cum adaugi materialul</h2>
               </div>
             </div>
-            <div className="ui-segmented-tabs import-method-tabs" role="tablist" aria-label="Metoda import licenta">
+            <div
+              className="ui-segmented-tabs import-method-tabs"
+              role="tablist"
+              aria-label="Metoda import licenta"
+              onKeyDown={handleTablistKeyDown}
+            >
               <button
+                id="licenta-import-tab-set"
                 type="button"
                 role="tab"
                 aria-selected={licentaImportMode === "set"}
+                aria-controls="licenta-import-mode-panel"
+                tabIndex={licentaImportMode === "set" ? 0 : -1}
                 className={`ui-segmented-tab secondary import-method-tab ${licentaImportMode === "set" ? "is-active" : ""}`}
                 onClick={() => setLicentaImportMode("set")}
               >
@@ -894,9 +893,12 @@ export function LicentaImportWorkspaceClient({
                 <span className="ui-chip is-good import-method-badge">Recomandat</span>
               </button>
               <button
+                id="licenta-import-tab-auto"
                 type="button"
                 role="tab"
                 aria-selected={licentaImportMode === "auto"}
+                aria-controls="licenta-import-mode-panel"
+                tabIndex={licentaImportMode === "auto" ? 0 : -1}
                 className={`ui-segmented-tab secondary import-method-tab ${licentaImportMode === "auto" ? "is-active" : ""}`}
                 onClick={() => {
                   setLicentaImportMode("auto");
@@ -914,6 +916,11 @@ export function LicentaImportWorkspaceClient({
             </div>
           </section>
 
+          <div
+            id="licenta-import-mode-panel"
+            role="tabpanel"
+            aria-labelledby={`licenta-import-tab-${licentaImportMode}`}
+          >
           {licentaImportMode === "auto" ? (
             <form className="workspace-form-panel ui-panel-card import-mode-card import-mode-card-single" onSubmit={submitAuto}>
               <div className="workspace-form-head">
@@ -1044,27 +1051,42 @@ export function LicentaImportWorkspaceClient({
                 </button>
               </div>
 
-              <div className="ui-segmented-tabs ai-workspace-source-tabs" role="tablist" aria-label="Sursa setului">
+              <div
+                className="ui-segmented-tabs ai-workspace-source-tabs"
+                role="tablist"
+                aria-label="Sursa setului"
+                onKeyDown={handleTablistKeyDown}
+              >
                 <button
+                  id="licenta-set-source-tab-text"
                   type="button"
                   role="tab"
                   aria-selected={setSourceMode === "text"}
+                  aria-controls="licenta-set-source-panel"
+                  tabIndex={setSourceMode === "text" ? 0 : -1}
                   className={`ui-segmented-tab secondary ai-workspace-source-tab ${setSourceMode === "text" ? "is-active" : ""}`}
                   onClick={() => {
                     setSetSourceMode("text");
+                    setRequestIdRef.current = createRequestId("set");
                     setActiveError("");
+                    setActiveErrorActionHref("");
                   }}
                 >
                   <IconText icon={Keyboard}>Input text</IconText>
                 </button>
                 <button
+                  id="licenta-set-source-tab-file"
                   type="button"
                   role="tab"
                   aria-selected={setSourceMode === "file"}
+                  aria-controls="licenta-set-source-panel"
+                  tabIndex={setSourceMode === "file" ? 0 : -1}
                   className={`ui-segmented-tab secondary ai-workspace-source-tab ${setSourceMode === "file" ? "is-active" : ""}`}
                   onClick={() => {
                     setSetSourceMode("file");
+                    setRequestIdRef.current = createRequestId("set");
                     setActiveError("");
+                    setActiveErrorActionHref("");
                   }}
                 >
                   <IconText icon={Upload}>Fisier</IconText>
@@ -1072,7 +1094,12 @@ export function LicentaImportWorkspaceClient({
               </div>
 
               {setSourceMode === "text" ? (
-                <div className="selector-container ai-workspace-source-panel">
+                <div
+                  id="licenta-set-source-panel"
+                  className="selector-container ai-workspace-source-panel"
+                  role="tabpanel"
+                  aria-labelledby="licenta-set-source-tab-text"
+                >
                   <label>
                     Lipeste continutul complet al setului
                     <textarea
@@ -1081,7 +1108,9 @@ export function LicentaImportWorkspaceClient({
                       value={contentText}
                       onChange={(event) => {
                         setContentText(event.target.value);
+                        setRequestIdRef.current = createRequestId("set");
                         setActiveError("");
+                        setActiveErrorActionHref("");
                       }}
                       placeholder="Pune aici intrebarile, variantele si raspunsurile, daca exista."
                     />
@@ -1123,7 +1152,12 @@ export function LicentaImportWorkspaceClient({
                   ) : null}
                 </div>
               ) : (
-                <div className="selector-container ai-workspace-source-panel">
+                <div
+                  id="licenta-set-source-panel"
+                  className="selector-container ai-workspace-source-panel"
+                  role="tabpanel"
+                  aria-labelledby="licenta-set-source-tab-file"
+                >
                   <label
                     className={`ai-workspace-file-dropzone${
                       isDraggingSetFile ? " is-dragging" : ""
@@ -1232,6 +1266,7 @@ export function LicentaImportWorkspaceClient({
               </div>
             </form>
           )}
+          </div>
 
           {noCredits ? (
             <div className="workspace-credit-alert">

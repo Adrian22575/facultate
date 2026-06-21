@@ -11,6 +11,7 @@ import {
   UpdateUserTypeSchema
 } from "@/lib/academic/schema";
 import { getInstitutionTypeForUserType } from "@/lib/academic/server";
+import { getPostLoginNextPath, getSafeNextPath } from "@/lib/auth/password-auth";
 import { isDemoUser } from "@/lib/demo-user";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireUser } from "@/lib/supabase/guards";
@@ -23,15 +24,13 @@ function assertNotDemo(user) {
 }
 
 function getSafeInternalPath(path, fallback = "") {
-  if (typeof path === "string" && path.startsWith("/") && !path.startsWith("//")) {
-    return path;
-  }
-
-  return fallback;
+  const safePath = getSafeNextPath(path);
+  return safePath === "/" && path !== "/" ? fallback : safePath;
 }
 
 function getRedirectBase(formData) {
-  return getSafeInternalPath(formData.get("redirectBase"), "/onboarding");
+  const path = getSafeInternalPath(formData.get("redirectBase"), "/onboarding");
+  return path === "/onboarding" || path.startsWith("/onboarding?") ? path : "/onboarding";
 }
 
 function getEditFlag(formData) {
@@ -43,11 +42,12 @@ function getSourceFlag(formData) {
 }
 
 function getNextPath(formData) {
-  return getSafeInternalPath(formData.get("next"));
+  const path = getPostLoginNextPath(formData.get("next"));
+  return path === "/" ? "" : path;
 }
 
 function getSafeReturnPath(formData) {
-  return getSafeInternalPath(formData.get("returnTo"), "/");
+  return getPostLoginNextPath(formData.get("returnTo"));
 }
 
 function getSafeErrorMessage(error, fallbackMessage) {
@@ -119,61 +119,6 @@ async function ensureProfileRow(supabase, user, overrides = {}) {
   if (error) {
     throw error;
   }
-}
-
-async function resolvePrimaryCohortId({
-  supabase,
-  userId,
-  userType,
-  institutionId,
-  programUnitId
-}) {
-  const cohortType = userType === "student" ? "student_group" : "school_class";
-  const cohortLabel =
-    userType === "student" ? "Comunitate generala studenti" : "Comunitate generala elevi";
-
-  let query = supabase
-    .from("cohorts")
-    .select("id")
-    .eq("institution_id", institutionId)
-    .eq("cohort_type", cohortType)
-    .eq("label", cohortLabel)
-    .order("created_at", { ascending: true })
-    .limit(1);
-
-  if (programUnitId) {
-    query = query.eq("program_unit_id", programUnitId);
-  } else {
-    query = query.is("program_unit_id", null);
-  }
-
-  const { data: existing, error: existingError } = await query.maybeSingle();
-  if (existingError) {
-    throw existingError;
-  }
-
-  if (existing?.id) {
-    return existing.id;
-  }
-
-  const { data: inserted, error: insertError } = await supabase
-    .from("cohorts")
-    .insert({
-      institution_id: institutionId,
-      program_unit_id: programUnitId || null,
-      cohort_type: cohortType,
-      label: cohortLabel,
-      source: "admin",
-      created_by: userId
-    })
-    .select("id")
-    .single();
-
-  if (insertError) {
-    throw insertError;
-  }
-
-  return inserted.id;
 }
 
 async function findExistingInstitutionId({ supabase, institutionType, name, city }) {
@@ -424,99 +369,67 @@ export async function savePrimaryMembershipAction(formData) {
 
   const rawProgramUnitId =
     typeof formData.get("programUnitId") === "string" ? formData.get("programUnitId") : "";
-
-  const parsed = SaveMembershipSchema.parse({
-    userType: formData.get("userType"),
-    institutionId: formData.get("institutionId"),
-    programUnitId: rawProgramUnitId || undefined
-  });
-
   const returnTo = getSafeReturnPath(formData);
-  const supabase = createAdminClient();
+  const edit = getEditFlag(formData);
+  let parsed = null;
 
-  await ensureProfileRow(supabase, user, {
-    user_type: parsed.userType
-  });
+  try {
+    parsed = SaveMembershipSchema.parse({
+      userType: formData.get("userType"),
+      institutionId: formData.get("institutionId"),
+      programUnitId: rawProgramUnitId || undefined
+    });
 
-  const cohortId = await resolvePrimaryCohortId({
-    supabase,
-    userId: user.id,
-    userType: parsed.userType,
-    institutionId: parsed.institutionId,
-    programUnitId: parsed.programUnitId || ""
-  });
+    const supabase = createAdminClient();
+    await ensureProfileRow(supabase, user, {
+      user_type: parsed.userType
+    });
 
-  await supabase
-    .from("memberships")
-    .update({
-      is_primary: false
-    })
-    .eq("user_id", user.id);
+    const { error: membershipError } = await supabase.rpc("save_primary_academic_membership", {
+      p_user_id: user.id,
+      p_user_type: parsed.userType,
+      p_institution_id: parsed.institutionId,
+      p_program_unit_id: parsed.programUnitId || null
+    });
 
-  const { data: existing } = await supabase
-    .from("memberships")
-    .select("id")
-    .eq("user_id", user.id)
-    .eq("cohort_id", cohortId)
-    .maybeSingle();
-
-  let membershipId = existing?.id || null;
-
-  if (membershipId) {
-    const { error: updateError } = await supabase
-      .from("memberships")
-      .update({
-        institution_id: parsed.institutionId,
-        program_unit_id: parsed.programUnitId || null,
-        membership_role: "member",
-        status: "active",
-        is_primary: true
-      })
-      .eq("id", membershipId)
-      .eq("user_id", user.id);
-
-    if (updateError) {
-      throw updateError;
-    }
-  } else {
-    const { data: insertedMembership, error: insertError } = await supabase
-      .from("memberships")
-      .insert({
-        user_id: user.id,
-        institution_id: parsed.institutionId,
-        program_unit_id: parsed.programUnitId || null,
-        cohort_id: cohortId,
-        membership_role: "member",
-        status: "active",
-        is_primary: true
-      })
-      .select("id")
-      .single();
-
-    if (insertError) {
-      throw insertError;
+    if (membershipError) {
+      throw membershipError;
     }
 
-    membershipId = insertedMembership.id;
+    try {
+      await ensureWelcomePackGranted({ userId: user.id });
+    } catch (welcomeError) {
+      console.error("welcome_pack_grant_after_onboarding_failed", welcomeError);
+    }
+
+    redirect(returnTo);
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
+
+    const rawMessage = String(error?.message || "");
+    const selectionInvalid = /INVALID_|PROGRAM_REQUIRED|PROFILE_NOT_FOUND/.test(rawMessage);
+    redirectWithError(
+      "/onboarding",
+      {
+        edit,
+        source: edit ? "query" : "",
+        next: edit ? "" : returnTo === "/" ? "" : returnTo,
+        userType: parsed?.userType || String(formData.get("userType") || ""),
+        institutionId: parsed?.institutionId || String(formData.get("institutionId") || ""),
+        programId:
+          (parsed?.userType || formData.get("userType")) === "student" ? rawProgramUnitId : "",
+        profileId:
+          (parsed?.userType || formData.get("userType")) === "elev"
+            ? rawProgramUnitId || "none"
+            : ""
+      },
+      new Error(
+        selectionInvalid
+          ? "Selectia nu mai este valida. Alege din nou comunitatea si salveaza."
+          : "Nu am putut salva comunitatea acum. Incearca din nou."
+      )
+    );
   }
-
-  const { error: profileError } = await supabase
-    .from("profiles")
-    .update({
-      user_type: parsed.userType,
-      primary_membership_id: membershipId,
-      onboarding_completed: true,
-      onboarding_completed_at: new Date().toISOString()
-    })
-    .eq("id", user.id);
-
-  if (profileError) {
-    throw profileError;
-  }
-
-  await ensureWelcomePackGranted({
-    userId: user.id
-  });
-
-  redirect(returnTo);
 }

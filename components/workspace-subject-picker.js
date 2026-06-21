@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { useDialogFocus } from "@/lib/ui/dialog";
+
 function sortSubjects(subjects) {
   return [...subjects].sort((left, right) => left.title.localeCompare(right.title, "ro"));
 }
@@ -53,6 +55,11 @@ export function WorkspaceSubjectPicker({
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const dialogRef = useDialogFocus(isModalOpen, () => {
+    if (isSubmitting) return;
+    setIsModalOpen(false);
+    setErrorMessage("");
+  });
 
   const contextLabel = useMemo(() => {
     if (!isContextReady) {
@@ -393,11 +400,12 @@ export function WorkspaceSubjectPicker({
         </div>
       )}
 
-      {successMessage ? <div className="success-state">{successMessage}</div> : null}
+      {successMessage ? <div className="success-state" role="status">{successMessage}</div> : null}
 
       {isModalOpen ? (
         <div className="workspace-modal-backdrop" role="presentation">
           <div
+            ref={dialogRef}
             className="workspace-modal-card ai-workspace-subject-modal"
             role="dialog"
             aria-modal="true"
@@ -416,6 +424,7 @@ export function WorkspaceSubjectPicker({
                   setErrorMessage("");
                 }}
                 aria-label="Inchide"
+                disabled={isSubmitting}
               >
                 Inchide
               </button>
@@ -439,7 +448,7 @@ export function WorkspaceSubjectPicker({
                 <span>{contextLabel}</span>
               </div>
 
-              {errorMessage ? <div className="error-state">{errorMessage}</div> : null}
+              {errorMessage ? <div className="error-state" role="alert">{errorMessage}</div> : null}
 
               <div className="inline-actions workspace-modal-actions">
                 <button type="button" disabled={!canSubmit} onClick={handleCreateSubject}>

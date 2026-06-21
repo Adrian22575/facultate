@@ -1,4 +1,16 @@
 import { redirect } from "next/navigation";
+import {
+  BookOpen,
+  Brain,
+  CalendarClock,
+  CheckCircle2,
+  Moon,
+  RotateCcw,
+  Rocket,
+  Target,
+  Upload,
+  Users
+} from "lucide-react";
 
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
@@ -67,42 +79,56 @@ export default async function LoginPage({ searchParams }) {
 
   const flowCards = [
     {
-      icon: "\uD83D\uDCE4",
+      icon: Upload,
       title: "Incarci materia",
       copy: "PDF, curs, notite sau material primit de la colegi. Totul porneste dintr-un singur upload."
     },
     {
-      icon: "\uD83E\uDDE0",
+      icon: Brain,
       title: "Primesti teste",
       copy: "Platforma genereaza intrebari, grile, flashcarduri si recapitulari clare."
     },
     {
-      icon: "\uD83C\uDFAF",
+      icon: Target,
       title: "Repeti greselile",
       copy: "Vezi unde ai probleme si revii exact pe intrebarile importante inainte de examen."
     }
   ];
 
-  const antiPoints = [
+  const uploadTips = [
     {
-      icon: "\uD83D\uDE24",
-      copy: "vrei sa vezi colegi mai slabi decat tine trecand inaintea ta;"
+      title: "Merge cel mai bine cu",
+      copy: "Cursuri, notite complete, PDF-uri cu text selectabil, DOCX-uri si prezentari cu idei explicate."
     },
     {
-      icon: "\uD83C\uDF34",
-      copy: "vrei sa-ti faci planuri de vara in jurul restantelor;"
+      title: "Rezultatul e mai bun cand",
+      copy: "Materialul are titluri, capitole, definitii sau exemple. Daca e dezordonat, adauga un obiectiv scurt."
     },
     {
-      icon: "\u26A1",
-      copy: "iti place adrenalina aia proasta din noaptea dinaintea examenului;"
-    },
-    {
-      icon: "\uD83D\uDCDA",
-      copy: "vrei sa inveti 200 de pagini ca sa pice fix cele 3 pe care nu le-ai citit."
+      title: "Poate avea nevoie de verificare",
+      copy: "Pozele scanate, fragmentele foarte scurte sau slide-urile fara context pot produce materiale incomplete."
     }
   ];
 
-  const communityIcons = ["\uD83D\uDCDA", "\uD83D\uDC65", "\u2705", "\uD83D\uDE80"];
+  const delayRisks = [
+    {
+      icon: Moon,
+      title: "Panica in ultima seara",
+      copy: "Ai prea multa materie si nu mai stii cu ce sa incepi."
+    },
+    {
+      icon: RotateCcw,
+      title: "Dai testul din nou",
+      copy: "Daca nu treci, pierzi alte zile cu restanta, refacerea si discutii acasa."
+    },
+    {
+      icon: CalendarClock,
+      title: "Pierzi din timpul liber",
+      copy: "Materia ramane in capul tau si iti mananca serile sau weekendul."
+    }
+  ];
+
+  const communityIcons = [BookOpen, Users, CheckCircle2, Rocket];
 
   return (
     <main className="nota5plus-page">
@@ -113,9 +139,14 @@ export default async function LoginPage({ searchParams }) {
             <span>Nota 5+</span>
           </a>
 
-          <a className="nota5plus-nav-link" href="/despre">
-            Despre platforma
-          </a>
+          <div className="nota5plus-nav-links">
+            <a className="nota5plus-nav-link" href="/preturi">
+              Preturi
+            </a>
+            <a className="nota5plus-nav-link" href="/despre">
+              Despre platforma
+            </a>
+          </div>
         </nav>
 
         <section className="nota5plus-hero">
@@ -126,7 +157,7 @@ export default async function LoginPage({ searchParams }) {
             </div>
 
             <h1 className="nota5plus-title">
-              Invata rapid. <span>Treci examenul.</span>
+              Invata organizat. <span>Pregateste-te cu incredere.</span>
             </h1>
 
             <p className="nota5plus-subtitle">
@@ -137,13 +168,13 @@ export default async function LoginPage({ searchParams }) {
             {error || !isConfigured ? (
               <div className="nota5plus-alert-stack">
                 {error ? (
-                  <div className="nota5plus-inline-error">
+                  <div className="nota5plus-inline-error" role="alert">
                     {errorLabels[error] || "Autentificarea nu a putut fi completata."}
                   </div>
                 ) : null}
 
                 {!isConfigured ? (
-                  <div className="nota5plus-inline-error">
+                  <div className="nota5plus-inline-error" role="alert">
                     Autentificarea nu este disponibila momentan. Incearca putin mai tarziu.
                   </div>
                 ) : null}
@@ -176,18 +207,16 @@ export default async function LoginPage({ searchParams }) {
               </GoogleSignInButton>
             </div>
 
-            <p className="nota5plus-microcopy">Fara cont pentru demo &middot; Gandit pentru studenti</p>
+            <p className="nota5plus-microcopy">Fara cont pentru demo &middot; Gandit pentru elevi si studenti</p>
             <a className="nota5plus-email-link" href={emailLoginHref}>
               Nu ai cont Google? Intra cu email
             </a>
 
             <div className="nota5plus-proof-note">
-              <div className="nota5plus-proof-icon">✓</div>
+              <div className="nota5plus-proof-icon">5+</div>
               <div>
-                <strong>
-                  Toti studentii care au folosit Nota 5+ pentru recapitulare in 2026 au trecut examenele.
-                </strong>
-                <span>Experienta reala din comunitatea noastra.</span>
+                <strong>Inveti din materia ta si revii exact la ce ai gresit.</strong>
+                <span>Progresul ramane salvat in contul tau.</span>
               </div>
             </div>
 
@@ -241,31 +270,99 @@ export default async function LoginPage({ searchParams }) {
         </section>
 
         <section className="nota5plus-flow" aria-label="Cum functioneaza">
-          {flowCards.map((card) => (
-            <article key={card.title} className="nota5plus-flow-card">
+          {flowCards.map(({ icon: Icon, title, copy }) => (
+            <article key={title} className="nota5plus-flow-card">
               <div className="nota5plus-flow-icon" aria-hidden="true">
-                {card.icon}
+                <Icon size={24} strokeWidth={2} />
               </div>
-              <h3>{card.title}</h3>
-              <p>{card.copy}</p>
+              <h3>{title}</h3>
+              <p>{copy}</p>
             </article>
           ))}
         </section>
 
-        <section className="nota5plus-anti-section" aria-label="Cand sa nu folosesti Nota 5+">
+        <section className="nota5plus-materials-lab" aria-label="Invata din materia ta">
+          <div className="nota5plus-materials-copy">
+            <div className="nota5plus-community-label">Mod nou</div>
+            <h2>Transforma materia ta intr-un plan clar de invatat.</h2>
+            <p>
+              Urca PDF, DOCX, PPTX, TXT sau lipeste notitele. Primesti capitole, concepte importante,
+              flashcards, test rapid, greseli salvate si un plan pe zile.
+            </p>
+            <div className="nota5plus-materials-actions">
+              <GoogleSignInButton
+                next="/materiale/invata"
+                disabled={!isConfigured}
+                className="nota5plus-google-wrap"
+                buttonClassName="nota5plus-btn nota5plus-btn-primary nota5plus-google-btn"
+                errorClassName="nota5plus-inline-error"
+              >
+                Incarca materia ta
+              </GoogleSignInButton>
+              <a className="nota5plus-materials-link" href="/despre#cum-functioneaza">
+                Vezi cum functioneaza
+              </a>
+            </div>
+          </div>
+
+          <div className="nota5plus-materials-board" aria-hidden="true">
+            <div className="nota5plus-materials-file">
+              <span>PDF</span>
+              <strong>Curs management</strong>
+              <small>128 pagini detectate</small>
+            </div>
+            <div className="nota5plus-materials-result is-main">
+              <span>7</span>
+              <strong>capitole</strong>
+            </div>
+            <div className="nota5plus-materials-result">
+              <span>85</span>
+              <strong>flashcards</strong>
+            </div>
+            <div className="nota5plus-materials-result">
+              <span>120</span>
+              <strong>intrebari</strong>
+            </div>
+            <div className="nota5plus-materials-plan">
+              <strong>Ziua 1</strong>
+              <span>Capitolul 1 + test rapid</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="nota5plus-upload-guide" aria-label="Ce materiale poti incarca">
+          <div>
+            <div className="nota5plus-community-label">Ghid rapid</div>
+            <h2>Ce fel de material poti incarca?</h2>
+          </div>
+
+          <div className="nota5plus-upload-guide-grid">
+            {uploadTips.map((tip) => (
+              <article key={tip.title}>
+                <h3>{tip.title}</h3>
+                <p>{tip.copy}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="nota5plus-anti-section" aria-label="Ce pierzi cand amani invatatul">
           <div className="nota5plus-anti-heading">
-            <div className="nota5plus-anti-kicker">Fara menajamente</div>
-            <h2>Cand sa NU folosesti Nota 5+</h2>
-            <p>Nu e pentru tine daca iti place sa traiesti sesiunea pe modul supravietuire.</p>
+            <div className="nota5plus-anti-kicker">Daca tot amani</div>
+            <h2>Ce pierzi cand lasi totul pe ultima seara?</h2>
+            <p>Incepe cu putin azi ca sa nu pierzi zile dupa test.</p>
           </div>
 
           <ul className="nota5plus-anti-list">
-            {antiPoints.map((point) => (
-              <li key={point.copy}>
+            {delayRisks.map(({ icon: Icon, title, copy }) => (
+              <li key={title}>
                 <span className="nota5plus-anti-symbol" aria-hidden="true">
-                  {point.icon}
+                  <Icon size={18} strokeWidth={2} />
                 </span>
-                <span>{point.copy}</span>
+                <div>
+                  <strong>{title}</strong>
+                  <p>{copy}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -276,15 +373,15 @@ export default async function LoginPage({ searchParams }) {
             <div className="nota5plus-community-label">Comunitate</div>
             <h2>Un coleg incarca materialul. Toti pot invata mai usor.</h2>
             <p>
-              Dupa login alegi universitatea, facultatea si specializarea. Vezi materialele disponibile
-              pentru comunitatea ta si contribui cand ai ceva util.
+              Dupa login alegi scoala sau universitatea si comunitatea ta. Vezi materialele disponibile
+              pentru clasa, grupa ori programul tau si contribui cand ai ceva util.
             </p>
           </div>
 
           <div className="nota5plus-community-visual" aria-hidden="true">
-            {communityIcons.map((icon, index) => (
-              <div key={`${icon}-${index}`} className="nota5plus-avatar">
-                {icon}
+            {communityIcons.map((Icon, index) => (
+              <div key={Icon.displayName || Icon.name || index} className="nota5plus-avatar">
+                <Icon size={30} strokeWidth={1.8} />
               </div>
             ))}
           </div>
@@ -295,7 +392,7 @@ export default async function LoginPage({ searchParams }) {
             <div className="nota5plus-final-cta-kicker">Pasul urmator</div>
             <h2>Intra acum si invata cu comunitatea ta.</h2>
             <p>
-              Pastrezi progresul, vezi materialele utile pentru facultatea ta si repeti exact ce
+              Pastrezi progresul, vezi materialele utile pentru comunitatea ta si repeti exact ce
               conteaza cand examenul e aproape.
             </p>
           </div>
@@ -310,6 +407,16 @@ export default async function LoginPage({ searchParams }) {
             Continua cu Google
           </GoogleSignInButton>
         </section>
+
+        <footer className="nota5plus-legal-footer">
+          <span>Nota 5+</span>
+          <nav aria-label="Informatii juridice">
+            <a href="/despre">Despre</a>
+            <a href="/preturi">Preturi</a>
+            <a href="/confidentialitate">Confidentialitate</a>
+            <a href="/termeni">Termeni</a>
+          </nav>
+        </footer>
       </div>
     </main>
   );

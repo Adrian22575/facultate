@@ -80,7 +80,7 @@ export default async function AIDraftPage({ params, searchParams }) {
 
       {published ? (
         <section className="surface">
-          <div className="success-state">Testul este activ si poate fi rezolvat.</div>
+          <div className="success-state" role="status">Testul este activ si poate fi rezolvat.</div>
         </section>
       ) : null}
 

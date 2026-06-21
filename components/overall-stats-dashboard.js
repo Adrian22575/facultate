@@ -13,6 +13,8 @@ import {
   Trophy
 } from "lucide-react";
 
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
+
 const DONUT_COLORS = ["#2563eb", "#16a34a", "#f97316", "#7c3aed", "#dc2626"];
 const TAB_ITEMS = [
   { key: "overview", label: "Overview" },
@@ -235,26 +237,168 @@ function Leaderboard({ title, rows, emptyLabel }) {
   );
 }
 
-function LearningFuturePanel({ learning }) {
+function LearningRows({ rows }) {
+  if (!rows.length) {
+    return (
+      <div className="licenta-stats-empty-insight">
+        <Brain aria-hidden="true" />
+        <p>Incarca o materie sau foloseste un material din comunitate ca sa vezi progresul aici.</p>
+      </div>
+    );
+  }
+
   return (
-    <article className="surface licenta-stats-panel overall-learning-panel" id="invatare">
-      <div className="licenta-stats-panel-head">
-        <div>
-          <span className="ui-section-label">In curand</span>
-          <h3>{learning.title}</h3>
-        </div>
-        <span className="status-pill is-muted">Pregatit pentru modulul nou</span>
-      </div>
-      <div className="overall-learning-grid">
-        {["Capitole", "Flashcards", "Plan", "Zone slabe"].map((item) => (
-          <div key={item}>
-            <Brain aria-hidden="true" />
-            <strong>{item}</strong>
+    <div className="overall-subject-table">
+      {rows.map((row) => (
+        <article key={row.key}>
+          <div>
+            <strong>{row.title}</strong>
+            <span>{row.lastActivityLabel ? `Ultima activitate: ${row.lastActivityLabel}` : "Material pregatit"}</span>
           </div>
-        ))}
+          <div>
+            <span>Runde</span>
+            <b>{row.attemptCount}</b>
+          </div>
+          <div>
+            <span>Scor</span>
+            <b>{row.bestScore === null ? "In curs" : `${row.bestScore}%`}</b>
+          </div>
+          <div>
+            <span>Comunitate</span>
+            <b>{row.communityAverage ? `${row.communityAverage}%` : "In curs"}</b>
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function LearningStatsPanel({ learning }) {
+  const reviewedFlashcards = Math.max(
+    learning.overview.knownFlashcards + learning.overview.weakFlashcards,
+    1
+  );
+  const flashcardRows = [
+    {
+      key: "known",
+      label: "Stiu",
+      count: learning.overview.knownFlashcards,
+      percent: Math.round((learning.overview.knownFlashcards / reviewedFlashcards) * 100)
+    },
+    {
+      key: "weak",
+      label: "De repetat",
+      count: learning.overview.weakFlashcards,
+      percent: Math.round((learning.overview.weakFlashcards / reviewedFlashcards) * 100)
+    },
+    {
+      key: "due",
+      label: "Scadente azi",
+      count: learning.overview.dueFlashcards,
+      percent: Math.round((learning.overview.dueFlashcards / reviewedFlashcards) * 100)
+    }
+  ];
+
+  return (
+    <>
+      <section className="overall-section-head">
+        <div>
+          <span className="ui-section-label">Invatare</span>
+          <h2>Progres din materialele tale</h2>
+        </div>
+        <Link className="btn-link secondary" href="/materiale/invata">
+          Deschide materialele
+        </Link>
+      </section>
+
+      <div className="licenta-stats-grid">
+        <StatCard
+          icon={BookOpenCheck}
+          label="Materiale folosite"
+          value={learning.overview.studySetCount}
+          detail={`${learning.overview.activeStudySetCount} cu progres salvat`}
+        />
+        <StatCard
+          icon={Gauge}
+          label="Scor mediu"
+          value={valueOrPending(learning.overview.personalAverageScore, "%")}
+          detail={`Comunitate: ${learning.overview.communityAverageScore}%`}
+        />
+        <StatCard
+          icon={Target}
+          label="Intrebari rezolvate"
+          value={learning.overview.answeredQuestions}
+          detail={`${learning.overview.attemptCount} runde finalizate`}
+        />
+        <StatCard
+          icon={Brain}
+          label="Repetari flashcard"
+          value={learning.overview.flashcardReviewCount}
+          detail={`${learning.overview.weakFlashcards} de repetat`}
+        />
       </div>
-      <p className="page-copy">{learning.description}</p>
-    </article>
+
+      <section className="competition-compare-grid">
+        <ComparisonCard
+          label="Scor la testele de invatare"
+          you={learning.overview.personalAverageScore}
+          community={learning.overview.communityAverageScore}
+          suffix="%"
+        />
+        <ComparisonCard
+          label="Intrebari rezolvate"
+          you={learning.overview.answeredQuestions}
+          community={learning.overview.communityAverageQuestions}
+          suffix=" intrebari"
+        />
+      </section>
+
+      <section className="licenta-stats-main-grid">
+        <article className="surface licenta-stats-panel licenta-stats-panel-wide">
+          <div className="licenta-stats-panel-head">
+            <div>
+              <span className="ui-section-label">Materiale</span>
+              <h3>Activitatea ta recenta</h3>
+            </div>
+            <span className="status-pill is-muted">{learning.scopeLabel}</span>
+          </div>
+          <LearningRows rows={learning.rows} />
+        </article>
+
+        <article className="surface licenta-stats-panel">
+          <div className="licenta-stats-panel-head">
+            <div>
+              <span className="ui-section-label">Mix</span>
+              <h3>Cum inveti</h3>
+            </div>
+          </div>
+          <Donut rows={learning.modeMix} centerLabel="actiuni" />
+        </article>
+
+        <article className="surface licenta-stats-panel">
+          <div className="licenta-stats-panel-head">
+            <div>
+              <span className="ui-section-label">Flashcards</span>
+              <h3>Ce trebuie repetat</h3>
+            </div>
+          </div>
+          <BarRows rows={flashcardRows} />
+        </article>
+
+        <article className="surface licenta-stats-panel licenta-stats-panel-wide">
+          <div className="licenta-stats-panel-head">
+            <div>
+              <span className="ui-section-label">Evolutie</span>
+              <h3>Scorurile recente</h3>
+            </div>
+          </div>
+          <TrendChart
+            rows={learning.trend}
+            emptyLabel="Evolutia apare dupa primele teste finalizate din materialele de invatare."
+          />
+        </article>
+      </section>
+    </>
   );
 }
 
@@ -290,13 +434,21 @@ export function OverallStatsDashboard({ stats }) {
 
   return (
     <div className="licenta-stats-dashboard overall-stats-dashboard">
-      <div className="overall-stats-tabs" role="tablist" aria-label="Sectiuni statistici">
+      <div
+        className="overall-stats-tabs"
+        role="tablist"
+        aria-label="Sectiuni statistici"
+        onKeyDown={handleTablistKeyDown}
+      >
         {TAB_ITEMS.map((tab) => (
           <button
             key={tab.key}
+            id={`overall-tab-${tab.key}`}
             type="button"
             role="tab"
             aria-selected={activeTab === tab.key}
+            aria-controls={`overall-panel-${tab.key}`}
+            tabIndex={activeTab === tab.key ? 0 : -1}
             className={activeTab === tab.key ? "is-active" : ""}
             onClick={() => setActiveTab(tab.key)}
           >
@@ -306,7 +458,12 @@ export function OverallStatsDashboard({ stats }) {
       </div>
 
       {activeTab === "overview" ? (
-        <section className="overall-tab-panel" role="tabpanel">
+        <section
+          id="overall-panel-overview"
+          className="overall-tab-panel"
+          role="tabpanel"
+          aria-labelledby="overall-tab-overview"
+        >
           <div className="licenta-stats-grid">
             <StatCard
               icon={Gauge}
@@ -365,8 +522,8 @@ export function OverallStatsDashboard({ stats }) {
               <div className="licenta-stats-next-step">
                 <Target aria-hidden="true" />
                 <p>
-                  Verifica tabul unde ai mai putine date: licenta pentru simulari, materii pentru progres
-                  pe cursuri, invatare pentru modulul care urmeaza.
+                  Verifica zona unde ai mai putine date: licenta pentru simulari, materii pentru progres
+                  pe cursuri sau invatare pentru flashcards, teste si repetarea zonelor slabe.
                 </p>
               </div>
             </article>
@@ -375,7 +532,12 @@ export function OverallStatsDashboard({ stats }) {
       ) : null}
 
       {activeTab === "competitie" ? (
-        <section className="overall-tab-panel" role="tabpanel">
+        <section
+          id="overall-panel-competitie"
+          className="overall-tab-panel"
+          role="tabpanel"
+          aria-labelledby="overall-tab-competitie"
+        >
           <section className="overall-section-head">
             <div>
               <span className="ui-section-label">Competitie</span>
@@ -426,7 +588,12 @@ export function OverallStatsDashboard({ stats }) {
       ) : null}
 
       {activeTab === "licenta" ? (
-        <section className="overall-tab-panel" role="tabpanel">
+        <section
+          id="overall-panel-licenta"
+          className="overall-tab-panel"
+          role="tabpanel"
+          aria-labelledby="overall-tab-licenta"
+        >
           <section className="overall-section-head">
             <div>
               <span className="ui-section-label">Licenta</span>
@@ -473,7 +640,12 @@ export function OverallStatsDashboard({ stats }) {
       ) : null}
 
       {activeTab === "materii" ? (
-        <section className="overall-tab-panel" role="tabpanel">
+        <section
+          id="overall-panel-materii"
+          className="overall-tab-panel"
+          role="tabpanel"
+          aria-labelledby="overall-tab-materii"
+        >
           <section className="overall-section-head">
             <div>
               <span className="ui-section-label">Teste pe materii</span>
@@ -528,8 +700,13 @@ export function OverallStatsDashboard({ stats }) {
       ) : null}
 
       {activeTab === "invatare" ? (
-        <section className="overall-tab-panel" role="tabpanel">
-          <LearningFuturePanel learning={stats.learning} />
+        <section
+          id="overall-panel-invatare"
+          className="overall-tab-panel"
+          role="tabpanel"
+          aria-labelledby="overall-tab-invatare"
+        >
+          <LearningStatsPanel learning={stats.learning} />
         </section>
       ) : null}
     </div>

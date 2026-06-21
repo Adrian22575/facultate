@@ -64,6 +64,7 @@ function SearchInput({ value, onChange, placeholder }) {
       onChange={(event) => onChange(event.target.value)}
       className="admin-search-input"
       placeholder={placeholder}
+      aria-label={placeholder}
     />
   );
 }

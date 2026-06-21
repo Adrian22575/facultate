@@ -11,6 +11,8 @@ import {
   AI_SOURCE_UPLOAD_MAX_BYTES,
   AI_SOURCE_UPLOAD_MAX_LABEL
 } from "@/lib/ai/upload-limits";
+import { useDialogFocus } from "@/lib/ui/dialog";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const BLOCKING_SET_STATUSES = new Set([
   "uploaded",
@@ -224,6 +226,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
   const [removeSet, setRemoveSet] = useState(null);
   const [confirmFinalize, setConfirmFinalize] = useState(false);
   const [confirmAbandon, setConfirmAbandon] = useState(false);
+  const hasOpenDialog = Boolean(auditJob || removeSet || confirmFinalize || confirmAbandon);
+  const dialogRef = useDialogFocus(hasOpenDialog, () => {
+    if (isBusy) return;
+    if (auditJob) setAuditJob(null);
+    else if (removeSet) setRemoveSet(null);
+    else if (confirmFinalize) setConfirmFinalize(false);
+    else if (confirmAbandon) setConfirmAbandon(false);
+  });
   const fileRef = useRef(null);
   const nextSetFormRef = useRef(null);
   const flowCardRef = useRef(null);
@@ -579,7 +589,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
 
   return (
     <div className="licenta-session-workspace">
-      {feedback ? <div className="success-state">{feedback}</div> : null}
+      {feedback ? <div className="success-state" role="status">{feedback}</div> : null}
       {isFinalizing ? (
         <div className="workspace-credit-alert import-warning-panel" aria-live="polite">
           <div>
@@ -589,7 +599,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
           <span className="status-pill is-muted">In lucru</span>
         </div>
       ) : null}
-      {errorMessage ? <div className="error-state">{errorMessage}</div> : null}
+      {errorMessage ? <div className="error-state" role="alert">{errorMessage}</div> : null}
       {creditsRequired ? (
         <div className="workspace-credit-alert licenta-credit-required-alert">
           <div>
@@ -759,11 +769,19 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 </div>
               </div>
 
-              <div className="ui-segmented-tabs ai-workspace-source-tabs" role="tablist" aria-label="Sursa setului">
+              <div
+                className="ui-segmented-tabs ai-workspace-source-tabs"
+                role="tablist"
+                aria-label="Sursa setului"
+                onKeyDown={handleTablistKeyDown}
+              >
                 <button
+                  id="licenta-session-source-tab-text"
                   type="button"
                   role="tab"
                   aria-selected={sourceMode === "text"}
+                  aria-controls="licenta-session-source-panel"
+                  tabIndex={sourceMode === "text" ? 0 : -1}
                   className={`ui-segmented-tab secondary ai-workspace-source-tab ${sourceMode === "text" ? "is-active" : ""}`}
                   onClick={() => {
                     if (isBusy) return;
@@ -774,9 +792,12 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                   <IconText icon={Keyboard}>Input text</IconText>
                 </button>
                 <button
+                  id="licenta-session-source-tab-file"
                   type="button"
                   role="tab"
                   aria-selected={sourceMode === "file"}
+                  aria-controls="licenta-session-source-panel"
+                  tabIndex={sourceMode === "file" ? 0 : -1}
                   className={`ui-segmented-tab secondary ai-workspace-source-tab ${sourceMode === "file" ? "is-active" : ""}`}
                   onClick={() => {
                     if (isBusy) return;
@@ -789,7 +810,12 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
               </div>
 
               {sourceMode === "text" ? (
-                <div className="selector-container">
+                <div
+                  id="licenta-session-source-panel"
+                  className="selector-container"
+                  role="tabpanel"
+                  aria-labelledby="licenta-session-source-tab-text"
+                >
                   <label>
                     Lipeste continutul setului
                     <textarea
@@ -827,7 +853,12 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                   ) : null}
                 </div>
               ) : (
-                <div className="selector-container">
+                <div
+                  id="licenta-session-source-panel"
+                  className="selector-container"
+                  role="tabpanel"
+                  aria-labelledby="licenta-session-source-tab-file"
+                >
                   <label>
                     Incarca fisierul setului
                     <input
@@ -991,10 +1022,16 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
 
       {auditJob ? (
         <div className="workspace-modal-backdrop" role="presentation">
-          <div className="workspace-modal-card licenta-questions-modal" role="dialog" aria-modal="true">
+          <div
+            ref={dialogRef}
+            className="workspace-modal-card licenta-questions-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="licenta-audit-dialog-title"
+          >
             <div className="workspace-modal-head">
               <div>
-                <strong>{`Set ${auditJob.setIndex || ""} - intrebari`}</strong>
+                <strong id="licenta-audit-dialog-title">{`Set ${auditJob.setIndex || ""} - intrebari`}</strong>
                 <p>Set salvat in licenta. Il poti consulta fara sa intri inapoi in flow-ul principal.</p>
               </div>
               <button
@@ -1021,10 +1058,16 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
 
       {removeSet && isEditable ? (
         <div className="workspace-modal-backdrop" role="presentation">
-          <div className="workspace-modal-card review-confirm-modal" role="dialog" aria-modal="true">
+          <div
+            ref={dialogRef}
+            className="workspace-modal-card review-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="licenta-remove-dialog-title"
+          >
             <div className="workspace-modal-head">
               <div>
-                <strong>{`Elimini setul ${removeSet.setIndex || ""}?`}</strong>
+                <strong id="licenta-remove-dialog-title">{`Elimini setul ${removeSet.setIndex || ""}?`}</strong>
                 <p>Setul si intrebarile extrase din el vor fi scoase din licenta curenta.</p>
               </div>
               <button
@@ -1054,10 +1097,16 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
 
       {confirmFinalize && isEditable ? (
         <div className="workspace-modal-backdrop" role="presentation">
-          <div className="workspace-modal-card review-confirm-modal" role="dialog" aria-modal="true">
+          <div
+            ref={dialogRef}
+            className="workspace-modal-card review-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="licenta-finalize-dialog-title"
+          >
             <div className="workspace-modal-head">
               <div>
-                <strong>Finalizezi licenta?</strong>
+                <strong id="licenta-finalize-dialog-title">Finalizezi licenta?</strong>
                 <p>
                   Include {session.completedSetCount} seturi si {session.questionsWithAnswers} intrebari cu raspuns.
                   Dupa finalizare cream testul final si consumam o singura incarcare.
@@ -1097,10 +1146,16 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
 
       {confirmAbandon && isEditable ? (
         <div className="workspace-modal-backdrop" role="presentation">
-          <div className="workspace-modal-card review-confirm-modal" role="dialog" aria-modal="true">
+          <div
+            ref={dialogRef}
+            className="workspace-modal-card review-confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="licenta-abandon-dialog-title"
+          >
             <div className="workspace-modal-head">
               <div>
-                <strong>Renunti la licenta curenta?</strong>
+                <strong id="licenta-abandon-dialog-title">Renunti la licenta curenta?</strong>
                 <p>Seturile din aceasta sesiune vor fi sterse. Nu se consuma nicio incarcare.</p>
               </div>
               <button

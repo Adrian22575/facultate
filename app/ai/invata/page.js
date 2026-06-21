@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { BookOpen, CalendarDays, FileText, Layers3, StickyNote, Upload } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 
-import { createLearningStudySetAction } from "@/app/ai/invata/actions";
 import { AppHeader } from "@/components/app-header";
+import { LearningUploadForm } from "@/components/learning-upload-form";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import {
   getAcademicCommunityLabel,
@@ -13,8 +13,9 @@ import {
 } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
-import { getUserLearningStudySets } from "@/lib/learning/study-sets";
+import { getCommunityLearningStudySets, getUserLearningStudySets } from "@/lib/learning/study-sets";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { getLearningSetupErrorMessage } from "@/lib/supabase/setup-status";
 
 export const dynamic = "force-dynamic";
 
@@ -22,35 +23,27 @@ export const metadata = {
   title: "Invata din materia ta | Nota 5+"
 };
 
-function IconText({ icon: Icon, children }) {
-  return (
-    <span className="ui-icon-text">
-      <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
-      <span>{children}</span>
-    </span>
-  );
-}
-
-function SourceOption({ icon: Icon, title, copy, active = false }) {
-  return (
-    <div className={`learning-upload-source-option${active ? " is-active" : ""}`}>
-      <span aria-hidden="true">
-        <Icon size={18} strokeWidth={2.3} />
-      </span>
-      <div>
-        <strong>{title}</strong>
-        <small>{copy}</small>
-      </div>
-    </div>
-  );
-}
-
 function statusLabel(status) {
   if (status === "ready") return "Gata";
   if (status === "ready_with_warnings") return "Gata cu atentionari";
   if (status === "failed") return "Oprit";
   return "In pregatire";
 }
+
+const uploadGuidance = [
+  {
+    title: "Materiale potrivite",
+    items: ["Cursuri cu titluri sau capitole", "Notite complete", "Prezentari cu idei explicate"]
+  },
+  {
+    title: "Materiale de evitat",
+    items: ["Poze scanate fara text selectabil", "Fragmente foarte scurte", "Fisiere doar cu bibliografie"]
+  },
+  {
+    title: "Daca materialul e dezordonat",
+    items: ["Da-i un titlu clar", "Adauga obiectivul examenului", "Publica pentru colegi doar dupa verificare"]
+  }
+];
 
 export default async function LearningUploadPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
@@ -72,19 +65,25 @@ export default async function LearningUploadPage({ searchParams }) {
 
   let billingSnapshot = { aiCredits: 0 };
   let recentSets = [];
+  let communitySets = [];
   let setupWarning = null;
 
   try {
-    [billingSnapshot, recentSets] = await Promise.all([
+    [billingSnapshot, recentSets, communitySets] = await Promise.all([
       getBillingSnapshot(user.id),
-      getUserLearningStudySets(user.id, 6)
+      getUserLearningStudySets(user.id, 6),
+      getCommunityLearningStudySets({ userId: user.id, academicContext, limit: 6 })
     ]);
-  } catch {
-    setupWarning = "Pagina nu a putut fi pregatita complet momentan. Incearca din nou.";
+  } catch (error) {
+    setupWarning =
+      getLearningSetupErrorMessage(error) ||
+      "Pagina nu a putut fi pregatita complet momentan. Incearca din nou.";
   }
 
   const error =
-    typeof resolvedSearchParams?.error === "string" ? decodeURIComponent(resolvedSearchParams.error) : null;
+    typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : null;
+  const message =
+    typeof resolvedSearchParams?.message === "string" ? resolvedSearchParams.message : null;
   const communityLabel = getAcademicCommunityLabel(academicContext);
 
   return (
@@ -100,16 +99,17 @@ export default async function LearningUploadPage({ searchParams }) {
         subtitle="Transforma notitele intr-un spatiu de invatare cu capitole, flashcards, teste si plan."
       />
 
-      {setupWarning ? <div className="error-state">{setupWarning}</div> : null}
-      {error ? <div className="error-state">{error}</div> : null}
+      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
+      {error ? <div className="error-state" role="alert">{error}</div> : null}
+      {message ? <div className="learning-upload-success" role="status">{message}</div> : null}
 
       <section className="learning-upload-hero">
         <div className="learning-upload-hero-copy">
           <span className="ui-section-label">Materia ta</span>
           <h1>Incarca materia ta si transform-o in teste, flashcards si plan de invatare.</h1>
           <p>
-            Prima versiune pregateste materia din text lipit. PDF, DOCX si PowerPoint intra in acelasi
-            flow dupa ce legam extractorul complet.
+            Poti incarca PDF, DOCX, PPTX, TXT sau poti lipi textul direct. Dupa procesare vezi capitolele,
+            conceptele importante si de unde merita sa incepi.
           </p>
           <div className="learning-upload-meta">
             <span>{`${billingSnapshot.aiCredits || 0} incarcari disponibile`}</span>
@@ -128,79 +128,7 @@ export default async function LearningUploadPage({ searchParams }) {
       </section>
 
       <section className="learning-upload-layout">
-        <form action={createLearningStudySetAction} className="surface learning-upload-form">
-          <div className="learning-upload-section-head">
-            <div>
-              <span className="ui-section-label">Sursa</span>
-              <h2>Pune aici cursul, notitele sau materialul primit.</h2>
-            </div>
-            <span className="status-pill is-muted">1 incarcare</span>
-          </div>
-
-          <div className="learning-upload-source-grid" aria-label="Tipuri sursa">
-            <SourceOption icon={StickyNote} title="Text lipit" copy="Activ acum" active />
-            <SourceOption icon={FileText} title="PDF" copy="Urmatorul pas" />
-            <SourceOption icon={BookOpen} title="DOCX" copy="Urmatorul pas" />
-            <SourceOption icon={Layers3} title="PowerPoint" copy="Dupa extractor" />
-          </div>
-
-          <label className="learning-upload-field">
-            Titlu materie
-            <input
-              className="input-search"
-              name="title"
-              placeholder="Ex: Management strategic"
-              type="text"
-            />
-          </label>
-
-          <label className="learning-upload-field">
-            Textul materiei
-            <textarea
-              className="input-search learning-upload-textarea"
-              name="manualText"
-              placeholder="Lipeste aici cursul, notitele sau continutul capitolului..."
-              required
-              minLength={600}
-            />
-          </label>
-
-          <div className="learning-upload-detail-grid">
-            <label className="learning-upload-field">
-              Data examenului
-              <input className="input-search" name="examDate" type="date" />
-            </label>
-            <label className="learning-upload-field">
-              Minute pe zi
-              <select className="input-search" name="minutesPerDay" defaultValue="30">
-                <option value="20">20 minute</option>
-                <option value="30">30 minute</option>
-                <option value="45">45 minute</option>
-                <option value="60">60 minute</option>
-                <option value="90">90 minute</option>
-              </select>
-            </label>
-          </div>
-
-          <label className="learning-upload-field">
-            Obiectiv optional
-            <input
-              className="input-search"
-              name="objective"
-              placeholder="Ex: vreau recapitulare rapida pentru colocviu"
-              type="text"
-            />
-          </label>
-
-          <div className="learning-upload-submit-row">
-            <p>
-              Vom pregati un study set privat. Il poti publica manual pentru comunitatea ta mai tarziu.
-            </p>
-            <button type="submit" disabled={Boolean(setupWarning) || billingSnapshot.aiCredits < 1}>
-              <IconText icon={Upload}>Proceseaza materia</IconText>
-            </button>
-          </div>
-        </form>
+        <LearningUploadForm billingSnapshot={billingSnapshot} setupWarning={setupWarning} />
 
         <aside className="learning-upload-side">
           <section className="surface learning-upload-side-card">
@@ -222,7 +150,7 @@ export default async function LearningUploadPage({ searchParams }) {
                   >
                     <div>
                       <strong>{item.title}</strong>
-                      <span>{`${item.chapterCount} capitole · ${item.flashcardCount} flashcards · ${item.questionCount} intrebari`}</span>
+                      <span>{`${item.chapterCount} capitole - ${item.flashcardCount} flashcards - ${item.questionCount} intrebari`}</span>
                     </div>
                     <em>{statusLabel(item.status)}</em>
                   </PendingNavigationLink>
@@ -232,9 +160,65 @@ export default async function LearningUploadPage({ searchParams }) {
               <div className="learning-upload-empty">
                 <CalendarDays aria-hidden="true" size={22} strokeWidth={2.2} />
                 <strong>Nu ai inca materii procesate.</strong>
-                <p>Primul study set apare aici dupa ce trimiti textul.</p>
+                <p>Primul set de invatare apare aici dupa ce trimiti materialul.</p>
               </div>
             )}
+          </section>
+
+          <section className="surface learning-upload-side-card">
+            <div className="learning-upload-section-head">
+              <div>
+                <span className="ui-section-label">Comunitate</span>
+                <h2>Materiale de la colegi</h2>
+              </div>
+            </div>
+
+            {communitySets.length ? (
+              <div className="learning-upload-recent-list">
+                {communitySets.map((item) => (
+                  <PendingNavigationLink
+                    key={item.id}
+                    className="learning-upload-recent-item"
+                    href={`/materiale/invata/${item.id}`}
+                    pendingLabel="Se deschide materialul..."
+                  >
+                    <div>
+                      <strong>{item.title}</strong>
+                      <span>{`${item.chapterCount} capitole - ${item.flashcardCount} flashcards - ${item.questionCount} intrebari`}</span>
+                    </div>
+                    <em>Publicat</em>
+                  </PendingNavigationLink>
+                ))}
+              </div>
+            ) : (
+              <div className="learning-upload-empty">
+                <CalendarDays aria-hidden="true" size={22} strokeWidth={2.2} />
+                <strong>Nu sunt inca materiale publicate.</strong>
+                <p>Cand un coleg publica un set bun, apare aici pentru comunitatea ta.</p>
+              </div>
+            )}
+          </section>
+
+          <section className="surface learning-upload-side-card learning-upload-guidance-card">
+            <div className="learning-upload-section-head">
+              <div>
+                <span className="ui-section-label">Ghid rapid</span>
+                <h2>Ce sa incarci</h2>
+              </div>
+            </div>
+
+            <div className="learning-upload-guidance-list">
+              {uploadGuidance.map((group) => (
+                <article key={group.title}>
+                  <strong>{group.title}</strong>
+                  <ul>
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </section>
         </aside>
       </section>

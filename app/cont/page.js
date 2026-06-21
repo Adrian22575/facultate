@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { CreditCard, FolderOpen, MessageSquareQuote, Upload } from "lucide-react";
+import { CreditCard, FolderOpen, Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { activateReferralRewardAction, activateWelcomePremiumAction } from "@/app/cont/actions";
 import { activateTestimonialRewardAction } from "@/app/review-reward/actions";
 import { AccountBillingTabsClient } from "@/components/account-billing-tabs-client";
+import { AccountDangerZone } from "@/components/account-danger-zone";
 import { AppHeader } from "@/components/app-header";
 import { BillingPlanCard } from "@/components/billing-plan-card";
 import { ReferralShareCard } from "@/components/referral-share-card";
@@ -16,6 +17,7 @@ import {
 } from "@/lib/academic/server";
 import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
+import { getSafeNextPath } from "@/lib/auth/password-auth";
 import { isDemoUser } from "@/lib/demo-user";
 import { hasSupabasePublicEnv } from "@/lib/env/public";
 import { getReferralDashboard, getReferralInvitationForUser } from "@/lib/referrals";
@@ -91,16 +93,8 @@ function formatPremiumSummary(snapshot) {
 }
 
 function getSafeReturnTo(value) {
-  if (typeof value !== "string") {
-    return "";
-  }
-
-  const trimmed = value.trim();
-  if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.includes("\\") || trimmed.includes("\n")) {
-    return "";
-  }
-
-  return trimmed.slice(0, 300);
+  const safePath = getSafeNextPath(value);
+  return safePath === "/" && value !== "/" ? "" : safePath.slice(0, 300);
 }
 
 function AccountIcon({ type }) {
@@ -239,7 +233,7 @@ function SummaryCard({
   );
 }
 
-function WelcomePremiumCard() {
+function WelcomePremiumCard({ returnTo = "" }) {
   return (
     <article className="plan-card onboarding-choice-card welcome-premium-card account-welcome-card">
       <div className="account-welcome-copy">
@@ -255,7 +249,7 @@ function WelcomePremiumCard() {
         </div>
       </div>
       <form action={activateWelcomePremiumAction} className="welcome-premium-form account-welcome-form">
-        <input type="hidden" name="returnTo" value="/cont?section=plans" />
+        <input type="hidden" name="returnTo" value={returnTo || "/cont?section=plans"} />
         <button type="submit">Activeaza cele 24h gratuite</button>
       </form>
     </article>
@@ -266,7 +260,7 @@ function testimonialRewardLabel(value) {
   return value === "premium_24h" ? "24h premium gratuite" : "O incarcare gratuita";
 }
 
-function TestimonialRewardClaimCard({ submission }) {
+function TestimonialRewardClaimCard({ submission, returnTo = "" }) {
   if (!submission?.id || submission.status !== "approved" || submission.reward_granted_at) {
     return null;
   }
@@ -287,7 +281,7 @@ function TestimonialRewardClaimCard({ submission }) {
       </div>
       <form action={activateTestimonialRewardAction} className="welcome-premium-form account-welcome-form">
         <input type="hidden" name="submissionId" value={submission.id} />
-        <input type="hidden" name="returnTo" value="/cont?section=plans" />
+        <input type="hidden" name="returnTo" value={returnTo || "/cont?section=plans"} />
         <button type="submit">Activeaza recompensa</button>
       </form>
     </article>
@@ -362,6 +356,7 @@ function InvitedByReferralCard({ invitation }) {
 
 export default async function AccountPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
+  const section = resolvedSearchParams?.section === "credits" ? "credits" : "plans";
   const isConfigured = hasSupabasePublicEnv();
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
@@ -378,7 +373,11 @@ export default async function AccountPage({ searchParams }) {
   const checkoutConfigured = adminUser ? hasStripeEnv(STRIPE_MODE.SANDBOX) : hasStripeEnv();
 
   if (isConfigured && !user) {
-    redirect("/auth/login?next=/");
+    const loginParams = new URLSearchParams({ section });
+    if (typeof resolvedSearchParams?.plan === "string") {
+      loginParams.set("plan", resolvedSearchParams.plan);
+    }
+    redirect(`/auth/login?next=${encodeURIComponent(`/cont?${loginParams.toString()}#planuri`)}`);
   }
 
   const academicContext = user && !demoMode ? await getAcademicContext(user.id) : null;
@@ -387,9 +386,17 @@ export default async function AccountPage({ searchParams }) {
     redirect(getOnboardingHref("/"));
   }
 
-  const section = resolvedSearchParams?.section === "credits" ? "credits" : "plans";
   const checkoutError =
-    typeof resolvedSearchParams?.error === "string" ? decodeURIComponent(resolvedSearchParams.error) : null;
+    typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : null;
+  const selectedPlanCode =
+    typeof resolvedSearchParams?.plan === "string" &&
+    BILLING_PLAN_LIST.some(
+      (plan) =>
+        plan.code === resolvedSearchParams.plan &&
+        (plan.family === "ai_credits" ? "credits" : "plans") === section
+    )
+      ? resolvedSearchParams.plan
+      : "";
   const returnTo = getSafeReturnTo(resolvedSearchParams?.returnTo);
   const syncState = typeof resolvedSearchParams?.sync === "string" ? resolvedSearchParams.sync : null;
   const lockReason = typeof resolvedSearchParams?.lock === "string" ? resolvedSearchParams.lock : null;
@@ -473,6 +480,7 @@ export default async function AccountPage({ searchParams }) {
     latestTestimonialReward?.status === "approved" && !latestTestimonialReward?.reward_granted_at;
   const uploadCount = billingSnapshot?.aiCredits ?? 0;
   const headerBadgeLabel = demoMode ? "Cont demo" : user?.email ? "Cont conectat" : "Acces local";
+  const authProviderLabel = user?.app_metadata?.provider === "google" ? "Google" : "Email";
 
   return (
     <main className="app-shell account-page-shell">
@@ -528,9 +536,9 @@ export default async function AccountPage({ searchParams }) {
           icon={<AccountIcon type="user" />}
           label="Cont"
           value={user?.email ?? "Cont local"}
-          statusLabel={demoMode ? "Demo" : "Google"}
+          statusLabel={demoMode ? "Demo" : authProviderLabel}
           statusTone={!demoMode && user?.email ? "good" : "default"}
-          footerCopy={demoMode ? "Esti in demo." : "Conectat prin Google."}
+          footerCopy={demoMode ? "Esti in demo." : `Conectat prin ${authProviderLabel.toLowerCase()}.`}
           compact
         />
       </section>
@@ -551,14 +559,11 @@ export default async function AccountPage({ searchParams }) {
           <Link className="btn-primary account-quick-primary" href="/materiale">
             <IconText icon={Upload}>Incarca materiale</IconText>
           </Link>
-          <Link className="account-quick-secondary" href="/materiale/activitate">
-            <IconText icon={FolderOpen}>Materialele mele</IconText>
+          <Link className="account-quick-secondary" href="/materiale/activitate?tab=subjects">
+            <IconText icon={FolderOpen}>Gestioneaza materiile</IconText>
           </Link>
           <Link className="account-quick-secondary" href="/cont?section=plans#planuri">
             <IconText icon={CreditCard}>Schimba planul</IconText>
-          </Link>
-          <Link className="account-quick-secondary" href="/review-reward">
-            <IconText icon={MessageSquareQuote}>Review recompensa</IconText>
           </Link>
         </div>
       </section>
@@ -576,24 +581,24 @@ export default async function AccountPage({ searchParams }) {
 
       {setupWarning ? (
         <section className="surface">
-          <div className="error-state">{setupWarning}</div>
+          <div className="error-state" role="alert">{setupWarning}</div>
         </section>
       ) : null}
 
       <section className="surface account-billing-surface" id="planuri">
-        {syncMessage ? <div className="success-state">{syncMessage}</div> : null}
+        {syncMessage ? <div className="success-state" role="status">{syncMessage}</div> : null}
         {welcomeMessage ? (
-          <div className={welcomeState === "error" ? "error-state" : "success-state"}>
+          <div className={welcomeState === "error" ? "error-state" : "success-state"} role={welcomeState === "error" ? "alert" : "status"}>
             {welcomeMessage}
           </div>
         ) : null}
         {referralMessage ? (
-          <div className={referralState === "error" ? "error-state" : "success-state"}>
+          <div className={referralState === "error" ? "error-state" : "success-state"} role={referralState === "error" ? "alert" : "status"}>
             {referralMessage}
           </div>
         ) : null}
         {testimonialMessage ? (
-          <div className={testimonialState === "error" ? "error-state" : "success-state"}>
+          <div className={testimonialState === "error" ? "error-state" : "success-state"} role={testimonialState === "error" ? "alert" : "status"}>
             {testimonialMessage}
           </div>
         ) : null}
@@ -622,9 +627,9 @@ export default async function AccountPage({ searchParams }) {
                 </div>
               ) : null}
 
-              {hasAvailableWelcomePremium ? <WelcomePremiumCard /> : null}
+              {hasAvailableWelcomePremium ? <WelcomePremiumCard returnTo={returnTo} /> : null}
               {hasAvailableTestimonialReward ? (
-                <TestimonialRewardClaimCard submission={latestTestimonialReward} />
+                <TestimonialRewardClaimCard submission={latestTestimonialReward} returnTo={returnTo} />
               ) : null}
 
               <div className="plan-grid account-plan-grid">
@@ -639,8 +644,10 @@ export default async function AccountPage({ searchParams }) {
                       comparisonText={presentation.comparisonText}
                       badge={presentation.badge}
                       featured={presentation.featured}
+                      selected={selectedPlanCode === plan.code}
                       icon={<AccountIcon type={presentation.icon} />}
                       disabled={!user || demoMode || !checkoutConfigured}
+                      selected={selectedPlanCode === plan.code}
                       returnTo={returnTo}
                     />
                   );
@@ -713,6 +720,8 @@ export default async function AccountPage({ searchParams }) {
           </Link>
         </div>
       </section>
+
+      {!demoMode ? <AccountDangerZone isAdmin={adminUser} /> : null}
     </main>
   );
 }

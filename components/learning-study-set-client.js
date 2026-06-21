@@ -1,17 +1,77 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { BookOpen, CheckCircle2, Layers3, RotateCcw, Target, XCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BookOpen, CheckCircle2, Layers3, LoaderCircle, RotateCcw, Target, Trash2, XCircle } from "lucide-react";
+
+import {
+  deleteLearningStudySetAction,
+  publishLearningStudySetAction,
+  reportLearningStudySetAction,
+  retryLearningStudySetAction,
+  saveLearningFlashcardRatingAction,
+  saveLearningQuizAttemptAction
+} from "@/app/ai/invata/actions";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const TABS = [
   { id: "overview", label: "Overview" },
   { id: "chapters", label: "Capitole" },
   { id: "flashcards", label: "Flashcards" },
   { id: "test", label: "Test" },
+  { id: "simulation", label: "Simulare" },
+  { id: "competition", label: "Competitie" },
   { id: "mistakes", label: "Greseli" },
   { id: "plan", label: "Plan" }
 ];
+const PROCESSING_STUDY_SET_STATUSES = new Set([
+  "draft",
+  "uploaded",
+  "extracting",
+  "outlining",
+  "generating",
+  "consolidating"
+]);
+
+function createAttemptKey() {
+  if (typeof globalThis.crypto?.randomUUID === "function") {
+    return globalThis.crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function LearningDeleteControl({ isOpen, isDeleting, message, onOpen, onCancel, onConfirm }) {
+  if (!isOpen) {
+    return (
+      <button
+        type="button"
+        className="secondary learning-delete-open"
+        data-usage-event="learning_set_delete_opened"
+        onClick={onOpen}
+      >
+        <Trash2 aria-hidden="true" size={17} />
+        Sterge materialul
+      </button>
+    );
+  }
+
+  return (
+    <div className="learning-delete-confirmation" role="alert">
+      <span>Se vor sterge materialul, progresul si publicarea lui.</span>
+      <div>
+        <button type="button" className="secondary" disabled={isDeleting} onClick={onCancel}>
+          Renunta
+        </button>
+        <button type="button" className="learning-delete-confirm" disabled={isDeleting} onClick={onConfirm}>
+          {isDeleting ? "Se sterge..." : "Sterge definitiv"}
+        </button>
+      </div>
+      {message ? <p role="status">{message}</p> : null}
+    </div>
+  );
+}
 
 function answerLabel(index) {
   return String.fromCharCode(65 + index);
@@ -21,6 +81,59 @@ function normalizeQuestions(questions) {
   return questions.filter((question) => Array.isArray(question.answers) && question.answers.length >= 2);
 }
 
+function formatShortDate(value) {
+  if (!value) return "fara data";
+  try {
+    return new Intl.DateTimeFormat("ro-RO", {
+      day: "2-digit",
+      month: "short"
+    }).format(new Date(value));
+  } catch {
+    return "fara data";
+  }
+}
+
+function buildSimulation(chapters, questions) {
+  const usableQuestions = normalizeQuestions(questions).slice(0, 6);
+  const concepts = chapters.flatMap((chapter) =>
+    chapter.concepts.map((concept) => ({
+      ...concept,
+      chapterTitle: chapter.title
+    }))
+  );
+
+  const trueFalseQuestions = concepts.slice(0, 6).map((concept, index) => {
+    const pair = concepts[(index + 1) % concepts.length] || concept;
+    const shouldBeTrue = index % 2 === 0 || concepts.length < 2;
+    const statement = shouldBeTrue
+      ? `${concept.title} este legat de: ${concept.simpleExplanation}`
+      : `${concept.title} este legat de: ${pair.simpleExplanation}`;
+    return {
+      id: `tf-${concept.id}-${index}`,
+      statement,
+      chapterTitle: concept.chapterTitle,
+      correct: shouldBeTrue,
+      explanation: shouldBeTrue
+        ? concept.simpleExplanation
+        : `Raspunsul corect este fals. Conceptul "${concept.title}" se explica astfel: ${concept.simpleExplanation}`
+    };
+  });
+
+  const shortAnswerQuestions = concepts.slice(0, 4).map((concept, index) => ({
+    id: `open-${concept.id}-${index}`,
+    question: `Explica pe scurt conceptul: ${concept.title}`,
+    chapterTitle: concept.chapterTitle,
+    modelAnswer: concept.simpleExplanation,
+    example: concept.example
+  }));
+
+  return {
+    multipleChoice: usableQuestions,
+    trueFalse: trueFalseQuestions,
+    shortAnswer: shortAnswerQuestions
+  };
+}
+
 function KpiCard({ label, value, detail }) {
   return (
     <article className="learning-kpi-card">
@@ -28,6 +141,124 @@ function KpiCard({ label, value, detail }) {
       <strong>{value}</strong>
       {detail ? <p>{detail}</p> : null}
     </article>
+  );
+}
+
+function isProcessingStudySet(studySet) {
+  if (PROCESSING_STUDY_SET_STATUSES.has(studySet.status)) return true;
+  return studySet.processingJob?.status === "pending" || studySet.processingJob?.status === "processing";
+}
+
+function LearningProcessingPanel({ studySet }) {
+  const [jobSnapshot, setJobSnapshot] = useState(studySet.processingJob || null);
+  const [message, setMessage] = useState("");
+  const jobId = studySet.jobId || studySet.processingJob?.id || null;
+  const progress = Math.max(0, Math.min(100, Number(jobSnapshot?.progressPercent || 0)));
+  const statusDetail =
+    jobSnapshot?.statusDetail ||
+    (studySet.status === "uploaded"
+      ? "Materia a fost incarcata. Pregatim procesarea."
+      : "Pregatim materialele de invatare.");
+
+  useEffect(() => {
+    if (!jobId) return undefined;
+    if (jobSnapshot?.status === "succeeded" || jobSnapshot?.status === "failed") return undefined;
+
+    let isCancelled = false;
+    let timeoutId = null;
+    let inFlight = false;
+
+    async function processTick() {
+      if (inFlight) return;
+      inFlight = true;
+      try {
+        const response = await fetch(`/api/materiale/jobs/${jobId}/process`, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            Accept: "application/json"
+          }
+        });
+        const payload = await response.json().catch(() => null);
+        if (!isCancelled && response.ok && payload) {
+          setJobSnapshot(payload);
+          if (payload.status === "succeeded") {
+            setMessage("Materia este gata. Actualizam pagina...");
+            window.setTimeout(() => window.location.reload(), 700);
+            return;
+          }
+          if (payload.status === "failed") {
+            setMessage("Procesarea s-a oprit. Actualizam pagina...");
+            window.setTimeout(() => window.location.reload(), 900);
+            return;
+          }
+        }
+      } catch {
+        if (!isCancelled) {
+          setMessage("Procesarea continua. Daca pagina nu se actualizeaza, revino din Activitate.");
+        }
+      } finally {
+        inFlight = false;
+        if (!isCancelled) {
+          timeoutId = window.setTimeout(processTick, 2600);
+        }
+      }
+    }
+
+    timeoutId = window.setTimeout(processTick, 350);
+    return () => {
+      isCancelled = true;
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [jobId, jobSnapshot?.status]);
+
+  return (
+    <section className="learning-processing-view">
+      <div className="learning-processing-hero">
+        <LoaderCircle aria-hidden="true" />
+        <div>
+          <span className="ui-section-label">Procesare</span>
+          <h1>{studySet.title}</h1>
+          <p>{statusDetail}</p>
+        </div>
+      </div>
+
+      <div className="learning-processing-progress">
+        <div>
+          <span>{`${progress}%`}</span>
+          <strong>{message || "Poti reveni oricand din Activitate. Nu trebuie sa incarci din nou materialul."}</strong>
+        </div>
+        <div className="learning-processing-progress-bar" aria-label={`Progres ${progress}%`}>
+          <span style={{ width: `${Math.max(6, progress)}%` }} />
+        </div>
+      </div>
+
+      <div className="learning-processing-steps">
+        {[
+          "Materia incarcata",
+          "Citim continutul",
+          "Construim capitolele",
+          "Pregatim testele",
+          "Finalizam"
+        ].map((step, index) => {
+          const stepProgress = (index + 1) * 20;
+          return (
+            <span key={step} className={progress >= stepProgress ? "is-done" : progress >= stepProgress - 20 ? "is-active" : ""}>
+              {step}
+            </span>
+          );
+        })}
+      </div>
+
+      <div className="learning-study-footer">
+        <Link className="btn-link secondary" href="/materiale/activitate">
+          Vezi activitatea
+        </Link>
+        <Link className="btn-link secondary" href="/materiale/invata">
+          Incarca alta materie
+        </Link>
+      </div>
+    </section>
   );
 }
 
@@ -51,6 +282,19 @@ function ChapterCard({ chapter, onStartChapterTest }) {
           <span key={term}>{term}</span>
         ))}
       </div>
+      {chapter.concepts.length ? (
+        <div className="learning-concept-list">
+          {chapter.concepts.slice(0, 4).map((concept) => (
+            <details key={concept.id}>
+              <summary>{concept.title}</summary>
+              <p>{concept.simpleExplanation}</p>
+              {concept.example ? <small>{`Exemplu: ${concept.example}`}</small> : null}
+              {concept.analogy ? <small>{`Pe scurt: ${concept.analogy}`}</small> : null}
+              {concept.checkQuestion ? <em>{concept.checkQuestion}</em> : null}
+            </details>
+          ))}
+        </div>
+      ) : null}
       <div className="learning-chapter-actions">
         <button type="button" className="secondary" onClick={() => onStartChapterTest(chapter.id)}>
           Test capitol
@@ -60,18 +304,42 @@ function ChapterCard({ chapter, onStartChapterTest }) {
   );
 }
 
-function FlashcardsTab({ flashcards }) {
+function FlashcardsTab({ studySetId, flashcards }) {
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
-  const [ratings, setRatings] = useState({});
+  const [ratings, setRatings] = useState(() =>
+    Object.fromEntries(
+      flashcards
+        .filter((flashcard) => flashcard.review?.rating)
+        .map((flashcard) => [flashcard.id, flashcard.review.rating])
+    )
+  );
+  const [saveMessage, setSaveMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
   const current = flashcards[index] || null;
   const weakCount = Object.values(ratings).filter((rating) => rating === "nu_stiu" || rating === "aproape").length;
 
-  function rateCurrent(rating) {
+  async function rateCurrent(rating) {
     if (!current) return;
     setRatings((value) => ({ ...value, [current.id]: rating }));
+    setSaveMessage("");
     setRevealed(false);
     setIndex((value) => Math.min(value + 1, flashcards.length));
+    setIsSaving(true);
+    try {
+      const result = await saveLearningFlashcardRatingAction({
+        studySetId,
+        flashcardId: current.id,
+        rating
+      });
+      if (!result.ok) {
+        setSaveMessage(result.error || "Nu am putut salva ratingul.");
+        return;
+      }
+      setSaveMessage("Rating salvat.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   if (!flashcards.length) {
@@ -103,7 +371,7 @@ function FlashcardsTab({ flashcards }) {
     <section className="learning-flashcards-shell">
       <div className="learning-session-head">
         <span>{`${index + 1} / ${flashcards.length}`}</span>
-        <strong>{current.hint || "Flashcards"}</strong>
+        <strong>{isSaving ? "Salvam progresul..." : current.hint || "Flashcards"}</strong>
       </div>
       <button
         type="button"
@@ -115,45 +383,136 @@ function FlashcardsTab({ flashcards }) {
         <small>{revealed ? "Apasa un rating mai jos." : "Apasa pe card ca sa vezi raspunsul."}</small>
       </button>
       <div className="learning-flashcard-actions">
-        <button type="button" className="secondary" onClick={() => rateCurrent("nu_stiu")}>
+        <button
+          type="button"
+          className="secondary"
+          data-usage-event="learning_flashcard_rated"
+          data-usage-label="Nu stiu"
+          disabled={isSaving}
+          onClick={() => rateCurrent("nu_stiu")}
+        >
           Nu stiu
         </button>
-        <button type="button" className="secondary" onClick={() => rateCurrent("aproape")}>
+        <button
+          type="button"
+          className="secondary"
+          data-usage-event="learning_flashcard_rated"
+          data-usage-label="Aproape"
+          disabled={isSaving}
+          onClick={() => rateCurrent("aproape")}
+        >
           Aproape
         </button>
-        <button type="button" onClick={() => rateCurrent("stiu")}>
+        <button
+          type="button"
+          data-usage-event="learning_flashcard_rated"
+          data-usage-label="Stiu"
+          disabled={isSaving}
+          onClick={() => rateCurrent("stiu")}
+        >
           Stiu
         </button>
-        <button type="button" className="secondary" onClick={() => rateCurrent("mai_tarziu")}>
+        <button
+          type="button"
+          className="secondary"
+          data-usage-event="learning_flashcard_rated"
+          data-usage-label="Mai tarziu"
+          disabled={isSaving}
+          onClick={() => rateCurrent("mai_tarziu")}
+        >
           Mai tarziu
         </button>
       </div>
+      {saveMessage ? <p className="learning-save-message" role="status">{saveMessage}</p> : null}
     </section>
   );
 }
 
-function TestTab({ questions, chapterId = "all", onChapterChange, onMistakes }) {
+function TestTab({
+  studySetId,
+  questions,
+  mistakeQuestions,
+  chapterId = "all",
+  testMode = "all",
+  onChapterChange,
+  onTestModeChange,
+  onMistakes
+}) {
+  const [questionLimit, setQuestionLimit] = useState(10);
+  const [difficulty, setDifficulty] = useState("all");
   const availableQuestions = useMemo(() => {
-    const safeQuestions = normalizeQuestions(questions);
-    return chapterId === "all"
-      ? safeQuestions.slice(0, 10)
-      : safeQuestions.filter((question) => question.chapterId === chapterId).slice(0, 10);
-  }, [chapterId, questions]);
+    const sourceQuestions = testMode === "mistakes" ? mistakeQuestions : questions;
+    const safeQuestions = normalizeQuestions(sourceQuestions);
+    const chapterQuestions =
+      testMode === "mistakes" || chapterId === "all"
+        ? safeQuestions
+        : safeQuestions.filter((question) => question.chapterId === chapterId);
+    const difficultyQuestions =
+      difficulty === "all"
+        ? chapterQuestions
+        : chapterQuestions.filter((question) => question.difficulty === difficulty);
+    return difficultyQuestions.slice(0, questionLimit);
+  }, [chapterId, difficulty, mistakeQuestions, questionLimit, questions, testMode]);
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const attemptKeyRef = useRef("");
   const unansweredCount = availableQuestions.filter((question) => answers[question.id] === undefined).length;
 
-  function finishTest() {
+  function resetTest() {
+    setAnswers({});
+    setResult(null);
+    attemptKeyRef.current = "";
+  }
+
+  async function finishTest() {
     if (unansweredCount) {
       setResult({ type: "warning", message: `Mai ai ${unansweredCount} intrebari fara raspuns.` });
       return;
     }
 
-    const wrong = availableQuestions.filter((question) => answers[question.id] !== question.correctIndex);
-    const score = availableQuestions.length - wrong.length;
-    const percentage = availableQuestions.length ? Math.round((score / availableQuestions.length) * 100) : 0;
-    onMistakes(wrong);
-    setResult({ type: "done", score, total: availableQuestions.length, percentage, wrong });
+    const submittedAnswers = availableQuestions.map((question) => ({
+      questionId: question.id,
+      selectedIndex: answers[question.id]
+    }));
+    const idempotencyKey = attemptKeyRef.current || createAttemptKey();
+    attemptKeyRef.current = idempotencyKey;
+    setResult({ type: "saving", message: "Salvam rezultatul testului..." });
+    setIsSaving(true);
+    try {
+      const saved = await saveLearningQuizAttemptAction({
+        studySetId,
+        chapterId: testMode === "mistakes" ? "mistakes" : chapterId,
+        idempotencyKey,
+        answers: submittedAnswers
+      });
+
+      if (!saved.ok) {
+        setResult({
+          type: "warning",
+          message: saved.error || "Nu am putut salva rezultatul testului."
+        });
+        return;
+      }
+
+      const wrong = (saved.result?.wrong || []).map((wrongQuestion) => {
+        const localQuestion = availableQuestions.find((question) => question.id === wrongQuestion.id);
+        return {
+          ...wrongQuestion,
+          chapterTitle: localQuestion?.chapterTitle || wrongQuestion.chapterTitle || "Capitol"
+        };
+      });
+      onMistakes(wrong);
+      setResult({
+        type: "done",
+        score: saved.result.score,
+        total: saved.result.total,
+        percentage: saved.result.percentage,
+        wrong
+      });
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   if (!availableQuestions.length) {
@@ -164,8 +523,28 @@ function TestTab({ questions, chapterId = "all", onChapterChange, onMistakes }) 
     <section className="learning-test-shell">
       <div className="learning-test-toolbar">
         <label>
+          Mod
+          <select
+            value={testMode}
+            onChange={(event) => {
+              onTestModeChange(event.target.value);
+              resetTest();
+            }}
+          >
+            <option value="all">Test rapid</option>
+            {mistakeQuestions.length ? <option value="mistakes">Doar greseli</option> : null}
+          </select>
+        </label>
+        <label>
           Capitol
-          <select value={chapterId} onChange={(event) => onChapterChange(event.target.value)}>
+          <select
+            value={chapterId}
+            disabled={testMode === "mistakes"}
+            onChange={(event) => {
+              onChapterChange(event.target.value);
+              resetTest();
+            }}
+          >
             <option value="all">Toate capitolele</option>
             {Array.from(new Map(questions.map((question) => [question.chapterId, question.chapterTitle || "Capitol"]))).map(
               ([id, title]) => (
@@ -174,6 +553,37 @@ function TestTab({ questions, chapterId = "all", onChapterChange, onMistakes }) 
                 </option>
               )
             )}
+          </select>
+        </label>
+        <label>
+          Numar
+          <select
+            value={questionLimit}
+            onChange={(event) => {
+              setQuestionLimit(Number(event.target.value));
+              resetTest();
+            }}
+          >
+            {[10, 20, 30, 50].map((value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Dificultate
+          <select
+            value={difficulty}
+            onChange={(event) => {
+              setDifficulty(event.target.value);
+              resetTest();
+            }}
+          >
+            <option value="all">Mixt</option>
+            <option value="usor">Usor</option>
+            <option value="mediu">Mediu</option>
+            <option value="greu">Greu</option>
           </select>
         </label>
         <span>{`${availableQuestions.length} intrebari`}</span>
@@ -210,6 +620,8 @@ function TestTab({ questions, chapterId = "all", onChapterChange, onMistakes }) 
             <strong>
               {result.type === "warning"
                 ? result.message
+                : result.type === "saving"
+                  ? result.message
                 : `Scor ${result.score} din ${result.total} (${result.percentage}%)`}
             </strong>
             {result.type === "done" ? (
@@ -224,16 +636,19 @@ function TestTab({ questions, chapterId = "all", onChapterChange, onMistakes }) 
       ) : null}
 
       <div className="learning-test-actions">
-        <button type="button" onClick={finishTest}>
-          Vezi rezultatul
+        <button
+          type="button"
+          data-usage-event="learning_quiz_completed"
+          data-usage-label={testMode === "mistakes" ? "Test greseli" : "Test invatare"}
+          onClick={finishTest}
+          disabled={isSaving}
+        >
+          {isSaving ? "Se salveaza..." : "Vezi rezultatul"}
         </button>
         <button
           type="button"
           className="secondary"
-          onClick={() => {
-            setAnswers({});
-            setResult(null);
-          }}
+          onClick={resetTest}
         >
           Reseteaza
         </button>
@@ -242,10 +657,271 @@ function TestTab({ questions, chapterId = "all", onChapterChange, onMistakes }) 
   );
 }
 
+function ExamSimulationTab({ chapters, questions }) {
+  const simulation = useMemo(() => buildSimulation(chapters, questions), [chapters, questions]);
+  const [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState({});
+  const [trueFalseAnswers, setTrueFalseAnswers] = useState({});
+  const [shortAnswers, setShortAnswers] = useState({});
+  const [result, setResult] = useState(null);
+
+  const objectiveTotal = simulation.multipleChoice.length + simulation.trueFalse.length;
+  const answeredObjectiveCount =
+    Object.keys(multipleChoiceAnswers).length + Object.keys(trueFalseAnswers).length;
+  const hasSimulationContent =
+    simulation.multipleChoice.length || simulation.trueFalse.length || simulation.shortAnswer.length;
+
+  function resetSimulation() {
+    setMultipleChoiceAnswers({});
+    setTrueFalseAnswers({});
+    setShortAnswers({});
+    setResult(null);
+  }
+
+  function finishSimulation() {
+    const missingObjectiveCount = objectiveTotal - answeredObjectiveCount;
+    if (missingObjectiveCount > 0) {
+      setResult({
+        type: "warning",
+        message: `Mai ai ${missingObjectiveCount} raspunsuri obligatorii in partea evaluata automat.`
+      });
+      return;
+    }
+
+    const multipleChoiceScore = simulation.multipleChoice.filter(
+      (question) => multipleChoiceAnswers[question.id] === question.correctIndex
+    ).length;
+    const trueFalseScore = simulation.trueFalse.filter(
+      (question) => trueFalseAnswers[question.id] === question.correct
+    ).length;
+    const score = multipleChoiceScore + trueFalseScore;
+    const percentage = objectiveTotal ? Math.round((score / objectiveTotal) * 100) : 0;
+
+    setResult({
+      type: "done",
+      score,
+      total: objectiveTotal,
+      percentage,
+      multipleChoiceScore,
+      trueFalseScore
+    });
+  }
+
+  if (!hasSimulationContent) {
+    return <div className="learning-empty-panel">Nu avem suficient continut pentru o simulare mixta.</div>;
+  }
+
+  return (
+    <section className="learning-simulation-shell">
+      <div className="learning-simulation-head">
+        <div>
+          <span className="ui-section-label">Simulare examen</span>
+          <h2>Runda mixta</h2>
+          <p>
+            Grilele si adevarat/fals se evalueaza automat. Intrebarile scurte primesc raspuns model
+            pentru verificare rapida.
+          </p>
+        </div>
+        <div className="learning-simulation-score">
+          <strong>{objectiveTotal}</strong>
+          <span>itemi evaluati automat</span>
+        </div>
+      </div>
+
+      {simulation.multipleChoice.length ? (
+        <section className="learning-simulation-section">
+          <h3>Subiectul 1. Grila</h3>
+          <div className="learning-question-list">
+            {simulation.multipleChoice.map((question, questionIndex) => (
+              <article key={question.id} className="learning-question-card">
+                <span className="learning-question-meta">{question.chapterTitle}</span>
+                <strong>{`${questionIndex + 1}. ${question.questionText}`}</strong>
+                <div className="learning-answer-list">
+                  {question.answers.map((answer, answerIndex) => (
+                    <label
+                      key={`${question.id}-${answerIndex}`}
+                      className={multipleChoiceAnswers[question.id] === answerIndex ? "is-selected" : ""}
+                    >
+                      <input
+                        checked={multipleChoiceAnswers[question.id] === answerIndex}
+                        name={`simulation-mc-${question.id}`}
+                        type="radio"
+                        onChange={() =>
+                          setMultipleChoiceAnswers((value) => ({ ...value, [question.id]: answerIndex }))
+                        }
+                      />
+                      <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
+                    </label>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {simulation.trueFalse.length ? (
+        <section className="learning-simulation-section">
+          <h3>Subiectul 2. Adevarat sau fals</h3>
+          <div className="learning-simulation-grid">
+            {simulation.trueFalse.map((question, index) => (
+              <article key={question.id} className="learning-true-false-card">
+                <span className="learning-question-meta">{`${index + 1}. ${question.chapterTitle}`}</span>
+                <strong>{question.statement}</strong>
+                <div className="learning-binary-actions">
+                  <button
+                    type="button"
+                    className={trueFalseAnswers[question.id] === true ? "is-selected" : ""}
+                    onClick={() => setTrueFalseAnswers((value) => ({ ...value, [question.id]: true }))}
+                  >
+                    Adevarat
+                  </button>
+                  <button
+                    type="button"
+                    className={trueFalseAnswers[question.id] === false ? "is-selected" : ""}
+                    onClick={() => setTrueFalseAnswers((value) => ({ ...value, [question.id]: false }))}
+                  >
+                    Fals
+                  </button>
+                </div>
+                {result?.type === "done" ? <p>{question.explanation}</p> : null}
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {simulation.shortAnswer.length ? (
+        <section className="learning-simulation-section">
+          <h3>Subiectul 3. Intrebari scurte</h3>
+          <div className="learning-simulation-grid">
+            {simulation.shortAnswer.map((question, index) => (
+              <article key={question.id} className="learning-short-answer-card">
+                <span className="learning-question-meta">{`${index + 1}. ${question.chapterTitle}`}</span>
+                <label>
+                  <strong>{question.question}</strong>
+                  <textarea
+                    value={shortAnswers[question.id] || ""}
+                    rows={4}
+                    placeholder="Scrie raspunsul tau..."
+                    onChange={(event) =>
+                      setShortAnswers((value) => ({ ...value, [question.id]: event.target.value }))
+                    }
+                  />
+                </label>
+                {result?.type === "done" ? (
+                  <div className="learning-model-answer">
+                    <span>Raspuns model</span>
+                    <p>{question.modelAnswer}</p>
+                    {question.example ? <small>{`Exemplu: ${question.example}`}</small> : null}
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {result ? (
+        <div className={`learning-test-result ${result.type === "warning" ? "is-warning" : "is-done"}`}>
+          {result.type === "warning" ? <XCircle aria-hidden="true" /> : <CheckCircle2 aria-hidden="true" />}
+          <div>
+            <strong>
+              {result.type === "warning"
+                ? result.message
+                : `Scor automat ${result.score} din ${result.total} (${result.percentage}%)`}
+            </strong>
+            {result.type === "done" ? (
+              <p>
+                {`Grila: ${result.multipleChoiceScore}/${simulation.multipleChoice.length}. Adevarat/fals: ${result.trueFalseScore}/${simulation.trueFalse.length}. Verifica manual raspunsurile scurte dupa model.`}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+
+      <div className="learning-test-actions">
+        <button
+          type="button"
+          data-usage-event="learning_simulation_completed"
+          data-usage-label="Simulare examen"
+          onClick={finishSimulation}
+        >
+          Finalizeaza simularea
+        </button>
+        <button type="button" className="secondary" onClick={resetSimulation}>
+          Reseteaza
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function CompetitionTab({ leaderboard }) {
+  const rows = leaderboard?.rows || [];
+  const hasParticipants = Number(leaderboard?.participantCount || 0) > 0;
+
+  if (!hasParticipants) {
+    return (
+      <div className="learning-empty-panel">
+        Competitia apare dupa primele teste salvate pentru acest material.
+      </div>
+    );
+  }
+
+  return (
+    <section className="learning-competition-shell">
+      <div className="learning-competition-head">
+        <div>
+          <span className="ui-section-label">Comparatie comunitate</span>
+          <h2>Leaderboard anonim</h2>
+          <p>
+            Comparatia foloseste doar rundele acestui material si ramane in comunitatea materialului.
+            Colegii sunt anonimizati.
+          </p>
+        </div>
+        <div className="learning-competition-kpis">
+          <KpiCard
+            label="Pozitia ta"
+            value={leaderboard.currentUserRank ? `#${leaderboard.currentUserRank}` : "-"}
+            detail={leaderboard.currentUserBestScore === null ? "fa un test" : `${leaderboard.currentUserBestScore}% cel mai bun`}
+          />
+          <KpiCard label="Participanti" value={leaderboard.participantCount} detail="cu teste salvate" />
+          <KpiCard label="Media comunitatii" value={`${leaderboard.communityAverage}%`} detail="dupa cel mai bun scor" />
+        </div>
+      </div>
+
+      <div className="learning-leaderboard-list">
+        {rows.map((row) => (
+          <article key={`${row.rank}-${row.label}`} className={row.isCurrentUser ? "is-current-user" : ""}>
+            <span>{`#${row.rank}`}</span>
+            <div>
+              <strong>{row.label}</strong>
+              <small>{`${row.attemptCount} runde - ultima: ${formatShortDate(row.lastAttemptAt)}`}</small>
+            </div>
+            <b>{`${row.bestScore}%`}</b>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function LearningStudySetClient({ studySet }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
   const [chapterFilter, setChapterFilter] = useState("all");
-  const [mistakes, setMistakes] = useState([]);
+  const [testMode, setTestMode] = useState("all");
+  const [mistakes, setMistakes] = useState(studySet.savedMistakes || []);
+  const [publishedAt, setPublishedAt] = useState(studySet.publishedAt || null);
+  const [publishMessage, setPublishMessage] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [reportMessage, setReportMessage] = useState("");
+  const [isReporting, setIsReporting] = useState(false);
+  const [retryMessage, setRetryMessage] = useState("");
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
   const questionsWithChapterTitles = useMemo(() => {
     const chapterTitleById = new Map(studySet.chapters.map((chapter) => [chapter.id, chapter.title]));
     return studySet.questions.map((question) => ({
@@ -254,10 +930,115 @@ export function LearningStudySetClient({ studySet }) {
     }));
   }, [studySet.chapters, studySet.questions]);
   const nextChapter = studySet.chapters[0] || null;
+  const isProcessing = isProcessingStudySet(studySet);
 
   function startChapterTest(chapterId) {
     setChapterFilter(chapterId);
+    setTestMode("all");
     setActiveTab("test");
+  }
+
+  function startMistakesTest() {
+    setChapterFilter("all");
+    setTestMode("mistakes");
+    setActiveTab("test");
+  }
+
+  function mergeMistakes(nextMistakes) {
+    setMistakes((currentMistakes) => {
+      const byId = new Map(currentMistakes.map((question) => [question.id, question]));
+      nextMistakes.forEach((question) => byId.set(question.id, question));
+      return Array.from(byId.values());
+    });
+  }
+
+  async function publishToCommunity() {
+    if (!studySet.isOwner || publishedAt || isPublishing) return;
+    setPublishMessage("");
+    setIsPublishing(true);
+    try {
+      const result = await publishLearningStudySetAction({ studySetId: studySet.id });
+      if (!result.ok) {
+        setPublishMessage(result.error || "Nu am putut publica materialul.");
+        return;
+      }
+      setPublishedAt(result.result?.publishedAt || new Date().toISOString());
+      setPublishMessage("Material publicat pentru comunitatea ta.");
+    } finally {
+      setIsPublishing(false);
+    }
+  }
+
+  async function reportCommunityMaterial() {
+    if (studySet.isOwner || isReporting) return;
+    setReportMessage("");
+    setIsReporting(true);
+    try {
+      const result = await reportLearningStudySetAction({
+        studySetId: studySet.id,
+        reason: "content_issue"
+      });
+      setReportMessage(result.ok ? "Raportarea a fost trimisa." : result.error || "Nu am putut trimite raportarea.");
+    } finally {
+      setIsReporting(false);
+    }
+  }
+
+  async function retryStudySet() {
+    if (!studySet.isOwner || studySet.status !== "failed" || isRetrying) return;
+    setRetryMessage("");
+    setIsRetrying(true);
+    try {
+      const result = await retryLearningStudySetAction({ studySetId: studySet.id });
+      if (!result.ok) {
+        setRetryMessage(result.error || "Nu am putut relua procesarea.");
+        return;
+      }
+      setRetryMessage("Procesarea a fost reluata. Actualizam pagina...");
+      window.location.reload();
+    } finally {
+      setIsRetrying(false);
+    }
+  }
+
+  async function deleteStudySet() {
+    if (!studySet.isOwner || isDeleting) return;
+    setDeleteMessage("");
+    setIsDeleting(true);
+    try {
+      const result = await deleteLearningStudySetAction({ studySetId: studySet.id });
+      if (!result.ok) {
+        setDeleteMessage(result.error || "Nu am putut sterge materialul.");
+        return;
+      }
+      router.replace(`/materiale/invata?message=${encodeURIComponent("Materialul a fost sters.")}`);
+      router.refresh();
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
+  if (isProcessing) {
+    return (
+      <>
+        <LearningProcessingPanel studySet={studySet} />
+        {studySet.isOwner ? (
+          <div className="learning-owner-delete-row">
+            <LearningDeleteControl
+              isOpen={deleteConfirmationOpen}
+              isDeleting={isDeleting}
+              message={deleteMessage}
+              onOpen={() => setDeleteConfirmationOpen(true)}
+              onCancel={() => {
+                setDeleteConfirmationOpen(false);
+                setDeleteMessage("");
+              }}
+              onConfirm={deleteStudySet}
+            />
+          </div>
+        ) : null}
+      </>
+    );
   }
 
   return (
@@ -274,11 +1055,77 @@ export function LearningStudySetClient({ studySet }) {
         <div className="learning-study-next">
           <Target aria-hidden="true" />
           <strong>{nextChapter ? `Incepe cu ${nextChapter.title}` : "Incepe cu flashcards"}</strong>
-          <button type="button" onClick={() => setActiveTab(nextChapter ? "chapters" : "flashcards")}>
+          <button
+            type="button"
+            data-usage-event="learning_continue_clicked"
+            data-usage-label={nextChapter ? "Continua capitole" : "Continua flashcards"}
+            onClick={() => setActiveTab(nextChapter ? "chapters" : "flashcards")}
+          >
             Continua invatarea
           </button>
+          {studySet.isOwner ? (
+            <button
+              type="button"
+              className="secondary learning-publish-button"
+              data-usage-event="learning_set_published"
+              data-usage-label="Publica pentru comunitate"
+              disabled={Boolean(publishedAt) || isPublishing}
+              onClick={publishToCommunity}
+            >
+              {publishedAt ? "Publicat in comunitate" : isPublishing ? "Se publica..." : "Publica pentru comunitatea ta"}
+            </button>
+          ) : (
+            <>
+              <span className="learning-community-badge">Material din comunitate</span>
+              <button
+                type="button"
+                className="secondary learning-report-button"
+                data-usage-event="learning_set_reported"
+                data-usage-label="Raporteaza material"
+                disabled={isReporting}
+                onClick={reportCommunityMaterial}
+              >
+                {isReporting ? "Se trimite..." : "Raporteaza material"}
+              </button>
+            </>
+          )}
+          {publishMessage ? <p className="learning-save-message" role="status">{publishMessage}</p> : null}
+          {reportMessage ? <p className="learning-save-message" role="status">{reportMessage}</p> : null}
+          {studySet.isOwner ? (
+            <LearningDeleteControl
+              isOpen={deleteConfirmationOpen}
+              isDeleting={isDeleting}
+              message={deleteMessage}
+              onOpen={() => setDeleteConfirmationOpen(true)}
+              onCancel={() => {
+                setDeleteConfirmationOpen(false);
+                setDeleteMessage("");
+              }}
+              onConfirm={deleteStudySet}
+            />
+          ) : null}
         </div>
       </div>
+
+      {studySet.isOwner && studySet.status === "failed" ? (
+        <div className="learning-retry-panel">
+          <div>
+            <strong>Procesarea s-a oprit.</strong>
+            <span>Reluam salvarea materialelor din sursa pastrata, fara o incarcare noua.</span>
+          </div>
+          <button
+            type="button"
+            className="secondary"
+            data-usage-event="learning_retry_started"
+            data-usage-label="Retry material invatare"
+            disabled={isRetrying}
+            onClick={retryStudySet}
+          >
+            {isRetrying ? "Se reia..." : "Reia procesarea"}
+          </button>
+          {retryMessage ? <p className="learning-save-message" role="status">{retryMessage}</p> : null}
+        </div>
+      ) : null}
 
       {studySet.warnings.length ? (
         <div className="learning-warning-panel">
@@ -297,13 +1144,24 @@ export function LearningStudySetClient({ studySet }) {
         <KpiCard label="Plan" value={`${studySet.recommendedDays} zile`} detail={`${studySet.recommendedMinutesPerDay} min/zi`} />
       </div>
 
-      <div className="learning-tabs" role="tablist" aria-label="Moduri invatare">
+      <div
+        className="learning-tabs"
+        role="tablist"
+        aria-label="Moduri invatare"
+        onKeyDown={handleTablistKeyDown}
+      >
         {TABS.map((tab) => (
           <button
             key={tab.id}
+            id={`learning-tab-${tab.id}`}
             type="button"
+            role="tab"
             aria-selected={activeTab === tab.id}
+            aria-controls="learning-active-panel"
+            tabIndex={activeTab === tab.id ? 0 : -1}
             className={activeTab === tab.id ? "is-active" : ""}
+            data-usage-event="learning_tab_opened"
+            data-usage-label={tab.label}
             onClick={() => setActiveTab(tab.id)}
           >
             {tab.label}
@@ -311,6 +1169,11 @@ export function LearningStudySetClient({ studySet }) {
         ))}
       </div>
 
+      <div
+        id="learning-active-panel"
+        role="tabpanel"
+        aria-labelledby={`learning-tab-${activeTab}`}
+      >
       {activeTab === "overview" ? (
         <div className="learning-overview-grid">
           <article className="surface learning-overview-card">
@@ -326,10 +1189,24 @@ export function LearningStudySetClient({ studySet }) {
           <article className="surface learning-overview-card">
             <Layers3 aria-hidden="true" />
             <div>
-              <h2>Material privat</h2>
+              <h2>{publishedAt ? "Publicat in comunitate" : studySet.isOwner ? "Material privat" : "Material din comunitate"}</h2>
               <p>
-                Setul ramane in contul tau. Publicarea pentru comunitate va fi o actiune separata,
-                dupa verificare.
+                {publishedAt
+                  ? "Colegi din comunitatea ta pot folosi acest material fara o incarcare noua."
+                  : studySet.isOwner
+                    ? "Setul ramane in contul tau pana il publici manual pentru comunitate."
+                    : "Folosesti un material publicat de un coleg din comunitatea ta."}
+              </p>
+            </div>
+          </article>
+          <article className="surface learning-overview-card">
+            <CheckCircle2 aria-hidden="true" />
+            <div>
+              <h2>Progres salvat</h2>
+              <p>
+                {studySet.attempts.length
+                  ? `Ai ${studySet.attempts.length} runde recente salvate. Ultimul scor: ${studySet.attempts[0].score}%.`
+                  : "Primele rezultate apar aici dupa flashcards sau test."}
               </p>
             </div>
           </article>
@@ -344,15 +1221,29 @@ export function LearningStudySetClient({ studySet }) {
         </div>
       ) : null}
 
-      {activeTab === "flashcards" ? <FlashcardsTab flashcards={studySet.flashcards} /> : null}
+      {activeTab === "flashcards" ? (
+        <FlashcardsTab studySetId={studySet.id} flashcards={studySet.flashcards} />
+      ) : null}
 
       {activeTab === "test" ? (
         <TestTab
+          studySetId={studySet.id}
           questions={questionsWithChapterTitles}
+          mistakeQuestions={mistakes}
           chapterId={chapterFilter}
+          testMode={testMode}
           onChapterChange={setChapterFilter}
-          onMistakes={setMistakes}
+          onTestModeChange={setTestMode}
+          onMistakes={mergeMistakes}
         />
+      ) : null}
+
+      {activeTab === "simulation" ? (
+        <ExamSimulationTab chapters={studySet.chapters} questions={questionsWithChapterTitles} />
+      ) : null}
+
+      {activeTab === "competition" ? (
+        <CompetitionTab leaderboard={studySet.leaderboard} />
       ) : null}
 
       {activeTab === "mistakes" ? (
@@ -364,8 +1255,14 @@ export function LearningStudySetClient({ studySet }) {
                   <span className="ui-section-label">Greseli</span>
                   <h2>Repeta intrebarile ratate</h2>
                 </div>
-                <button type="button" className="secondary" onClick={() => setActiveTab("test")}>
-                  Test nou
+                <button
+                  type="button"
+                  className="secondary"
+                  data-usage-event="learning_mistakes_started"
+                  data-usage-label="Test doar din greseli"
+                  onClick={startMistakesTest}
+                >
+                  Test doar din greseli
                 </button>
               </div>
               {mistakes.map((question) => (
@@ -386,20 +1283,26 @@ export function LearningStudySetClient({ studySet }) {
       {activeTab === "plan" ? (
         <section className="learning-plan-list">
           {studySet.plan.length ? (
-            studySet.plan.map((day, index) => (
-              <article key={`${day.title}-${index}`} className="learning-plan-card">
-                <span>{day.title}</span>
-                <strong>{`Ziua ${day.day}`}</strong>
-                {day.activities.map((activity) => (
-                  <p key={activity}>{activity}</p>
-                ))}
-              </article>
-            ))
+            studySet.plan.map((day, index) => {
+              const dayLabel = `Ziua ${day.day || index + 1}`;
+              const title = day.title && day.title !== dayLabel ? day.title : dayLabel;
+
+              return (
+                <article key={`${day.title}-${index}`} className="learning-plan-card">
+                  <span>Plan zilnic</span>
+                  <strong>{title}</strong>
+                  {day.activities.map((activity) => (
+                    <p key={activity}>{activity}</p>
+                  ))}
+                </article>
+              );
+            })
           ) : (
             <div className="learning-empty-panel">Planul apare dupa ce exista capitole salvate.</div>
           )}
         </section>
       ) : null}
+      </div>
 
       <div className="learning-study-footer">
         <Link className="btn-link secondary" href="/materiale/invata">

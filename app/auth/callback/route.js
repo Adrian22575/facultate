@@ -47,6 +47,18 @@ function getSafeAuthErrorDetails(error) {
   return details;
 }
 
+function getAuthFailureUrl({ origin, errorCode, nextPath, hasReferral }) {
+  const url = new URL("/auth/login", origin);
+  url.searchParams.set("error", errorCode);
+  if (nextPath && nextPath !== "/") {
+    url.searchParams.set("next", nextPath);
+  }
+  if (hasReferral) {
+    url.searchParams.set("ref", "1");
+  }
+  return url;
+}
+
 export async function GET(request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
@@ -56,7 +68,12 @@ export async function GET(request) {
 
   if (!code) {
     return NextResponse.redirect(
-      new URL("/auth/login?error=missing_code", requestUrl.origin)
+      getAuthFailureUrl({
+        origin: requestUrl.origin,
+        errorCode: "missing_code",
+        nextPath: safeNext,
+        hasReferral: Boolean(referralCode)
+      })
     );
   }
 
@@ -71,7 +88,12 @@ export async function GET(request) {
       );
 
       return NextResponse.redirect(
-        new URL("/auth/login?error=oauth_exchange_failed", requestUrl.origin)
+        getAuthFailureUrl({
+          origin: requestUrl.origin,
+          errorCode: "oauth_exchange_failed",
+          nextPath: safeNext,
+          hasReferral: Boolean(referralCode)
+        })
       );
     }
 
@@ -169,7 +191,12 @@ export async function GET(request) {
     );
 
     return NextResponse.redirect(
-      new URL("/auth/login?error=unexpected", requestUrl.origin)
+      getAuthFailureUrl({
+        origin: requestUrl.origin,
+        errorCode: "unexpected",
+        nextPath: safeNext,
+        hasReferral: Boolean(referralCode)
+      })
     );
   }
 }

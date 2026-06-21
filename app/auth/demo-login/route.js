@@ -1,16 +1,12 @@
 import { NextResponse } from "next/server";
 
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { startDemoSession } from "@/lib/demo-session";
-
-function getSafeNextPath(value, fallback = "/") {
-  return typeof value === "string" && value.startsWith("/") && !value.startsWith("//")
-    ? value
-    : fallback;
-}
 
 export async function GET(request) {
   const requestUrl = new URL(request.url);
-  const nextPath = getSafeNextPath(requestUrl.searchParams.get("next"), "/demo");
+  const requestedNextPath = requestUrl.searchParams.get("next");
+  const nextPath = requestedNextPath ? getPostLoginNextPath(requestedNextPath) : "/demo";
 
   await startDemoSession();
 
@@ -21,7 +17,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   const formData = await request.formData();
-  const nextPath = getSafeNextPath(formData.get("next"));
+  const nextPath = getPostLoginNextPath(formData.get("next"));
 
   await startDemoSession();
 

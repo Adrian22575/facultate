@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getImportJobMonitor } from "@/lib/ai/import-pipeline";
 import { getQuestionBankJobMonitor } from "@/lib/ai/question-bank-pipeline";
+import { getLearningStudySetJobMonitor } from "@/lib/learning/study-set-pipeline";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -11,17 +12,19 @@ function getSortTimestamp(item) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function mergeMonitors(generationMonitor, importMonitor) {
+function mergeAllMonitors(generationMonitor, importMonitor, learningMonitor) {
   const activeJobs = [
     ...(generationMonitor?.activeJobs || []).map((job) => ({ ...job, kind: job.kind || "generation" })),
-    ...(importMonitor?.activeJobs || [])
+    ...(importMonitor?.activeJobs || []),
+    ...(learningMonitor?.activeJobs || [])
   ].sort((left, right) => getSortTimestamp(right) - getSortTimestamp(left));
 
   const terminalCandidates = [
     generationMonitor?.terminalJob
       ? { ...generationMonitor.terminalJob, kind: generationMonitor.terminalJob.kind || "generation" }
       : null,
-    importMonitor?.terminalJob || null
+    importMonitor?.terminalJob || null,
+    learningMonitor?.terminalJob || null
   ].filter(Boolean);
 
   terminalCandidates.sort((left, right) => getSortTimestamp(right) - getSortTimestamp(left));
@@ -44,12 +47,13 @@ export async function GET() {
   }
 
   try {
-    const [generationMonitor, importMonitor] = await Promise.all([
+    const [generationMonitor, importMonitor, learningMonitor] = await Promise.all([
       getQuestionBankJobMonitor(user.id),
-      getImportJobMonitor(user.id)
+      getImportJobMonitor(user.id),
+      getLearningStudySetJobMonitor(user.id)
     ]);
 
-    return NextResponse.json(mergeMonitors(generationMonitor, importMonitor), {
+    return NextResponse.json(mergeAllMonitors(generationMonitor, importMonitor, learningMonitor), {
       headers: {
         "Cache-Control": "no-store, max-age=0"
       }

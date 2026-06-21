@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+import { getPublicSiteUrl } from "@/lib/site";
 import {
   BookOpenCheck,
   CheckCircle2,
@@ -16,7 +18,7 @@ import {
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { hasSupabasePublicEnv } from "@/lib/env/public";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nota5plus.ro";
+const siteUrl = getPublicSiteUrl();
 const pageUrl = `${siteUrl}/despre`;
 const homeHref = "/auth/exit-demo?next=/";
 const loginHref = `/auth/exit-demo?next=${encodeURIComponent("/auth/login?next=/")}`;

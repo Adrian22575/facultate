@@ -946,9 +946,10 @@ Surse active relevante:
 - `components/private-test-player.js`
 - `supabase/migrations/`
 
-Limitare curenta importanta:
-- upload-ul accepta PDF, DOCX si TXT/text lipit.
-- PowerPoint/PPTX nu este inca in `AI_SOURCE_ACCEPTED_MIME_TYPES`.
+Stare curenta:
+- upload-ul accepta PDF, DOCX, PPTX, TXT si text lipit;
+- extragerea si procesarea backend sunt verificate pentru toate aceste formate;
+- verificarile vizuale pentru selectarea reala a fisierelor raman amanate separat.
 
 ## Input-uri acceptate
 
@@ -1518,7 +1519,7 @@ Aceste decizii trebuie confirmate explicit inainte sa scriem codul principal.
 | Study set privat sau comunitar | Privat la procesare, publicabil manual in comunitate | Reduce duplicatele fara sa publice accidental continut personal | Deschis |
 | Cost pentru colegi | Study set publicat se foloseste fara incarcare suplimentara | Incurajeaza contributia si reduce procesari duplicate | Deschis |
 | Leaderboard | MVP simplu pe study set, apoi comunitate completa | Competitia ajuta retentia, dar trebuie privacy/control | Deschis |
-| Simulare examen mixta | Faza 2 daca MVP devine mare | Nu trebuie sa blocheze invatarea de baza | Deschis |
+| Simulare examen mixta | MVP simplu in client, fara salvare dedicata initial | Da utilitate rapida fara schema noua | Implementat local |
 | Plan adaptiv | Faza 2 | Are nevoie de date din teste/flashcards | Deschis |
 | Niveluri Rapid/Complet | Nu in MVP | Mai putine alegeri initiale | Deschis |
 
@@ -1735,117 +1736,145 @@ Planul este gata de implementare doar cand:
 
 - [x] Document de plan creat: `docs/material-learning-module-plan.md`
 - [x] Plan extins cu UX, cost, optimizare, QA si roadmap
-- [ ] Decizie finala confirmata: integrat in Workspace, nu landing separat initial
-- [ ] Decizie finala PPTX: MVP sau imediat dupa MVP
-- [ ] Decizie finala billing pentru study set
-- [ ] Decizie finala privacy/comunitate: privat initial, publicabil manual in comunitate
-- [ ] Decizie finala acces comunitate: cine vede materialul publicat
-- [ ] Decizie finala leaderboard: anonim, nume real sau opt-in
-- [ ] Decizie finala simulare mixta: MVP sau faza 2
+- [x] Decizie finala confirmata: integrat in Workspace, nu landing separat initial
+- [x] Decizie finala PPTX: inclus in MVP
+- [x] Decizie finala billing pentru study set
+- [x] Decizie finala privacy/comunitate: privat initial, publicabil manual in comunitate
+- [x] Decizie finala acces comunitate: cel mai specific context disponibil, grupa/clasa > program > institutie
+- [x] Decizie finala leaderboard: anonim in MVP, fara nume reale
+- [x] Decizie finala simulare mixta: MVP simplu, apoi extindere cu salvare/istoric
 
 ### Schema Supabase
 
-- [ ] Migrare `learning_study_sets`
-- [ ] Migrare `learning_chapters`
-- [ ] Migrare `learning_concepts`
-- [ ] Migrare `learning_flashcards`
-- [ ] Migrare `learning_questions`
-- [ ] Migrare `learning_attempts`
-- [ ] Migrare `learning_attempt_items`
-- [ ] Campuri/tabele pentru publicare comunitara
-- [ ] Campuri/tabele pentru raportare materiale
-- [ ] Campuri/tabele pentru leaderboard/reputatie daca intra in MVP
-- [ ] RLS pentru toate tabelele
-- [ ] Indexuri pentru user, study_set, status, next_review_at
-- [ ] Indexuri pentru community scope si materiale publicate
+- [x] Migrare `learning_study_sets`
+- [x] Migrare `learning_chapters`
+- [x] Migrare `learning_concepts`
+- [x] Migrare `learning_flashcards`
+- [x] Migrare `learning_questions`
+- [x] Migrare `learning_attempts`
+- [x] Migrare `learning_attempt_items`
+- [x] Campuri/tabele pentru publicare comunitara
+- [x] Campuri/tabele pentru raportare materiale
+- [x] Campuri/tabele pentru leaderboard/reputatie daca intra in MVP (MVP foloseste `learning_attempts`, fara schema noua)
+- [x] RLS pentru toate tabelele
+- [x] Functiile SQL pentru lock-urile joburilor sunt limitate la backend (`service_role`)
+- [x] Functiile privilegiate publice au granturi minime si `search_path` fixat
+- [x] Politicile RLS pentru profilul propriu sunt restaurate si verificate in baza live
+- [x] Cheile straine fara index si politicile RLS costisitoare sunt optimizate pentru cresterea volumului
+- [x] Indexuri pentru user, study_set, status, next_review_at
+- [x] Indexuri pentru community scope si materiale publicate
+- [x] Index unic pentru consumul unei incarcari per study set
 
 ### Backend
 
-- [ ] API upload/creare study set
-- [ ] Idempotency pentru submit/upload
-- [ ] Extractie text PDF
-- [ ] Extractie text DOCX
-- [ ] Extractie text lipit
-- [ ] Extractie PPTX daca intra in MVP
-- [ ] Pipeline analiza materie
-- [ ] Pipeline generare capitole
-- [ ] Pipeline generare concepte
-- [ ] Pipeline generare flashcards
-- [ ] Pipeline generare intrebari
-- [ ] Consolidare si deduplicare
-- [ ] Status/progress pentru procesare
-- [ ] Salvare partiala pe capitole
-- [ ] Retry doar pentru capitole esuate
-- [ ] Publicare manuala in comunitate
-- [ ] Folosire study set publicat fara consum de incarcare
-- [ ] Raportare/depublicare material comunitar
-- [ ] Fallback pentru setup Supabase incomplet
+- [x] API upload/creare study set
+- [x] Consum 1 incarcare pentru study set procesat
+- [x] Idempotency pentru submit/upload
+- [x] Extractie text PDF
+- [x] Extractie text DOCX
+- [x] Extractie text lipit
+- [x] Extractie PPTX daca intra in MVP
+- [x] Pipeline analiza materie
+- [x] Pipeline generare capitole
+- [x] Pipeline generare concepte
+- [x] Pipeline generare flashcards
+- [x] Pipeline generare intrebari
+- [x] Consolidare si deduplicare simpla
+- [x] Status/progress pentru procesare cu job async si revenire din activitate
+- [x] Salvare partiala pe capitole
+- [x] Retry doar pentru capitole esuate
+- [x] Publicare manuala in comunitate
+- [x] Folosire study set publicat fara consum de incarcare
+- [x] Raportare/depublicare material comunitar
+- [x] Stergere study set propriu, inclusiv anularea jobului activ si cleanup sigur al sursei nefolosite
+- [x] Fallback pentru setup Supabase incomplet
 
 ### UI
 
-- [ ] Workspace hub cu 3 optiuni clare
-- [ ] Card nou in Workspace pentru `Invata din materia ta`
-- [ ] Ruta `/materiale/invata`
-- [ ] Upload simplu PDF/DOCX/text/PPTX
-- [ ] Ecran de procesare
-- [ ] Ecran analiza materie
-- [ ] Ruta `/materiale/invata/[studySetId]`
-- [ ] Overview study set
-- [ ] Tab capitole
-- [ ] Pagina/sectiune capitol
-- [ ] Tab flashcards
-- [ ] Tab test
-- [ ] Tab greseli
-- [ ] Tab plan
-- [ ] Actiune `Publica pentru clasa/grupa ta`
-- [ ] Lista `Materiale din comunitatea ta`
-- [ ] Indicator `Publicat in comunitate`
-- [ ] Leaderboard simplu pe study set daca intra in MVP
-- [ ] Empty/loading/error states
+- [x] Workspace hub cu 3 optiuni clare
+- [x] Card nou in Workspace pentru `Invata din materia ta`
+- [x] Sectiune pe landing-ul public actual pentru `Invata din materia ta`
+- [x] Pagina publica de preturi, accesibila fara cont si legata din landing
+- [x] Ruta `/materiale/invata`
+- [x] Upload simplu PDF/DOCX/TXT/text lipit
+- [x] Upload simplu PPTX
+- [x] Ecran de procesare
+- [x] Ecran analiza materie
+- [x] Ruta `/materiale/invata/[studySetId]`
+- [x] Overview study set
+- [x] Tab capitole
+- [x] Pagina/sectiune capitol
+- [x] Tab flashcards
+- [x] Tab test
+- [x] Tab greseli
+- [x] Tab plan
+- [x] Actiune `Publica pentru clasa/grupa ta`
+- [x] Lista `Materiale din comunitatea ta`
+- [x] Indicator `Publicat in comunitate`
+- [x] Stergere material propriu cu confirmare inline, fara dialog suprapus
+- [x] Leaderboard simplu pe study set daca intra in MVP
+- [x] Empty/loading/error states
 - [ ] Mobile layout verificat
-- [ ] Copy fara termeni tehnici interzisi
+  - Audit structural actualizat la 19 iunie 2026: centrul de materiale foloseste carduri etichetate sub 760 px, taburile lui nu mai sunt comprimate, actiunile flashcard folosesc o grila 2x2, iar KPI-urile folosesc doua coloane pe telefoanele obisnuite si o coloana pe ecrane foarte inguste.
+  - Ramane necesara verificarea vizuala pe un server sanatos la cel putin 360 px, 390 px si 760 px inainte de bifare.
+- [x] Copy fara termeni tehnici interzisi
 
 ### Moduri invatare
 
-- [ ] Invata pe capitole
-- [ ] Flashcards cu rating
-- [ ] Test grila configurabil
-- [ ] Rezultate cu explicatii
-- [ ] Test din greseli
-- [ ] Explica-mi simplu pentru concepte
-- [ ] Simulare examen mixta
-- [ ] Plan de invatare simplu
+- [x] Invata pe capitole
+- [x] Flashcards cu rating
+- [x] Test grila configurabil
+- [x] Rezultate cu explicatii
+- [x] Test din greseli
+- [x] Explica-mi simplu pentru concepte
+- [x] Simulare examen mixta
+- [x] Plan de invatare simplu
 
 ### Analytics/Admin
 
-- [ ] Usage events pentru flow-ul de invatare
-- [ ] Cost estimat per study set in Admin
-- [ ] Durata pe etapa in Admin/loguri
-- [ ] Admin vede study sets create
-- [ ] Admin vede rate de reusita/esec
-- [ ] Admin vede modurile folosite cel mai mult
-- [ ] Admin vede erori de procesare pentru study sets
-- [ ] Admin vede study sets scumpe dar nefolosite dupa procesare
-- [ ] Admin vede materiale publicate in comunitate
-- [ ] Admin vede materiale raportate
-- [ ] Admin vede incarcari duplicate evitate prin comunitate
-- [ ] Admin vede top materiale si top contributori
+- [x] Usage events pentru flow-ul de invatare
+- [x] Tabul utilizatorului `Statistici > Invatare` foloseste date reale pentru materiale, teste, flashcards, evolutie, zone slabe si comparatia agregata cu propria comunitate
+- [x] Activitatea din modulul de invatare este inclusa in competitia generala a comunitatii
+- [x] Cost estimat per study set in Admin
+- [x] Durata pe etapa in Admin/loguri
+- [x] Admin vede study sets create
+- [x] Admin vede rate de reusita/esec
+- [x] Admin vede modurile folosite cel mai mult
+- [x] Admin vede erori de procesare pentru study sets
+- [x] Admin vede study sets nefolosite dupa procesare si consumul de incarcare
+- [x] Admin vede materiale publicate in comunitate
+- [x] Admin vede materiale raportate
+- [x] Admin vede incarcari duplicate evitate prin comunitate
+- [x] Admin vede top materiale si top contributori
 
 ### Verificare
 
-- [ ] `npm run build`
-- [ ] `npm run supabase:check`
-- [ ] Migrare aplicata live
-- [ ] Test upload text scurt
-- [ ] Test upload DOCX
-- [ ] Test upload PDF
-- [ ] Test upload PPTX daca intra in MVP
-- [ ] Test flashcards
-- [ ] Test quiz
-- [ ] Test greseli
-- [ ] Test plan
+- [x] `npm run build`
+- [x] `npm run supabase:check`
+- [x] Schema live verificata pentru agregarea statisticilor de invatare (`learning_study_sets`, `learning_attempts`, `learning_flashcard_reviews`, `score_percent`, `next_review_at`)
+- [x] Migrare aplicata live
+- [x] `npm run learning:verify` pentru extractor text/TXT/DOCX/PPTX/PDF si generator capitole/flashcards/intrebari/plan
+- [x] Monitorizare post-lansare definita prin `npm run learning:monitor`; verificata direct cu `node --use-system-ca scripts/learning-monitor.mjs`
+- [x] `node --use-system-ca --import ./scripts/register-path-alias.mjs scripts/learning-live-e2e.mjs` pentru pipeline live Supabase: user temporar, credit temporar, text raw, job async, capitole, flashcards, intrebari, quiz, greseli si review flashcard
+- [x] `node --use-system-ca --import ./scripts/register-path-alias.mjs scripts/learning-storage-e2e.mjs` pentru upload live in Supabase Storage si procesare TXT/DOCX/PDF/PPTX
+- [x] Test backend text raw
+- [x] Test backend upload TXT
+- [x] Test backend upload DOCX
+- [x] Test backend upload PDF
+- [x] Test backend upload PPTX
+- [x] Test UI upload text scurt prin browser: login email cu user temporar, text lipit, redirect la `/materiale/invata/[studySetId]`, job ajuns `Materia este gata`
+- [ ] Test UI upload DOCX
+- [ ] Test UI upload PDF
+- [ ] Test UI upload PPTX
+  - Runner pregatit: `npm run learning:ui:file:e2e -- --base-url https://preview.example DOCX PDF PPTX`.
+  - Nu se bifeaza pana cand runnerul trece integral pe deploymentul Preview conectat la acelasi proiect Supabase ca mediul local de test.
+- [x] Test flashcards prin browser: tab Flashcards si rating `Stiu` salvat
+- [x] Test quiz prin browser: 10 raspunsuri selectate, rezultat salvat `Scor 10 din 10`, apoi runda gresita `Scor 0 din 10`
+- [x] Test greseli prin browser: tab Greseli populat dupa runda gresita, cu 10 carduri
+- [x] Test plan prin browser: tab Plan populat cu zile si actiuni
 - [ ] Verificare vizuala desktop
 - [ ] Verificare vizuala mobile
+  - Verificarea statica si build-ul de productie trec dupa adaptarea mobila din 19 iunie 2026; aceste verificari nu inlocuiesc inspectia randarii reale.
 
 ## Ordine recomandata de implementare
 
@@ -1876,3 +1905,64 @@ Modulul este considerat implementat cand un utilizator poate:
 9. repeta greselile;
 10. primeste un plan de invatare;
 11. iar Admin poate vedea usage si erori pentru acest flow.
+
+## Criteriu de lansare oficiala
+
+Pentru lansare nationala, nu este suficient ca flow-ul sa mearga punctual. Trebuie bifate si:
+
+- [x] Utilizatorul neautentificat vede modulul pe landing-ul public.
+- [x] Utilizatorul autentificat ajunge la modul din dashboard.
+- [x] Utilizatorul autentificat ajunge la modul din header/nav privat.
+- [x] Workspace-ul comunica explicit cele trei directii: invatare din materie, import grile existente, licenta.
+- [x] Modulul foloseste limbaj de produs, fara termeni tehnici interzisi in UI.
+- [x] Schema live Supabase este aplicata pentru invatare, PPTX, idempotency si raportari.
+- [x] Admin vede erori, usage, cost/incarcari, reutilizare comunitara si top materiale/contributori.
+- [x] Flow-ul este asincron cu progres persistent si revenire din activitate.
+- [x] Exista verificari reale backend/Storage pentru upload text, TXT, DOCX, PDF si PPTX.
+- [ ] Exista verificari reale UI pentru upload text, DOCX, PDF si PPTX. Textul lipit este verificat; DOCX/PDF/PPTX raman de verificat prin selector real de fisier.
+- [x] Exista verificari reale backend pentru flashcards, test, greseli si plan.
+- [x] Exista verificari reale UI pentru flashcards, test, greseli, plan, simulare si competitie.
+- [ ] Mobile si desktop sunt validate vizual pe server sanatos.
+- [x] Exista monitorizare post-lansare pentru erori de procesare si materiale esuate.
+- [x] Exista copy de suport/FAQ pentru utilizatori care nu inteleg ce tip de material sa incarce.
+- [x] Joburile de procesare au worker Vercel Cron securizat, independent de tab, cu lock atomic si recuperare pentru executii intrerupte.
+- [x] Operatiile costisitoare, feedback-ul si evenimentele de utilizare au limitare atomica in baza de date.
+- [x] Telemetria anonimizeaza identificatorii dinamici si nu stocheaza parametri sensibili din URL.
+- [x] Paginile publice Termeni si Confidentialitate sunt implementate si legate.
+- [x] Pagina tehnica `/setup` este limitata la administratori.
+- [ ] Datele operatorului si textele juridice sunt completate si validate profesional inainte de Production.
+- [ ] Configurarea Production este verificata: domeniu, redirect-uri Auth, Stripe live + webhook si variabile Vercel.
+- [x] Exista procedura documentata pentru backup, restaurare si raspuns la incidente in `docs/production-operations-runbook.md`.
+- [ ] Este efectuat un exercitiu real de restaurare intr-un proiect separat.
+- [ ] Protectia Supabase pentru parole compromise si protectia anti-bot pentru Auth sunt activate si verificate.
+
+## Audit de lansare 2026-06-22
+
+Verificari headless trecute in ultima runda:
+
+- build Next.js de productie, inclusiv toate cele 88 de rute;
+- verificarea statica UI pentru 159 de fisiere si verificarea documentatiei de agent;
+- schema live Supabase: 32 de relatii, 18 functii critice si bucketul privat cu toate cele 4 tipuri MIME;
+- concurenta si idempotency pentru progres, incercari, onboarding, premium, credite si joburi de fundal;
+- stergerea completa a unui cont temporar;
+- disponibilitatea live a ambelor modele configurate;
+- scanare diff pentru erori de whitespace si chei introduse accidental.
+
+Corectii incluse in aceasta runda:
+
+- greselile de la licenta sunt persistente intre dispozitive si actualizate atomic;
+- rundele de recapitulare nu mai umfla statisticile testelor pe materii;
+- comparatia imediata de la licenta foloseste acelasi mod de test, iar overview-ul exclude rundele auxiliare;
+- explicatiile sunt afisate in testul interactiv, parcurgerea licentei si rezultatele gresite;
+- API-ul de rezultate licenta valideaza intrebarile accesibile si limiteaza salvarile abuzive.
+
+Verificarile vizuale si testele UI prin selector real de fisier sunt amanate la cererea utilizatorului si se ruleaza numai daca apare un indiciu concret in cod sau in functionare.
+
+Blocaje externe ramase inainte de Production:
+
+- valorile finale pentru operatorul juridic si validarea profesionala a textelor;
+- `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY` si `CRON_SECRET` au fost suprascrise sigur in Production pe 2026-06-22; Vercel confirma metadatele, dar nu permite recitirea valorilor `Sensitive`;
+- `STRIPE_SECRET_KEY` si `STRIPE_WEBHOOK_SECRET` exista ca variabile criptate; tipul Live si corespondenta webhookului trebuie confirmate de preflightul deploymentului si de un checkout real inainte de promovare;
+- activarea protectiei pentru parole compromise si a protectiei anti-bot in Supabase Auth;
+- contul Vercel este Hobby si a refuzat deploymentul Preview din 2026-06-22 deoarece cronul la un minut necesita Pro; este necesar upgrade la Pro sau mutarea explicita a schedulerului pe alta infrastructura;
+- verificarea Stripe live, redirecturilor Auth si un exercitiu de restaurare intr-un proiect separat.

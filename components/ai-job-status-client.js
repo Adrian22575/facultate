@@ -11,6 +11,7 @@ import {
   formatGenerationError,
   getJobPresentation
 } from "@/lib/ai/job-presentation";
+import { useDialogFocus } from "@/lib/ui/dialog";
 
 const MAX_POLLING_SERVER_ERRORS = 3;
 
@@ -202,6 +203,10 @@ function LoadingGlyph() {
 }
 
 function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
+  const dialogRef = useDialogFocus(Boolean(confirmState), () => {
+    if (!isPending) onClose();
+  });
+
   if (!confirmState) {
     return null;
   }
@@ -209,6 +214,7 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   return (
     <div className="workspace-modal-backdrop" role="presentation">
       <div
+        ref={dialogRef}
         className="workspace-modal-card review-confirm-modal"
         role="dialog"
         aria-modal="true"
@@ -251,6 +257,7 @@ export function AIJobStatusClient({ initialJob }) {
   const router = useRouter();
   const [job, setJob] = useState(initialJob);
   const [isRetrying, setIsRetrying] = useState(false);
+  const [retryError, setRetryError] = useState(null);
   const [isDeleting, startDeleteTransition] = useTransition();
   const [deleteError, setDeleteError] = useState("");
   const [confirmState, setConfirmState] = useState(null);
@@ -321,11 +328,8 @@ export function AIJobStatusClient({ initialJob }) {
           consecutiveServerErrorsRef.current = 0;
           setJob((currentJob) =>
             buildTerminalFailedJob(currentJob, {
-              errorMessage:
-                typeof payload?.error === "string"
-                  ? payload.error
-                  : "Setup-ul pentru procesarea fisierelor nu este complet.",
-              statusDetail: "Polling-ul a fost oprit pana cand migrarile lipsa sunt aplicate."
+              errorMessage: "Procesarea nu este disponibila momentan.",
+              statusDetail: "Incearca din nou peste cateva minute. Fisierul incarcat ramane salvat."
             })
           );
           return;
@@ -346,7 +350,7 @@ export function AIJobStatusClient({ initialJob }) {
                 errorMessage:
                   "Procesarea s-a oprit temporar dupa mai multe erori consecutive de server.",
                 statusDetail:
-                  "Reincarca pagina dupa ce verifici setup-ul local sau logurile serverului."
+                  "Reincarca pagina si incearca din nou. Fisierul incarcat ramane salvat."
               })
             );
           }
@@ -374,6 +378,7 @@ export function AIJobStatusClient({ initialJob }) {
       return;
     }
 
+    setRetryError(null);
     setIsRetrying(true);
     try {
       const response = await fetch(`/api/materiale/jobs/${job.id}/process`, {
@@ -384,16 +389,18 @@ export function AIJobStatusClient({ initialJob }) {
       if (response.status === 503 && payload?.code === "setup_incomplete") {
         setJob((currentJob) =>
           buildTerminalFailedJob(currentJob, {
-            errorMessage:
-              typeof payload?.error === "string"
-                ? payload.error
-                : "Setup-ul pentru procesarea fisierelor nu este complet.",
-            statusDetail: "Retry-ul a fost oprit pana cand migrarile lipsa sunt aplicate."
+            errorMessage: "Procesarea nu este disponibila momentan.",
+            statusDetail: "Incearca din nou peste cateva minute. Fisierul incarcat ramane salvat."
           })
         );
       } else if (payload && response.ok) {
         consecutiveServerErrorsRef.current = 0;
         setJob(payload);
+      } else {
+        setRetryError({
+          message: payload?.error || "Nu am putut relua procesarea acum.",
+          actionHref: payload?.actionHref || null
+        });
       }
     } finally {
       setIsRetrying(false);
@@ -405,6 +412,7 @@ export function AIJobStatusClient({ initialJob }) {
       return;
     }
 
+    setRetryError(null);
     setIsRetrying(true);
     try {
       const response = await fetch(`/api/materiale/jobs/${job.id}/process`, {
@@ -416,6 +424,11 @@ export function AIJobStatusClient({ initialJob }) {
       if (payload && response.ok) {
         consecutiveServerErrorsRef.current = 0;
         setJob(payload);
+      } else {
+        setRetryError({
+          message: payload?.error || "Nu am putut relua procesarea acum.",
+          actionHref: payload?.actionHref || null
+        });
       }
     } finally {
       setIsRetrying(false);
@@ -475,7 +488,7 @@ export function AIJobStatusClient({ initialJob }) {
   }
 
   if (!job) {
-    return <div className="error-state">Jobul nu a putut fi incarcat.</div>;
+    return <div className="error-state" role="alert">Jobul nu a putut fi incarcat.</div>;
   }
 
   const initialTimestamp = Date.parse(job?.startedAt || job?.createdAt || "");
@@ -491,7 +504,7 @@ export function AIJobStatusClient({ initialJob }) {
     <div className="job-status-stack">
       {deleteError ? (
         <section className="surface">
-          <div className="error-state">{deleteError}</div>
+          <div className="error-state" role="alert">{deleteError}</div>
         </section>
       ) : null}
 
@@ -582,6 +595,20 @@ export function AIJobStatusClient({ initialJob }) {
         </div>
 
         <div className="job-actions">
+          {retryError ? (
+            <div className="error-state" role="alert">
+              <span>{retryError.message}</span>
+              {retryError.actionHref ? (
+                <PendingNavigationLink
+                  className="btn-link secondary"
+                  href={retryError.actionHref}
+                  pendingLabel="Se deschide contul..."
+                >
+                  Vezi incarcarile
+                </PendingNavigationLink>
+              ) : null}
+            </div>
+          ) : null}
           {job.status === "succeeded" ? (
             <PendingNavigationLink
               className="btn-back job-primary-cta"

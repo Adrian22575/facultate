@@ -1,11 +1,10 @@
-import { Activity, BookOpen, ClipboardList, CreditCard, GraduationCap, Upload } from "lucide-react";
+import { Activity, ArrowRight, BookOpen, ClipboardList, CreditCard, GraduationCap, Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { AIWorkspaceHighlightCard } from "@/components/ai-workspace-highlight-card";
-import { LicentaImportWorkspaceClient } from "@/components/licenta-import-workspace-client";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
-import { getActiveLicentaImportSession, getUserImportJobs } from "@/lib/ai/import-pipeline";
+import { getUserImportJobs } from "@/lib/ai/import-pipeline";
 import { getUserQuestionBankJobs } from "@/lib/ai/question-bank-pipeline";
 import {
   getAcademicCommunityLabel,
@@ -14,14 +13,14 @@ import {
   isAcademicContextComplete
 } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
-import { getSubjectAllocations, getSubjects } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Workspace | Nota 5+"
+  title: "Workspace de invatare | Nota 5+",
+  description: "Incarca materia, importa intrebari existente sau pregateste licenta intr-un singur Workspace."
 };
 
 function WorkspaceHeaderIcon({ type }) {
@@ -91,12 +90,13 @@ function WorkspaceSummaryCard({ icon, label, value, accent, action }) {
   );
 }
 
-function WorkspaceChoiceCard({ icon: Icon, title, copy, bullets = [], href, primary = false }) {
+function WorkspaceChoiceCard({ icon: Icon, title, copy, bullets = [], actionLabel, href, primary = false }) {
   return (
     <PendingNavigationLink
       className={`ai-workspace-choice-card${primary ? " is-primary" : ""}`}
       href={href}
-      pendingLabel="Se deschide flow-ul..."
+      pendingLabel={`Se deschide ${title.toLowerCase()}...`}
+      pendingMode="silent"
     >
       <span className="ai-workspace-choice-icon" aria-hidden="true">
         <Icon size={22} strokeWidth={2.2} />
@@ -109,6 +109,10 @@ function WorkspaceChoiceCard({ icon: Icon, title, copy, bullets = [], href, prim
             <span key={bullet}>{bullet}</span>
           ))}
         </div>
+        <span className="ai-workspace-choice-action">
+          <span>{actionLabel}</span>
+          <ArrowRight aria-hidden="true" size={17} strokeWidth={2.3} />
+        </span>
       </div>
     </PendingNavigationLink>
   );
@@ -128,8 +132,7 @@ function getActivityTimestamp(item) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-export default async function AIWorkspacePage({ searchParams }) {
-  const resolvedSearchParams = await searchParams;
+export default async function AIWorkspacePage() {
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
 
@@ -160,29 +163,18 @@ export default async function AIWorkspacePage({ searchParams }) {
 
   let jobs = [];
   let importJobs = [];
-  let activeLicentaSession = null;
   if (!demoMode && !setupWarning) {
     try {
-      [jobs, importJobs, activeLicentaSession] = await Promise.all([
+      [jobs, importJobs] = await Promise.all([
         getUserQuestionBankJobs(user.id, 8),
-        getUserImportJobs(user.id, 8),
-        getActiveLicentaImportSession(user.id)
+        getUserImportJobs(user.id, 8)
       ]);
     } catch (error) {
       setupWarning = "Activitatea recenta nu a putut fi incarcata momentan.";
     }
   }
 
-  const message =
-    typeof resolvedSearchParams?.message === "string" ? decodeURIComponent(resolvedSearchParams.message) : null;
-  const error =
-    typeof resolvedSearchParams?.error === "string" ? decodeURIComponent(resolvedSearchParams.error) : null;
   const communityLabel = academicContext ? getAcademicCommunityLabel(academicContext) : null;
-  const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
-  const [subjects, subjectAllocations] = await Promise.all([
-    getSubjects(),
-    getSubjectAllocations()
-  ]);
   const activityJobs = [...jobs, ...importJobs].sort(
     (left, right) => getActivityTimestamp(right) - getActivityTimestamp(left)
   );
@@ -222,21 +214,22 @@ export default async function AIWorkspacePage({ searchParams }) {
   return (
     <main className="app-shell ai-workspace-page">
       <AppHeader
-        title="Incarca intrebarile"
-        subtitle="Trimite un fisier sau text care are deja intrebari si raspunsuri."
+        title="Workspace de invatare"
+        subtitle="Incarca materia, importa intrebari existente sau pregateste licenta."
         hidePageTitle
       />
+
+      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
 
       <section className="ai-workspace-header">
         <div className="ai-workspace-header-copy">
           <span className="ui-section-label">Workspace</span>
           <h1 className="ai-workspace-title">
-            Trimite intrebarile si pregateste-le pentru comunitatea ta.
+            Alege cum vrei sa transformi materialele in invatare.
           </h1>
           <p className="ai-workspace-subtitle">
-            Urca un fisier sau lipeste text care are deja intrebari si raspunsuri. Noi verificam
-            continutul, il pregatim si il trimitem spre materia potrivita sau spre simularea de
-            licenta.
+            Incarca materia ca sa primesti capitole, flashcards si teste, importa grile existente
+            sau pregateste seturi mari pentru licenta si comunitatea ta.
           </p>
         </div>
         <PendingNavigationLink
@@ -277,8 +270,8 @@ export default async function AIWorkspacePage({ searchParams }) {
                 <div className="ai-workspace-empty-kicker">Gata de upload</div>
                 <h2>Incepe cu un fisier bun sau cu text clar si continui in doi pasi simpli.</h2>
                 <p>
-                  PDF, DOCX, TXT sau text lipit direct. Daca materialul are deja intrebari si
-                  raspunsuri, il putem verifica si pregati imediat.
+                  PDF, DOCX, PPTX, TXT sau text lipit direct. Alege mai jos daca vrei sa inveti
+                  din materie sau sa pregatesti intrebari existente.
                 </p>
                 <span className="ui-icon-text ai-workspace-empty-iconline">
                   <Upload aria-hidden="true" size={17} strokeWidth={2.2} />
@@ -296,6 +289,7 @@ export default async function AIWorkspacePage({ searchParams }) {
           title="Invata din materia ta"
           copy="Incarca materia si primesti capitole, flashcards, test si plan de invatare."
           bullets={["Capitole", "Flashcards", "Plan"]}
+          actionLabel="Deschide modul"
           href="/materiale/invata"
           primary
         />
@@ -304,28 +298,16 @@ export default async function AIWorkspacePage({ searchParams }) {
           title="Importa intrebari existente"
           copy="Pentru grile care au deja variante si raspunsuri marcate."
           bullets={["Review", "Materii", "Teste"]}
-          href="#workspace-import-flow"
+          actionLabel="Importa grile"
+          href="/materiale/importa"
         />
         <WorkspaceChoiceCard
           icon={GraduationCap}
           title="Pregateste licenta"
           copy="Pentru seturi mari de licenta si simulari centralizate."
           bullets={["Licenta", "Review", "Simulari"]}
-          href="/materiale?examType=licenta#workspace-import-flow"
-        />
-      </section>
-
-      <section className="surface workspace-upload-surface ai-workspace-upload-surface" id="workspace-import-flow">
-        <LicentaImportWorkspaceClient
-          userType={userType}
-          subjects={subjects}
-          subjectAllocations={subjectAllocations}
-          demoMode={demoMode}
-          setupWarning={setupWarning}
-          billingSnapshot={billingSnapshot}
-          activeLicentaSession={activeLicentaSession}
-          message={message}
-          error={error}
+          actionLabel="Pregateste licenta"
+          href="/materiale/licenta"
         />
       </section>
     </main>

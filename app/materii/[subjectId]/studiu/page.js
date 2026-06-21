@@ -4,9 +4,9 @@ import { notFound, redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { StudyPageClient } from "@/components/study-page-client";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
-import { getQuestionsForSubject } from "@/lib/data";
+import { getQuestionsForSubject, getSubjectProgressSnapshot } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
-import { hasLearningModesAccess, LEARNING_MODES_LOCK_HREF } from "@/lib/learning-access";
+import { getLearningModesLockHref, hasLearningModesAccess } from "@/lib/learning-access";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export async function generateMetadata({ params }) {
@@ -36,7 +36,7 @@ export default async function StudyPage({ params }) {
 
   const canUseLearningModes = await hasLearningModesAccess({ user, demoMode });
   if (!canUseLearningModes) {
-    redirect(LEARNING_MODES_LOCK_HREF);
+    redirect(getLearningModesLockHref(`/materii/${resolvedParams.subjectId}/studiu`));
   }
 
   const data = await getQuestionsForSubject(
@@ -46,6 +46,9 @@ export default async function StudyPage({ params }) {
       : {}
   );
   if (!data || !data.questions.length) notFound();
+  const progress = demoMode
+    ? null
+    : await getSubjectProgressSnapshot(user.id, data.subject.id);
 
   return (
     <main className="app-shell">
@@ -59,7 +62,11 @@ export default async function StudyPage({ params }) {
         title={`Mod Studiu - ${data.subject.title}`}
         subtitle="Parcurge toate intrebarile cu raspunsurile corecte evidentiate si explicatiile disponibile."
       />
-      <StudyPageClient subject={data.subject} questions={data.questions} />
+      <StudyPageClient
+        subject={data.subject}
+        questions={data.questions}
+        initialViewedIndexes={progress?.study_viewed_question_ids || []}
+      />
     </main>
   );
 }

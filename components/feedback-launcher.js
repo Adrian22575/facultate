@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { LoadingIconText } from "@/components/loading-spinner";
+import { useDialogFocus } from "@/lib/ui/dialog";
 
 const FEEDBACK_OPTIONS = [
   { value: "problem", label: "Problema" },
@@ -44,37 +45,11 @@ export function FeedbackLauncher() {
   const [success, setSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messageRef = useRef(null);
+  const dialogRef = useDialogFocus(isOpen, () => setIsOpen(false), messageRef);
 
   const isHidden = useMemo(() => shouldHideFeedback(pathname), [pathname]);
   const trimmedMessageLength = message.trim().length;
   const isValid = trimmedMessageLength >= MIN_FEEDBACK_MESSAGE_LENGTH;
-
-  useEffect(() => {
-    if (!isOpen) {
-      return undefined;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      messageRef.current?.focus();
-    }, 40);
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    function handleEscape(event) {
-      if (event.key === "Escape") {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen]);
 
   if (isHidden) {
     return null;
@@ -156,6 +131,7 @@ export function FeedbackLauncher() {
           }}
         >
           <section
+            ref={dialogRef}
             className="feedback-panel"
             role="dialog"
             aria-modal="true"
@@ -224,8 +200,8 @@ export function FeedbackLauncher() {
                 />
               </label>
 
-              {error ? <div className="error-state">{error}</div> : null}
-              {success ? <div className="success-state">{success}</div> : null}
+              {error ? <div className="error-state" role="alert">{error}</div> : null}
+              {success ? <div className="success-state" role="status">{success}</div> : null}
 
               <div className="inline-actions feedback-actions">
                 <button type="submit" disabled={!isValid || isSubmitting}>

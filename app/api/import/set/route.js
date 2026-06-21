@@ -1,11 +1,29 @@
 import { NextResponse } from "next/server";
 
 import { extractSourceText, prepareSourceFile } from "@/lib/ai/extract-text";
-import { createSetImportJob } from "@/lib/ai/import-pipeline";
+import { createSetImportJob, getImportStatus } from "@/lib/ai/import-pipeline";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getImportRequestContext, jsonError } from "@/app/api/import/_shared";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
+
+function normalizeRequestId(value) {
+  const requestId = String(value || "").trim();
+  return /^[a-z0-9_.:-]{12,120}$/i.test(requestId) ? requestId : null;
+}
+
+async function findExistingRequest(userId, requestId) {
+  if (!requestId) return null;
+  const { data, error } = await createAdminClient()
+    .from("ai_import_jobs")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("metadata->>requestId", requestId)
+    .maybeSingle();
+  if (error) throw error;
+  return data?.id ? getImportStatus({ importJobId: data.id, userId }) : null;
+}
 
 async function readOptionalFileText({ file, userId, label }) {
   if (!(file instanceof File) || file.size <= 0) {
@@ -41,13 +59,16 @@ async function readOptionalFileText({ file, userId, label }) {
 }
 
 export async function POST(request) {
-  const context = await getImportRequestContext();
+  const context = await getImportRequestContext({ returnTo: "/materiale/licenta" });
   if (context.error) {
     return context.error;
   }
 
   try {
     const formData = await request.formData();
+    const requestId = normalizeRequestId(formData.get("requestId"));
+    const existing = await findExistingRequest(context.user.id, requestId);
+    if (existing) return NextResponse.json(existing);
     const licentaSessionId = String(formData.get("licentaSessionId") || "").trim() || null;
     const title = String(formData.get("title") || "").trim();
     const contentText = String(formData.get("contentText") || "").trim();
@@ -93,6 +114,7 @@ export async function POST(request) {
       answerKeyText: [answerKeyText, fileAnswerKey.text].filter(Boolean).join("\n\n"),
       academicContext: context.academicContext,
       metadata: {
+        ...(requestId ? { requestId } : {}),
         hasContentFile: Boolean(fileContent.text),
         hasQuestionsFile: Boolean(fileQuestions.text),
         hasAnswerKeyFile: Boolean(fileAnswerKey.text),

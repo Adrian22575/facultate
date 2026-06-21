@@ -74,14 +74,14 @@ export default async function MyTestsPage() {
 
       <section className="surface">
         {communityLabel ? (
-          <div className="success-state">{`Comunitate activa: ${communityLabel}`}</div>
+          <div className="success-state" role="status">{`Comunitate activa: ${communityLabel}`}</div>
         ) : null}
         {demoMode ? (
-          <div className="error-state">
+          <div className="error-state" role="alert">
             In modul demo aceasta pagina afiseaza doar structura.
           </div>
         ) : null}
-        {setupWarning ? <div className="error-state">{setupWarning}</div> : null}
+        {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
       </section>
 
       <section className="surface">

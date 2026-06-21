@@ -22,7 +22,7 @@ import {
   buildPublishedDraftHref,
   buildPublishedQuestionBankHref
 } from "@/lib/ai/published-destination";
-import { deleteSourceDocumentObject } from "@/lib/ai/storage";
+import { cleanupUnusedSourceDocumentsForUser } from "@/lib/ai/source-document-cleanup";
 import { isDemoUser } from "@/lib/demo-user";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireUser } from "@/lib/supabase/guards";
@@ -139,6 +139,25 @@ async function reindexQuestionBankItems(supabase, bankId) {
 
     if (updateError) throw updateError;
   }
+}
+
+async function refreshQuestionBankStats(supabase, bankId) {
+  const { count, error: countError } = await supabase
+    .from("ai_question_bank_items")
+    .select("id", { count: "exact", head: true })
+    .eq("bank_id", bankId);
+
+  if (countError) throw countError;
+
+  const { error: bankError } = await supabase
+    .from("ai_question_banks")
+    .update({
+      question_count: count || 0,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", bankId);
+
+  if (bankError) throw bankError;
 }
 
 function getPublishedBankMessage(bank) {
@@ -344,80 +363,7 @@ async function deleteUnusedUserSubjectCatalogEntries(supabase, userId, deletedBa
 }
 
 async function deleteUnusedSourceDocumentsForUser(supabase, userId, sourceDocumentIds) {
-  const uniqueIds = [...new Set(sourceDocumentIds)].filter(Boolean);
-  if (!uniqueIds.length) {
-    return;
-  }
-
-  const [
-    { data: sourceDocuments, error: sourceDocumentsError },
-    { data: bankRefs, error: bankRefsError },
-    { data: testRefs, error: testRefsError },
-    { data: generationJobRefs, error: generationJobRefsError },
-    { data: importJobRefs, error: importJobRefsError }
-  ] = await Promise.all([
-    supabase
-      .from("ai_source_documents")
-      .select("id, storage_bucket, storage_path")
-      .eq("user_id", userId)
-      .in("id", uniqueIds),
-    supabase
-      .from("ai_question_banks")
-      .select("source_document_id")
-      .eq("user_id", userId)
-      .in("source_document_id", uniqueIds),
-    supabase
-      .from("user_generated_tests")
-      .select("source_document_id")
-      .eq("user_id", userId)
-      .in("source_document_id", uniqueIds),
-    supabase
-      .from("ai_generation_jobs")
-      .select("source_document_id")
-      .eq("user_id", userId)
-      .in("source_document_id", uniqueIds),
-    supabase
-      .from("ai_import_jobs")
-      .select("source_document_id")
-      .eq("user_id", userId)
-      .in("source_document_id", uniqueIds)
-  ]);
-
-  if (sourceDocumentsError) throw sourceDocumentsError;
-  if (bankRefsError) throw bankRefsError;
-  if (testRefsError) throw testRefsError;
-  if (generationJobRefsError) throw generationJobRefsError;
-  if (importJobRefsError) throw importJobRefsError;
-
-  const referencedIds = new Set([
-    ...(bankRefs || []).map((row) => row.source_document_id),
-    ...(testRefs || []).map((row) => row.source_document_id),
-    ...(generationJobRefs || []).map((row) => row.source_document_id),
-    ...(importJobRefs || []).map((row) => row.source_document_id)
-  ].filter(Boolean));
-
-  const unusedDocuments = (sourceDocuments || []).filter((document) => !referencedIds.has(document.id));
-  for (const document of unusedDocuments) {
-    try {
-      await deleteSourceDocumentObject({
-        storageBucket: document.storage_bucket,
-        storagePath: document.storage_path
-      });
-    } catch (error) {
-      console.warn("Nu am putut sterge fisierul sursa din storage.", {
-        sourceDocumentId: document.id,
-        message: error instanceof Error ? error.message : String(error)
-      });
-    }
-
-    const { error: deleteDocumentError } = await supabase
-      .from("ai_source_documents")
-      .delete()
-      .eq("id", document.id)
-      .eq("user_id", userId);
-
-    if (deleteDocumentError) throw deleteDocumentError;
-  }
+  return cleanupUnusedSourceDocumentsForUser(supabase, userId, sourceDocumentIds);
 }
 
 export async function updateDraftMetaAction(formData) {
@@ -559,6 +505,7 @@ export async function updateQuestionBankItemAction(formData) {
     .eq("bank_id", parsed.bankId);
 
   if (error) throw error;
+  await refreshQuestionBankStats(supabase, parsed.bankId);
 
   await markJobsActivityByBankId(parsed.bankId, {
     activityState: "modified",
@@ -625,6 +572,7 @@ export async function addQuestionBankItemAction(formData) {
     .single();
 
   if (error) throw error;
+  await refreshQuestionBankStats(supabase, parsed.bankId);
 
   await markJobsActivityByBankId(parsed.bankId, {
     activityState: "modified",
@@ -659,6 +607,7 @@ export async function deleteQuestionBankItemAction(formData) {
   if (error) throw error;
 
   await reindexQuestionBankItems(supabase, parsed.bankId);
+  await refreshQuestionBankStats(supabase, parsed.bankId);
   await markJobsActivityByBankId(parsed.bankId, {
     activityState: "modified",
     activityMessage: "Intrebarile au fost modificate.",
@@ -836,7 +785,7 @@ async function deleteQuestionBanksForUser(userId, bankIds) {
 
   if (remainingBanksError) throw remainingBanksError;
   if ((remainingBanks || []).length) {
-    throw new Error("Unele materiale inca exista in baza de date dupa stergere.");
+    throw new Error("Unele materiale nu au putut fi sterse complet. Reincarca pagina si incearca din nou.");
   }
 
   await deleteUnusedUserSubjectCatalogEntries(supabase, userId, banks);

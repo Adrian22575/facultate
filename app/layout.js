@@ -5,8 +5,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AIJobGlobalNotifier } from "@/components/ai-job-global-notifier";
 import { FeedbackLauncherServer } from "@/components/feedback-launcher-server";
 import { UsageTracker } from "@/components/usage-tracker";
+import { getPublicSiteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nota5plus.ro";
+const siteUrl = getPublicSiteUrl();
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -41,7 +42,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ro">
       <body>
-        {children}
+        <a className="skip-link" href="#main-content">
+          Sari la continut
+        </a>
+        <div id="main-content" tabIndex={-1}>
+          {children}
+        </div>
         <UsageTracker />
         <AIJobGlobalNotifier />
         <FeedbackLauncherServer />

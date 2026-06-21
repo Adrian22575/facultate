@@ -1,9 +1,11 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
+import { useDialogFocus } from "@/lib/ui/dialog";
 import {
   normalizeSearchText,
   truncateText
@@ -82,12 +84,22 @@ function buildSearchResult(question, index, normalizedQuery) {
   };
 }
 
-export function StudyPageClient({ subject, questions }) {
-  const [seen, setSeen] = useState(() => new Set());
+export function StudyPageClient({ subject, questions, initialViewedIndexes = [] }) {
+  const [seen, setSeen] = useState(
+    () =>
+      new Set(
+        (Array.isArray(initialViewedIndexes) ? initialViewedIndexes : []).filter(
+          (value) => Number.isInteger(value) && value >= 0 && value < questions.length
+        )
+      )
+  );
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [query, setQuery] = useState("");
   const questionRefs = useRef([]);
   const lastSyncedKeyRef = useRef("");
+  const navToggleRef = useRef(null);
+  const navCloseRef = useRef(null);
+  const navDialogRef = useDialogFocus(isNavOpen, () => setIsNavOpen(false), navCloseRef);
 
   const safeQuestions = useMemo(() => sanitizeQuestions(questions), [questions]);
 
@@ -113,8 +125,9 @@ export function StudyPageClient({ subject, questions }) {
             let changed = false;
 
             entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                next.add(String(entry.target.dataset.index));
+              const questionIndex = String(entry.target.dataset.index);
+              if (entry.isIntersecting && !next.has(questionIndex)) {
+                next.add(questionIndex);
                 changed = true;
               }
             });
@@ -122,7 +135,7 @@ export function StudyPageClient({ subject, questions }) {
             return changed ? next : current;
           });
         },
-        { threshold: 0.6 }
+        { threshold: 0.2 }
       );
 
       questionRefs.current.forEach((element) => {
@@ -136,24 +149,6 @@ export function StudyPageClient({ subject, questions }) {
       return undefined;
     }
   }, [safeQuestions]);
-
-  useEffect(() => {
-    function handleEscape(event) {
-      if (event.key === "Escape") {
-        setIsNavOpen(false);
-      }
-    }
-
-    if (isNavOpen && typeof document !== "undefined") {
-      document.addEventListener("keydown", handleEscape);
-    }
-
-    return () => {
-      if (typeof document !== "undefined") {
-        document.removeEventListener("keydown", handleEscape);
-      }
-    };
-  }, [isNavOpen]);
 
   useEffect(() => {
     if (!safeQuestions.length || !seen.size) {
@@ -275,23 +270,45 @@ export function StudyPageClient({ subject, questions }) {
         ))}
       </section>
 
-      <button className="nav-toggle" type="button" onClick={() => setIsNavOpen(true)}>
+      <button
+        ref={navToggleRef}
+        className="nav-toggle"
+        type="button"
+        onClick={() => setIsNavOpen(true)}
+        aria-expanded={isNavOpen}
+        aria-controls="study-navigation-panel"
+      >
         Navigare
       </button>
 
       <div
         className={`nav-overlay${isNavOpen ? " active" : ""}`}
+        role="presentation"
+        aria-hidden={!isNavOpen}
         onClick={(event) => {
           if (event.target === event.currentTarget) {
             setIsNavOpen(false);
           }
         }}
       >
-        <div className="nav-panel">
+        <div
+          ref={navDialogRef}
+          id="study-navigation-panel"
+          className="nav-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="study-navigation-title"
+        >
           <div className="nav-panel-header">
-            <h3>Navigare studiu</h3>
-            <button className="nav-close" type="button" onClick={() => setIsNavOpen(false)}>
-              x
+            <h3 id="study-navigation-title">Navigare studiu</h3>
+            <button
+              ref={navCloseRef}
+              className="nav-close"
+              type="button"
+              onClick={() => setIsNavOpen(false)}
+              aria-label="Inchide navigarea"
+            >
+              <X aria-hidden="true" size={20} strokeWidth={2.2} />
             </button>
           </div>
 
@@ -334,6 +351,7 @@ export function StudyPageClient({ subject, questions }) {
             type="text"
             inputMode="search"
             placeholder="Cauta dupa numar, intrebare sau raspuns"
+            aria-label="Cauta dupa numar, intrebare sau raspuns"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />

@@ -27,7 +27,6 @@ if ($missing.Count -gt 0) {
 }
 
 $legacyRootItems = @(
-  "index.html",
   "materii.html",
   "subject.html",
   "study.html",
@@ -65,7 +64,7 @@ if ($clutter) {
 }
 
 $skill = Get-Content -LiteralPath (Join-Path $workspace ".codex/skills/teste-facultate-maintenance/SKILL.md") -Raw
-if (-not $skill.StartsWith("---`n")) {
+if ($skill -notmatch '\A---\r?\n') {
   Write-Host "Local maintenance skill is missing YAML frontmatter."
   exit 1
 }

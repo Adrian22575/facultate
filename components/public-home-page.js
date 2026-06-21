@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { hasSupabasePublicEnv } from "@/lib/env/public";
+import { getPublicSiteUrl } from "@/lib/site";
 
 const featureCards = [
   {
@@ -50,12 +51,8 @@ const faqItems = [
   }
 ];
 
-function getSiteUrl() {
-  return process.env.NEXT_PUBLIC_SITE_URL || "https://nota5plus.ro";
-}
-
 function StructuredData() {
-  const siteUrl = getSiteUrl();
+  const siteUrl = getPublicSiteUrl();
   const graph = [
     {
       "@type": "WebSite",

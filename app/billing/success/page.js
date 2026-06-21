@@ -1,29 +1,40 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { BillingSuccessRedirect } from "@/components/billing-success-redirect";
+import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { getBillingSnapshot, reconcileCheckoutSession } from "@/lib/billing";
 import { hasStripeEnv, resolveStripeMode } from "@/lib/stripe/server";
+import { getOptionalUser } from "@/lib/supabase/guards";
 
 export const metadata = {
   title: "Plata reusita | Nota 5+"
 };
 
 function getSafeReturnTo(value) {
-  if (typeof value !== "string") {
-    return "";
-  }
+  const safePath = getPostLoginNextPath(value);
+  return safePath === "/" && value !== "/" ? "" : safePath.slice(0, 300);
+}
 
-  const trimmed = value.trim();
-  if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.includes("\\") || trimmed.includes("\n")) {
-    return "";
+function getCurrentSuccessPath(searchParams) {
+  const params = new URLSearchParams();
+  for (const key of ["session_id", "stripe_mode", "return_to"]) {
+    const value = searchParams?.[key];
+    if (typeof value === "string" && value) {
+      params.set(key, value);
+    }
   }
-
-  return trimmed.slice(0, 300);
+  const query = params.toString();
+  return query ? `/billing/success?${query}` : "/billing/success";
 }
 
 export default async function BillingSuccessPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
+  const user = await getOptionalUser();
+  if (!user) {
+    redirect(`/auth/login?next=${encodeURIComponent(getCurrentSuccessPath(resolvedSearchParams))}`);
+  }
   const returnTo = getSafeReturnTo(resolvedSearchParams?.return_to);
   let targetHref = returnTo || "/cont?section=plans";
   let title = "Plata a fost inregistrata";
@@ -37,7 +48,10 @@ export default async function BillingSuccessPage({ searchParams }) {
 
   if (typeof sessionId === "string" && sessionId && hasStripeEnv(stripeMode)) {
     try {
-      const result = await reconcileCheckoutSession(sessionId, { stripeMode });
+      const result = await reconcileCheckoutSession(sessionId, {
+        stripeMode,
+        expectedUserId: user.id
+      });
       targetHref = returnTo || `/cont?section=${result.section}&sync=${result.status}`;
 
       if (result.status === "applied") {
@@ -58,28 +72,39 @@ export default async function BillingSuccessPage({ searchParams }) {
             ? "Planul sau incarcarea este deja in cont. Te trimitem imediat mai departe."
             : "Plata este reusita, dar actualizarea poate mai dura putin daca webhook-ul este in curs.";
       } else {
-        title = "Plata este confirmata";
-        subtitle = "Asteptam confirmarea finala pentru actualizare.";
+        title = "Plata este in curs";
+        subtitle = "Asteptam confirmarea finala a platii.";
         status = "pending";
         detail =
-          "Plata este reusita, dar actualizarea mai dureaza putin. Daca esti in local, verifica si listener-ul Stripe.";
+          "Nu repeta plata. Actualizarea se finalizeaza automat dupa confirmare.";
       }
-    } catch (_error) {
+    } catch (error) {
       targetHref = returnTo || "/cont?section=plans";
-      title = "Plata este reusita";
-      subtitle = "Nu am putut confirma imediat actualizarea contului.";
-      status = "warning";
-      detail =
-        "Daca nu vezi schimbarea imediat, intra in cont peste cateva secunde. In local, verifica daca Stripe CLI a fost pornit.";
+      const sessionMismatch = error instanceof Error && error.message === "CHECKOUT_SESSION_USER_MISMATCH";
+      title = sessionMismatch ? "Sesiunea nu poate fi verificata" : "Plata este reusita";
+      subtitle = sessionMismatch
+        ? "Linkul de confirmare nu apartine contului conectat."
+        : "Nu am putut confirma imediat actualizarea contului.";
+      status = sessionMismatch ? "invalid" : "warning";
+      detail = sessionMismatch
+        ? "Intra in contul folosit la plata sau revino la pagina de planuri."
+        : "Daca nu vezi schimbarea imediat, intra din nou in cont peste cateva secunde. Plata nu trebuie repetata.";
     }
+  } else {
+    title = "Link de confirmare incomplet";
+    subtitle = "Nu am primit identificatorul platii.";
+    status = "invalid";
+    detail = "Revino in cont pentru a verifica planul si platile disponibile.";
   }
+
+  const backLabel = returnTo ? "Inapoi unde ai ramas" : "Inapoi la cont";
 
   return (
     <main className="app-shell">
       <AppHeader
         action={
           <Link className="btn-back" href={targetHref}>
-            Inapoi la cont
+            {backLabel}
           </Link>
         }
         title={title}

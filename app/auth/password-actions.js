@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
+import { getAcademicContext, isAcademicContextComplete } from "@/lib/academic/server";
 import {
   getPostLoginNextPath,
   isValidEmail,
@@ -185,10 +186,14 @@ export async function signUpWithEmailAction(formData) {
     }
 
     const supabase = await createClient();
+    const { NEXT_PUBLIC_SITE_URL } = getSupabasePublicEnv();
+    const confirmationUrl = new URL("/auth/callback", NEXT_PUBLIC_SITE_URL);
+    confirmationUrl.searchParams.set("next", nextPath);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: confirmationUrl.toString(),
         data: {
           full_name: fullName,
           phone_number: phoneNumber
@@ -269,7 +274,7 @@ export async function signUpWithEmailAction(formData) {
       }
     }
 
-    clearDemoSession();
+    await clearDemoSession();
 
     if (!data?.session) {
       loginRedirect(addReferralParam({ mode: "login", next: nextPath, message: "check_email" }, referralCode));
@@ -327,7 +332,7 @@ export async function signInWithPasswordAction(formData) {
     });
   }
 
-  clearDemoSession();
+  await clearDemoSession();
 
   if (data?.user?.id && data.user.email) {
     try {
@@ -349,6 +354,13 @@ export async function signInWithPasswordAction(formData) {
     }
   }
 
+  if (data?.user?.id) {
+    const academicContext = await getAcademicContext(data.user.id);
+    if (!isAcademicContextComplete(academicContext)) {
+      redirect(buildOnboardingRedirect(nextPath));
+    }
+  }
+
   redirect(nextPath);
 }
 
@@ -362,8 +374,10 @@ export async function forgotPasswordAction(formData) {
 
   const supabase = await createClient();
   const { NEXT_PUBLIC_SITE_URL } = getSupabasePublicEnv();
+  const resetUrl = new URL("/auth/reset-password", NEXT_PUBLIC_SITE_URL);
+  resetUrl.searchParams.set("next", nextPath);
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")}/auth/reset-password`
+    redirectTo: resetUrl.toString()
   });
 
   if (error) {
@@ -374,20 +388,21 @@ export async function forgotPasswordAction(formData) {
 }
 
 export async function resetPasswordAction(formData) {
+  const nextPath = getPostLoginNextPath(formData.get("next"));
   const password = String(formData.get("password") || "");
   const confirmPassword = String(formData.get("confirmPassword") || "");
   const passwordError = validatePasswordPair(password, confirmPassword);
 
   if (passwordError) {
-    redirect("/auth/reset-password?error=password_invalid");
+    redirect(`/auth/reset-password?error=password_invalid&next=${encodeURIComponent(nextPath)}`);
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
 
   if (error) {
-    redirect("/auth/reset-password?error=reset_failed");
+    redirect(`/auth/reset-password?error=reset_failed&next=${encodeURIComponent(nextPath)}`);
   }
 
-  redirect("/auth/email-login?mode=login&message=password_reset");
+  redirect(`/auth/email-login?mode=login&message=password_reset&next=${encodeURIComponent(nextPath)}`);
 }

@@ -9,6 +9,7 @@ import {
   FileCheck2,
   FileClock,
   FolderOpen,
+  PencilLine,
   PlayCircle,
   RotateCcw,
   Trash2
@@ -19,6 +20,8 @@ import { deleteQuestionBanksAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
+import { useDialogFocus } from "@/lib/ui/dialog";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const MATERIALS_PAGE_SIZE = 8;
 const ACTIVITY_PAGE_SIZE = 6;
@@ -143,18 +146,27 @@ function activityTitle(job) {
 
 function activityType(job) {
   if (job.kind === "import") return "Import licenta";
+  if (job.kind === "learning") return "Invatare";
   if (job.metadata?.examType === "licenta") return "Licenta";
   return "Test grila";
 }
 
+function withReturnTo(href, returnTo) {
+  if (!href) return href;
+  const separator = href.includes("?") ? "&" : "?";
+  return `${href}${separator}returnTo=${encodeURIComponent(returnTo)}`;
+}
+
 function activityHref(job) {
   if (job.kind === "import") return job.href || `/materiale/imports/${job.id}`;
+  if (job.kind === "learning") return job.resultHref || `/materiale/invata/${job.resultStudySetId || job.metadata?.studySetId || ""}`;
   if (job.status === "succeeded") return job.reviewHref || job.resultHref || `/materiale/jobs/${job.id}`;
   return `/materiale/jobs/${job.id}`;
 }
 
 function activityActionLabel(job) {
   if (job.canResumeProcessing) return "Reia";
+  if (job.kind === "learning" && job.status === "succeeded") return "Deschide";
   if (job.kind === "import" && job.status === "ready_for_preview") return "Verifica";
   if (job.status === "succeeded" || job.status === "ready_for_preview") return "Verifica";
   return "Detalii";
@@ -192,6 +204,10 @@ function EmptyState({ title, copy }) {
 }
 
 function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, onTextChange, onClose, onConfirm }) {
+  const dialogRef = useDialogFocus(Boolean(target), () => {
+    if (!isPending) onClose();
+  });
+
   if (!target) {
     return null;
   }
@@ -206,6 +222,7 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
   return (
     <div className="workspace-modal-backdrop" role="presentation">
       <div
+        ref={dialogRef}
         className="workspace-modal-card review-confirm-modal"
         role="dialog"
         aria-modal="true"
@@ -239,7 +256,7 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
               disabled={isPending}
             />
           </label>
-          {errorMessage ? <div className="error-state">{errorMessage}</div> : null}
+          {errorMessage ? <div className="error-state" role="alert">{errorMessage}</div> : null}
           <div className="inline-actions">
             <button
               type="button"
@@ -366,7 +383,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
   if (!materials.length) {
     return (
       <>
-        {feedback ? <div className="success-state workspace-inline-feedback">{feedback}</div> : null}
+        {feedback ? <div className="success-state workspace-inline-feedback" role="status">{feedback}</div> : null}
         <EmptyState
           title={emptyTitle}
           copy={emptyCopy}
@@ -377,7 +394,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
 
   return (
     <>
-      {feedback ? <div className="success-state workspace-inline-feedback">{feedback}</div> : null}
+      {feedback ? <div className="success-state workspace-inline-feedback" role="status">{feedback}</div> : null}
       {selectedIds.length ? (
         <div className="ai-activity-bulk-actions">
           <span>{`${selectedIds.length} selectate`}</span>
@@ -415,7 +432,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
           <tbody>
             {paginated.rows.map((material) => (
               <tr key={material.id}>
-                <td className="ai-activity-select-cell">
+                <td className="ai-activity-select-cell" data-label="Selecteaza">
                   <input
                     type="checkbox"
                     aria-label={`Selecteaza ${material.title}`}
@@ -423,28 +440,45 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
                     onChange={() => toggleSelected(material.id)}
                   />
                 </td>
-                <td className="admin-table-name-cell admin-table-name-cell--xl">{material.title}</td>
-                <td className="admin-table-text-cell">{material.typeLabel}</td>
-                <td className="admin-table-text-cell">{material.subjectLabel}</td>
-                <td className="table-center admin-table-count-cell">{material.questionCount}</td>
-                <td>
+                <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Material" data-mobile-wide="true">
+                  {material.title}
+                </td>
+                <td className="admin-table-text-cell" data-label="Tip">{material.typeLabel}</td>
+                <td className="admin-table-text-cell" data-label="Materie">{material.subjectLabel}</td>
+                <td className="table-center admin-table-count-cell" data-label="Intrebari">{material.questionCount}</td>
+                <td data-label="Status">
                   <span className={`admin-table-pill ${materialStatusTone(material.status)}`}>
                     {materialStatusLabel(material.status)}
                   </span>
                 </td>
-                <td className="admin-table-date-cell">{formatDate(material.updatedAt)}</td>
-                <td>
+                <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(material.updatedAt)}</td>
+                <td data-label="Actiuni" data-mobile-wide="true">
                   <div className="inline-actions ai-activity-table-actions">
-                    <PendingNavigationLink
-                      className="admin-table-link"
-                      href={material.primaryHref}
-                      pendingLabel="Se deschide..."
-                      pendingMode="replace"
-                    >
-                      <IconText icon={material.canReview ? CheckCircle2 : FileCheck2}>
-                        {material.primaryActionLabel}
-                      </IconText>
-                    </PendingNavigationLink>
+                      {material.reviewHref ? (
+                        <PendingNavigationLink
+                          className="admin-table-link"
+                          href={withReturnTo(
+                            material.reviewHref,
+                            "/materiale/activitate?tab=subjects"
+                          )}
+                          pendingLabel="Se deschide editorul..."
+                          pendingMode="replace"
+                        >
+                          <IconText icon={material.canReview ? CheckCircle2 : PencilLine}>
+                            {material.canReview ? "Verifica" : "Corecteaza"}
+                          </IconText>
+                        </PendingNavigationLink>
+                      ) : null}
+                      {material.resultHref && material.resultHref !== material.reviewHref ? (
+                        <PendingNavigationLink
+                          className="admin-table-link secondary"
+                          href={material.resultHref}
+                          pendingLabel="Se deschide..."
+                          pendingMode="replace"
+                        >
+                          <IconText icon={FileCheck2}>{material.primaryActionLabel}</IconText>
+                        </PendingNavigationLink>
+                      ) : null}
                     <button
                       type="button"
                       className="admin-table-link secondary review-delete-btn"
@@ -496,20 +530,30 @@ function getLicentaStatusTone(row) {
   return "is-warning";
 }
 
-function getLicentaAction(row) {
-  if (row.status === "completed" && row.resultHref) {
-    return {
-      href: row.resultHref,
-      label: "Deschide",
-      icon: FileCheck2
-    };
+function getLicentaActions(row) {
+  const actions = [];
+
+  if (row.reviewHref) {
+    actions.push({
+      href: withReturnTo(row.reviewHref, "/materiale/activitate?tab=licenta"),
+      label: "Corecteaza",
+      icon: PencilLine
+    });
   }
 
-  return {
-    href: row.href,
-    label: row.status === "failed" ? "Detalii" : "Continua",
-    icon: row.status === "failed" ? Eye : CheckCircle2
-  };
+  if (row.status === "completed" && row.resultHref && row.resultHref !== row.reviewHref) {
+    actions.push({ href: row.resultHref, label: "Simulare", icon: PlayCircle });
+  }
+
+  if (!actions.length) {
+    actions.push({
+      href: row.href,
+      label: row.status === "failed" ? "Detalii" : "Continua",
+      icon: row.status === "failed" ? Eye : CheckCircle2
+    });
+  }
+
+  return actions;
 }
 
 function buildStandaloneLicentaRow(materials) {
@@ -530,6 +574,7 @@ function buildStandaloneLicentaRow(materials) {
     status: completedSetCount === materials.length ? "completed" : "active",
     resultBankId: first.status === "published" ? first.id : null,
     resultHref: first.primaryHref,
+    reviewHref: first.reviewHref,
     title: materials.length === 1 ? first.title : "Licenta generala",
     setCount: materials.length,
     completedSetCount,
@@ -591,33 +636,36 @@ function LicentaTable({ rows }) {
           </thead>
           <tbody>
             {paginated.rows.map((row) => {
-              const action = getLicentaAction(row);
+              const actions = getLicentaActions(row);
               return (
                 <tr key={row.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl">
+                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Licenta" data-mobile-wide="true">
                     <div className="ai-activity-name-cell">
                       <strong>{row.title}</strong>
                       <span>{`${row.completedSetCount || 0}/${row.setCount || 0} seturi salvate`}</span>
                     </div>
                   </td>
-                  <td className="table-center admin-table-count-cell">{row.setCount || 0}</td>
-                  <td className="table-center admin-table-count-cell">{row.questionsWithAnswers || row.totalQuestions || 0}</td>
-                  <td>
+                  <td className="table-center admin-table-count-cell" data-label="Seturi">{row.setCount || 0}</td>
+                  <td className="table-center admin-table-count-cell" data-label="Intrebari">{row.questionsWithAnswers || row.totalQuestions || 0}</td>
+                  <td data-label="Status">
                     <span className={`admin-table-pill ${getLicentaStatusTone(row)}`}>
                       {getLicentaStatusLabel(row)}
                     </span>
                   </td>
-                  <td className="admin-table-date-cell">{formatDate(row.updatedAt || row.completedAt || row.createdAt)}</td>
-                  <td>
+                  <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(row.updatedAt || row.completedAt || row.createdAt)}</td>
+                  <td data-label="Actiuni" data-mobile-wide="true">
                     <div className="inline-actions ai-activity-table-actions">
-                      <PendingNavigationLink
-                        className="admin-table-link"
-                        href={action.href}
-                        pendingLabel={action.label === "Continua" ? "Se continua..." : "Se deschide..."}
-                        pendingMode="replace"
-                      >
-                        <IconText icon={action.icon}>{action.label}</IconText>
-                      </PendingNavigationLink>
+                      {actions.map((action, index) => (
+                        <PendingNavigationLink
+                          key={`${row.id}-${action.href}-${action.label}`}
+                          className={`admin-table-link${index > 0 ? " secondary" : ""}`}
+                          href={action.href}
+                          pendingLabel={action.label === "Continua" ? "Se continua..." : "Se deschide..."}
+                          pendingMode="replace"
+                        >
+                          <IconText icon={action.icon}>{action.label}</IconText>
+                        </PendingNavigationLink>
+                      ))}
                     </div>
                   </td>
                 </tr>
@@ -666,23 +714,23 @@ function ActivityTable({ jobs }) {
               const presentation = getJobPresentation(job);
               return (
                 <tr key={`${job.kind || "job"}-${job.id}`}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl">
+                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Procesare" data-mobile-wide="true">
                     <div className="ai-activity-name-cell">
                       <strong>{activityTitle(job)}</strong>
                       <span>{presentation.primaryMessage}</span>
                     </div>
                   </td>
-                  <td className="admin-table-text-cell">{activityType(job)}</td>
-                  <td>
+                  <td className="admin-table-text-cell" data-label="Tip">{activityType(job)}</td>
+                  <td data-label="Status">
                     <span className={`status-pill ${presentation.tone}`}>{presentation.statusLabel}</span>
                   </td>
-                  <td className="admin-table-text-cell">
+                  <td className="admin-table-text-cell" data-label="Progres" data-mobile-wide="true">
                     {presentation.isTerminal
                       ? `${presentation.progressLabel} - ${presentation.elapsedCaption}: ${presentation.elapsedLabel}`
                       : `${presentation.progressLabel} - astepti de ${presentation.elapsedLabel}`}
                   </td>
-                  <td className="admin-table-date-cell">{formatDate(job.updatedAt || job.completedAt || job.createdAt)}</td>
-                  <td>
+                  <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(job.updatedAt || job.completedAt || job.createdAt)}</td>
+                  <td data-label="Actiuni">
                     <div className="inline-actions ai-activity-table-actions">
                       <PendingNavigationLink
                         className="admin-table-link"
@@ -749,15 +797,15 @@ function TestsTable({ testGroups }) {
               const isActive = test.status === "active";
               return (
                 <tr key={test.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl">{test.title}</td>
-                  <td>
+                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Test" data-mobile-wide="true">{test.title}</td>
+                  <td data-label="Status">
                     <span className={`admin-table-pill ${isActive ? "is-good" : "is-warning"}`}>
                       {test.displayStatus}
                     </span>
                   </td>
-                  <td className="table-center admin-table-count-cell">{test.total_questions}</td>
-                  <td className="admin-table-date-cell">{formatDate(test.published_at || test.created_at)}</td>
-                  <td>
+                  <td className="table-center admin-table-count-cell" data-label="Intrebari">{test.total_questions}</td>
+                  <td className="admin-table-date-cell" data-label="Creat">{formatDate(test.published_at || test.created_at)}</td>
+                  <td data-label="Actiuni" data-mobile-wide="true">
                     <div className="inline-actions ai-activity-table-actions">
                       {isActive ? (
                         <PendingNavigationLink
@@ -770,7 +818,7 @@ function TestsTable({ testGroups }) {
                         </PendingNavigationLink>
                       ) : null}
                       <PendingNavigationLink
-                        className="admin-table-link"
+                        className="admin-table-link secondary"
                         href={`/materiale/drafts/${test.id}`}
                         pendingLabel="Se deschide..."
                         pendingMode="replace"
@@ -794,9 +842,12 @@ export function AIActivityCenterClient({
   materials = [],
   activityJobs = [],
   licentaSessions = [],
-  testGroups = { active: [], drafts: [] }
+  testGroups = { active: [], drafts: [] },
+  initialTab = "subjects"
 }) {
-  const [activeTab, setActiveTab] = useState("subjects");
+  const [activeTab, setActiveTab] = useState(
+    ACTIVITY_TABS.some((tab) => tab.id === initialTab) ? initialTab : "subjects"
+  );
   const [visibleMaterials, setVisibleMaterials] = useState(materials);
   function handleMaterialsDeleted(deletedIds) {
     setVisibleMaterials((current) => current.filter((material) => !deletedIds.includes(material.id)));
@@ -822,19 +873,34 @@ export function AIActivityCenterClient({
     tests: (testGroups.active || []).length + (testGroups.drafts || []).length
   };
 
+  function selectTab(tabId) {
+    setActiveTab(tabId);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(window.history.state, "", `/materiale/activitate?tab=${tabId}`);
+    }
+  }
+
   return (
     <section className="surface ai-workspace-activity-surface ai-activity-management-surface">
-      <div className="ui-segmented-tabs ai-activity-tabs" role="tablist" aria-label="Sectiuni activitate">
+      <div
+        className="ui-segmented-tabs ai-activity-tabs"
+        role="tablist"
+        aria-label="Sectiuni activitate"
+        onKeyDown={handleTablistKeyDown}
+      >
         {ACTIVITY_TABS.map((tab) => {
           const Icon = tab.icon;
           return (
             <button
               key={tab.id}
+              id={`activity-tab-${tab.id}`}
               type="button"
               role="tab"
               aria-selected={activeTab === tab.id}
+              aria-controls="activity-main-panel"
+              tabIndex={activeTab === tab.id ? 0 : -1}
               className={`ui-segmented-tab secondary ai-activity-tab ${activeTab === tab.id ? "is-active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => selectTab(tab.id)}
             >
               <Icon aria-hidden="true" size={17} strokeWidth={2.2} />
               <span>{tab.label}</span>
@@ -844,37 +910,43 @@ export function AIActivityCenterClient({
         })}
       </div>
 
-      <TableSection
-        title={selectedTab.title}
-        description={selectedTab.description}
-        actions={
-          activeTab === "tests" ? (
-            <div className="ai-activity-section-actions">
-              <PendingNavigationLink
-                className="btn-link secondary"
-                href="/testele-mele"
-                pendingLabel="Se deschid testele..."
-                pendingMode="replace"
-              >
-                <IconText icon={BookOpenCheck}>Vezi toate testele</IconText>
-              </PendingNavigationLink>
-            </div>
-          ) : null
-        }
+      <div
+        id="activity-main-panel"
+        role="tabpanel"
+        aria-labelledby={`activity-tab-${activeTab}`}
       >
-        {activeTab === "subjects" ? (
-          <MaterialsTable
-            key="subjects"
-            materials={subjectMaterials}
-            emptyTitle="Nu ai materii urcate inca."
-            emptyCopy="Dupa ce verifici si salvezi o materie, ea apare aici."
-            onDeleted={handleMaterialsDeleted}
-          />
-        ) : null}
-        {activeTab === "licenta" ? <LicentaTable rows={licentaRows} /> : null}
-        {activeTab === "activity" ? <ActivityTable jobs={activityJobs} /> : null}
-        {activeTab === "tests" ? <TestsTable testGroups={testGroups} /> : null}
-      </TableSection>
+        <TableSection
+          title={selectedTab.title}
+          description={selectedTab.description}
+          actions={
+            activeTab === "tests" ? (
+              <div className="ai-activity-section-actions">
+                <PendingNavigationLink
+                  className="btn-link secondary"
+                  href="/testele-mele"
+                  pendingLabel="Se deschid testele..."
+                  pendingMode="replace"
+                >
+                  <IconText icon={BookOpenCheck}>Vezi toate testele</IconText>
+                </PendingNavigationLink>
+              </div>
+            ) : null
+          }
+        >
+          {activeTab === "subjects" ? (
+            <MaterialsTable
+              key="subjects"
+              materials={subjectMaterials}
+              emptyTitle="Nu ai materii urcate inca."
+              emptyCopy="Dupa ce verifici si salvezi o materie, ea apare aici."
+              onDeleted={handleMaterialsDeleted}
+            />
+          ) : null}
+          {activeTab === "licenta" ? <LicentaTable rows={licentaRows} /> : null}
+          {activeTab === "activity" ? <ActivityTable jobs={activityJobs} /> : null}
+          {activeTab === "tests" ? <TestsTable testGroups={testGroups} /> : null}
+        </TableSection>
+      </div>
     </section>
   );
 }

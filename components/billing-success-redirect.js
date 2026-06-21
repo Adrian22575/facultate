@@ -19,16 +19,25 @@ function getStatusContent(status) {
   if (status === "warning") {
     return {
       visualLabel: "Verificare",
-      title: "Plata este reusita",
-      summary: "Mai verificam sincronizarea, dar te poti intoarce imediat in cont.",
+      title: "Verificam plata",
+      summary: "Nu am putut confirma imediat actualizarea, dar plata nu trebuie repetata.",
+      badgeClass: "is-warning"
+    };
+  }
+
+  if (status === "invalid") {
+    return {
+      visualLabel: "Neverificat",
+      title: "Verificare necesara",
+      summary: "Linkul nu contine o sesiune valida pentru contul conectat.",
       badgeClass: "is-warning"
     };
   }
 
   return {
     visualLabel: "In curs",
-    title: "Plata este confirmata",
-    summary: "Actualizarea este pe drum si te trimitem imediat in sectiunea potrivita.",
+      title: "Plata este in curs",
+      summary: "Asteptam confirmarea finala si te trimitem apoi in sectiunea potrivita.",
     badgeClass: "is-muted"
   };
 }
@@ -38,6 +47,8 @@ export function BillingSuccessRedirect({ href, status = "pending", detail }) {
   const [secondsLeft, setSecondsLeft] = useState(REDIRECT_SECONDS);
   const statusContent = useMemo(() => getStatusContent(status), [status]);
   const progressPercent = ((REDIRECT_SECONDS - secondsLeft) / REDIRECT_SECONDS) * 100;
+  const paymentChip = status === "applied" ? "Plata confirmata" : "Plata in verificare";
+  const accountChip = status === "applied" ? "Cont actualizat" : "Cont neschimbat";
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -81,8 +92,8 @@ export function BillingSuccessRedirect({ href, status = "pending", detail }) {
             </div>
           </div>
 
-          <div className="billing-success-chip is-top-left">Plata confirmata</div>
-          <div className="billing-success-chip is-top-right">Cont actualizat</div>
+          <div className="billing-success-chip is-top-left">{paymentChip}</div>
+          <div className="billing-success-chip is-top-right">{accountChip}</div>
           <div className={`billing-success-chip is-bottom ${statusContent.badgeClass}`}>
             {statusContent.visualLabel}
           </div>

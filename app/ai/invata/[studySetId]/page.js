@@ -11,6 +11,7 @@ import {
 import { isDemoUser } from "@/lib/demo-user";
 import { getLearningStudySetForUser } from "@/lib/learning/study-sets";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { getLearningSetupErrorMessage } from "@/lib/supabase/setup-status";
 
 export const dynamic = "force-dynamic";
 
@@ -39,10 +40,37 @@ export default async function LearningStudySetPage({ params }) {
     redirect(getOnboardingHref(`/materiale/invata/${resolvedParams.studySetId}`));
   }
 
-  const studySet = await getLearningStudySetForUser({
-    studySetId: resolvedParams.studySetId,
-    userId: user.id
-  });
+  let studySet = null;
+  let setupWarning = null;
+
+  try {
+    studySet = await getLearningStudySetForUser({
+      studySetId: resolvedParams.studySetId,
+      userId: user.id,
+      academicContext
+    });
+  } catch (error) {
+    setupWarning = getLearningSetupErrorMessage(error);
+    if (!setupWarning) throw error;
+  }
+
+  if (setupWarning) {
+    return (
+      <main className="app-shell learning-study-page">
+        <AppHeader
+          action={
+            <Link className="btn-back" href="/materiale/invata">
+              Inapoi la invatare
+            </Link>
+          }
+          kicker="Invata"
+          title="Material indisponibil momentan"
+          subtitle="Zona de invatare nu poate incarca acest material pana cand configurarea este completa."
+        />
+        <div className="error-state" role="alert">{setupWarning}</div>
+      </main>
+    );
+  }
 
   if (!studySet) {
     notFound();
@@ -56,7 +84,7 @@ export default async function LearningStudySetPage({ params }) {
             Inapoi la invatare
           </Link>
         }
-        kicker="Study set"
+        kicker={studySet.isOwner ? "Materia ta" : "Din comunitate"}
         title={studySet.title}
         subtitle="Capitole, flashcards, teste si plan intr-un singur loc."
       />

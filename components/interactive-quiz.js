@@ -90,7 +90,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
   }
 
   if (!currentQuestion) {
-    return <div className="error-state">Fișierul de întrebări este gol sau format greșit.</div>;
+    return <div className="error-state" role="alert">Fișierul de întrebări este gol sau format greșit.</div>;
   }
 
   const selectedAnswer = userAnswers[currentIndex];
@@ -146,6 +146,13 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
             })}
           </div>
 
+          {selectedAnswer !== null && currentQuestion.explanation ? (
+            <div className="study-explanation">
+              <strong>Explicatie</strong>
+              <p>{currentQuestion.explanation}</p>
+            </div>
+          ) : null}
+
           {selectedAnswer !== null ? (
             <button className="reset-btn" type="button" onClick={resetAnswer}>
               Resetează răspunsul
@@ -154,6 +161,11 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
         </div>
 
         <div className="navigation">
+          {selectedAnswer === null ? (
+            <p className="quiz-answer-required" id="interactive-answer-required" role="status">
+              Alege un raspuns pentru a continua.
+            </p>
+          ) : null}
           <div className="nav-buttons-row">
             <button
               className="nav-btn"
@@ -166,7 +178,8 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
             <button
               className="nav-btn"
               type="button"
-              disabled={currentIndex >= totalQuestions - 1}
+              aria-describedby={selectedAnswer === null ? "interactive-answer-required" : undefined}
+              disabled={selectedAnswer === null || currentIndex >= totalQuestions - 1}
               onClick={() => setCurrentIndex((value) => value + 1)}
             >
               Următoare

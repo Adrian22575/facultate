@@ -5,13 +5,18 @@ import {
   getAcademicContext,
   isAcademicContextComplete
 } from "@/lib/academic/server";
+import { getAllExamQuestions } from "@/lib/data";
 import { buildLicentaExamCommunityStats } from "@/lib/licenta-exam-community-stats";
+import { getActiveLicentaMistakeIds } from "@/lib/licenta-exam-mistakes";
+import { buildLicentaQuestionKey } from "@/lib/licenta-exam-question-key";
+import { assertRateLimit } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseSetupIncompleteError } from "@/lib/supabase/setup-status";
 
 const AttemptPayloadSchema = z
   .object({
+    idempotencyKey: z.string().trim().min(8).max(160),
     mode: z.enum(["quick", "custom", "mistakes", "verify"]),
     score: z.number().int().min(0),
     total: z.number().int().min(1).max(500),
@@ -58,6 +63,59 @@ const AttemptPayloadSchema = z
         message: "Numarul de intrebari fara raspuns nu este valid."
       });
     }
+
+    if (value.score + value.wrongCount + value.unansweredCount !== value.total) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["total"],
+        message: "Rezultatul nu acopera toate intrebarile."
+      });
+    }
+
+    if (value.percentage !== Math.round((value.score / value.total) * 100)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["percentage"],
+        message: "Procentul rezultatului nu este valid."
+      });
+    }
+
+    const uniqueQuestionIds = new Set(value.questionIds);
+    const uniqueWrongQuestionIds = new Set(value.wrongQuestionIds);
+    if (
+      value.questionIds.length !== value.total ||
+      uniqueQuestionIds.size !== value.questionIds.length ||
+      value.wrongQuestionIds.length !== value.wrongCount ||
+      uniqueWrongQuestionIds.size !== value.wrongQuestionIds.length ||
+      value.wrongQuestionIds.some((questionId) => !uniqueQuestionIds.has(questionId))
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["questionIds"],
+        message: "Lista intrebarilor din rezultat nu este valida."
+      });
+    }
+
+    const breakdownTotals = value.subjectBreakdown.reduce(
+      (totals, row) => ({
+        total: totals.total + row.total,
+        correct: totals.correct + row.correct,
+        wrong: totals.wrong + row.wrong
+      }),
+      { total: 0, correct: 0, wrong: 0 }
+    );
+    if (
+      breakdownTotals.total !== value.total ||
+      breakdownTotals.correct !== value.score ||
+      breakdownTotals.wrong !== value.wrongCount ||
+      value.subjectBreakdown.some((row) => row.correct + row.wrong !== row.total)
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["subjectBreakdown"],
+        message: "Rezultatul pe materii nu este valid."
+      });
+    }
   });
 
 export async function POST(request) {
@@ -91,52 +149,85 @@ export async function POST(request) {
       );
     }
 
-    const admin = createAdminClient();
-    const insertRow = {
-      user_id: user.id,
-      membership_id: academicContext.membership.id,
-      target_institution_id: academicContext.membership.institution_id,
-      target_unit_id: academicContext.membership.program_unit_id,
-      target_cohort_id: academicContext.membership.cohort_id,
-      user_type: academicContext.profile.user_type === "elev" ? "elev" : "student",
-      mode: payload.mode,
-      score_percent: payload.percentage,
-      correct_count: payload.score,
-      question_count: payload.total,
-      wrong_count: payload.wrongCount,
-      unanswered_count: payload.unansweredCount,
-      question_ids: payload.questionIds,
-      wrong_question_ids: payload.wrongQuestionIds,
-      duration_seconds: payload.durationSeconds ?? null,
-      metadata: {
-        source: "licenta_exam",
-        subjectBreakdown: payload.subjectBreakdown
-      }
-    };
+    await assertRateLimit({
+      action: "licenta_attempt_save",
+      subject: user.id,
+      windowSeconds: 5 * 60,
+      maxRequests: 30
+    });
 
-    const { data: insertedAttempt, error: insertError } = await admin
-      .from("licenta_exam_attempts")
-      .insert(insertRow)
-      .select("id")
-      .single();
-
-    if (insertError) {
-      throw insertError;
+    const { questions } = await getAllExamQuestions({
+      userId: user.id,
+      membership: academicContext.membership
+    });
+    const availableQuestionIds = new Set(
+      questions.map((question, index) => buildLicentaQuestionKey(question, index))
+    );
+    if (payload.questionIds.some((questionId) => !availableQuestionIds.has(questionId))) {
+      return NextResponse.json(
+        { error: "Setul de intrebari s-a schimbat. Porneste o runda noua." },
+        { status: 409 }
+      );
     }
 
-    const communityStats = await buildLicentaExamCommunityStats({
-      admin,
-      academicContext,
-      userId: user.id,
-      scorePercent: payload.percentage
-    });
+    const admin = createAdminClient();
+    const { data: attemptResult, error: attemptError } = await admin.rpc(
+      "record_licenta_exam_attempt",
+      {
+        p_user_id: user.id,
+        p_membership_id: academicContext.membership.id,
+        p_target_institution_id: academicContext.membership.institution_id,
+        p_target_unit_id: academicContext.membership.program_unit_id,
+        p_target_cohort_id: academicContext.membership.cohort_id,
+        p_user_type: academicContext.profile.user_type === "elev" ? "elev" : "student",
+        p_mode: payload.mode,
+        p_score_percent: payload.percentage,
+        p_correct_count: payload.score,
+        p_question_count: payload.total,
+        p_wrong_count: payload.wrongCount,
+        p_unanswered_count: payload.unansweredCount,
+        p_question_ids: payload.questionIds,
+        p_wrong_question_ids: payload.wrongQuestionIds,
+        p_duration_seconds: payload.durationSeconds ?? null,
+        p_metadata: {
+          source: "licenta_exam",
+          subjectBreakdown: payload.subjectBreakdown
+        },
+        p_idempotency_key: payload.idempotencyKey
+      }
+    );
+    if (attemptError || !attemptResult?.attemptId) {
+      throw attemptError || new Error("licenta_attempt_missing_after_insert");
+    }
+
+    const [communityStats, mistakeQuestionIds] = await Promise.all([
+      buildLicentaExamCommunityStats({
+        admin,
+        academicContext,
+        userId: user.id,
+        scorePercent: payload.percentage,
+        mode: payload.mode
+      }),
+      getActiveLicentaMistakeIds(user.id)
+    ]);
 
     return NextResponse.json({
       ok: true,
-      attemptId: insertedAttempt.id,
-      communityStats
+      attemptId: attemptResult.attemptId,
+      communityStats,
+      mistakeQuestionIds
     });
   } catch (error) {
+    if (error?.code === "RATE_LIMITED") {
+      return NextResponse.json(
+        { error: error.message },
+        {
+          status: 429,
+          headers: { "Retry-After": String(error.retryAfterSeconds || 300) }
+        }
+      );
+    }
+
     if (isSupabaseSetupIncompleteError(error)) {
       return NextResponse.json(
         {

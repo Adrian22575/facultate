@@ -32,6 +32,22 @@ function getPublishedHint() {
   return "Modificarile tale se vad direct aici.";
 }
 
+function getSafeInternalPath(value) {
+  if (
+    typeof value !== "string" ||
+    value.length > 500 ||
+    !value.startsWith("/") ||
+    value.startsWith("//") ||
+    value.includes("\\") ||
+    value.includes("\n") ||
+    value.includes("\r")
+  ) {
+    return null;
+  }
+
+  return value;
+}
+
 function buildExtractionSummary(review) {
   const estimatedItems =
     review.job?.metadata?.estimatedItems ||
@@ -117,6 +133,10 @@ export default async function AIQuestionBankReviewPage({ params, searchParams })
   const published = resolvedSearchParams?.published === "1" || bank.status === "published";
   const publishedHref = buildPublishedQuestionBankHref(bank);
   const isLicenta = bank.exam_type === "licenta";
+  const backHref =
+    getSafeInternalPath(resolvedSearchParams?.returnTo) ||
+    `/materiale/activitate?tab=${isLicenta ? "licenta" : "subjects"}`;
+  const backLabel = isLicenta ? "Inapoi la licente" : "Inapoi la materii";
   const extractionSummary = buildExtractionSummary(review);
   const unresolvedReviewCount = items.filter((item) => item.quality_status === "needs_review").length;
 
@@ -126,11 +146,11 @@ export default async function AIQuestionBankReviewPage({ params, searchParams })
         action={
           <PendingNavigationLink
             className="btn-back"
-            href="/materiale"
+            href={backHref}
             pendingLabel="Se revine..."
             pendingMode="replace"
           >
-            Inapoi la workspace
+            {backLabel}
           </PendingNavigationLink>
         }
         kicker={published ? "Publicat" : "Gata de verificat"}
@@ -144,7 +164,7 @@ export default async function AIQuestionBankReviewPage({ params, searchParams })
 
       {published ? (
         <section className="surface">
-          <div className="success-state review-success-block">
+          <div className="success-state review-success-block" role="status">
             <strong>{getPublishedCopy(bank)}</strong>
             <p>{getPublishedHint()}</p>
           </div>

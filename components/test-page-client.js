@@ -83,7 +83,7 @@ function formatScoreDelta(value) {
   return `${value}% sub record`;
 }
 
-function SubjectTestInsight({ stats, status }) {
+function SubjectTestInsight({ stats, status, onRetry }) {
   const community = stats?.community || null;
 
   if (status === "saving") {
@@ -96,6 +96,23 @@ function SubjectTestInsight({ stats, status }) {
             <p>Salvam scorul si calculam comparatia cu progresul tau.</p>
           </div>
         </div>
+      </section>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <section className="licenta-community-panel is-muted subject-test-insight-panel" aria-live="polite">
+        <div className="licenta-community-panel-head">
+          <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
+          <div>
+            <h3>Scorul nu s-a salvat inca</h3>
+            <p>Rezultatul ramane pe ecran. Reincearca salvarea pentru a-l include in progres si comparatii.</p>
+          </div>
+        </div>
+        <button className="btn-link secondary subject-test-insight-link" type="button" onClick={onRetry}>
+          Reincearca salvarea
+        </button>
       </section>
     );
   }
@@ -173,6 +190,7 @@ export function TestPageClient({ subject, initialQuestions }) {
   const [answerNotice, setAnswerNotice] = useState("");
   const [resultStats, setResultStats] = useState(null);
   const [resultStatsStatus, setResultStatsStatus] = useState("idle");
+  const [syncRevision, setSyncRevision] = useState(0);
   const lastSyncedScoreRef = useRef("");
 
   const safeInitialQuestions = useMemo(() => sanitizeQuestions(initialQuestions), [initialQuestions]);
@@ -199,6 +217,8 @@ export function TestPageClient({ subject, initialQuestions }) {
     setAnswerNotice("");
     setResultStats(null);
     setResultStatsStatus("idle");
+    setSyncRevision(0);
+    lastSyncedScoreRef.current = "";
     setPhase("quiz");
 
     if (typeof window !== "undefined") {
@@ -240,7 +260,7 @@ export function TestPageClient({ subject, initialQuestions }) {
   }
 
   useEffect(() => {
-    if (phase !== "result" || !testQuestions.length) {
+    if (phase !== "result" || !testQuestions.length || reviewRound) {
       return undefined;
     }
 
@@ -255,7 +275,6 @@ export function TestPageClient({ subject, initialQuestions }) {
     }
 
     const timeoutId = window.setTimeout(async () => {
-      lastSyncedScoreRef.current = syncKey;
       setResultStatsStatus("saving");
       const payload = await syncSubjectProgress({
         subjectId: subject.id,
@@ -264,16 +283,17 @@ export function TestPageClient({ subject, initialQuestions }) {
       });
 
       if (payload?.subjectTestStats) {
+        lastSyncedScoreRef.current = syncKey;
         setResultStats(payload.subjectTestStats);
         setResultStatsStatus("ready");
       } else {
         setResultStats(null);
-        setResultStatsStatus("idle");
+        setResultStatsStatus("error");
       }
     }, 300);
 
     return () => window.clearTimeout(timeoutId);
-  }, [answers, phase, reviewRound, subject.id, testQuestions]);
+  }, [answers, phase, reviewRound, subject.id, syncRevision, testQuestions]);
 
   if (phase === "setup") {
     return (
@@ -350,7 +370,15 @@ export function TestPageClient({ subject, initialQuestions }) {
         percentage={scorePercent}
         wrongRows={wrongRows}
         stats={[{ label: "Greseli", value: wrongQuestions.length }]}
-        insights={<SubjectTestInsight stats={resultStats} status={resultStatsStatus} />}
+        insights={
+          reviewRound ? null : (
+            <SubjectTestInsight
+              stats={resultStats}
+              status={resultStatsStatus}
+              onRetry={() => setSyncRevision((value) => value + 1)}
+            />
+          )
+        }
         emptyMessage="Nu ai gresit nicio intrebare in aceasta runda."
         actions={
           <>
@@ -381,7 +409,7 @@ export function TestPageClient({ subject, initialQuestions }) {
   }
 
   if (!currentQuestion) {
-    return <div className="error-state">Nu am putut incarca intrebarile pentru acest test.</div>;
+    return <div className="error-state" role="alert">Nu am putut incarca intrebarile pentru acest test.</div>;
   }
 
   const progressPercent = testQuestions.length

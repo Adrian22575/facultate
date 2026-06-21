@@ -8,6 +8,7 @@ import { getBillingSnapshot } from "@/lib/billing";
 import { getAdminActionSummary } from "@/lib/admin-center";
 import { getAccessibleSubjectsForUser, getUserSubjectProgress } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
+import { getPublicSiteUrl } from "@/lib/site";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export const dynamic = "force-dynamic";
@@ -47,7 +48,7 @@ export const metadata = {
 };
 
 function HomeStructuredData() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nota5plus.ro";
+  const siteUrl = getPublicSiteUrl();
   const graph = [
     {
       "@type": "WebSite",

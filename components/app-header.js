@@ -1,22 +1,12 @@
 import Link from "next/link";
-import { BarChart3, Home, LogOut, Shield, UserCircle } from "lucide-react";
 
+import { AppHeaderNavigation } from "@/components/app-header-navigation";
 import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
 import { getAdminActionSummary } from "@/lib/admin-center";
 import { getOptionalUser } from "@/lib/supabase/guards";
-
-function IconText({ icon: Icon, children, badgeCount = 0 }) {
-  return (
-    <span className="ui-icon-text">
-      <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
-      <span>{children}</span>
-      {badgeCount > 0 ? <span className="nav-action-badge">{badgeCount}</span> : null}
-    </span>
-  );
-}
 
 export async function AppHeader({
   title,
@@ -60,33 +50,13 @@ export async function AppHeader({
           <span>Nota 5+</span>
         </Link>
 
-        <div className="header-actions">
-          {showPrivateNav ? (
-            <nav className="header-shortcuts" aria-label="Navigare rapida">
-              <Link className="btn-link btn-primary header-shortcut-link" href="/">
-                <IconText icon={Home}>Home</IconText>
-              </Link>
-              <Link className="btn-link secondary header-shortcut-link" href="/statistici">
-                <IconText icon={BarChart3}>Statistici</IconText>
-              </Link>
-              <Link className="btn-link secondary header-shortcut-link" href="/cont">
-                <IconText icon={UserCircle}>Contul meu</IconText>
-              </Link>
-              {showAdminLink ? (
-                <Link className={`btn-link secondary header-shortcut-link ${adminActionCount > 0 ? "has-admin-action" : ""}`} href="/admin">
-                  <IconText icon={Shield} badgeCount={adminActionCount}>Admin</IconText>
-                </Link>
-              ) : null}
-            </nav>
-          ) : null}
-          {showLogout ? (
-            <form action="/auth/signout" method="post">
-              <button className="btn-link secondary header-logout-btn" type="submit">
-                <IconText icon={LogOut}>{logoutLabel}</IconText>
-              </button>
-            </form>
-          ) : null}
-        </div>
+        <AppHeaderNavigation
+          showPrivateNav={showPrivateNav}
+          showLogout={showLogout}
+          showAdminLink={showAdminLink}
+          adminActionCount={adminActionCount}
+          logoutLabel={logoutLabel}
+        />
       </div>
 
       {billingSnapshot ? (
@@ -106,7 +76,7 @@ export async function AppHeader({
       {demoMode ? (
         <div className="app-header-demo-row">
           <span className="status-pill is-warning">Esti in demo</span>
-          <p>Poti testa modul de invatare. Pentru progres real, materiale si generare, intra cu Google.</p>
+          <p>Poti testa modul de invatare. Pentru progres real, materiale si generare, intra in cont.</p>
         </div>
       ) : null}
     </header>

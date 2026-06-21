@@ -9,6 +9,7 @@ import {
   getUserQuestionBankJobs,
   getUserQuestionBankMaterials
 } from "@/lib/ai/question-bank-pipeline";
+import { getUserLearningStudySetJobs } from "@/lib/learning/study-set-pipeline";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { isDemoUser } from "@/lib/demo-user";
 import { getPrivateGeneratedTests } from "@/lib/private-tests";
@@ -34,7 +35,12 @@ function IconText({ icon: Icon, children }) {
   );
 }
 
-export default async function AIActivityPage() {
+export default async function AIActivityPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
+  const requestedTab = typeof resolvedSearchParams?.tab === "string" ? resolvedSearchParams.tab : "subjects";
+  const initialTab = ["subjects", "licenta", "activity", "tests"].includes(requestedTab)
+    ? requestedTab
+    : "subjects";
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
 
@@ -59,15 +65,16 @@ export default async function AIActivityPage() {
   let setupWarning = null;
 
   try {
-    const [jobs, importJobs, licentaSessionRows, materialRows, tests] = await Promise.all([
+    const [jobs, importJobs, learningJobs, licentaSessionRows, materialRows, tests] = await Promise.all([
       getUserQuestionBankJobs(user.id, 16),
       getUserImportJobs(user.id, 16),
+      getUserLearningStudySetJobs(user.id, 16),
       getUserLicentaImportSessions(user.id, 12),
       getUserQuestionBankMaterials(user.id, 60),
       getPrivateGeneratedTests(user.id)
     ]);
 
-    activityJobs = [...jobs, ...importJobs].sort(
+    activityJobs = [...jobs, ...importJobs, ...learningJobs].sort(
       (left, right) => getActivityTimestamp(right) - getActivityTimestamp(left)
     );
     licentaSessions = licentaSessionRows;
@@ -111,14 +118,16 @@ export default async function AIActivityPage() {
         </PendingNavigationLink>
       </section>
 
-      {setupWarning ? <div className="error-state">{setupWarning}</div> : null}
+      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
 
       {hasAnyActivity ? (
         <AIActivityCenterClient
+          key={`activity-${initialTab}`}
           materials={materials}
           activityJobs={activityJobs}
           licentaSessions={licentaSessions}
           testGroups={testGroups}
+          initialTab={initialTab}
         />
       ) : (
         <section className="surface ai-workspace-activity-surface">

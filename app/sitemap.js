@@ -1,6 +1,7 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nota5plus.ro";
+import { getPublicSiteUrl } from "@/lib/site";
 
 export default function sitemap() {
+  const siteUrl = getPublicSiteUrl();
   const now = new Date();
 
   return [
@@ -11,22 +12,28 @@ export default function sitemap() {
       priority: 1
     },
     {
-      url: `${siteUrl}/demo`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7
-    },
-    {
       url: `${siteUrl}/despre`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8
     },
     {
-      url: `${siteUrl}/auth/login`,
+      url: `${siteUrl}/preturi`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.5
+      priority: 0.7
+    },
+    {
+      url: `${siteUrl}/confidentialitate`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4
+    },
+    {
+      url: `${siteUrl}/termeni`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.4
     }
   ];
 }

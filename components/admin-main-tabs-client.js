@@ -5,6 +5,7 @@ import { AlertTriangle, Database, ServerCog } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 function normalizeTab(value) {
   if (value === "processing" || value === "openai") {
@@ -108,29 +109,45 @@ export function AdminMainTabsClient({
   return (
     <div className="admin-main-tabs-shell">
       <section className="surface admin-main-tabs-surface">
-        <AdminTabsContainer role="tablist" aria-label="Sectiuni principale admin">
+        <AdminTabsContainer
+          role="tablist"
+          aria-label="Sectiuni principale admin"
+          onKeyDown={handleTablistKeyDown}
+        >
           <button
+            id="admin-tab-platform"
             type="button"
             role="tab"
             aria-selected={activeTab === "platform"}
+            aria-controls="admin-panel-platform"
+            tabIndex={activeTab === "platform" ? 0 : -1}
+            aria-label="Date platforma"
             className={`btn-link secondary admin-main-tab ${activeTab === "platform" ? "is-active-filter" : ""} ${visibleActionCounts.platform > 0 ? "has-admin-action" : ""}`}
             onClick={() => switchTab("platform")}
           >
             <AdminTabContent icon={Database} label="Date platforma" count={tabCounts.platform} actionCount={visibleActionCounts.platform} />
           </button>
           <button
+            id="admin-tab-processing"
             type="button"
             role="tab"
             aria-selected={activeTab === "processing"}
+            aria-controls="admin-panel-processing"
+            tabIndex={activeTab === "processing" ? 0 : -1}
+            aria-label="Loguri procesare"
             className={`btn-link secondary admin-main-tab ${activeTab === "processing" ? "is-active-filter" : ""} ${visibleActionCounts.processing > 0 ? "has-admin-action" : ""}`}
             onClick={() => switchTab("processing")}
           >
             <AdminTabContent icon={ServerCog} label="Loguri procesare" count={tabCounts.processing} actionCount={visibleActionCounts.processing} />
           </button>
           <button
+            id="admin-tab-uploads"
             type="button"
             role="tab"
             aria-selected={activeTab === "uploads"}
+            aria-controls="admin-panel-uploads"
+            tabIndex={activeTab === "uploads" ? 0 : -1}
+            aria-label="Upload-uri cu erori"
             className={`btn-link secondary admin-main-tab ${activeTab === "uploads" ? "is-active-filter" : ""} ${visibleActionCounts.uploads > 0 ? "has-admin-action" : ""}`}
             onClick={() => switchTab("uploads")}
           >
@@ -140,21 +157,30 @@ export function AdminMainTabsClient({
       </section>
 
       <div
+        id="admin-panel-platform"
         className="admin-main-tab-panel"
+        role="tabpanel"
+        aria-labelledby="admin-tab-platform"
         aria-hidden={activeTab !== "platform"}
         hidden={activeTab !== "platform"}
       >
         {platformContent}
       </div>
       <div
+        id="admin-panel-processing"
         className="admin-main-tab-panel"
+        role="tabpanel"
+        aria-labelledby="admin-tab-processing"
         aria-hidden={activeTab !== "processing"}
         hidden={activeTab !== "processing"}
       >
         {openaiContent}
       </div>
       <div
+        id="admin-panel-uploads"
         className="admin-main-tab-panel"
+        role="tabpanel"
+        aria-labelledby="admin-tab-uploads"
         aria-hidden={activeTab !== "uploads"}
         hidden={activeTab !== "uploads"}
       >

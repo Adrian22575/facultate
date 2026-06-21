@@ -6,7 +6,6 @@ import {
   completeStripeEventProcessing,
   failStripeEventProcessing
 } from "@/lib/billing";
-import { assertRateLimit } from "@/lib/rate-limit";
 import {
   getAvailableStripeWebhookModes,
   getStripe,
@@ -39,44 +38,17 @@ export async function POST(request) {
 
   const signature = request.headers.get("stripe-signature");
   if (!signature) {
-    return NextResponse.json({ error: "Lipsește Stripe-Signature." }, { status: 400 });
+    return NextResponse.json({ error: "Lipseste Stripe-Signature." }, { status: 400 });
   }
 
   const payload = await request.text();
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  const webhookSubject = forwardedFor || "stripe_webhook";
-
-  try {
-    await assertRateLimit({
-      action: "stripe_webhook",
-      subject: webhookSubject,
-      windowSeconds: 60,
-      maxRequests: 120
-    });
-  } catch (error) {
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Webhook-ul Stripe depășește limita temporară."
-      },
-      { status: 429 }
-    );
-  }
-
   let event;
 
   try {
     event = constructStripeEvent(payload, signature);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Semnătura webhook-ului Stripe nu a putut fi verificată."
-      },
+      { error: "Semnatura webhook-ului Stripe nu a putut fi verificata." },
       { status: 400 }
     );
   }
@@ -102,13 +74,7 @@ export async function POST(request) {
       error instanceof Error ? error.message : "fulfillment_failed"
     );
 
-    return NextResponse.json(
-      {
-        error:
-          error instanceof Error ? error.message : "Webhook fulfillment failed."
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Webhook fulfillment failed." }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });

@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { assertRateLimit, getRateLimitSubject } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseSetupIncompleteError } from "@/lib/supabase/setup-status";
+import { sanitizeUsagePath, sanitizeUsageQuery } from "@/lib/usage-events";
 
 const EVENT_NAME_PATTERN = /^[a-z0-9_.:-]+$/i;
 const DEVICE_TYPES = ["desktop", "tablet", "mobile", "unknown"];
@@ -99,15 +101,29 @@ export async function POST(request) {
   }
 
   const userId = await getCurrentUserId();
+  try {
+    await assertRateLimit({
+      action: "usage_event",
+      subject: getRateLimitSubject(request, userId),
+      windowSeconds: 15 * 60,
+      maxRequests: 180
+    });
+  } catch (error) {
+    if (error?.code === "RATE_LIMITED") {
+      return NextResponse.json({ ok: false, warning: "rate_limited" }, { status: 202 });
+    }
+    throw error;
+  }
+
   const admin = createAdminClient();
   const { error } = await admin.from("user_usage_events").insert({
     user_id: userId,
     session_id: payload.sessionId || null,
     event_name: payload.eventName,
     feature: payload.feature || null,
-    route_path: payload.routePath || null,
-    route_query: payload.routeQuery || null,
-    referrer_path: payload.referrerPath || null,
+    route_path: sanitizeUsagePath(payload.routePath) || null,
+    route_query: sanitizeUsageQuery(payload.routeQuery) || null,
+    referrer_path: sanitizeUsagePath(payload.referrerPath) || null,
     device_type: payload.deviceType || "unknown",
     viewport_width: payload.viewportWidth || null,
     viewport_height: payload.viewportHeight || null,

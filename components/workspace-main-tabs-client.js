@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
+
 export function WorkspaceMainTabsClient({
   uploadContent,
   activityContent,
@@ -12,11 +14,19 @@ export function WorkspaceMainTabsClient({
 
   return (
     <section className="ai-workspace-main-tabs">
-      <div className="ui-segmented-tabs ai-workspace-main-tabs-nav" role="tablist" aria-label="Sectiuni workspace">
+      <div
+        className="ui-segmented-tabs ai-workspace-main-tabs-nav"
+        role="tablist"
+        aria-label="Sectiuni workspace"
+        onKeyDown={handleTablistKeyDown}
+      >
         <button
+          id="workspace-tab-upload"
           type="button"
           role="tab"
           aria-selected={activeTab === "upload"}
+          aria-controls="workspace-main-panel"
+          tabIndex={activeTab === "upload" ? 0 : -1}
           className={`ui-segmented-tab secondary ai-workspace-main-tab ${
             activeTab === "upload" ? "is-active" : ""
           }`}
@@ -25,9 +35,12 @@ export function WorkspaceMainTabsClient({
           Incarcare
         </button>
         <button
+          id="workspace-tab-activity"
           type="button"
           role="tab"
           aria-selected={activeTab === "activity"}
+          aria-controls="workspace-main-panel"
+          tabIndex={activeTab === "activity" ? 0 : -1}
           className={`ui-segmented-tab secondary ai-workspace-main-tab ${
             activeTab === "activity" ? "is-active" : ""
           }`}
@@ -38,7 +51,12 @@ export function WorkspaceMainTabsClient({
         </button>
       </div>
 
-      <div className="ai-workspace-main-tab-panel" role="tabpanel">
+      <div
+        id="workspace-main-panel"
+        className="ai-workspace-main-tab-panel"
+        role="tabpanel"
+        aria-labelledby={`workspace-tab-${activeTab}`}
+      >
         {activeTab === "upload" ? uploadContent : activityContent}
       </div>
     </section>

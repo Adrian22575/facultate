@@ -44,14 +44,30 @@ export async function POST(request) {
     return jsonError("Procesarea nu este disponibila momentan. Incearca mai tarziu.", 503);
   }
 
-  const academicContext = await getAcademicContext(user.id);
+  let academicContext = null;
+  try {
+    academicContext = await getAcademicContext(user.id);
+  } catch {
+    return jsonError("Nu am putut verifica profilul tau. Incearca din nou.", 503);
+  }
   if (!isAcademicContextComplete(academicContext)) {
     return jsonError("Finalizeaza onboarding-ul inainte sa urci fisiere.", 403);
   }
 
-  const billingSnapshot = await getBillingSnapshot(user.id);
+  let billingSnapshot = null;
+  try {
+    billingSnapshot = await getBillingSnapshot(user.id);
+  } catch {
+    return jsonError("Nu am putut verifica incarcarile disponibile. Incearca din nou.", 503);
+  }
   if (billingSnapshot.aiCredits < 1) {
-    return jsonError("Nu ai incarcari disponibile. Adauga incarcari si incearca din nou.", 402);
+    return NextResponse.json(
+      {
+        error: "Nu ai incarcari disponibile. Adauga incarcari si incearca din nou.",
+        actionHref: "/cont?section=credits&returnTo=%2Fmateriale%2Finvata"
+      },
+      { status: 402 }
+    );
   }
 
   let payload = null;
@@ -113,10 +129,18 @@ export async function POST(request) {
       maxUploadSizeBytes: AI_SOURCE_UPLOAD_MAX_BYTES
     });
   } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    const normalized = message.toLowerCase();
+    const isSafeValidationError = [
+      "fisierul selectat pare gol",
+      "fisierul depaseste limita",
+      "sunt acceptate doar fisiere"
+    ].some((part) => normalized.includes(part));
+
     return jsonError(
-      error instanceof Error
-        ? error.message
-        : "Nu am putut pregati uploadul fisierului.",
+      error?.code === "RATE_LIMITED" || isSafeValidationError
+        ? message
+        : "Nu am putut pregati uploadul fisierului. Incearca din nou peste cateva momente.",
       400
     );
   }

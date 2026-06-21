@@ -1,9 +1,16 @@
 "use client";
 
-import { BarChart3, BookOpenCheck, GraduationCap, PlayCircle } from "lucide-react";
+import {
+  BarChart3,
+  BookOpenCheck,
+  FileUp,
+  GraduationCap,
+  PlayCircle
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { AppHeaderNavigation } from "@/components/app-header-navigation";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
@@ -23,65 +30,63 @@ export function DashboardPageClient({
   const [lastSession, setLastSession] = useState(null);
   const [sessionEntryStep, setSessionEntryStep] = useState("entry");
   const fallbackSubject = subjects[0] || null;
+  const hasSubjects = subjects.length > 0;
 
   useEffect(() => {
     setLastSession(getLastSession());
   }, []);
 
-  const continueTitle =
-    lastSession?.subjectTitle || fallbackSubject?.title || "Analiza economico-financiara";
-  const continueMode = lastSession?.mode || "Alege modul";
-  const fallbackContinueUrl = fallbackSubject ? `/materii/${fallbackSubject.id}` : "/";
-  const continueUrl = isAuthenticated
-    ? lastSession?.url || fallbackContinueUrl
-    : "/auth/login?next=/";
+  const hasLastSession = Boolean(lastSession?.url);
+  const continueTitle = hasLastSession
+    ? lastSession.subjectTitle || "Continua materia"
+    : hasSubjects
+      ? "Alege prima materie"
+      : "Incarca prima ta materie";
+  const continueCopy = hasLastSession
+    ? `Ultimul mod folosit: ${lastSession.mode || "Materie"}`
+    : hasSubjects
+      ? `${subjects.length} ${subjects.length === 1 ? "materie disponibila" : "materii disponibile"}. Alege una si incepe.`
+      : "Incarca un curs sau notitele tale si incepe de acolo.";
+
+  function openSubjectPicker() {
+    setSessionEntryStep("subject-picker");
+    window.requestAnimationFrame(() => {
+      document.getElementById("start-sesiune")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
   return (
     <div className="dashboard-page">
       <div className="dashboard-container">
         <nav className="dashboard-top-nav">
-          <div className="brand">
+          <Link className="brand" href="/">
             <div className="brand-mark">5+</div>
             <span>Nota 5+</span>
-          </div>
+          </Link>
 
-          <div className="dashboard-nav-actions">
-            {isAuthenticated ? (
-              <>
-                {isAdmin ? (
-                  <Link href="/admin" className={`dashboard-nav-btn ${adminActionCount > 0 ? "has-admin-action" : ""}`}>
-                    Admin
-                    {adminActionCount > 0 ? <span className="nav-action-badge">{adminActionCount}</span> : null}
-                  </Link>
-                ) : null}
-                <Link href="/cont" className="dashboard-nav-btn">
-                  Contul meu
-                </Link>
-                <form action="/auth/signout" method="post">
-                  <button
-                    type="submit"
-                    className="dashboard-nav-btn dashboard-logout-btn"
-                  >
-                    Logout
-                  </button>
-                </form>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/login?next=/" className="dashboard-nav-btn">
-                  Intra in cont
-                </Link>
-                <GoogleSignInButton
-                  next="/"
-                  className="dashboard-google-wrap"
-                  buttonClassName="dashboard-nav-btn dashboard-nav-btn-primary"
-                  errorClassName="nota5plus-inline-error"
-                >
-                  Continua cu Google
-                </GoogleSignInButton>
-              </>
-            )}
-          </div>
+          {isAuthenticated ? (
+            <AppHeaderNavigation
+              showPrivateNav
+              showLogout
+              showAdminLink={isAdmin}
+              adminActionCount={adminActionCount}
+              logoutLabel="Logout"
+            />
+          ) : (
+            <div className="dashboard-nav-actions">
+              <Link href="/auth/login?next=/" className="dashboard-nav-btn">
+                Intra in cont
+              </Link>
+              <GoogleSignInButton
+                next="/"
+                className="dashboard-google-wrap"
+                buttonClassName="dashboard-nav-btn dashboard-nav-btn-primary"
+                errorClassName="nota5plus-inline-error"
+              >
+                Continua cu Google
+              </GoogleSignInButton>
+            </div>
+          )}
         </nav>
 
         {isAuthenticated && billingSnapshot ? (
@@ -99,36 +104,52 @@ export function DashboardPageClient({
           <div className="dashboard-hero-grid">
             <div>
               <h1 className="dashboard-hero-title">
-                Nu ai invatat cat trebuia?
+                Invata mai clar, chiar si cand timpul este scurt.
                 <span className="dashboard-accent">
                   {" "}
-                  Repeta in 30 de minute ce are sanse sa te salveze.
+                  Concentreaza-te pe ce conteaza pentru urmatorul test.
                 </span>
               </h1>
               <p className="section-sub dashboard-hero-subcopy">
-                Teste pe materii, simulare de examen si intrebari gresite — ca sa nu mai pierzi
-                timp prin cursuri cand examenul e aproape.
+                Teste pe materii, simulare de examen si intrebari gresite, intr-un parcurs usor de urmarit.
               </p>
             </div>
 
             <div className="dashboard-hero-side">
-              <div className="dashboard-hero-side-label">Continua de unde ai ramas</div>
+              <div className="dashboard-hero-side-label">
+                {hasLastSession ? "Continua de unde ai ramas" : "Primul pas"}
+              </div>
               <h3>{continueTitle}</h3>
-              <p>{`Ultimul mod folosit: ${continueMode}`}</p>
-              <PendingNavigationLink
-                href={continueUrl}
-                className="dashboard-hero-side-btn"
-                pendingLabel="Se deschide sesiunea..."
-                pendingMode="replace"
-              >
-                Continua acum
-              </PendingNavigationLink>
+              <p>{continueCopy}</p>
+              {hasLastSession ? (
+                <PendingNavigationLink
+                  href={lastSession.url}
+                  className="dashboard-hero-side-btn"
+                  pendingLabel="Se deschide sesiunea..."
+                  pendingMode="replace"
+                >
+                  Continua acum
+                </PendingNavigationLink>
+              ) : hasSubjects ? (
+                <button type="button" className="secondary dashboard-hero-side-btn" onClick={openSubjectPicker}>
+                  Alege materia
+                </button>
+              ) : (
+                <PendingNavigationLink
+                  href="/materiale/invata"
+                  className="dashboard-hero-side-btn"
+                  pendingLabel="Se deschide incarcarea..."
+                  pendingMode="replace"
+                >
+                  Incarca materia
+                </PendingNavigationLink>
+              )}
             </div>
           </div>
         </section>
 
         <section className="dashboard-layout-grid">
-          <div className="dashboard-main-stack">
+          <div id="start-sesiune" className="dashboard-main-stack">
             {sessionEntryStep === "entry" ? (
               <div className="section-card dashboard-main-card dashboard-session-focus-card">
                 <div className="dashboard-session-head">
@@ -154,10 +175,29 @@ export function DashboardPageClient({
                     <button
                       type="button"
                       className="dashboard-mode-cta dashboard-mode-cta-primary"
-                      onClick={() => setSessionEntryStep("subject-picker")}
+                      onClick={openSubjectPicker}
                     >
                       Alege materia
                     </button>
+                  </div>
+
+                  <div className="dashboard-mode-card">
+                    <div className="dashboard-mode-icon is-blue">
+                      <FileUp size={22} strokeWidth={2.5} />
+                    </div>
+                    <h3>Invata din materia ta</h3>
+                    <p>
+                      Incarca PDF, DOCX, PPTX, TXT sau text si primesti capitole, flashcards,
+                      teste, greseli salvate si plan.
+                    </p>
+                    <PendingNavigationLink
+                      href="/materiale/invata"
+                      className="secondary-button dashboard-mode-cta"
+                      pendingLabel="Se deschide uploadul..."
+                      pendingMode="replace"
+                    >
+                      Incarca materia
+                    </PendingNavigationLink>
                   </div>
 
                   <div className="dashboard-mode-card">
@@ -253,21 +293,46 @@ export function DashboardPageClient({
                   ))}
                 </div>
               ) : (
-                <p className="section-sub dashboard-progress-empty">
-                  Progresul apare aici dupa ce incepi sa lucrezi o materie in Studiu, Interactiv sau
-                  Test.
-                </p>
+                <div className="dashboard-progress-empty">
+                  <p className="section-sub">
+                    Progresul apare aici dupa prima sesiune de Studiu, Interactiv sau Test.
+                  </p>
+                  {hasSubjects ? (
+                    <button type="button" className="btn-link secondary" onClick={openSubjectPicker}>
+                      Alege materia
+                    </button>
+                  ) : (
+                    <PendingNavigationLink
+                      href="/materiale/invata"
+                      className="btn-link secondary"
+                      pendingLabel="Se deschide incarcarea..."
+                      pendingMode="replace"
+                    >
+                      Incarca materia
+                    </PendingNavigationLink>
+                  )}
+                </div>
               )}
             </div>
 
             <div className="section-card dashboard-mini-section">
               <h3>Sfat rapid</h3>
               <div className="dashboard-tip-box">
-                <strong>Incepe cu ce ai gresit cel mai des.</strong>
-                <p>
-                  Daca mai ai putin timp pana la examen, repeta intai intrebarile gresite, apoi fa o
-                  simulare completa.
-                </p>
+                {progressItems.length ? (
+                  <>
+                    <strong>Incepe cu ce ai gresit cel mai des.</strong>
+                    <p>Repeta intrebarile gresite, apoi fa o simulare completa.</p>
+                  </>
+                ) : (
+                  <>
+                    <strong>{hasSubjects ? "Incepe cu o singura materie." : "Incepe cu materialul pe care il ai."}</strong>
+                    <p>
+                      {hasSubjects
+                        ? "Alege modul Studiu si parcurge primele intrebari. Progresul se salveaza automat."
+                        : "Incarca un curs sau lipeste notitele. Vei primi pasii de invatare in acelasi loc."}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </aside>

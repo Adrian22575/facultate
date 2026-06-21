@@ -222,6 +222,17 @@ Regula:
 - asset-urile `/_next/static/...`
 - daca `next dev` continua sa corupa `.next` dupa ruta jobului, valideaza flow-ul cu `npm run start:reset`
 
+### 18. Pe Windows, fetch catre Supabase poate pica fara certificatele sistemului
+
+Ce s-a intamplat:
+- rutele locale au raspuns cu `500`, iar logul arata `UNABLE_TO_VERIFY_LEAF_SIGNATURE`
+- cauza a fost fetch-ul Node catre Supabase prin certificatul local/proxy, nu pagina React in sine
+
+Regula:
+- scripturile care pornesc Next sau fac verificari live trebuie sa ruleze Node cu `--use-system-ca`
+- dupa schimbarea scripturilor, serverul deja pornit trebuie repornit ca sa preia flagul nou
+- pentru verificare rapida, ruleaza direct `node --use-system-ca scripts/learning-monitor.mjs` sau `node --use-system-ca scripts/supabase-check.mjs --live`
+
 ## Checklist scurt inainte de a spune gata
 
 - `localhost:3000` raspunde

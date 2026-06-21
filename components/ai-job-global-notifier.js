@@ -74,6 +74,10 @@ function jobHref(job) {
     return job.href || `/materiale/imports/${job.id}`;
   }
 
+  if (job.kind === "learning") {
+    return job.resultHref || `/materiale/invata/${job.resultStudySetId || job.metadata?.studySetId || ""}`;
+  }
+
   if (job.status === "succeeded") {
     return job.reviewHref || job.resultHref || `/materiale/jobs/${job.id}`;
   }

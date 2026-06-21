@@ -61,12 +61,12 @@ export function GoogleSignInButton({
       });
 
       if (error) {
-        setErrorMessage(error.message);
+        setErrorMessage("Autentificarea cu Google nu a pornit. Incearca din nou.");
         setLoading(false);
       }
     } catch (error) {
       setErrorMessage(
-        error instanceof Error ? error.message : "Autentificarea nu a putut fi pornita."
+        "Autentificarea cu Google nu a pornit. Verifica conexiunea si incearca din nou."
       );
       setLoading(false);
     }
@@ -88,7 +88,7 @@ export function GoogleSignInButton({
         </span>
       </button>
       {errorMessage ? (
-        <div className={errorClassName || "error-state"}>{errorMessage}</div>
+        <div className={errorClassName || "error-state"} role="alert">{errorMessage}</div>
       ) : null}
     </div>
   );

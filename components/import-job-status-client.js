@@ -8,6 +8,7 @@ import {
   ExternalLink,
   ListPlus,
   Plus,
+  RefreshCw,
   Save,
   Search,
   Trash2,
@@ -17,6 +18,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { useDialogFocus } from "@/lib/ui/dialog";
 
 const TERMINAL_STATUSES = new Set([
   "ready_for_preview",
@@ -338,6 +340,7 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
                   type="text"
                   value={option.text}
                   placeholder={`Text varianta ${optionDisplayLabel(option, index)}`}
+                  aria-label={`Text varianta ${optionDisplayLabel(option, index)}`}
                   onChange={(event) => updateOption(index, { text: event.target.value })}
                 />
                 <button
@@ -549,14 +552,24 @@ function ReadyToSaveSetPanel({ sessionMode, isBusy, onSave, onSaveAndContinue })
 }
 
 function ConfirmDialog({ confirmState, isBusy, onClose, onConfirm }) {
+  const dialogRef = useDialogFocus(Boolean(confirmState), () => {
+    if (!isBusy) onClose();
+  });
+
   if (!confirmState) return null;
 
   return (
     <div className="workspace-modal-backdrop" role="presentation">
-      <div className="workspace-modal-card review-confirm-modal" role="dialog" aria-modal="true">
+      <div
+        ref={dialogRef}
+        className="workspace-modal-card review-confirm-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="import-confirm-dialog-title"
+      >
         <div className="workspace-modal-head">
           <div>
-            <strong>{confirmState.title}</strong>
+            <strong id="import-confirm-dialog-title">{confirmState.title}</strong>
             <p>{confirmState.copy}</p>
           </div>
           <button className="workspace-modal-close feedback-modal-close" type="button" onClick={onClose} disabled={isBusy}>
@@ -606,6 +619,9 @@ export function ImportJobStatusClient({
   const [savingQuestionId, setSavingQuestionId] = useState(null);
   const [confirmState, setConfirmState] = useState(null);
   const [showAllQuestions, setShowAllQuestions] = useState(false);
+  const questionsDialogRef = useDialogFocus(guidedMode && showAllQuestions, () => {
+    if (!isBusy) setShowAllQuestions(false);
+  });
   const [feedback, setFeedback] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [processingNotice, setProcessingNotice] = useState("");
@@ -613,6 +629,7 @@ export function ImportJobStatusClient({
   const [answerKeyText, setAnswerKeyText] = useState("");
   const [isSubmittingAnswerKey, setIsSubmittingAnswerKey] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
+  const [isRetryingImport, setIsRetryingImport] = useState(false);
   const inFlightRef = useRef(false);
   const loadedReviewRef = useRef("");
   const questionRequestRef = useRef(0);
@@ -764,6 +781,30 @@ export function ImportJobStatusClient({
 
     if (TERMINAL_STATUSES.has(payload.status)) {
       await loadActionableReviewData(payload);
+    }
+  }
+
+  async function retryFailedImport() {
+    if (!importJobId || !failedWithoutExtractedQuestions || isRetryingImport) return;
+
+    setIsRetryingImport(true);
+    setErrorMessage("");
+    setProcessingNotice("");
+    try {
+      const response = await fetch(`/api/import/${importJobId}/retry`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          Accept: "application/json"
+        }
+      });
+      const payload = await readJson(response);
+      setStatus(payload);
+      onStatusChange?.(payload);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Nu am putut relua procesarea acum.");
+    } finally {
+      setIsRetryingImport(false);
     }
   }
 
@@ -1111,12 +1152,12 @@ export function ImportJobStatusClient({
   }
 
   if (!status) {
-    return <div className="error-state">Importul nu a putut fi incarcat.</div>;
+    return <div className="error-state" role="alert">Importul nu a putut fi incarcat.</div>;
   }
 
   return (
     <div className={`job-status-stack${guidedMode ? " licenta-guided-job" : ""}`}>
-      {feedback ? <div className="success-state">{feedback}</div> : null}
+      {feedback ? <div className="success-state" role="status">{feedback}</div> : null}
       {processingNotice ? (
         <div className="workspace-credit-alert import-warning-panel">
           <div>
@@ -1125,7 +1166,7 @@ export function ImportJobStatusClient({
           </div>
         </div>
       ) : null}
-      {errorMessage ? <div className="error-state">{errorMessage}</div> : null}
+      {errorMessage ? <div className="error-state" role="alert">{errorMessage}</div> : null}
 
       <section className={guidedMode ? "licenta-guided-status" : "surface workspace-job-hero"}>
         <div className="workspace-job-badge">
@@ -1167,12 +1208,24 @@ export function ImportJobStatusClient({
             <strong>{status.needsReviewCount}</strong>
           </article>
         </div>
-        {status.errorMessage ? <div className="error-state">{status.errorMessage}</div> : null}
+        {status.errorMessage ? <div className="error-state" role="alert">{status.errorMessage}</div> : null}
         {failedWithoutExtractedQuestions ? (
           <div className="workspace-credit-alert import-warning-panel">
             <div>
               <strong>Setul nu poate fi verificat in forma actuala</strong>
-              <p>Elimina setul din zona de gestionare si incarca din nou un fisier sau text mai clar.</p>
+              <p>Poti relua procesarea din sursa pastrata. Daca rezultatul ramane la fel, incarca un fisier sau un text mai clar.</p>
+              {!readOnly ? (
+                <button
+                  type="button"
+                  className="btn-link secondary"
+                  disabled={isRetryingImport}
+                  onClick={retryFailedImport}
+                >
+                  <LoadingIconText icon={RefreshCw} loading={isRetryingImport} loadingLabel="Reluam...">
+                    Incearca din nou
+                  </LoadingIconText>
+                </button>
+              ) : null}
             </div>
           </div>
         ) : null}
@@ -1231,6 +1284,7 @@ export function ImportJobStatusClient({
                     value={answerKeyText}
                     onChange={(event) => setAnswerKeyText(event.target.value)}
                     placeholder="Exemplu: 1-a, 2-c, 3-b..."
+                    aria-label="Barem sau lista raspunsurilor corecte"
                     disabled={isSubmittingAnswerKey}
                   />
                   <div className="inline-actions import-actions-row">
@@ -1286,7 +1340,7 @@ export function ImportJobStatusClient({
                   <p className="page-copy">Aducem lista pentru setul curent.</p>
                 </div>
               ) : questionsLoadError ? (
-                <div className="error-state">{questionsLoadError}</div>
+                <div className="error-state" role="alert">{questionsLoadError}</div>
               ) : visibleQuestions.length ? (
                 <div className="draft-list import-preview-list">
                   {visibleQuestions.map((question) => (
@@ -1326,13 +1380,12 @@ export function ImportJobStatusClient({
             </div>
           ) : (
             <>
-              <div className="ui-segmented-tabs import-main-tabs" role="tablist" aria-label="Filtru intrebari">
+              <div className="ui-segmented-tabs import-main-tabs" role="group" aria-label="Filtru intrebari">
                 {QUESTION_TABS.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
-                    role="tab"
-                    aria-selected={activeFilter === tab.id}
+                    aria-pressed={activeFilter === tab.id}
                     className={`ui-segmented-tab secondary ${activeFilter === tab.id ? "is-active" : ""}`}
                     onClick={() => changeFilter(tab.id)}
                   >
@@ -1374,7 +1427,7 @@ export function ImportJobStatusClient({
                   <p className="page-copy">Aducem lista pentru filtrul selectat.</p>
                 </div>
               ) : questionsLoadError ? (
-                <div className="error-state">{questionsLoadError}</div>
+                <div className="error-state" role="alert">{questionsLoadError}</div>
               ) : questions.length ? (
                 <div className="draft-list import-preview-list">
                   {questions.map((question) => (
@@ -1506,10 +1559,16 @@ export function ImportJobStatusClient({
 
       {guidedMode && showAllQuestions ? (
         <div className="workspace-modal-backdrop" role="presentation">
-          <div className="workspace-modal-card licenta-questions-modal" role="dialog" aria-modal="true">
+          <div
+            ref={questionsDialogRef}
+            className="workspace-modal-card licenta-questions-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="import-all-questions-title"
+          >
             <div className="workspace-modal-head">
               <div>
-                <strong>{`Intrebarile din ${setIndexLabel.toLowerCase()}`}</strong>
+                <strong id="import-all-questions-title">{`Intrebarile din ${setIndexLabel.toLowerCase()}`}</strong>
                 <p>Editeaza sau elimina intrebarile problematice, apoi revino la pasul principal.</p>
               </div>
               <button
@@ -1531,13 +1590,12 @@ export function ImportJobStatusClient({
                 />
               ) : null}
 
-              <div className="ui-segmented-tabs import-main-tabs" role="tablist" aria-label="Filtru intrebari">
+              <div className="ui-segmented-tabs import-main-tabs" role="group" aria-label="Filtru intrebari">
                 {QUESTION_TABS.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
-                    role="tab"
-                    aria-selected={activeFilter === tab.id}
+                    aria-pressed={activeFilter === tab.id}
                     className={`ui-segmented-tab secondary ${activeFilter === tab.id ? "is-active" : ""}`}
                     onClick={() => changeFilter(tab.id)}
                   >
@@ -1579,7 +1637,7 @@ export function ImportJobStatusClient({
                   <p className="page-copy">Aducem lista pentru filtrul selectat.</p>
                 </div>
               ) : questionsLoadError ? (
-                <div className="error-state">{questionsLoadError}</div>
+                <div className="error-state" role="alert">{questionsLoadError}</div>
               ) : questions.length ? (
                 <div className="draft-list import-preview-list">
                   {questions.map((question) => (

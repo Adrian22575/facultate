@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 
 import { notifyAdminFeedbackSubmitted } from "@/lib/notifications/telegram";
+import { assertRateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseSetupIncompleteError } from "@/lib/supabase/setup-status";
 
@@ -41,6 +42,13 @@ export async function POST(request) {
   }
 
   try {
+    await assertRateLimit({
+      action: "feedback_submit",
+      subject: user.id,
+      windowSeconds: 60 * 60,
+      maxRequests: 5
+    });
+
     const { data: profile } = await supabase
       .from("profiles")
       .select("user_type")
@@ -79,6 +87,16 @@ export async function POST(request) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
+    if (error?.code === "RATE_LIMITED") {
+      return NextResponse.json(
+        { error: error.message },
+        {
+          status: 429,
+          headers: { "Retry-After": String(error.retryAfterSeconds || 3600) }
+        }
+      );
+    }
+
     if (isSupabaseSetupIncompleteError(error)) {
       return NextResponse.json(
         {

@@ -19,6 +19,7 @@ import {
   signUpWithEmailAction
 } from "@/app/auth/password-actions";
 import { LoadingIconText } from "@/components/loading-spinner";
+import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 function normalizeInitialMode(mode) {
   return ["login", "signup", "forgot"].includes(mode) ? mode : "login";
@@ -60,6 +61,7 @@ export function EmailAuthPanel({
 }) {
   const [mode, setMode] = useState(normalizeInitialMode(initialMode));
   const [signupStep, setSignupStep] = useState(1);
+  const [showServerMessage, setShowServerMessage] = useState(true);
   const [signupIdentity, setSignupIdentity] = useState({
     fullName: "",
     email: "",
@@ -69,20 +71,23 @@ export function EmailAuthPanel({
   const canContinueSignup = useMemo(
     () =>
       signupIdentity.fullName.trim().length >= 2 &&
-      signupIdentity.email.trim().length > 3 &&
-      signupIdentity.phone.trim().length >= 9,
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signupIdentity.email.trim()) &&
+      signupIdentity.phone.replace(/\D/g, "").length >= 9,
     [signupIdentity]
   );
 
   function showMode(nextMode) {
     setMode(nextMode);
     setSignupStep(1);
+    setShowServerMessage(false);
   }
+
+  const loginBackHref = `/auth/login?next=${encodeURIComponent(nextPath)}${hasReferralInvite ? "&ref=1" : ""}`;
 
   return (
     <section className="email-auth-panel" aria-label="Autentificare cu email">
       <div className="email-auth-head">
-        <a className="email-auth-back" href="/auth/login">
+        <a className="email-auth-back" href={loginBackHref}>
           <ArrowLeft aria-hidden="true" size={16} />
           Inapoi la Google
         </a>
@@ -110,21 +115,32 @@ export function EmailAuthPanel({
         </div>
       ) : null}
 
-      <div className="email-auth-segment" role="tablist" aria-label="Alege actiunea">
+      <div
+        className="email-auth-segment"
+        role="tablist"
+        aria-label="Alege actiunea"
+        onKeyDown={handleTablistKeyDown}
+      >
         <button
+          id="email-auth-tab-login"
           type="button"
           role="tab"
-          aria-selected={mode === "login"}
-          className={`email-auth-tab${mode === "login" ? " is-active" : ""}`}
+          aria-selected={mode !== "signup"}
+          aria-controls="email-auth-active-panel"
+          tabIndex={mode !== "signup" ? 0 : -1}
+          className={`email-auth-tab${mode !== "signup" ? " is-active" : ""}`}
           onClick={() => showMode("login")}
         >
           <Mail aria-hidden="true" size={16} />
           Intra
         </button>
         <button
+          id="email-auth-tab-signup"
           type="button"
           role="tab"
           aria-selected={mode === "signup"}
+          aria-controls="email-auth-active-panel"
+          tabIndex={mode === "signup" ? 0 : -1}
           className={`email-auth-tab${mode === "signup" ? " is-active" : ""}`}
           onClick={() => showMode("signup")}
         >
@@ -133,13 +149,18 @@ export function EmailAuthPanel({
         </button>
       </div>
 
-      {errorMessage ? (
+      <div
+        id="email-auth-active-panel"
+        role="tabpanel"
+        aria-labelledby={`email-auth-tab-${mode === "signup" ? "signup" : "login"}`}
+      >
+      {showServerMessage && errorMessage ? (
         <div className="nota5plus-inline-error" role="alert">
           {errorMessage}
         </div>
       ) : null}
 
-      {successMessage ? (
+      {showServerMessage && successMessage ? (
         <div className="auth-inline-success" role="status">
           {successMessage}
         </div>
@@ -268,6 +289,11 @@ export function EmailAuthPanel({
               required
             />
           </AuthInput>
+          <p className="email-auth-legal-copy">
+            Prin crearea contului confirmi ca ai citit si accepti{" "}
+            <a href="/termeni" target="_blank" rel="noreferrer">Termenii</a> si{" "}
+            <a href="/confidentialitate" target="_blank" rel="noreferrer">Politica de confidentialitate</a>.
+          </p>
           <EmailAuthSubmitButton pendingLabel="Se creeaza contul...">Creeaza cont</EmailAuthSubmitButton>
           <button className="email-auth-secondary-button" type="button" onClick={() => setSignupStep(1)}>
             Inapoi la datele de contact
@@ -287,6 +313,7 @@ export function EmailAuthPanel({
           </button>
         </form>
       ) : null}
+      </div>
     </section>
   );
 }
