@@ -9,6 +9,9 @@ export function GamificationResultPanel({ result }) {
   const unlocked = Array.isArray(result.unlockedAchievements)
     ? result.unlockedAchievements
     : [];
+  const currentLevel = result.level?.current || null;
+  const nextLevel = result.level?.next || null;
+  const progressPercent = result.level?.progressPercent || 0;
 
   return (
     <section className="gamification-result-panel" aria-label="Progres primit">
@@ -20,6 +23,21 @@ export function GamificationResultPanel({ result }) {
         <p>
           {`Total: ${result.totalPoints} puncte. Streak actual: ${result.currentStreak} zile.`}
         </p>
+        <div className="gamification-result-level">
+          <span>
+            {currentLevel
+              ? `Nivel: ${currentLevel.title}`
+              : "Nivel: Incepator"}
+          </span>
+          <span>
+            {nextLevel
+              ? `${result.level.pointsToNext} puncte pana la ${nextLevel.title}`
+              : "Nivel maxim atins"}
+          </span>
+        </div>
+        <div className="gamification-result-track" aria-label="Progres catre urmatorul nivel">
+          <span style={{ width: `${progressPercent}%` }} />
+        </div>
         {unlocked.length ? (
           <div className="gamification-unlocked-list">
             {unlocked.map((achievement) => (

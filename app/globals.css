@@ -17447,6 +17447,31 @@ td {
   line-height: 1.45;
 }
 
+.gamification-result-level {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 8px;
+  color: #25416f;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.gamification-result-track {
+  overflow: hidden;
+  height: 7px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: #deebff;
+}
+
+.gamification-result-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1d5fc1, #1fae72);
+}
+
 .gamification-unlocked-list {
   display: flex;
   flex-wrap: wrap;

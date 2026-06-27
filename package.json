@@ -17,6 +17,7 @@
     "onboarding:membership:e2e": "node --use-system-ca --import ./scripts/register-path-alias.mjs scripts/onboarding-membership-e2e.mjs",
     "billing:premium:e2e": "node --use-system-ca --import ./scripts/register-path-alias.mjs scripts/billing-premium-e2e.mjs",
     "background:locks:e2e": "node --use-system-ca --import ./scripts/register-path-alias.mjs scripts/background-job-locks-e2e.mjs",
+    "gamification:e2e": "node --use-system-ca --import ./scripts/register-path-alias.mjs scripts/gamification-e2e.mjs",
     "auth:flow:check": "node scripts/auth-flow-check.mjs",
     "local:probe": "powershell -ExecutionPolicy Bypass -File scripts/probe-local.ps1",
     "server:status": "powershell -ExecutionPolicy Bypass -File scripts/server-status.ps1",

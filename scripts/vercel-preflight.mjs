@@ -258,7 +258,7 @@ console.log("- Supabase Auth Site URL and redirect URLs configured");
 console.log("- Supabase Storage bucket private-source-documents exists");
 console.log("- Google OAuth origins and callback URLs configured");
 console.log("- Stripe webhook endpoint secret matches the target environment");
-console.log("- Vercel Cron is enabled on a plan that supports one-minute schedules");
+console.log("- Vercel Cron schedule is supported by the target plan");
 console.log("- Telegram admin notifications tested if review/import approvals are expected");
 
 if (missingKeys.length || configurationErrors.length) {
