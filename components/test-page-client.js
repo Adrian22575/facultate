@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { shuffleArray } from "@/lib/quiz";
+import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { TestResultPanel } from "@/components/test-result-panel";
 
 function sanitizeQuestions(questions) {
@@ -81,6 +82,14 @@ function formatScoreDelta(value) {
   }
 
   return `${value}% sub record`;
+}
+
+function createAttemptKey() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `subject-test-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 function SubjectTestInsight({ stats, status, onRetry }) {
@@ -190,8 +199,10 @@ export function TestPageClient({ subject, initialQuestions }) {
   const [answerNotice, setAnswerNotice] = useState("");
   const [resultStats, setResultStats] = useState(null);
   const [resultStatsStatus, setResultStatsStatus] = useState("idle");
+  const [gamificationResult, setGamificationResult] = useState(null);
   const [syncRevision, setSyncRevision] = useState(0);
   const lastSyncedScoreRef = useRef("");
+  const attemptKeyRef = useRef("");
 
   const safeInitialQuestions = useMemo(() => sanitizeQuestions(initialQuestions), [initialQuestions]);
 
@@ -217,8 +228,10 @@ export function TestPageClient({ subject, initialQuestions }) {
     setAnswerNotice("");
     setResultStats(null);
     setResultStatsStatus("idle");
+    setGamificationResult(null);
     setSyncRevision(0);
     lastSyncedScoreRef.current = "";
+    attemptKeyRef.current = createAttemptKey();
     setPhase("quiz");
 
     if (typeof window !== "undefined") {
@@ -279,12 +292,16 @@ export function TestPageClient({ subject, initialQuestions }) {
       const payload = await syncSubjectProgress({
         subjectId: subject.id,
         mode: "test",
-        testScorePercent: scorePercent
+        testScorePercent: scorePercent,
+        testQuestionCount: testQuestions.length,
+        testCorrectCount: correctAnswers,
+        idempotencyKey: attemptKeyRef.current
       });
 
       if (payload?.subjectTestStats) {
         lastSyncedScoreRef.current = syncKey;
         setResultStats(payload.subjectTestStats);
+        setGamificationResult(payload.gamification || null);
         setResultStatsStatus("ready");
       } else {
         setResultStats(null);
@@ -372,11 +389,14 @@ export function TestPageClient({ subject, initialQuestions }) {
         stats={[{ label: "Greseli", value: wrongQuestions.length }]}
         insights={
           reviewRound ? null : (
-            <SubjectTestInsight
-              stats={resultStats}
-              status={resultStatsStatus}
-              onRetry={() => setSyncRevision((value) => value + 1)}
-            />
+            <>
+              <SubjectTestInsight
+                stats={resultStats}
+                status={resultStatsStatus}
+                onRetry={() => setSyncRevision((value) => value + 1)}
+              />
+              <GamificationResultPanel result={gamificationResult} />
+            </>
           )
         }
         emptyMessage="Nu ai gresit nicio intrebare in aceasta runda."

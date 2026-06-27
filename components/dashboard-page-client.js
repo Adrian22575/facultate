@@ -5,7 +5,8 @@ import {
   BookOpenCheck,
   FileUp,
   GraduationCap,
-  PlayCircle
+  PlayCircle,
+  Trophy
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -25,7 +26,8 @@ export function DashboardPageClient({
   isAuthenticated = false,
   isAdmin = false,
   adminActionCount = 0,
-  billingSnapshot = null
+  billingSnapshot = null,
+  gamificationSummary = null
 }) {
   const [lastSession, setLastSession] = useState(null);
   const [sessionEntryStep, setSessionEntryStep] = useState("entry");
@@ -37,6 +39,8 @@ export function DashboardPageClient({
   }, []);
 
   const hasLastSession = Boolean(lastSession?.url);
+  const gamificationLevel = gamificationSummary?.level?.current || null;
+  const nextLevel = gamificationSummary?.level?.next || null;
   const continueTitle = hasLastSession
     ? lastSession.subjectTitle || "Continua materia"
     : hasSubjects
@@ -272,6 +276,46 @@ export function DashboardPageClient({
           </div>
 
           <aside className="dashboard-side-stack">
+            {gamificationSummary ? (
+              <div className="section-card dashboard-mini-section dashboard-gamification-card">
+                <div className="dashboard-gamification-head">
+                  <span className="dashboard-mode-icon is-orange" aria-hidden="true">
+                    <Trophy size={22} strokeWidth={2.5} />
+                  </span>
+                  <div>
+                    <h3>Progresul meu</h3>
+                    <p>{gamificationSummary.todayMessage}</p>
+                  </div>
+                </div>
+                <div className="dashboard-gamification-level">
+                  <span>{gamificationLevel?.title || "Incepator"}</span>
+                  <strong>{`${gamificationSummary.totalPoints || 0} puncte`}</strong>
+                </div>
+                <div className="dashboard-progress-bar" aria-label="Progres catre nivelul urmator">
+                  <div
+                    className="dashboard-progress-fill"
+                    style={{ width: `${gamificationSummary.level?.progressPercent || 0}%` }}
+                  />
+                </div>
+                <div className="dashboard-gamification-meta">
+                  <span>{`${gamificationSummary.currentStreak || 0} zile streak`}</span>
+                  <span>
+                    {nextLevel
+                      ? `${gamificationSummary.level.pointsToNext} puncte pana la ${nextLevel.title}`
+                      : "Nivel maxim"}
+                  </span>
+                </div>
+                <PendingNavigationLink
+                  href="/progresul-meu"
+                  className="btn-link secondary dashboard-gamification-link"
+                  pendingLabel="Se deschide progresul..."
+                  pendingMode="replace"
+                >
+                  Vezi progresul
+                </PendingNavigationLink>
+              </div>
+            ) : null}
+
             <div className="section-card dashboard-mini-section">
               <h3>Progresul tau</h3>
               {progressItems.length ? (

@@ -5,6 +5,10 @@ import {
   getAcademicContext,
   isAcademicContextComplete
 } from "@/lib/academic/server";
+import {
+  awardGamificationPoints,
+  calculateGamificationAward
+} from "@/lib/gamification";
 import { getStatsScopeCandidates } from "@/lib/licenta-exam-community-stats";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -20,7 +24,10 @@ const ProgressPayloadSchema = z
     interactiveAnswered: z.number().int().min(0).optional(),
     interactiveCorrect: z.number().int().min(0).optional(),
     interactiveWrong: z.number().int().min(0).optional(),
-    testScorePercent: z.number().int().min(0).max(100).optional()
+    testScorePercent: z.number().int().min(0).max(100).optional(),
+    testQuestionCount: z.number().int().min(1).max(500).optional(),
+    testCorrectCount: z.number().int().min(0).max(500).optional(),
+    idempotencyKey: z.string().trim().min(8).max(180).optional()
   })
   .superRefine((value, context) => {
     if (value.mode === "studiu") {
@@ -74,18 +81,37 @@ const ProgressPayloadSchema = z
       }
     }
 
-    if (value.mode === "test" && typeof value.testScorePercent !== "number") {
-      context.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["testScorePercent"],
-        message: "Lipseste scorul testului."
-      });
+    if (value.mode === "test") {
+      if (typeof value.testScorePercent !== "number") {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["testScorePercent"],
+          message: "Lipseste scorul testului."
+        });
+      }
+
+      if (
+        typeof value.testQuestionCount === "number" &&
+        typeof value.testCorrectCount === "number" &&
+        value.testCorrectCount > value.testQuestionCount
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["testCorrectCount"],
+          message: "Datele testului nu sunt coerente."
+        });
+      }
     }
   });
 
 function average(values) {
   if (!values.length) return 0;
   return Math.round(values.reduce((total, value) => total + value, 0) / values.length);
+}
+
+function pickReachedThreshold(value, thresholds) {
+  const safeValue = Number(value || 0);
+  return thresholds.filter((threshold) => safeValue >= threshold).pop() || 0;
 }
 
 function membershipColumnForScope(scope) {
@@ -246,8 +272,70 @@ export async function POST(request) {
             previousBestScore: Number(syncResult?.previousBestScore || 0)
           })
         : null;
+    let gamification = null;
 
-    return NextResponse.json({ ok: true, subjectTestStats });
+    if (payload.mode === "test" && payload.idempotencyKey) {
+      gamification = await awardGamificationPoints({
+        userId: user.id,
+        actionType: "subject_test_completed",
+        points: calculateGamificationAward({
+          actionType: "subject_test_completed",
+          correctCount: payload.testCorrectCount ?? 0,
+          questionCount: payload.testQuestionCount ?? 0,
+          scorePercent: payload.testScorePercent ?? 0
+        }),
+        referenceType: "subject",
+        referenceId: payload.subjectId,
+        idempotencyKey: `subject-test:${payload.idempotencyKey}`,
+        metadata: {
+          subjectId: payload.subjectId,
+          scorePercent: payload.testScorePercent ?? 0,
+          correctCount: payload.testCorrectCount ?? null,
+          questionCount: payload.testQuestionCount ?? null
+        }
+      });
+    } else if (payload.mode === "interactiv") {
+      const threshold = pickReachedThreshold(payload.interactiveAnswered, [5, 10, 20, 50, 100, 200, 500]);
+      if (threshold) {
+        gamification = await awardGamificationPoints({
+          userId: user.id,
+          actionType: "subject_interactive_session",
+          points: Math.min(120, 10 + threshold),
+          referenceType: "subject",
+          referenceId: payload.subjectId,
+          idempotencyKey: `subject-interactive:${payload.subjectId}:${threshold}`,
+          metadata: {
+            subjectId: payload.subjectId,
+            threshold,
+            correctCount: payload.interactiveCorrect ?? 0,
+            questionCount: threshold,
+            answeredCount: payload.interactiveAnswered ?? 0
+          }
+        });
+      }
+    } else if (payload.mode === "studiu") {
+      const viewedCount = Array.isArray(payload.studyViewedIndexes)
+        ? payload.studyViewedIndexes.length
+        : 0;
+      const threshold = pickReachedThreshold(viewedCount, [10, 25, 50, 100, 200, 500]);
+      if (threshold) {
+        gamification = await awardGamificationPoints({
+          userId: user.id,
+          actionType: "subject_study_session",
+          points: Math.min(100, 8 + Math.round(threshold / 2)),
+          referenceType: "subject",
+          referenceId: payload.subjectId,
+          idempotencyKey: `subject-study:${payload.subjectId}:${threshold}`,
+          metadata: {
+            subjectId: payload.subjectId,
+            threshold,
+            viewedCount
+          }
+        });
+      }
+    }
+
+    return NextResponse.json({ ok: true, subjectTestStats, gamification });
   } catch (error) {
     if (isSupabaseSetupIncompleteError(error)) {
       return NextResponse.json(

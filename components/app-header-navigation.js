@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Home, LogOut, Menu, Shield, Upload, UserCircle, X } from "lucide-react";
+import { BarChart3, Home, LogOut, Menu, Shield, Trophy, Upload, UserCircle, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 function IconText({ icon: Icon, children, badgeCount = 0 }) {
@@ -31,6 +31,7 @@ export function AppHeaderNavigation({ showPrivateNav, showLogout, showAdminLink,
     ? [
         { href: "/", label: "Home", icon: Home },
         { href: "/materiale", label: "Workspace", icon: Upload },
+        { href: "/progresul-meu", label: "Progres", icon: Trophy },
         { href: "/statistici", label: "Statistici", icon: BarChart3 },
         { href: "/cont", label: "Contul meu", icon: UserCircle },
         ...(showAdminLink ? [{ href: "/admin", label: "Admin", icon: Shield, badgeCount: adminActionCount }] : [])

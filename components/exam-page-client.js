@@ -14,6 +14,7 @@ import {
   Zap
 } from "lucide-react";
 
+import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { buildLicentaQuestionKey } from "@/lib/licenta-exam-question-key";
 import { shuffleArray } from "@/lib/quiz";
 
@@ -281,6 +282,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
   const [communityStats, setCommunityStats] = useState(null);
   const [communityStatsStatus, setCommunityStatsStatus] = useState("idle");
   const [communityStatsError, setCommunityStatsError] = useState("");
+  const [gamificationResult, setGamificationResult] = useState(null);
   const [quizValidationMessage, setQuizValidationMessage] = useState("");
   const attemptKeyRef = useRef("");
   const finishingRef = useRef(false);
@@ -463,6 +465,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
   async function saveLicentaAttempt(summary) {
     setCommunityStatsStatus("saving");
     setCommunityStatsError("");
+    setGamificationResult(null);
 
     try {
       const response = await fetch("/api/licenta-exam/attempts", {
@@ -491,12 +494,14 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
       }
 
       setCommunityStats(payload.communityStats || null);
+      setGamificationResult(payload.gamification || null);
       if (Array.isArray(payload.mistakeQuestionIds)) {
         replaceMistakes(payload.mistakeQuestionIds);
       }
       setCommunityStatsStatus("ready");
     } catch (error) {
       setCommunityStats(null);
+      setGamificationResult(null);
       setCommunityStatsStatus("error");
       setCommunityStatsError(
         error instanceof Error
@@ -947,6 +952,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             status={communityStatsStatus}
             error={communityStatsError}
           />
+          <GamificationResultPanel result={gamificationResult} />
 
           <hr className="result-divider" />
           <h3>{isResultVerificationMode ? "Verificari gresite" : "Intrebari gresite"}</h3>

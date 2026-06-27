@@ -13,6 +13,7 @@ import {
   saveLearningFlashcardRatingAction,
   saveLearningQuizAttemptAction
 } from "@/app/ai/invata/actions";
+import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const TABS = [
@@ -508,7 +509,8 @@ function TestTab({
         score: saved.result.score,
         total: saved.result.total,
         percentage: saved.result.percentage,
-        wrong
+        wrong,
+        gamification: saved.result.gamification || null
       });
     } finally {
       setIsSaving(false);
@@ -614,25 +616,28 @@ function TestTab({
       </div>
 
       {result ? (
-        <div className={`learning-test-result ${result.type === "warning" ? "is-warning" : "is-done"}`}>
-          {result.type === "warning" ? <XCircle aria-hidden="true" /> : <CheckCircle2 aria-hidden="true" />}
-          <div>
-            <strong>
-              {result.type === "warning"
-                ? result.message
-                : result.type === "saving"
+        <>
+          <div className={`learning-test-result ${result.type === "warning" ? "is-warning" : "is-done"}`}>
+            {result.type === "warning" ? <XCircle aria-hidden="true" /> : <CheckCircle2 aria-hidden="true" />}
+            <div>
+              <strong>
+                {result.type === "warning"
                   ? result.message
-                : `Scor ${result.score} din ${result.total} (${result.percentage}%)`}
-            </strong>
-            {result.type === "done" ? (
-              <p>
-                {result.wrong.length
-                  ? "Repeta greselile si revino la capitolul slab."
-                  : "Runda curata. Continua cu flashcards sau cu planul."}
-              </p>
-            ) : null}
+                  : result.type === "saving"
+                    ? result.message
+                    : `Scor ${result.score} din ${result.total} (${result.percentage}%)`}
+              </strong>
+              {result.type === "done" ? (
+                <p>
+                  {result.wrong.length
+                    ? "Repeta greselile si revino la capitolul slab."
+                    : "Runda curata. Continua cu flashcards sau cu planul."}
+                </p>
+              ) : null}
+            </div>
           </div>
-        </div>
+          <GamificationResultPanel result={result.gamification} />
+        </>
       ) : null}
 
       <div className="learning-test-actions">

@@ -27,7 +27,9 @@ const REQUIRED_RPC_FUNCTIONS = [
   "requeue_credit_backed_generation_job",
   "acquire_ai_import_job_lock",
   "release_ai_import_job_lock",
-  "claim_stripe_webhook_event"
+  "claim_stripe_webhook_event",
+  "award_gamification_points",
+  "refresh_gamification_achievements"
 ];
 const REQUIRED_RELATIONS = [
   { table: "profiles", columns: "id,user_type,onboarding_completed,primary_membership_id,phone_normalized" },
@@ -89,7 +91,22 @@ const REQUIRED_RELATIONS = [
     table: "learning_flashcard_reviews",
     columns: "id,study_set_id,flashcard_id,user_id,rating,next_review_at,metadata"
   },
-  { table: "learning_study_set_reports", columns: "id,study_set_id,reporter_user_id,status" }
+  { table: "learning_study_set_reports", columns: "id,study_set_id,reporter_user_id,status" },
+  { table: "gamification_profiles", columns: "user_id,total_points,current_streak,best_streak,last_active_date" },
+  {
+    table: "gamification_point_transactions",
+    columns: "id,user_id,action_type,points,activity_date,idempotency_key"
+  },
+  { table: "gamification_daily_activity", columns: "user_id,activity_date,action_count,points_earned" },
+  { table: "gamification_levels", columns: "level_key,position,title,min_points,badge" },
+  {
+    table: "gamification_achievements",
+    columns: "achievement_key,title,requirement_type,requirement_value,bonus_points"
+  },
+  {
+    table: "gamification_user_achievements",
+    columns: "user_id,achievement_key,unlocked_at,points_awarded"
+  }
 ];
 
 const args = new Set(process.argv.slice(2));

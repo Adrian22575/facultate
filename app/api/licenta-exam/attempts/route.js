@@ -6,6 +6,10 @@ import {
   isAcademicContextComplete
 } from "@/lib/academic/server";
 import { getAllExamQuestions } from "@/lib/data";
+import {
+  awardGamificationPoints,
+  calculateGamificationAward
+} from "@/lib/gamification";
 import { buildLicentaExamCommunityStats } from "@/lib/licenta-exam-community-stats";
 import { getActiveLicentaMistakeIds } from "@/lib/licenta-exam-mistakes";
 import { buildLicentaQuestionKey } from "@/lib/licenta-exam-question-key";
@@ -200,6 +204,32 @@ export async function POST(request) {
       throw attemptError || new Error("licenta_attempt_missing_after_insert");
     }
 
+    const actionType =
+      payload.mode === "mistakes" ? "licenta_mistakes_completed" : "licenta_simulation_completed";
+    const gamification = attemptResult?.created
+      ? await awardGamificationPoints({
+          userId: user.id,
+          actionType,
+          points: calculateGamificationAward({
+            actionType,
+            correctCount: payload.score,
+            questionCount: payload.total,
+            scorePercent: payload.percentage
+          }),
+          referenceType: "licenta_exam_attempt",
+          referenceId: attemptResult.attemptId,
+          idempotencyKey: `licenta-attempt:${payload.idempotencyKey}`,
+          metadata: {
+            mode: payload.mode,
+            scorePercent: payload.percentage,
+            correctCount: payload.score,
+            questionCount: payload.total,
+            wrongCount: payload.wrongCount,
+            unansweredCount: payload.unansweredCount
+          }
+        })
+      : null;
+
     const [communityStats, mistakeQuestionIds] = await Promise.all([
       buildLicentaExamCommunityStats({
         admin,
@@ -215,7 +245,8 @@ export async function POST(request) {
       ok: true,
       attemptId: attemptResult.attemptId,
       communityStats,
-      mistakeQuestionIds
+      mistakeQuestionIds,
+      gamification
     });
   } catch (error) {
     if (error?.code === "RATE_LIMITED") {
