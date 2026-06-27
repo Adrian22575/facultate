@@ -14210,14 +14210,32 @@ td {
   text-align: left;
 }
 
+.learning-upload-source-option:hover,
+.learning-upload-source-option:focus-visible {
+  border-color: #a9c4ea;
+  background: #f7fbff;
+  color: inherit;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(20, 50, 100, 0.08);
+}
+
 .learning-upload-source-option.is-active {
   border-color: rgba(37, 99, 235, 0.38);
   background: #eff6ff;
 }
 
+.learning-upload-source-option.is-active:hover,
+.learning-upload-source-option.is-active:focus-visible {
+  border-color: rgba(37, 99, 235, 0.5);
+  background: #eff6ff;
+  color: inherit;
+}
+
 .learning-upload-source-option:disabled {
   cursor: not-allowed;
   opacity: 0.72;
+  transform: none;
+  box-shadow: none;
 }
 
 .learning-upload-source-option > span {
@@ -14415,11 +14433,134 @@ td {
 }
 
 .learning-upload-submit-row p {
+  flex: 1 1 auto;
   margin: 0;
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 700;
   line-height: 1.45;
+}
+
+.learning-upload-submit-row button {
+  flex: 0 0 auto;
+  min-width: 190px;
+  white-space: nowrap;
+}
+
+.workspace-flow-page .learning-upload-hero {
+  margin-bottom: 18px;
+}
+
+.workspace-flow-layout {
+  align-items: start;
+}
+
+.workspace-flow-main {
+  min-width: 0;
+}
+
+.workspace-flow-main .licenta-import-workspace {
+  gap: 18px;
+}
+
+.workspace-flow-main .import-mode-card-single {
+  max-width: none;
+}
+
+.workspace-flow-main .workspace-form-panel,
+.workspace-flow-main .workspace-submit-card,
+.workspace-flow-main .workspace-credit-alert {
+  width: 100%;
+}
+
+.workspace-flow-side {
+  align-self: start;
+}
+
+.workspace-flow-page .workspace-form-panel,
+.workspace-flow-page .workspace-submit-card {
+  border-radius: 24px;
+  border-color: #d6e3f5;
+  box-shadow: 0 16px 34px rgba(20, 50, 100, 0.06);
+}
+
+.workspace-flow-page .workspace-form-head h2 {
+  font-size: 1.35rem;
+  line-height: 1.14;
+}
+
+.workspace-flow-page .workspace-form-head p {
+  max-width: 720px;
+  color: var(--muted);
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+.workspace-flow-page .ai-workspace-source-tabs,
+.workspace-flow-page .import-method-tabs {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.workspace-flow-page .ai-workspace-source-tab,
+.workspace-flow-page .import-method-tab {
+  justify-content: flex-start;
+  min-width: 0;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface-soft);
+  color: var(--ink);
+  text-align: left;
+  box-shadow: none;
+}
+
+.workspace-flow-page .ai-workspace-source-tab:hover,
+.workspace-flow-page .ai-workspace-source-tab:focus-visible,
+.workspace-flow-page .import-method-tab:hover,
+.workspace-flow-page .import-method-tab:focus-visible {
+  border-color: #a9c4ea;
+  background: #f7fbff;
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(20, 50, 100, 0.08);
+}
+
+.workspace-flow-page .ai-workspace-source-tab.is-active,
+.workspace-flow-page .import-method-tab.is-active {
+  border-color: rgba(37, 99, 235, 0.38);
+  background: #eff6ff;
+  color: var(--primary-dark);
+}
+
+.workspace-flow-page .ai-workspace-file-dropzone {
+  min-height: 176px;
+  border-radius: 22px;
+  text-align: center;
+}
+
+.workspace-flow-page .ai-workspace-submit-card {
+  align-items: stretch;
+  background: #f7fbff;
+}
+
+.workspace-flow-page .ai-workspace-submit-row {
+  align-content: center;
+  justify-content: flex-end;
+}
+
+.workspace-flow-page .ai-workspace-submit-row button,
+.workspace-flow-page .import-actions-row button {
+  min-width: 190px;
+  white-space: nowrap;
 }
 
 .learning-upload-recent-list {
@@ -14526,7 +14667,9 @@ td {
   .learning-upload-source-grid,
   .learning-processing-steps,
   .learning-upload-detail-grid,
-  .learning-competition-kpis {
+  .learning-competition-kpis,
+  .workspace-flow-page .ai-workspace-source-tabs,
+  .workspace-flow-page .import-method-tabs {
     grid-template-columns: 1fr;
   }
 
