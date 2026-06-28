@@ -5,7 +5,6 @@ import {
   BookOpenCheck,
   FileUp,
   GraduationCap,
-  PlayCircle,
   Trophy
 } from "lucide-react";
 import Link from "next/link";
@@ -30,7 +29,6 @@ export function DashboardPageClient({
 }) {
   const [lastSession, setLastSession] = useState(null);
   const [sessionEntryStep, setSessionEntryStep] = useState("entry");
-  const fallbackSubject = subjects[0] || null;
   const hasSubjects = subjects.length > 0;
 
   useEffect(() => {
@@ -40,6 +38,7 @@ export function DashboardPageClient({
   const hasLastSession = Boolean(lastSession?.url);
   const gamificationLevel = gamificationSummary?.level?.current || null;
   const nextLevel = gamificationSummary?.level?.next || null;
+  const featuredProgressItem = progressItems[0] || null;
   const continueTitle = hasLastSession
     ? lastSession.subjectTitle || "Continua materia"
     : hasSubjects
@@ -94,111 +93,79 @@ export function DashboardPageClient({
           )}
         </nav>
 
-        <section className="dashboard-hero-shell">
-          <div className="dashboard-home-hero-grid">
-            <div className="dashboard-home-copy">
-              <h1 className="dashboard-hero-title">
-                Ce inveti azi?
-              </h1>
-              <p className="section-sub dashboard-hero-subcopy">
-                Continua sesiunea inceputa sau alege rapid un mod de lucru. Totul ramane in acelasi parcurs:
-                materii, teste, greseli si progres.
-              </p>
-              <div className="dashboard-home-actions">
-                {hasLastSession ? (
-                  <PendingNavigationLink
-                    href={lastSession.url}
-                    className="dashboard-home-primary-action"
-                    pendingLabel="Se deschide sesiunea..."
-                    pendingMode="replace"
-                  >
-                    Continua acum
-                    <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
-                  </PendingNavigationLink>
-                ) : hasSubjects ? (
-                  <button type="button" className="dashboard-home-primary-action" onClick={openSubjectPicker}>
-                    Alege materia
-                    <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
-                  </button>
-                ) : (
-                  <PendingNavigationLink
-                    href="/materiale/invata"
-                    className="dashboard-home-primary-action"
-                    pendingLabel="Se deschide incarcarea..."
-                    pendingMode="replace"
-                  >
-                    Incarca materia
-                    <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
-                  </PendingNavigationLink>
-                )}
-                <PendingNavigationLink
-                  href="/materiale"
-                  className="dashboard-home-secondary-action"
-                  pendingLabel="Se deschide workspace-ul..."
-                  pendingMode="replace"
-                >
-                  Deschide Workspace
-                </PendingNavigationLink>
-              </div>
-            </div>
-
-            <article className="dashboard-hero-side dashboard-continue-card">
-              <div className="dashboard-hero-side-label">
-                {hasLastSession ? "Continua de unde ai ramas" : "Primul pas"}
-              </div>
-              <h3>{continueTitle}</h3>
-              <p>{continueCopy}</p>
-              {hasLastSession ? (
-                <PendingNavigationLink
-                  href={lastSession.url}
-                  className="dashboard-hero-side-btn"
-                  pendingLabel="Se deschide sesiunea..."
-                  pendingMode="replace"
-                >
-                  Continua acum
-                </PendingNavigationLink>
-              ) : hasSubjects ? (
-                <button type="button" className="secondary dashboard-hero-side-btn" onClick={openSubjectPicker}>
-                  Alege materia
-                </button>
-              ) : (
-                <PendingNavigationLink
-                  href="/materiale/invata"
-                  className="dashboard-hero-side-btn"
-                  pendingLabel="Se deschide incarcarea..."
-                  pendingMode="replace"
-                >
-                  Incarca materia
-                </PendingNavigationLink>
-              )}
-            </article>
+        <section className="dashboard-home-intro" aria-labelledby="dashboard-home-title">
+          <div>
+            <h1 id="dashboard-home-title">Ce inveti azi?</h1>
+            <p>Continua de unde ai ramas sau porneste rapid un flux nou.</p>
           </div>
+          <PendingNavigationLink
+            href="/materiale"
+            className="dashboard-home-secondary-action"
+            pendingLabel="Se deschide workspace-ul..."
+            pendingMode="replace"
+          >
+            Workspace
+          </PendingNavigationLink>
         </section>
 
         <section className="dashboard-layout-grid">
           <div id="start-sesiune" className="dashboard-main-stack">
             {sessionEntryStep === "entry" ? (
-              <div className="section-card dashboard-main-card dashboard-session-focus-card">
-                <div className="dashboard-session-head">
-                  <div>
-                    <span className="dashboard-session-kicker">Actiuni rapide</span>
-                    <h2>Alege ce faci acum</h2>
-                    <p className="section-sub">Cele mai folosite fluxuri, fara pasi inutili.</p>
+              <>
+                <article className="dashboard-continue-panel">
+                  <div className="dashboard-continue-copy">
+                    <span>{hasLastSession ? "Continua" : "Start rapid"}</span>
+                    <h2>{continueTitle}</h2>
+                    <p>{continueCopy}</p>
                   </div>
-                  <div className="dashboard-session-pulse" aria-hidden="true">
-                    <PlayCircle size={30} strokeWidth={2.4} />
-                  </div>
-                </div>
 
-                <div className="dashboard-mode-grid">
-                  <div className="dashboard-mode-card">
-                    <div className="dashboard-mode-icon is-blue">
+                  <div className="dashboard-continue-actions">
+                    {hasLastSession ? (
+                      <PendingNavigationLink
+                        href={lastSession.url}
+                        className="dashboard-home-primary-action"
+                        pendingLabel="Se deschide sesiunea..."
+                        pendingMode="replace"
+                      >
+                        Continua acum
+                        <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
+                      </PendingNavigationLink>
+                    ) : hasSubjects ? (
+                      <button type="button" className="dashboard-home-primary-action" onClick={openSubjectPicker}>
+                        Alege materia
+                        <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
+                      </button>
+                    ) : (
+                      <PendingNavigationLink
+                        href="/materiale/invata"
+                        className="dashboard-home-primary-action"
+                        pendingLabel="Se deschide incarcarea..."
+                        pendingMode="replace"
+                      >
+                        Incarca materia
+                        <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
+                      </PendingNavigationLink>
+                    )}
+                    <PendingNavigationLink
+                      href="/statistici"
+                      className="dashboard-home-tertiary-action"
+                      pendingLabel="Se deschid statisticile..."
+                      pendingMode="replace"
+                    >
+                      Vezi statisticile
+                    </PendingNavigationLink>
+                  </div>
+                </article>
+
+                <section className="dashboard-action-list" aria-label="Actiuni rapide">
+                  <article className="dashboard-action-row">
+                    <div className="dashboard-mode-icon is-blue" aria-hidden="true">
                       <GraduationCap size={22} strokeWidth={2.5} />
                     </div>
-                    <h3>Teste pe materii</h3>
-                    <p>
-                      Pentru cand vrei sa exersezi rapid din materia deja disponibila.
-                    </p>
+                    <div className="dashboard-action-row-copy">
+                      <h3>Teste pe materii</h3>
+                      <p>Exerseaza rapid din materiile disponibile.</p>
+                    </div>
                     <button
                       type="button"
                       className="dashboard-mode-cta dashboard-mode-cta-primary"
@@ -206,16 +173,16 @@ export function DashboardPageClient({
                     >
                       Alege materia
                     </button>
-                  </div>
+                  </article>
 
-                  <div className="dashboard-mode-card">
-                    <div className="dashboard-mode-icon is-blue">
+                  <article className="dashboard-action-row">
+                    <div className="dashboard-mode-icon is-blue" aria-hidden="true">
                       <FileUp size={22} strokeWidth={2.5} />
                     </div>
-                    <h3>Invata din materia ta</h3>
-                    <p>
-                      Incarca PDF, DOCX, PPTX, TXT sau lipeste text si construieste materialul de lucru.
-                    </p>
+                    <div className="dashboard-action-row-copy">
+                      <h3>Invata din materia ta</h3>
+                      <p>Incarca PDF, DOCX, PPTX, TXT sau lipeste text.</p>
+                    </div>
                     <PendingNavigationLink
                       href="/materiale/invata"
                       className="secondary-button dashboard-mode-cta"
@@ -224,16 +191,16 @@ export function DashboardPageClient({
                     >
                       Incarca materia
                     </PendingNavigationLink>
-                  </div>
+                  </article>
 
-                  <div className="dashboard-mode-card">
-                    <div className="dashboard-mode-icon is-orange">
+                  <article className="dashboard-action-row">
+                    <div className="dashboard-mode-icon is-orange" aria-hidden="true">
                       <BookOpenCheck size={22} strokeWidth={2.5} />
                     </div>
-                    <h3>Simulare examen licenta</h3>
-                    <p>
-                      Porneste o simulare completa cand vrei sa testezi ritmul de examen.
-                    </p>
+                    <div className="dashboard-action-row-copy">
+                      <h3>Simulare examen licenta</h3>
+                      <p>Testeaza ritmul de examen intr-o simulare completa.</p>
+                    </div>
                     <PendingNavigationLink
                       href="/licenta-exam"
                       className="secondary-button dashboard-mode-cta"
@@ -242,9 +209,9 @@ export function DashboardPageClient({
                     >
                       Porneste simularea
                     </PendingNavigationLink>
-                  </div>
-                </div>
-              </div>
+                  </article>
+                </section>
+              </>
             ) : (
               <div className="section-card dashboard-main-card dashboard-main-card-stepper">
                 <div className="dashboard-stepper-head">
@@ -281,7 +248,7 @@ export function DashboardPageClient({
 
           <aside className="dashboard-side-stack">
             {gamificationSummary ? (
-              <div className="section-card dashboard-mini-section dashboard-gamification-card">
+              <div className="dashboard-progress-panel">
                 <div className="dashboard-gamification-head">
                   <span className="dashboard-mode-icon is-orange" aria-hidden="true">
                     <Trophy size={22} strokeWidth={2.5} />
@@ -315,53 +282,26 @@ export function DashboardPageClient({
                   pendingLabel="Se deschide progresul..."
                   pendingMode="replace"
                 >
-                  Vezi progresul
+                  Detalii progres
                 </PendingNavigationLink>
               </div>
             ) : null}
 
-            <div className="section-card dashboard-mini-section">
-              <h3>Progresul tau</h3>
-              {progressItems.length ? (
-                <div className="dashboard-progress-list">
-                  {progressItems.map((item) => (
-                    <div key={item.id} className="dashboard-progress-item">
-                      <div className="dashboard-progress-head">
-                        <span>{item.title}</span>
-                        <span>{`${item.percent}%`}</span>
-                      </div>
-                      <div className="dashboard-progress-bar">
-                        <div
-                          className="dashboard-progress-fill"
-                          style={{ width: `${item.percent}%` }}
-                        />
-                      </div>
-                      <span>{item.description}</span>
-                    </div>
-                  ))}
+            {featuredProgressItem ? (
+              <div className="dashboard-subject-progress">
+                <div className="dashboard-progress-head">
+                  <span>{featuredProgressItem.title}</span>
+                  <span>{`${featuredProgressItem.percent}%`}</span>
                 </div>
-              ) : (
-                <div className="dashboard-progress-empty">
-                  <p className="section-sub">
-                    Progresul apare aici dupa prima sesiune de Studiu, Interactiv sau Test.
-                  </p>
-                  {hasSubjects ? (
-                    <button type="button" className="btn-link secondary" onClick={openSubjectPicker}>
-                      Alege materia
-                    </button>
-                  ) : (
-                    <PendingNavigationLink
-                      href="/materiale/invata"
-                      className="btn-link secondary"
-                      pendingLabel="Se deschide incarcarea..."
-                      pendingMode="replace"
-                    >
-                      Incarca materia
-                    </PendingNavigationLink>
-                  )}
+                <div className="dashboard-progress-bar">
+                  <div
+                    className="dashboard-progress-fill"
+                    style={{ width: `${featuredProgressItem.percent}%` }}
+                  />
                 </div>
-              )}
-            </div>
+                <p>{featuredProgressItem.description}</p>
+              </div>
+            ) : null}
 
             <div className="section-card dashboard-mini-section">
               <h3>Sfat rapid</h3>
