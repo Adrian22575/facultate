@@ -12,7 +12,7 @@ Pentru un flux local end-to-end, vezi si `docs/local-end-to-end-setup.md`.
 - Runtime Logs Production nu contin erori sau evenimente fatale in intervalul disponibil de 24 de ore la momentul auditului;
 - in Production sunt prezente, ca valori criptate, configurarea Supabase, procesarea materialelor, Stripe, `CRON_SECRET` si notificarile admin;
 - lipsesc din Production cele patru variabile `NEXT_PUBLIC_LEGAL_*` enumerate mai jos;
-- preflightul raporteaza doar daca o variabila este setata sau lipseste si nu afiseaza fragmente din chei in loguri;
+- preflightul opreste Production pentru env-urile tehnice obligatorii si raporteaza separat variabilele juridice `NEXT_PUBLIC_LEGAL_*`, fara sa afiseze fragmente din chei in loguri;
 - migratiile Supabase sunt aplicate in Production pana la `0064`; verificarea live confirma schema critica, functiile atomice si bucketul privat;
 - rezervarea incarcarilor, reluarea joburilor si lock-urile workerului au teste live concurente;
 - workerul cron poate continua in fundal procesarea materialelor, importurilor si seturilor de invatare;
@@ -23,7 +23,7 @@ Pentru un flux local end-to-end, vezi si `docs/local-end-to-end-setup.md`.
 - health check-ul curent expune un identificator scurt, non-sensibil, al release-ului, iar smoke testul poate valida explicit commitul cu `--expected-commit`;
 - verificarile vizuale nu se ruleaza de rutina la cererea utilizatorului; se folosesc doar daca inspectia codului indica o problema care nu poate fi confirmata headless.
 
-Nu promova workspace-ul curent direct peste Production pana cand datele juridice sunt completate, este creat un Preview din commitul final si fluxurile sensibile sunt validate acolo.
+Nu considera lansarea oficiala completa pana cand datele juridice sunt completate, este creat un Preview din commitul final si fluxurile sensibile sunt validate acolo. Deployment-ul tehnic poate fi publicat pentru a livra functionalitatea, dar `production:smoke` trebuie sa ramana gate-ul final de lansare.
 
 Nota de securitate:
 

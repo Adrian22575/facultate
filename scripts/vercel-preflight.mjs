@@ -13,7 +13,9 @@ const requiredEnvKeys = [
   "STRIPE_WEBHOOK_SECRET"
 ];
 const productionRequiredEnvKeys = [
-  "CRON_SECRET",
+  "CRON_SECRET"
+];
+const productionLaunchEnvKeys = [
   "NEXT_PUBLIC_LEGAL_OPERATOR_NAME",
   "NEXT_PUBLIC_LEGAL_OPERATOR_ADDRESS",
   "NEXT_PUBLIC_LEGAL_REGISTRATION_ID",
@@ -132,6 +134,13 @@ for (const key of productionRequiredEnvKeys) {
   console.log(`- ${key}: ${formatPresence(value)}`);
 }
 
+console.log("");
+console.log("Production launch-readiness variables:");
+for (const key of productionLaunchEnvKeys) {
+  const value = getEnvValue(key, localFallback);
+  console.log(`- ${key}: ${formatPresence(value)}`);
+}
+
 const warnings = [];
 const configurationErrors = [];
 
@@ -201,10 +210,10 @@ if (
 }
 
 if (targetEnvironment === "production") {
-  for (const key of productionRequiredEnvKeys.filter((key) => key.startsWith("NEXT_PUBLIC_LEGAL_"))) {
+  for (const key of productionLaunchEnvKeys) {
     const value = getEnvValue(key, localFallback);
     if (value && isPlaceholder(value)) {
-      configurationErrors.push(`${key} still contains a placeholder value.`);
+      warnings.push(`${key} still contains a placeholder value.`);
     }
   }
 
