@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Home, LogOut, Menu, Shield, Trophy, Upload, UserCircle, X } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { BarChart3, Home, LogOut, Menu, Shield, Trophy, Upload, UserCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 function IconText({ icon: Icon, children, badgeCount = 0 }) {
   return (
@@ -21,9 +21,7 @@ function isActivePath(pathname, href) {
 }
 
 function HeaderProgressBadge({ summary }) {
-  if (!summary?.level?.current) return null;
-
-  const level = summary.level.current;
+  const level = summary?.level?.current || { title: "Incepator", badge: "1" };
   const points = Number(summary.totalPoints || 0);
 
   return (
@@ -49,7 +47,6 @@ export function AppHeaderNavigation({
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const menuTitleId = useId();
   const menuRootRef = useRef(null);
   const menuButtonRef = useRef(null);
   const menuPanelRef = useRef(null);
@@ -140,22 +137,8 @@ export function AppHeaderNavigation({
           id="app-mobile-navigation"
           className="header-mobile-menu-panel"
           ref={menuPanelRef}
-          aria-labelledby={menuTitleId}
+          aria-label="Meniu principal"
         >
-          <div className="header-mobile-menu-head">
-            <div>
-              <h2 id={menuTitleId}>Meniu principal</h2>
-            </div>
-            <button
-              className="header-mobile-menu-close"
-              type="button"
-              aria-label="Inchide meniul"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <X aria-hidden="true" size={20} strokeWidth={2.2} />
-            </button>
-          </div>
-
           {showPrivateNav ? (
             <nav className="header-mobile-menu-links" aria-label="Navigare principala">
               {navigationLinks("header-mobile-menu-link", () => setMobileMenuOpen(false))}
