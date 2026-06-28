@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowRight,
   BookOpenCheck,
   FileUp,
   GraduationCap,
@@ -94,21 +95,54 @@ export function DashboardPageClient({
         </nav>
 
         <section className="dashboard-hero-shell">
-          <div className="dashboard-hero-grid">
-            <div>
+          <div className="dashboard-home-hero-grid">
+            <div className="dashboard-home-copy">
               <h1 className="dashboard-hero-title">
-                Invata mai clar, chiar si cand timpul este scurt.
-                <span className="dashboard-accent">
-                  {" "}
-                  Concentreaza-te pe ce conteaza pentru urmatorul test.
-                </span>
+                Ce inveti azi?
               </h1>
               <p className="section-sub dashboard-hero-subcopy">
-                Teste pe materii, simulare de examen si intrebari gresite, intr-un parcurs usor de urmarit.
+                Continua sesiunea inceputa sau alege rapid un mod de lucru. Totul ramane in acelasi parcurs:
+                materii, teste, greseli si progres.
               </p>
+              <div className="dashboard-home-actions">
+                {hasLastSession ? (
+                  <PendingNavigationLink
+                    href={lastSession.url}
+                    className="dashboard-home-primary-action"
+                    pendingLabel="Se deschide sesiunea..."
+                    pendingMode="replace"
+                  >
+                    Continua acum
+                    <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
+                  </PendingNavigationLink>
+                ) : hasSubjects ? (
+                  <button type="button" className="dashboard-home-primary-action" onClick={openSubjectPicker}>
+                    Alege materia
+                    <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
+                  </button>
+                ) : (
+                  <PendingNavigationLink
+                    href="/materiale/invata"
+                    className="dashboard-home-primary-action"
+                    pendingLabel="Se deschide incarcarea..."
+                    pendingMode="replace"
+                  >
+                    Incarca materia
+                    <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
+                  </PendingNavigationLink>
+                )}
+                <PendingNavigationLink
+                  href="/materiale"
+                  className="dashboard-home-secondary-action"
+                  pendingLabel="Se deschide workspace-ul..."
+                  pendingMode="replace"
+                >
+                  Deschide Workspace
+                </PendingNavigationLink>
+              </div>
             </div>
 
-            <div className="dashboard-hero-side">
+            <article className="dashboard-hero-side dashboard-continue-card">
               <div className="dashboard-hero-side-label">
                 {hasLastSession ? "Continua de unde ai ramas" : "Primul pas"}
               </div>
@@ -137,7 +171,7 @@ export function DashboardPageClient({
                   Incarca materia
                 </PendingNavigationLink>
               )}
-            </div>
+            </article>
           </div>
         </section>
 
@@ -147,9 +181,9 @@ export function DashboardPageClient({
               <div className="section-card dashboard-main-card dashboard-session-focus-card">
                 <div className="dashboard-session-head">
                   <div>
-                    <span className="dashboard-session-kicker">Start aici</span>
-                    <h2>Incepe sesiunea</h2>
-                    <p className="section-sub">Alege modul potrivit pentru ritmul tau de invatare.</p>
+                    <span className="dashboard-session-kicker">Actiuni rapide</span>
+                    <h2>Alege ce faci acum</h2>
+                    <p className="section-sub">Cele mai folosite fluxuri, fara pasi inutili.</p>
                   </div>
                   <div className="dashboard-session-pulse" aria-hidden="true">
                     <PlayCircle size={30} strokeWidth={2.4} />
@@ -163,7 +197,7 @@ export function DashboardPageClient({
                     </div>
                     <h3>Teste pe materii</h3>
                     <p>
-                      Alege materia si intra direct in modul potrivit: Interactiv, Studiu sau Test.
+                      Pentru cand vrei sa exersezi rapid din materia deja disponibila.
                     </p>
                     <button
                       type="button"
@@ -180,8 +214,7 @@ export function DashboardPageClient({
                     </div>
                     <h3>Invata din materia ta</h3>
                     <p>
-                      Incarca PDF, DOCX, PPTX, TXT sau text si primesti capitole, flashcards,
-                      teste, greseli salvate si plan.
+                      Incarca PDF, DOCX, PPTX, TXT sau lipeste text si construieste materialul de lucru.
                     </p>
                     <PendingNavigationLink
                       href="/materiale/invata"
@@ -199,7 +232,7 @@ export function DashboardPageClient({
                     </div>
                     <h3>Simulare examen licenta</h3>
                     <p>
-                      60 de intrebari aleatorii din toate materiile, cu timer si ritm de examen real.
+                      Porneste o simulare completa cand vrei sa testezi ritmul de examen.
                     </p>
                     <PendingNavigationLink
                       href="/licenta-exam"
