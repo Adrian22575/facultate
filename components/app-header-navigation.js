@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Home, LogOut, Menu, Shield, Trophy, Upload, UserCircle } from "lucide-react";
+import { BarChart3, ChevronLeft, Home, LogOut, Menu, Shield, Trophy, Upload, UserCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+import { HeaderCreditStatus } from "@/components/header-credit-status";
 
 function IconText({ icon: Icon, children, badgeCount = 0 }) {
   return (
@@ -43,6 +45,7 @@ export function AppHeaderNavigation({
   showAdminLink,
   adminActionCount,
   logoutLabel,
+  billingSnapshot = null,
   gamificationSummary = null
 }) {
   const pathname = usePathname();
@@ -85,6 +88,8 @@ export function AppHeaderNavigation({
 
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     window.requestAnimationFrame(() => {
       menuPanelRef.current?.querySelector("a, button")?.focus();
     });
@@ -92,6 +97,7 @@ export function AppHeaderNavigation({
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
     };
   }, [mobileMenuOpen]);
 
@@ -133,26 +139,55 @@ export function AppHeaderNavigation({
       ) : null}
 
       {mobileMenuOpen ? (
-        <section
-          id="app-mobile-navigation"
-          className="header-mobile-menu-panel"
-          ref={menuPanelRef}
-          aria-label="Meniu principal"
-        >
-          {showPrivateNav ? (
-            <nav className="header-mobile-menu-links" aria-label="Navigare principala">
-              {navigationLinks("header-mobile-menu-link", () => setMobileMenuOpen(false))}
-            </nav>
-          ) : null}
-
-          {showLogout ? (
-            <form className="header-mobile-logout-form" action="/auth/signout" method="post">
-              <button className="header-mobile-logout-button" type="submit">
-                <IconText icon={LogOut}>{logoutLabel}</IconText>
+        <div className="header-side-menu-layer" role="presentation">
+          <button
+            className="header-side-menu-scrim"
+            type="button"
+            aria-label="Inchide meniul"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <aside
+            id="app-mobile-navigation"
+            className="header-mobile-menu-panel"
+            ref={menuPanelRef}
+            aria-label="Meniu principal"
+          >
+            <div className="header-side-menu-top">
+              <div>
+                <span>Nota 5+</span>
+                <strong>Meniu</strong>
+              </div>
+              <button
+                type="button"
+                className="header-side-menu-collapse"
+                aria-label="Inchide meniul"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ChevronLeft aria-hidden="true" size={19} strokeWidth={2.4} />
               </button>
-            </form>
-          ) : null}
-        </section>
+            </div>
+
+            {billingSnapshot ? (
+              <div className="header-side-menu-status">
+                <HeaderCreditStatus billingSnapshot={billingSnapshot} />
+              </div>
+            ) : null}
+
+            {showPrivateNav ? (
+              <nav className="header-mobile-menu-links" aria-label="Navigare principala">
+                {navigationLinks("header-mobile-menu-link", () => setMobileMenuOpen(false))}
+              </nav>
+            ) : null}
+
+            {showLogout ? (
+              <form className="header-mobile-logout-form" action="/auth/signout" method="post">
+                <button className="header-mobile-logout-button" type="submit">
+                  <IconText icon={LogOut}>{logoutLabel}</IconText>
+                </button>
+              </form>
+            ) : null}
+          </aside>
+        </div>
       ) : null}
     </div>
   );

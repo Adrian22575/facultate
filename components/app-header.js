@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { AppHeaderNavigation } from "@/components/app-header-navigation";
-import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
@@ -62,15 +61,10 @@ export async function AppHeader({
           showAdminLink={showAdminLink}
           adminActionCount={adminActionCount}
           logoutLabel={logoutLabel}
+          billingSnapshot={billingSnapshot}
           gamificationSummary={gamificationSummary}
         />
       </div>
-
-      {billingSnapshot ? (
-        <div className="app-header-credit-row">
-          <HeaderCreditStatus billingSnapshot={billingSnapshot} />
-        </div>
-      ) : null}
 
       {action ? (
         <div className="app-header-row">

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
@@ -42,20 +41,8 @@ export default async function ExamPage() {
 
   return (
     <main className="app-shell">
-      <AppHeader
-        action={
-          <div className="licenta-header-actions">
-            <Link className="btn-back" href="/">
-              Inapoi la dashboard
-            </Link>
-            <Link className="btn-link secondary" href="/statistici">
-              Vezi statistici
-            </Link>
-          </div>
-        }
-        title="Pregatire licenta"
-        subtitle="Alege cum vrei sa te pregatesti azi. Fa o runda rapida, un antrenament mai lung sau repeta doar intrebarile gresite."
-      />
+      <AppHeader title="Pregatire licenta" hidePageTitle />
+      <h1 className="sr-only">Pregatire licenta</h1>
 
       <ExamPageClient
         questions={questions}
