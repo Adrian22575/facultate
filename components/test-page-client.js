@@ -68,22 +68,6 @@ function mixAnswersForHardMode(questions, answerBank) {
   });
 }
 
-function formatScoreDelta(value) {
-  if (value === null || value === undefined) {
-    return "Prima runda";
-  }
-
-  if (value > 0) {
-    return `+${value}% fata de record`;
-  }
-
-  if (value === 0) {
-    return "La nivelul recordului";
-  }
-
-  return `${value}% sub record`;
-}
-
 function createAttemptKey() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
     return crypto.randomUUID();
@@ -92,33 +76,41 @@ function createAttemptKey() {
   return `subject-test-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+function getSimpleTestAdvice(stats) {
+  const community = stats?.community || null;
+
+  if (stats?.currentScore >= 80) {
+    return "Scor bun. Repeta greselile si treci mai departe.";
+  }
+
+  if (community?.averageScore && stats?.currentScore < community.averageScore) {
+    return "Esti sub media colegilor. Repeta greselile si refa testul.";
+  }
+
+  if (stats?.currentScore >= 50) {
+    return "Esti aproape. Mai fa o runda scurta din greseli.";
+  }
+
+  return "Incepe cu greselile si refa testul pe acelasi set.";
+}
+
 function SubjectTestInsight({ stats, status, onRetry }) {
   const community = stats?.community || null;
 
   if (status === "saving") {
     return (
-      <section className="licenta-community-panel is-loading subject-test-insight-panel" aria-live="polite">
-        <div className="licenta-community-panel-head">
-          <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
-          <div>
-            <h3>Pregatim statistica testului</h3>
-            <p>Salvam scorul si calculam comparatia cu progresul tau.</p>
-          </div>
-        </div>
+      <section className="simple-test-insight is-loading" aria-live="polite">
+        <strong>Salvam rezultatul...</strong>
+        <p>Statistica apare imediat dupa salvare.</p>
       </section>
     );
   }
 
   if (status === "error") {
     return (
-      <section className="licenta-community-panel is-muted subject-test-insight-panel" aria-live="polite">
-        <div className="licenta-community-panel-head">
-          <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
-          <div>
-            <h3>Scorul nu s-a salvat inca</h3>
-            <p>Rezultatul ramane pe ecran. Reincearca salvarea pentru a-l include in progres si comparatii.</p>
-          </div>
-        </div>
+      <section className="simple-test-insight is-muted" aria-live="polite">
+        <strong>Scorul nu s-a salvat inca.</strong>
+        <p>Rezultatul ramane pe ecran.</p>
         <button className="btn-link secondary subject-test-insight-link" type="button" onClick={onRetry}>
           Reincearca salvarea
         </button>
@@ -128,14 +120,9 @@ function SubjectTestInsight({ stats, status, onRetry }) {
 
   if (!stats) {
     return (
-      <section className="licenta-community-panel is-muted subject-test-insight-panel">
-        <div className="licenta-community-panel-head">
-          <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
-          <div>
-            <h3>Statistica testului apare dupa salvare</h3>
-            <p>Poti continua sa lucrezi, iar pagina de statistici va strange evolutia ta.</p>
-          </div>
-        </div>
+      <section className="simple-test-insight is-muted">
+        <strong>Statistica apare dupa salvare.</strong>
+        <p>Poti continua testele intre timp.</p>
         <Link className="btn-link secondary subject-test-insight-link" href="/statistici">
           Vezi statistici
         </Link>
@@ -144,44 +131,30 @@ function SubjectTestInsight({ stats, status, onRetry }) {
   }
 
   return (
-    <section className="licenta-community-panel subject-test-insight-panel" aria-label="Statistici test">
-      <div className="licenta-community-panel-head">
-        <span className="licenta-community-panel-icon" aria-hidden="true">%</span>
-        <div>
-          <h3>Ce inseamna scorul asta</h3>
-          <p>
-            Un reper rapid ca sa stii daca merita sa repeti greselile sau sa treci mai departe.
-          </p>
-        </div>
+    <section className="simple-test-insight" aria-label="Statistici test">
+      <div className="simple-test-insight-head">
+        <h3>Pe scurt</h3>
+        <p>{getSimpleTestAdvice(stats)}</p>
       </div>
 
-      <div className="licenta-community-stat-grid">
+      <div className="simple-test-insight-grid">
         <div>
-          <span>Scor curent</span>
+          <span>Scorul tau</span>
           <strong>{`${stats.currentScore}%`}</strong>
         </div>
         <div>
-          <span>Record personal</span>
+          <span>Recordul tau</span>
           <strong>{`${stats.personalBest}%`}</strong>
         </div>
         <div>
-          <span>Evolutie</span>
-          <strong>{formatScoreDelta(stats.deltaFromPreviousBest)}</strong>
-        </div>
-        <div>
-          <span>Media colegilor</span>
+          <span>Colegii</span>
           <strong>{community ? `${community.averageScore}%` : "In curs"}</strong>
         </div>
       </div>
 
-      <div className="subject-test-insight-footer">
-        <p>
-          {community?.participantCount > 1
-            ? `Comunitate: ${community.scopeLabel}. ${community.participantCount} colegi cu progres salvat${community.userRank ? `, locul tau este ${community.userRank}` : ""}.`
-            : "Comparația cu ceilalti apare cand exista destule rezultate in comunitatea ta."}
-        </p>
+      <div className="simple-test-insight-actions">
         <Link className="btn-link secondary subject-test-insight-link" href="/statistici">
-          Vezi toate statisticile
+          Mai multe statistici
         </Link>
       </div>
     </section>

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  BarChart3,
   BookOpenCheck,
   FileUp,
   GraduationCap,
@@ -13,7 +12,6 @@ import { useEffect, useState } from "react";
 
 import { AppHeaderNavigation } from "@/components/app-header-navigation";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
-import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { SubjectsListClient } from "@/components/subjects-list-client";
 import { getLastSession } from "@/lib/session-storage";
@@ -75,6 +73,7 @@ export function DashboardPageClient({
               showAdminLink={isAdmin}
               adminActionCount={adminActionCount}
               logoutLabel="Logout"
+              billingSnapshot={billingSnapshot}
               gamificationSummary={gamificationSummary}
             />
           ) : (
@@ -94,18 +93,7 @@ export function DashboardPageClient({
           )}
         </nav>
 
-        {isAuthenticated && billingSnapshot ? (
-          <div className="dashboard-credit-row">
-            <HeaderCreditStatus billingSnapshot={billingSnapshot} />
-          </div>
-        ) : null}
-
         <section className="dashboard-hero-shell">
-          <div className="dashboard-pill">
-            <span className="dashboard-dot" />
-            Pregatire rapida pentru licenta si examene
-          </div>
-
           <div className="dashboard-hero-grid">
             <div>
               <h1 className="dashboard-hero-title">
@@ -169,7 +157,7 @@ export function DashboardPageClient({
                 </div>
 
                 <div className="dashboard-mode-grid">
-                  <div className="dashboard-mode-card dashboard-mode-card-primary">
+                  <div className="dashboard-mode-card">
                     <div className="dashboard-mode-icon is-blue">
                       <GraduationCap size={22} strokeWidth={2.5} />
                     </div>
@@ -220,24 +208,6 @@ export function DashboardPageClient({
                       pendingMode="replace"
                     >
                       Porneste simularea
-                    </PendingNavigationLink>
-                  </div>
-
-                  <div className="dashboard-mode-card dashboard-mode-card-stats">
-                    <div className="dashboard-mode-icon is-blue">
-                      <BarChart3 size={22} strokeWidth={2.5} />
-                    </div>
-                    <h3>Statistici</h3>
-                    <p>
-                      Vezi licenta, materiile, media comunitatii si ce merita repetat mai departe.
-                    </p>
-                    <PendingNavigationLink
-                      href="/statistici"
-                      className="secondary-button dashboard-mode-cta"
-                      pendingLabel="Se deschid statisticile..."
-                      pendingMode="replace"
-                    >
-                      Vezi statistici
                     </PendingNavigationLink>
                   </div>
                 </div>
