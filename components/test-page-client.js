@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { shuffleArray } from "@/lib/quiz";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
+import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
 
 function sanitizeQuestions(questions) {
@@ -15,6 +16,7 @@ function sanitizeQuestions(questions) {
   }
 
   return questions.map((question, index) => ({
+    ...question,
     id: question?.id ?? index + 1,
     text: typeof question?.text === "string" ? question.text : String(question?.text || ""),
     answers: Array.isArray(question?.answers)
@@ -162,6 +164,7 @@ function SubjectTestInsight({ stats, status, onRetry }) {
 }
 
 export function TestPageClient({ subject, initialQuestions }) {
+  const [safeInitialQuestions, setSafeInitialQuestions] = useState(() => sanitizeQuestions(initialQuestions));
   const [count, setCount] = useState("10");
   const [mode, setMode] = useState("1");
   const [phase, setPhase] = useState("setup");
@@ -177,7 +180,9 @@ export function TestPageClient({ subject, initialQuestions }) {
   const lastSyncedScoreRef = useRef("");
   const attemptKeyRef = useRef("");
 
-  const safeInitialQuestions = useMemo(() => sanitizeQuestions(initialQuestions), [initialQuestions]);
+  useEffect(() => {
+    setSafeInitialQuestions(sanitizeQuestions(initialQuestions));
+  }, [initialQuestions]);
 
   useEffect(() => {
     saveLastSession({
@@ -257,6 +262,30 @@ export function TestPageClient({ subject, initialQuestions }) {
     nextAnswers[currentIndex] = answerIndex;
     setAnswers(nextAnswers);
     setAnswerNotice("");
+  }
+
+  function mergeCorrectedQuestion(question, correction) {
+    if (question?.correction?.sourceQuestionId !== correction.sourceQuestionId) {
+      return question;
+    }
+
+    return {
+      ...question,
+      text: correction.text,
+      answers: correction.answers,
+      correctIndex: correction.correctIndex,
+      explanation: correction.explanation,
+      correction: {
+        ...(question.correction || {}),
+        ...correction,
+        hasPersonalCorrection: true
+      }
+    };
+  }
+
+  function applySavedCorrection(correction) {
+    setSafeInitialQuestions((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
+    setTestQuestions((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
   }
 
   useEffect(() => {
@@ -357,7 +386,14 @@ export function TestPageClient({ subject, initialQuestions }) {
           selectedText: userAnswer === null ? "Fara raspuns" : question.answers[userAnswer],
           correctIndex: question.correctIndex,
           correctText: question.answers[question.correctIndex] || "Raspuns indisponibil",
-          explanation: question.explanation
+          explanation: question.explanation,
+          correctionControl: (
+            <QuestionCorrectionButton
+              question={question}
+              label="Corecteaza intrebarea"
+              onSaved={applySavedCorrection}
+            />
+          )
         });
       }
     });
@@ -456,7 +492,13 @@ export function TestPageClient({ subject, initialQuestions }) {
       </div>
 
       <div className="question">
-        <strong>{`${currentIndex + 1}. ${currentQuestion.text}`}</strong>
+        <div className="question-inline-head">
+          <strong>
+            <span>{`${currentIndex + 1}. `}</span>
+            <span className="question-rich-text">{currentQuestion.text}</span>
+          </strong>
+          <QuestionCorrectionButton question={currentQuestion} onSaved={applySavedCorrection} />
+        </div>
         <div className="answers">
           {currentQuestion.answers.map((answer, answerIndex) => (
             <label key={`${currentQuestion.id}-${answerIndex}`}>
@@ -467,7 +509,7 @@ export function TestPageClient({ subject, initialQuestions }) {
                 value={answerIndex}
                 onChange={() => chooseAnswer(answerIndex)}
               />
-              {answer}
+              <span className="question-rich-text">{answer}</span>
             </label>
           ))}
         </div>

@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { useDialogFocus } from "@/lib/ui/dialog";
@@ -17,6 +18,7 @@ function sanitizeQuestions(questions) {
   }
 
   return questions.map((question, index) => ({
+    ...question,
     id: question?.id ?? index + 1,
     text: typeof question?.text === "string" ? question.text : String(question?.text || ""),
     answers: Array.isArray(question?.answers)
@@ -85,6 +87,7 @@ function buildSearchResult(question, index, normalizedQuery) {
 }
 
 export function StudyPageClient({ subject, questions, initialViewedIndexes = [] }) {
+  const [safeQuestions, setSafeQuestions] = useState(() => sanitizeQuestions(questions));
   const [seen, setSeen] = useState(
     () =>
       new Set(
@@ -101,7 +104,9 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
   const navCloseRef = useRef(null);
   const navDialogRef = useDialogFocus(isNavOpen, () => setIsNavOpen(false), navCloseRef);
 
-  const safeQuestions = useMemo(() => sanitizeQuestions(questions), [questions]);
+  useEffect(() => {
+    setSafeQuestions(sanitizeQuestions(questions));
+  }, [questions]);
 
   useEffect(() => {
     saveLastSession({
@@ -227,6 +232,29 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
     return truncateText(typeof text === "string" ? text : String(text || ""), normalizedQuery.length >= 1 ? 120 : 80);
   }
 
+  function applySavedCorrection(correction) {
+    setSafeQuestions((current) =>
+      current.map((question) => {
+        if (question?.correction?.sourceQuestionId !== correction.sourceQuestionId) {
+          return question;
+        }
+
+        return {
+          ...question,
+          text: correction.text,
+          answers: correction.answers,
+          correctIndex: correction.correctIndex,
+          explanation: correction.explanation,
+          correction: {
+            ...(question.correction || {}),
+            ...correction,
+            hasPersonalCorrection: true
+          }
+        };
+      })
+    );
+  }
+
   return (
     <>
       <section className="study-intro">
@@ -249,14 +277,20 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
               questionRefs.current[index] = element;
             }}
           >
-            <h3>{`${index + 1}. ${question.text}`}</h3>
+            <div className="question-study-head">
+              <h3>
+                <span>{`${index + 1}. `}</span>
+                <span className="question-rich-text">{question.text}</span>
+              </h3>
+              <QuestionCorrectionButton question={question} onSaved={applySavedCorrection} />
+            </div>
             <ul className="options-study">
               {question.answers.map((answer, answerIndex) => (
                 <li
                   key={`${question.id}-${answerIndex}`}
                   className={answerIndex === question.correctIndex ? "correct" : ""}
                 >
-                  {answer}
+                  <span className="question-rich-text">{answer}</span>
                 </li>
               ))}
             </ul>

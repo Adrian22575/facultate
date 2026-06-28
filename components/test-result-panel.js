@@ -92,6 +92,11 @@ export function TestResultPanel({
                 </div>
               </div>
               {row.explanation ? <p className="choice-row-meta">{row.explanation}</p> : null}
+              {row.correctionControl ? (
+                <div className="result-correction-actions">
+                  {row.correctionControl}
+                </div>
+              ) : null}
             </article>
           ))}
         </div>

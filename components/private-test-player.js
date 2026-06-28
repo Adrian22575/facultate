@@ -3,16 +3,43 @@
 import Link from "next/link";
 import { useState } from "react";
 
+import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
 
 export function PrivateTestPlayer({ test, questions }) {
+  const [safeQuestions, setSafeQuestions] = useState(questions);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState(() => new Array(questions.length).fill(null));
   const [phase, setPhase] = useState("quiz");
   const [answerNotice, setAnswerNotice] = useState("");
 
-  const currentQuestion = questions[currentIndex];
+  const currentQuestion = safeQuestions[currentIndex];
   const answeredCount = answers.filter((answer) => answer !== null).length;
+
+  function mergeCorrectedQuestion(question, correction) {
+    if (question?.correction?.sourceQuestionId !== correction.sourceQuestionId) {
+      return question;
+    }
+
+    return {
+      ...question,
+      question_text: correction.text,
+      text: correction.text,
+      answers: correction.answers,
+      correct_index: correction.correctIndex,
+      correctIndex: correction.correctIndex,
+      explanation: correction.explanation,
+      correction: {
+        ...(question.correction || {}),
+        ...correction,
+        hasPersonalCorrection: true
+      }
+    };
+  }
+
+  function applySavedCorrection(correction) {
+    setSafeQuestions((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
+  }
 
   function chooseAnswer(answerIndex) {
     const next = [...answers];
@@ -29,24 +56,24 @@ export function PrivateTestPlayer({ test, questions }) {
 
     setAnswerNotice("");
 
-    if (currentIndex < questions.length - 1) {
+    if (currentIndex < safeQuestions.length - 1) {
       setCurrentIndex((value) => value + 1);
     } else {
       setPhase("result");
     }
   }
 
-  if (!questions.length) {
+  if (!safeQuestions.length) {
     return <div className="empty-state">Testul activ nu contine inca intrebari.</div>;
   }
 
   if (phase === "result") {
-    const score = questions.reduce(
+    const score = safeQuestions.reduce(
       (total, question, index) => total + (answers[index] === question.correct_index ? 1 : 0),
       0
     );
-    const percentage = Math.round((score / questions.length) * 100);
-    const wrongRows = questions
+    const percentage = Math.round((score / safeQuestions.length) * 100);
+    const wrongRows = safeQuestions
       .map((question, index) => {
         const selectedIndex = answers[index];
 
@@ -64,7 +91,14 @@ export function PrivateTestPlayer({ test, questions }) {
               : question.answers[selectedIndex] || "Raspuns lipsa",
           correctIndex: question.correct_index,
           correctText: question.answers[question.correct_index] || "Raspuns lipsa",
-          explanation: question.explanation
+          explanation: question.explanation,
+          correctionControl: (
+            <QuestionCorrectionButton
+              question={question}
+              label="Corecteaza intrebarea"
+              onSaved={applySavedCorrection}
+            />
+          )
         };
       })
       .filter(Boolean);
@@ -73,7 +107,7 @@ export function PrivateTestPlayer({ test, questions }) {
       <TestResultPanel
         title={test.title || "Rezultat final"}
         score={score}
-        total={questions.length}
+        total={safeQuestions.length}
         percentage={percentage}
         wrongRows={wrongRows}
         stats={[{ label: "Greseli", value: wrongRows.length }]}
@@ -86,7 +120,7 @@ export function PrivateTestPlayer({ test, questions }) {
             <button
               type="button"
               onClick={() => {
-                setAnswers(new Array(questions.length).fill(null));
+                setAnswers(new Array(safeQuestions.length).fill(null));
                 setCurrentIndex(0);
                 setAnswerNotice("");
                 setPhase("quiz");
@@ -105,17 +139,23 @@ export function PrivateTestPlayer({ test, questions }) {
       <div className="progress-bar-container" aria-label="Progres test privat">
         <div
           className="progress-fill"
-          style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
+          style={{ width: `${((currentIndex + 1) / safeQuestions.length) * 100}%` }}
         />
       </div>
 
       <div className="quiz-meta">
-        <div>{`${currentIndex + 1} / ${questions.length}`}</div>
-        <div>{`Raspunse: ${answeredCount}/${questions.length}`}</div>
+        <div>{`${currentIndex + 1} / ${safeQuestions.length}`}</div>
+        <div>{`Raspunse: ${answeredCount}/${safeQuestions.length}`}</div>
       </div>
 
       <div className="question">
-        <strong>{`${currentIndex + 1}. ${currentQuestion.question_text}`}</strong>
+        <div className="question-inline-head">
+          <strong>
+            <span>{`${currentIndex + 1}. `}</span>
+            <span className="question-rich-text">{currentQuestion.question_text}</span>
+          </strong>
+          <QuestionCorrectionButton question={currentQuestion} onSaved={applySavedCorrection} />
+        </div>
         <div className="answers">
           {currentQuestion.answers.map((answer, answerIndex) => (
             <label key={`${currentQuestion.id}-${answerIndex}`}>
@@ -126,7 +166,7 @@ export function PrivateTestPlayer({ test, questions }) {
                 value={answerIndex}
                 onChange={() => chooseAnswer(answerIndex)}
               />
-              {answer}
+              <span className="question-rich-text">{answer}</span>
             </label>
           ))}
         </div>
@@ -146,7 +186,7 @@ export function PrivateTestPlayer({ test, questions }) {
           className={answers[currentIndex] === null ? "is-disabled-soft" : ""}
           onClick={advanceCurrentQuestion}
         >
-          {currentIndex === questions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
+          {currentIndex === safeQuestions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
         </button>
       </div>
     </section>

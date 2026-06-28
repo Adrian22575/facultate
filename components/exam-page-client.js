@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
+import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { buildLicentaQuestionKey } from "@/lib/licenta-exam-question-key";
 import { shuffleArray } from "@/lib/quiz";
 
@@ -257,13 +258,14 @@ function scrollToTop() {
 }
 
 export function ExamPageClient({ questions, subjectCount, initialMistakeIds = [] }) {
+  const [questionSource, setQuestionSource] = useState(questions);
   const preparedQuestions = useMemo(
     () =>
-      questions.map((question, index) => ({
+      questionSource.map((question, index) => ({
         ...question,
         stableId: buildLicentaQuestionKey(question, index)
       })),
-    [questions]
+    [questionSource]
   );
   const questionById = useMemo(
     () => new Map(preparedQuestions.map((question) => [question.stableId, question])),
@@ -286,6 +288,10 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
   const [quizValidationMessage, setQuizValidationMessage] = useState("");
   const attemptKeyRef = useRef("");
   const finishingRef = useRef(false);
+
+  useEffect(() => {
+    setQuestionSource(questions);
+  }, [questions]);
 
   useEffect(() => {
     const validIds = Array.from(
@@ -645,6 +651,46 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
     setShowBrowseAnswer(false);
   }
 
+  function mergeCorrectedQuestion(question, correction) {
+    if (question?.correction?.sourceQuestionId !== correction.sourceQuestionId) {
+      return question;
+    }
+
+    return {
+      ...question,
+      text: correction.text,
+      answers: correction.answers,
+      correctIndex: correction.correctIndex,
+      explanation: correction.explanation,
+      correction: {
+        ...(question.correction || {}),
+        ...correction,
+        hasPersonalCorrection: true
+      }
+    };
+  }
+
+  function applySavedCorrection(correction) {
+    setQuestionSource((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
+    setCurrentQuestions((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
+    setResultSummary((current) => {
+      if (!current) {
+        return current;
+      }
+
+      return {
+        ...current,
+        completedQuestions: current.completedQuestions.map((question) =>
+          mergeCorrectedQuestion(question, correction)
+        ),
+        wrongQuestions: current.wrongQuestions.map((row) => ({
+          ...row,
+          question: mergeCorrectedQuestion(row.question, correction)
+        }))
+      };
+    });
+  }
+
   if (!preparedQuestions.length) {
     return (
       <section className="surface exam-empty-state">
@@ -786,7 +832,13 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
           <div className="licenta-prep-question-list">
             {currentQuestions.map((question, index) => (
               <article key={`${question.stableId}-${index}`} className="question licenta-prep-question">
-                <div className="question-title">{`${index + 1}. ${question.text}`}</div>
+                <div className="question-inline-head">
+                  <div className="question-title">
+                    <span>{`${index + 1}. `}</span>
+                    <span className="question-rich-text">{question.text}</span>
+                  </div>
+                  <QuestionCorrectionButton question={question} onSaved={applySavedCorrection} />
+                </div>
                 <div className="meta">{question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}</div>
                 {isVerificationMode ? (
                   <>
@@ -800,7 +852,10 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                               : "licenta-prep-answer-row"
                           }
                         >
-                          <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
+                          <span>
+                            <span>{`${answerLabel(answerIndex)}. `}</span>
+                            <span className="question-rich-text">{answer}</span>
+                          </span>
                           {answerIndex === question.proposedIndex ? (
                             <strong>Ales ca raspuns</strong>
                           ) : null}
@@ -840,7 +895,10 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                           value={answerIndex}
                           onChange={() => answerQuestion(index, answerIndex)}
                         />
-                        <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
+                        <span>
+                          <span>{`${answerLabel(answerIndex)}. `}</span>
+                          <span className="question-rich-text">{answer}</span>
+                        </span>
                       </label>
                     ))}
                   </div>
@@ -894,7 +952,12 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
           </div>
 
           <article className="question licenta-prep-question">
-            <div className="question-title">{browseQuestion.text}</div>
+            <div className="question-inline-head">
+              <div className="question-title">
+                <span className="question-rich-text">{browseQuestion.text}</span>
+              </div>
+              <QuestionCorrectionButton question={browseQuestion} onSaved={applySavedCorrection} />
+            </div>
             <div className="meta">
               {browseQuestion.subjectTitle ? `Materia: ${browseQuestion.subjectTitle}` : "Licenta"}
             </div>
@@ -908,7 +971,10 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                       : "licenta-prep-answer-row"
                   }
                 >
-                  <span>{`${answerLabel(answerIndex)}. ${answer}`}</span>
+                  <span>
+                    <span>{`${answerLabel(answerIndex)}. `}</span>
+                    <span className="question-rich-text">{answer}</span>
+                  </span>
                 </div>
               ))}
             </div>
@@ -1042,6 +1108,13 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                       <p>{question.explanation}</p>
                     </div>
                   ) : null}
+                  <div className="result-correction-actions">
+                    <QuestionCorrectionButton
+                      question={question}
+                      label="Corecteaza intrebarea"
+                      onSaved={applySavedCorrection}
+                    />
+                  </div>
                 </article>
               ))}
             </div>
