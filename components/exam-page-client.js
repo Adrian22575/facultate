@@ -704,7 +704,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
         </div>
 
         <div className="exam-empty-state-actions">
-          <Link className="btn-link job-primary-cta" href="/materiale?examType=licenta">
+          <Link className="btn-link job-primary-cta" href="/materiale/licenta">
             Incarca grilele de licenta
           </Link>
           <Link className="btn-link secondary" href="/">

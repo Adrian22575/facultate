@@ -37,7 +37,12 @@ export default async function ExamPage() {
       ? { userId: user.id, membership: academicContext.membership }
       : {}
   );
-  const initialMistakeIds = await getActiveLicentaMistakeIds(user.id);
+  let initialMistakeIds = [];
+  try {
+    initialMistakeIds = await getActiveLicentaMistakeIds(user.id);
+  } catch (error) {
+    console.error("licenta_mistakes_load_failed", error);
+  }
 
   return (
     <main className="app-shell">
