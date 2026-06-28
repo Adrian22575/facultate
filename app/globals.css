@@ -1707,6 +1707,8 @@ p {
 
 .dashboard-progress-panel,
 .dashboard-subject-progress {
+  display: grid;
+  gap: 14px;
   padding: 22px;
   background: #fff;
   border: 1px solid #d9e5f5;
@@ -1715,7 +1717,7 @@ p {
 }
 
 .dashboard-progress-panel .dashboard-gamification-head {
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .dashboard-progress-panel .dashboard-gamification-head h3 {
@@ -18370,21 +18372,27 @@ td {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .dashboard-gamification-level span,
 .dashboard-gamification-meta span {
+  min-width: 0;
   color: var(--muted);
   font-size: 0.84rem;
   font-weight: 800;
+  line-height: 1.35;
 }
 
 .dashboard-gamification-level strong {
   color: var(--ink);
+  white-space: nowrap;
 }
 
 .dashboard-gamification-link {
   width: 100%;
+  margin-top: 2px;
+  justify-content: center;
 }
 
 .gamification-page {
