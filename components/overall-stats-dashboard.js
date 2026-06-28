@@ -360,7 +360,7 @@ function LearningStatsPanel({ learning }) {
               <span className="ui-section-label">Materiale</span>
               <h3>Activitatea ta recenta</h3>
             </div>
-            <span className="status-pill is-muted">{learning.scopeLabel}</span>
+            <span className="overall-section-meta">{learning.scopeLabel}</span>
           </div>
           <LearningRows rows={learning.rows} />
         </article>
@@ -543,7 +543,7 @@ export function OverallStatsDashboard({ stats }) {
               <span className="ui-section-label">Competitie</span>
               <h2>Tu vs comunitatea ta</h2>
             </div>
-            <span className="status-pill is-muted">{`${competition.participantCount} participanti`}</span>
+            <span className="overall-section-meta">{`${competition.participantCount} participanti`}</span>
           </section>
 
           <section className="competition-compare-grid">
@@ -611,7 +611,7 @@ export function OverallStatsDashboard({ stats }) {
                   <span className="ui-section-label">Evolutie</span>
                   <h3>Scorurile recente la licenta</h3>
                 </div>
-                <span className="status-pill is-muted">{`${licenta.overview.activeDays} zile active`}</span>
+                <span className="overall-section-meta">{`${licenta.overview.activeDays} zile active`}</span>
               </div>
               <TrendChart rows={licenta.trend} emptyLabel="Fa cateva runde de licenta ca sa vezi evolutia scorului." />
             </article>
@@ -660,7 +660,7 @@ export function OverallStatsDashboard({ stats }) {
                   <span className="ui-section-label">Materii</span>
                   <h3>Cele mai active materii</h3>
                 </div>
-                <span className="status-pill is-muted">{subjects.scopeLabel}</span>
+                <span className="overall-section-meta">{subjects.scopeLabel}</span>
               </div>
               <SubjectRows rows={subjects.rows} />
             </article>

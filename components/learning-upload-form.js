@@ -291,7 +291,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning }) {
             <span className="ui-section-label">Sursa</span>
             <h2>Pune aici cursul, notitele sau materialul primit.</h2>
           </div>
-          <span className="status-pill is-muted">1 incarcare</span>
+          <span className="learning-upload-cost-meta">Consuma 1 incarcare</span>
         </div>
 
         <div className="learning-upload-source-grid" aria-label="Tipuri sursa">

@@ -479,7 +479,6 @@ export default async function AccountPage({ searchParams }) {
   const hasAvailableTestimonialReward =
     latestTestimonialReward?.status === "approved" && !latestTestimonialReward?.reward_granted_at;
   const uploadCount = billingSnapshot?.aiCredits ?? 0;
-  const headerBadgeLabel = demoMode ? "Cont demo" : user?.email ? "Cont conectat" : "Acces local";
   const authProviderLabel = user?.app_metadata?.provider === "google" ? "Google" : "Email";
 
   return (
@@ -492,15 +491,10 @@ export default async function AccountPage({ searchParams }) {
 
       <section className="account-page-header">
         <div className="account-page-copy">
-          <span className="account-page-kicker">Profil</span>
           <h1 className="account-page-title">Contul meu</h1>
           <p className="account-page-subtitle">
             Setari simple pentru comunitate, acces si materiale. Tot ce conteaza intr-un singur loc.
           </p>
-        </div>
-        <div className="account-page-badge">
-          <span className="account-page-badge-dot"></span>
-          {headerBadgeLabel}
         </div>
       </section>
 

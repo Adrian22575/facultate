@@ -7302,6 +7302,14 @@ select:focus {
   letter-spacing: -0.04em;
 }
 
+.overall-section-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
 .overall-subject-table {
   display: grid;
   gap: 10px;
@@ -11033,21 +11041,6 @@ td {
   gap: 10px;
 }
 
-.account-page-kicker {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid #cfe0f6;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--primary-dark);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .account-page-title {
   margin: 0;
   font-size: clamp(2.6rem, 5vw, 4.3rem);
@@ -11062,30 +11055,6 @@ td {
   font-size: 1.02rem;
   line-height: 1.65;
   font-weight: 500;
-}
-
-.account-page-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  flex: 0 0 auto;
-  min-height: 44px;
-  padding: 0 15px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--primary-dark);
-  font-size: 0.9rem;
-  font-weight: 700;
-  box-shadow: 0 12px 30px rgba(20, 50, 100, 0.05);
-}
-
-.account-page-badge-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--good);
-  box-shadow: 0 0 0 6px rgba(31, 157, 99, 0.13);
 }
 
 .account-summary-grid {
@@ -12705,10 +12674,6 @@ td {
   .account-invited-referral-card,
   .account-welcome-card {
     display: block;
-  }
-
-  .account-page-badge {
-    margin-top: 18px;
   }
 
   .account-quick-copy {
@@ -14671,6 +14636,15 @@ td {
   color: var(--ink);
   font-size: 1.35rem;
   line-height: 1.14;
+}
+
+.learning-upload-cost-meta {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .learning-upload-source-grid {
