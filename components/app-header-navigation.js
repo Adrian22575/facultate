@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, ChevronLeft, Home, LogOut, Menu, Shield, Trophy, Upload, UserCircle } from "lucide-react";
+import { BarChart3, ChevronLeft, Home, LogOut, Menu, PanelLeftClose, PanelLeftOpen, Shield, Trophy, Upload, UserCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { HeaderCreditStatus } from "@/components/header-credit-status";
@@ -24,7 +24,7 @@ function isActivePath(pathname, href) {
 
 function HeaderProgressBadge({ summary }) {
   const level = summary?.level?.current || { title: "Incepator", badge: "1" };
-  const points = Number(summary.totalPoints || 0);
+  const points = Number(summary?.totalPoints || 0);
 
   return (
     <Link className="header-progress-badge" href="/progresul-meu" aria-label={`Progres: ${level.title}`}>
@@ -50,6 +50,7 @@ export function AppHeaderNavigation({
 }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
   const menuRootRef = useRef(null);
   const menuButtonRef = useRef(null);
   const menuPanelRef = useRef(null);
@@ -63,6 +64,14 @@ export function AppHeaderNavigation({
         ...(showAdminLink ? [{ href: "/admin", label: "Admin", icon: Shield, badgeCount: adminActionCount }] : [])
       ]
     : [];
+
+  useEffect(() => {
+    try {
+      setDesktopCollapsed(window.localStorage.getItem("nota5plus_sidebar_collapsed") === "true");
+    } catch {
+      setDesktopCollapsed(false);
+    }
+  }, []);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -118,8 +127,92 @@ export function AppHeaderNavigation({
     });
   }
 
+  function toggleDesktopSidebar() {
+    setDesktopCollapsed((current) => {
+      const next = !current;
+      try {
+        window.localStorage.setItem("nota5plus_sidebar_collapsed", String(next));
+      } catch {
+        // Persistence is helpful, not required.
+      }
+      return next;
+    });
+  }
+
+  function SidebarContent({ variant }) {
+    const isDesktop = variant === "desktop";
+    const collapsed = isDesktop && desktopCollapsed;
+
+    return (
+      <>
+        <div className="app-sidebar-top">
+          <Link
+            className="app-sidebar-brand"
+            href="/"
+            aria-label="Nota 5+"
+            onClick={isDesktop ? undefined : () => setMobileMenuOpen(false)}
+          >
+            <span className="brand-mark">5+</span>
+            <span className="app-sidebar-brand-copy">
+              <strong>Nota 5+</strong>
+              <small>Workspace</small>
+            </span>
+          </Link>
+
+          {isDesktop ? (
+            <button
+              type="button"
+              className="app-sidebar-toggle"
+              aria-label={collapsed ? "Extinde meniul" : "Restrange meniul"}
+              onClick={toggleDesktopSidebar}
+            >
+              {collapsed ? (
+                <PanelLeftOpen aria-hidden="true" size={18} strokeWidth={2.25} />
+              ) : (
+                <PanelLeftClose aria-hidden="true" size={18} strokeWidth={2.25} />
+              )}
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="app-sidebar-toggle"
+              aria-label="Inchide meniul"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <ChevronLeft aria-hidden="true" size={18} strokeWidth={2.35} />
+            </button>
+          )}
+        </div>
+
+        {showPrivateNav ? (
+          <nav className="app-sidebar-links" aria-label="Navigare principala">
+            {navigationLinks("app-sidebar-link", isDesktop ? undefined : () => setMobileMenuOpen(false))}
+          </nav>
+        ) : null}
+
+        <div className="app-sidebar-footer">
+          {showPrivateNav ? <HeaderProgressBadge summary={gamificationSummary} /> : null}
+          {billingSnapshot ? <HeaderCreditStatus billingSnapshot={billingSnapshot} /> : null}
+          {showLogout ? (
+            <form className="app-sidebar-logout-form" action="/auth/signout" method="post">
+              <button className="app-sidebar-logout-button" type="submit">
+                <IconText icon={LogOut}>{logoutLabel}</IconText>
+              </button>
+            </form>
+          ) : null}
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className="header-actions" ref={menuRootRef}>
+      {showPrivateNav ? (
+        <aside className={`app-sidebar ${desktopCollapsed ? "is-collapsed" : ""}`} aria-label="Meniu aplicatie">
+          <SidebarContent variant="desktop" />
+        </aside>
+      ) : null}
+
       {showPrivateNav ? <HeaderProgressBadge summary={gamificationSummary} /> : null}
 
       {showPrivateNav || showLogout ? (
@@ -148,44 +241,11 @@ export function AppHeaderNavigation({
           />
           <aside
             id="app-mobile-navigation"
-            className="header-mobile-menu-panel"
+            className="header-mobile-menu-panel app-sidebar-mobile"
             ref={menuPanelRef}
             aria-label="Meniu principal"
           >
-            <div className="header-side-menu-top">
-              <div>
-                <span>Nota 5+</span>
-                <strong>Meniu</strong>
-              </div>
-              <button
-                type="button"
-                className="header-side-menu-collapse"
-                aria-label="Inchide meniul"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <ChevronLeft aria-hidden="true" size={19} strokeWidth={2.4} />
-              </button>
-            </div>
-
-            {billingSnapshot ? (
-              <div className="header-side-menu-status">
-                <HeaderCreditStatus billingSnapshot={billingSnapshot} />
-              </div>
-            ) : null}
-
-            {showPrivateNav ? (
-              <nav className="header-mobile-menu-links" aria-label="Navigare principala">
-                {navigationLinks("header-mobile-menu-link", () => setMobileMenuOpen(false))}
-              </nav>
-            ) : null}
-
-            {showLogout ? (
-              <form className="header-mobile-logout-form" action="/auth/signout" method="post">
-                <button className="header-mobile-logout-button" type="submit">
-                  <IconText icon={LogOut}>{logoutLabel}</IconText>
-                </button>
-              </form>
-            ) : null}
+            <SidebarContent variant="mobile" />
           </aside>
         </div>
       ) : null}

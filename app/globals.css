@@ -20,6 +20,8 @@
   --container: 1180px;
   --touch-target: 48px;
   --orange: #ffb020;
+  --app-sidebar-open: 266px;
+  --app-sidebar-closed: 78px;
 }
 
 * {
@@ -145,6 +147,36 @@ summary:focus-visible,
   max-width: var(--container);
   margin: 0 auto;
   padding: 28px 20px 50px;
+}
+
+@media (min-width: 901px) {
+  .app-shell:has(.app-sidebar) {
+    max-width: none;
+    padding-right: 28px;
+    padding-left: calc(var(--app-sidebar-open) + 30px);
+    transition: padding-left 180ms ease;
+  }
+
+  .app-shell:has(.app-sidebar.is-collapsed) {
+    padding-left: calc(var(--app-sidebar-closed) + 30px);
+  }
+
+  .app-shell:has(.app-sidebar) > *:not(.app-sidebar) {
+    width: 100%;
+    max-width: var(--container);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .app-shell:has(.app-sidebar) .app-header-row:first-child {
+    height: 0;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .app-shell:has(.app-sidebar) .app-header-row:first-child > .brand {
+    display: none;
+  }
 }
 
 .app-header {
@@ -422,6 +454,261 @@ p {
   flex-wrap: nowrap;
   justify-content: flex-end;
   min-width: 0;
+}
+
+.app-sidebar {
+  position: fixed;
+  top: 14px;
+  bottom: 14px;
+  left: 14px;
+  z-index: 1000;
+  width: var(--app-sidebar-open);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid rgba(207, 221, 240, 0.86);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 50px rgba(15, 31, 55, 0.14);
+  backdrop-filter: blur(18px);
+  transition: width 180ms ease, padding 180ms ease;
+}
+
+.app-sidebar.is-collapsed {
+  width: var(--app-sidebar-closed);
+  align-items: center;
+  padding: 12px 10px;
+}
+
+.app-sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.app-sidebar-brand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.app-sidebar-brand .brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.app-sidebar-brand-copy {
+  display: grid;
+  min-width: 0;
+  line-height: 1.1;
+}
+
+.app-sidebar-brand-copy strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 0.96rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-sidebar-brand-copy small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.app-sidebar-toggle {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  flex: 0 0 36px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid #d6e3f5;
+  border-radius: 9px;
+  color: #52637d;
+  background: #fff;
+  box-shadow: none;
+}
+
+.app-sidebar-toggle:hover,
+.app-sidebar-toggle:focus-visible {
+  border-color: #a9c4ea;
+  color: var(--primary-dark);
+  background: #f7fbff;
+}
+
+.app-sidebar-links {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.app-sidebar-link,
+.app-sidebar-logout-button {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px 11px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #314766;
+  background: transparent;
+  text-decoration: none;
+  font-weight: 850;
+  box-shadow: none;
+}
+
+.app-sidebar-link:hover,
+.app-sidebar-link:focus-visible,
+.app-sidebar-logout-button:hover,
+.app-sidebar-logout-button:focus-visible {
+  border-color: #d6e3f5;
+  background: #f8fbff;
+  color: var(--ink);
+}
+
+.app-sidebar-link.is-active {
+  border-color: #d6e3f5;
+  color: var(--ink);
+  background: #f6f9fe;
+  box-shadow: none;
+}
+
+.app-sidebar-link .ui-icon-text,
+.app-sidebar-logout-button .ui-icon-text {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-sidebar-link .ui-icon-text > span:not(.nav-action-badge),
+.app-sidebar-logout-button .ui-icon-text > span:not(.nav-action-badge) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-sidebar-link svg,
+.app-sidebar-logout-button svg {
+  flex: 0 0 auto;
+}
+
+.app-sidebar-footer {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+  min-width: 0;
+}
+
+.app-sidebar-footer .header-progress-badge,
+.app-sidebar-footer .header-credit-status,
+.app-sidebar-footer .header-credit-pill,
+.app-sidebar-logout-form {
+  width: 100%;
+}
+
+.app-sidebar-footer .header-progress-badge {
+  min-height: 48px;
+  justify-content: flex-start;
+  box-shadow: none;
+}
+
+.app-sidebar-footer .header-credit-status {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.app-sidebar-footer .header-credit-pill {
+  min-height: 44px;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.app-sidebar-logout-form {
+  margin: 0;
+}
+
+.app-sidebar.is-collapsed .app-sidebar-brand-copy,
+.app-sidebar.is-collapsed .app-sidebar-link .ui-icon-text > span:not(.nav-action-badge),
+.app-sidebar.is-collapsed .app-sidebar-logout-button .ui-icon-text > span:not(.nav-action-badge),
+.app-sidebar.is-collapsed .header-progress-badge-copy,
+.app-sidebar.is-collapsed .header-credit-copy,
+.app-sidebar.is-collapsed .header-credit-detail {
+  display: none;
+}
+
+.app-sidebar.is-collapsed .app-sidebar-top,
+.app-sidebar.is-collapsed .app-sidebar-links,
+.app-sidebar.is-collapsed .app-sidebar-footer {
+  width: 100%;
+}
+
+.app-sidebar.is-collapsed .app-sidebar-brand,
+.app-sidebar.is-collapsed .app-sidebar-link,
+.app-sidebar.is-collapsed .app-sidebar-logout-button,
+.app-sidebar.is-collapsed .header-progress-badge,
+.app-sidebar.is-collapsed .header-credit-pill {
+  justify-content: center;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.app-sidebar.is-collapsed .app-sidebar-top {
+  display: grid;
+  justify-items: center;
+}
+
+.app-sidebar.is-collapsed .app-sidebar-brand .brand-mark {
+  width: 38px;
+  height: 38px;
+}
+
+.app-sidebar.is-collapsed .app-sidebar-toggle {
+  width: 38px;
+  height: 34px;
+}
+
+@media (min-width: 901px) {
+  .header-actions:has(.app-sidebar) {
+    height: 0;
+  }
+
+  .header-actions:has(.app-sidebar) > .header-progress-badge,
+  .header-actions:has(.app-sidebar) > .header-mobile-menu-button {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-sidebar {
+    display: none;
+  }
+
+  .app-sidebar-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .app-sidebar-mobile .app-sidebar-footer {
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
 }
 
 .header-progress-badge {
@@ -5549,7 +5836,7 @@ button,
 }
 
 .btn-primary,
-button:not(.inline-text-action):not(.secondary):not(.workspace-modal-close):not(.feedback-modal-close):not(.workspace-subject-result):not(.option):not(.email-auth-primary):not(.email-auth-tab):not(.email-auth-text-button):not(.email-auth-switch-button):not(.email-auth-secondary-button):not(.dashboard-mode-cta-primary),
+button:not(.inline-text-action):not(.secondary):not(.workspace-modal-close):not(.feedback-modal-close):not(.workspace-subject-result):not(.option):not(.email-auth-primary):not(.email-auth-tab):not(.email-auth-text-button):not(.email-auth-switch-button):not(.email-auth-secondary-button):not(.dashboard-mode-cta-primary):not(.header-mobile-menu-button):not(.app-sidebar-toggle):not(.app-sidebar-logout-button):not(.header-side-menu-scrim),
 .restart-btn,
 .test-link.primary,
 .btn-back,
@@ -5565,7 +5852,7 @@ button:not(.inline-text-action):not(.secondary):not(.workspace-modal-close):not(
 }
 
 .btn-primary:hover,
-button:not(.inline-text-action):not(.secondary):not(.workspace-modal-close):not(.feedback-modal-close):not(.workspace-subject-result):not(.option):not(.email-auth-primary):not(.email-auth-tab):not(.email-auth-text-button):not(.email-auth-switch-button):not(.email-auth-secondary-button):not(.dashboard-mode-cta-primary):hover,
+button:not(.inline-text-action):not(.secondary):not(.workspace-modal-close):not(.feedback-modal-close):not(.workspace-subject-result):not(.option):not(.email-auth-primary):not(.email-auth-tab):not(.email-auth-text-button):not(.email-auth-switch-button):not(.email-auth-secondary-button):not(.dashboard-mode-cta-primary):not(.header-mobile-menu-button):not(.app-sidebar-toggle):not(.app-sidebar-logout-button):not(.header-side-menu-scrim):hover,
 .restart-btn:hover,
 .test-link.primary:hover,
 .btn-back:hover,
