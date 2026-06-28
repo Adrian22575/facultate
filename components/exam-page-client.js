@@ -583,7 +583,29 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
     scrollToTop();
   }
 
-  function retryCurrentMode() {
+  function repeatCurrentTest() {
+    if (!resultSummary?.completedQuestions?.length) {
+      goToModes();
+      return;
+    }
+
+    finishingRef.current = false;
+    setNotice("");
+    setResultSummary(null);
+    setCommunityStats(null);
+    setCommunityStatsStatus("idle");
+    setCommunityStatsError("");
+    setGamificationResult(null);
+    setQuizValidationMessage("");
+    setActiveMode(resultSummary.mode);
+    setCurrentQuestions(resultSummary.completedQuestions);
+    setAnswers(new Array(resultSummary.completedQuestions.length).fill(null));
+    attemptKeyRef.current = createAttemptKey();
+    setPhase("quiz");
+    scrollToTop();
+  }
+
+  function startAnotherTest() {
     if (!resultSummary) {
       goToModes();
       return;
@@ -1040,8 +1062,11 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             >
               Repeta greselile
             </button>
-            <button type="button" onClick={retryCurrentMode}>
-              Incearca din nou
+            <button type="button" onClick={repeatCurrentTest}>
+              Repeta testul
+            </button>
+            <button type="button" className="secondary" onClick={startAnotherTest}>
+              Mai fa un test
             </button>
             <button type="button" className="secondary" onClick={() => goToModes()}>
               Inapoi la moduri

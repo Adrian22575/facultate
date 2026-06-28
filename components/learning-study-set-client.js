@@ -14,6 +14,7 @@ import {
   saveLearningQuizAttemptAction
 } from "@/app/ai/invata/actions";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
+import { shuffleArray } from "@/lib/quiz";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const TABS = [
@@ -94,14 +95,16 @@ function formatShortDate(value) {
   }
 }
 
-function buildSimulation(chapters, questions) {
-  const usableQuestions = normalizeQuestions(questions).slice(0, 6);
-  const concepts = chapters.flatMap((chapter) =>
+function buildSimulation(chapters, questions, variant = 0) {
+  const usableQuestionsSource = normalizeQuestions(questions);
+  const usableQuestions = (variant ? shuffleArray(usableQuestionsSource) : usableQuestionsSource).slice(0, 6);
+  const conceptSource = chapters.flatMap((chapter) =>
     chapter.concepts.map((concept) => ({
       ...concept,
       chapterTitle: chapter.title
     }))
   );
+  const concepts = variant ? shuffleArray(conceptSource) : conceptSource;
 
   const trueFalseQuestions = concepts.slice(0, 6).map((concept, index) => {
     const pair = concepts[(index + 1) % concepts.length] || concept;
@@ -441,7 +444,7 @@ function TestTab({
 }) {
   const [questionLimit, setQuestionLimit] = useState(10);
   const [difficulty, setDifficulty] = useState("all");
-  const availableQuestions = useMemo(() => {
+  const questionPool = useMemo(() => {
     const sourceQuestions = testMode === "mistakes" ? mistakeQuestions : questions;
     const safeQuestions = normalizeQuestions(sourceQuestions);
     const chapterQuestions =
@@ -452,18 +455,35 @@ function TestTab({
       difficulty === "all"
         ? chapterQuestions
         : chapterQuestions.filter((question) => question.difficulty === difficulty);
-    return difficultyQuestions.slice(0, questionLimit);
+    return difficultyQuestions;
   }, [chapterId, difficulty, mistakeQuestions, questionLimit, questions, testMode]);
+  const defaultQuestions = useMemo(
+    () => questionPool.slice(0, questionLimit),
+    [questionPool, questionLimit]
+  );
+  const [questionSession, setQuestionSession] = useState([]);
+  const activeQuestions = questionSession.length ? questionSession : defaultQuestions;
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const attemptKeyRef = useRef("");
-  const unansweredCount = availableQuestions.filter((question) => answers[question.id] === undefined).length;
+  const unansweredCount = activeQuestions.filter((question) => answers[question.id] === undefined).length;
 
   function resetTest() {
     setAnswers({});
     setResult(null);
     attemptKeyRef.current = "";
+  }
+
+  function resetSelection() {
+    setQuestionSession([]);
+    resetTest();
+  }
+
+  function startAnotherTest() {
+    const nextQuestions = shuffleArray(questionPool).slice(0, Math.min(questionLimit, questionPool.length));
+    setQuestionSession(nextQuestions);
+    resetTest();
   }
 
   async function finishTest() {
@@ -472,7 +492,7 @@ function TestTab({
       return;
     }
 
-    const submittedAnswers = availableQuestions.map((question) => ({
+    const submittedAnswers = activeQuestions.map((question) => ({
       questionId: question.id,
       selectedIndex: answers[question.id]
     }));
@@ -497,7 +517,7 @@ function TestTab({
       }
 
       const wrong = (saved.result?.wrong || []).map((wrongQuestion) => {
-        const localQuestion = availableQuestions.find((question) => question.id === wrongQuestion.id);
+        const localQuestion = activeQuestions.find((question) => question.id === wrongQuestion.id);
         return {
           ...wrongQuestion,
           chapterTitle: localQuestion?.chapterTitle || wrongQuestion.chapterTitle || "Capitol"
@@ -517,7 +537,7 @@ function TestTab({
     }
   }
 
-  if (!availableQuestions.length) {
+  if (!activeQuestions.length) {
     return <div className="learning-empty-panel">Nu avem intrebari pentru selectia curenta.</div>;
   }
 
@@ -530,7 +550,7 @@ function TestTab({
             value={testMode}
             onChange={(event) => {
               onTestModeChange(event.target.value);
-              resetTest();
+              resetSelection();
             }}
           >
             <option value="all">Test rapid</option>
@@ -544,7 +564,7 @@ function TestTab({
             disabled={testMode === "mistakes"}
             onChange={(event) => {
               onChapterChange(event.target.value);
-              resetTest();
+              resetSelection();
             }}
           >
             <option value="all">Toate capitolele</option>
@@ -563,7 +583,7 @@ function TestTab({
             value={questionLimit}
             onChange={(event) => {
               setQuestionLimit(Number(event.target.value));
-              resetTest();
+              resetSelection();
             }}
           >
             {[10, 20, 30, 50].map((value) => (
@@ -579,7 +599,7 @@ function TestTab({
             value={difficulty}
             onChange={(event) => {
               setDifficulty(event.target.value);
-              resetTest();
+              resetSelection();
             }}
           >
             <option value="all">Mixt</option>
@@ -588,11 +608,11 @@ function TestTab({
             <option value="greu">Greu</option>
           </select>
         </label>
-        <span>{`${availableQuestions.length} intrebari`}</span>
+        <span>{`${activeQuestions.length} intrebari`}</span>
       </div>
 
       <div className="learning-question-list">
-        {availableQuestions.map((question, questionIndex) => (
+        {activeQuestions.map((question, questionIndex) => (
           <article key={question.id} className="learning-question-card">
             <strong>{`${questionIndex + 1}. ${question.questionText}`}</strong>
             <div className="learning-answer-list">
@@ -655,7 +675,14 @@ function TestTab({
           className="secondary"
           onClick={resetTest}
         >
-          Reseteaza
+          Repeta testul
+        </button>
+        <button
+          type="button"
+          className="secondary"
+          onClick={startAnotherTest}
+        >
+          Mai fa un test
         </button>
       </div>
     </section>
@@ -663,7 +690,11 @@ function TestTab({
 }
 
 function ExamSimulationTab({ chapters, questions }) {
-  const simulation = useMemo(() => buildSimulation(chapters, questions), [chapters, questions]);
+  const [simulationVariant, setSimulationVariant] = useState(0);
+  const simulation = useMemo(
+    () => buildSimulation(chapters, questions, simulationVariant),
+    [chapters, questions, simulationVariant]
+  );
   const [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState({});
   const [trueFalseAnswers, setTrueFalseAnswers] = useState({});
   const [shortAnswers, setShortAnswers] = useState({});
@@ -680,6 +711,11 @@ function ExamSimulationTab({ chapters, questions }) {
     setTrueFalseAnswers({});
     setShortAnswers({});
     setResult(null);
+  }
+
+  function startAnotherSimulation() {
+    setSimulationVariant((value) => value + 1);
+    resetSimulation();
   }
 
   function finishSimulation() {
@@ -854,7 +890,10 @@ function ExamSimulationTab({ chapters, questions }) {
           Finalizeaza simularea
         </button>
         <button type="button" className="secondary" onClick={resetSimulation}>
-          Reseteaza
+          Repeta simularea
+        </button>
+        <button type="button" className="secondary" onClick={startAnotherSimulation}>
+          Mai fa o simulare
         </button>
       </div>
     </section>

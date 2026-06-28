@@ -90,7 +90,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
   }
 
   if (!currentQuestion) {
-    return <div className="error-state" role="alert">Fișierul de întrebări este gol sau format greșit.</div>;
+    return <div className="error-state" role="alert">Fisierul de intrebari este gol sau format gresit.</div>;
   }
 
   const selectedAnswer = userAnswers[currentIndex];
@@ -112,7 +112,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
 
         <div className="status-bar">
           <div className="stats">
-            {`Răspunse: ${stats.answered}/${totalQuestions} · Corecte: ${stats.correct} · Greșite: ${stats.wrong}`}
+            {`Raspunse: ${stats.answered}/${totalQuestions} - Corecte: ${stats.correct} - Gresite: ${stats.wrong}`}
           </div>
           <span className="question-counter">{`${currentIndex + 1} / ${totalQuestions}`}</span>
         </div>
@@ -155,7 +155,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
 
           {selectedAnswer !== null ? (
             <button className="reset-btn" type="button" onClick={resetAnswer}>
-              Resetează răspunsul
+              Reseteaza raspunsul
             </button>
           ) : null}
         </div>
@@ -173,7 +173,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
               disabled={currentIndex <= 0}
               onClick={() => setCurrentIndex((value) => value - 1)}
             >
-              Anterioară
+              Anterioara
             </button>
             <button
               className="nav-btn"
@@ -182,32 +182,37 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
               disabled={selectedAnswer === null || currentIndex >= totalQuestions - 1}
               onClick={() => setCurrentIndex((value) => value + 1)}
             >
-              Următoare
+              Urmatoarea
             </button>
           </div>
         </div>
 
         {showFinishActions ? (
-          <>
-            <div className="center-actions">
-              {wrongQuestions.length ? (
-                <button
-                  className="restart-btn"
-                  type="button"
-                  onClick={() => restartWithQuestions(wrongQuestions)}
-                >
-                  {`Revizuiește greșelile (${wrongQuestions.length})`}
-                </button>
-              ) : null}
+          <div className="center-actions">
+            {wrongQuestions.length ? (
               <button
                 className="restart-btn"
                 type="button"
-                onClick={() => restartWithQuestions(shuffleArray(initialQuestions))}
+                onClick={() => restartWithQuestions(wrongQuestions)}
               >
-                Ia-o de la capăt
+                {`Revizuieste greselile (${wrongQuestions.length})`}
               </button>
-            </div>
-          </>
+            ) : null}
+            <button
+              className="restart-btn"
+              type="button"
+              onClick={() => restartWithQuestions(questions)}
+            >
+              Repeta testul
+            </button>
+            <button
+              className="restart-btn secondary"
+              type="button"
+              onClick={() => restartWithQuestions(shuffleArray(initialQuestions))}
+            >
+              Mai fa un test
+            </button>
+          </div>
         ) : null}
       </section>
     </>

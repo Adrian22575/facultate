@@ -262,6 +262,20 @@ export function TestPageClient({ subject, initialQuestions }) {
     startQuestionSet(selectedQuestions, false);
   }
 
+  function repeatCurrentTest() {
+    if (!testQuestions.length) {
+      setPhase("setup");
+      return;
+    }
+
+    startQuestionSet(testQuestions, reviewRound);
+  }
+
+  function startAnotherTest() {
+    setReviewRound(false);
+    startTest();
+  }
+
   const currentQuestion = testQuestions[currentIndex] || null;
   const answeredCount = answers.filter((answer) => answer !== null).length;
 
@@ -414,13 +428,16 @@ export function TestPageClient({ subject, initialQuestions }) {
           <button
             className="restart-btn"
             type="button"
-            onClick={() => {
-              setPhase("setup");
-              setCurrentIndex(0);
-              setReviewRound(false);
-            }}
+            onClick={repeatCurrentTest}
           >
-            Reincepe
+            Repeta testul
+          </button>
+          <button
+            className="secondary"
+            type="button"
+            onClick={startAnotherTest}
+          >
+            Mai fa un test
           </button>
           </>
         }
