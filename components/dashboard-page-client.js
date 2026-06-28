@@ -75,6 +75,7 @@ export function DashboardPageClient({
               showAdminLink={isAdmin}
               adminActionCount={adminActionCount}
               logoutLabel="Logout"
+              gamificationSummary={gamificationSummary}
             />
           ) : (
             <div className="dashboard-nav-actions">

@@ -20,7 +20,33 @@ function isActivePath(pathname, href) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AppHeaderNavigation({ showPrivateNav, showLogout, showAdminLink, adminActionCount, logoutLabel }) {
+function HeaderProgressBadge({ summary }) {
+  if (!summary?.level?.current) return null;
+
+  const level = summary.level.current;
+  const points = Number(summary.totalPoints || 0);
+
+  return (
+    <Link className="header-progress-badge" href="/progresul-meu" aria-label={`Progres: ${level.title}`}>
+      <span className="header-progress-badge-mark" aria-hidden="true">
+        {level.badge || "1"}
+      </span>
+      <span className="header-progress-badge-copy">
+        <strong>{level.title}</strong>
+        <span>{`${points} puncte`}</span>
+      </span>
+    </Link>
+  );
+}
+
+export function AppHeaderNavigation({
+  showPrivateNav,
+  showLogout,
+  showAdminLink,
+  adminActionCount,
+  logoutLabel,
+  gamificationSummary = null
+}) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuTitleId = useId();
@@ -91,6 +117,8 @@ export function AppHeaderNavigation({ showPrivateNav, showLogout, showAdminLink,
 
   return (
     <div className="header-actions" ref={menuRootRef}>
+      {showPrivateNav ? <HeaderProgressBadge summary={gamificationSummary} /> : null}
+
       {showPrivateNav || showLogout ? (
         <button
           className="header-mobile-menu-button"
@@ -116,7 +144,6 @@ export function AppHeaderNavigation({ showPrivateNav, showLogout, showAdminLink,
         >
           <div className="header-mobile-menu-head">
             <div>
-              <span className="app-kicker">Navigare</span>
               <h2 id={menuTitleId}>Meniu principal</h2>
             </div>
             <button

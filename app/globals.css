@@ -423,6 +423,61 @@ p {
   justify-content: flex-start;
 }
 
+.header-progress-badge {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 11px 7px 8px;
+  border: 1px solid #d6e3f5;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--primary-dark);
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(20, 50, 100, 0.05);
+}
+
+.header-progress-badge:hover,
+.header-progress-badge:focus-visible {
+  border-color: #a9c4ea;
+  background: #f7fbff;
+  color: var(--primary-dark);
+}
+
+.header-progress-badge-mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #fff4da;
+  color: #9a6700;
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.header-progress-badge-copy {
+  display: grid;
+  gap: 1px;
+  line-height: 1.05;
+}
+
+.header-progress-badge-copy strong {
+  max-width: 132px;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-progress-badge-copy span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 850;
+}
+
 .header-desktop-navigation {
   display: flex;
   align-items: center;
@@ -514,7 +569,7 @@ p {
 }
 
 .header-mobile-menu-head h2 {
-  margin: 5px 0 0;
+  margin: 0;
   font-size: 1.12rem;
 }
 
@@ -566,10 +621,10 @@ p {
 }
 
 .header-mobile-menu-link.is-active {
-  border-color: var(--primary);
-  color: #fff;
-  background: var(--primary);
-  box-shadow: 0 8px 18px rgba(24, 79, 144, 0.16);
+  border-color: #a9c4ea;
+  color: var(--primary-dark);
+  background: #f7fbff;
+  box-shadow: inset 3px 0 0 var(--primary);
 }
 
 .header-mobile-menu-link .ui-icon-text,
@@ -7979,6 +8034,18 @@ td {
 
   .app-header-row:first-child .header-actions {
     width: auto;
+  }
+
+  .header-progress-badge {
+    padding-right: 9px;
+  }
+
+  .header-progress-badge-copy span {
+    display: none;
+  }
+
+  .header-progress-badge-copy strong {
+    max-width: 92px;
   }
 
   .dashboard-nav-actions {

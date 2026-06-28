@@ -5,6 +5,7 @@ import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
+import { getGamificationSummary } from "@/lib/gamification";
 import { getAdminActionSummary } from "@/lib/admin-center";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
@@ -23,13 +24,18 @@ export async function AppHeader({
   const showAdminLink = await isAdminUser(user);
   const logoutLabel = demoMode ? "Iesi din demo" : "Logout";
   let billingSnapshot = null;
+  let gamificationSummary = null;
   let adminActionCount = 0;
 
   if (user && !demoMode) {
     try {
-      billingSnapshot = await getBillingSnapshot(user.id);
+      [billingSnapshot, gamificationSummary] = await Promise.all([
+        getBillingSnapshot(user.id).catch(() => null),
+        getGamificationSummary(user.id).catch(() => null)
+      ]);
     } catch {
       billingSnapshot = null;
+      gamificationSummary = null;
     }
   }
 
@@ -56,6 +62,7 @@ export async function AppHeader({
           showAdminLink={showAdminLink}
           adminActionCount={adminActionCount}
           logoutLabel={logoutLabel}
+          gamificationSummary={gamificationSummary}
         />
       </div>
 
