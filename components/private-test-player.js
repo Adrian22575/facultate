@@ -91,14 +91,7 @@ export function PrivateTestPlayer({ test, questions }) {
               : question.answers[selectedIndex] || "Raspuns lipsa",
           correctIndex: question.correct_index,
           correctText: question.answers[question.correct_index] || "Raspuns lipsa",
-          explanation: question.explanation,
-          correctionControl: (
-            <QuestionCorrectionButton
-              question={question}
-              label="Corecteaza intrebarea"
-              onSaved={applySavedCorrection}
-            />
-          )
+          explanation: question.explanation
         };
       })
       .filter(Boolean);

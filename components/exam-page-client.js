@@ -1178,16 +1178,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             <div className="licenta-prep-wrong-list">
               {resultSummary.wrongQuestions.map(({ question, selectedIndex, selectedTruth, proposedIndex }, index) => (
                 <article key={`${question.stableId}-wrong-${index}`} className="result-detail">
-                  <div className="result-detail-head">
-                    <strong>{`${index + 1}. ${question.text}`}</strong>
-                    <div className="result-correction-actions">
-                      <QuestionCorrectionButton
-                        question={question}
-                        label="Corecteaza intrebarea"
-                        onSaved={applySavedCorrection}
-                      />
-                    </div>
-                  </div>
+                  <strong>{`${index + 1}. ${question.text}`}</strong>
                   {getResultSubjectMeta(question) ? (
                     <div className="result-meta">{getResultSubjectMeta(question)}</div>
                   ) : null}

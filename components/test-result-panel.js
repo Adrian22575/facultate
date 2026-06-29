@@ -79,14 +79,7 @@ export function TestResultPanel({
         <div className="licenta-prep-wrong-list">
           {wrongRows.map((row, index) => (
             <article key={row.id || `${row.questionText}-${index}`} className="result-detail">
-              <div className="result-detail-head">
-                <strong>{`${index + 1}. ${row.questionText}`}</strong>
-                {row.correctionControl ? (
-                  <div className="result-correction-actions">
-                    {row.correctionControl}
-                  </div>
-                ) : null}
-              </div>
+              <strong>{`${index + 1}. ${row.questionText}`}</strong>
               {row.meta ? <div className="result-meta">{row.meta}</div> : null}
               <div className="licenta-result-review-grid">
                 <div className="licenta-result-review-item is-negative">

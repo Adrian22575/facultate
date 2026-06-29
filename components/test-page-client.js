@@ -386,14 +386,7 @@ export function TestPageClient({ subject, initialQuestions }) {
           selectedText: userAnswer === null ? "Fara raspuns" : question.answers[userAnswer],
           correctIndex: question.correctIndex,
           correctText: question.answers[question.correctIndex] || "Raspuns indisponibil",
-          explanation: question.explanation,
-          correctionControl: (
-            <QuestionCorrectionButton
-              question={question}
-              label="Corecteaza intrebarea"
-              onSaved={applySavedCorrection}
-            />
-          )
+          explanation: question.explanation
         });
       }
     });
