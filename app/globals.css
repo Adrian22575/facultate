@@ -8977,8 +8977,9 @@ td {
 
   .header-progress-badge {
     min-height: 40px;
-    gap: 0;
-    padding: 5px;
+    max-width: min(50vw, 190px);
+    gap: 7px;
+    padding: 5px 9px 5px 5px;
     border-radius: 8px;
   }
 
@@ -8988,11 +8989,17 @@ td {
   }
 
   .header-progress-badge-copy {
-    display: none;
+    min-width: 0;
+    display: grid;
   }
 
   .header-progress-badge-copy span {
     display: none;
+  }
+
+  .header-progress-badge-copy strong {
+    max-width: 118px;
+    font-size: 0.8rem;
   }
 
   .header-mobile-menu-button {
