@@ -7,6 +7,7 @@ import {
   BookOpen,
   CheckCircle2,
   RotateCcw,
+  Search,
   SlidersHorizontal,
   Trophy,
   Users,
@@ -257,6 +258,30 @@ function scrollToTop() {
   }
 }
 
+function normalizeBrowseSearchValue(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function getBrowseSearchHaystack(question, index) {
+  return normalizeBrowseSearchValue(
+    [
+      index + 1,
+      question?.text,
+      question?.subjectTitle,
+      ...(Array.isArray(question?.answers) ? question.answers : [])
+    ].join(" ")
+  );
+}
+
+function getBrowseSearchPreview(question) {
+  const text = String(question?.text || "").replace(/\s+/g, " ").trim();
+  return text.length > 150 ? `${text.slice(0, 150).trim()}...` : text;
+}
+
 export function ExamPageClient({ questions, subjectCount, initialMistakeIds = [] }) {
   const [questionSource, setQuestionSource] = useState(questions);
   const preparedQuestions = useMemo(
@@ -280,6 +305,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
   const [notice, setNotice] = useState("");
   const [browseIndex, setBrowseIndex] = useState(0);
   const [showBrowseAnswer, setShowBrowseAnswer] = useState(false);
+  const [browseSearchQuery, setBrowseSearchQuery] = useState("");
   const [resultSummary, setResultSummary] = useState(null);
   const [communityStats, setCommunityStats] = useState(null);
   const [communityStatsStatus, setCommunityStatsStatus] = useState("idle");
@@ -288,6 +314,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
   const [quizValidationMessage, setQuizValidationMessage] = useState("");
   const attemptKeyRef = useRef("");
   const finishingRef = useRef(false);
+  const browseSearchInputRef = useRef(null);
 
   useEffect(() => {
     setQuestionSource(questions);
@@ -344,6 +371,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
     setCommunityStatsStatus("idle");
     setCommunityStatsError("");
     setQuizValidationMessage("");
+    setBrowseSearchQuery("");
     setNotice(message);
     scrollToTop();
   }
@@ -430,6 +458,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
     setCommunityStatsError("");
     setQuizValidationMessage("");
     setActiveMode("browse");
+    setBrowseSearchQuery("");
 
     if (!preparedQuestions.length) {
       setNotice("Nu exista intrebari disponibile momentan.");
@@ -444,6 +473,36 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
     setPhase("browse");
     scrollToTop();
   }
+
+  const normalizedBrowseSearchQuery = useMemo(
+    () => normalizeBrowseSearchValue(browseSearchQuery),
+    [browseSearchQuery]
+  );
+  const browseSearchResults = useMemo(() => {
+    if (!normalizedBrowseSearchQuery || !currentQuestions.length) {
+      return [];
+    }
+
+    return currentQuestions
+      .map((question, index) => ({ question, index }))
+      .filter(({ question, index }) =>
+        getBrowseSearchHaystack(question, index).includes(normalizedBrowseSearchQuery)
+      )
+      .slice(0, 12);
+  }, [currentQuestions, normalizedBrowseSearchQuery]);
+  const browseSearchTotalCount = useMemo(() => {
+    if (!normalizedBrowseSearchQuery || !currentQuestions.length) {
+      return 0;
+    }
+
+    return currentQuestions.reduce(
+      (total, question, index) =>
+        getBrowseSearchHaystack(question, index).includes(normalizedBrowseSearchQuery)
+          ? total + 1
+          : total,
+      0
+    );
+  }, [currentQuestions, normalizedBrowseSearchQuery]);
 
   function answerQuestion(questionIndex, answerIndex) {
     const question = currentQuestions[questionIndex];
@@ -649,6 +708,23 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
 
     setBrowseIndex((index) => index + 1);
     setShowBrowseAnswer(false);
+  }
+
+  function jumpToBrowseQuestion(index) {
+    if (index < 0 || index >= currentQuestions.length) {
+      return;
+    }
+
+    setBrowseIndex(index);
+    setShowBrowseAnswer(false);
+  }
+
+  function handleBrowseSearchSubmit(event) {
+    event.preventDefault();
+    const firstResult = browseSearchResults[0];
+    if (firstResult) {
+      jumpToBrowseQuestion(firstResult.index);
+    }
   }
 
   function mergeCorrectedQuestion(question, correction) {
@@ -950,6 +1026,59 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
               Inapoi la moduri
             </button>
           </div>
+
+          <form className="licenta-browse-search" onSubmit={handleBrowseSearchSubmit}>
+            <label htmlFor="licenta-browse-search-input">
+              <span>Cauta rapid o intrebare</span>
+              <div className="licenta-browse-search-control">
+                <Search aria-hidden="true" size={18} strokeWidth={2.3} />
+                <input
+                  ref={browseSearchInputRef}
+                  id="licenta-browse-search-input"
+                  type="search"
+                  value={browseSearchQuery}
+                  onChange={(event) => setBrowseSearchQuery(event.target.value)}
+                  placeholder="Cauta dupa cuvinte din intrebare sau raspuns..."
+                  autoComplete="off"
+                />
+              </div>
+            </label>
+
+            {normalizedBrowseSearchQuery ? (
+              <div className="licenta-browse-search-results" aria-live="polite">
+                <div className="licenta-browse-search-meta">
+                  <strong>
+                    {browseSearchTotalCount
+                      ? `${browseSearchTotalCount} ${browseSearchTotalCount === 1 ? "rezultat" : "rezultate"}`
+                      : "Niciun rezultat"}
+                  </strong>
+                  {browseSearchQuery ? (
+                    <button type="button" className="inline-text-action" onClick={() => setBrowseSearchQuery("")}>
+                      Sterge cautarea
+                    </button>
+                  ) : null}
+                </div>
+
+                {browseSearchResults.length ? (
+                  <div className="licenta-browse-search-list">
+                    {browseSearchResults.map(({ question, index }) => (
+                      <button
+                        key={`${question.stableId}-search-${index}`}
+                        type="button"
+                        className={`licenta-browse-search-result${index === browseIndex ? " is-active" : ""}`}
+                        onClick={() => jumpToBrowseQuestion(index)}
+                      >
+                        <span>{`Intrebarea ${index + 1}`}</span>
+                        <strong>{getBrowseSearchPreview(question)}</strong>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p>Incearca un cuvant mai scurt sau o varianta de raspuns.</p>
+                )}
+              </div>
+            ) : null}
+          </form>
 
           <article className="question licenta-prep-question">
             <div className="question-inline-head">
