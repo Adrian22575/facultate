@@ -219,8 +219,8 @@ export function DashboardPageClient({
                     <span className="dashboard-stepper-kicker">Pasul 2</span>
                     <h2>Alege materia</h2>
                     <p className="section-sub">
-                      Alege rapid contextul, apoi deschide materia potrivita pentru Interactiv,
-                      Studiu sau Test.
+                      Alege orice materie disponibila, inclusiv din ani sau semestre trecute,
+                      apoi porneste Interactiv, Studiu sau Test.
                     </p>
                   </div>
 
@@ -239,7 +239,7 @@ export function DashboardPageClient({
                   userType={userType}
                   embedded
                   title="Materii disponibile"
-                  description=""
+                  description="Toate materiile sunt vizibile din start. Anul, semestrul si clasa sunt doar filtre optionale."
                   sectionId="materii-list"
                 />
               </div>
