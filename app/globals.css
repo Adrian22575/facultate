@@ -6962,6 +6962,12 @@ select:focus {
   flex-wrap: wrap;
 }
 
+.test-result-followup {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
 .question-rich-text {
   white-space: pre-wrap;
 }

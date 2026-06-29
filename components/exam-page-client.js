@@ -1164,13 +1164,6 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             </div>
           </div>
 
-          <CommunityComparisonPanel
-            stats={communityStats}
-            status={communityStatsStatus}
-            error={communityStatsError}
-          />
-          <GamificationResultPanel result={gamificationResult} />
-
           <hr className="result-divider" />
           <h3>{isResultVerificationMode ? "Verificari gresite" : "Intrebari gresite"}</h3>
 
@@ -1266,6 +1259,15 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             <button type="button" className="secondary" onClick={() => goToModes()}>
               Inapoi la moduri
             </button>
+          </div>
+
+          <div className="test-result-followup">
+            <CommunityComparisonPanel
+              stats={communityStats}
+              status={communityStatsStatus}
+              error={communityStatsError}
+            />
+            <GamificationResultPanel result={gamificationResult} />
           </div>
         </section>
       ) : null}

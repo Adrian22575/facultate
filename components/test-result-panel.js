@@ -70,8 +70,6 @@ export function TestResultPanel({
         ))}
       </div>
 
-      {insights}
-
       <hr className="result-divider" />
       <h3>Intrebari gresite</h3>
 
@@ -100,6 +98,7 @@ export function TestResultPanel({
       )}
 
       {actions ? <div className="licenta-prep-actions licenta-prep-result-actions">{actions}</div> : null}
+      {insights ? <div className="test-result-followup">{insights}</div> : null}
     </section>
   );
 }
