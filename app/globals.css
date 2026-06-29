@@ -15467,6 +15467,115 @@ td {
   white-space: nowrap;
 }
 
+.workspace-import-page {
+  max-width: 1120px;
+}
+
+.workspace-import-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 18px;
+  padding: 22px;
+  border: 1px solid #d6e3f5;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 16px 34px rgba(20, 50, 100, 0.07);
+}
+
+.workspace-import-hero-copy {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.workspace-import-hero-copy h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.workspace-import-hero-copy p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+.workspace-import-meta {
+  display: grid;
+  gap: 8px;
+  justify-self: end;
+  width: 100%;
+}
+
+.workspace-import-meta span {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 12px;
+  border-left: 3px solid rgba(37, 99, 235, 0.5);
+  border-radius: 12px;
+  background: #f7fbff;
+  color: var(--primary-dark);
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.workspace-import-layout {
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
+
+.workspace-import-steps-card {
+  position: sticky;
+  top: 18px;
+}
+
+.workspace-import-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workspace-import-steps li {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.workspace-import-steps li > span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-weight: 950;
+}
+
+.workspace-import-steps p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  font-weight: 750;
+}
+
+.workspace-import-page .workspace-help-toggle,
+.workspace-import-page .workspace-checklist,
+.workspace-import-page .ai-workspace-submit-readiness {
+  display: none;
+}
+
 .workspace-flow-page .learning-upload-hero {
   margin-bottom: 18px;
 }
@@ -15669,6 +15778,8 @@ td {
 }
 
 @media (max-width: 980px) {
+  .workspace-import-hero,
+  .workspace-import-layout,
   .learning-upload-hero,
   .learning-upload-layout,
   .learning-study-hero,
@@ -15678,12 +15789,25 @@ td {
     grid-template-columns: 1fr;
   }
 
+  .workspace-import-meta {
+    justify-self: stretch;
+  }
+
+  .workspace-import-steps-card {
+    position: static;
+  }
+
   .learning-kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 760px) {
+  .workspace-import-hero {
+    padding: 16px;
+    border-radius: 20px;
+  }
+
   .learning-upload-source-grid,
   .learning-processing-steps,
   .learning-upload-detail-grid,
