@@ -80,12 +80,13 @@ function createAttemptKey() {
 
 function getSimpleTestAdvice(stats) {
   const community = stats?.community || null;
+  const comparison = getSubjectTestComparison(stats);
 
   if (stats?.currentScore >= 80) {
-    return "Scor bun. Repeta greselile si treci mai departe.";
+    return "Scor bun. Pastreaza ritmul si repeta doar greselile.";
   }
 
-  if (community?.averageScore && stats?.currentScore < community.averageScore) {
+  if (comparison?.tone === "negative") {
     return "Esti sub media colegilor. Repeta greselile si refa testul.";
   }
 
@@ -96,8 +97,72 @@ function getSimpleTestAdvice(stats) {
   return "Incepe cu greselile si refa testul pe acelasi set.";
 }
 
+function getSubjectTestComparison(stats) {
+  const community = stats?.community || null;
+  const communityAverage = Number(community?.averageScore);
+  const currentScore = Number(stats?.currentScore);
+
+  if (!Number.isFinite(currentScore) || !Number.isFinite(communityAverage) || communityAverage <= 0) {
+    return null;
+  }
+
+  const delta = Math.round(currentScore - communityAverage);
+  const absDelta = Math.abs(delta);
+  const scopeLabel = community?.scopeLabel || "comunitatea ta";
+  const participantCount = Number(community?.participantCount || 0);
+  const peerLabel =
+    participantCount > 1
+      ? `${participantCount} colegi cu progres salvat`
+      : "datele comunitatii tale";
+
+  if (delta > 0) {
+    return {
+      delta,
+      tone: "positive",
+      title: "Esti peste media comunitatii",
+      detail: `Ai +${absDelta} puncte peste media din ${scopeLabel}.`,
+      peerLabel
+    };
+  }
+
+  if (delta < 0) {
+    return {
+      delta,
+      tone: "negative",
+      title: "Esti sub media comunitatii",
+      detail: `Mai ai ${absDelta} puncte pana la media din ${scopeLabel}.`,
+      peerLabel
+    };
+  }
+
+  return {
+    delta,
+    tone: "neutral",
+    title: "Esti la media comunitatii",
+    detail: `Esti exact la media din ${scopeLabel}.`,
+    peerLabel
+  };
+}
+
+function getPersonalBestText(stats) {
+  const personalBest = Number(stats?.personalBest || 0);
+  const delta = Number(stats?.deltaFromPreviousBest);
+
+  if (Number.isFinite(delta) && delta > 0) {
+    return `Record nou: +${delta} puncte.`;
+  }
+
+  if (personalBest > 0) {
+    return `Record personal: ${personalBest}%.`;
+  }
+
+  return "Primul rezultat salvat pentru materia asta.";
+}
+
 function SubjectTestInsight({ stats, status, onRetry }) {
   const community = stats?.community || null;
+  const comparison = getSubjectTestComparison(stats);
+  const toneClass = comparison ? ` is-${comparison.tone}` : " is-neutral";
 
   if (status === "saving") {
     return (
@@ -133,26 +198,43 @@ function SubjectTestInsight({ stats, status, onRetry }) {
   }
 
   return (
-    <section className="simple-test-insight" aria-label="Statistici test">
+    <section className={`simple-test-insight${toneClass}`} aria-label="Statistici test">
       <div className="simple-test-insight-head">
-        <h3>Pe scurt</h3>
-        <p>{getSimpleTestAdvice(stats)}</p>
+        <span className="simple-test-insight-kicker">Comparatie comunitate</span>
+        <h3>{comparison?.title || "Rezultatul tau este salvat"}</h3>
+        <p>{comparison?.detail || "Mai avem nevoie de cateva rezultate in comunitatea ta ca sa aratam comparatia."}</p>
       </div>
 
-      <div className="simple-test-insight-grid">
-        <div>
-          <span>Scorul tau</span>
+      <div className="simple-test-comparison-row">
+        <div className="simple-test-score-card is-user">
+          <span>Tu</span>
           <strong>{`${stats.currentScore}%`}</strong>
         </div>
-        <div>
-          <span>Recordul tau</span>
-          <strong>{`${stats.personalBest}%`}</strong>
-        </div>
-        <div>
-          <span>Colegii</span>
+        <div className="simple-test-score-card is-community">
+          <span>Comunitatea</span>
           <strong>{community ? `${community.averageScore}%` : "In curs"}</strong>
         </div>
+        <div className="simple-test-delta-card">
+          <span>Diferenta</span>
+          <strong>
+            {comparison
+              ? comparison.delta > 0
+                ? `+${comparison.delta}`
+                : `${comparison.delta}`
+              : "-"}
+          </strong>
+          <small>puncte</small>
+        </div>
       </div>
+
+      <p className="simple-test-next-step">
+        <strong>Urmatorul pas:</strong> {getSimpleTestAdvice(stats)}
+      </p>
+      <p className="simple-test-context">
+        {`${getPersonalBestText(stats)}${
+          comparison?.peerLabel ? ` Comparatia foloseste ${comparison.peerLabel}.` : ""
+        }`}
+      </p>
 
       <div className="simple-test-insight-actions">
         <Link className="btn-link secondary subject-test-insight-link" href="/statistici">

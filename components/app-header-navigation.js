@@ -213,8 +213,6 @@ export function AppHeaderNavigation({
         </aside>
       ) : null}
 
-      {showPrivateNav ? <HeaderProgressBadge summary={gamificationSummary} /> : null}
-
       {showPrivateNav || showLogout ? (
         <button
           className="header-mobile-menu-button"

@@ -126,7 +126,63 @@ function formatRank(stats) {
     return "In curs";
   }
 
-  return `${stats.userRank} / ${stats.participantCount}`;
+  return `#${stats.userRank} din ${stats.participantCount}`;
+}
+
+function getCommunityComparison(stats) {
+  const userScore = Number(stats?.userLatestScore);
+  const averageScore = Number(stats?.averageScore);
+
+  if (!Number.isFinite(userScore) || !Number.isFinite(averageScore) || averageScore <= 0) {
+    return null;
+  }
+
+  const delta = Math.round(userScore - averageScore);
+  const absDelta = Math.abs(delta);
+  const scopeLabel = stats?.scopeLabel || "comunitatea ta";
+
+  if (delta > 0) {
+    return {
+      delta,
+      tone: "positive",
+      title: "Esti peste media comunitatii",
+      detail: `Ai +${absDelta} puncte peste media din ${scopeLabel}.`
+    };
+  }
+
+  if (delta < 0) {
+    return {
+      delta,
+      tone: "negative",
+      title: "Esti sub media comunitatii",
+      detail: `Mai ai ${absDelta} puncte pana la media din ${scopeLabel}.`
+    };
+  }
+
+  return {
+    delta,
+    tone: "neutral",
+    title: "Esti la media comunitatii",
+    detail: `Esti exact la media din ${scopeLabel}.`
+  };
+}
+
+function getCommunityNextStep(stats, comparison) {
+  const score = Number(stats?.userLatestScore || 0);
+
+  if (comparison?.tone === "negative") {
+    return "Repeta intrebarile gresite si mai fa o runda scurta.";
+  }
+
+  if (score >= 80) {
+    return "Pastreaza ritmul: repeta doar greselile si urmareste recordul personal.";
+  }
+
+  if (score >= 50) {
+    return "Mai fa o simulare si incearca sa treci peste 80%.";
+  }
+
+  return "Incepe cu greselile salvate, apoi revino la o runda rapida.";
 }
 
 function CommunityComparisonPanel({ stats, status, error }) {
@@ -169,53 +225,46 @@ function CommunityComparisonPanel({ stats, status, error }) {
     return null;
   }
 
+  const comparison = getCommunityComparison(stats);
+  const toneClass = comparison ? ` is-${comparison.tone}` : " is-neutral";
+
   return (
-    <section className="licenta-community-panel" aria-label="Comparatie cu comunitatea">
+    <section className={`licenta-community-panel${toneClass}`} aria-label="Comparatie cu comunitatea">
       <div className="licenta-community-panel-head">
         <span className="licenta-community-panel-icon" aria-hidden="true">
           <Users />
         </span>
         <div>
-          <h3>Comparatie cu comunitatea ta</h3>
-          <p>
-            Date anonime din {stats.scopeLabel || "comunitatea ta"}: {stats.attemptCount} incercari de la{" "}
-            {stats.participantCount} utilizatori.
-          </p>
+          <span className="licenta-community-kicker">Cursa comunitatii</span>
+          <h3>{comparison?.title || "Rezultatul tau este salvat"}</h3>
+          <p>{comparison?.detail || "Mai avem nevoie de rezultate in comunitatea ta ca sa calculam comparatia."}</p>
         </div>
       </div>
 
-      <div className="licenta-community-stat-grid">
-        <div>
-          <span>Scorul tau</span>
+      <div className="licenta-community-compare-row">
+        <div className="licenta-community-score-card is-user">
+          <span>Tu</span>
           <strong>{`${stats.userLatestScore}%`}</strong>
         </div>
-        <div>
-          <span>Media comunitatii</span>
+        <div className="licenta-community-score-card is-community">
+          <span>Comunitatea</span>
           <strong>{`${stats.averageScore}%`}</strong>
         </div>
-        <div>
-          <span>Peste rezultate</span>
-          <strong>{Number.isInteger(stats.percentile) ? `${stats.percentile}%` : "In curs"}</strong>
-        </div>
-        <div>
-          <span>Clasare anonima</span>
+        <div className="licenta-community-score-card is-rank">
+          <span>Locul tau</span>
           <strong>{formatRank(stats)}</strong>
+          <small>dupa cel mai bun scor</small>
         </div>
       </div>
 
-      <div className="licenta-community-bars" aria-label="Distributia scorurilor">
-        {stats.distribution?.map((bucket) => (
-          <div key={bucket.key} className="licenta-community-bar-row">
-            <span>{bucket.label}</span>
-            <div className="licenta-community-bar-track">
-              <div style={{ width: `${Math.max(bucket.percent, bucket.count ? 8 : 0)}%` }} />
-            </div>
-            <strong>{bucket.count}</strong>
-          </div>
-        ))}
-      </div>
+      <p className="licenta-community-next-step">
+        <strong>Urmatorul pas:</strong> {getCommunityNextStep(stats, comparison)}
+      </p>
       <div className="licenta-community-footer">
-        <p>Urmareste evolutia, topul comunitatii si zonele slabe in pagina dedicata.</p>
+        <p>
+          Comparatia foloseste {stats.attemptCount} incercari de la {stats.participantCount} utilizatori din{" "}
+          {stats.scopeLabel || "comunitatea ta"}.
+        </p>
         <Link className="btn-link secondary licenta-community-stats-link" href="/statistici">
           Vezi statistici
         </Link>
@@ -915,7 +964,9 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                   </div>
                   <QuestionCorrectionButton question={question} onSaved={applySavedCorrection} />
                 </div>
-                <div className="meta">{question.subjectTitle ? `Materia: ${question.subjectTitle}` : "Licenta"}</div>
+                {getResultSubjectMeta(question) ? (
+                  <div className="meta">{getResultSubjectMeta(question)}</div>
+                ) : null}
                 {isVerificationMode ? (
                   <>
                     <div className="answers licenta-prep-answers licenta-prep-answers-check">
@@ -1087,9 +1138,9 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
               </div>
               <QuestionCorrectionButton question={browseQuestion} onSaved={applySavedCorrection} />
             </div>
-            <div className="meta">
-              {browseQuestion.subjectTitle ? `Materia: ${browseQuestion.subjectTitle}` : "Licenta"}
-            </div>
+            {getResultSubjectMeta(browseQuestion) ? (
+              <div className="meta">{getResultSubjectMeta(browseQuestion)}</div>
+            ) : null}
             <div className="answers licenta-prep-answers is-review">
               {browseQuestion.answers.map((answer, answerIndex) => (
                 <div

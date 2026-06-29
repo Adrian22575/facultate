@@ -657,6 +657,7 @@ p {
 }
 
 .app-sidebar-footer .header-progress-badge {
+  max-width: none;
   min-height: 48px;
   justify-content: flex-start;
   box-shadow: none;
@@ -6795,6 +6796,24 @@ select:focus {
   background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%);
 }
 
+.licenta-community-panel.is-positive,
+.simple-test-insight.is-positive {
+  border-color: rgba(21, 128, 61, 0.28);
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.licenta-community-panel.is-negative,
+.simple-test-insight.is-negative {
+  border-color: rgba(180, 35, 44, 0.28);
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+}
+
+.licenta-community-panel.is-neutral,
+.simple-test-insight.is-neutral {
+  border-color: #cfe0f6;
+  background: linear-gradient(135deg, #f8fbff 0%, #ffffff 100%);
+}
+
 .licenta-community-panel.is-loading,
 .licenta-community-panel.is-muted {
   border-color: var(--line);
@@ -6832,6 +6851,88 @@ select:focus {
 .licenta-community-panel-icon svg {
   width: 20px;
   height: 20px;
+}
+
+.licenta-community-kicker,
+.simple-test-insight-kicker {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--primary-dark);
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.licenta-community-panel.is-positive .licenta-community-kicker,
+.simple-test-insight.is-positive .simple-test-insight-kicker {
+  color: #14532d;
+}
+
+.licenta-community-panel.is-negative .licenta-community-kicker,
+.simple-test-insight.is-negative .simple-test-insight-kicker {
+  color: var(--bad);
+}
+
+.licenta-community-compare-row,
+.simple-test-comparison-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.licenta-community-score-card,
+.simple-test-score-card,
+.simple-test-delta-card {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.licenta-community-score-card span,
+.simple-test-score-card span,
+.simple-test-delta-card span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.licenta-community-score-card strong,
+.simple-test-score-card strong,
+.simple-test-delta-card strong {
+  color: var(--ink);
+  font-size: 1.42rem;
+  line-height: 1;
+}
+
+.licenta-community-score-card small,
+.simple-test-delta-card small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.licenta-community-next-step,
+.simple-test-next-step,
+.simple-test-context {
+  max-width: none;
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.simple-test-context {
+  color: var(--muted);
+  font-size: 0.88rem;
 }
 
 .licenta-community-stat-grid {
@@ -8656,6 +8757,7 @@ td {
   .licenta-prep-count-grid,
   .licenta-prep-score-grid,
   .licenta-community-stat-grid,
+  .licenta-community-compare-row,
   .licenta-stats-grid,
   .licenta-stats-main-grid,
   .overall-learning-grid,
@@ -9041,6 +9143,10 @@ td {
   }
 
   .simple-test-insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .simple-test-comparison-row {
     grid-template-columns: 1fr;
   }
 
