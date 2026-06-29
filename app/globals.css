@@ -6981,6 +6981,11 @@ select:focus {
   min-width: 0;
 }
 
+.question-inline-head strong,
+.question-inline-head .question-title {
+  margin-bottom: 0;
+}
+
 button.question-correction-trigger {
   min-height: 36px;
   display: inline-flex;
@@ -7200,8 +7205,26 @@ button.question-correction-remove:focus-visible {
 
 .result-correction-actions {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   margin-top: 12px;
+}
+
+.result-detail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.result-detail-head > strong {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.result-detail-head .result-correction-actions {
+  flex: 0 0 auto;
+  margin-top: 0;
 }
 
 .licenta-community-bar-row {
@@ -8089,6 +8112,11 @@ button.question-correction-remove:focus-visible {
   font-size: 1.02rem;
   line-height: 1.5;
   overflow-wrap: anywhere;
+}
+
+.question .question-inline-head strong,
+.question .question-inline-head .question-title {
+  margin-bottom: 0;
 }
 
 .answers {
@@ -9028,7 +9056,6 @@ td {
   }
 
   .question-study-head,
-  .question-inline-head,
   .question-correction-head,
   .question-correction-subhead,
   .question-correction-actions {
@@ -9036,10 +9063,36 @@ td {
     align-items: stretch;
   }
 
-  .question-correction-trigger,
   .question-source-link,
   .question-correction-actions button {
     width: 100%;
+  }
+
+  .question-inline-head,
+  .result-detail-head {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .question-inline-head .question-correction-trigger,
+  .result-detail-head .question-correction-trigger {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0;
+    border-radius: 12px;
+  }
+
+  .question-inline-head .question-correction-trigger span,
+  .result-detail-head .question-correction-trigger span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .question-correction-layer {
