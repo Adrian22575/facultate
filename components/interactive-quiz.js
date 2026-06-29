@@ -2,23 +2,22 @@
 
 import { useEffect, useState } from "react";
 
+import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { shuffleArray } from "@/lib/quiz";
 
 export function InteractiveQuiz({ subject, initialQuestions }) {
+  const [questionSource, setQuestionSource] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
 
   useEffect(() => {
-    const shuffled = shuffleArray(
-      initialQuestions.map((question) => ({
-        ...question,
-        answers: [...question.answers]
-      }))
-    );
+    const source = normalizeQuestionList(initialQuestions);
+    const shuffled = shuffleArray(source);
 
+    setQuestionSource(source);
     setQuestions(shuffled);
     setUserAnswers(new Array(shuffled.length).fill(null));
 
@@ -78,15 +77,51 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
   }
 
   function restartWithQuestions(nextQuestions) {
-    setQuestions(
-      nextQuestions.map((question) => ({
-        ...question,
-        answers: [...question.answers]
-      }))
-    );
+    setQuestions(normalizeQuestionList(nextQuestions));
     setUserAnswers(new Array(nextQuestions.length).fill(null));
     setCurrentIndex(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function mergeCorrectedQuestion(question, correction) {
+    if (question?.correction?.sourceQuestionId !== correction.sourceQuestionId) {
+      return question;
+    }
+
+    return {
+      ...question,
+      text: correction.text,
+      answers: correction.answers,
+      correctIndex: correction.correctIndex,
+      explanation: correction.explanation,
+      correction: {
+        ...(question.correction || {}),
+        ...correction,
+        hasPersonalCorrection: true
+      }
+    };
+  }
+
+  function applySavedCorrection(correction) {
+    const correctedSourceQuestionId = correction.sourceQuestionId;
+    const correctedAnswerCount = correction.answers.length;
+
+    setQuestionSource((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
+    setQuestions((current) => current.map((question) => mergeCorrectedQuestion(question, correction)));
+    setUserAnswers((current) =>
+      current.map((answer, index) => {
+        if (answer === null || answer === undefined) {
+          return answer;
+        }
+
+        const question = questions[index];
+        if (question?.correction?.sourceQuestionId !== correctedSourceQuestionId) {
+          return answer;
+        }
+
+        return answer >= correctedAnswerCount ? null : answer;
+      })
+    );
   }
 
   if (!currentQuestion) {
@@ -118,7 +153,13 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
         </div>
 
         <div className="question-container">
-          <div className="question-header">{`${currentIndex + 1}. ${currentQuestion.text}`}</div>
+          <div className="question-inline-head">
+            <strong>
+              <span>{`${currentIndex + 1}. `}</span>
+              <span className="question-rich-text">{currentQuestion.text}</span>
+            </strong>
+            <QuestionCorrectionButton question={currentQuestion} onSaved={applySavedCorrection} />
+          </div>
           <div className={`answers${selectedAnswer !== null ? " answered" : ""}`}>
             {currentQuestion.answers.map((answer, answerIndex) => {
               const letter = String.fromCharCode(97 + answerIndex);
@@ -208,7 +249,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
             <button
               className="restart-btn secondary"
               type="button"
-              onClick={() => restartWithQuestions(shuffleArray(initialQuestions))}
+              onClick={() => restartWithQuestions(shuffleArray(questionSource))}
             >
               Mai fa un test
             </button>
@@ -217,4 +258,11 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
       </section>
     </>
   );
+}
+
+function normalizeQuestionList(questionList) {
+  return (questionList || []).map((question) => ({
+    ...question,
+    answers: [...(question.answers || [])]
+  }));
 }
