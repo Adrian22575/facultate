@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 
 const NAVIGATION_PENDING_EVENT = "nota5plus:navigation-pending";
+let activeNavigationHref = "";
 
 function shouldShowPending(event, href) {
   if (
@@ -41,6 +42,7 @@ export function PendingNavigationLink({
   const [blocked, setBlocked] = useState(false);
 
   useEffect(() => {
+    activeNavigationHref = "";
     setPending(false);
     setBlocked(false);
   }, [pathname]);
@@ -52,6 +54,7 @@ export function PendingNavigationLink({
         return;
       }
 
+      activeNavigationHref = nextHref;
       setBlocked(true);
     }
 
@@ -60,7 +63,7 @@ export function PendingNavigationLink({
   }, [href]);
 
   function handleClick(event) {
-    if (blocked) {
+    if (blocked || activeNavigationHref) {
       event.preventDefault();
       return;
     }
@@ -68,6 +71,7 @@ export function PendingNavigationLink({
     onClick?.(event);
 
     if (shouldShowPending(event, href)) {
+      activeNavigationHref = href;
       setPending(true);
       window.dispatchEvent(
         new CustomEvent(NAVIGATION_PENDING_EVENT, {
