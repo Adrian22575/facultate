@@ -5,6 +5,7 @@ import {
   BookOpenCheck,
   CheckCircle2,
   ClipboardList,
+  ExternalLink,
   Eye,
   FileCheck2,
   FileClock,
@@ -12,20 +13,32 @@ import {
   PencilLine,
   PlayCircle,
   RotateCcw,
-  Trash2
+  Trash2,
+  UploadCloud
 } from "lucide-react";
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useRef, useState, useTransition } from "react";
 
 import { deleteQuestionBanksAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
+import {
+  AI_SOURCE_ACCEPTED_MIME_TYPES,
+  AI_SOURCE_UPLOAD_MAX_BYTES,
+  AI_SOURCE_UPLOAD_MAX_LABEL
+} from "@/lib/ai/upload-limits";
+import { createClient as createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const MATERIALS_PAGE_SIZE = 8;
 const ACTIVITY_PAGE_SIZE = 6;
 const TESTS_PAGE_SIZE = 6;
+const SOURCE_FILE_ACCEPTED_EXTENSIONS = [".pdf", ".docx", ".pptx", ".txt"];
+const SOURCE_FILE_ACCEPT_ATTRIBUTE = [
+  ...SOURCE_FILE_ACCEPTED_EXTENSIONS,
+  ...AI_SOURCE_ACCEPTED_MIME_TYPES
+].join(",");
 const ACTIVITY_TABS = [
   {
     id: "subjects",
@@ -68,6 +81,27 @@ function formatDate(value) {
     hour: "2-digit",
     minute: "2-digit"
   });
+}
+
+function getResponseError(payload, fallback) {
+  if (typeof payload?.error === "string" && payload.error.trim()) {
+    return payload.error;
+  }
+
+  return fallback;
+}
+
+function isSupportedSourceFile(file) {
+  if (!file) {
+    return false;
+  }
+
+  const normalizedName = file.name.toLowerCase();
+  const hasAcceptedExtension = SOURCE_FILE_ACCEPTED_EXTENSIONS.some((extension) =>
+    normalizedName.endsWith(extension)
+  );
+
+  return AI_SOURCE_ACCEPTED_MIME_TYPES.includes(file.type) || hasAcceptedExtension;
 }
 
 function paginateRows(rows, page, pageSize) {
@@ -203,6 +237,145 @@ function EmptyState({ title, copy }) {
   );
 }
 
+function SourceDocumentAction({
+  targetType,
+  targetId,
+  sourceDocumentHref,
+  sourceDocumentName,
+  onAttached
+}) {
+  const inputRef = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function attachFile(file) {
+    if (!file) {
+      return;
+    }
+
+    setErrorMessage("");
+
+    if (!isSupportedSourceFile(file)) {
+      setErrorMessage("Alege PDF, DOCX, PPTX sau TXT.");
+      return;
+    }
+
+    if (file.size > AI_SOURCE_UPLOAD_MAX_BYTES) {
+      setErrorMessage(`Fisierul depaseste limita de ${AI_SOURCE_UPLOAD_MAX_LABEL}.`);
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const intentResponse = await fetch("/api/source-documents/attach-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          targetType,
+          targetId,
+          originalFilename: file.name,
+          mimeType: file.type,
+          sizeBytes: file.size
+        })
+      });
+      const intentPayload = await intentResponse.json().catch(() => null);
+
+      if (!intentResponse.ok) {
+        throw new Error(getResponseError(intentPayload, "Nu am putut pregati uploadul fisierului."));
+      }
+
+      const supabase = createSupabaseBrowserClient();
+      const { error: uploadError } = await supabase.storage
+        .from(intentPayload.storageBucket)
+        .upload(intentPayload.storagePath, file, {
+          contentType: intentPayload.mimeType || file.type,
+          upsert: false
+        });
+
+      if (uploadError) {
+        throw new Error("Fisierul nu a putut fi urcat. Verifica legatura si incearca din nou.");
+      }
+
+      const attachResponse = await fetch("/api/source-documents/attach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          targetType,
+          targetId,
+          sourceDocumentId: intentPayload.sourceDocumentId
+        })
+      });
+      const attachPayload = await attachResponse.json().catch(() => null);
+
+      if (!attachResponse.ok) {
+        throw new Error(getResponseError(attachPayload, "Nu am putut atasa fisierul original."));
+      }
+
+      onAttached?.({
+        targetType,
+        targetId,
+        sourceDocumentId: attachPayload.sourceDocumentId,
+        sourceDocumentHref: attachPayload.sourceDocumentHref,
+        sourceDocumentName: attachPayload.sourceDocumentName
+      });
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Uploadul a esuat.");
+    } finally {
+      setIsUploading(false);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    }
+  }
+
+  if (!targetType || !targetId) {
+    return null;
+  }
+
+  if (sourceDocumentHref) {
+    return (
+      <a
+        className="admin-table-link secondary ai-source-document-link"
+        href={sourceDocumentHref}
+        target="_blank"
+        rel="noreferrer"
+        title={sourceDocumentName || "Deschide fisierul original"}
+      >
+        <IconText icon={ExternalLink}>Fisier sursa</IconText>
+      </a>
+    );
+  }
+
+  return (
+    <span className="ai-source-document-action">
+      <input
+        ref={inputRef}
+        className="sr-only"
+        type="file"
+        accept={SOURCE_FILE_ACCEPT_ATTRIBUTE}
+        aria-label="Alege fisierul original"
+        onChange={(event) => attachFile(event.target.files?.[0] || null)}
+        disabled={isUploading}
+      />
+      <button
+        type="button"
+        className="admin-table-link secondary ai-source-document-upload"
+        onClick={() => inputRef.current?.click()}
+        disabled={isUploading}
+      >
+        <LoadingIconText icon={UploadCloud} loading={isUploading} loadingLabel="Se urca...">
+          Adauga sursa
+        </LoadingIconText>
+      </button>
+      {errorMessage ? (
+        <span className="ai-source-document-error" role="alert">
+          {errorMessage}
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
 function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, onTextChange, onClose, onConfirm }) {
   const dialogRef = useDialogFocus(Boolean(target), () => {
     if (!isPending) onClose();
@@ -278,7 +451,7 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
   );
 }
 
-function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
+function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceDocumentAttached }) {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState([]);
@@ -486,6 +659,13 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted }) {
                     >
                       <IconText icon={Trash2}>Sterge</IconText>
                     </button>
+                    <SourceDocumentAction
+                      targetType="question_bank"
+                      targetId={material.id}
+                      sourceDocumentHref={material.sourceDocumentHref}
+                      sourceDocumentName={material.sourceDocumentName}
+                      onAttached={onSourceDocumentAttached}
+                    />
                   </div>
                 </td>
               </tr>
@@ -582,7 +762,12 @@ function buildStandaloneLicentaRow(materials) {
     questionsWithAnswers: materials.reduce((total, material) => total + (material.questionCount || 0), 0),
     hasOpenSets,
     updatedAt: first.updatedAt,
-    createdAt: first.createdAt
+    createdAt: first.createdAt,
+    sourceDocumentId: first.sourceDocumentId || null,
+    sourceDocumentHref: first.sourceDocumentHref || null,
+    sourceDocumentName: first.sourceDocumentName || null,
+    sourceAttachmentTargetType: "question_bank",
+    sourceAttachmentTargetId: first.id
   };
 }
 
@@ -598,13 +783,15 @@ function buildLicentaRows({ sessions, materials }) {
     ...(sessions || []).map((session) => ({
       ...session,
       title: getLicentaSessionTitle(session),
-      updatedAt: session.updatedAt || session.completedAt || session.createdAt
+      updatedAt: session.updatedAt || session.completedAt || session.createdAt,
+      sourceAttachmentTargetType: "licenta_session",
+      sourceAttachmentTargetId: session.id
     })),
     ...(standaloneRow ? [standaloneRow] : [])
   ].sort((left, right) => Date.parse(right.updatedAt || "") - Date.parse(left.updatedAt || ""));
 }
 
-function LicentaTable({ rows }) {
+function LicentaTable({ rows, onSourceDocumentAttached }) {
   const [page, setPage] = useState(1);
   const paginated = useMemo(
     () => paginateRows(rows, page, MATERIALS_PAGE_SIZE),
@@ -666,6 +853,13 @@ function LicentaTable({ rows }) {
                           <IconText icon={action.icon}>{action.label}</IconText>
                         </PendingNavigationLink>
                       ))}
+                      <SourceDocumentAction
+                        targetType={row.sourceAttachmentTargetType}
+                        targetId={row.sourceAttachmentTargetId}
+                        sourceDocumentHref={row.sourceDocumentHref}
+                        sourceDocumentName={row.sourceDocumentName}
+                        onAttached={onSourceDocumentAttached}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -849,8 +1043,34 @@ export function AIActivityCenterClient({
     ACTIVITY_TABS.some((tab) => tab.id === initialTab) ? initialTab : "subjects"
   );
   const [visibleMaterials, setVisibleMaterials] = useState(materials);
+  const [visibleLicentaSessions, setVisibleLicentaSessions] = useState(licentaSessions);
   function handleMaterialsDeleted(deletedIds) {
     setVisibleMaterials((current) => current.filter((material) => !deletedIds.includes(material.id)));
+  }
+
+  function handleSourceDocumentAttached(attachment) {
+    const patch = {
+      sourceDocumentId: attachment.sourceDocumentId,
+      sourceDocumentHref: attachment.sourceDocumentHref,
+      sourceDocumentName: attachment.sourceDocumentName
+    };
+
+    if (attachment.targetType === "question_bank") {
+      setVisibleMaterials((current) =>
+        current.map((material) =>
+          material.id === attachment.targetId ? { ...material, ...patch } : material
+        )
+      );
+      return;
+    }
+
+    if (attachment.targetType === "licenta_session") {
+      setVisibleLicentaSessions((current) =>
+        current.map((session) =>
+          session.id === attachment.targetId ? { ...session, ...patch } : session
+        )
+      );
+    }
   }
 
   const subjectMaterials = useMemo(
@@ -862,8 +1082,8 @@ export function AIActivityCenterClient({
     [visibleMaterials]
   );
   const licentaRows = useMemo(
-    () => buildLicentaRows({ sessions: licentaSessions, materials: licentaMaterials }),
-    [licentaSessions, licentaMaterials]
+    () => buildLicentaRows({ sessions: visibleLicentaSessions, materials: licentaMaterials }),
+    [visibleLicentaSessions, licentaMaterials]
   );
   const selectedTab = ACTIVITY_TABS.find((tab) => tab.id === activeTab) || ACTIVITY_TABS[0];
   const tabCounts = {
@@ -940,9 +1160,12 @@ export function AIActivityCenterClient({
               emptyTitle="Nu ai materii urcate inca."
               emptyCopy="Dupa ce verifici si salvezi o materie, ea apare aici."
               onDeleted={handleMaterialsDeleted}
+              onSourceDocumentAttached={handleSourceDocumentAttached}
             />
           ) : null}
-          {activeTab === "licenta" ? <LicentaTable rows={licentaRows} /> : null}
+          {activeTab === "licenta" ? (
+            <LicentaTable rows={licentaRows} onSourceDocumentAttached={handleSourceDocumentAttached} />
+          ) : null}
           {activeTab === "activity" ? <ActivityTable jobs={activityJobs} /> : null}
           {activeTab === "tests" ? <TestsTable testGroups={testGroups} /> : null}
         </TableSection>

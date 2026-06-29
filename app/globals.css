@@ -18186,7 +18186,7 @@ td {
 }
 
 .ai-activity-table {
-  min-width: 1040px;
+  min-width: 1120px;
 }
 
 .ai-activity-table thead th {
@@ -18325,6 +18325,22 @@ td {
 .ai-activity-table-actions .admin-table-link[aria-disabled="true"] {
   opacity: 0.6;
   transform: none;
+}
+
+.ai-source-document-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.ai-source-document-error {
+  max-width: 180px;
+  color: var(--danger);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: normal;
 }
 
 .ai-workspace-activity-head {
@@ -19303,10 +19319,21 @@ td {
   .ai-activity-table-actions {
     justify-content: flex-start;
     width: 100%;
+    flex-wrap: wrap;
   }
 
   .ai-activity-table-actions .admin-table-link {
     min-height: 44px;
+  }
+
+  .ai-source-document-action {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .ai-source-document-error {
+    max-width: none;
   }
 
   .learning-upload-submit-row,
