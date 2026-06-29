@@ -23,6 +23,10 @@ import {
   buildPublishedQuestionBankHref
 } from "@/lib/ai/published-destination";
 import { cleanupUnusedSourceDocumentsForUser } from "@/lib/ai/source-document-cleanup";
+import {
+  stripAnswerLabelPrefix,
+  stripQuestionNumberPrefix
+} from "@/lib/ai/text-prefix-cleanup";
 import { isDemoUser } from "@/lib/demo-user";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireUser } from "@/lib/supabase/guards";
@@ -59,8 +63,13 @@ function normalizeQuestionBankHashText(value) {
     .trim();
 }
 
-function buildManualQuestionBankItemHash(questionText, correctAnswer) {
-  const base = `${normalizeQuestionBankHashText(questionText)}::${normalizeQuestionBankHashText(correctAnswer)}`;
+function buildManualQuestionBankItemHash(questionText, answers = [], correctIndex = 0) {
+  const normalizedAnswers = (Array.isArray(answers) ? answers : [])
+    .map((answer) => normalizeQuestionBankHashText(answer))
+    .filter(Boolean)
+    .sort();
+  const normalizedCorrectAnswer = normalizeQuestionBankHashText(answers?.[correctIndex] || "");
+  const base = `${normalizeQuestionBankHashText(questionText)}::answers:${normalizedAnswers.join("|")}::correct:${normalizedCorrectAnswer}`;
   return crypto.createHash("sha256").update(base).digest("hex");
 }
 
@@ -406,13 +415,17 @@ export async function updateDraftQuestionAction(formData) {
   });
 
   await assertOwnedDraftTest(user.id, parsed.testId);
+  const cleanedQuestionText = stripQuestionNumberPrefix(parsed.questionText);
+  const cleanedAnswers = [parsed.answerA, parsed.answerB, parsed.answerC, parsed.answerD].map((answer, index) =>
+    stripAnswerLabelPrefix(answer, "", index)
+  );
 
   const supabase = createAdminClient();
   const { error } = await supabase
     .from("user_generated_test_questions")
     .update({
-      question_text: parsed.questionText,
-      answers: [parsed.answerA, parsed.answerB, parsed.answerC, parsed.answerD],
+      question_text: cleanedQuestionText,
+      answers: cleanedAnswers,
       correct_index: parsed.correctIndex,
       explanation: parsed.explanation
     })
@@ -487,13 +500,17 @@ export async function updateQuestionBankItemAction(formData) {
     throw new Error("Confirma ca ai completat manual ce lipsea inainte sa salvezi intrebarea.");
   }
 
+  const cleanedQuestionText = stripQuestionNumberPrefix(parsed.questionText);
+  const cleanedAnswers = parsed.answers.map((answer, index) => stripAnswerLabelPrefix(answer, "", index));
+
   const { error } = await supabase
     .from("ai_question_bank_items")
     .update({
-      question_text: parsed.questionText,
-      answers: parsed.answers,
+      question_text: cleanedQuestionText,
+      answers: cleanedAnswers,
       correct_index: parsed.correctIndex,
       explanation: parsed.explanation,
+      normalized_hash: buildManualQuestionBankItemHash(cleanedQuestionText, cleanedAnswers, parsed.correctIndex),
       quality_status: "accepted",
       metadata: {
         ...(currentItem.metadata || {}),
@@ -519,8 +536,8 @@ export async function updateQuestionBankItemAction(formData) {
     item: {
       id: parsed.itemId,
       position: typeof formData?.position === "number" ? formData.position : null,
-      question_text: parsed.questionText,
-      answers: parsed.answers,
+      question_text: cleanedQuestionText,
+      answers: cleanedAnswers,
       correct_index: parsed.correctIndex,
       explanation: parsed.explanation
     }
@@ -551,17 +568,19 @@ export async function addQuestionBankItemAction(formData) {
 
   if (lastItemError) throw lastItemError;
 
+  const cleanedQuestionText = stripQuestionNumberPrefix(parsed.questionText);
+  const cleanedAnswers = parsed.answers.map((answer, index) => stripAnswerLabelPrefix(answer, "", index));
   const nextPosition = Number(lastItem?.position || 0) + 1;
   const { data: insertedItem, error } = await supabase
     .from("ai_question_bank_items")
     .insert({
       bank_id: parsed.bankId,
       position: nextPosition,
-      question_text: parsed.questionText,
-      answers: parsed.answers,
+      question_text: cleanedQuestionText,
+      answers: cleanedAnswers,
       correct_index: parsed.correctIndex,
       explanation: parsed.explanation,
-      normalized_hash: buildManualQuestionBankItemHash(parsed.questionText, parsed.answers[parsed.correctIndex]),
+      normalized_hash: buildManualQuestionBankItemHash(cleanedQuestionText, cleanedAnswers, parsed.correctIndex),
       quality_status: "accepted",
       metadata: {
         manual_added: true,

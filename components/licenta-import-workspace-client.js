@@ -220,7 +220,7 @@ function QuestionPreviewList({ title, items }) {
             <div className="draft-card-head">
               <div>
                 <span className="step-eyebrow">{`Intrebarea ${item.globalIndex || item.localNumber || ""}`}</span>
-                <strong>{item.questionText}</strong>
+                <strong className="review-question-text">{item.questionText}</strong>
               </div>
               <span className={`status-pill ${item.status === "answer_matched" ? "is-good" : "is-warning"}`}>
                 {questionStatusLabel(item.status)}

@@ -5186,6 +5186,7 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
   font-size: clamp(1.02rem, 1.5vw, 1.18rem);
   line-height: 1.55;
   color: var(--ink);
+  white-space: pre-wrap;
 }
 
 .review-quality-pill {
