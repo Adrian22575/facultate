@@ -234,13 +234,13 @@ export function SubjectsListClient({
             <tbody>
               {filteredRows.map((row) => (
                 <tr key={row.subject.id}>
-                  <td>
+                  <td data-label="Materie">
                     <div className="subject-title-cell">
                       <strong>{row.subject.title}</strong>
                       <span>{row.subject.id}</span>
                     </div>
                   </td>
-                  <td>
+                  <td data-label="Disponibila pentru">
                     <div className="subject-context-list">
                       {row.contextLabels.slice(0, 3).map((label) => (
                         <span className="subject-context-pill" key={label}>
@@ -254,7 +254,7 @@ export function SubjectsListClient({
                       ) : null}
                     </div>
                   </td>
-                  <td>
+                  <td data-label="Actiuni">
                     <div className="subject-actions-row">
                       <PendingNavigationLink
                         className="subject-table-action"

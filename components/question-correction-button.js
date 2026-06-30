@@ -14,6 +14,8 @@ function normalizeAnswers(answers) {
   return list.length ? list.map((answer) => String(answer || "")) : ["", ""];
 }
 
+const MAX_ANSWERS = 12;
+
 export function QuestionCorrectionButton({ question, label = "Corecteaza", onSaved }) {
   const correction = question?.correction || null;
   const [open, setOpen] = useState(false);
@@ -60,7 +62,7 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
   }
 
   function addAnswer() {
-    setAnswers((current) => [...current, ""]);
+    setAnswers((current) => (current.length >= MAX_ANSWERS ? current : [...current, ""]));
   }
 
   function removeAnswer(index) {
@@ -119,6 +121,12 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
       setMessage(error instanceof Error ? error.message : "Nu am putut salva corectia.");
     }
   }
+
+  const canAddAnswer = answers.length < MAX_ANSWERS;
+  const nextAnswerLabel = answerLabel(answers.length);
+  const addAnswerLabel = canAddAnswer
+    ? `Adauga varianta ${nextAnswerLabel}`
+    : `Limita de ${MAX_ANSWERS} variante`;
 
   return (
     <>
@@ -190,9 +198,9 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
               <div className="question-correction-answers">
                 <div className="question-correction-subhead">
                   <strong>Raspunsuri</strong>
-                  <button type="button" className="secondary" onClick={addAnswer} disabled={answers.length >= 12}>
+                  <button type="button" className="secondary question-correction-add" onClick={addAnswer} disabled={!canAddAnswer}>
                     <Plus aria-hidden="true" size={15} strokeWidth={2.2} />
-                    Adauga
+                    {addAnswerLabel}
                   </button>
                 </div>
 
@@ -225,6 +233,16 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
                     </button>
                   </div>
                 ))}
+
+                <button
+                  type="button"
+                  className="secondary question-correction-add question-correction-add-inline"
+                  onClick={addAnswer}
+                  disabled={!canAddAnswer}
+                >
+                  <Plus aria-hidden="true" size={15} strokeWidth={2.2} />
+                  {addAnswerLabel}
+                </button>
               </div>
 
               <label className="question-correction-field">
