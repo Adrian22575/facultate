@@ -6,7 +6,7 @@ import { isAdminUser } from "@/lib/admin";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
 import { getAdminActionSummary } from "@/lib/admin-center";
-import { getAccessibleSubjectsForUser, getUserSubjectProgress } from "@/lib/data";
+import { getAccessibleSubjectsForUser } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getGamificationSummary } from "@/lib/gamification";
 import { getPublicSiteUrl } from "@/lib/site";
@@ -124,13 +124,12 @@ export default async function HomePage() {
   }
 
   const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
-  const [accessibleCatalog, progressItems, billingSnapshot, gamificationSummary] = await Promise.all([
+  const [accessibleCatalog, billingSnapshot, gamificationSummary] = await Promise.all([
     getAccessibleSubjectsForUser({
       userId: user.id,
       membership: academicContext?.membership,
       userType
     }),
-    getUserSubjectProgress(user.id, 2),
     getBillingSnapshot(user.id).catch(() => null),
     getGamificationSummary(user.id)
   ]);
@@ -144,7 +143,6 @@ export default async function HomePage() {
       <DashboardPageClient
         subjects={accessibleCatalog.subjects}
         subjectAllocations={accessibleCatalog.subjectAllocations}
-        progressItems={progressItems}
         userType={userType}
         isAuthenticated
         isAdmin={isAdmin}
