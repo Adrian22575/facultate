@@ -57,7 +57,7 @@ export function AppHeaderNavigation({
   const links = showPrivateNav
     ? [
         { href: "/", label: "Home", icon: Home },
-        { href: "/materiale", label: "Workspace", icon: Upload },
+        { href: "/materiale", label: "Materiale", icon: Upload },
         { href: "/progresul-meu", label: "Progres", icon: Trophy },
         { href: "/statistici", label: "Statistici", icon: BarChart3 },
         { href: "/cont", label: "Contul meu", icon: UserCircle },
@@ -155,7 +155,7 @@ export function AppHeaderNavigation({
             <span className="brand-mark">5+</span>
             <span className="app-sidebar-brand-copy">
               <strong>Nota 5+</strong>
-              <small>Workspace</small>
+              <small>Invata mai usor</small>
             </span>
           </Link>
 

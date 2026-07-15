@@ -190,23 +190,6 @@ export function DashboardPageClient({
                   description="Toate materiile sunt vizibile din start. Anul, semestrul si clasa sunt doar filtre optionale."
                   sectionId="materii-list"
                 />
-
-                <div className="dashboard-license-path">
-                  <div>
-                    <span>Pregatire pentru examen</span>
-                    <h3>Ai de pregatit licenta?</h3>
-                    <p>Lucreaza separat cu intrebarile si simularile pentru examenul tau.</p>
-                  </div>
-                  <PendingNavigationLink
-                    href="/licenta-exam"
-                    className="dashboard-license-path-link"
-                    pendingLabel="Se deschide pregatirea..."
-                    pendingMode="replace"
-                  >
-                    Vezi pregatirea pentru licenta
-                    <ArrowRight aria-hidden="true" size={16} strokeWidth={2.4} />
-                  </PendingNavigationLink>
-                </div>
               </div>
             )}
           </div>
