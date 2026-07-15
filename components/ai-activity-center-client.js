@@ -20,6 +20,7 @@ import {
 import { useMemo, useRef, useState, useTransition } from "react";
 
 import { deleteQuestionBanksAction } from "@/app/ai/actions";
+import { assignLearningStudySetSubjectAction } from "@/app/ai/invata/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
@@ -210,17 +211,60 @@ function learningStatusTone(status) {
   return "is-muted";
 }
 
-function LearningStudySetCard({ studySet, origin }) {
+function SubjectAssignment({ studySet, subjects }) {
+  const router = useRouter();
+  const [subjectId, setSubjectId] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  if (!subjects.length) return null;
+
+  async function handleAssign(event) {
+    event.preventDefault();
+    if (!subjectId || isSaving) return;
+
+    setIsSaving(true);
+    setError("");
+    const result = await assignLearningStudySetSubjectAction({ studySetId: studySet.id, subjectId });
+    setIsSaving(false);
+    if (!result?.ok) {
+      setError(result?.error || "Nu am putut salva materia.");
+      return;
+    }
+    router.refresh();
+  }
+
+  return (
+    <form className="learning-library-subject-form" onSubmit={handleAssign}>
+      <label>
+        Leaga-l de o materie
+        <select value={subjectId} onChange={(event) => setSubjectId(event.target.value)} disabled={isSaving}>
+          <option value="">Alege materia</option>
+          {subjects.map((subject) => (
+            <option key={subject.id} value={subject.id}>{subject.title}</option>
+          ))}
+        </select>
+      </label>
+      <button type="submit" className="btn-link secondary" disabled={!subjectId || isSaving}>
+        {isSaving ? "Se salveaza..." : "Salveaza"}
+      </button>
+      {error ? <small role="alert">{error}</small> : null}
+    </form>
+  );
+}
+
+function LearningStudySetCard({ studySet, origin, subjects = [] }) {
   const isCommunity = origin === "community";
   const detail = `${studySet.chapterCount || 0} capitole · ${studySet.flashcardCount || 0} flashcards · ${studySet.questionCount || 0} intrebari`;
 
   return (
-    <PendingNavigationLink
-      className={`learning-library-card${isCommunity ? " is-community" : ""}`}
-      href={`/materiale/invata/${studySet.id}`}
-      pendingLabel="Se deschide materialul..."
-      pendingMode="replace"
-    >
+    <article className={`learning-library-card${isCommunity ? " is-community" : ""}`}>
+      <PendingNavigationLink
+        className="learning-library-card-main"
+        href={`/materiale/invata/${studySet.id}`}
+        pendingLabel="Se deschide materialul..."
+        pendingMode="replace"
+      >
       <div className="learning-library-card-head">
         <span className={`status-pill ${learningStatusTone(studySet.status)}`}>{learningStatusLabel(studySet.status)}</span>
         <span className="learning-library-origin">
@@ -233,11 +277,13 @@ function LearningStudySetCard({ studySet, origin }) {
         Deschide materialul
         <ExternalLink aria-hidden="true" size={16} strokeWidth={2.3} />
       </span>
-    </PendingNavigationLink>
+      </PendingNavigationLink>
+      {!isCommunity && !studySet.subjectId ? <SubjectAssignment studySet={studySet} subjects={subjects} /> : null}
+    </article>
   );
 }
 
-function LearningLibrary({ learningStudySets, communityLearningStudySets }) {
+function LearningLibrary({ learningStudySets, communityLearningStudySets, subjects }) {
   if (!learningStudySets.length && !communityLearningStudySets.length) {
     return (
       <div className="learning-library-empty">
@@ -268,7 +314,7 @@ function LearningLibrary({ learningStudySets, communityLearningStudySets }) {
           </div>
           <div className="learning-library-grid">
             {communityLearningStudySets.map((studySet) => (
-              <LearningStudySetCard key={studySet.id} studySet={studySet} origin="community" />
+              <LearningStudySetCard key={studySet.id} studySet={studySet} origin="community" subjects={subjects} />
             ))}
           </div>
         </section>
@@ -285,7 +331,7 @@ function LearningLibrary({ learningStudySets, communityLearningStudySets }) {
           </div>
           <div className="learning-library-grid">
             {learningStudySets.map((studySet) => (
-              <LearningStudySetCard key={studySet.id} studySet={studySet} origin="owned" />
+              <LearningStudySetCard key={studySet.id} studySet={studySet} origin="owned" subjects={subjects} />
             ))}
           </div>
         </section>
@@ -1145,6 +1191,7 @@ export function AIActivityCenterClient({
   materials = [],
   learningStudySets = [],
   communityLearningStudySets = [],
+  subjects = [],
   activityJobs = [],
   licentaSessions = [],
   testGroups = { active: [], drafts: [] },
@@ -1269,6 +1316,7 @@ export function AIActivityCenterClient({
             <LearningLibrary
               learningStudySets={learningStudySets}
               communityLearningStudySets={communityLearningStudySets}
+              subjects={subjects}
             />
           ) : null}
           {activeTab === "subjects" ? (

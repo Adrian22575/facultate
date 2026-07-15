@@ -15,6 +15,7 @@ import {
 } from "@/lib/learning/study-sets";
 import { getUserLearningStudySetJobs } from "@/lib/learning/study-set-pipeline";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
+import { getAccessibleSubjectsForUser } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getPrivateGeneratedTests } from "@/lib/private-tests";
 import { getOptionalUser } from "@/lib/supabase/guards";
@@ -65,18 +66,24 @@ export default async function AIActivityPage({ searchParams }) {
   let materials = [];
   let learningStudySets = [];
   let communityLearningStudySets = [];
+  let subjects = [];
   let activityJobs = [];
   let licentaSessions = [];
   let testGroups = { active: [], drafts: [] };
   let setupWarning = null;
 
   try {
-    const [jobs, importJobs, learningJobs, ownedStudySets, communityStudySets, licentaSessionRows, materialRows, tests] = await Promise.all([
+    const [jobs, importJobs, learningJobs, ownedStudySets, communityStudySets, catalog, licentaSessionRows, materialRows, tests] = await Promise.all([
       getUserQuestionBankJobs(user.id, 16),
       getUserImportJobs(user.id, 16),
       getUserLearningStudySetJobs(user.id, 16),
       getUserLearningStudySets(user.id, 24),
       getCommunityLearningStudySets({ userId: user.id, academicContext, limit: 24 }),
+      getAccessibleSubjectsForUser({
+        userId: user.id,
+        membership: academicContext.membership,
+        userType: academicContext.profile?.user_type === "elev" ? "elev" : "student"
+      }),
       getUserLicentaImportSessions(user.id, 12),
       getUserQuestionBankMaterials(user.id, 60),
       getPrivateGeneratedTests(user.id)
@@ -89,6 +96,7 @@ export default async function AIActivityPage({ searchParams }) {
     materials = materialRows;
     learningStudySets = ownedStudySets;
     communityLearningStudySets = communityStudySets;
+    subjects = catalog.subjects;
     testGroups = tests;
   } catch (error) {
     setupWarning = "Activitatea nu a putut fi incarcata momentan. Incearca din nou.";
@@ -138,6 +146,7 @@ export default async function AIActivityPage({ searchParams }) {
           materials={materials}
           learningStudySets={learningStudySets}
           communityLearningStudySets={communityLearningStudySets}
+          subjects={subjects}
           activityJobs={activityJobs}
           licentaSessions={licentaSessions}
           testGroups={testGroups}

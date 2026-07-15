@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 
 import { getAcademicContext } from "@/lib/academic/server";
+import { getAccessibleSubjectById } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import {
+  assignOwnedLearningStudySetSubject,
   deleteOwnedLearningStudySet,
   publishLearningStudySetToCommunity,
   reportLearningStudySet,
@@ -168,6 +170,48 @@ export async function retryLearningStudySetAction(payload) {
       ok: false,
       error: getLearningSetupErrorMessage(error) ||
         (error instanceof Error ? error.message : "Nu am putut relua procesarea acum.")
+    };
+  }
+}
+
+export async function assignLearningStudySetSubjectAction(payload) {
+  const studySetId = String(payload?.studySetId || "").trim();
+  const subjectId = String(payload?.subjectId || "").trim();
+  const user = await requireUser("/materiale/activitate?tab=learning");
+
+  if (isDemoUser(user)) {
+    return { ok: false, error: "Asocierea materiei nu este activa in modul demo." };
+  }
+
+  if (!studySetId || !subjectId) {
+    return { ok: false, error: "Alege materia pentru acest material." };
+  }
+
+  try {
+    const academicContext = await getAcademicContext(user.id);
+    const subject = await getAccessibleSubjectById({
+      subjectId,
+      userId: user.id,
+      membership: academicContext.membership
+    });
+    if (!subject) {
+      return { ok: false, error: "Materia aleasa nu este disponibila pentru comunitatea ta." };
+    }
+
+    const result = await assignOwnedLearningStudySetSubject({
+      userId: user.id,
+      studySetId,
+      subjectId: subject.id
+    });
+    revalidatePath("/materiale/activitate");
+    revalidatePath("/materiale/invata");
+    revalidatePath(`/materii/${subject.id}`);
+    return { ok: true, result };
+  } catch (error) {
+    console.error("learning_study_set_subject_assign_failed", error);
+    return {
+      ok: false,
+      error: getLearningSetupErrorMessage(error) || "Nu am putut asocia materialul cu materia acum."
     };
   }
 }

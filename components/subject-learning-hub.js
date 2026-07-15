@@ -26,6 +26,14 @@ export function SubjectLearningHub({
   const uploadHref = `/materiale/invata?subjectId=${encodeURIComponent(subject.id)}`;
   const studyHref = locked ? lockHref : `/materii/${subject.id}/studiu`;
   const testHref = locked ? lockHref : `/materii/${subject.id}/test`;
+  const hasUnfinishedStudy = metrics.total > 0 && metrics.viewed < metrics.total;
+  const nextAction = locked
+    ? { href: lockHref, label: "Vezi planuri", copy: "Activeaza accesul pentru grile si teste pe aceasta materie." }
+    : hasUnfinishedStudy
+      ? { href: studyHref, label: "Continua grilele", copy: `${metrics.total - metrics.viewed} intrebari ramase de parcurs.` }
+      : metrics.bestScore
+        ? { href: testHref, label: "Imbunatateste scorul", copy: `Cel mai bun rezultat: ${metrics.bestScore}%.` }
+        : { href: studyHref, label: "Incepe cu grilele", copy: "Parcurge intai intrebarile, apoi verifica-te cu un test." };
 
   return (
     <section className="subject-learning-hub" aria-label={`Zona de invatare pentru ${subject.title}`}>
@@ -83,10 +91,10 @@ export function SubjectLearningHub({
         <article className="subject-learning-next-card">
           <span className="ui-section-label">Teste si grile</span>
           <h3>Alege urmatorul pas.</h3>
-          <p>{metrics.studyLabel}</p>
+          <p>{nextAction.copy}</p>
           <div className="subject-learning-next-links">
-            <Link href={studyHref}>{locked ? "Vezi planuri" : "Parcurge grilele"}</Link>
-            {!locked ? <Link href={testHref}>Da un test</Link> : null}
+            <Link className="subject-learning-next-primary" href={nextAction.href}>{nextAction.label}</Link>
+            {!locked ? <Link href="#moduri">Toate modurile</Link> : null}
           </div>
         </article>
       </div>

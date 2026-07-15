@@ -94,14 +94,16 @@ export default async function SubjectPage({ params, searchParams }) {
         locked={!canUseLearningModes}
         lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
       />
-      <ModeGrid
-        subject={subject}
-        locked={!canUseLearningModes}
-        lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
-        showWelcomePremium={hasAvailableWelcomePremium}
-        welcomeReturnTo={`/materii/${subject.id}`}
-        welcomeState={welcomeState}
-      />
+      <div id="moduri">
+        <ModeGrid
+          subject={subject}
+          locked={!canUseLearningModes}
+          lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
+          showWelcomePremium={hasAvailableWelcomePremium}
+          welcomeReturnTo={`/materii/${subject.id}`}
+          welcomeState={welcomeState}
+        />
+      </div>
     </main>
   );
 }
