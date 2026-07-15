@@ -16851,6 +16851,29 @@ td {
   width: 100%;
 }
 
+.learning-publish-confirmation {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #b8d8c6;
+  border-radius: 16px;
+  background: #f2fbf5;
+  color: #194a2c;
+}
+
+.learning-publish-confirmation strong,
+.learning-publish-confirmation span { display: block; }
+.learning-publish-confirmation span { font-size: 0.83rem; line-height: 1.45; }
+.learning-publish-confirmation > div { display: grid; grid-template-columns: 1fr 1.25fr; gap: 8px; }
+
+.learning-publish-confirm {
+  background: #197044;
+  color: #fff;
+}
+
+.learning-publish-confirm:hover { background: #125a35; }
+
 .learning-community-badge {
   display: inline-flex;
   align-items: center;

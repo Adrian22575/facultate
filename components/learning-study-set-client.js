@@ -959,6 +959,7 @@ export function LearningStudySetClient({ studySet }) {
   const [publishedAt, setPublishedAt] = useState(studySet.publishedAt || null);
   const [publishMessage, setPublishMessage] = useState("");
   const [isPublishing, setIsPublishing] = useState(false);
+  const [publishConfirmationOpen, setPublishConfirmationOpen] = useState(false);
   const [reportMessage, setReportMessage] = useState("");
   const [isReporting, setIsReporting] = useState(false);
   const [retryMessage, setRetryMessage] = useState("");
@@ -1008,6 +1009,7 @@ export function LearningStudySetClient({ studySet }) {
       }
       setPublishedAt(result.result?.publishedAt || new Date().toISOString());
       setPublishMessage("Material publicat pentru comunitatea ta.");
+      setPublishConfirmationOpen(false);
     } finally {
       setIsPublishing(false);
     }
@@ -1108,16 +1110,39 @@ export function LearningStudySetClient({ studySet }) {
             Continua invatarea
           </button>
           {studySet.isOwner ? (
-            <button
-              type="button"
-              className="secondary learning-publish-button"
-              data-usage-event="learning_set_published"
-              data-usage-label="Publica pentru comunitate"
-              disabled={Boolean(publishedAt) || isPublishing}
-              onClick={publishToCommunity}
-            >
-              {publishedAt ? "Publicat in comunitate" : isPublishing ? "Se publica..." : "Publica pentru comunitatea ta"}
-            </button>
+            publishedAt ? (
+              <span className="learning-community-badge">Publicat pentru comunitatea ta</span>
+            ) : publishConfirmationOpen ? (
+              <div className="learning-publish-confirmation" role="status">
+                <strong>Distribui acest material colegilor?</strong>
+                <span>Vor putea invata din el, iar progresul fiecaruia ramane separat. Fisierul sursa ramane privat.</span>
+                <div>
+                  <button type="button" className="secondary" disabled={isPublishing} onClick={() => setPublishConfirmationOpen(false)}>
+                    Pastreaza privat
+                  </button>
+                  <button
+                    type="button"
+                    className="learning-publish-confirm"
+                    data-usage-event="learning_set_published"
+                    data-usage-label="Distribuie clasei"
+                    disabled={isPublishing}
+                    onClick={publishToCommunity}
+                  >
+                    {isPublishing ? "Se distribuie..." : "Distribuie clasei"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="secondary learning-publish-button"
+                data-usage-event="learning_set_publish_opened"
+                data-usage-label="Distribuie clasei"
+                onClick={() => setPublishConfirmationOpen(true)}
+              >
+                Distribuie clasei
+              </button>
+            )
           ) : (
             <>
               <span className="learning-community-badge">Material din comunitate</span>
