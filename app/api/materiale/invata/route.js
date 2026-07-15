@@ -7,6 +7,7 @@ import {
 import { validateUpload } from "@/lib/ai/extract-text";
 import { cleanupUnusedSourceDocumentsForUser } from "@/lib/ai/source-document-cleanup";
 import { getBillingSnapshot } from "@/lib/billing";
+import { getAccessibleSubjectById } from "@/lib/data";
 import { DEMO_USER_ID } from "@/lib/demo-user";
 import {
   attachLearningStudySetJob,
@@ -207,6 +208,7 @@ export async function POST(request) {
       ? formData.get("uploadedSourceDocumentId").trim()
       : "";
   const rawTitle = String(formData.get("title") || "").trim();
+  const requestedSubjectId = String(formData.get("subjectId") || "").trim();
   const title = rawTitle || "Materia mea";
   const objective = String(formData.get("objective") || "").trim();
   const examDate = String(formData.get("examDate") || "").trim() || null;
@@ -230,6 +232,17 @@ export async function POST(request) {
   }
 
   const admin = createAdminClient();
+  let selectedSubject = null;
+  if (requestedSubjectId) {
+    selectedSubject = await getAccessibleSubjectById({
+      subjectId: requestedSubjectId,
+      userId: user.id,
+      membership: academicContext.membership
+    });
+    if (!selectedSubject) {
+      return jsonError("Materia selectata nu este disponibila pentru comunitatea ta.", 403);
+    }
+  }
   let existingStudySet = null;
   try {
     existingStudySet = await findExistingStudySetByIdempotencyKey({
@@ -350,7 +363,8 @@ export async function POST(request) {
         studySetId = await createPendingLearningStudySet({
           userId: user.id,
           academicContext,
-          title,
+          subjectId: selectedSubject?.id || null,
+          title: rawTitle || selectedSubject?.title || title,
           sourceDocumentId: sourceDocument.id,
           sourceKind: sourceDocument.source_kind === "manual" ? "text" : sourceDocument.source_kind,
           originalFilename: sourceDocument.original_filename,

@@ -114,7 +114,7 @@ function ProcessingPanel({ status, statusStage }) {
   );
 }
 
-export function LearningUploadForm({ billingSnapshot, setupWarning }) {
+export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [], initialSubjectId = "" }) {
   const [sourceMode, setSourceMode] = useState("file");
   const [selectedFile, setSelectedFile] = useState(null);
   const [manualText, setManualText] = useState("");
@@ -313,9 +313,23 @@ export function LearningUploadForm({ billingSnapshot, setupWarning }) {
           />
         </div>
 
+        {subjects.length ? (
+          <label className="learning-upload-field">
+            Materia
+            <select className="input-search" name="subjectId" defaultValue={initialSubjectId}>
+              <option value="">Alege materia (optional)</option>
+              {subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+
         <label className="learning-upload-field">
-          Titlu materie <span className="learning-upload-optional">optional</span>
-          <input className="input-search" name="title" placeholder="Ex: Management strategic" type="text" maxLength={120} />
+          Titlul materialului <span className="learning-upload-optional">optional</span>
+          <input className="input-search" name="title" placeholder="Ex: Curs 4 - Analiza pietei" type="text" maxLength={120} />
         </label>
 
         {sourceMode === "file" ? (

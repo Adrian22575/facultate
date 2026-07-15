@@ -3,11 +3,13 @@ import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { ModeGrid } from "@/components/mode-grid";
+import { SubjectLearningHub } from "@/components/subject-learning-hub";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
-import { getAccessibleSubjectById, getDemoSubject, getSubjectById } from "@/lib/data";
+import { getAccessibleSubjectById, getDemoSubject, getSubjectById, getSubjectProgressSnapshot } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getLearningModesLockHref, hasLearningModesAccess } from "@/lib/learning-access";
+import { getLearningStudySetsForSubject } from "@/lib/learning/study-sets";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export async function generateMetadata({ params }) {
@@ -56,6 +58,17 @@ export default async function SubjectPage({ params, searchParams }) {
     billingSnapshot = await getBillingSnapshot(user.id);
   }
   const canUseLearningModes = await hasLearningModesAccess({ user, demoMode, billingSnapshot });
+  const [progress, studySets] = demoMode
+    ? [null, []]
+    : await Promise.all([
+        getSubjectProgressSnapshot(user.id, subject.id),
+        getLearningStudySetsForSubject({
+          subjectId: subject.id,
+          userId: user.id,
+          academicContext,
+          limit: 6
+        })
+      ]);
 
   const hasAvailableWelcomePremium =
     !demoMode && !billingSnapshot?.activePremium && billingSnapshot?.welcomePremiumStatus === "available";
@@ -70,9 +83,16 @@ export default async function SubjectPage({ params, searchParams }) {
             {demoMode ? "Inapoi la demo" : "Înapoi la materii"}
           </Link>
         }
-        kicker="Alege modul"
+        kicker="Materia ta"
         title={subject.title}
-        subtitle="Alege cum vrei sa lucrezi materia acum."
+        subtitle="Materiale, teste si progres pentru aceeasi materie."
+      />
+      <SubjectLearningHub
+        subject={subject}
+        studySets={studySets}
+        progress={progress}
+        locked={!canUseLearningModes}
+        lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
       />
       <ModeGrid
         subject={subject}

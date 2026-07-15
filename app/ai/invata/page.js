@@ -9,6 +9,7 @@ import {
   isAcademicContextComplete
 } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
+import { getAccessibleSubjectsForUser } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
 import { getLearningSetupErrorMessage } from "@/lib/supabase/setup-status";
@@ -38,10 +39,20 @@ export default async function LearningUploadPage({ searchParams }) {
   }
 
   let billingSnapshot = { aiCredits: 0 };
+  let subjects = [];
   let setupWarning = null;
 
   try {
-    billingSnapshot = await getBillingSnapshot(user.id);
+    const [snapshot, catalog] = await Promise.all([
+      getBillingSnapshot(user.id),
+      getAccessibleSubjectsForUser({
+        userId: user.id,
+        membership: academicContext.membership,
+        userType: academicContext.profile?.user_type === "elev" ? "elev" : "student"
+      })
+    ]);
+    billingSnapshot = snapshot;
+    subjects = catalog.subjects;
   } catch (error) {
     setupWarning =
       getLearningSetupErrorMessage(error) ||
@@ -76,7 +87,12 @@ export default async function LearningUploadPage({ searchParams }) {
       alerts={alerts}
       steps={["Alege fisier sau lipeste text.", "Adauga data examenului daca o stii.", "Porneste procesarea si continua din pagina de progres."]}
     >
-      <LearningUploadForm billingSnapshot={billingSnapshot} setupWarning={setupWarning} />
+      <LearningUploadForm
+        billingSnapshot={billingSnapshot}
+        setupWarning={setupWarning}
+        subjects={subjects}
+        initialSubjectId={typeof resolvedSearchParams?.subjectId === "string" ? resolvedSearchParams.subjectId : ""}
+      />
     </WorkspaceUploadShell>
   );
 }
