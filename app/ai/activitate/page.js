@@ -9,6 +9,10 @@ import {
   getUserQuestionBankJobs,
   getUserQuestionBankMaterials
 } from "@/lib/ai/question-bank-pipeline";
+import {
+  getCommunityLearningStudySets,
+  getUserLearningStudySets
+} from "@/lib/learning/study-sets";
 import { getUserLearningStudySetJobs } from "@/lib/learning/study-set-pipeline";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { isDemoUser } from "@/lib/demo-user";
@@ -37,10 +41,10 @@ function IconText({ icon: Icon, children }) {
 
 export default async function AIActivityPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
-  const requestedTab = typeof resolvedSearchParams?.tab === "string" ? resolvedSearchParams.tab : "subjects";
-  const initialTab = ["subjects", "licenta", "activity", "tests"].includes(requestedTab)
+  const requestedTab = typeof resolvedSearchParams?.tab === "string" ? resolvedSearchParams.tab : "learning";
+  const initialTab = ["learning", "subjects", "licenta", "activity", "tests"].includes(requestedTab)
     ? requestedTab
-    : "subjects";
+    : "learning";
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
 
@@ -59,16 +63,20 @@ export default async function AIActivityPage({ searchParams }) {
   }
 
   let materials = [];
+  let learningStudySets = [];
+  let communityLearningStudySets = [];
   let activityJobs = [];
   let licentaSessions = [];
   let testGroups = { active: [], drafts: [] };
   let setupWarning = null;
 
   try {
-    const [jobs, importJobs, learningJobs, licentaSessionRows, materialRows, tests] = await Promise.all([
+    const [jobs, importJobs, learningJobs, ownedStudySets, communityStudySets, licentaSessionRows, materialRows, tests] = await Promise.all([
       getUserQuestionBankJobs(user.id, 16),
       getUserImportJobs(user.id, 16),
       getUserLearningStudySetJobs(user.id, 16),
+      getUserLearningStudySets(user.id, 24),
+      getCommunityLearningStudySets({ userId: user.id, academicContext, limit: 24 }),
       getUserLicentaImportSessions(user.id, 12),
       getUserQuestionBankMaterials(user.id, 60),
       getPrivateGeneratedTests(user.id)
@@ -79,6 +87,8 @@ export default async function AIActivityPage({ searchParams }) {
     );
     licentaSessions = licentaSessionRows;
     materials = materialRows;
+    learningStudySets = ownedStudySets;
+    communityLearningStudySets = communityStudySets;
     testGroups = tests;
   } catch (error) {
     setupWarning = "Activitatea nu a putut fi incarcata momentan. Incearca din nou.";
@@ -86,6 +96,8 @@ export default async function AIActivityPage({ searchParams }) {
 
   const hasAnyActivity =
     materials.length ||
+    learningStudySets.length ||
+    communityLearningStudySets.length ||
     activityJobs.length ||
     licentaSessions.length ||
     testGroups.active.length ||
@@ -124,6 +136,8 @@ export default async function AIActivityPage({ searchParams }) {
         <AIActivityCenterClient
           key={`activity-${initialTab}`}
           materials={materials}
+          learningStudySets={learningStudySets}
+          communityLearningStudySets={communityLearningStudySets}
           activityJobs={activityJobs}
           licentaSessions={licentaSessions}
           testGroups={testGroups}
@@ -132,9 +146,9 @@ export default async function AIActivityPage({ searchParams }) {
       ) : (
         <section className="surface ai-workspace-activity-surface">
           <article className="ui-panel-card ai-workspace-activity-empty">
-            <strong>Nu ai activitate inca.</strong>
+            <strong>Biblioteca nu are materiale inca.</strong>
             <p className="page-copy">
-              Incarca primul material si il vei vedea aici dupa procesare.
+              Incarca primul curs. Dupa ce alegi sa il publici, colegii din comunitatea ta il pot folosi fara o procesare noua.
             </p>
             <PendingNavigationLink
               className="btn-back"

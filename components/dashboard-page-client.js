@@ -134,7 +134,7 @@ export function DashboardPageClient({
                     <p>Deschide un curs deja pregatit si continua cu flashcarduri, teste si planuri de studiu.</p>
                   </div>
                   <PendingNavigationLink
-                    href="/materiale/activitate?tab=subjects"
+                    href="/materiale/activitate?tab=learning"
                     className="dashboard-start-card-action"
                     pendingLabel="Se deschid materialele..."
                     pendingMode="replace"

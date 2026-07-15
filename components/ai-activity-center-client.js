@@ -10,6 +10,7 @@ import {
   FileCheck2,
   FileClock,
   FolderOpen,
+  LibraryBig,
   PencilLine,
   PlayCircle,
   RotateCcw,
@@ -40,6 +41,13 @@ const SOURCE_FILE_ACCEPT_ATTRIBUTE = [
   ...AI_SOURCE_ACCEPTED_MIME_TYPES
 ].join(",");
 const ACTIVITY_TABS = [
+  {
+    id: "learning",
+    label: "Materiale de studiu",
+    icon: LibraryBig,
+    title: "Biblioteca de invatare",
+    description: "Foloseste materialele tale sau cele publicate de colegii din comunitatea ta, fara o incarcare noua."
+  },
   {
     id: "subjects",
     label: "Materiile mele",
@@ -183,6 +191,107 @@ function activityType(job) {
   if (job.kind === "learning") return "Invatare";
   if (job.metadata?.examType === "licenta") return "Licenta";
   return "Test grila";
+}
+
+function learningStatusLabel(status) {
+  if (status === "ready") return "Gata de invatat";
+  if (status === "ready_with_warnings") return "Gata cu observatii";
+  if (status === "failed") return "Procesare oprita";
+  if (["uploaded", "extracting", "outlining", "generating", "consolidating"].includes(status)) return "In pregatire";
+  return "Ciorna";
+}
+
+function learningStatusTone(status) {
+  if (status === "ready") return "is-good";
+  if (status === "ready_with_warnings" || ["uploaded", "extracting", "outlining", "generating", "consolidating"].includes(status)) {
+    return "is-warning";
+  }
+  if (status === "failed") return "is-bad";
+  return "is-muted";
+}
+
+function LearningStudySetCard({ studySet, origin }) {
+  const isCommunity = origin === "community";
+  const detail = `${studySet.chapterCount || 0} capitole · ${studySet.flashcardCount || 0} flashcards · ${studySet.questionCount || 0} intrebari`;
+
+  return (
+    <PendingNavigationLink
+      className={`learning-library-card${isCommunity ? " is-community" : ""}`}
+      href={`/materiale/invata/${studySet.id}`}
+      pendingLabel="Se deschide materialul..."
+      pendingMode="replace"
+    >
+      <div className="learning-library-card-head">
+        <span className={`status-pill ${learningStatusTone(studySet.status)}`}>{learningStatusLabel(studySet.status)}</span>
+        <span className="learning-library-origin">
+          {isCommunity ? "Din comunitate" : studySet.publishedAt ? "Publicat de tine" : "Doar pentru tine"}
+        </span>
+      </div>
+      <strong>{studySet.title}</strong>
+      <p>{detail}</p>
+      <span className="learning-library-card-action">
+        Deschide materialul
+        <ExternalLink aria-hidden="true" size={16} strokeWidth={2.3} />
+      </span>
+    </PendingNavigationLink>
+  );
+}
+
+function LearningLibrary({ learningStudySets, communityLearningStudySets }) {
+  if (!learningStudySets.length && !communityLearningStudySets.length) {
+    return (
+      <div className="learning-library-empty">
+        <strong>Biblioteca nu are materiale inca.</strong>
+        <p>Incarca primul curs. Dupa ce alegi sa il publici, colegii din comunitatea ta il pot folosi fara o procesare noua.</p>
+        <PendingNavigationLink
+          className="btn-back"
+          href="/materiale/invata"
+          pendingLabel="Se deschide incarcarea..."
+          pendingMode="replace"
+        >
+          <IconText icon={UploadCloud}>Adauga primul material</IconText>
+        </PendingNavigationLink>
+      </div>
+    );
+  }
+
+  return (
+    <div className="learning-library">
+      {communityLearningStudySets.length ? (
+        <section className="learning-library-group" aria-labelledby="community-materials-title">
+          <div className="learning-library-group-head">
+            <div>
+              <span>Comunitatea ta</span>
+              <h3 id="community-materials-title">Foloseste ce este deja pregatit</h3>
+            </div>
+            <p>Aceste materiale sunt deja procesate si nu consuma o incarcare noua.</p>
+          </div>
+          <div className="learning-library-grid">
+            {communityLearningStudySets.map((studySet) => (
+              <LearningStudySetCard key={studySet.id} studySet={studySet} origin="community" />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {learningStudySets.length ? (
+        <section className="learning-library-group" aria-labelledby="owned-materials-title">
+          <div className="learning-library-group-head">
+            <div>
+              <span>Materialele tale</span>
+              <h3 id="owned-materials-title">Continua de unde ai ramas</h3>
+            </div>
+            <p>Publica un material gata doar daca vrei sa il folositi si voi in comunitate.</p>
+          </div>
+          <div className="learning-library-grid">
+            {learningStudySets.map((studySet) => (
+              <LearningStudySetCard key={studySet.id} studySet={studySet} origin="owned" />
+            ))}
+          </div>
+        </section>
+      ) : null}
+    </div>
+  );
 }
 
 function withReturnTo(href, returnTo) {
@@ -1034,13 +1143,15 @@ function TestsTable({ testGroups }) {
 
 export function AIActivityCenterClient({
   materials = [],
+  learningStudySets = [],
+  communityLearningStudySets = [],
   activityJobs = [],
   licentaSessions = [],
   testGroups = { active: [], drafts: [] },
-  initialTab = "subjects"
+  initialTab = "learning"
 }) {
   const [activeTab, setActiveTab] = useState(
-    ACTIVITY_TABS.some((tab) => tab.id === initialTab) ? initialTab : "subjects"
+    ACTIVITY_TABS.some((tab) => tab.id === initialTab) ? initialTab : "learning"
   );
   const [visibleMaterials, setVisibleMaterials] = useState(materials);
   const [visibleLicentaSessions, setVisibleLicentaSessions] = useState(licentaSessions);
@@ -1087,6 +1198,7 @@ export function AIActivityCenterClient({
   );
   const selectedTab = ACTIVITY_TABS.find((tab) => tab.id === activeTab) || ACTIVITY_TABS[0];
   const tabCounts = {
+    learning: learningStudySets.length + communityLearningStudySets.length,
     subjects: subjectMaterials.length,
     licenta: licentaRows.length,
     activity: activityJobs.length,
@@ -1153,6 +1265,12 @@ export function AIActivityCenterClient({
             ) : null
           }
         >
+          {activeTab === "learning" ? (
+            <LearningLibrary
+              learningStudySets={learningStudySets}
+              communityLearningStudySets={communityLearningStudySets}
+            />
+          ) : null}
           {activeTab === "subjects" ? (
             <MaterialsTable
               key="subjects"
