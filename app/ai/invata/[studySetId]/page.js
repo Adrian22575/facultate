@@ -22,8 +22,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function LearningStudySetPage({ params }) {
+export default async function LearningStudySetPage({ params, searchParams }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
 
@@ -76,6 +77,10 @@ export default async function LearningStudySetPage({ params }) {
     notFound();
   }
 
+  if (studySet.reusedStudySetId) {
+    redirect(`/materiale/invata/${studySet.reusedStudySetId}?reused=1`);
+  }
+
   return (
     <main className="app-shell learning-study-page">
       <AppHeader
@@ -88,6 +93,11 @@ export default async function LearningStudySetPage({ params }) {
         title={studySet.title}
         subtitle="Capitole, flashcards, teste si plan intr-un singur loc."
       />
+      {resolvedSearchParams?.reused === "1" ? (
+        <div className="learning-reuse-notice" role="status">
+          Am gasit un material deja pregatit pentru comunitatea ta si l-am deschis fara o procesare noua.
+        </div>
+      ) : null}
       <LearningStudySetClient studySet={studySet} />
     </main>
   );

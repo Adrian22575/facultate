@@ -16572,6 +16572,17 @@ td {
   font-weight: 700;
 }
 
+.learning-reuse-notice {
+  margin: 0 auto 20px;
+  max-width: 920px;
+  border: 1px solid color-mix(in srgb, var(--success, #137333) 26%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--success, #137333) 8%, var(--surface, #ffffff));
+  color: var(--text-primary, #15211a);
+  padding: 14px 18px;
+  font-weight: 650;
+}
+
 .learning-processing-view {
   display: grid;
   gap: 18px;
