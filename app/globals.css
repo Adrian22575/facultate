@@ -8998,6 +8998,47 @@ button:disabled {
   margin-top: 20px;
 }
 
+.test-recommended-start {
+  display: grid;
+  gap: 5px;
+  padding: 4px 0 2px;
+}
+
+.test-recommended-start strong {
+  color: var(--ink);
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  letter-spacing: -0.03em;
+}
+
+.test-recommended-start p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 650;
+}
+
+.test-customize {
+  margin: 22px auto 0;
+  max-width: 660px;
+  border-top: 1px solid var(--line);
+}
+
+.test-customize summary {
+  padding: 16px 4px 4px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.test-customize[open] summary {
+  color: var(--primary-dark);
+}
+
+.test-customize .selector-grid {
+  margin-top: 14px;
+}
+
 .test-mistakes-setup {
   display: flex;
   align-items: center;

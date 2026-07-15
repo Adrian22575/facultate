@@ -15,6 +15,7 @@ import {
 } from "@/app/ai/invata/actions";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { shuffleArray } from "@/lib/quiz";
+import { saveLastSession } from "@/lib/session-storage";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const TABS = [
@@ -976,6 +977,16 @@ export function LearningStudySetClient({ studySet }) {
   }, [studySet.chapters, studySet.questions]);
   const nextChapter = studySet.chapters[0] || null;
   const isProcessing = isProcessingStudySet(studySet);
+
+  useEffect(() => {
+    if (isProcessing) return;
+
+    saveLastSession({
+      subjectTitle: studySet.title,
+      mode: "Material de studiu",
+      url: `/materiale/invata/${studySet.id}`
+    });
+  }, [isProcessing, studySet.id, studySet.title]);
 
   function startChapterTest(chapterId) {
     setChapterFilter(chapterId);

@@ -21,7 +21,8 @@ export function DashboardPageClient({
   isAdmin = false,
   adminActionCount = 0,
   billingSnapshot = null,
-  gamificationSummary = null
+  gamificationSummary = null,
+  recommendedLearningStudySet = null
 }) {
   const [lastSession, setLastSession] = useState(null);
   const [sessionEntryStep, setSessionEntryStep] = useState("entry");
@@ -30,7 +31,19 @@ export function DashboardPageClient({
     setLastSession(getLastSession());
   }, []);
 
-  const hasLastSession = Boolean(lastSession?.url);
+  const resumeSession =
+    lastSession?.url
+      ? lastSession
+      : recommendedLearningStudySet
+        ? {
+            url: `/materiale/invata/${recommendedLearningStudySet.id}`,
+            subjectTitle: recommendedLearningStudySet.title,
+            mode: "Material de studiu"
+          }
+        : null;
+  const materialHref = recommendedLearningStudySet
+    ? `/materiale/invata/${recommendedLearningStudySet.id}`
+    : "/materiale/activitate?tab=learning";
 
   function openSubjectPicker() {
     setSessionEntryStep("subject-picker");
@@ -80,16 +93,16 @@ export function DashboardPageClient({
             <h1 id="dashboard-home-title">Cum vrei sa inveti azi?</h1>
             <p>Alege un punct de plecare. Restul optiunilor apar pe parcurs.</p>
           </div>
-          {hasLastSession ? (
+          {resumeSession ? (
             <PendingNavigationLink
-              href={lastSession.url}
+              href={resumeSession.url}
               className="dashboard-resume-link"
               pendingLabel="Se reia sesiunea..."
               pendingMode="replace"
             >
-              <span>Ultima sesiune</span>
-              <strong>{lastSession.subjectTitle || "Materia ta"}</strong>
-              <em>{lastSession.mode || "Reia"}</em>
+              <span>Continua invatarea</span>
+              <strong>{resumeSession.subjectTitle || "Materia ta"}</strong>
+              <em>{resumeSession.mode || "Reia"}</em>
               <ArrowRight aria-hidden="true" size={16} strokeWidth={2.4} />
             </PendingNavigationLink>
           ) : null}
@@ -131,15 +144,19 @@ export function DashboardPageClient({
                   </div>
                   <div className="dashboard-start-card-copy">
                     <h2>Materiale de studiu</h2>
-                    <p>Deschide un curs deja pregatit si continua cu flashcarduri, teste si planuri de studiu.</p>
+                    <p>
+                      {recommendedLearningStudySet
+                        ? `Reia „${recommendedLearningStudySet.title}” exact de unde ai ramas.`
+                        : "Deschide un curs deja pregatit si continua cu flashcarduri, teste si planuri de studiu."}
+                    </p>
                   </div>
                   <PendingNavigationLink
-                    href="/materiale/activitate?tab=learning"
+                    href={materialHref}
                     className="dashboard-start-card-action"
-                    pendingLabel="Se deschid materialele..."
+                    pendingLabel={recommendedLearningStudySet ? "Se deschide materialul..." : "Se deschid materialele..."}
                     pendingMode="replace"
                   >
-                    Deschide materialele
+                    {recommendedLearningStudySet ? "Continua materialul" : "Deschide materialele"}
                     <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
                   </PendingNavigationLink>
                 </article>

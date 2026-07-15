@@ -89,13 +89,23 @@ export function SubjectLearningHub({
 
           <div className="subject-learning-card-actions">
             {studySets.length ? (
-              <PendingNavigationLink href="/materiale/activitate?tab=learning" className="btn-link secondary" pendingLabel="Se deschide biblioteca...">
-                Vezi biblioteca
+              <>
+                <PendingNavigationLink
+                  href={`/materiale/invata/${studySets[0].id}`}
+                  className="btn-back"
+                  pendingLabel="Se deschide materialul..."
+                >
+                  Continua materialul
+                </PendingNavigationLink>
+                <PendingNavigationLink href="/materiale/activitate?tab=learning" className="btn-link secondary" pendingLabel="Se deschide biblioteca...">
+                  Vezi biblioteca
+                </PendingNavigationLink>
+              </>
+            ) : (
+              <PendingNavigationLink href={uploadHref} className="btn-back" pendingLabel="Se deschide incarcarea...">
+                Adauga material
               </PendingNavigationLink>
-            ) : null}
-            <PendingNavigationLink href={uploadHref} className="btn-back" pendingLabel="Se deschide incarcarea...">
-              Adauga material
-            </PendingNavigationLink>
+            )}
           </div>
         </article>
 

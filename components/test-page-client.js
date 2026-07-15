@@ -375,6 +375,10 @@ export function TestPageClient({
 
   const currentQuestion = testQuestions[currentIndex] || null;
   const answeredCount = answers.filter((answer) => answer !== null).length;
+  const isRecommendedTest = count === "10" && mode === "1";
+  const selectedQuestionCount = count === "all"
+    ? safeInitialQuestions.length
+    : Math.min(Number(count), safeInitialQuestions.length);
 
   function chooseAnswer(answerIndex) {
     const nextAnswers = [...answers];
@@ -467,29 +471,14 @@ export function TestPageClient({
   if (phase === "setup") {
     return (
       <section className="surface">
-        <div className="selector-grid">
-          <div className="selector-container">
-            <label>
-              Numar de intrebari
-              <select value={count} onChange={(event) => setCount(event.target.value)}>
-                <option value="5">5 intrebari</option>
-                <option value="10">10 intrebari</option>
-                <option value="20">20 intrebari</option>
-                <option value="all">Toate</option>
-              </select>
-            </label>
-          </div>
-
-          <div className="selector-container">
-            <label>
-              Mod de lucru
-              <select value={mode} onChange={(event) => setMode(event.target.value)}>
-                <option value="1">In ordine</option>
-                <option value="2">Intrebari amestecate</option>
-                <option value="3">Intrebari si raspunsuri mixate</option>
-              </select>
-            </label>
-          </div>
+        <div className="test-recommended-start">
+          <span className="ui-section-label">Test recomandat</span>
+          <strong>
+            {isRecommendedTest
+              ? `${Math.min(10, safeInitialQuestions.length)} intrebari, in ordine`
+              : `${selectedQuestionCount} intrebari, ${mode === "1" ? "in ordine" : "amestecate"}`}
+          </strong>
+          <p>{isRecommendedTest ? "Incepe rapid. Poti ajusta testul doar daca ai nevoie." : "Setarile tale sunt pregatite."}</p>
         </div>
 
         {mistakeQuestionIds.length ? (
@@ -509,9 +498,37 @@ export function TestPageClient({
 
         <div className="center test-setup-actions">
           <button type="button" onClick={startTest}>
-            Incepe testul
+            {isRecommendedTest ? "Incepe testul recomandat" : "Incepe testul"}
           </button>
         </div>
+
+        <details className="test-customize">
+          <summary>Personalizeaza testul</summary>
+          <div className="selector-grid">
+            <div className="selector-container">
+              <label>
+                Numar de intrebari
+                <select value={count} onChange={(event) => setCount(event.target.value)}>
+                  <option value="5">5 intrebari</option>
+                  <option value="10">10 intrebari</option>
+                  <option value="20">20 intrebari</option>
+                  <option value="all">Toate</option>
+                </select>
+              </label>
+            </div>
+
+            <div className="selector-container">
+              <label>
+                Mod de lucru
+                <select value={mode} onChange={(event) => setMode(event.target.value)}>
+                  <option value="1">In ordine</option>
+                  <option value="2">Intrebari amestecate</option>
+                  <option value="3">Intrebari si raspunsuri mixate</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </details>
       </section>
     );
   }

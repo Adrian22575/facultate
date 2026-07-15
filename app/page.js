@@ -9,6 +9,7 @@ import { getAdminActionSummary } from "@/lib/admin-center";
 import { getAccessibleSubjectsForUser } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getGamificationSummary } from "@/lib/gamification";
+import { getCommunityLearningStudySets, getUserLearningStudySets } from "@/lib/learning/study-sets";
 import { getPublicSiteUrl } from "@/lib/site";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
@@ -124,15 +125,18 @@ export default async function HomePage() {
   }
 
   const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
-  const [accessibleCatalog, billingSnapshot, gamificationSummary] = await Promise.all([
+  const [accessibleCatalog, billingSnapshot, gamificationSummary, ownedLearningStudySets, communityLearningStudySets] = await Promise.all([
     getAccessibleSubjectsForUser({
       userId: user.id,
       membership: academicContext?.membership,
       userType
     }),
     getBillingSnapshot(user.id).catch(() => null),
-    getGamificationSummary(user.id)
+    getGamificationSummary(user.id),
+    getUserLearningStudySets(user.id, 1).catch(() => []),
+    getCommunityLearningStudySets({ userId: user.id, academicContext, limit: 1 }).catch(() => [])
   ]);
+  const recommendedLearningStudySet = ownedLearningStudySets[0] || communityLearningStudySets[0] || null;
   const isAdmin = await adminStatePromise;
   const adminActionCount = isAdmin
     ? await getAdminActionSummary(user.id).then((summary) => summary.total || 0).catch(() => 0)
@@ -149,6 +153,7 @@ export default async function HomePage() {
         adminActionCount={adminActionCount}
         billingSnapshot={billingSnapshot}
         gamificationSummary={gamificationSummary}
+        recommendedLearningStudySet={recommendedLearningStudySet}
       />
     </main>
   );
