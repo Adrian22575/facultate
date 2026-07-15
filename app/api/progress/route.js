@@ -27,6 +27,8 @@ const ProgressPayloadSchema = z
     testScorePercent: z.number().int().min(0).max(100).optional(),
     testQuestionCount: z.number().int().min(1).max(500).optional(),
     testCorrectCount: z.number().int().min(0).max(500).optional(),
+    testQuestionIds: z.array(z.string().trim().min(1).max(200)).max(500).optional(),
+    wrongQuestionIds: z.array(z.string().trim().min(1).max(200)).max(500).optional(),
     idempotencyKey: z.string().trim().min(8).max(180).optional()
   })
   .superRefine((value, context) => {
@@ -101,6 +103,26 @@ const ProgressPayloadSchema = z
           message: "Datele testului nu sunt coerente."
         });
       }
+
+      if (Array.isArray(value.testQuestionIds) !== Array.isArray(value.wrongQuestionIds)) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["testQuestionIds"],
+          message: "Datele pentru greselile testului nu sunt complete."
+        });
+      }
+
+      if (
+        Array.isArray(value.testQuestionIds) &&
+        Array.isArray(value.wrongQuestionIds) &&
+        value.wrongQuestionIds.some((questionId) => !value.testQuestionIds.includes(questionId))
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["wrongQuestionIds"],
+          message: "O intrebare gresita trebuie sa faca parte din test."
+        });
+      }
     }
   });
 
@@ -112,6 +134,54 @@ function average(values) {
 function pickReachedThreshold(value, thresholds) {
   const safeValue = Number(value || 0);
   return thresholds.filter((threshold) => safeValue >= threshold).pop() || 0;
+}
+
+function normalizeQuestionIds(questionIds) {
+  return Array.from(
+    new Set(
+      (Array.isArray(questionIds) ? questionIds : [])
+        .map((questionId) => String(questionId || "").trim())
+        .filter(Boolean)
+    )
+  ).slice(0, 500);
+}
+
+async function syncSubjectMistakes({ admin, userId, subjectId, testQuestionIds, wrongQuestionIds }) {
+  if (!Array.isArray(testQuestionIds) || !Array.isArray(wrongQuestionIds)) {
+    return null;
+  }
+
+  const testedIds = normalizeQuestionIds(testQuestionIds);
+  const wrongIds = normalizeQuestionIds(wrongQuestionIds);
+  const testedSet = new Set(testedIds);
+
+  const { data: progress, error: progressError } = await admin
+    .from("subject_progress")
+    .select("mistake_question_ids")
+    .eq("user_id", userId)
+    .eq("subject_id", subjectId)
+    .maybeSingle();
+
+  if (progressError && progressError.code !== "PGRST116") {
+    throw progressError;
+  }
+
+  const retainedIds = normalizeQuestionIds(progress?.mistake_question_ids).filter(
+    (questionId) => !testedSet.has(questionId)
+  );
+  const nextMistakeIds = normalizeQuestionIds([...retainedIds, ...wrongIds]);
+
+  const { error: updateError } = await admin
+    .from("subject_progress")
+    .update({ mistake_question_ids: nextMistakeIds })
+    .eq("user_id", userId)
+    .eq("subject_id", subjectId);
+
+  if (updateError) {
+    throw updateError;
+  }
+
+  return nextMistakeIds;
 }
 
 function membershipColumnForScope(scope) {
@@ -262,6 +332,17 @@ export async function POST(request) {
       throw syncError;
     }
 
+    const mistakeQuestionIds =
+      payload.mode === "test"
+        ? await syncSubjectMistakes({
+            admin,
+            userId: user.id,
+            subjectId: payload.subjectId,
+            testQuestionIds: payload.testQuestionIds,
+            wrongQuestionIds: payload.wrongQuestionIds
+          })
+        : null;
+
     const subjectTestStats =
       payload.mode === "test"
         ? await buildSubjectTestStats({
@@ -335,7 +416,7 @@ export async function POST(request) {
       }
     }
 
-    return NextResponse.json({ ok: true, subjectTestStats, gamification });
+    return NextResponse.json({ ok: true, subjectTestStats, gamification, mistakeQuestionIds });
   } catch (error) {
     if (isSupabaseSetupIncompleteError(error)) {
       return NextResponse.json(

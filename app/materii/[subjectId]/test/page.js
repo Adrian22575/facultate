@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { TestPageClient } from "@/components/test-page-client";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
-import { getQuestionsForSubject } from "@/lib/data";
+import { getQuestionsForSubject, getSubjectProgressSnapshot } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getLearningModesLockHref, hasLearningModesAccess } from "@/lib/learning-access";
 import { getOptionalUser } from "@/lib/supabase/guards";
@@ -17,8 +17,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function TestPage({ params }) {
+export default async function TestPage({ params, searchParams }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
   let academicContext = null;
@@ -47,6 +48,9 @@ export default async function TestPage({ params }) {
   );
   if (!data || !data.questions.length) notFound();
 
+  const progress = demoMode ? null : await getSubjectProgressSnapshot(user.id, data.subject.id);
+  const initialMode = resolvedSearchParams?.mode === "mistakes" ? "mistakes" : "";
+
   return (
     <main className="app-shell">
       <AppHeader
@@ -59,7 +63,12 @@ export default async function TestPage({ params }) {
         title={`Test — ${data.subject.title}`}
         subtitle="Alege durata testului si modul de amestecare."
       />
-      <TestPageClient subject={data.subject} initialQuestions={data.questions} />
+      <TestPageClient
+        subject={data.subject}
+        initialQuestions={data.questions}
+        initialMistakeQuestionIds={progress?.mistake_question_ids || []}
+        initialMode={initialMode}
+      />
     </main>
   );
 }

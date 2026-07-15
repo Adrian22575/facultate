@@ -6,11 +6,15 @@ function formatProgress(progress) {
   const viewed = Number(progress?.study_viewed_count || 0);
   const total = Number(progress?.study_total_questions || 0);
   const bestScore = Number(progress?.test_best_score_percent || 0);
+  const mistakeCount = Array.isArray(progress?.mistake_question_ids)
+    ? progress.mistake_question_ids.filter(Boolean).length
+    : 0;
 
   return {
     viewed,
     total,
     bestScore,
+    mistakeCount,
     studyLabel: total ? `${viewed} din ${total} intrebari parcurse` : "Incepe cu primul set de grile"
   };
 }
@@ -26,10 +30,17 @@ export function SubjectLearningHub({
   const uploadHref = `/materiale/invata?subjectId=${encodeURIComponent(subject.id)}`;
   const studyHref = locked ? lockHref : `/materii/${subject.id}/studiu`;
   const testHref = locked ? lockHref : `/materii/${subject.id}/test`;
+  const mistakesHref = locked ? lockHref : `/materii/${subject.id}/test?mode=mistakes`;
   const hasUnfinishedStudy = metrics.total > 0 && metrics.viewed < metrics.total;
   const nextAction = locked
     ? { href: lockHref, label: "Vezi planuri", copy: "Activeaza accesul pentru grile si teste pe aceasta materie." }
-    : hasUnfinishedStudy
+    : metrics.mistakeCount
+      ? {
+          href: mistakesHref,
+          label: "Repeta greselile",
+          copy: `${metrics.mistakeCount} intrebari raman de consolidat.`
+        }
+      : hasUnfinishedStudy
       ? { href: studyHref, label: "Continua grilele", copy: `${metrics.total - metrics.viewed} intrebari ramase de parcurs.` }
       : metrics.bestScore
         ? { href: testHref, label: "Imbunatateste scorul", copy: `Cel mai bun rezultat: ${metrics.bestScore}%.` }

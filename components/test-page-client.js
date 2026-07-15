@@ -78,6 +78,16 @@ function createAttemptKey() {
   return `subject-test-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+function normalizeQuestionIds(questionIds) {
+  return Array.from(
+    new Set(
+      (Array.isArray(questionIds) ? questionIds : [])
+        .map((questionId) => String(questionId || "").trim())
+        .filter(Boolean)
+    )
+  );
+}
+
 function getSimpleTestAdvice(stats) {
   const community = stats?.community || null;
   const comparison = getSubjectTestComparison(stats);
@@ -245,7 +255,12 @@ function SubjectTestInsight({ stats, status, onRetry }) {
   );
 }
 
-export function TestPageClient({ subject, initialQuestions }) {
+export function TestPageClient({
+  subject,
+  initialQuestions,
+  initialMistakeQuestionIds = [],
+  initialMode = ""
+}) {
   const [safeInitialQuestions, setSafeInitialQuestions] = useState(() => sanitizeQuestions(initialQuestions));
   const [count, setCount] = useState("10");
   const [mode, setMode] = useState("1");
@@ -259,12 +274,21 @@ export function TestPageClient({ subject, initialQuestions }) {
   const [resultStatsStatus, setResultStatsStatus] = useState("idle");
   const [gamificationResult, setGamificationResult] = useState(null);
   const [syncRevision, setSyncRevision] = useState(0);
+  const [mistakeQuestionIds, setMistakeQuestionIds] = useState(() =>
+    normalizeQuestionIds(initialMistakeQuestionIds)
+  );
+  const [setupNotice, setSetupNotice] = useState("");
   const lastSyncedScoreRef = useRef("");
   const attemptKeyRef = useRef("");
+  const openedInitialMistakesRef = useRef(false);
 
   useEffect(() => {
     setSafeInitialQuestions(sanitizeQuestions(initialQuestions));
   }, [initialQuestions]);
+
+  useEffect(() => {
+    setMistakeQuestionIds(normalizeQuestionIds(initialMistakeQuestionIds));
+  }, [initialMistakeQuestionIds]);
 
   useEffect(() => {
     saveLastSession({
@@ -286,6 +310,7 @@ export function TestPageClient({ subject, initialQuestions }) {
     setCurrentIndex(0);
     setReviewRound(isReview);
     setAnswerNotice("");
+    setSetupNotice("");
     setResultStats(null);
     setResultStatsStatus("idle");
     setGamificationResult(null);
@@ -317,6 +342,18 @@ export function TestPageClient({ subject, initialQuestions }) {
         selectedQuestions,
         buildAnswerBank(safeInitialQuestions)
       );
+    }
+
+    startQuestionSet(selectedQuestions, false);
+  }
+
+  function startMistakesTest() {
+    const mistakeIds = new Set(mistakeQuestionIds);
+    const selectedQuestions = safeInitialQuestions.filter((question) => mistakeIds.has(String(question.id)));
+
+    if (!selectedQuestions.length) {
+      setSetupNotice("Nu mai ai greseli salvate pentru intrebarile disponibile acum.");
+      return;
     }
 
     startQuestionSet(selectedQuestions, false);
@@ -371,6 +408,15 @@ export function TestPageClient({ subject, initialQuestions }) {
   }
 
   useEffect(() => {
+    if (initialMode !== "mistakes" || openedInitialMistakesRef.current || !safeInitialQuestions.length) {
+      return;
+    }
+
+    openedInitialMistakesRef.current = true;
+    startMistakesTest();
+  }, [initialMode, safeInitialQuestions, mistakeQuestionIds]);
+
+  useEffect(() => {
     if (phase !== "result" || !testQuestions.length || reviewRound) {
       return undefined;
     }
@@ -393,8 +439,16 @@ export function TestPageClient({ subject, initialQuestions }) {
         testScorePercent: scorePercent,
         testQuestionCount: testQuestions.length,
         testCorrectCount: correctAnswers,
+        testQuestionIds: testQuestions.map((question) => String(question.id)),
+        wrongQuestionIds: testQuestions
+          .filter((question, index) => answers[index] !== question.correctIndex)
+          .map((question) => String(question.id)),
         idempotencyKey: attemptKeyRef.current
       });
+
+      if (Array.isArray(payload?.mistakeQuestionIds)) {
+        setMistakeQuestionIds(normalizeQuestionIds(payload.mistakeQuestionIds));
+      }
 
       if (payload?.subjectTestStats) {
         lastSyncedScoreRef.current = syncKey;
@@ -437,6 +491,21 @@ export function TestPageClient({ subject, initialQuestions }) {
             </label>
           </div>
         </div>
+
+        {mistakeQuestionIds.length ? (
+          <div className="test-mistakes-setup">
+            <div>
+              <span>Greșelile mele</span>
+              <strong>{`${mistakeQuestionIds.length} intrebari de reluat`}</strong>
+              <p>Le poti reface separat; cele rezolvate corect ies automat din lista.</p>
+            </div>
+            <button className="secondary" type="button" onClick={startMistakesTest}>
+              Repeta greselile
+            </button>
+          </div>
+        ) : null}
+
+        {setupNotice ? <p className="quiz-answer-required" role="status">{setupNotice}</p> : null}
 
         <div className="center test-setup-actions">
           <button type="button" onClick={startTest}>
@@ -507,6 +576,11 @@ export function TestPageClient({ subject, initialQuestions }) {
               onClick={() => startQuestionSet(wrongQuestions, true)}
             >
               {`Revizuieste greselile (${wrongQuestions.length})`}
+            </button>
+          ) : null}
+          {mistakeQuestionIds.length ? (
+            <button type="button" className="secondary" onClick={startMistakesTest}>
+              {`Repeta greselile salvate (${mistakeQuestionIds.length})`}
             </button>
           ) : null}
           <button
