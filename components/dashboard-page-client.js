@@ -1,10 +1,9 @@
 "use client";
 
 import {
-  ArrowRight,
-  FileUp,
-  GraduationCap
+  ArrowRight
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -101,13 +100,18 @@ export function DashboardPageClient({
             {sessionEntryStep === "entry" ? (
               <section className="dashboard-start-grid" aria-label="Alege cum incepi sa inveti">
                 <article className="dashboard-start-card is-practice">
-                  <div className="dashboard-start-card-icon" aria-hidden="true">
-                    <GraduationCap size={28} strokeWidth={2.25} />
+                  <div className="dashboard-start-card-media" aria-hidden="true">
+                    <Image
+                      src="/images/home/practice-card.png"
+                      alt=""
+                      fill
+                      sizes="(max-width: 980px) 100vw, 50vw"
+                      priority
+                    />
                   </div>
                   <div className="dashboard-start-card-copy">
-                    <span>Pasul 1</span>
-                    <h2>Exerseaza si recapituleaza</h2>
-                    <p>Alege materia, apoi invata in ritmul tau prin studiu, teste si recapitulare.</p>
+                    <h2>Teste si grile</h2>
+                    <p>Alege materia, apoi exerseaza prin grile, teste, studiu si intrebarile gresite.</p>
                   </div>
                   <button type="button" className="dashboard-start-card-action" onClick={openSubjectPicker}>
                     Alege o materie
@@ -116,21 +120,26 @@ export function DashboardPageClient({
                 </article>
 
                 <article className="dashboard-start-card is-materials">
-                  <div className="dashboard-start-card-icon" aria-hidden="true">
-                    <FileUp size={27} strokeWidth={2.25} />
+                  <div className="dashboard-start-card-media" aria-hidden="true">
+                    <Image
+                      src="/images/home/materials-card.png"
+                      alt=""
+                      fill
+                      sizes="(max-width: 980px) 100vw, 50vw"
+                      priority
+                    />
                   </div>
                   <div className="dashboard-start-card-copy">
-                    <span>Pasul 1</span>
-                    <h2>Invata din materialele tale</h2>
-                    <p>Incarca un curs sau notitele tale si transforma-le intr-un punct de plecare pentru invatare.</p>
+                    <h2>Materiale de studiu</h2>
+                    <p>Deschide un curs deja pregatit si continua cu flashcarduri, teste si planuri de studiu.</p>
                   </div>
                   <PendingNavigationLink
-                    href="/materiale/invata"
+                    href="/materiale/activitate?tab=subjects"
                     className="dashboard-start-card-action"
-                    pendingLabel="Se deschide incarcarea..."
+                    pendingLabel="Se deschid materialele..."
                     pendingMode="replace"
                   >
-                    Adauga un material
+                    Deschide materialele
                     <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
                   </PendingNavigationLink>
                 </article>

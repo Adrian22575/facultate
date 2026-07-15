@@ -18,7 +18,7 @@ import { getOptionalUser } from "@/lib/supabase/guards";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Activitate materiale | Nota 5+"
+  title: "Materiale de studiu | Nota 5+"
 };
 
 function getActivityTimestamp(item) {
@@ -94,15 +94,15 @@ export default async function AIActivityPage({ searchParams }) {
   return (
     <main className="app-shell ai-workspace-page ai-activity-page">
       <AppHeader
-        title="Activitate materiale"
+        title="Materiale de studiu"
         subtitle="Materialele, importurile si testele tale intr-un singur loc."
         hidePageTitle
       />
 
       <section className="ai-workspace-header ai-activity-header">
         <div className="ai-workspace-header-copy">
-          <span className="ui-section-label">Activitate</span>
-          <h1 className="ai-workspace-title">Materialele si procesarile tale.</h1>
+          <span className="ui-section-label">Biblioteca ta</span>
+          <h1 className="ai-workspace-title">Materialele tale de studiu.</h1>
           <p className="ai-workspace-subtitle">
             Revii la importuri, verifici materialele salvate si deschizi testele pregatite fara sa
             incarci din nou fisierele.
@@ -110,8 +110,8 @@ export default async function AIActivityPage({ searchParams }) {
         </div>
         <PendingNavigationLink
           className="btn-link secondary ai-activity-back-link"
-          href="/materiale"
-          pendingLabel="Se deschide uploadul..."
+          href="/materiale/invata"
+          pendingLabel="Se deschide incarcarea..."
           pendingMode="replace"
         >
           <IconText icon={Upload}>Incarca alt material</IconText>
@@ -138,7 +138,7 @@ export default async function AIActivityPage({ searchParams }) {
             </p>
             <PendingNavigationLink
               className="btn-back"
-              href="/materiale"
+              href="/materiale/invata"
               pendingLabel="Se deschide uploadul..."
               pendingMode="replace"
             >

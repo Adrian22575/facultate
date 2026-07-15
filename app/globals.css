@@ -1477,60 +1477,49 @@ p {
 }
 
 .dashboard-start-card {
-  min-height: 330px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: clamp(24px, 4vw, 38px);
+  min-height: 408px;
+  display: grid;
+  grid-template-rows: 162px minmax(0, 1fr) auto;
+  overflow: hidden;
   border: 1px solid #d9e5f5;
   border-radius: 26px;
   box-shadow: 0 16px 42px rgba(20, 50, 100, 0.07);
 }
 
 .dashboard-start-card.is-practice {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(97, 160, 255, 0.21), transparent 37%),
-    #fff;
+  background: #fff;
 }
 
 .dashboard-start-card.is-materials {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(87, 190, 134, 0.2), transparent 37%),
-    #fff;
+  background: #fff;
 }
 
-.dashboard-start-card-icon {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 28px;
-  border-radius: 18px;
-  background: var(--primary-soft);
-  color: var(--primary);
+.dashboard-start-card-media {
+  position: relative;
+  overflow: hidden;
+  background: var(--primary-dark);
 }
 
-.dashboard-start-card.is-materials .dashboard-start-card-icon {
-  background: #e8f8ef;
-  color: #177a4b;
+.dashboard-start-card.is-materials .dashboard-start-card-media {
+  background: #105f38;
 }
 
-.dashboard-start-card-copy > span {
-  display: block;
-  margin-bottom: 10px;
-  color: var(--primary-dark);
-  font-size: 0.76rem;
-  font-weight: 900;
-  letter-spacing: 0.065em;
-  text-transform: uppercase;
+.dashboard-start-card-media img {
+  object-fit: cover;
+  object-position: right center;
+  transition: transform 0.35s ease;
 }
 
-.dashboard-start-card.is-materials .dashboard-start-card-copy > span {
-  color: #177a4b;
+.dashboard-start-card:hover .dashboard-start-card-media img {
+  transform: scale(1.035);
+}
+
+.dashboard-start-card-copy {
+  width: 100%;
+  padding: 26px 30px 20px;
 }
 
 .dashboard-start-card-copy h2 {
-  max-width: 12ch;
   margin: 0;
   color: var(--ink);
   font-size: clamp(1.55rem, 2.35vw, 2.15rem);
@@ -1539,7 +1528,6 @@ p {
 }
 
 .dashboard-start-card-copy p {
-  max-width: 38ch;
   margin: 14px 0 0;
   color: var(--muted);
   line-height: 1.6;
@@ -1551,7 +1539,8 @@ p {
   align-items: center;
   justify-content: center;
   gap: 9px;
-  margin-top: auto;
+  width: fit-content;
+  margin: 0 30px 30px;
   padding: 13px 17px;
   border: 1px solid transparent;
   border-radius: 14px;
@@ -9544,7 +9533,7 @@ td {
   }
 
   .dashboard-start-card {
-    min-height: 280px;
+    min-height: 390px;
   }
 
   .dashboard-license-path {
