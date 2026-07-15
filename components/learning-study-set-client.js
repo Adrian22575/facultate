@@ -19,15 +19,18 @@ import { saveLastSession } from "@/lib/session-storage";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 const TABS = [
-  { id: "overview", label: "Overview" },
+  { id: "overview", label: "Incepe" },
   { id: "chapters", label: "Capitole" },
   { id: "flashcards", label: "Flashcards" },
-  { id: "test", label: "Test" },
+  { id: "test", label: "Testeaza-te" },
   { id: "simulation", label: "Simulare" },
-  { id: "competition", label: "Competitie" },
+  { id: "competition", label: "Clasament" },
   { id: "mistakes", label: "Greseli" },
   { id: "plan", label: "Plan" }
 ];
+const PRIMARY_TAB_IDS = new Set(["overview", "flashcards", "test"]);
+const PRIMARY_TABS = TABS.filter((tab) => PRIMARY_TAB_IDS.has(tab.id));
+const MORE_TABS = TABS.filter((tab) => !PRIMARY_TAB_IDS.has(tab.id));
 const PROCESSING_STUDY_SET_STATUSES = new Set([
   "draft",
   "uploaded",
@@ -977,6 +980,8 @@ export function LearningStudySetClient({ studySet }) {
   }, [studySet.chapters, studySet.questions]);
   const nextChapter = studySet.chapters[0] || null;
   const isProcessing = isProcessingStudySet(studySet);
+  const activeTabLabel = TABS.find((tab) => tab.id === activeTab)?.label || "Invatare";
+  const isMoreTabActive = MORE_TABS.some((tab) => tab.id === activeTab);
 
   useEffect(() => {
     if (isProcessing) return;
@@ -1230,7 +1235,7 @@ export function LearningStudySetClient({ studySet }) {
         aria-label="Moduri invatare"
         onKeyDown={handleTablistKeyDown}
       >
-        {TABS.map((tab) => (
+        {PRIMARY_TABS.map((tab) => (
           <button
             key={tab.id}
             id={`learning-tab-${tab.id}`}
@@ -1249,10 +1254,29 @@ export function LearningStudySetClient({ studySet }) {
         ))}
       </div>
 
+      <details className="learning-more-modes" open={isMoreTabActive}>
+        <summary>{isMoreTabActive ? `Mai multe moduri: ${activeTabLabel}` : "Mai multe moduri"}</summary>
+        <div aria-label="Moduri suplimentare de invatare">
+          {MORE_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              aria-pressed={activeTab === tab.id}
+              className={activeTab === tab.id ? "is-active" : ""}
+              data-usage-event="learning_tab_opened"
+              data-usage-label={tab.label}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </details>
+
       <div
         id="learning-active-panel"
         role="tabpanel"
-        aria-labelledby={`learning-tab-${activeTab}`}
+        aria-label={`Modul ${activeTabLabel}`}
       >
       {activeTab === "overview" ? (
         <div className="learning-overview-grid">
@@ -1390,7 +1414,7 @@ export function LearningStudySetClient({ studySet }) {
         </Link>
         <button type="button" className="secondary" onClick={() => setActiveTab("overview")}>
           <RotateCcw aria-hidden="true" size={16} />
-          Inapoi la overview
+          Inapoi la inceput
         </button>
       </div>
     </section>

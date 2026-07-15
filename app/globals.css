@@ -17087,6 +17087,53 @@ td {
   box-shadow: 0 10px 22px rgba(37, 99, 235, 0.18);
 }
 
+.learning-more-modes {
+  border-bottom: 1px solid #d6e3f5;
+}
+
+.learning-more-modes summary {
+  width: fit-content;
+  margin: 0 auto;
+  padding: 12px 4px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.learning-more-modes[open] summary {
+  color: var(--primary-dark);
+}
+
+.learning-more-modes > div {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 0 0 14px;
+}
+
+.learning-more-modes button {
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid #d6e3f5;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--primary-dark);
+  font-size: 0.83rem;
+  font-weight: 850;
+  box-shadow: none;
+}
+
+.learning-more-modes button:hover,
+.learning-more-modes button:focus-visible,
+.learning-more-modes button.is-active {
+  border-color: rgba(37, 99, 235, 0.38);
+  background: #eff6ff;
+  color: var(--primary-dark);
+  box-shadow: none;
+}
+
 .learning-overview-grid,
 .learning-chapter-grid {
   display: grid;
