@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, BookOpenCheck, ClipboardList, Search } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -66,12 +66,14 @@ export function SubjectsListClient({
   embedded = false,
   title = "Alege materia",
   description = "Vezi toate materiile disponibile si filtreaza doar daca vrei sa restrangi lista.",
-  headerAction = null
+  headerAction = null,
+  recentSubjects = []
 }) {
   const [query, setQuery] = useState("");
   const [yearFilter, setYearFilter] = useState("all");
   const [semesterFilter, setSemesterFilter] = useState("all");
   const [classFilter, setClassFilter] = useState("all");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const rows = useMemo(
     () => createSubjectRows(subjects, subjectAllocations, userType),
@@ -140,6 +142,7 @@ export function SubjectsListClient({
     filterOptions.years.length > 0 ||
     filterOptions.semesters.length > 0 ||
     filterOptions.classes.length > 0;
+  const hasActiveFilters = yearFilter !== "all" || semesterFilter !== "all" || classFilter !== "all";
 
   return (
     <section
@@ -155,12 +158,36 @@ export function SubjectsListClient({
 
       {headerAction ? <div className="subjects-section-action">{headerAction}</div> : null}
 
-      <div className="subject-helper-note">
-        <span>Nu gasesti materia?</span>
-        <Link href="/materiale">
-          O poti adauga chiar tu din Workspace daca ai intrebarile si raspunsurile.
-        </Link>
-      </div>
+      {recentSubjects.length ? (
+        <section className="subjects-recent" aria-label="Materii de continuat">
+          <div className="subjects-recent-head">
+            <div>
+              <span className="ui-section-label">Continua</span>
+              <h3>Materii recente</h3>
+            </div>
+            <small>Alege una si reiei direct.</small>
+          </div>
+          <div className="subjects-recent-list">
+            {recentSubjects.map((subject) => (
+              <PendingNavigationLink
+                key={subject.id}
+                className="subjects-recent-row"
+                href={`/materii/${subject.id}`}
+                pendingLabel="Se deschide materia..."
+              >
+                <span>
+                  <strong>{subject.title}</strong>
+                  <small>{subject.description}</small>
+                </span>
+                <em>
+                  Continua
+                  <ArrowRight size={16} strokeWidth={2.5} aria-hidden="true" />
+                </em>
+              </PendingNavigationLink>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <div className="subjects-toolbar" aria-label="Filtre pentru materii">
         <label className="subjects-search-field">
@@ -175,51 +202,63 @@ export function SubjectsListClient({
           />
         </label>
 
-        {userType === "student" && filterOptions.years.length ? (
-          <label className="subject-filter-field">
-            <span>An</span>
-            <select value={yearFilter} onChange={(event) => setYearFilter(event.target.value)}>
-              <option value="all">Toti anii</option>
-              {filterOptions.years.map((year) => (
-                <option key={year} value={year}>
-                  {`Anul ${year}`}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-
-        {userType === "elev" && filterOptions.classes.length ? (
-          <label className="subject-filter-field">
-            <span>Clasa</span>
-            <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
-              <option value="all">Toate clasele</option>
-              {filterOptions.classes.map((schoolClass) => (
-                <option key={schoolClass} value={schoolClass}>
-                  {schoolClass}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-
-        {filterOptions.semesters.length ? (
-          <label className="subject-filter-field">
-            <span>Semestru</span>
-            <select
-              value={semesterFilter}
-              onChange={(event) => setSemesterFilter(event.target.value)}
-            >
-              <option value="all">Toate semestrele</option>
-              {filterOptions.semesters.map((semester) => (
-                <option key={semester} value={semester}>
-                  {`Semestrul ${semester}`}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
       </div>
+
+      {hasFilters ? (
+        <details
+          className="subjects-filter-disclosure"
+          open={filtersOpen}
+          onToggle={(event) => setFiltersOpen(event.currentTarget.open)}
+        >
+          <summary>{hasActiveFilters ? "Filtre active" : "Filtreaza lista"}</summary>
+          <div className="subjects-filter-options">
+            {userType === "student" && filterOptions.years.length ? (
+              <label className="subject-filter-field">
+                <span>An</span>
+                <select value={yearFilter} onChange={(event) => setYearFilter(event.target.value)}>
+                  <option value="all">Toti anii</option>
+                  {filterOptions.years.map((year) => (
+                    <option key={year} value={year}>
+                      {`Anul ${year}`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+
+            {userType === "elev" && filterOptions.classes.length ? (
+              <label className="subject-filter-field">
+                <span>Clasa</span>
+                <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
+                  <option value="all">Toate clasele</option>
+                  {filterOptions.classes.map((schoolClass) => (
+                    <option key={schoolClass} value={schoolClass}>
+                      {schoolClass}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+
+            {filterOptions.semesters.length ? (
+              <label className="subject-filter-field">
+                <span>Semestru</span>
+                <select
+                  value={semesterFilter}
+                  onChange={(event) => setSemesterFilter(event.target.value)}
+                >
+                  <option value="all">Toate semestrele</option>
+                  {filterOptions.semesters.map((semester) => (
+                    <option key={semester} value={semester}>
+                      {`Semestrul ${semester}`}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+          </div>
+        </details>
+      ) : null}
 
       {filteredRows.length ? (
         <div className="subjects-table-shell">
@@ -227,8 +266,7 @@ export function SubjectsListClient({
             <thead>
               <tr>
                 <th scope="col">Materie</th>
-                <th scope="col">Disponibila pentru</th>
-                <th scope="col">Actiuni</th>
+                <th scope="col">Continua</th>
               </tr>
             </thead>
             <tbody>
@@ -237,50 +275,18 @@ export function SubjectsListClient({
                   <td data-label="Materie">
                     <div className="subject-title-cell">
                       <strong>{row.subject.title}</strong>
-                      <span>{row.subject.id}</span>
+                      <span>{row.contextLabels[0]}</span>
                     </div>
                   </td>
-                  <td data-label="Disponibila pentru">
-                    <div className="subject-context-list">
-                      {row.contextLabels.slice(0, 3).map((label) => (
-                        <span className="subject-context-pill" key={label}>
-                          {label}
-                        </span>
-                      ))}
-                      {row.contextLabels.length > 3 ? (
-                        <span className="subject-context-pill is-muted">
-                          {`+${row.contextLabels.length - 3} contexte`}
-                        </span>
-                      ) : null}
-                    </div>
-                  </td>
-                  <td data-label="Actiuni">
-                    <div className="subject-actions-row">
-                      <PendingNavigationLink
-                        className="subject-table-action"
-                        href={`/materii/${row.subject.id}/interactiv`}
-                        pendingLabel="Se deschide modul interactiv..."
-                      >
-                        <ArrowRight size={16} strokeWidth={2.5} aria-hidden="true" />
-                        Interactiv
-                      </PendingNavigationLink>
-                      <PendingNavigationLink
-                        className="subject-table-action"
-                        href={`/materii/${row.subject.id}/studiu`}
-                        pendingLabel="Se deschide modul studiu..."
-                      >
-                        <BookOpenCheck size={16} strokeWidth={2.5} aria-hidden="true" />
-                        Studiu
-                      </PendingNavigationLink>
-                      <PendingNavigationLink
-                        className="subject-table-action is-primary"
-                        href={`/materii/${row.subject.id}/test`}
-                        pendingLabel="Se porneste testul..."
-                      >
-                        <ClipboardList size={16} strokeWidth={2.5} aria-hidden="true" />
-                        Test
-                      </PendingNavigationLink>
-                    </div>
+                  <td data-label="Continua">
+                    <PendingNavigationLink
+                      className="subject-table-action is-primary"
+                      href={`/materii/${row.subject.id}`}
+                      pendingLabel="Se deschide materia..."
+                    >
+                      Deschide materia
+                      <ArrowRight size={16} strokeWidth={2.5} aria-hidden="true" />
+                    </PendingNavigationLink>
                   </td>
                 </tr>
               ))}
@@ -294,6 +300,13 @@ export function SubjectsListClient({
             : "Nu exista materii disponibile momentan. Le poti adauga din Workspace."}
         </div>
       )}
+
+      <div className="subject-helper-note">
+        <span>Nu gasesti materia?</span>
+        <Link href="/materiale">
+          Adauga o materie sau un set de grile din Materiale.
+        </Link>
+      </div>
     </section>
   );
 }

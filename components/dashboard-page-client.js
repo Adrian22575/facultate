@@ -22,7 +22,8 @@ export function DashboardPageClient({
   adminActionCount = 0,
   billingSnapshot = null,
   gamificationSummary = null,
-  recommendedLearningStudySet = null
+  recommendedLearningStudySet = null,
+  recentSubjects = []
 }) {
   const [lastSession, setLastSession] = useState(null);
   const [sessionEntryStep, setSessionEntryStep] = useState("entry");
@@ -182,6 +183,7 @@ export function DashboardPageClient({
                 </div>
 
                 <SubjectsListClient
+                  recentSubjects={recentSubjects}
                   subjects={subjects}
                   subjectAllocations={subjectAllocations}
                   userType={userType}
