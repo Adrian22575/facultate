@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ImagePlus, X } from "lucide-react";
+import { ImagePlus, MonitorUp, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import {
@@ -50,6 +50,7 @@ export function FeedbackLauncher() {
   const [screenshot, setScreenshot] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isCapturing, setIsCapturing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messageRef = useRef(null);
   const screenshotInputRef = useRef(null);
@@ -58,6 +59,7 @@ export function FeedbackLauncher() {
   const isHidden = useMemo(() => shouldHideFeedback(pathname), [pathname]);
   const trimmedMessageLength = message.trim().length;
   const isValid = trimmedMessageLength >= MIN_FEEDBACK_MESSAGE_LENGTH;
+  const canCapturePage = typeof navigator !== "undefined" && Boolean(navigator.mediaDevices?.getDisplayMedia);
   const screenshotPreviewUrl = useMemo(
     () => (screenshot ? URL.createObjectURL(screenshot) : ""),
     [screenshot]
@@ -106,6 +108,85 @@ export function FeedbackLauncher() {
 
     event.preventDefault();
     updateScreenshot(pastedImage);
+  }
+
+  async function captureCurrentPage() {
+    if (!canCapturePage || isCapturing || isSubmitting) {
+      return;
+    }
+
+    let stream = null;
+    let video = null;
+    setError("");
+    setIsCapturing(true);
+
+    try {
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: {
+          displaySurface: "browser"
+        },
+        audio: false,
+        preferCurrentTab: true,
+        selfBrowserSurface: "include",
+        surfaceSwitching: "exclude"
+      });
+
+      const track = stream.getVideoTracks()[0];
+      if (!track) {
+        throw new Error("Nu am primit imaginea pentru captură.");
+      }
+
+      if (track.getSettings?.().displaySurface && track.getSettings().displaySurface !== "browser") {
+        throw new Error("Alege tabul aplicației din fereastra de partajare pentru a face captura.");
+      }
+
+      video = document.createElement("video");
+      video.srcObject = stream;
+      video.muted = true;
+      video.playsInline = true;
+      await video.play();
+
+      if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+        await new Promise((resolve) => video.addEventListener("loadeddata", resolve, { once: true }));
+      }
+
+      const scale = Math.min(1, 1600 / Math.max(video.videoWidth || 1, video.videoHeight || 1));
+      const width = Math.max(1, Math.round(video.videoWidth * scale));
+      const height = Math.max(1, Math.round(video.videoHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d")?.drawImage(video, 0, 0, width, height);
+
+      const qualities = [0.88, 0.76, 0.64];
+      let imageBlob = null;
+      for (const quality of qualities) {
+        imageBlob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+        if (imageBlob && imageBlob.size <= FEEDBACK_SCREENSHOT_MAX_BYTES) {
+          break;
+        }
+      }
+
+      if (!imageBlob || imageBlob.size > FEEDBACK_SCREENSHOT_MAX_BYTES) {
+        throw new Error(`Captura depășește limita de ${FEEDBACK_SCREENSHOT_MAX_LABEL}.`);
+      }
+
+      updateScreenshot(new File([imageBlob], `captura-feedback-${Date.now()}.jpg`, { type: "image/jpeg" }));
+    } catch (captureError) {
+      const captureMessage = captureError instanceof Error ? captureError.message : "Nu am putut face captura.";
+      setError(
+        captureError?.name === "NotAllowedError"
+          ? "Captura a fost anulată. Poți atașa manual o imagine, dacă preferi."
+          : captureMessage
+      );
+    } finally {
+      stream?.getTracks().forEach((track) => track.stop());
+      if (video) {
+        video.pause();
+        video.srcObject = null;
+      }
+      setIsCapturing(false);
+    }
   }
 
   async function handleSubmit(event) {
@@ -178,7 +259,7 @@ export function FeedbackLauncher() {
 
       {isOpen ? (
         <div
-          className="feedback-backdrop"
+          className={`feedback-backdrop${isCapturing ? " is-capturing" : ""}`}
           role="presentation"
           onClick={(event) => {
             if (event.target === event.currentTarget) {
@@ -268,16 +349,33 @@ export function FeedbackLauncher() {
                       onChange={(event) => updateScreenshot(event.target.files?.[0] || null)}
                       hidden
                     />
-                    <button
-                      type="button"
-                      className="btn-link secondary feedback-screenshot-add"
-                      onClick={() => screenshotInputRef.current?.click()}
-                      onPaste={handleScreenshotPaste}
-                    >
-                      <ImagePlus aria-hidden="true" size={17} />
-                      Adaugă o captură
-                    </button>
-                    <span>Poți încărca sau lipi aici o imagine PNG, JPG ori WEBP, de maximum {FEEDBACK_SCREENSHOT_MAX_LABEL}.</span>
+                    <div className="feedback-screenshot-actions">
+                      {canCapturePage ? (
+                        <button
+                          type="button"
+                          className="btn-link secondary feedback-screenshot-add"
+                          onClick={captureCurrentPage}
+                          disabled={isCapturing || isSubmitting}
+                        >
+                          <LoadingIconText icon={MonitorUp} loading={isCapturing} loadingLabel="Pregătim captura...">
+                            Capturează pagina
+                          </LoadingIconText>
+                        </button>
+                      ) : null}
+                      <button
+                        type="button"
+                        className="btn-link secondary feedback-screenshot-add"
+                        onClick={() => screenshotInputRef.current?.click()}
+                        onPaste={handleScreenshotPaste}
+                        disabled={isCapturing || isSubmitting}
+                      >
+                        <ImagePlus aria-hidden="true" size={17} />
+                        Adaugă o captură
+                      </button>
+                    </div>
+                    <span>
+                      Pentru captură, alege tabul aplicației în fereastra browserului. Poți și încărca sau lipi o imagine PNG, JPG ori WEBP, de maximum {FEEDBACK_SCREENSHOT_MAX_LABEL}.
+                    </span>
                   </div>
                 )}
               </div>

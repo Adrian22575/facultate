@@ -3573,6 +3573,22 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
   line-height: 1.4;
 }
 
+.feedback-screenshot-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.feedback-backdrop.is-capturing {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.feedback-backdrop.is-capturing .feedback-panel {
+  visibility: hidden;
+}
+
 .feedback-screenshot-add {
   flex: 0 0 auto;
   gap: 8px;
