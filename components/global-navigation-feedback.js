@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 
 let isGlobalNavigationPending = false;
+const NAVIGATION_PENDING_EVENT = "nota5plus:navigation-pending";
+const NAVIGATION_RESET_EVENT = "nota5plus:navigation-reset";
+const NAVIGATION_RECOVERY_MS = 10_000;
 
 function isInternalNavigation(event, anchor) {
   if (
@@ -34,41 +37,73 @@ function isInternalNavigation(event, anchor) {
 export function GlobalNavigationFeedback() {
   const pathname = usePathname();
   const [pending, setPending] = useState(false);
+  const recoveryTimeoutRef = useRef(null);
 
   useEffect(() => {
+    if (recoveryTimeoutRef.current) {
+      window.clearTimeout(recoveryTimeoutRef.current);
+      recoveryTimeoutRef.current = null;
+    }
     isGlobalNavigationPending = false;
     setPending(false);
+    window.dispatchEvent(new CustomEvent(NAVIGATION_RESET_EVENT));
   }, [pathname]);
 
   useEffect(() => {
-    function handleNavigation(event) {
-      const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
-      if (!anchor || !isInternalNavigation(event, anchor)) return;
+    const mainContent = document.getElementById("main-content");
+    if (pending) {
+      mainContent?.setAttribute("inert", "");
+      return () => mainContent?.removeAttribute("inert");
+    }
 
+    mainContent?.removeAttribute("inert");
+    return undefined;
+  }, [pending]);
+
+  useEffect(() => {
+    function handleNavigation(event) {
       if (isGlobalNavigationPending) {
         event.preventDefault();
+        event.stopPropagation();
         return;
       }
 
+      const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!anchor || !isInternalNavigation(event, anchor)) return;
+
       isGlobalNavigationPending = true;
       window.dispatchEvent(
-        new CustomEvent("nota5plus:navigation-pending", {
+        new CustomEvent(NAVIGATION_PENDING_EVENT, {
           detail: { href: anchor.getAttribute("href") || anchor.href }
         })
       );
       setPending(true);
+      recoveryTimeoutRef.current = window.setTimeout(() => {
+        isGlobalNavigationPending = false;
+        recoveryTimeoutRef.current = null;
+        setPending(false);
+        window.dispatchEvent(new CustomEvent(NAVIGATION_RESET_EVENT));
+      }, NAVIGATION_RECOVERY_MS);
     }
 
     document.addEventListener("click", handleNavigation, true);
-    return () => document.removeEventListener("click", handleNavigation, true);
+    return () => {
+      document.removeEventListener("click", handleNavigation, true);
+      if (recoveryTimeoutRef.current) {
+        window.clearTimeout(recoveryTimeoutRef.current);
+      }
+    };
   }, []);
 
   if (!pending) return null;
 
   return (
-    <div className="global-navigation-feedback" role="status" aria-live="polite">
-      <LoadingSpinner size={16} />
-      <span>Se deschide pagina...</span>
-    </div>
+    <>
+      <div className="global-navigation-blocker" aria-hidden="true" />
+      <div className="global-navigation-feedback" role="status" aria-live="polite">
+        <LoadingSpinner size={16} />
+        <span>Se deschide pagina...</span>
+      </div>
+    </>
   );
 }
