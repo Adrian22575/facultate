@@ -78,7 +78,7 @@ function TrendChart({ rows, emptyLabel }) {
             <div className="licenta-stats-trend-bar-track">
               <div style={{ height: `${Math.max(8, Math.min(row.score, 100))}%` }} />
             </div>
-            <span>{row.label}</span>
+            <span title={`${row.mode || "Activitate"} · ${row.score}%`}>{row.label}</span>
           </div>
         ))}
       </div>
