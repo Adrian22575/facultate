@@ -17,8 +17,10 @@ export async function AppHeader({
 }) {
   const user = await getOptionalUser();
   const demoMode = isDemoUser(user);
-  const showLogout = Boolean(user);
+  const showLogout = Boolean(user) && !demoMode;
   const showPrivateNav = Boolean(user) && !hidePrivateNav && !demoMode;
+  const brandHref = demoMode ? "/auth/exit-demo?next=/" : user ? "/" : "/auth/login";
+  const brandPendingLabel = demoMode ? "Ieși din demo..." : "Se deschide pagina principală...";
   const showAdminLink = await isAdminUser(user);
   const logoutLabel = demoMode ? "Iesi din demo" : "Logout";
   let billingSnapshot = null;
@@ -51,8 +53,8 @@ export async function AppHeader({
       <div className="app-header-row">
         <PendingNavigationLink
           className="brand"
-          href={demoMode ? "/demo" : user ? "/" : "/auth/login"}
-          pendingLabel="Se deschide pagina principala..."
+          href={brandHref}
+          pendingLabel={brandPendingLabel}
           pendingMode="replace"
         >
           <span className="brand-mark">5+</span>

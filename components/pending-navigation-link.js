@@ -21,11 +21,15 @@ function shouldShowPending(event, href) {
     return false;
   }
 
-  if (typeof href !== "string") {
-    return true;
+  if (typeof href !== "string" || !href.startsWith("/") || href.startsWith("//") || href.startsWith("#")) {
+    return false;
   }
 
-  return href.startsWith("/") && !href.startsWith("//") && !href.startsWith("#");
+  try {
+    return new URL(href, window.location.href).href !== window.location.href;
+  } catch {
+    return false;
+  }
 }
 
 export function PendingNavigationLink({
