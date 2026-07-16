@@ -6976,7 +6976,7 @@ select:focus {
 }
 
 .quiz-answer-required {
-  margin: 12px 0 0;
+  margin: 16px 0 18px;
   padding: 10px 12px;
   border: 1px solid #fecaca;
   border-radius: 14px;
@@ -8887,6 +8887,27 @@ button.question-correction-remove:focus-visible {
 .quiz-actions button,
 .navigation .nav-buttons-row .nav-btn {
   flex: 1;
+}
+
+.navigation .nav-buttons-row .nav-btn {
+  border-color: var(--line-strong);
+  background: var(--surface-soft);
+  color: var(--primary-dark);
+  font-weight: 850;
+}
+
+.navigation .nav-buttons-row .nav-btn-primary {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(18, 80, 177, 0.18);
+}
+
+.navigation .nav-buttons-row .nav-btn-primary:hover:not(:disabled),
+.navigation .nav-buttons-row .nav-btn-primary:focus-visible:not(:disabled) {
+  border-color: var(--primary-dark);
+  background: var(--primary-dark);
+  color: #fff;
 }
 
 .navigation {

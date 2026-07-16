@@ -217,7 +217,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
               Anterioara
             </button>
             <button
-              className="nav-btn"
+              className="nav-btn nav-btn-primary"
               type="button"
               aria-describedby={selectedAnswer === null ? "interactive-answer-required" : undefined}
               disabled={selectedAnswer === null || currentIndex >= totalQuestions - 1}
