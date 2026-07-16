@@ -7,7 +7,7 @@ import {
 import { validateUpload } from "@/lib/ai/extract-text";
 import { cleanupUnusedSourceDocumentsForUser } from "@/lib/ai/source-document-cleanup";
 import { getBillingSnapshot } from "@/lib/billing";
-import { getAccessibleSubjectById } from "@/lib/data";
+import { createLearningSubject, getAccessibleSubjectById } from "@/lib/data";
 import { DEMO_USER_ID } from "@/lib/demo-user";
 import {
   attachLearningStudySetJob,
@@ -24,12 +24,6 @@ export const maxDuration = 60;
 
 function jsonError(message, status = 400) {
   return NextResponse.json({ error: message }, { status });
-}
-
-function parseMinutes(value) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return 30;
-  return Math.max(10, Math.min(240, Math.round(parsed)));
 }
 
 function trimErrorMessage(error) {
@@ -209,31 +203,31 @@ export async function POST(request) {
       : "";
   const rawTitle = String(formData.get("title") || "").trim();
   const requestedSubjectId = String(formData.get("subjectId") || "").trim();
-  const title = rawTitle || "Materia mea";
-  const objective = String(formData.get("objective") || "").trim();
-  const examDate = String(formData.get("examDate") || "").trim() || null;
-  const minutesPerDay = parseMinutes(formData.get("minutesPerDay"));
+  const requestedSubjectTitle = String(formData.get("subjectCustomName") || "").trim();
+  let title = rawTitle || "Materia mea";
   const idempotencyKey = normalizeIdempotencyKey(formData.get("idempotencyKey"));
 
   if (rawTitle.length > 120) {
     return jsonError("Titlul poate avea cel mult 120 de caractere.");
   }
 
-  if (objective.length > 500) {
-    return jsonError("Obiectivul poate avea cel mult 500 de caractere.");
-  }
-
-  if (examDate && (!/^\d{4}-\d{2}-\d{2}$/.test(examDate) || Number.isNaN(new Date(examDate).getTime()))) {
-    return jsonError("Data examenului nu este valida.");
-  }
-
-  if (examDate && new Date(`${examDate}T23:59:59.999Z`).getTime() < Date.now()) {
-    return jsonError("Data examenului nu poate fi in trecut.");
-  }
-
   const admin = createAdminClient();
   let selectedSubject = null;
-  if (requestedSubjectId) {
+  if (!requestedSubjectId) {
+    return jsonError("Alege materia înainte să procesezi materialul.");
+  }
+
+  if (requestedSubjectId === "custom") {
+    if (requestedSubjectTitle.length < 2 || requestedSubjectTitle.length > 160) {
+      return jsonError("Scrie numele materiei noi, între 2 și 160 de caractere.");
+    }
+
+    const createdSubject = await createLearningSubject({
+      title: requestedSubjectTitle,
+      createdByUserId: user.id
+    });
+    selectedSubject = createdSubject.subject;
+  } else {
     selectedSubject = await getAccessibleSubjectById({
       subjectId: requestedSubjectId,
       userId: user.id,
@@ -243,6 +237,7 @@ export async function POST(request) {
       return jsonError("Materia selectata nu este disponibila pentru comunitatea ta.", 403);
     }
   }
+  title = rawTitle || selectedSubject.title;
   let existingStudySet = null;
   try {
     existingStudySet = await findExistingStudySetByIdempotencyKey({
@@ -374,10 +369,7 @@ export async function POST(request) {
             sourceSizeBytes: sourceDocument.size_bytes,
             uploadAcceptedAt: new Date().toISOString()
           },
-          idempotencyKey,
-          examDate,
-          minutesPerDay,
-          objective
+          idempotencyKey
         });
       }
     } catch (createError) {
@@ -416,9 +408,6 @@ export async function POST(request) {
         originalFilename: sourceDocument.original_filename,
         metadata: {
           idempotencyKey,
-          objective: objective || null,
-          examDate,
-          minutesPerDay,
           uploadStageDurationsMs: stageDurationsMs
         }
       });

@@ -31,12 +31,6 @@ function formatFileSize(bytes) {
   return `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
-function getTodayInputValue() {
-  const now = new Date();
-  const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
-  return localDate.toISOString().slice(0, 10);
-}
-
 function isSupportedFile(file) {
   if (!file) return false;
   const normalizedName = file.name.toLowerCase();
@@ -90,6 +84,9 @@ function ProcessingPanel({ status }) {
 
 export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [], initialSubjectId = "" }) {
   const [sourceMode, setSourceMode] = useState("file");
+  const [selectedSubjectId, setSelectedSubjectId] = useState(() =>
+    subjects.some((subject) => subject.id === initialSubjectId) ? initialSubjectId : ""
+  );
   const [selectedFile, setSelectedFile] = useState(null);
   const [manualText, setManualText] = useState("");
   const [clientError, setClientError] = useState("");
@@ -110,8 +107,9 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
   const textTooShort = sourceMode === "text" && textLength > 0 && textLength < MIN_TEXT_LENGTH;
   const textReady = sourceMode === "text" && textLength >= MIN_TEXT_LENGTH;
   const sourceReady = fileReady || textReady;
+  const subjectReady = Boolean(selectedSubjectId);
   const disabled = Boolean(setupWarning) || noCredits || isSubmitting;
-  const submitDisabled = disabled || !sourceReady;
+  const submitDisabled = disabled || !sourceReady || !subjectReady;
   const visibleError =
     clientError ||
     (selectedFileUnsupported ? "Tip de fisier neacceptat. Alege PDF, DOCX, PPTX sau TXT." : "") ||
@@ -258,6 +256,65 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
           <span className="learning-upload-cost-meta">Consuma 1 incarcare</span>
         </div>
 
+        <section className="learning-upload-subject-section" aria-labelledby="learning-upload-subject-title">
+          <div className="learning-upload-subject-head">
+            <div>
+              <h3 id="learning-upload-subject-title">Materia</h3>
+              <p>Alege materia căreia îi aparține conținutul.</p>
+            </div>
+          </div>
+
+          <label className="learning-upload-field">
+            <span className="sr-only">Materia</span>
+            <select
+              className="input-search"
+              name="subjectId"
+              value={selectedSubjectId}
+              required
+              disabled={isSubmitting}
+              onChange={(event) => {
+                setSelectedSubjectId(event.target.value);
+                setClientError("");
+                setErrorActionHref("");
+              }}
+            >
+              <option value="" disabled>
+                Alege materia
+              </option>
+              {subjects.map((subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.title}
+                </option>
+              ))}
+              <option value="custom">+ Adaugă o materie nouă</option>
+            </select>
+          </label>
+
+          {selectedSubjectId === "custom" ? (
+            <label className="learning-upload-field learning-upload-new-subject">
+              Numele materiei noi
+              <input
+                className="input-search"
+                name="subjectCustomName"
+                placeholder="Ex: Economie internațională"
+                type="text"
+                minLength={2}
+                maxLength={160}
+                required
+                disabled={isSubmitting}
+                autoFocus
+              />
+              <span className="learning-upload-field-note">
+                O adăugăm pentru acest material; îl poți publica ulterior pentru comunitatea ta.
+              </span>
+            </label>
+          ) : null}
+
+          <p className="learning-upload-subject-helper">
+            Nu găsești materia? Alege „Adaugă o materie nouă”.
+          </p>
+        </section>
+
         <div className="learning-upload-source-grid" aria-label="Tipuri sursa">
           <SourceOption
             icon={FileUp}
@@ -336,64 +393,14 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
           </label>
         )}
 
-        <details className="learning-upload-details">
-          <summary>Adauga detalii optional</summary>
-          <div className="learning-upload-details-content">
-            {subjects.length ? (
-              <label className="learning-upload-field">
-                Materia
-                <select className="input-search" name="subjectId" defaultValue={initialSubjectId}>
-                  <option value="">Alege materia (optional)</option>
-                  {subjects.map((subject) => (
-                    <option key={subject.id} value={subject.id}>
-                      {subject.title}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ) : null}
-
-            <label className="learning-upload-field">
-              Titlul materialului <span className="learning-upload-optional">optional</span>
-              <input className="input-search" name="title" placeholder="Ex: Curs 4 - Analiza pietei" type="text" maxLength={120} />
-            </label>
-
-            <div className="learning-upload-detail-grid">
-              <label className="learning-upload-field">
-                Data examenului
-                <input className="input-search" name="examDate" type="date" min={getTodayInputValue()} />
-              </label>
-              <label className="learning-upload-field">
-                Minute pe zi
-                <select className="input-search" name="minutesPerDay" defaultValue="30">
-                  <option value="20">20 minute</option>
-                  <option value="30">30 minute</option>
-                  <option value="45">45 minute</option>
-                  <option value="60">60 minute</option>
-                  <option value="90">90 minute</option>
-                </select>
-              </label>
-            </div>
-
-            <label className="learning-upload-field">
-              Obiectiv optional
-              <input
-                className="input-search"
-                name="objective"
-                placeholder="Ex: vreau recapitulare rapida pentru colocviu"
-                type="text"
-                maxLength={500}
-              />
-            </label>
-          </div>
-        </details>
-
         <input type="hidden" name="uploadedSourceDocumentId" value="" />
         <input type="hidden" name="idempotencyKey" value={idempotencyKeyRef.current} />
 
         <div className="learning-upload-submit-row">
           <p>
-            {status || "Vom pregati un set de invatare privat. Il poti publica manual pentru comunitatea ta mai tarziu."}
+            {status || (!subjectReady
+              ? "Alege materia înainte să pornești procesarea."
+              : "Materialul rămâne privat. Îl poți publica pentru comunitatea ta mai târziu.")}
           </p>
           <button
             type="submit"
@@ -402,9 +409,11 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
             disabled={submitDisabled}
           >
             {isSubmitting
-              ? "Se proceseaza..."
-              : noCredits
-                ? "Ai nevoie de o incarcare"
+                ? "Se proceseaza..."
+                : noCredits
+                  ? "Ai nevoie de o incarcare"
+                  : !subjectReady
+                    ? "Alege materia"
                 : "Proceseaza materia"}
           </button>
         </div>

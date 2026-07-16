@@ -16162,10 +16162,36 @@ td {
   font-weight: 850;
 }
 
-.learning-upload-optional {
+.learning-upload-subject-section {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #d6e3f5;
+  border-radius: 20px;
+  background: #f7fbff;
+}
+
+.learning-upload-subject-head h3,
+.learning-upload-subject-head p,
+.learning-upload-subject-helper {
+  margin: 0;
+}
+
+.learning-upload-subject-head h3 {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.learning-upload-subject-head p,
+.learning-upload-subject-helper {
   color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 750;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.learning-upload-new-subject {
+  padding-top: 2px;
 }
 
 .learning-upload-credit-warning {
@@ -16205,24 +16231,6 @@ td {
 .learning-upload-file-box {
   display: grid;
   gap: 10px;
-}
-
-.learning-upload-details {
-  border-top: 1px solid var(--line);
-}
-
-.learning-upload-details summary {
-  padding: 14px 0;
-  color: var(--primary-dark);
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 800;
-}
-
-.learning-upload-details-content {
-  display: grid;
-  gap: 18px;
-  padding: 4px 0 2px;
 }
 
 .learning-upload-file-drop {
@@ -16345,12 +16353,6 @@ td {
   border-color: #bfe4ce;
   background: #edf9f1;
   color: #0f6b4b;
-}
-
-.learning-upload-detail-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
 }
 
 .learning-upload-submit-row {
@@ -16741,7 +16743,6 @@ td {
 
   .learning-upload-source-grid,
   .learning-processing-steps,
-  .learning-upload-detail-grid,
   .learning-competition-kpis,
   .workspace-flow-page .ai-workspace-source-tabs,
   .workspace-flow-page .import-method-tabs {
