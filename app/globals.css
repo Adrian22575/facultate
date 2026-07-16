@@ -8244,7 +8244,7 @@ button.question-correction-remove:focus-visible {
   top: 10px;
   z-index: 5;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   padding: 7px;
   border: 1px solid #bfd2ec;
@@ -8298,6 +8298,80 @@ button.question-correction-remove:focus-visible {
 .overall-tab-panel {
   display: grid;
   gap: 18px;
+}
+
+.overall-stats-focus {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-color: rgba(37, 99, 235, 0.22);
+  background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+}
+
+.overall-stats-focus h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.overall-stats-focus p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.overall-stats-compact-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.overall-stats-simple-grid {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+}
+
+.overall-stat-list {
+  display: grid;
+  gap: 8px;
+}
+
+.overall-stat-list article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+
+.overall-stat-list article > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.overall-stat-list strong {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.overall-stat-list span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.overall-stat-list b {
+  flex: 0 0 auto;
+  color: var(--primary-dark);
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .competition-compare-grid {
@@ -9644,6 +9718,22 @@ td {
 
   .overall-stats-tabs button {
     text-align: center;
+  }
+
+  .overall-stats-focus {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .overall-stats-focus .btn-link {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .overall-stat-list article {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .overall-subject-table article {
