@@ -36,7 +36,7 @@ export function ModeGrid({
   const showPlanFallback = locked && !showWelcomePremium;
 
   return (
-    <section className="surface">
+    <section className="mode-grid-panel">
       {welcomeState === "activated" ? (
         <div className="subject-welcome-success" role="status">
           Premium activ. Spor la invatat!

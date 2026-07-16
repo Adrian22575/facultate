@@ -114,7 +114,14 @@ export function SubjectLearningHub({
           <h3>Alege urmatorul pas.</h3>
           <p>{nextAction.copy}</p>
           <div className="subject-learning-next-links">
-            <Link className="subject-learning-next-primary" href={nextAction.href}>{nextAction.label}</Link>
+            <PendingNavigationLink
+              className="subject-learning-next-primary"
+              href={nextAction.href}
+              pendingLabel="Se deschid grilele..."
+              pendingMode="replace"
+            >
+              {nextAction.label}
+            </PendingNavigationLink>
           </div>
         </article>
       </div>
