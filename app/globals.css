@@ -7577,6 +7577,10 @@ select:focus {
   margin-bottom: 14px;
 }
 
+.question-inline-head {
+  margin-bottom: 14px;
+}
+
 .question-study-head h3,
 .question-inline-head strong,
 .question-inline-head .question-title {
