@@ -2,10 +2,7 @@ import { redirect } from "next/navigation";
 import {
   BookOpen,
   Brain,
-  CalendarClock,
   CheckCircle2,
-  Moon,
-  RotateCcw,
   Rocket,
   Target,
   Upload,
@@ -22,8 +19,8 @@ import { getOptionalUser } from "@/lib/supabase/guards";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Login | Nota 5+",
-  description: "Invata rapid pentru examen alaturi de comunitatea ta cu Nota 5+."
+  title: "Învață mai ușor | Nota 5+",
+  description: "Alege cum vrei să înveți pentru următorul examen, cu materia ta sau cu grile."
 };
 
 export default async function LoginPage({ searchParams }) {
@@ -33,6 +30,8 @@ export default async function LoginPage({ searchParams }) {
     typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : undefined;
   const hasReferralInvite = resolvedSearchParams?.ref === "1";
   const emailLoginHref = `/auth/email-login?next=${encodeURIComponent(nextPath)}${hasReferralInvite ? "&ref=1" : ""}`;
+  const materialStartPath = nextPath === "/" ? "/materiale/invata" : nextPath;
+  const gridsStartPath = nextPath === "/" ? "/materii" : nextPath;
 
   const isConfigured = hasSupabasePublicEnv();
   const user = await getOptionalUser();
@@ -95,39 +94,6 @@ export default async function LoginPage({ searchParams }) {
     }
   ];
 
-  const uploadTips = [
-    {
-      title: "Merge cel mai bine cu",
-      copy: "Cursuri, notite complete, PDF-uri cu text selectabil, DOCX-uri si prezentari cu idei explicate."
-    },
-    {
-      title: "Rezultatul e mai bun cand",
-      copy: "Materialul are titluri, capitole, definitii sau exemple. Daca e dezordonat, adauga un obiectiv scurt."
-    },
-    {
-      title: "Poate avea nevoie de verificare",
-      copy: "Pozele scanate, fragmentele foarte scurte sau slide-urile fara context pot produce materiale incomplete."
-    }
-  ];
-
-  const delayRisks = [
-    {
-      icon: Moon,
-      title: "Panica in ultima seara",
-      copy: "Ai prea multa materie si nu mai stii cu ce sa incepi."
-    },
-    {
-      icon: RotateCcw,
-      title: "Dai testul din nou",
-      copy: "Daca nu treci, pierzi alte zile cu restanta, refacerea si discutii acasa."
-    },
-    {
-      icon: CalendarClock,
-      title: "Pierzi din timpul liber",
-      copy: "Materia ramane in capul tau si iti mananca serile sau weekendul."
-    }
-  ];
-
   const communityIcons = [BookOpen, Users, CheckCircle2, Rocket];
 
   return (
@@ -153,16 +119,15 @@ export default async function LoginPage({ searchParams }) {
           <div className="nota5plus-hero-copy">
             <div className="nota5plus-eyebrow">
               <span className="nota5plus-dot" />
-              Pentru sesiune, restante si examene apropiate
+              Pentru liceu, facultate și examene apropiate
             </div>
 
             <h1 className="nota5plus-title">
-              Invata organizat. <span>Pregateste-te cu incredere.</span>
+              Învață mai ușor. <span>Începe cu ce ai acum.</span>
             </h1>
 
             <p className="nota5plus-subtitle">
-              Incarci materia, iar platforma o transforma in intrebari, teste si recapitulare. Repeti exact ce
-              conteaza, fara PDF-uri pierdute si conversatii vechi.
+              Alege dacă pornești de la materia ta sau de la grile. Noi îți arătăm imediat următorul pas.
             </p>
 
             {error || !isConfigured ? (
@@ -189,42 +154,49 @@ export default async function LoginPage({ searchParams }) {
               </div>
             ) : null}
 
-            <div className="nota5plus-actions">
-              <form action="/auth/demo-login" method="post" className="nota5plus-demo-form">
-                <input type="hidden" name="next" value="/demo" />
-                <button type="submit" className="nota5plus-btn nota5plus-btn-primary">
-                  Incearca demo
-                </button>
-              </form>
+            <div className="nota5plus-path-grid" aria-label="Alege cum vrei să înveți">
               <GoogleSignInButton
-                next={nextPath}
+                next={materialStartPath}
                 disabled={!isConfigured}
-                className="nota5plus-google-wrap"
-                buttonClassName="nota5plus-btn nota5plus-btn-secondary nota5plus-google-btn"
+                icon={Upload}
+                className="nota5plus-path-wrap"
+                buttonClassName="nota5plus-path-card is-material"
                 errorClassName="nota5plus-inline-error"
               >
-                Continua cu Google
+                <span className="nota5plus-path-copy">
+                  <strong>Învață din materia ta</strong>
+                  <small>Încarcă un curs sau niște notițe și primești un mod clar de a continua.</small>
+                </span>
+              </GoogleSignInButton>
+              <GoogleSignInButton
+                next={gridsStartPath}
+                disabled={!isConfigured}
+                icon={Target}
+                className="nota5plus-path-wrap"
+                buttonClassName="nota5plus-path-card is-grids"
+                errorClassName="nota5plus-inline-error"
+              >
+                <span className="nota5plus-path-copy">
+                  <strong>Exersează cu grile</strong>
+                  <small>Alege materia și repetă cu întrebări, teste și greșeli salvate.</small>
+                </span>
               </GoogleSignInButton>
             </div>
 
-            <p className="nota5plus-microcopy">Fara cont pentru demo &middot; Gandit pentru elevi si studenti</p>
-            <a className="nota5plus-email-link" href={emailLoginHref}>
-              Nu ai cont Google? Intra cu email
-            </a>
-
-            <div className="nota5plus-proof-note">
-              <div className="nota5plus-proof-icon">5+</div>
-              <div>
-                <strong>Inveti din materia ta si revii exact la ce ai gresit.</strong>
-                <span>Progresul ramane salvat in contul tau.</span>
-              </div>
+            <div className="nota5plus-start-options">
+              <form action="/auth/demo-login" method="post" className="nota5plus-demo-form">
+                <input type="hidden" name="next" value="/demo" />
+                <button type="submit" className="nota5plus-demo-link">
+                  Vezi un exemplu fără cont
+                </button>
+              </form>
+              <span aria-hidden="true">·</span>
+              <a className="nota5plus-email-link" href={emailLoginHref}>
+                Intră cu email
+              </a>
             </div>
 
-            <div className="nota5plus-stats-line" aria-label="Beneficii rapide">
-              <span className="nota5plus-pill">30 min recapitulare</span>
-              <span className="nota5plus-pill">1 upload</span>
-              <span className="nota5plus-pill">0 haos</span>
-            </div>
+            <p className="nota5plus-microcopy">Creezi cont doar când alegi una dintre opțiuni.</p>
           </div>
 
           <div className="nota5plus-mockup-wrap" aria-label="Previzualizare aplicatie">
@@ -236,7 +208,7 @@ export default async function LoginPage({ searchParams }) {
                   <span />
                   <span />
                 </div>
-                <div className="nota5plus-mockup-badge">Generare in progres</div>
+                <div className="nota5plus-mockup-badge">Gata de învățat</div>
               </div>
 
               <div className="nota5plus-upload-card">
@@ -248,8 +220,8 @@ export default async function LoginPage({ searchParams }) {
                   </div>
                 </div>
                 <div className="nota5plus-progress-label">
-                  <span>Analiza material</span>
-                  <span>78%</span>
+                  <span>Material pregătit</span>
+                  <span>100%</span>
                 </div>
                 <div className="nota5plus-progress">
                   <span />
@@ -330,44 +302,6 @@ export default async function LoginPage({ searchParams }) {
           </div>
         </section>
 
-        <section className="nota5plus-upload-guide" aria-label="Ce materiale poti incarca">
-          <div>
-            <div className="nota5plus-community-label">Ghid rapid</div>
-            <h2>Ce fel de material poti incarca?</h2>
-          </div>
-
-          <div className="nota5plus-upload-guide-grid">
-            {uploadTips.map((tip) => (
-              <article key={tip.title}>
-                <h3>{tip.title}</h3>
-                <p>{tip.copy}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="nota5plus-anti-section" aria-label="Ce pierzi cand amani invatatul">
-          <div className="nota5plus-anti-heading">
-            <div className="nota5plus-anti-kicker">Daca tot amani</div>
-            <h2>Ce pierzi cand lasi totul pe ultima seara?</h2>
-            <p>Incepe cu putin azi ca sa nu pierzi zile dupa test.</p>
-          </div>
-
-          <ul className="nota5plus-anti-list">
-            {delayRisks.map(({ icon: Icon, title, copy }) => (
-              <li key={title}>
-                <span className="nota5plus-anti-symbol" aria-hidden="true">
-                  <Icon size={18} strokeWidth={2} />
-                </span>
-                <div>
-                  <strong>{title}</strong>
-                  <p>{copy}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
         <section className="nota5plus-community" id="comunitate">
           <div className="nota5plus-community-content">
             <div className="nota5plus-community-label">Comunitate</div>
@@ -385,27 +319,6 @@ export default async function LoginPage({ searchParams }) {
               </div>
             ))}
           </div>
-        </section>
-
-        <section className="nota5plus-final-cta">
-          <div className="nota5plus-final-cta-copy">
-            <div className="nota5plus-final-cta-kicker">Pasul urmator</div>
-            <h2>Intra acum si invata cu comunitatea ta.</h2>
-            <p>
-              Pastrezi progresul, vezi materialele utile pentru comunitatea ta si repeti exact ce
-              conteaza cand examenul e aproape.
-            </p>
-          </div>
-
-          <GoogleSignInButton
-            next={nextPath}
-            disabled={!isConfigured}
-            className="nota5plus-final-cta-actions"
-            buttonClassName="nota5plus-btn nota5plus-btn-secondary nota5plus-google-btn"
-            errorClassName="nota5plus-inline-error"
-          >
-            Continua cu Google
-          </GoogleSignInButton>
         </section>
 
         <footer className="nota5plus-legal-footer">

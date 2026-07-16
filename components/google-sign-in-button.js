@@ -31,6 +31,7 @@ function GoogleLogo() {
 export function GoogleSignInButton({
   next = "/",
   disabled = false,
+  icon: Icon = null,
   className = "",
   buttonClassName = "",
   errorClassName = "",
@@ -81,7 +82,7 @@ export function GoogleSignInButton({
         disabled={disabled || loading}
       >
         <span className="google-signin-content">
-          {loading ? null : <GoogleLogo />}
+          {loading ? null : Icon ? <Icon aria-hidden="true" size={24} strokeWidth={2.1} /> : <GoogleLogo />}
           <LoadingIconText loading={loading} loadingLabel="Se deschide Google...">
             {children || "Continua cu Google"}
           </LoadingIconText>

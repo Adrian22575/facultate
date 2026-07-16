@@ -12689,6 +12689,17 @@ td {
     justify-content: center;
   }
 
+  .nota5plus-path-grid {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+  }
+
+  .nota5plus-start-options {
+    justify-content: center;
+  }
+
   .nota5plus-email-link {
     margin-left: auto;
     margin-right: auto;
@@ -12851,6 +12862,14 @@ td {
   .nota5plus-actions {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .nota5plus-path-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nota5plus-start-options {
+    flex-wrap: wrap;
   }
 
   .auth-forgot-form {
@@ -16855,6 +16874,120 @@ td {
 
 .workspace-flow-page .learning-upload-hero {
   margin-bottom: 18px;
+}
+
+.nota5plus-path-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 650px;
+}
+
+.nota5plus-path-wrap {
+  display: grid;
+  min-width: 0;
+}
+
+.nota5plus-path-card {
+  width: 100%;
+  min-height: 132px;
+  padding: 18px;
+  border: 1px solid #cbdcf3;
+  border-radius: 20px;
+  background: #ffffff;
+  color: #0b3474;
+  box-shadow: 0 12px 28px rgba(18, 80, 177, 0.08);
+}
+
+.nota5plus-path-card .google-signin-content {
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 13px;
+  text-align: left;
+}
+
+.nota5plus-path-card .google-signin-content > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #1250b1;
+}
+
+.nota5plus-path-card.is-grids .google-signin-content > svg {
+  color: #147a57;
+}
+
+.nota5plus-path-card .ui-icon-text,
+.nota5plus-path-card .ui-icon-text > span {
+  display: grid;
+  align-items: start;
+  justify-items: start;
+}
+
+.nota5plus-path-card .ui-icon-text {
+  min-width: 0;
+}
+
+.nota5plus-path-copy {
+  display: grid;
+  gap: 5px;
+}
+
+.nota5plus-path-copy strong {
+  color: #07142f;
+  font-size: 1.04rem;
+  line-height: 1.2;
+}
+
+.nota5plus-path-copy small {
+  color: #64718a;
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.42;
+}
+
+.nota5plus-path-card:hover:not(:disabled),
+.nota5plus-path-card:focus-visible:not(:disabled) {
+  border-color: #7da9e4;
+  background: #f8fbff;
+  box-shadow: 0 16px 34px rgba(18, 80, 177, 0.13);
+}
+
+.nota5plus-start-options {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+  color: #8a9ab0;
+  font-size: 0.88rem;
+}
+
+.nota5plus-demo-link,
+.nota5plus-start-options .nota5plus-email-link {
+  min-height: 38px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: #31527f;
+  font: inherit;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.nota5plus-demo-link:hover,
+.nota5plus-demo-link:focus-visible,
+.nota5plus-start-options .nota5plus-email-link:hover,
+.nota5plus-start-options .nota5plus-email-link:focus-visible {
+  border-bottom-color: currentColor;
+  color: #1250b1;
+}
+
+@media (max-width: 580px) {
+  .nota5plus-path-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .workspace-flow-layout {
