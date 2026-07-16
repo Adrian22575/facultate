@@ -37,9 +37,14 @@ function isInternalNavigation(event, anchor) {
 export function GlobalNavigationFeedback() {
   const pathname = usePathname();
   const [pending, setPending] = useState(false);
+  const activationTimeoutRef = useRef(null);
   const recoveryTimeoutRef = useRef(null);
 
   useEffect(() => {
+    if (activationTimeoutRef.current) {
+      window.clearTimeout(activationTimeoutRef.current);
+      activationTimeoutRef.current = null;
+    }
     if (recoveryTimeoutRef.current) {
       window.clearTimeout(recoveryTimeoutRef.current);
       recoveryTimeoutRef.current = null;
@@ -77,7 +82,12 @@ export function GlobalNavigationFeedback() {
           detail: { href: anchor.getAttribute("href") || anchor.href }
         })
       );
-      setPending(true);
+      activationTimeoutRef.current = window.setTimeout(() => {
+        activationTimeoutRef.current = null;
+        if (isGlobalNavigationPending) {
+          setPending(true);
+        }
+      }, 0);
       recoveryTimeoutRef.current = window.setTimeout(() => {
         isGlobalNavigationPending = false;
         recoveryTimeoutRef.current = null;
@@ -89,6 +99,9 @@ export function GlobalNavigationFeedback() {
     document.addEventListener("click", handleNavigation, true);
     return () => {
       document.removeEventListener("click", handleNavigation, true);
+      if (activationTimeoutRef.current) {
+        window.clearTimeout(activationTimeoutRef.current);
+      }
       if (recoveryTimeoutRef.current) {
         window.clearTimeout(recoveryTimeoutRef.current);
       }
