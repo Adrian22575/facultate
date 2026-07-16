@@ -41,10 +41,10 @@ export function HeaderCreditStatus({ billingSnapshot }) {
   const aiCredits = Number(billingSnapshot.aiCredits || 0);
   const premiumDate = formatPremiumDate(billingSnapshot.premiumEndsAt);
   const accessActive = Boolean(billingSnapshot.activePremium);
-  const accessDetail = accessActive && premiumDate ? `pana ${premiumDate}` : "";
+  const accessDetail = accessActive && premiumDate ? `până la ${premiumDate}` : "";
 
   return (
-    <div className="header-credit-status" aria-label="Status acces si incarcari">
+    <div className="header-credit-status" aria-label="Status acces și încărcări">
       <HeaderCreditPill
         href="/cont?section=plans"
         icon={Crown}
@@ -56,9 +56,9 @@ export function HeaderCreditStatus({ billingSnapshot }) {
       <HeaderCreditPill
         href="/cont?section=credits"
         icon={Upload}
-        label="Incarcari"
+        label="Încărcări"
         value={String(aiCredits)}
-        detail={aiCredits === 1 ? "disponibila" : "disponibile"}
+        detail={aiCredits === 1 ? "disponibilă" : "disponibile"}
         tone={aiCredits > 0 ? "is-active" : "is-warning"}
       />
     </div>

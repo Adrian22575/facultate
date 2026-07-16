@@ -697,6 +697,9 @@ p {
 
 .app-sidebar-footer .header-credit-pill {
   min-height: 40px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
   padding: 6px 9px;
   border: 0;
   border-radius: 0;
@@ -711,6 +714,11 @@ p {
 .app-sidebar-footer .header-credit-pill:hover,
 .app-sidebar-footer .header-credit-pill:focus-visible {
   background: #fff;
+}
+
+.app-sidebar-footer .header-credit-detail {
+  padding-left: 0;
+  text-align: right;
 }
 
 .app-sidebar-logout-form {
