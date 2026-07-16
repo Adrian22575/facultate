@@ -306,11 +306,7 @@ function LearningLibrary({ learningStudySets, communityLearningStudySets, subjec
       {communityLearningStudySets.length ? (
         <section className="learning-library-group" aria-labelledby="community-materials-title">
           <div className="learning-library-group-head">
-            <div>
-              <span>Comunitatea ta</span>
-              <h3 id="community-materials-title">Foloseste ce este deja pregatit</h3>
-            </div>
-            <p>Aceste materiale sunt deja procesate si nu consuma o incarcare noua.</p>
+            <h3 id="community-materials-title">Din comunitate</h3>
           </div>
           <div className="learning-library-grid">
             {communityLearningStudySets.map((studySet) => (
@@ -323,11 +319,7 @@ function LearningLibrary({ learningStudySets, communityLearningStudySets, subjec
       {learningStudySets.length ? (
         <section className="learning-library-group" aria-labelledby="owned-materials-title">
           <div className="learning-library-group-head">
-            <div>
-              <span>Materialele tale</span>
-              <h3 id="owned-materials-title">Continua de unde ai ramas</h3>
-            </div>
-            <p>Publica un material gata doar daca vrei sa il folositi si voi in comunitate.</p>
+            <h3 id="owned-materials-title">Materialele tale</h3>
           </div>
           <div className="learning-library-grid">
             {learningStudySets.map((studySet) => (

@@ -8,13 +8,7 @@ function formatProgress(progress) {
     ? progress.mistake_question_ids.filter(Boolean).length
     : 0;
 
-  return {
-    viewed,
-    total,
-    bestScore,
-    mistakeCount,
-    studyLabel: total ? `${viewed} din ${total} intrebari parcurse` : "Incepe cu primul set de grile"
-  };
+  return { viewed, total, bestScore, mistakeCount };
 }
 
 export function SubjectLearningHub({
@@ -33,39 +27,37 @@ export function SubjectLearningHub({
   const nextAction = locked
     ? { href: lockHref, label: "Vezi planuri", copy: "Activeaza accesul pentru grile si teste pe aceasta materie." }
     : metrics.mistakeCount
-      ? {
-          href: mistakesHref,
-          label: "Repeta greselile",
-          copy: `${metrics.mistakeCount} intrebari raman de consolidat.`
-        }
+      ? { href: mistakesHref, label: "Repeta greselile", copy: `${metrics.mistakeCount} intrebari raman de consolidat.` }
       : hasUnfinishedStudy
-      ? { href: studyHref, label: "Continua grilele", copy: `${metrics.total - metrics.viewed} intrebari ramase de parcurs.` }
-      : metrics.bestScore
-        ? { href: testHref, label: "Imbunatateste scorul", copy: `Cel mai bun rezultat: ${metrics.bestScore}%.` }
-        : { href: studyHref, label: "Incepe cu grilele", copy: "Parcurge intai intrebarile, apoi verifica-te cu un test." };
+        ? { href: studyHref, label: "Continua grilele", copy: `${metrics.total - metrics.viewed} intrebari ramase de parcurs.` }
+        : metrics.bestScore
+          ? { href: testHref, label: "Imbunatateste scorul", copy: `Cel mai bun rezultat: ${metrics.bestScore}%.` }
+          : { href: studyHref, label: "Incepe cu grilele", copy: "Parcurge intai intrebarile, apoi verifica-te cu un test." };
 
   return (
     <section className="subject-learning-hub" aria-label={`Zona de invatare pentru ${subject.title}`}>
-      <div className="subject-learning-hub-intro">
-        <div>
-          <span className="ui-section-label">Materia ta</span>
-          <h2>Invata in ritmul tau, din aceeasi materie.</h2>
-          <p>Gasesti materialele comunitatii, apoi alegi cum vrei sa exersezi.</p>
-        </div>
-        <div className="subject-learning-progress" aria-label="Progresul tau">
-          <span>Progres</span>
-          <strong>{metrics.bestScore ? `${metrics.bestScore}%` : "—"}</strong>
-          <small>{metrics.bestScore ? "cel mai bun test" : "inca nu ai un test finalizat"}</small>
-        </div>
-      </div>
-
       <div className="subject-learning-hub-grid">
+        <article className="subject-learning-next-card">
+          <div>
+            <h2>Urmatorul pas</h2>
+            <p>{nextAction.copy}</p>
+          </div>
+          <PendingNavigationLink
+            className="subject-learning-next-primary"
+            href={nextAction.href}
+            pendingLabel="Se deschid grilele..."
+            pendingMode="replace"
+          >
+            {nextAction.label}
+          </PendingNavigationLink>
+          {metrics.bestScore ? (
+            <small className="subject-learning-next-meta">Cel mai bun test: {metrics.bestScore}%</small>
+          ) : null}
+        </article>
+
         <article className="subject-learning-materials-card">
           <div className="subject-learning-card-head">
-            <div>
-              <span className="ui-section-label">Materiale de studiu</span>
-              <h3>Materiale pentru {subject.title}</h3>
-            </div>
+            <h2>Materiale</h2>
             <span className="subject-learning-count">{studySets.length}</span>
           </div>
 
@@ -110,22 +102,6 @@ export function SubjectLearningHub({
                 Adauga material
               </PendingNavigationLink>
             )}
-          </div>
-        </article>
-
-        <article className="subject-learning-next-card">
-          <span className="ui-section-label">Teste si grile</span>
-          <h3>Alege urmatorul pas.</h3>
-          <p>{nextAction.copy}</p>
-          <div className="subject-learning-next-links">
-            <PendingNavigationLink
-              className="subject-learning-next-primary"
-              href={nextAction.href}
-              pendingLabel="Se deschid grilele..."
-              pendingMode="replace"
-            >
-              {nextAction.label}
-            </PendingNavigationLink>
           </div>
         </article>
       </div>

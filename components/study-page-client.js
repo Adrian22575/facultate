@@ -258,12 +258,10 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
   return (
     <>
       <section className="study-intro">
-        <h3>Progres de citire</h3>
-        <p>Intrebarile sunt marcate ca vizualizate pe masura ce le parcurgi.</p>
+        <span>{`Progres: ${viewedCount} din ${safeQuestions.length}`}</span>
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
         </div>
-        <div className="stats">{`Progres: ${viewedCount} din ${safeQuestions.length} intrebari vizualizate`}</div>
       </section>
 
       <section id="questionsRoot">

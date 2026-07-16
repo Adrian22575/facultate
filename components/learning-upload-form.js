@@ -288,8 +288,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
       <form className="surface learning-upload-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
         <div className="learning-upload-section-head">
           <div>
-            <span className="ui-section-label">Sursa</span>
-            <h2>Pune aici cursul, notitele sau materialul primit.</h2>
+            <h2>Adauga materialul</h2>
           </div>
           <span className="learning-upload-cost-meta">Consuma 1 incarcare</span>
         </div>

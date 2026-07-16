@@ -18,16 +18,12 @@ const PAGE_CONTENT = {
   test: {
     path: "/materiale/importa",
     title: "Importa intrebari existente",
-    subtitle: "Urca grilele, verifica rapid intrebarile si publica testul la materia potrivita.",
-    eyebrow: "Import grile",
-    steps: ["Alege fisier sau text.", "Verifica intrebarile marcate pentru review.", "Publica testul la materia corecta."]
+    subtitle: "Urca grilele, verifica rapid intrebarile si publica testul la materia potrivita."
   },
   licenta: {
     path: "/materiale/licenta",
     title: "Pregateste licenta",
-    subtitle: "Adauga seturile, corecteaza ce trebuie si finalizeaza simularea cand totul este verificat.",
-    eyebrow: "Licenta",
-    steps: ["Incarca un set complet sau lipeste text.", "Adauga urmatorul set in aceeasi sesiune.", "Finalizeaza simularea dupa review."]
+    subtitle: "Adauga seturile, corecteaza ce trebuie si finalizeaza simularea cand totul este verificat."
   }
 };
 
@@ -84,9 +80,7 @@ export async function ImportWorkspacePage({ mode, searchParams }) {
     <WorkspaceUploadShell
       title={page.title}
       subtitle={page.subtitle}
-      eyebrow={page.eyebrow}
       meta={meta}
-      steps={page.steps}
     >
       <LicentaImportWorkspaceClient
         fixedMode={mode}

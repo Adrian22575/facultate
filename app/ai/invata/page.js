@@ -82,10 +82,8 @@ export default async function LearningUploadPage({ searchParams }) {
     <WorkspaceUploadShell
       title={title}
       subtitle={subtitle}
-      eyebrow="Materie"
       meta={meta}
       alerts={alerts}
-      steps={["Alege fisier sau lipeste text.", "Adauga data examenului daca o stii.", "Porneste procesarea si continua din pagina de progres."]}
     >
       <LearningUploadForm
         billingSnapshot={billingSnapshot}

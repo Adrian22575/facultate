@@ -121,11 +121,9 @@ export default async function AIActivityPage({ searchParams }) {
 
       <section className="ai-workspace-header ai-activity-header">
         <div className="ai-workspace-header-copy">
-          <span className="ui-section-label">Biblioteca ta</span>
-          <h1 className="ai-workspace-title">Materialele tale de studiu.</h1>
+          <h1 className="ai-workspace-title">Materialele mele</h1>
           <p className="ai-workspace-subtitle">
-            Revii la importuri, verifici materialele salvate si deschizi testele pregatite fara sa
-            incarci din nou fisierele.
+            Deschide un material salvat sau urmareste o procesare in curs.
           </p>
         </div>
         <PendingNavigationLink
@@ -156,9 +154,7 @@ export default async function AIActivityPage({ searchParams }) {
         <section className="surface ai-workspace-activity-surface">
           <article className="ui-panel-card ai-workspace-activity-empty">
             <strong>Biblioteca nu are materiale inca.</strong>
-            <p className="page-copy">
-              Incarca primul curs. Dupa ce alegi sa il publici, colegii din comunitatea ta il pot folosi fara o procesare noua.
-            </p>
+            <p className="page-copy">Adauga primul material pentru a incepe.</p>
             <PendingNavigationLink
               className="btn-back"
               href="/materiale/invata"
