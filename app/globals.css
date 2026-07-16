@@ -6586,6 +6586,12 @@ button.inline-text-action:hover {
   font-weight: 900;
 }
 
+a[data-navigation-blocked="true"] {
+  pointer-events: none !important;
+  cursor: wait;
+  opacity: 0.52;
+}
+
 .test-link.primary .navigation-pending-badge {
   background: rgba(255, 255, 255, 0.16);
   color: #fff;
@@ -16881,6 +16887,12 @@ td {
   color: #fff;
   font-weight: 750;
   text-decoration: none;
+}
+
+.subject-learning-next-card .subject-learning-next-primary[data-navigation-blocked="true"] {
+  background: #9aa8ba;
+  color: #fff;
+  box-shadow: none;
 }
 
 .subject-learning-next-meta {

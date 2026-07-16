@@ -51,6 +51,11 @@ export function GlobalNavigationFeedback() {
       }
 
       isGlobalNavigationPending = true;
+      window.dispatchEvent(
+        new CustomEvent("nota5plus:navigation-pending", {
+          detail: { href: anchor.getAttribute("href") || anchor.href }
+        })
+      );
       setPending(true);
     }
 
