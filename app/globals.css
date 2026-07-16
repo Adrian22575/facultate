@@ -5850,7 +5850,7 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
 .onboarding-selection-list {
   max-height: 560px;
   overflow-y: auto;
-  padding-right: 4px;
+  padding: 1px 4px 1px 1px;
 }
 
 .test-link.onboarding-selection-card {
@@ -5868,6 +5868,10 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
 .test-link.onboarding-selection-card:focus-visible {
   border-color: #8eb5ee;
   background: #f7fbff;
+  transform: none;
+}
+
+.test-link.onboarding-selection-card[data-navigation-pending="true"] {
   transform: none;
 }
 
