@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowRight, GraduationCap, School } from "lucide-react";
 
 import { OnboardingActionForm } from "@/components/onboarding-action-form";
 import { AppHeader } from "@/components/app-header";
@@ -331,6 +332,28 @@ function OnboardingReviewPanel({ summaryItems }) {
   );
 }
 
+function OnboardingSelectionContext({ summaryItems }) {
+  if (!summaryItems.length) {
+    return null;
+  }
+
+  return (
+    <div className="onboarding-selection-context" aria-label="Alegerile tale de până acum">
+      {summaryItems.map((item) => (
+        <div key={item.key} className="onboarding-selection-context-item">
+          <span>{item.label}</span>
+          <strong>{item.value}</strong>
+          {item.clearHref ? (
+            <Link href={item.clearHref} className="onboarding-selection-context-change">
+              Schimbă
+            </Link>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function OnboardingStepCard({
   currentStep,
   steps,
@@ -362,10 +385,7 @@ function OnboardingStepCard({
 
       <div className="onboarding-confirm-body">
         {summaryItems.length ? (
-          <>
-            <p className="onboarding-confirm-section-title">Rezumat selectie</p>
-            <OnboardingReviewPanel summaryItems={summaryItems} />
-          </>
+          <OnboardingSelectionContext summaryItems={summaryItems} />
         ) : null}
 
         <div className={`onboarding-step-content${summaryItems.length ? "" : " onboarding-step-content-first"}`}>
@@ -844,12 +864,24 @@ export default async function OnboardingPage({ searchParams }) {
               entries={allSearchParams}
               exclude={["userType", "institutionId", "facultyId", "programId", "profileId"]}
             />
-            <div className="pricing-copy">
-              <strong>Student</strong>
-              <p className="page-copy">Universitate, facultate si specializare.</p>
+            <div className="onboarding-choice-icon" aria-hidden="true">
+              <GraduationCap size={28} strokeWidth={2.1} />
             </div>
-            <OnboardingSubmitButton pendingLabel="Pregatim pasul urmator...">
-              Sunt student
+            <div className="pricing-copy onboarding-choice-copy">
+              <span className="onboarding-choice-kicker">Universitate</span>
+              <strong>Student</strong>
+              <p className="page-copy">Alegi universitatea, facultatea si specializarea.</p>
+            </div>
+            <div className="onboarding-choice-route" aria-hidden="true">
+              <span>Universitate</span>
+              <ArrowRight size={14} strokeWidth={2.3} />
+              <span>Facultate</span>
+              <ArrowRight size={14} strokeWidth={2.3} />
+              <span>Specializare</span>
+            </div>
+            <OnboardingSubmitButton className="onboarding-choice-action" pendingLabel="Pregatim pasul urmator...">
+              <span>Continua ca student</span>
+              <ArrowRight aria-hidden="true" size={17} strokeWidth={2.4} />
             </OnboardingSubmitButton>
           </form>
 
@@ -860,12 +892,22 @@ export default async function OnboardingPage({ searchParams }) {
               entries={allSearchParams}
               exclude={["userType", "institutionId", "facultyId", "programId", "profileId"]}
             />
-            <div className="pricing-copy">
-              <strong>Elev</strong>
-              <p className="page-copy">Liceu sau scoala, cu profil optional.</p>
+            <div className="onboarding-choice-icon is-school" aria-hidden="true">
+              <School size={28} strokeWidth={2.1} />
             </div>
-            <OnboardingSubmitButton pendingLabel="Pregatim pasul urmator...">
-              Sunt elev
+            <div className="pricing-copy onboarding-choice-copy">
+              <span className="onboarding-choice-kicker">Liceu sau scoala</span>
+              <strong>Elev</strong>
+              <p className="page-copy">Alegi liceul sau scoala. Profilul ramane optional.</p>
+            </div>
+            <div className="onboarding-choice-route" aria-hidden="true">
+              <span>Institutie</span>
+              <ArrowRight size={14} strokeWidth={2.3} />
+              <span>Profil optional</span>
+            </div>
+            <OnboardingSubmitButton className="onboarding-choice-action" pendingLabel="Pregatim pasul urmator...">
+              <span>Continua ca elev</span>
+              <ArrowRight aria-hidden="true" size={17} strokeWidth={2.4} />
             </OnboardingSubmitButton>
           </form>
         </div>
@@ -881,6 +923,8 @@ export default async function OnboardingPage({ searchParams }) {
               ? "Scrie numele universitatii..."
               : "Scrie numele liceului sau scolii..."
           }
+          selectionKind="institution"
+          searchRequired
           items={institutions.map((institution) => ({
             id: institution.id,
             title: institution.name,
@@ -951,6 +995,7 @@ export default async function OnboardingPage({ searchParams }) {
         <OnboardingSelectionStep
           key="faculty-step"
           searchPlaceholder="Scrie numele facultatii..."
+          selectionKind="faculty"
           items={faculties.map((faculty) => ({
             id: faculty.id,
             title: faculty.name,
@@ -1000,6 +1045,7 @@ export default async function OnboardingPage({ searchParams }) {
         <OnboardingSelectionStep
           key="program-step"
           searchPlaceholder="Scrie numele specializarii..."
+          selectionKind="program"
           items={programs.map((program) => ({
             id: program.id,
             title: program.name,
@@ -1049,6 +1095,7 @@ export default async function OnboardingPage({ searchParams }) {
         <OnboardingSelectionStep
           key="profile-step"
           searchPlaceholder="Scrie numele profilului..."
+          selectionKind="profile"
           items={[
             ...profiles.map((profile) => ({
               id: profile.id,
@@ -1063,6 +1110,7 @@ export default async function OnboardingPage({ searchParams }) {
               id: "none",
               title: "Continua fara profil",
               subtitle: "Folosim doar institutia aleasa.",
+              kind: "skip",
               selected: profileId === "none",
               href: buildHref(allSearchParams, {
                 step: "",
