@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ClipboardPaste, FileUp } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
@@ -579,8 +580,7 @@ Raspuns corect: B`}</pre>
         <section className="workspace-form-panel ui-panel-card ai-workspace-step-panel">
           <div className="workspace-form-head">
             <div>
-              <span className="ui-section-label ai-workspace-step-label">Pasul 1</span>
-              <h2>Alege cum trimiti continutul</h2>
+              <h2>Adauga grilele</h2>
             </div>
           </div>
 
@@ -598,12 +598,16 @@ Raspuns corect: B`}</pre>
               aria-controls="workspace-source-panel"
               tabIndex={sourceMode === "file" ? 0 : -1}
               aria-disabled={formLocked}
+              disabled={formLocked}
               className={`ui-segmented-tab secondary ai-workspace-source-tab ${
                 sourceMode === "file" ? "is-active" : ""
               }`}
               onClick={() => switchSourceMode("file")}
             >
-              Urc fisier
+              <span className="ai-workspace-source-tab-icon" aria-hidden="true">
+                <FileUp size={19} strokeWidth={2.3} />
+              </span>
+              <span>Urc fisier</span>
             </button>
             <button
               id="workspace-source-tab-text"
@@ -613,12 +617,16 @@ Raspuns corect: B`}</pre>
               aria-controls="workspace-source-panel"
               tabIndex={sourceMode === "text" ? 0 : -1}
               aria-disabled={formLocked}
+              disabled={formLocked}
               className={`ui-segmented-tab secondary ai-workspace-source-tab ${
                 sourceMode === "text" ? "is-active" : ""
               }`}
               onClick={() => switchSourceMode("text")}
             >
-              Lipesc text
+              <span className="ai-workspace-source-tab-icon" aria-hidden="true">
+                <ClipboardPaste size={19} strokeWidth={2.3} />
+              </span>
+              <span>Lipesc text</span>
             </button>
           </div>
 
@@ -674,6 +682,9 @@ Raspuns corect: B`}</pre>
                   applyDroppedSourceFiles(event.dataTransfer.files);
                 }}
               >
+                <span className="ai-workspace-file-drop-icon" aria-hidden="true">
+                  <UploadFileIcon />
+                </span>
                 <span className="ai-workspace-file-drop-title">
                   {isDraggingSourceFile ? "Elibereaza fisierul aici" : "Alege sau trage fisierul aici"}
                 </span>
@@ -820,20 +831,6 @@ Raspuns corect: B`}</pre>
             </p>
           </div>
 
-          <div className="workspace-checklist">
-            <div className="workspace-check-row">
-              <span>1</span>
-              <p>Verificam rapid daca sursa are deja intrebari si raspunsuri clare.</p>
-            </div>
-            <div className="workspace-check-row">
-              <span>2</span>
-              <p>Daca este buna, scoatem intrebarile si pregatim rezultatul pentru verificare.</p>
-            </div>
-            <div className="workspace-check-row">
-              <span>3</span>
-              <p>Dupa trimitere, vezi progresul si deschizi rezultatul din activitatea ta.</p>
-            </div>
-          </div>
         </section>
 
         <section
@@ -843,8 +840,7 @@ Raspuns corect: B`}</pre>
         >
           <div className="workspace-form-head">
             <div>
-              <span className="ui-section-label ai-workspace-step-label">Pasul 2</span>
-              <h2>{isLicentaFlow ? "Alege tipul de test" : "Alege materia si detaliile"}</h2>
+              <h2>{isLicentaFlow ? "Alege tipul de test" : "Alege materia"}</h2>
             </div>
           </div>
 

@@ -870,7 +870,6 @@ export function LicentaImportWorkspaceClient({
           <section className="workspace-form-panel ui-panel-card import-method-panel">
             <div className="workspace-form-head">
               <div>
-                <span className="ui-section-label ai-workspace-step-label">Metoda de import</span>
                 <h2>Alege cum adaugi materialul</h2>
               </div>
             </div>
@@ -926,7 +925,6 @@ export function LicentaImportWorkspaceClient({
             <form className="workspace-form-panel ui-panel-card import-mode-card import-mode-card-single" onSubmit={submitAuto}>
               <div className="workspace-form-head">
                 <div>
-                  <span className="ui-section-label ai-workspace-step-label">Fisier complet</span>
                   <h2>Incarca fisierul complet</h2>
                   <p>
                     Potrivit cand fisierul este ordonat si raspunsurile sunt usor de identificat.
@@ -1040,7 +1038,6 @@ export function LicentaImportWorkspaceClient({
             <form className="workspace-form-panel ui-panel-card import-mode-card import-mode-card-single" onSubmit={submitSet}>
               <div className="workspace-form-head">
                 <div>
-                  <span className="ui-section-label ai-workspace-step-label">Import pe seturi</span>
                   <h2>Proceseaza licenta pe seturi</h2>
                   <p>
                     Recomandat pentru materiale mari sau neclare. Seturile raman in aceeasi licenta,
@@ -1073,7 +1070,7 @@ export function LicentaImportWorkspaceClient({
                     setActiveErrorActionHref("");
                   }}
                 >
-                  <IconText icon={Keyboard}>Input text</IconText>
+                  <IconText icon={Keyboard}>Lipesc text</IconText>
                 </button>
                 <button
                   id="licenta-set-source-tab-file"
@@ -1090,7 +1087,7 @@ export function LicentaImportWorkspaceClient({
                     setActiveErrorActionHref("");
                   }}
                 >
-                  <IconText icon={Upload}>Fisier</IconText>
+                  <IconText icon={Upload}>Urc fisier</IconText>
                 </button>
               </div>
 

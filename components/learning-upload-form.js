@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
-import { FileText, StickyNote, Upload } from "lucide-react";
+import { Check, ClipboardPaste, FileUp, LoaderCircle, Upload } from "lucide-react";
 
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -13,13 +13,6 @@ import { createClient as createSupabaseBrowserClient } from "@/lib/supabase/clie
 
 const ACCEPTED_EXTENSIONS = [".pdf", ".docx", ".pptx", ".txt"];
 const MIN_TEXT_LENGTH = 600;
-const PROCESSING_STEPS = [
-  { id: "preparing", label: "Pregatim sursa" },
-  { id: "uploading", label: "Urcam fisierul" },
-  { id: "reading", label: "Citim materia" },
-  { id: "building", label: "Pregatim procesarea" },
-  { id: "redirecting", label: "Deschidem progresul" }
-];
 
 function createIdempotencyKey() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -72,6 +65,7 @@ function SourceOption({ icon: Icon, title, copy, active = false, disabled = fals
         <strong>{title}</strong>
         <small>{copy}</small>
       </div>
+      {active ? <Check className="learning-upload-source-check" aria-hidden="true" size={18} strokeWidth={2.5} /> : null}
     </button>
   );
 }
@@ -80,36 +74,16 @@ function getResponseError(payload, fallback) {
   return payload?.error || fallback;
 }
 
-function getActiveStepIndex(statusStage) {
-  if (statusStage === "uploading") return 1;
-  if (statusStage === "reading") return 2;
-  if (statusStage === "building") return 3;
-  if (statusStage === "redirecting") return 4;
-  return 0;
-}
-
-function ProcessingPanel({ status, statusStage }) {
-  const activeIndex = getActiveStepIndex(statusStage);
-
+function ProcessingPanel({ status }) {
   return (
     <section className="learning-processing-panel" aria-live="polite">
-      <div>
-        <span className="ui-section-label">Procesare</span>
-        <strong>{status || "Pregatim materialele de invatare..."}</strong>
+      <span className="learning-processing-icon" aria-hidden="true">
+        <LoaderCircle size={20} strokeWidth={2.3} />
+      </span>
+      <div className="learning-processing-copy">
+        <strong>{status || "Pregatim materialul..."}</strong>
+        <p>Poti inchide pagina. Materialul ramane disponibil in Materialele mele.</p>
       </div>
-      <div className="learning-processing-steps">
-        {PROCESSING_STEPS.map((step, index) => (
-          <span
-            key={step.id}
-            className={
-              index < activeIndex ? "is-done" : index === activeIndex ? "is-active" : ""
-            }
-          >
-            {step.label}
-          </span>
-        ))}
-      </div>
-      <p>Poti inchide pagina. Procesarea continua, iar progresul ramane disponibil in Activitate.</p>
     </section>
   );
 }
@@ -121,7 +95,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
   const [clientError, setClientError] = useState("");
   const [errorActionHref, setErrorActionHref] = useState("");
   const [status, setStatus] = useState("");
-  const [statusStage, setStatusStage] = useState("idle");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef(null);
   const uploadedSourceDocumentIdRef = useRef("");
@@ -151,7 +124,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     setClientError("");
     setErrorActionHref("");
     setStatus("");
-    setStatusStage("idle");
   }
 
   function updateSelectedFile(file) {
@@ -161,7 +133,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     setClientError("");
     setErrorActionHref("");
     setStatus("");
-    setStatusStage("idle");
   }
 
   async function uploadSelectedFile() {
@@ -181,7 +152,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
       return uploadedSourceDocumentIdRef.current;
     }
 
-    setStatusStage("preparing");
     setStatus("Pregatim spatiul privat pentru fisier...");
     const intentResponse = await fetch("/api/materiale/source-documents/upload-intent", {
       method: "POST",
@@ -201,7 +171,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
       throw new Error(getResponseError(intentPayload, "Nu am putut pregati uploadul fisierului."));
     }
 
-    setStatusStage("uploading");
     setStatus("Urcam fisierul in siguranta...");
     const supabase = createSupabaseBrowserClient();
     const { error: uploadError } = await supabase.storage
@@ -227,7 +196,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     setIsSubmitting(true);
     setClientError("");
     setErrorActionHref("");
-    setStatusStage(sourceMode === "file" ? "preparing" : "reading");
     setStatus(sourceMode === "file" ? "Pregatim fisierul..." : "Pregatim textul...");
 
     try {
@@ -241,7 +209,6 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
         formData.delete("uploadedSourceDocumentId");
       }
 
-      setStatusStage("building");
       setStatus("Pregatim procesarea materialului...");
       const response = await fetch("/api/materiale/invata", {
         method: "POST",
@@ -254,13 +221,11 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
         throw new Error(getResponseError(payload, "Nu am putut porni procesarea materialului."));
       }
 
-      setStatusStage("redirecting");
       setStatus("Materia a fost incarcata. Deschidem pagina de progres...");
       window.location.assign(payload.redirectUrl || "/materiale/invata");
     } catch (error) {
       setIsSubmitting(false);
       setStatus("");
-      setStatusStage("idle");
       setClientError(error instanceof Error ? error.message : "Procesarea materialului a esuat.");
     }
   }
@@ -284,7 +249,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
           </Link>
         </div>
       ) : null}
-      {isSubmitting ? <ProcessingPanel status={status} statusStage={statusStage} /> : null}
+      {isSubmitting ? <ProcessingPanel status={status} /> : null}
       <form className="surface learning-upload-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
         <div className="learning-upload-section-head">
           <div>
@@ -295,41 +260,22 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
 
         <div className="learning-upload-source-grid" aria-label="Tipuri sursa">
           <SourceOption
-            icon={FileText}
-            title="Fisier"
+            icon={FileUp}
+            title="Incarca fisier"
             copy="PDF, DOCX, PPTX sau TXT"
             active={sourceMode === "file"}
             disabled={isSubmitting}
             onClick={() => switchSourceMode("file")}
           />
           <SourceOption
-            icon={StickyNote}
-            title="Text lipit"
+            icon={ClipboardPaste}
+            title="Lipeste text"
             copy="Lipeste continutul direct"
             active={sourceMode === "text"}
             disabled={isSubmitting}
             onClick={() => switchSourceMode("text")}
           />
         </div>
-
-        {subjects.length ? (
-          <label className="learning-upload-field">
-            Materia
-            <select className="input-search" name="subjectId" defaultValue={initialSubjectId}>
-              <option value="">Alege materia (optional)</option>
-              {subjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.title}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-
-        <label className="learning-upload-field">
-          Titlul materialului <span className="learning-upload-optional">optional</span>
-          <input className="input-search" name="title" placeholder="Ex: Curs 4 - Analiza pietei" type="text" maxLength={120} />
-        </label>
 
         {sourceMode === "file" ? (
           <div className="learning-upload-file-box">
@@ -390,33 +336,57 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
           </label>
         )}
 
-        <div className="learning-upload-detail-grid">
-          <label className="learning-upload-field">
-            Data examenului
-            <input className="input-search" name="examDate" type="date" min={getTodayInputValue()} />
-          </label>
-          <label className="learning-upload-field">
-            Minute pe zi
-            <select className="input-search" name="minutesPerDay" defaultValue="30">
-              <option value="20">20 minute</option>
-              <option value="30">30 minute</option>
-              <option value="45">45 minute</option>
-              <option value="60">60 minute</option>
-              <option value="90">90 minute</option>
-            </select>
-          </label>
-        </div>
+        <details className="learning-upload-details">
+          <summary>Adauga detalii optional</summary>
+          <div className="learning-upload-details-content">
+            {subjects.length ? (
+              <label className="learning-upload-field">
+                Materia
+                <select className="input-search" name="subjectId" defaultValue={initialSubjectId}>
+                  <option value="">Alege materia (optional)</option>
+                  {subjects.map((subject) => (
+                    <option key={subject.id} value={subject.id}>
+                      {subject.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
 
-        <label className="learning-upload-field">
-          Obiectiv optional
-          <input
-            className="input-search"
-            name="objective"
-            placeholder="Ex: vreau recapitulare rapida pentru colocviu"
-            type="text"
-            maxLength={500}
-          />
-        </label>
+            <label className="learning-upload-field">
+              Titlul materialului <span className="learning-upload-optional">optional</span>
+              <input className="input-search" name="title" placeholder="Ex: Curs 4 - Analiza pietei" type="text" maxLength={120} />
+            </label>
+
+            <div className="learning-upload-detail-grid">
+              <label className="learning-upload-field">
+                Data examenului
+                <input className="input-search" name="examDate" type="date" min={getTodayInputValue()} />
+              </label>
+              <label className="learning-upload-field">
+                Minute pe zi
+                <select className="input-search" name="minutesPerDay" defaultValue="30">
+                  <option value="20">20 minute</option>
+                  <option value="30">30 minute</option>
+                  <option value="45">45 minute</option>
+                  <option value="60">60 minute</option>
+                  <option value="90">90 minute</option>
+                </select>
+              </label>
+            </div>
+
+            <label className="learning-upload-field">
+              Obiectiv optional
+              <input
+                className="input-search"
+                name="objective"
+                placeholder="Ex: vreau recapitulare rapida pentru colocviu"
+                type="text"
+                maxLength={500}
+              />
+            </label>
+          </div>
+        </details>
 
         <input type="hidden" name="uploadedSourceDocumentId" value="" />
         <input type="hidden" name="idempotencyKey" value={idempotencyKeyRef.current} />
