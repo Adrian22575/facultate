@@ -680,18 +680,37 @@ p {
   max-width: none;
   min-height: 48px;
   justify-content: flex-start;
+  border-color: #ead7a8;
+  background: #fffaf0;
   box-shadow: none;
 }
 
 .app-sidebar-footer .header-credit-status {
   display: grid;
   grid-template-columns: 1fr;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid #d6e3f5;
+  border-radius: 12px;
+  background: #f8fbff;
 }
 
 .app-sidebar-footer .header-credit-pill {
-  min-height: 44px;
-  border-radius: 10px;
+  min-height: 40px;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   box-shadow: none;
+}
+
+.app-sidebar-footer .header-credit-pill + .header-credit-pill {
+  border-top: 1px solid #dce7f5;
+}
+
+.app-sidebar-footer .header-credit-pill:hover,
+.app-sidebar-footer .header-credit-pill:focus-visible {
+  background: #fff;
 }
 
 .app-sidebar-logout-form {
