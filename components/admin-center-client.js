@@ -1203,7 +1203,7 @@ export function AdminCenterClient({
 
         {filteredFeedbackEntries.length ? (
           <>
-            <AdminTable minWidth={1120} columns={[
+            <AdminTable minWidth={1200} columns={[
               { key: "review", label: "" },
               { key: "type", label: "Tip" },
               { key: "message", label: "Mesaj" },
@@ -1211,6 +1211,7 @@ export function AdminCenterClient({
               { key: "email", label: "Email" },
               { key: "userType", label: "Tip user" },
               { key: "path", label: "Pagina" },
+              { key: "screenshot", label: "Captură" },
               { key: "createdAt", label: "Trimis la" }
             ]}>
               {feedbackPageData.rows.map((entry) => (
@@ -1224,6 +1225,20 @@ export function AdminCenterClient({
                   <td>{entry.user_email || "Fara email"}</td>
                   <td>{entry.user_type || "necunoscut"}</td>
                   <td className="admin-table-text-cell">{entry.page_path || "/"}</td>
+                  <td>
+                    {entry.screenshot_path ? (
+                      <a
+                        className="btn-link secondary admin-feedback-screenshot-link"
+                        href={`/api/admin/feedback/${entry.id}/screenshot`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Vezi
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
                   <td><TableDate value={entry.created_at} /></td>
                 </tr>
               ))}
