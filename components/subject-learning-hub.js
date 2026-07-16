@@ -115,7 +115,6 @@ export function SubjectLearningHub({
           <p>{nextAction.copy}</p>
           <div className="subject-learning-next-links">
             <Link className="subject-learning-next-primary" href={nextAction.href}>{nextAction.label}</Link>
-            {!locked ? <Link href="#moduri">Toate modurile</Link> : null}
           </div>
         </article>
       </div>

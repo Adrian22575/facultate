@@ -94,16 +94,22 @@ export default async function SubjectPage({ params, searchParams }) {
         locked={!canUseLearningModes}
         lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
       />
-      <div id="moduri">
-        <ModeGrid
-          subject={subject}
-          locked={!canUseLearningModes}
-          lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
-          showWelcomePremium={hasAvailableWelcomePremium}
-          welcomeReturnTo={`/materii/${subject.id}`}
-          welcomeState={welcomeState}
-        />
-      </div>
+      <details id="moduri" className="subject-mode-disclosure">
+        <summary>
+          <span>Alte moduri de invatare</span>
+          <small>Interactiv, Studiu sau Test</small>
+        </summary>
+        <div className="subject-mode-disclosure-content">
+          <ModeGrid
+            subject={subject}
+            locked={!canUseLearningModes}
+            lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
+            showWelcomePremium={hasAvailableWelcomePremium}
+            welcomeReturnTo={`/materii/${subject.id}`}
+            welcomeState={welcomeState}
+          />
+        </div>
+      </details>
     </main>
   );
 }

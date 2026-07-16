@@ -16710,6 +16710,33 @@ td {
   text-decoration: none;
 }
 
+.subject-mode-disclosure {
+  max-width: 1180px;
+  margin: 0 auto 28px;
+  border: 1px solid color-mix(in srgb, var(--text-primary, #15211a) 9%, transparent);
+  border-radius: 18px;
+  background: var(--surface, #ffffff);
+}
+
+.subject-mode-disclosure summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 18px;
+  color: var(--text-primary, #15211a);
+  cursor: pointer;
+  list-style: none;
+}
+
+.subject-mode-disclosure summary::-webkit-details-marker { display: none; }
+.subject-mode-disclosure summary::after { content: "+"; color: var(--accent, #136fd2); font-size: 1.2rem; font-weight: 750; }
+.subject-mode-disclosure[open] summary::after { content: "−"; }
+.subject-mode-disclosure summary span { font-weight: 760; }
+.subject-mode-disclosure summary small { margin-left: auto; color: var(--text-secondary, #617065); font-weight: 600; }
+.subject-mode-disclosure[open] summary { border-bottom: 1px solid color-mix(in srgb, var(--text-primary, #15211a) 9%, transparent); }
+.subject-mode-disclosure-content { padding: 0 18px 18px; }
+
 @media (max-width: 720px) {
   .subject-learning-hub { padding: 20px; }
   .subject-learning-hub-intro,
