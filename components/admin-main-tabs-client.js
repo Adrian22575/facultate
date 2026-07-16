@@ -121,11 +121,11 @@ export function AdminMainTabsClient({
             aria-selected={activeTab === "platform"}
             aria-controls="admin-panel-platform"
             tabIndex={activeTab === "platform" ? 0 : -1}
-            aria-label="Date platforma"
+            aria-label="Platformă"
             className={`btn-link secondary admin-main-tab ${activeTab === "platform" ? "is-active-filter" : ""} ${visibleActionCounts.platform > 0 ? "has-admin-action" : ""}`}
             onClick={() => switchTab("platform")}
           >
-            <AdminTabContent icon={Database} label="Date platforma" count={tabCounts.platform} actionCount={visibleActionCounts.platform} />
+            <AdminTabContent icon={Database} label="Platformă" count={tabCounts.platform} actionCount={visibleActionCounts.platform} />
           </button>
           <button
             id="admin-tab-processing"
@@ -134,11 +134,11 @@ export function AdminMainTabsClient({
             aria-selected={activeTab === "processing"}
             aria-controls="admin-panel-processing"
             tabIndex={activeTab === "processing" ? 0 : -1}
-            aria-label="Loguri procesare"
+            aria-label="Procesări"
             className={`btn-link secondary admin-main-tab ${activeTab === "processing" ? "is-active-filter" : ""} ${visibleActionCounts.processing > 0 ? "has-admin-action" : ""}`}
             onClick={() => switchTab("processing")}
           >
-            <AdminTabContent icon={ServerCog} label="Loguri procesare" count={tabCounts.processing} actionCount={visibleActionCounts.processing} />
+            <AdminTabContent icon={ServerCog} label="Procesări" count={tabCounts.processing} actionCount={visibleActionCounts.processing} />
           </button>
           <button
             id="admin-tab-uploads"
