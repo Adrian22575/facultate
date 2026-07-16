@@ -3566,11 +3566,25 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
   background: #f8fbff;
 }
 
-.feedback-screenshot-empty > span {
+.feedback-screenshot-empty {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.feedback-screenshot-help {
+  display: grid;
+  flex: 1 1 100%;
+  gap: 3px;
+  margin: 0;
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 700;
   line-height: 1.4;
+}
+
+.feedback-screenshot-help strong {
+  color: var(--ink);
+  font-size: 0.84rem;
 }
 
 .feedback-screenshot-actions {

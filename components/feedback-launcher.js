@@ -373,9 +373,10 @@ export function FeedbackLauncher() {
                         Adaugă o captură
                       </button>
                     </div>
-                    <span>
-                      Pentru captură, alege tabul aplicației în fereastra browserului. Poți și încărca sau lipi o imagine PNG, JPG ori WEBP, de maximum {FEEDBACK_SCREENSHOT_MAX_LABEL}.
-                    </span>
+                    <p className="feedback-screenshot-help">
+                      <strong>Pentru captură, selectează tabul aplicației în fereastra browserului.</strong>
+                      <span>Poți și încărca sau lipi o imagine PNG, JPG ori WEBP, de maximum {FEEDBACK_SCREENSHOT_MAX_LABEL}.</span>
+                    </p>
                   </div>
                 )}
               </div>
