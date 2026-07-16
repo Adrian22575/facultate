@@ -27,9 +27,27 @@ export function DashboardPageClient({
 }) {
   const [lastSession, setLastSession] = useState(null);
   const [sessionEntryStep, setSessionEntryStep] = useState("entry");
+  const [navigationPending, setNavigationPending] = useState(false);
 
   useEffect(() => {
     setLastSession(getLastSession());
+  }, []);
+
+  useEffect(() => {
+    function markNavigationPending() {
+      setNavigationPending(true);
+    }
+
+    function resetNavigationPending() {
+      setNavigationPending(false);
+    }
+
+    window.addEventListener("nota5plus:navigation-pending", markNavigationPending);
+    window.addEventListener("nota5plus:navigation-reset", resetNavigationPending);
+    return () => {
+      window.removeEventListener("nota5plus:navigation-pending", markNavigationPending);
+      window.removeEventListener("nota5plus:navigation-reset", resetNavigationPending);
+    };
   }, []);
 
   const resumeSession =
@@ -47,6 +65,7 @@ export function DashboardPageClient({
     : "/materiale/activitate?tab=learning";
 
   function openSubjectPicker() {
+    if (navigationPending) return;
     setSessionEntryStep("subject-picker");
     window.requestAnimationFrame(() => {
       document.getElementById("start-sesiune")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -129,7 +148,12 @@ export function DashboardPageClient({
                     <h2>Teste si grile</h2>
                     <p>Alege materia, apoi exerseaza prin grile, teste, studiu si intrebarile gresite.</p>
                   </div>
-                  <button type="button" className="dashboard-start-card-action" onClick={openSubjectPicker}>
+                  <button
+                    type="button"
+                    className="dashboard-start-card-action"
+                    disabled={navigationPending}
+                    onClick={openSubjectPicker}
+                  >
                     Alege o materie
                     <ArrowRight aria-hidden="true" size={18} strokeWidth={2.4} />
                   </button>
