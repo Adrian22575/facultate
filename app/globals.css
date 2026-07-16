@@ -118,13 +118,6 @@ button,
   transform: translateX(-50%);
 }
 
-.global-navigation-blocker {
-  position: fixed;
-  inset: 0;
-  z-index: 4200;
-  cursor: wait;
-}
-
 .skip-link {
   position: fixed;
   top: 12px;

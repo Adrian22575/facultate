@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AlertTriangle, Database, ServerCog } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
@@ -19,20 +20,7 @@ function normalizeTab(value) {
   return "platform";
 }
 
-function readTabFromUrl() {
-  if (typeof window === "undefined") {
-    return "platform";
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  return normalizeTab(params.get("admin_tab"));
-}
-
-function writeTabToUrl(tab) {
-  if (typeof window === "undefined") {
-    return;
-  }
-
+function getTabUrl(tab) {
   const params = new URLSearchParams(window.location.search);
   if (tab === "platform") {
     params.delete("admin_tab");
@@ -41,8 +29,7 @@ function writeTabToUrl(tab) {
   }
 
   const query = params.toString();
-  const nextUrl = query ? `/admin?${query}` : "/admin";
-  window.history.replaceState(window.history.state, "", nextUrl);
+  return query ? `/admin?${query}` : "/admin";
 }
 
 function AdminTabContent({ icon: Icon, label, count, actionCount = 0 }) {
@@ -64,32 +51,26 @@ export function AdminMainTabsClient({
   openaiContent,
   uploadsContent
 }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState(normalizeTab(defaultTab));
   const [visibleActionCounts, setVisibleActionCounts] = useState(tabActionCounts);
 
   useEffect(() => {
-    setActiveTab(readTabFromUrl());
-  }, []);
+    setActiveTab(normalizeTab(defaultTab));
+  }, [defaultTab]);
 
   useEffect(() => {
     setVisibleActionCounts(tabActionCounts);
   }, [tabActionCounts]);
 
-  useEffect(() => {
-    function syncFromHistory() {
-      setActiveTab(readTabFromUrl());
-    }
-
-    window.addEventListener("popstate", syncFromHistory);
-    return () => {
-      window.removeEventListener("popstate", syncFromHistory);
-    };
-  }, []);
-
   function switchTab(nextTab) {
     const normalized = normalizeTab(nextTab);
+    if (normalized === activeTab) {
+      return;
+    }
+
     setActiveTab(normalized);
-    writeTabToUrl(normalized);
+    router.push(getTabUrl(normalized), { scroll: false });
   }
 
   useEffect(() => {

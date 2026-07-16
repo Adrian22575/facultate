@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 
 const NAVIGATION_PENDING_EVENT = "nota5plus:navigation-pending";
 const NAVIGATION_RESET_EVENT = "nota5plus:navigation-reset";
-let activeNavigationHref = "";
 
 function shouldShowPending(event, href) {
   if (
@@ -39,35 +38,17 @@ export function PendingNavigationLink({
   ...props
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const routeKey = `${pathname}?${searchParams.toString()}`;
   const [pending, setPending] = useState(false);
-  const [blocked, setBlocked] = useState(false);
 
   useEffect(() => {
-    activeNavigationHref = "";
     setPending(false);
-    setBlocked(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    function handleNavigationPending(event) {
-      const nextHref = event?.detail?.href;
-      if (!nextHref || nextHref === href) {
-        return;
-      }
-
-      activeNavigationHref = nextHref;
-      setBlocked(true);
-    }
-
-    window.addEventListener(NAVIGATION_PENDING_EVENT, handleNavigationPending);
-    return () => window.removeEventListener(NAVIGATION_PENDING_EVENT, handleNavigationPending);
-  }, [href]);
+  }, [routeKey]);
 
   useEffect(() => {
     function resetNavigation() {
-      activeNavigationHref = "";
       setPending(false);
-      setBlocked(false);
     }
 
     window.addEventListener(NAVIGATION_RESET_EVENT, resetNavigation);
@@ -75,7 +56,7 @@ export function PendingNavigationLink({
   }, []);
 
   function handleClick(event) {
-    if (blocked || activeNavigationHref) {
+    if (pending) {
       event.preventDefault();
       return;
     }
@@ -83,7 +64,6 @@ export function PendingNavigationLink({
     onClick?.(event);
 
     if (shouldShowPending(event, href)) {
-      activeNavigationHref = href;
       setPending(true);
       window.dispatchEvent(
         new CustomEvent(NAVIGATION_PENDING_EVENT, {
@@ -99,9 +79,6 @@ export function PendingNavigationLink({
       href={href}
       className={className}
       aria-busy={pending ? "true" : undefined}
-      aria-disabled={blocked ? "true" : undefined}
-      tabIndex={blocked ? -1 : props.tabIndex}
-      data-navigation-blocked={blocked ? "true" : undefined}
       data-navigation-pending={pending ? "true" : undefined}
       onClick={handleClick}
     >

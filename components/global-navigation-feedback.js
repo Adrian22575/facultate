@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
 
-let isGlobalNavigationPending = false;
 const NAVIGATION_RESET_EVENT = "nota5plus:navigation-reset";
+const NAVIGATION_INDICATOR_DELAY_MS = 280;
 const NAVIGATION_RECOVERY_MS = 10_000;
 
 function isInternalNavigation(event, anchor) {
@@ -18,7 +18,8 @@ function isInternalNavigation(event, anchor) {
     event.shiftKey ||
     event.altKey ||
     anchor.target ||
-    anchor.hasAttribute("download")
+    anchor.hasAttribute("download") ||
+    anchor.getAttribute("aria-disabled") === "true"
   ) {
     return false;
   }
@@ -27,7 +28,8 @@ function isInternalNavigation(event, anchor) {
   if (!rawHref || rawHref.startsWith("#") || rawHref.startsWith("//")) return false;
 
   try {
-    return new URL(anchor.href, window.location.href).origin === window.location.origin;
+    const destination = new URL(anchor.href, window.location.href);
+    return destination.origin === window.location.origin && destination.href !== window.location.href;
   } catch {
     return false;
   }
@@ -35,11 +37,14 @@ function isInternalNavigation(event, anchor) {
 
 export function GlobalNavigationFeedback() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const routeKey = `${pathname}?${searchParams.toString()}`;
   const [pending, setPending] = useState(false);
   const activationTimeoutRef = useRef(null);
   const recoveryTimeoutRef = useRef(null);
+  const activeAnchorRef = useRef(null);
 
-  useEffect(() => {
+  function resetNavigation() {
     if (activationTimeoutRef.current) {
       window.clearTimeout(activationTimeoutRef.current);
       activationTimeoutRef.current = null;
@@ -48,69 +53,56 @@ export function GlobalNavigationFeedback() {
       window.clearTimeout(recoveryTimeoutRef.current);
       recoveryTimeoutRef.current = null;
     }
-    isGlobalNavigationPending = false;
+
+    activeAnchorRef.current?.removeAttribute("aria-busy");
+    activeAnchorRef.current?.removeAttribute("data-navigation-pending");
+    activeAnchorRef.current = null;
     setPending(false);
     window.dispatchEvent(new CustomEvent(NAVIGATION_RESET_EVENT));
-  }, [pathname]);
+  }
 
   useEffect(() => {
-    const mainContent = document.getElementById("main-content");
-    if (pending) {
-      mainContent?.setAttribute("inert", "");
-      return () => mainContent?.removeAttribute("inert");
-    }
-
-    mainContent?.removeAttribute("inert");
-    return undefined;
-  }, [pending]);
+    resetNavigation();
+  }, [routeKey]);
 
   useEffect(() => {
     function handleNavigation(event) {
-      if (isGlobalNavigationPending) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
-
       const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
       if (!anchor || !isInternalNavigation(event, anchor)) return;
 
-      isGlobalNavigationPending = true;
+      if (activeAnchorRef.current === anchor) {
+        event.preventDefault();
+        return;
+      }
+
+      resetNavigation();
+      activeAnchorRef.current = anchor;
+      anchor.setAttribute("aria-busy", "true");
+      anchor.setAttribute("data-navigation-pending", "true");
+
       activationTimeoutRef.current = window.setTimeout(() => {
         activationTimeoutRef.current = null;
-        if (isGlobalNavigationPending) {
+        if (activeAnchorRef.current === anchor) {
           setPending(true);
         }
-      }, 0);
-      recoveryTimeoutRef.current = window.setTimeout(() => {
-        isGlobalNavigationPending = false;
-        recoveryTimeoutRef.current = null;
-        setPending(false);
-        window.dispatchEvent(new CustomEvent(NAVIGATION_RESET_EVENT));
-      }, NAVIGATION_RECOVERY_MS);
+      }, NAVIGATION_INDICATOR_DELAY_MS);
+
+      recoveryTimeoutRef.current = window.setTimeout(resetNavigation, NAVIGATION_RECOVERY_MS);
     }
 
     document.addEventListener("click", handleNavigation, true);
     return () => {
       document.removeEventListener("click", handleNavigation, true);
-      if (activationTimeoutRef.current) {
-        window.clearTimeout(activationTimeoutRef.current);
-      }
-      if (recoveryTimeoutRef.current) {
-        window.clearTimeout(recoveryTimeoutRef.current);
-      }
+      resetNavigation();
     };
   }, []);
 
   if (!pending) return null;
 
   return (
-    <>
-      <div className="global-navigation-blocker" aria-hidden="true" />
-      <div className="global-navigation-feedback" role="status" aria-live="polite">
-        <LoadingSpinner size={16} />
-        <span>Se deschide pagina...</span>
-      </div>
-    </>
+    <div className="global-navigation-feedback" role="status" aria-live="polite">
+      <LoadingSpinner size={16} />
+      <span>Se deschide pagina...</span>
+    </div>
   );
 }

@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AIJobGlobalNotifier } from "@/components/ai-job-global-notifier";
@@ -50,9 +51,13 @@ export default function RootLayout({ children }) {
           {children}
         </div>
         <UsageTracker />
-        <GlobalNavigationFeedback />
+        <Suspense fallback={null}>
+          <GlobalNavigationFeedback />
+        </Suspense>
         <AIJobGlobalNotifier />
-        <FeedbackLauncherServer />
+        <Suspense fallback={null}>
+          <FeedbackLauncherServer />
+        </Suspense>
         <Analytics />
         <SpeedInsights />
       </body>
