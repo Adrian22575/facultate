@@ -4,6 +4,7 @@ import { ArrowRight, GraduationCap, School } from "lucide-react";
 
 import { OnboardingActionForm } from "@/components/onboarding-action-form";
 import { AppHeader } from "@/components/app-header";
+import { OnboardingRoleChoiceLock } from "@/components/onboarding-role-choice-lock";
 import { OnboardingSelectionStep } from "@/components/onboarding-selection-step";
 import { OnboardingSubmitButton } from "@/components/onboarding-submit-button";
 import {
@@ -856,7 +857,7 @@ export default async function OnboardingPage({ searchParams }) {
   function renderStepContent() {
     if (currentStep === "user-type") {
       return (
-        <div className="mode-grid onboarding-type-grid">
+        <OnboardingRoleChoiceLock>
           <form action={updateUserTypeAction} className="plan-card onboarding-choice-card">
             <input type="hidden" name="userType" value="student" />
             <input type="hidden" name="redirectBase" value="/onboarding" />
@@ -910,7 +911,7 @@ export default async function OnboardingPage({ searchParams }) {
               <ArrowRight aria-hidden="true" size={17} strokeWidth={2.4} />
             </OnboardingSubmitButton>
           </form>
-        </div>
+        </OnboardingRoleChoiceLock>
       );
     }
 
