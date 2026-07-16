@@ -19942,15 +19942,23 @@ td {
 
 .gamification-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.48fr);
+  gap: 28px;
   align-items: center;
   padding: 26px;
   border-radius: 28px;
 }
 
+.gamification-hero-copy {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}
+
 .gamification-hero h1,
-.gamification-hero p {
+.gamification-hero p,
+.gamification-level-summary strong,
+.gamification-level-summary small {
   margin: 0;
 }
 
@@ -19961,65 +19969,109 @@ td {
 }
 
 .gamification-hero p {
-  margin-top: 10px;
+  max-width: 580px;
   color: var(--muted);
   font-weight: 700;
   line-height: 1.55;
 }
 
-.gamification-hero-badge {
-  display: grid;
-  place-items: center;
-  gap: 6px;
-  width: 104px;
-  height: 104px;
-  border: 1px solid #f0d7a2;
-  border-radius: 28px;
-  background: #fff8e8;
-  color: #b97700;
+.gamification-primary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 850;
+  text-decoration: none;
 }
 
-.gamification-hero-badge span {
+.gamification-primary-action:hover,
+.gamification-primary-action:focus-visible {
+  background: var(--primary-dark);
+  color: #fff;
+}
+
+.gamification-level-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 16px;
+  border: 1px solid #d9e5f5;
+  border-radius: 20px;
+  background: #f7fbff;
+}
+
+.gamification-level-summary > div {
+  display: grid;
+  gap: 5px;
+}
+
+.gamification-level-summary > div > span,
+.gamification-level-summary small,
+.gamification-rhythm-card small,
+.gamification-rhythm-card div > span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.gamification-level-summary strong {
   color: var(--ink);
   font-size: 1.2rem;
-  font-weight: 950;
+  line-height: 1.2;
 }
 
-.gamification-kpi-grid {
+.gamification-level-icon,
+.gamification-rhythm-icon,
+.gamification-next-icon {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.gamification-rhythm-icon.is-warm {
+  background: #fff4e8;
+  color: #c26d12;
+}
+
+.gamification-rhythm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-.gamification-kpi-grid article {
+.gamification-rhythm-card {
   display: grid;
-  gap: 6px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
   padding: 18px;
 }
 
-.gamification-kpi-grid span,
-.gamification-activity-list span,
-.gamification-achievement-list small {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.gamification-kpi-grid strong {
-  color: var(--ink);
-  font-size: 1.45rem;
-}
-
-.gamification-level-card,
-.gamification-achievements-card,
-.gamification-activity-card {
+.gamification-rhythm-card > div {
   display: grid;
-  gap: 16px;
-  padding: 20px;
+  gap: 4px;
+}
+
+.gamification-rhythm-card strong {
+  color: var(--ink);
+  font-size: 1.3rem;
+  line-height: 1.2;
 }
 
 .gamification-level-track {
-  height: 12px;
+  height: 8px;
+  margin-top: 5px;
   overflow: hidden;
   border-radius: 999px;
   background: #dfe9fb;
@@ -20033,29 +20085,109 @@ td {
   transition: width 220ms ease;
 }
 
-@keyframes gamification-result-enter {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.gamification-next-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 20px;
 }
 
-.gamification-level-card p {
+.gamification-next-copy h2,
+.gamification-next-copy p {
   margin: 0;
+}
+
+.gamification-next-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.gamification-next-copy h2 {
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.gamification-next-copy p,
+.gamification-empty-copy {
   color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.gamification-next-bonus {
+  white-space: nowrap;
+  color: #0f6b4b;
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.gamification-details {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.gamification-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.gamification-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.gamification-details summary > span:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.gamification-details summary small {
+  color: var(--muted);
+  font-size: 0.82rem;
   font-weight: 750;
 }
 
-.gamification-layout {
+.gamification-details-marker {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.gamification-details[open] .gamification-details-marker {
+  transform: rotate(45deg);
+}
+
+.gamification-details-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 18px;
-  align-items: start;
+  padding: 2px 18px 18px;
+  border-top: 1px solid var(--line);
+}
+
+.gamification-details-content > section {
+  display: grid;
+  gap: 10px;
+}
+
+.gamification-details-content h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
 }
 
 .gamification-achievement-list,
@@ -20111,6 +20243,20 @@ td {
   line-height: 1.45;
 }
 
+.gamification-activity-list span,
+.gamification-achievement-list small {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.gamification-empty-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
 .gamification-achievement-list svg {
   color: var(--muted);
 }
@@ -20128,19 +20274,38 @@ td {
   font-size: 1.1rem;
 }
 
+@keyframes gamification-result-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 980px) {
-  .gamification-kpi-grid,
-  .gamification-layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .gamification-hero {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 760px) {
   .gamification-result-panel,
   .gamification-hero,
-  .gamification-kpi-grid,
-  .gamification-layout {
+  .gamification-rhythm-grid,
+  .gamification-details-content {
     grid-template-columns: 1fr;
+  }
+
+  .gamification-next-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .gamification-next-bonus {
+    grid-column: 2;
   }
 
   .gamification-result-link {

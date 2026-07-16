@@ -39,8 +39,8 @@ export default async function MyProgressPage() {
   return (
     <main className="app-shell">
       <AppHeader
-        title="Progresul meu"
-        subtitle="Puncte, streak, niveluri si realizari obtinute prin sesiuni reale de invatare."
+        title="Progres"
+        subtitle="Vezi ce ai făcut și alege următorul pas de învățare."
       />
       <GamificationProgressPage summary={summary} />
     </main>
