@@ -89,25 +89,27 @@ export function DashboardPageClient({
           )}
         </nav>
 
-        <section className="dashboard-home-intro" aria-labelledby="dashboard-home-title">
-          <div>
-            <h1 id="dashboard-home-title">Cum vrei sa inveti azi?</h1>
-            <p>Alege un punct de plecare. Restul optiunilor apar pe parcurs.</p>
-          </div>
-          {resumeSession ? (
-            <PendingNavigationLink
-              href={resumeSession.url}
-              className="dashboard-resume-link"
-              pendingLabel="Se reia sesiunea..."
-              pendingMode="replace"
-            >
-              <span>Continua invatarea</span>
-              <strong>{resumeSession.subjectTitle || "Materia ta"}</strong>
-              <em>{resumeSession.mode || "Reia"}</em>
-              <ArrowRight aria-hidden="true" size={16} strokeWidth={2.4} />
-            </PendingNavigationLink>
-          ) : null}
-        </section>
+        {sessionEntryStep === "entry" ? (
+          <section className="dashboard-home-intro" aria-labelledby="dashboard-home-title">
+            <div>
+              <h1 id="dashboard-home-title">Cum vrei sa inveti azi?</h1>
+              <p>Alege un punct de plecare. Restul optiunilor apar pe parcurs.</p>
+            </div>
+            {resumeSession ? (
+              <PendingNavigationLink
+                href={resumeSession.url}
+                className="dashboard-resume-link"
+                pendingLabel="Se reia sesiunea..."
+                pendingMode="replace"
+              >
+                <span>Continua invatarea</span>
+                <strong>{resumeSession.subjectTitle || "Materia ta"}</strong>
+                <em>{resumeSession.mode || "Reia"}</em>
+                <ArrowRight aria-hidden="true" size={16} strokeWidth={2.4} />
+              </PendingNavigationLink>
+            ) : null}
+          </section>
+        ) : null}
 
         <section className="dashboard-start-layout">
           <div id="start-sesiune" className="dashboard-main-stack">
@@ -164,21 +166,15 @@ export function DashboardPageClient({
               </section>
             ) : (
               <div className="section-card dashboard-main-card dashboard-main-card-stepper">
-                <div className="dashboard-stepper-head">
-                  <div className="dashboard-stepper-copy">
-                    <span className="dashboard-stepper-kicker">Exerseaza si recapituleaza</span>
-                    <h2>Alege materia</h2>
-                    <p className="section-sub">
-                      Dupa ce alegi materia, poti continua cu Studiu, Test sau Interactiv.
-                    </p>
-                  </div>
+                <div className="dashboard-stepper-head dashboard-stepper-head-minimal">
+                  <h2>Alege materia</h2>
 
                   <button
                     type="button"
                     className="btn-link secondary dashboard-stepper-back"
                     onClick={() => setSessionEntryStep("entry")}
                   >
-                    Inapoi la optiuni
+                    Inapoi
                   </button>
                 </div>
 
@@ -188,8 +184,8 @@ export function DashboardPageClient({
                   subjectAllocations={subjectAllocations}
                   userType={userType}
                   embedded
-                  title="Materii disponibile"
-                  description="Toate materiile sunt vizibile din start. Anul, semestrul si clasa sunt doar filtre optionale."
+                  title=""
+                  description=""
                   sectionId="materii-list"
                 />
               </div>

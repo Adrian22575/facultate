@@ -149,10 +149,12 @@ export function SubjectsListClient({
       id={sectionId}
       className={`section-card subjects-section-card${embedded ? " is-embedded" : ""}`}
     >
-      <div className="dashboard-header">
-        <h2>{title}</h2>
-        <span className="subject-count">{`${filteredRows.length} din ${rows.length} materii`}</span>
-      </div>
+      {title ? (
+        <div className="dashboard-header">
+          <h2>{title}</h2>
+          <span className="subject-count">{`${filteredRows.length} din ${rows.length} materii`}</span>
+        </div>
+      ) : null}
 
       {description ? <p className="section-sub">{description}</p> : null}
 
@@ -160,13 +162,6 @@ export function SubjectsListClient({
 
       {recentSubjects.length ? (
         <section className="subjects-recent" aria-label="Materii de continuat">
-          <div className="subjects-recent-head">
-            <div>
-              <span className="ui-section-label">Continua</span>
-              <h3>Materii recente</h3>
-            </div>
-            <small>Alege una si reiei direct.</small>
-          </div>
           <div className="subjects-recent-list">
             {recentSubjects.map((subject) => (
               <PendingNavigationLink
@@ -191,14 +186,14 @@ export function SubjectsListClient({
 
       <div className="subjects-toolbar" aria-label="Filtre pentru materii">
         <label className="subjects-search-field">
-          <span>Cauta</span>
+          <span className="sr-only">Cauta materia</span>
           <Search size={18} strokeWidth={2.5} aria-hidden="true" />
           <input
             className="input-search"
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Cauta dupa materie, an, semestru sau clasa"
+            placeholder="Cauta materia"
           />
         </label>
 
@@ -266,7 +261,7 @@ export function SubjectsListClient({
             <thead>
               <tr>
                 <th scope="col">Materie</th>
-                <th scope="col">Continua</th>
+                <th scope="col"><span className="sr-only">Actiune</span></th>
               </tr>
             </thead>
             <tbody>
@@ -275,10 +270,9 @@ export function SubjectsListClient({
                   <td data-label="Materie">
                     <div className="subject-title-cell">
                       <strong>{row.subject.title}</strong>
-                      <span>{row.contextLabels[0]}</span>
                     </div>
                   </td>
-                  <td data-label="Continua">
+                  <td data-label="">
                     <PendingNavigationLink
                       className="subject-table-action is-primary"
                       href={`/materii/${row.subject.id}`}
