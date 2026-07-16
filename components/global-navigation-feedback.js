@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { LoadingSpinner } from "@/components/loading-spinner";
 
 let isGlobalNavigationPending = false;
-const NAVIGATION_PENDING_EVENT = "nota5plus:navigation-pending";
 const NAVIGATION_RESET_EVENT = "nota5plus:navigation-reset";
 const NAVIGATION_RECOVERY_MS = 10_000;
 
@@ -77,11 +76,6 @@ export function GlobalNavigationFeedback() {
       if (!anchor || !isInternalNavigation(event, anchor)) return;
 
       isGlobalNavigationPending = true;
-      window.dispatchEvent(
-        new CustomEvent(NAVIGATION_PENDING_EVENT, {
-          detail: { href: anchor.getAttribute("href") || anchor.href }
-        })
-      );
       activationTimeoutRef.current = window.setTimeout(() => {
         activationTimeoutRef.current = null;
         if (isGlobalNavigationPending) {
