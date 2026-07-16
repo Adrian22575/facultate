@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CreditCard, FolderOpen, Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { activateReferralRewardAction, activateWelcomePremiumAction } from "@/app/cont/actions";
@@ -8,7 +7,6 @@ import { AccountBillingTabsClient } from "@/components/account-billing-tabs-clie
 import { AccountDangerZone } from "@/components/account-danger-zone";
 import { AppHeader } from "@/components/app-header";
 import { BillingPlanCard } from "@/components/billing-plan-card";
-import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ReferralShareCard } from "@/components/referral-share-card";
 import {
   getAcademicCommunityLabel,
@@ -63,15 +61,6 @@ const CREDIT_PLAN_CONTENT = {
     icon: "layers"
   }
 };
-
-function IconText({ icon: Icon, children }) {
-  return (
-    <span className="ui-icon-text">
-      <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
-      <span>{children}</span>
-    </span>
-  );
-}
 
 function formatPremiumSummary(snapshot) {
   if (!snapshot?.activePremium || !snapshot?.premiumProductCode) {
@@ -136,12 +125,6 @@ function AccountIcon({ type }) {
         <svg {...svgProps}>
           <circle cx="12" cy="8.5" r="3.25" />
           <path d="M6 18c1.2-2.55 3.38-3.82 6-3.82S16.8 15.45 18 18" />
-        </svg>
-      );
-    case "bolt":
-      return (
-        <svg {...svgProps}>
-          <path d="M13 2 6.5 12h4L9.5 22 17 10h-4L13 2Z" />
         </svg>
       );
     case "clock":
@@ -481,6 +464,8 @@ export default async function AccountPage({ searchParams }) {
     latestTestimonialReward?.status === "approved" && !latestTestimonialReward?.reward_granted_at;
   const uploadCount = billingSnapshot?.aiCredits ?? 0;
   const authProviderLabel = user?.app_metadata?.provider === "google" ? "Google" : "Email";
+  const uploadActionHref = uploadCount > 0 ? "/materiale/invata" : "/cont?section=credits#planuri";
+  const uploadActionLabel = uploadCount > 0 ? "Adaugă material" : "Adaugă încărcări";
 
   return (
     <main className="app-shell account-page-shell">
@@ -493,9 +478,14 @@ export default async function AccountPage({ searchParams }) {
       <section className="account-page-header">
         <div className="account-page-copy">
           <h1 className="account-page-title">Contul meu</h1>
-          <p className="account-page-subtitle">
-            Setari simple pentru comunitate, acces si materiale. Tot ce conteaza intr-un singur loc.
-          </p>
+          <p className="account-page-subtitle">Accesul, comunitatea și încărcările tale.</p>
+          <div className="account-page-identity">
+            <span className="account-page-identity-icon" aria-hidden="true">
+              <AccountIcon type="user" />
+            </span>
+            <span>{user?.email ?? "Cont local"}</span>
+            {!demoMode ? <span>Conectat prin {authProviderLabel.toLowerCase()}</span> : <span>Mod demo</span>}
+          </div>
         </div>
       </section>
 
@@ -516,7 +506,7 @@ export default async function AccountPage({ searchParams }) {
           statusLabel={billingSnapshot?.activePremium ? "Activ" : "Inactiv"}
           statusTone={billingSnapshot?.activePremium ? "good" : "default"}
           actionHref="/cont?section=plans#planuri"
-          actionLabel={billingSnapshot?.activePremium ? "Schimba planul" : "Alege un plan"}
+          actionLabel={billingSnapshot?.activePremium ? "Vezi opțiunile" : "Alege un plan"}
         />
         <SummaryCard
           icon={<AccountIcon type="upload" />}
@@ -524,55 +514,12 @@ export default async function AccountPage({ searchParams }) {
           value={creditsLabel}
           statusLabel={uploadCount > 0 ? `${uploadCount} disponibile` : "0 disponibile"}
           statusTone={uploadCount > 0 ? "good" : "default"}
-          actionHref="/materiale"
-          actionLabel="Incarca materiale"
-        />
-        <SummaryCard
-          icon={<AccountIcon type="user" />}
-          label="Cont"
-          value={user?.email ?? "Cont local"}
-          statusLabel={demoMode ? "Demo" : authProviderLabel}
-          statusTone={!demoMode && user?.email ? "good" : "default"}
-          footerCopy={demoMode ? "Esti in demo." : `Conectat prin ${authProviderLabel.toLowerCase()}.`}
-          compact
+          actionHref={uploadActionHref}
+          actionLabel={uploadActionLabel}
         />
       </section>
 
       {referralInvitation ? <InvitedByReferralCard invitation={referralInvitation} /> : null}
-
-      <section className="account-quick-actions" aria-label="Actiuni rapide">
-        <div className="account-quick-copy">
-          <span className="account-icon-box" aria-hidden="true">
-            <AccountIcon type="bolt" />
-          </span>
-          <div>
-            <strong>Actiuni rapide</strong>
-            <span>Incepe cu ce ai nevoie acum.</span>
-          </div>
-        </div>
-        <div className="account-quick-buttons">
-          <PendingNavigationLink className="btn-primary account-quick-primary" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
-            <IconText icon={Upload}>Incarca materiale</IconText>
-          </PendingNavigationLink>
-          <PendingNavigationLink className="account-quick-secondary" href="/materiale/activitate?tab=subjects" pendingLabel="Se deschide activitatea..." pendingMode="replace">
-            <IconText icon={FolderOpen}>Gestioneaza materiile</IconText>
-          </PendingNavigationLink>
-          <Link className="account-quick-secondary" href="/cont?section=plans#planuri">
-            <IconText icon={CreditCard}>Schimba planul</IconText>
-          </Link>
-        </div>
-      </section>
-
-      {referralDashboard ? (
-        <ReferralShareCard
-          referralPath={referralDashboard.referralPath}
-          pendingCount={referralDashboard.pendingCount}
-          readyCount={referralDashboard.readyCount}
-          rewardedCount={referralDashboard.rewardedCount}
-          referrals={referralDashboard.referrals}
-          activateAction={activateReferralRewardAction}
-        />
-      ) : null}
 
       {setupWarning ? (
         <section className="surface">
@@ -607,11 +554,11 @@ export default async function AccountPage({ searchParams }) {
               <div className="account-section-head">
                 <div>
                   <div className="account-section-label">Acces</div>
-                  <h2>Alege accesul potrivit pentru tine</h2>
+                  <h2>Planul tău de studiu</h2>
                   <p className="page-copy">
                     {billingSnapshot?.activePremium
-                      ? "Daca vrei, poti schimba planul direct de aici."
-                      : "Nu ai niciun plan activ. Alege unul si continua rapid cu recapitularea."}
+                      ? "Planul activ și alternativele disponibile."
+                      : "Alege un plan pentru modurile de învățare."}
                   </p>
                 </div>
               </div>
@@ -642,7 +589,6 @@ export default async function AccountPage({ searchParams }) {
                       selected={selectedPlanCode === plan.code}
                       icon={<AccountIcon type={presentation.icon} />}
                       disabled={!user || demoMode || !checkoutConfigured}
-                      selected={selectedPlanCode === plan.code}
                       returnTo={returnTo}
                     />
                   );
@@ -655,9 +601,9 @@ export default async function AccountPage({ searchParams }) {
               <div className="account-section-head">
                 <div>
                   <div className="account-section-label">Materiale</div>
-                  <h2>Alege pachetul de incarcari</h2>
+                  <h2>Încărcări pentru materiale</h2>
                   <p className="page-copy">
-                    Dupa incarcare, verifici intrebarile inainte sa fie disponibile pentru tine si comunitatea ta.
+                    Alege doar numărul de materiale pe care vrei să le pregătești.
                   </p>
                 </div>
               </div>
@@ -684,37 +630,16 @@ export default async function AccountPage({ searchParams }) {
         />
       </section>
 
-      <section className="account-workspace-cta" id="workspace">
-        <div className="account-workspace-copy">
-          <div className="account-workspace-kicker">Materiale</div>
-          <h2>Incarca materiale si creeaza teste pentru comunitatea ta.</h2>
-          <p>
-            Adaugi cursuri, notite sau PDF-uri, iar platforma le transforma in intrebari si recapitulare pentru tine si colegii tai.
-          </p>
-        </div>
-        <div className="account-workspace-visual" aria-hidden="true">
-          <span className="account-workspace-chip">
-            <AccountIcon type="file" />
-          </span>
-          <span className="account-workspace-chip">
-            <AccountIcon type="cap" />
-          </span>
-          <span className="account-workspace-chip">
-            <AccountIcon type="spark" />
-          </span>
-          <span className="account-workspace-chip">
-            <AccountIcon type="layers" />
-          </span>
-        </div>
-        <div className="account-workspace-actions">
-          <PendingNavigationLink className="account-workspace-button" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
-            <IconText icon={Upload}>Incarca materiale</IconText>
-          </PendingNavigationLink>
-          <PendingNavigationLink className="account-workspace-button secondary" href="/materiale/activitate" pendingLabel="Se deschide activitatea..." pendingMode="replace">
-            <IconText icon={FolderOpen}>Materialele mele</IconText>
-          </PendingNavigationLink>
-        </div>
-      </section>
+      {referralDashboard ? (
+        <ReferralShareCard
+          referralPath={referralDashboard.referralPath}
+          pendingCount={referralDashboard.pendingCount}
+          readyCount={referralDashboard.readyCount}
+          rewardedCount={referralDashboard.rewardedCount}
+          referrals={referralDashboard.referrals}
+          activateAction={activateReferralRewardAction}
+        />
+      ) : null}
 
       {!demoMode ? <AccountDangerZone isAdmin={adminUser} /> : null}
     </main>

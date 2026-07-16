@@ -12450,6 +12450,7 @@ td {
 }
 
 .account-page-subtitle {
+  margin: 0;
   max-width: 620px;
   color: var(--muted);
   font-size: 1.02rem;
@@ -12457,9 +12458,40 @@ td {
   font-weight: 500;
 }
 
+.account-page-identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px 10px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.account-page-identity > span:last-child::before {
+  content: "·";
+  margin-right: 10px;
+  color: #9eb0c8;
+}
+
+.account-page-identity-icon {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.account-page-identity-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
 .account-summary-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin-bottom: 22px;
 }
@@ -12495,8 +12527,7 @@ td {
 }
 
 .account-icon-box svg,
-.account-price-icon svg,
-.account-workspace-chip svg {
+.account-price-icon svg {
   width: 22px;
   height: 22px;
 }
@@ -12586,75 +12617,6 @@ td {
 .account-summary-footnote {
   color: var(--muted);
   font-weight: 500;
-}
-
-.account-quick-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding: 16px;
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.7);
-}
-
-.account-quick-copy {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: var(--muted);
-}
-
-.account-quick-copy strong {
-  display: block;
-  margin-bottom: 2px;
-  color: var(--ink);
-  font-size: 0.98rem;
-  font-weight: 700;
-}
-
-.account-quick-copy span {
-  font-size: 0.92rem;
-  font-weight: 500;
-}
-
-.account-quick-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.account-quick-primary,
-.account-quick-secondary,
-.account-workspace-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 18px;
-  border-radius: 16px;
-  text-decoration: none;
-}
-
-.account-quick-primary {
-  padding: 0 20px;
-}
-
-.account-quick-secondary {
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--primary-dark);
-  font-weight: 700;
-  transition: 0.18s ease;
-}
-
-.account-quick-secondary:hover,
-.account-workspace-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(20, 50, 100, 0.08);
 }
 
 .account-invited-referral-card {
@@ -13916,110 +13878,6 @@ td {
   justify-content: flex-end;
 }
 
-.account-workspace-cta {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 24px;
-  align-items: center;
-  padding: 30px;
-  border-radius: 32px;
-  background: var(--primary-dark);
-  color: #fff;
-  box-shadow: 0 22px 48px rgba(11, 52, 116, 0.22);
-  overflow: hidden;
-}
-
-.account-workspace-cta::after {
-  content: "";
-  position: absolute;
-  width: 260px;
-  height: 260px;
-  top: -100px;
-  right: -80px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.account-workspace-copy,
-.account-workspace-visual,
-.account-workspace-actions,
-.account-workspace-button {
-  position: relative;
-  z-index: 1;
-}
-
-.account-workspace-kicker {
-  margin-bottom: 10px;
-  color: #a9c8ff;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.account-workspace-copy h2 {
-  margin: 0 0 10px;
-  color: #fff;
-  font-size: clamp(1.8rem, 3vw, 2.45rem);
-  line-height: 1.06;
-  letter-spacing: -0.055em;
-  font-weight: 800;
-}
-
-.account-workspace-copy p {
-  max-width: 620px;
-  color: #d9e7ff;
-  font-size: 0.98rem;
-  line-height: 1.65;
-  font-weight: 500;
-}
-
-.account-workspace-visual {
-  display: grid;
-  grid-template-columns: repeat(2, 74px);
-  gap: 12px;
-}
-
-.account-workspace-chip {
-  width: 74px;
-  height: 74px;
-  display: grid;
-  place-items: center;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.13);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #fff;
-}
-
-.account-workspace-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.account-workspace-button {
-  background: #fff;
-  color: var(--primary-dark);
-  font-weight: 700;
-}
-
-.account-workspace-button.secondary {
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-.account-workspace-button:hover {
-  color: var(--primary-dark);
-}
-
-.account-workspace-button.secondary:hover {
-  color: #fff;
-}
-
 @media (max-width: 980px) {
   .account-summary-grid,
   .account-plan-grid {
@@ -14063,30 +13921,18 @@ td {
     width: 100%;
   }
 
-  .account-workspace-cta {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 760px) {
   .account-page-header,
-  .account-quick-actions,
   .account-invited-referral-card,
   .account-welcome-card {
     display: block;
   }
 
-  .account-quick-copy {
-    margin-bottom: 14px;
-  }
-
   .account-invited-referral-icon,
   .account-invited-referral-copy {
     margin-bottom: 14px;
-  }
-
-  .account-quick-buttons {
-    justify-content: flex-start;
   }
 
   .account-referral-linkbox {
@@ -14133,14 +13979,6 @@ td {
     grid-template-columns: 1fr;
   }
 
-  .account-quick-buttons,
-  .account-quick-primary,
-  .account-quick-secondary,
-  .account-workspace-actions,
-  .account-workspace-button {
-    width: 100%;
-  }
-
   .account-referral-stats {
     grid-template-columns: 1fr;
   }
@@ -14152,23 +13990,8 @@ td {
 
   .account-summary-card,
   .account-referral-panel,
-  .account-billing-surface,
-  .account-workspace-cta {
+  .account-billing-surface {
     border-radius: 24px;
-  }
-
-  .account-workspace-cta {
-    padding: 24px;
-  }
-
-  .account-workspace-visual {
-    grid-template-columns: repeat(2, 64px);
-  }
-
-  .account-workspace-chip {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
   }
 }
 

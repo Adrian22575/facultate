@@ -18,7 +18,7 @@ export function AccountBillingTabsClient({
       <div
         className="ui-segmented-tabs account-billing-tabs"
         role="tablist"
-        aria-label="Optiuni cont"
+        aria-label="Acces și încărcări"
         onKeyDown={handleTablistKeyDown}
       >
         <button
@@ -33,7 +33,7 @@ export function AccountBillingTabsClient({
           }`}
           onClick={() => setSection("plans")}
         >
-          Schimba planul
+          Plan de studiu
         </button>
         <button
           id="account-tab-credits"
@@ -47,7 +47,7 @@ export function AccountBillingTabsClient({
           }`}
           onClick={() => setSection("credits")}
         >
-          Incarca materiale
+          Încărcări
         </button>
       </div>
 
