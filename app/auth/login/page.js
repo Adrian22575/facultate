@@ -158,7 +158,7 @@ export default async function LoginPage({ searchParams }) {
               <GoogleSignInButton
                 next={materialStartPath}
                 disabled={!isConfigured}
-                icon={Upload}
+                icon="upload"
                 className="nota5plus-path-wrap"
                 buttonClassName="nota5plus-path-card is-material"
                 errorClassName="nota5plus-inline-error"
@@ -171,7 +171,7 @@ export default async function LoginPage({ searchParams }) {
               <GoogleSignInButton
                 next={gridsStartPath}
                 disabled={!isConfigured}
-                icon={Target}
+                icon="target"
                 className="nota5plus-path-wrap"
                 buttonClassName="nota5plus-path-card is-grids"
                 errorClassName="nota5plus-inline-error"

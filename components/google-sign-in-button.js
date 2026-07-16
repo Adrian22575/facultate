@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Target, Upload } from "lucide-react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
 import { createClient } from "@/lib/supabase/client";
@@ -28,15 +29,21 @@ function GoogleLogo() {
   );
 }
 
+const SEMANTIC_ICONS = {
+  upload: Upload,
+  target: Target
+};
+
 export function GoogleSignInButton({
   next = "/",
   disabled = false,
-  icon: Icon = null,
+  icon = "",
   className = "",
   buttonClassName = "",
   errorClassName = "",
   children = null
 }) {
+  const Icon = SEMANTIC_ICONS[icon] || null;
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
