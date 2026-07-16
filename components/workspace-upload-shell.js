@@ -1,13 +1,12 @@
-import Link from "next/link";
-
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 export function WorkspaceUploadShell({
   title,
   subtitle,
-  eyebrow = "Workspace",
+  eyebrow = "Materiale",
   backHref = "/materiale",
-  backLabel = "Inapoi la Workspace",
+  backLabel = "Inapoi la materiale",
   meta = [],
   steps = [],
   children,
@@ -17,9 +16,14 @@ export function WorkspaceUploadShell({
     <main className="app-shell learning-upload-page workspace-flow-page workspace-import-page">
       <AppHeader
         action={
-          <Link className="btn-back" href={backHref}>
+          <PendingNavigationLink
+            className="btn-back"
+            href={backHref}
+            pendingLabel="Se revine la materiale..."
+            pendingMode="replace"
+          >
             {backLabel}
-          </Link>
+          </PendingNavigationLink>
         }
         title={title}
         subtitle={subtitle}

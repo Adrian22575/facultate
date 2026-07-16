@@ -630,7 +630,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
             <PendingNavigationLink
               className="btn-link secondary"
               href="/materiale"
-              pendingLabel="Se deschide workspace-ul..."
+              pendingLabel="Se deschid materialele..."
               pendingMode="replace"
             >
               <IconText icon={ListPlus}>Porneste alta licenta</IconText>
@@ -937,7 +937,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
               pendingLabel="Se revine..."
               pendingMode="replace"
             >
-              <IconText icon={FileText}>Inapoi la workspace</IconText>
+              <IconText icon={FileText}>Inapoi la materiale</IconText>
             </PendingNavigationLink>
           </div>
         </section>

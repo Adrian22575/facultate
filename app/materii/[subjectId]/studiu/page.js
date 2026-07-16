@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { StudyPageClient } from "@/components/study-page-client";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getQuestionsForSubject, getSubjectProgressSnapshot } from "@/lib/data";
@@ -54,9 +54,14 @@ export default async function StudyPage({ params }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href={`/materii/${data.subject.id}`}>
+          <PendingNavigationLink
+            className="btn-back"
+            href={`/materii/${data.subject.id}`}
+            pendingLabel="Se revine la materie..."
+            pendingMode="replace"
+          >
             Inapoi
-          </Link>
+          </PendingNavigationLink>
         }
         kicker="Recapitulare completa"
         title={`Mod Studiu - ${data.subject.title}`}

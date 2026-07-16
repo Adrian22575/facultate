@@ -144,7 +144,7 @@ export default async function SetupPage() {
             Verifica billing
           </Link>
           <Link className="btn-link secondary" href="/materiale">
-            Verifica Workspace
+            Verifica Materiale
           </Link>
         </div>
       </section>
@@ -256,11 +256,11 @@ export default async function SetupPage() {
 
           <StepCard title="Storage fisiere" ready={sourceBucketStatus.ready}>
             <p>
-              Pentru uploadurile din Workspace trebuie sa existe bucketul privat{" "}
+              Pentru incarcarile din Materiale trebuie sa existe bucketul privat{" "}
               <code>{SOURCE_BUCKET}</code> in Supabase Storage.
             </p>
             {sourceBucketStatus.ready ? (
-              <p>Bucketul exista si este pregatit pentru fisierele urcate din Workspace.</p>
+              <p>Bucketul exista si este pregatit pentru fisierele urcate din Materiale.</p>
             ) : (
               <p>
                 {sourceBucketStatus.message} Solutia standard este sa rulezi migrarea{" "}
@@ -404,7 +404,7 @@ export default async function SetupPage() {
           <li>`0017` activeaza logging-ul tehnic recomandat pentru audit si investigatii dupa lansare.</li>
           <li>`0026` activeaza deduplicarea notificarilor admin trimise catre Telegram.</li>
           <li>`0027` adauga timerul si heartbeat-ul pentru procesarea materialelor.</li>
-          <li>Workspace nu poate salva fisiere daca bucketul `private-source-documents` lipseste din Supabase Storage.</li>
+          <li>Materiale nu poate salva fisiere daca bucketul `private-source-documents` lipseste din Supabase Storage.</li>
           <li>Pastrezi cheile secrete doar in `.env.local` sau in env-urile server-side din platforma de deploy si le rotesti daca au fost distribuite in chat.</li>
           <li>Dupa orice schimbare de env in Vercel, redeployezi mediul afectat inainte de retestare.</li>
         </div>

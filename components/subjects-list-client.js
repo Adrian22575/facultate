@@ -291,7 +291,7 @@ export function SubjectsListClient({
         <div className="empty-state">
           {hasFilters || query.trim()
             ? "Nu exista materii pentru filtrele alese. Sterge cautarea sau alege Toate."
-            : "Nu exista materii disponibile momentan. Le poti adauga din Workspace."}
+            : "Nu exista materii disponibile momentan. Le poti adauga din Materiale."}
         </div>
       )}
 

@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { InteractiveQuiz } from "@/components/interactive-quiz";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getQuestionsForSubject } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
@@ -51,9 +51,14 @@ export default async function InteractivePage({ params }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href={`/materii/${data.subject.id}`}>
+          <PendingNavigationLink
+            className="btn-back"
+            href={`/materii/${data.subject.id}`}
+            pendingLabel="Se revine la materie..."
+            pendingMode="replace"
+          >
             Inapoi
-          </Link>
+          </PendingNavigationLink>
         }
         kicker="Feedback instant"
         title={`Mod Interactiv - ${data.subject.title}`}

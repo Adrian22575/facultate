@@ -19,8 +19,8 @@ import { getOptionalUser } from "@/lib/supabase/guards";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Workspace de invatare | Nota 5+",
-  description: "Incarca materia, importa intrebari existente sau pregateste licenta intr-un singur Workspace."
+  title: "Materiale de studiu | Nota 5+",
+  description: "Incarca materia, importa intrebari existente sau pregateste licenta din Materiale."
 };
 
 function WorkspaceHeaderIcon({ type }) {
@@ -214,7 +214,7 @@ export default async function AIWorkspacePage() {
   return (
     <main className="app-shell ai-workspace-page">
       <AppHeader
-        title="Workspace de invatare"
+        title="Materiale de studiu"
         subtitle="Incarca materia, importa intrebari existente sau pregateste licenta."
         hidePageTitle
       />
@@ -223,7 +223,7 @@ export default async function AIWorkspacePage() {
 
       <section className="ai-workspace-header">
         <div className="ai-workspace-header-copy">
-          <span className="ui-section-label">Workspace</span>
+          <span className="ui-section-label">Materiale</span>
           <h1 className="ai-workspace-title">
             Alege cum vrei sa transformi materialele in invatare.
           </h1>

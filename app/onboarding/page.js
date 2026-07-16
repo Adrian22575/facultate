@@ -91,7 +91,7 @@ function getReturnDestinationLabel(path) {
   }
 
   if (path === "/ai" || path === "/materiale") {
-    return "Workspace";
+    return "Materiale";
   }
 
   if (path === "/ai/activitate" || path === "/materiale/activitate") {

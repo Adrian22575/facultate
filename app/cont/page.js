@@ -8,6 +8,7 @@ import { AccountBillingTabsClient } from "@/components/account-billing-tabs-clie
 import { AccountDangerZone } from "@/components/account-danger-zone";
 import { AppHeader } from "@/components/app-header";
 import { BillingPlanCard } from "@/components/billing-plan-card";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ReferralShareCard } from "@/components/referral-share-card";
 import {
   getAcademicCommunityLabel,
@@ -550,12 +551,12 @@ export default async function AccountPage({ searchParams }) {
           </div>
         </div>
         <div className="account-quick-buttons">
-          <Link className="btn-primary account-quick-primary" href="/materiale">
+          <PendingNavigationLink className="btn-primary account-quick-primary" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
             <IconText icon={Upload}>Incarca materiale</IconText>
-          </Link>
-          <Link className="account-quick-secondary" href="/materiale/activitate?tab=subjects">
+          </PendingNavigationLink>
+          <PendingNavigationLink className="account-quick-secondary" href="/materiale/activitate?tab=subjects" pendingLabel="Se deschide activitatea..." pendingMode="replace">
             <IconText icon={FolderOpen}>Gestioneaza materiile</IconText>
-          </Link>
+          </PendingNavigationLink>
           <Link className="account-quick-secondary" href="/cont?section=plans#planuri">
             <IconText icon={CreditCard}>Schimba planul</IconText>
           </Link>
@@ -685,7 +686,7 @@ export default async function AccountPage({ searchParams }) {
 
       <section className="account-workspace-cta" id="workspace">
         <div className="account-workspace-copy">
-          <div className="account-workspace-kicker">Workspace</div>
+          <div className="account-workspace-kicker">Materiale</div>
           <h2>Incarca materiale si creeaza teste pentru comunitatea ta.</h2>
           <p>
             Adaugi cursuri, notite sau PDF-uri, iar platforma le transforma in intrebari si recapitulare pentru tine si colegii tai.
@@ -706,12 +707,12 @@ export default async function AccountPage({ searchParams }) {
           </span>
         </div>
         <div className="account-workspace-actions">
-          <Link className="account-workspace-button" href="/materiale">
+          <PendingNavigationLink className="account-workspace-button" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
             <IconText icon={Upload}>Incarca materiale</IconText>
-          </Link>
-          <Link className="account-workspace-button secondary" href="/materiale/activitate">
+          </PendingNavigationLink>
+          <PendingNavigationLink className="account-workspace-button secondary" href="/materiale/activitate" pendingLabel="Se deschide activitatea..." pendingMode="replace">
             <IconText icon={FolderOpen}>Materialele mele</IconText>
-          </Link>
+          </PendingNavigationLink>
         </div>
       </section>
 

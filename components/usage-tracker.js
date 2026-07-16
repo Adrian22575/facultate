@@ -61,7 +61,7 @@ function getFeatureFromPath(pathname) {
   }
 
   if (pathname.startsWith("/ai") || pathname.startsWith("/materiale")) {
-    return "Workspace";
+    return "Materiale";
   }
 
   if (pathname.startsWith("/materii")) {

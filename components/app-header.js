@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { AppHeaderNavigation } from "@/components/app-header-navigation";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
@@ -50,10 +49,15 @@ export async function AppHeader({
   return (
     <header className="app-header">
       <div className="app-header-row">
-        <Link className="brand" href={demoMode ? "/demo" : user ? "/" : "/auth/login"}>
+        <PendingNavigationLink
+          className="brand"
+          href={demoMode ? "/demo" : user ? "/" : "/auth/login"}
+          pendingLabel="Se deschide pagina principala..."
+          pendingMode="replace"
+        >
           <span className="brand-mark">5+</span>
           <span>Nota 5+</span>
-        </Link>
+        </PendingNavigationLink>
 
         <AppHeaderNavigation
           showPrivateNav={showPrivateNav}

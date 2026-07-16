@@ -12,6 +12,7 @@ import {
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { WorkspaceGenerateForm } from "@/components/workspace-generate-form";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -1274,9 +1275,9 @@ export function LicentaImportWorkspaceClient({
                 <strong>Nu mai ai incarcari disponibile</strong>
                 <p>Adauga o incarcare noua din cont ca sa poti importa grilele.</p>
               </div>
-              <Link className="btn-link secondary ai-workspace-alert-link" href="/cont?section=credits">
+              <PendingNavigationLink className="btn-link secondary ai-workspace-alert-link" href="/cont?section=credits" pendingLabel="Se deschid pachetele..." pendingMode="replace">
                 Adauga incarcari
-              </Link>
+              </PendingNavigationLink>
             </div>
           ) : null}
             </>

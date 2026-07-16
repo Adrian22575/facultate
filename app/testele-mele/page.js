@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
@@ -63,9 +62,9 @@ export default async function MyTestsPage() {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale">
-            Inapoi la workspace
-          </Link>
+          <PendingNavigationLink className="btn-back" href="/materiale" pendingLabel="Se revine la materiale..." pendingMode="replace">
+            Inapoi la materiale
+          </PendingNavigationLink>
         }
         kicker="Teste"
         title="Testele mele"
@@ -87,9 +86,9 @@ export default async function MyTestsPage() {
       <section className="surface">
         <div className="dashboard-header">
           <h2>Teste din comunitate</h2>
-          <Link className="btn-link secondary" href="/onboarding?edit=1&source=query">
+          <PendingNavigationLink className="btn-link secondary" href="/onboarding?edit=1&source=query" pendingLabel="Se deschide comunitatea..." pendingMode="replace">
             Schimba comunitatea
-          </Link>
+          </PendingNavigationLink>
         </div>
         {tests.communityActive?.length ? (
           <div className="draft-list">
@@ -117,9 +116,9 @@ export default async function MyTestsPage() {
       <section className="surface">
         <div className="dashboard-header">
           <h2>Testele mele active</h2>
-          <Link className="btn-link secondary" href="/materiale">
+          <PendingNavigationLink className="btn-link secondary" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
             Genereaza test nou
-          </Link>
+          </PendingNavigationLink>
         </div>
         {tests.active.length ? (
           <div className="draft-list">
@@ -132,9 +131,9 @@ export default async function MyTestsPage() {
                   </div>
                   <div className="inline-actions">
                     <TestOpenLink href={`/testele-mele/${test.id}`} />
-                    <Link className="btn-link secondary" href={`/materiale/drafts/${test.id}`}>
+                    <PendingNavigationLink className="btn-link secondary" href={`/materiale/drafts/${test.id}`} pendingLabel="Se deschide editorul..." pendingMode="replace">
                       Editeaza
-                    </Link>
+                    </PendingNavigationLink>
                   </div>
                 </div>
               </article>
@@ -158,9 +157,9 @@ export default async function MyTestsPage() {
                     <strong>{test.title}</strong>
                     <p className="choice-row-meta">{`${test.total_questions} intrebari - in verificare`}</p>
                   </div>
-                  <Link className="btn-link secondary" href={`/materiale/drafts/${test.id}`}>
+                  <PendingNavigationLink className="btn-link secondary" href={`/materiale/drafts/${test.id}`} pendingLabel="Se deschide editorul..." pendingMode="replace">
                     Deschide
-                  </Link>
+                  </PendingNavigationLink>
                 </div>
               </article>
             ))}

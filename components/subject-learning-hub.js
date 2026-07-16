@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 function formatProgress(progress) {
@@ -74,13 +72,19 @@ export function SubjectLearningHub({
           {studySets.length ? (
             <div className="subject-learning-material-list">
               {studySets.slice(0, 3).map((studySet) => (
-                <Link key={studySet.id} className="subject-learning-material-row" href={`/materiale/invata/${studySet.id}`}>
+                <PendingNavigationLink
+                  key={studySet.id}
+                  className="subject-learning-material-row"
+                  href={`/materiale/invata/${studySet.id}`}
+                  pendingLabel="Se deschide materialul..."
+                  pendingMode="replace"
+                >
                   <span>
                     <strong>{studySet.title}</strong>
                     <small>{`${studySet.chapterCount} capitole · ${studySet.flashcardCount} flashcards · ${studySet.questionCount} intrebari`}</small>
                   </span>
                   <em>{studySet.isOwner ? "Al tau" : "Comunitate"}</em>
-                </Link>
+                </PendingNavigationLink>
               ))}
             </div>
           ) : (

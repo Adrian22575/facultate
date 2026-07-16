@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { SearchX } from "lucide-react";
+
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 export const metadata = {
   title: "Pagina nu a fost gasita | Nota 5+",
@@ -20,12 +21,12 @@ export default function NotFoundPage() {
         <h1>Pagina aceasta nu mai este aici.</h1>
         <p>Adresa poate fi gresita sau continutul a fost mutat. Poti reveni imediat la o zona sigura.</p>
         <div className="route-error-actions">
-          <Link className="btn-link btn-primary" href="/">
+          <PendingNavigationLink className="btn-link btn-primary" href="/" pendingLabel="Se deschide pagina principala..." pendingMode="replace">
             Mergi la pagina principala
-          </Link>
-          <Link className="btn-link secondary" href="/materiale">
-            Deschide Workspace
-          </Link>
+          </PendingNavigationLink>
+          <PendingNavigationLink className="btn-link secondary" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
+            Deschide materialele
+          </PendingNavigationLink>
         </div>
       </section>
     </main>

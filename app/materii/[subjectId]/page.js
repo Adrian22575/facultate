@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { ModeGrid } from "@/components/mode-grid";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { SubjectLearningHub } from "@/components/subject-learning-hub";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
@@ -79,9 +79,14 @@ export default async function SubjectPage({ params, searchParams }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href={demoMode ? "/demo" : "/materii"}>
+          <PendingNavigationLink
+            className="btn-back"
+            href={demoMode ? "/demo" : "/materii"}
+            pendingLabel="Se revine la materii..."
+            pendingMode="replace"
+          >
             {demoMode ? "Inapoi la demo" : "Înapoi la materii"}
-          </Link>
+          </PendingNavigationLink>
         }
         kicker="Materia ta"
         title={subject.title}

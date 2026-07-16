@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, ChevronLeft, Home, LogOut, Menu, PanelLeftClose, PanelLeftOpen, Shield, Trophy, Upload, UserCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { HeaderCreditStatus } from "@/components/header-credit-status";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 function IconText({ icon: Icon, children, badgeCount = 0 }) {
   return (
@@ -27,7 +27,13 @@ function HeaderProgressBadge({ summary }) {
   const points = Number(summary?.totalPoints || 0);
 
   return (
-    <Link className="header-progress-badge" href="/progresul-meu" aria-label={`Progres: ${level.title}`}>
+    <PendingNavigationLink
+      className="header-progress-badge"
+      href="/progresul-meu"
+      aria-label={`Progres: ${level.title}`}
+      pendingLabel="Se deschide progresul..."
+      pendingMode="replace"
+    >
       <span className="header-progress-badge-mark" aria-hidden="true">
         {level.badge || "1"}
       </span>
@@ -35,7 +41,7 @@ function HeaderProgressBadge({ summary }) {
         <strong>{level.title}</strong>
         <span>{`${points} puncte`}</span>
       </span>
-    </Link>
+    </PendingNavigationLink>
   );
 }
 
@@ -114,15 +120,17 @@ export function AppHeaderNavigation({
     return links.map(({ href, label, icon, badgeCount = 0 }) => {
       const active = isActivePath(pathname, href);
       return (
-        <Link
+        <PendingNavigationLink
           key={href}
           className={`${className} ${active ? "is-active" : ""} ${badgeCount > 0 ? "has-admin-action" : ""}`}
           href={href}
           aria-current={active ? "page" : undefined}
           onClick={onNavigate}
+          pendingLabel="Se deschide..."
+          pendingMode="replace"
         >
           <IconText icon={icon} badgeCount={badgeCount}>{label}</IconText>
-        </Link>
+        </PendingNavigationLink>
       );
     });
   }
@@ -146,18 +154,19 @@ export function AppHeaderNavigation({
     return (
       <>
         <div className="app-sidebar-top">
-          <Link
+          <PendingNavigationLink
             className="app-sidebar-brand"
             href="/"
             aria-label="Nota 5+"
-            onClick={isDesktop ? undefined : () => setMobileMenuOpen(false)}
+            pendingLabel="Se deschide pagina principala..."
+            pendingMode="replace"
           >
             <span className="brand-mark">5+</span>
             <span className="app-sidebar-brand-copy">
               <strong>Nota 5+</strong>
               <small>Invata mai usor</small>
             </span>
-          </Link>
+          </PendingNavigationLink>
 
           {isDesktop ? (
             <button
@@ -186,7 +195,7 @@ export function AppHeaderNavigation({
 
         {showPrivateNav ? (
           <nav className="app-sidebar-links" aria-label="Navigare principala">
-            {navigationLinks("app-sidebar-link", isDesktop ? undefined : () => setMobileMenuOpen(false))}
+            {navigationLinks("app-sidebar-link")}
           </nav>
         ) : null}
 

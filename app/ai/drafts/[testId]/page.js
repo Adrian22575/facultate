@@ -70,7 +70,7 @@ export default async function AIDraftPage({ params, searchParams }) {
             pendingLabel="Se revine..."
             pendingMode="replace"
           >
-            Inapoi la workspace
+            Inapoi la materiale
           </PendingNavigationLink>
         }
         kicker={test.status === "active" ? "Test activ" : "In verificare"}
