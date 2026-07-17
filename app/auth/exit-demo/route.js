@@ -5,7 +5,10 @@ import { clearDemoSession } from "@/lib/demo-session";
 
 export async function GET(request) {
   const requestUrl = new URL(request.url);
-  const nextPath = getPostLoginNextPath(requestUrl.searchParams.get("next"));
+  const requestedNextPath = getPostLoginNextPath(requestUrl.searchParams.get("next"));
+  const nextPath = requestUrl.searchParams.get("target") === "login"
+    ? `/auth/email-login?next=${encodeURIComponent(requestedNextPath)}`
+    : requestedNextPath;
 
   await clearDemoSession();
 

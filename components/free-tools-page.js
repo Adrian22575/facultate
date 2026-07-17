@@ -86,7 +86,7 @@ function ToolsNavigation() {
     <div>
       <Link href="/articole" className="free-tools-nav-link">Articole</Link>
       <Link href="/instrumente" className="free-tools-nav-link">Instrumente gratuite</Link>
-      <Link href="/auth/login?next=/" className="free-tools-login" data-usage-event="free_tools_login_clicked">Intră în cont</Link>
+      <Link href="/auth/exit-demo?target=login" className="free-tools-login" data-usage-event="free_tools_login_clicked">Intră în cont</Link>
     </div>
   </nav>;
 }
@@ -118,7 +118,7 @@ export function FreeToolsIndexPage() {
       </header>
       {groups.map(({ category, tools }) => <section className="free-tools-group" key={category} aria-labelledby={`group-${category}`}><div className="free-tools-group-head"><span>{category}</span><p>{category === "Planificare" ? "Începe cu ce ai de parcurs și timpul pe care îl ai." : "Verifică scorul și ajustează următoarea sesiune."}</p></div><div className="free-tools-grid">{tools.map((tool, index) => <ToolCard tool={tool} featured={category === "Planificare" && index === 0} key={tool.slug} />)}</div></section>)}
       <section className="free-tools-faq" aria-labelledby="tools-faq-title"><div><span className="free-tools-eyebrow">Întrebări frecvente</span><h2 id="tools-faq-title">Rezultatele sunt gratuite și rămân la tine.</h2></div><div>{[["Trebuie să îmi fac cont?", "Nu. Instrumentele sunt publice, iar calculele se fac direct în browser."], ["Sunt formulele exacte?", "Rezultatele respectă formulele afișate pe fiecare pagină. Le poți ajusta imediat prin valorile din formular."], ["Ce fac după ce am un plan?", "Poți intra în Nota 5+ pentru a lucra pe materia ta, grile și simulări într-un singur loc."]].map(([question, answer]) => <article key={question}><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
-      <section className="free-tools-final"><div><span className="free-tools-eyebrow">Următorul pas</span><h2>Ai planul. Acum lucrează materia într-un ritm care se vede.</h2></div><Link href="/auth/login?next=/materiale/invata" className="free-tools-final-link" data-usage-event="free_tools_cta_clicked">Începe cu materialul tău <ArrowRight size={17} /></Link></section>
+      <section className="free-tools-final"><div><span className="free-tools-eyebrow">Următorul pas</span><h2>Ai planul. Acum lucrează materia într-un ritm care se vede.</h2></div><Link href="/auth/exit-demo?target=login&next=/materiale/invata" className="free-tools-final-link" data-usage-event="free_tools_cta_clicked">Începe cu materialul tău <ArrowRight size={17} /></Link></section>
     </div>
   </main>;
 }

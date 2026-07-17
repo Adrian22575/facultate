@@ -32,7 +32,7 @@ function PricingGroup({ title, description, plans, view }) {
             <strong className="public-pricing-price">{formatPrice(plan)}</strong>
             <Link
               className="nota5plus-btn nota5plus-btn-primary"
-              href={`/auth/login?next=${encodeURIComponent(`/cont?section=${view}&plan=${plan.code}#planuri`)}`}
+              href={`/auth/exit-demo?target=login&next=${encodeURIComponent(`/cont?section=${view}&plan=${plan.code}#planuri`)}`}
             >
               Continua
             </Link>
@@ -55,7 +55,7 @@ export default function PricingPage() {
             <span className="nota5plus-brand-mark">5+</span>
             <span>Nota 5+</span>
           </Link>
-          <Link className="nota5plus-nav-link" href="/auth/login">
+          <Link className="nota5plus-nav-link" href="/auth/exit-demo?target=login">
             Intra in cont
           </Link>
         </nav>

@@ -130,7 +130,7 @@ export function PublicHomePage() {
             <Link href="#intrebari" className="nota5plus-nav-link">
               Intrebari
             </Link>
-            <Link href="/auth/login?next=/" className="public-home-login-link">
+            <Link href="/auth/exit-demo?target=login" className="public-home-login-link">
               Intra in cont
             </Link>
           </div>

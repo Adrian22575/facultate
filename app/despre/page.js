@@ -21,7 +21,7 @@ import { hasSupabasePublicEnv } from "@/lib/env/public";
 const siteUrl = getPublicSiteUrl();
 const pageUrl = `${siteUrl}/despre`;
 const homeHref = "/auth/exit-demo?next=/";
-const loginHref = `/auth/exit-demo?next=${encodeURIComponent("/auth/login?next=/")}`;
+const loginHref = "/auth/exit-demo?target=login";
 
 const audienceCards = [
   {
