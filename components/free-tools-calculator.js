@@ -140,7 +140,8 @@ export function FreeToolsCalculator({ tool }) {
 
   const setValue = (key, value) => {
     setValues((current) => ({ ...current, [key]: value }));
-    setMessage("");
+    setResult(null);
+    setMessage("Valorile au fost modificate. Recalculează pentru un rezultat actualizat.");
   };
 
   const calculate = () => {
@@ -158,11 +159,11 @@ export function FreeToolsCalculator({ tool }) {
 
   return (
     <section className="free-tool-workspace" aria-labelledby="calculator-title">
-      <div className="free-tool-form-card">
+      <form className="free-tool-form-card" onSubmit={(event) => { event.preventDefault(); calculate(); }}>
         <div className="free-tool-form-head"><div><span className="free-tool-kicker">Calculator gratuit</span><h2 id="calculator-title">Completează datele</h2><p>Rezultatul se calculează direct în browser. Nu salvăm aceste valori.</p></div><button type="button" className="free-tool-reset" onClick={reset} data-usage-event="free_tool_reset"><RefreshCcw size={16} /> Resetează</button></div>
         <ToolFields slug={tool.slug} values={values} setValue={setValue} />
-        <button type="button" className="free-tool-calculate" onClick={calculate} data-usage-event="free_tool_calculated">Calculează</button>
-      </div>
+        <button type="submit" className="free-tool-calculate" data-usage-event="free_tool_calculated">Calculează</button>
+      </form>
       <div className="free-tool-result-card" aria-live="polite">
         {result?.ok ? <><div className="free-tool-result-head"><div><span className="free-tool-kicker">Rezultatul tău</span><h2>Un plan clar, de ajustat oricând</h2></div><div className="free-tool-result-actions"><button type="button" onClick={copy} aria-label="Copiază rezultatul" data-usage-event="free_tool_result_copied"><Clipboard size={17} /></button><button type="button" onClick={share} aria-label="Distribuie rezultatul" data-usage-event="free_tool_result_shared"><Share2 size={17} /></button></div></div><ResultContent slug={tool.slug} result={result} /><p className="free-tool-formula"><strong>Cum am calculat:</strong> {result.formula}</p><a className="free-tool-cta" href={tool.cta.href} data-usage-event="free_tool_cta_clicked">{tool.cta.label} <span aria-hidden="true">→</span></a></> : <div className="free-tool-empty"><span aria-hidden="true">↗</span><h2>Rezultatul apare aici</h2><p>Completează câmpurile și apasă „Calculează”. Poți schimba valorile oricând.</p></div>}
       </div>

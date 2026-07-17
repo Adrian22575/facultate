@@ -66,8 +66,8 @@ test("creates a deterministic study plan with a buffer day", () => {
 
   assert.equal(result.ok, true);
   assert.equal(dateInputValue(result.bufferDate), "2026-08-09");
-  assert.ok(result.plan.some((item) => item.type === "review"));
-  assert.ok(result.plan.some((item) => item.type === "simulation"));
+  assert.equal(result.plan.filter((item) => item.type === "review").length, result.reviewSlots);
+  assert.equal(result.plan.filter((item) => item.type === "simulation").length, result.simulationSlots);
 });
 
 test("calculates score with penalties and validates answer count", () => {
@@ -107,4 +107,5 @@ test("finds the required average for future simulations and impossible targets",
   assert.equal(possible.requiredAverage, 91.5);
   assert.equal(possible.possible, true);
   assert.equal(impossible.possible, false);
+  assert.equal(calculateRequiredSimulationScore({ scores: ["70", "greșit"], targetAverage: 75, plannedTotal: 3, remaining: 1 }).ok, false);
 });

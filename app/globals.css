@@ -10766,6 +10766,7 @@ td {
 
 .free-tools-card > a {
   gap: 8px;
+  min-height: 44px;
   margin-top: auto;
   color: #1454b5;
   font-size: 0.9rem;
@@ -10933,7 +10934,7 @@ td {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-height: 38px;
+  min-height: 44px;
   border: 1px solid #c8dcf4;
   border-radius: 11px;
   color: #335a87;
@@ -10946,7 +10947,7 @@ td {
 
 .free-tool-reset { padding: 8px 10px; }
 .free-tool-result-actions { gap: 7px; }
-.free-tool-result-actions button { width: 38px; padding: 0; }
+.free-tool-result-actions button { width: 44px; padding: 0; }
 
 .free-tool-reset:hover,
 .free-tool-reset:focus-visible,
