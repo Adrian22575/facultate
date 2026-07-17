@@ -10804,13 +10804,17 @@ td {
 
 .nota5plus-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-  gap: 54px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
   align-items: center;
+  justify-items: center;
+  padding: 34px 0 54px;
 }
 
 .nota5plus-hero-copy {
-  max-width: 660px;
+  width: min(100%, 1020px);
+  max-width: 1020px;
+  text-align: center;
 }
 
 .nota5plus-eyebrow {
@@ -10838,21 +10842,20 @@ td {
 
 .nota5plus-title {
   margin: 0 0 24px;
-  max-width: 780px;
+  max-width: none;
   color: #07142f;
-  font-size: clamp(3.15rem, 7vw, 5.5rem);
-  line-height: 0.94;
+  font-size: clamp(3.1rem, 6vw, 4.9rem);
+  line-height: 0.98;
   letter-spacing: -0.075em;
 }
 
 .nota5plus-title span {
-  display: block;
   color: #1250b1;
 }
 
 .nota5plus-subtitle {
-  max-width: 610px;
-  margin: 0 0 30px;
+  max-width: 560px;
+  margin: 0 auto 32px;
   color: #64718a;
   font-size: clamp(1.18rem, 2vw, 1.5rem);
   line-height: 1.55;
@@ -16916,8 +16919,9 @@ td {
 .nota5plus-path-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  max-width: 650px;
+  gap: 20px;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
 .nota5plus-path-wrap {
@@ -16927,37 +16931,31 @@ td {
 
 .nota5plus-path-card {
   width: 100%;
-  min-height: 132px;
-  padding: 18px;
-  border: 1px solid #cbdcf3;
-  border-radius: 20px;
+  min-height: 390px;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid #c9d9ee;
+  border-radius: 26px;
   background: #ffffff;
   color: #0b3474;
-  box-shadow: 0 12px 28px rgba(18, 80, 177, 0.08);
+  box-shadow: 0 16px 36px rgba(18, 80, 177, 0.1);
 }
 
 .nota5plus-path-card .google-signin-content {
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 13px;
-  text-align: left;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .nota5plus-path-card .google-signin-content > svg {
-  flex: 0 0 auto;
-  margin-top: 2px;
-  color: #1250b1;
-}
-
-.nota5plus-path-card.is-grids .google-signin-content > svg {
-  color: #147a57;
+  display: none;
 }
 
 .nota5plus-path-card .ui-icon-text,
 .nota5plus-path-card .ui-icon-text > span {
   display: grid;
-  align-items: start;
-  justify-items: start;
+  width: 100%;
+  height: 100%;
 }
 
 .nota5plus-path-card .ui-icon-text {
@@ -16966,27 +16964,85 @@ td {
 
 .nota5plus-path-copy {
   display: grid;
-  gap: 5px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  text-align: left;
 }
 
-.nota5plus-path-copy strong {
+.nota5plus-path-heading {
+  display: grid;
+  gap: 7px;
+  padding: 24px 26px 0;
+}
+
+.nota5plus-path-heading strong {
   color: #07142f;
-  font-size: 1.04rem;
+  font-size: 1.32rem;
   line-height: 1.2;
 }
 
-.nota5plus-path-copy small {
+.nota5plus-path-heading small {
   color: #64718a;
-  font-size: 0.84rem;
-  font-weight: 650;
+  font-size: 0.92rem;
+  font-weight: 600;
   line-height: 1.42;
+}
+
+.nota5plus-path-preview {
+  position: relative;
+  display: block;
+  min-height: 180px;
+  margin: 20px 22px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #e7eef8;
+}
+
+.nota5plus-path-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 76% center;
+  transition: transform 280ms ease;
+}
+
+.nota5plus-path-card.is-grids .nota5plus-path-preview img {
+  object-position: 72% center;
+}
+
+.nota5plus-path-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 26px 20px;
+  border-top: 1px solid #e0e9f5;
+  color: #1250b1;
+  font-size: 0.94rem;
+  font-weight: 900;
+}
+
+.nota5plus-path-cta > span {
+  font-size: 1.2rem;
+  transition: transform 180ms ease;
 }
 
 .nota5plus-path-card:hover:not(:disabled),
 .nota5plus-path-card:focus-visible:not(:disabled) {
   border-color: #7da9e4;
-  background: #f8fbff;
-  box-shadow: 0 16px 34px rgba(18, 80, 177, 0.13);
+  background: #ffffff;
+  box-shadow: 0 22px 42px rgba(18, 80, 177, 0.16);
+}
+
+.nota5plus-path-card:hover:not(:disabled) .nota5plus-path-preview img,
+.nota5plus-path-card:focus-visible:not(:disabled) .nota5plus-path-preview img {
+  transform: scale(1.035);
+}
+
+.nota5plus-path-card:hover:not(:disabled) .nota5plus-path-cta > span,
+.nota5plus-path-card:focus-visible:not(:disabled) .nota5plus-path-cta > span {
+  transform: translateX(4px);
 }
 
 .nota5plus-start-options {

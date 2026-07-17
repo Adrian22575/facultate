@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import {
   BookOpen,
   Brain,
@@ -53,29 +54,6 @@ export default async function LoginPage({ searchParams }) {
     unexpected: "A aparut o eroare neasteptata in timpul autentificarii."
   };
 
-  const mockupStats = [
-    {
-      value: "42",
-      title: "intrebari generate",
-      copy: "din materia incarcata"
-    },
-    {
-      value: "8",
-      title: "greseli salvate",
-      copy: "pentru recapitulare"
-    },
-    {
-      value: "18",
-      title: "flashcarduri",
-      copy: "pentru memorare rapida"
-    },
-    {
-      value: "3",
-      title: "teste rapide",
-      copy: "cu rezultat imediat"
-    }
-  ];
-
   const flowCards = [
     {
       icon: Upload,
@@ -117,17 +95,10 @@ export default async function LoginPage({ searchParams }) {
 
         <section className="nota5plus-hero">
           <div className="nota5plus-hero-copy">
-            <div className="nota5plus-eyebrow">
-              <span className="nota5plus-dot" />
-              Pentru liceu, facultate și examene apropiate
-            </div>
-
-            <h1 className="nota5plus-title">
-              Învață mai ușor. <span>Începe cu ce ai acum.</span>
-            </h1>
+            <h1 className="nota5plus-title">Cum vrei să înveți?</h1>
 
             <p className="nota5plus-subtitle">
-              Alege dacă pornești de la materia ta sau de la grile. Noi îți arătăm imediat următorul pas.
+              Alege punctul de pornire. Te ducem direct la următorul pas.
             </p>
 
             {error || !isConfigured ? (
@@ -164,8 +135,20 @@ export default async function LoginPage({ searchParams }) {
                 errorClassName="nota5plus-inline-error"
               >
                 <span className="nota5plus-path-copy">
-                  <strong>Învață din materia ta</strong>
-                  <small>Încarcă un curs sau niște notițe și primești un mod clar de a continua.</small>
+                  <span className="nota5plus-path-heading">
+                    <strong>Am un material</strong>
+                    <small>Încarcă un curs sau niște notițe. Le transformi în moduri clare de învățare.</small>
+                  </span>
+                  <span className="nota5plus-path-preview" aria-hidden="true">
+                    <Image
+                      src="/images/home/materials-card.png"
+                      alt=""
+                      width={1600}
+                      height={900}
+                      sizes="(max-width: 580px) 100vw, 50vw"
+                    />
+                  </span>
+                  <span className="nota5plus-path-cta">Încarcă materialul <span aria-hidden="true">→</span></span>
                 </span>
               </GoogleSignInButton>
               <GoogleSignInButton
@@ -177,8 +160,20 @@ export default async function LoginPage({ searchParams }) {
                 errorClassName="nota5plus-inline-error"
               >
                 <span className="nota5plus-path-copy">
-                  <strong>Exersează cu grile</strong>
-                  <small>Alege materia și repetă cu întrebări, teste și greșeli salvate.</small>
+                  <span className="nota5plus-path-heading">
+                    <strong>Vreau să exersez</strong>
+                    <small>Alege materia și lucrează cu grile, teste rapide și greșeli salvate.</small>
+                  </span>
+                  <span className="nota5plus-path-preview" aria-hidden="true">
+                    <Image
+                      src="/images/home/practice-card.png"
+                      alt=""
+                      width={1600}
+                      height={900}
+                      sizes="(max-width: 580px) 100vw, 50vw"
+                    />
+                  </span>
+                  <span className="nota5plus-path-cta">Alege materia <span aria-hidden="true">→</span></span>
                 </span>
               </GoogleSignInButton>
             </div>
@@ -199,46 +194,6 @@ export default async function LoginPage({ searchParams }) {
             <p className="nota5plus-microcopy">Creezi cont doar când alegi una dintre opțiuni.</p>
           </div>
 
-          <div className="nota5plus-mockup-wrap" aria-label="Previzualizare aplicatie">
-            <div className="nota5plus-mockup-glow" />
-            <div className="nota5plus-mockup">
-              <div className="nota5plus-mockup-top">
-                <div className="nota5plus-window-dots" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className="nota5plus-mockup-badge">Gata de învățat</div>
-              </div>
-
-              <div className="nota5plus-upload-card">
-                <div className="nota5plus-file-row">
-                  <div className="nota5plus-file-icon">PDF</div>
-                  <div>
-                    <div className="nota5plus-file-title">Management strategic.pdf</div>
-                    <div className="nota5plus-file-meta">Curs incarcat de comunitate</div>
-                  </div>
-                </div>
-                <div className="nota5plus-progress-label">
-                  <span>Material pregătit</span>
-                  <span>100%</span>
-                </div>
-                <div className="nota5plus-progress">
-                  <span />
-                </div>
-              </div>
-
-              <div className="nota5plus-result-grid">
-                {mockupStats.map((stat) => (
-                  <div key={stat.title} className="nota5plus-mini-card">
-                    <div className="nota5plus-mini-number">{stat.value}</div>
-                    <div className="nota5plus-mini-text">{stat.title}</div>
-                    <div className="nota5plus-mini-muted">{stat.copy}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </section>
 
         <section className="nota5plus-flow" aria-label="Cum functioneaza">
