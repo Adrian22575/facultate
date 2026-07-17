@@ -11637,8 +11637,9 @@ td {
 }
 
 .nota5plus-microcopy {
-  width: 100%;
-  margin: 0;
+  width: fit-content;
+  max-width: 100%;
+  margin: 10px auto 0;
   color: #64718a;
   font-size: 0.95rem;
   font-weight: 400;
