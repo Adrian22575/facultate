@@ -84,6 +84,7 @@ function ToolsNavigation() {
       <span>Nota 5+</span>
     </Link>
     <div>
+      <Link href="/articole" className="free-tools-nav-link">Articole</Link>
       <Link href="/instrumente" className="free-tools-nav-link">Instrumente gratuite</Link>
       <Link href="/auth/login?next=/" className="free-tools-login" data-usage-event="free_tools_login_clicked">Intră în cont</Link>
     </div>

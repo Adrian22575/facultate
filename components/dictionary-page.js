@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpenText, Brain, ChevronRight, GraduationCap, ListChecks, Upload } from "lucide-react";
 
 function DictionaryNav() {
-  return <nav className="dictionary-nav" aria-label="Navigare publică"><Link className="nota5plus-brand" href="/"><span className="nota5plus-brand-mark">5+</span><span>Nota 5+</span></Link><div><Link href="/dictionar" className="dictionary-nav-link">Dicționar</Link><Link href="/instrumente" className="dictionary-nav-link">Instrumente gratuite</Link><Link href="/auth/login?next=/" className="dictionary-login-link">Intră în cont</Link></div></nav>;
+  return <nav className="dictionary-nav" aria-label="Navigare publică"><Link className="nota5plus-brand" href="/"><span className="nota5plus-brand-mark">5+</span><span>Nota 5+</span></Link><div><Link href="/articole" className="dictionary-nav-link">Articole</Link><Link href="/dictionar" className="dictionary-nav-link">Dicționar</Link><Link href="/instrumente" className="dictionary-nav-link">Instrumente gratuite</Link><Link href="/auth/login?next=/" className="dictionary-login-link">Intră în cont</Link></div></nav>;
 }
 
 export function DictionaryShell({ children }) {

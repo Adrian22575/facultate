@@ -87,6 +87,9 @@ export default async function LoginPage({ searchParams }) {
             <a className="nota5plus-nav-link" href="/dictionar">
               Dicționar
             </a>
+            <a className="nota5plus-nav-link" href="/articole">
+              Articole
+            </a>
             <a className="nota5plus-nav-link nota5plus-tools-link" href="/instrumente">
               Instrumente gratuite
             </a>
@@ -198,6 +201,9 @@ export default async function LoginPage({ searchParams }) {
             </div>
 
             <p className="nota5plus-microcopy">Creezi cont doar când alegi una dintre opțiuni.</p>
+            <a className="nota5plus-articles-entry" href="/articole">
+              Citește articole despre educație <span aria-hidden="true">→</span>
+            </a>
           </div>
 
         </section>
@@ -284,7 +290,10 @@ export default async function LoginPage({ searchParams }) {
 
         <footer className="nota5plus-legal-footer">
           <span>Nota 5+</span>
-          <nav aria-label="Informatii juridice">
+          <nav aria-label="Navigare publică și informații">
+            <a href="/articole">Articole</a>
+            <a href="/dictionar">Dicționar</a>
+            <a href="/instrumente">Instrumente gratuite</a>
             <a href="/despre">Despre</a>
             <a href="/preturi">Preturi</a>
             <a href="/confidentialitate">Confidentialitate</a>
