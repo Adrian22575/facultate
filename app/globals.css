@@ -10943,10 +10943,12 @@ td {
 }
 
 .nota5plus-microcopy {
+  width: 100%;
   margin: 0;
   color: #64718a;
   font-size: 0.95rem;
   font-weight: 400;
+  text-align: center;
 }
 
 .nota5plus-email-link {
@@ -17048,6 +17050,7 @@ td {
 .nota5plus-start-options {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 9px;
   margin-top: 16px;
   color: #8a9ab0;
