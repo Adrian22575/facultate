@@ -39,6 +39,8 @@
     "ui:check": "node scripts/ui-static-check.mjs",
     "test:tools": "node --test tests/free-tools.test.mjs",
     "test:dictionary": "node --test tests/dictionary.test.mjs",
+    "test:editorial": "node --test tests/editorial.test.mjs",
+    "editorial:web-search:check": "node --use-system-ca scripts/editorial-web-search-check.mjs",
     "workspace:audit": "powershell -ExecutionPolicy Bypass -File scripts/workspace-audit.ps1",
     "prebuild": "node scripts/ui-static-check.mjs",
     "build": "node --use-system-ca node_modules/next/dist/bin/next build",

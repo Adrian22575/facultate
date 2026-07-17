@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, BookText, Database, ServerCog } from "lucide-react";
+import { AlertTriangle, BookText, Database, Newspaper, ServerCog } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
@@ -20,6 +20,7 @@ function normalizeTab(value) {
   if (value === "dictionary") {
     return "dictionary";
   }
+  if (value === "editorial") return "editorial";
 
   return "platform";
 }
@@ -54,7 +55,8 @@ export function AdminMainTabsClient({
   platformContent,
   openaiContent,
   uploadsContent,
-  dictionaryContent
+  dictionaryContent,
+  editorialContent
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(normalizeTab(defaultTab));
@@ -139,6 +141,9 @@ export function AdminMainTabsClient({
           >
             <AdminTabContent icon={AlertTriangle} label="Upload-uri cu erori" count={tabCounts.uploads} actionCount={visibleActionCounts.uploads} />
           </button>
+          <button id="admin-tab-editorial" type="button" role="tab" aria-selected={activeTab === "editorial"} aria-controls="admin-panel-editorial" tabIndex={activeTab === "editorial" ? 0 : -1} aria-label="Articole" className={`btn-link secondary admin-main-tab ${activeTab === "editorial" ? "is-active-filter" : ""}`} onClick={() => switchTab("editorial")}>
+            <AdminTabContent icon={Newspaper} label="Articole" count={tabCounts.editorial} />
+          </button>
           <button
             id="admin-tab-dictionary"
             type="button"
@@ -195,6 +200,7 @@ export function AdminMainTabsClient({
       >
         {dictionaryContent}
       </div>
+      <div id="admin-panel-editorial" className="admin-main-tab-panel" role="tabpanel" aria-labelledby="admin-tab-editorial" aria-hidden={activeTab !== "editorial"} hidden={activeTab !== "editorial"}>{editorialContent}</div>
     </div>
   );
 }
