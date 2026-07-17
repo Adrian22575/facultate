@@ -68,15 +68,23 @@ function getResponseError(payload, fallback) {
   return payload?.error || fallback;
 }
 
-function ProcessingPanel({ status }) {
+function ProcessingPanel({ status, sourceMode, sourceSaved }) {
+  const waitingMessage = sourceSaved
+    ? sourceMode === "file"
+      ? "Fisierul este salvat. Pregatim pagina unde urmaresti procesarea."
+      : "Continutul este preluat. Pregatim pagina unde urmaresti procesarea."
+    : sourceMode === "file"
+      ? "Pastreaza aceasta pagina deschisa cat timp fisierul se incarca."
+      : "Pregatim continutul pentru procesare.";
+
   return (
-    <section className="learning-processing-panel" aria-live="polite">
+    <section className="learning-processing-panel" role="status" aria-atomic="true">
       <span className="learning-processing-icon" aria-hidden="true">
         <LoaderCircle size={20} strokeWidth={2.3} />
       </span>
       <div className="learning-processing-copy">
         <strong>{status || "Pregatim materialul..."}</strong>
-        <p>Poti inchide pagina. Materialul ramane disponibil in Materialele mele.</p>
+        <p>{waitingMessage}</p>
       </div>
     </section>
   );
@@ -93,6 +101,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
   const [errorActionHref, setErrorActionHref] = useState("");
   const [status, setStatus] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sourceSaved, setSourceSaved] = useState(false);
   const fileInputRef = useRef(null);
   const uploadedSourceDocumentIdRef = useRef("");
   const idempotencyKeyRef = useRef(createIdempotencyKey());
@@ -122,6 +131,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     setClientError("");
     setErrorActionHref("");
     setStatus("");
+    setSourceSaved(false);
   }
 
   function updateSelectedFile(file) {
@@ -131,6 +141,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     setClientError("");
     setErrorActionHref("");
     setStatus("");
+    setSourceSaved(false);
   }
 
   async function uploadSelectedFile() {
@@ -183,6 +194,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     }
 
     uploadedSourceDocumentIdRef.current = intentPayload.sourceDocumentId;
+    setSourceSaved(true);
     return intentPayload.sourceDocumentId;
   }
 
@@ -230,6 +242,9 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
 
   return (
     <>
+      {isSubmitting ? (
+        <ProcessingPanel status={status} sourceMode={sourceMode} sourceSaved={sourceSaved} />
+      ) : null}
       {visibleError ? (
         <div className="error-state" role="alert">
           <span>{visibleError}</span>
@@ -247,8 +262,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
           </Link>
         </div>
       ) : null}
-      {isSubmitting ? <ProcessingPanel status={status} /> : null}
-      <form className="surface learning-upload-form" onSubmit={handleSubmit} aria-busy={isSubmitting}>
+      {!isSubmitting ? <form className="surface learning-upload-form" onSubmit={handleSubmit}>
         <div className="learning-upload-section-head">
           <div>
             <h2>Adauga materialul</h2>
@@ -417,7 +431,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
                 : "Proceseaza materia"}
           </button>
         </div>
-      </form>
+      </form> : null}
     </>
   );
 }

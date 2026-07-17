@@ -14,6 +14,7 @@ import {
   saveLearningQuizAttemptAction
 } from "@/app/ai/invata/actions";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
+import { ProcessingStageTracker } from "@/components/processing-stage-tracker";
 import { shuffleArray } from "@/lib/quiz";
 import { saveLastSession } from "@/lib/session-storage";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
@@ -158,10 +159,12 @@ function isProcessingStudySet(studySet) {
 }
 
 function LearningProcessingPanel({ studySet }) {
+  const router = useRouter();
   const [jobSnapshot, setJobSnapshot] = useState(studySet.processingJob || null);
   const [message, setMessage] = useState("");
+  const [terminalStatus, setTerminalStatus] = useState(null);
   const jobId = studySet.jobId || studySet.processingJob?.id || null;
-  const progress = Math.max(0, Math.min(100, Number(jobSnapshot?.progressPercent || 0)));
+  const processingStage = jobSnapshot?.stage || studySet.status;
   const statusDetail =
     jobSnapshot?.statusDetail ||
     (studySet.status === "uploaded"
@@ -175,6 +178,7 @@ function LearningProcessingPanel({ studySet }) {
     let isCancelled = false;
     let timeoutId = null;
     let inFlight = false;
+    let continuePolling = true;
 
     async function processTick() {
       if (inFlight) return;
@@ -191,13 +195,15 @@ function LearningProcessingPanel({ studySet }) {
         if (!isCancelled && response.ok && payload) {
           setJobSnapshot(payload);
           if (payload.status === "succeeded") {
-            setMessage("Materia este gata. Actualizam pagina...");
-            window.setTimeout(() => window.location.reload(), 700);
+            continuePolling = false;
+            setTerminalStatus("succeeded");
+            setMessage("Materia este gata de invatat.");
             return;
           }
           if (payload.status === "failed") {
-            setMessage("Procesarea s-a oprit. Actualizam pagina...");
-            window.setTimeout(() => window.location.reload(), 900);
+            continuePolling = false;
+            setTerminalStatus("failed");
+            setMessage("Procesarea s-a oprit.");
             return;
           }
         }
@@ -207,7 +213,7 @@ function LearningProcessingPanel({ studySet }) {
         }
       } finally {
         inFlight = false;
-        if (!isCancelled) {
+        if (!isCancelled && continuePolling) {
           timeoutId = window.setTimeout(processTick, 2600);
         }
       }
@@ -220,8 +226,27 @@ function LearningProcessingPanel({ studySet }) {
     };
   }, [jobId, jobSnapshot?.status]);
 
+  if (terminalStatus) {
+    const succeeded = terminalStatus === "succeeded";
+
+    return (
+      <section className={`learning-processing-result ${succeeded ? "is-success" : "is-error"}`} role="status">
+        <span className="ui-section-label">{succeeded ? "Material gata" : "Procesare oprita"}</span>
+        <h1>{succeeded ? "Poti incepe sa inveti." : "Materialul este pastrat."}</h1>
+        <p>
+          {succeeded
+            ? "Au fost pregatite capitole, flashcarduri si teste pentru materia ta."
+            : "Deschide materialul pentru a vedea optiunile disponibile de reluare."}
+        </p>
+        <button type="button" className="btn-link" onClick={() => router.refresh()}>
+          {succeeded ? "Deschide materialul" : "Vezi optiunile"}
+        </button>
+      </section>
+    );
+  }
+
   return (
-    <section className="learning-processing-view">
+    <section className="learning-processing-view" aria-busy="true">
       <div className="learning-processing-hero">
         <LoaderCircle aria-hidden="true" />
         <div>
@@ -231,39 +256,16 @@ function LearningProcessingPanel({ studySet }) {
         </div>
       </div>
 
-      <div className="learning-processing-progress">
-        <div>
-          <span>{`${progress}%`}</span>
-          <strong>{message || "Poti reveni oricand din Activitate. Nu trebuie sa incarci din nou materialul."}</strong>
-        </div>
-        <div className="learning-processing-progress-bar" aria-label={`Progres ${progress}%`}>
-          <span style={{ width: `${Math.max(6, progress)}%` }} />
-        </div>
+      <div className="learning-processing-status" role="status" aria-atomic="true">
+        <strong>{message || statusDetail}</strong>
+        <p>Poti reveni oricand din Activitate. Materialul este pastrat si nu trebuie incarcat din nou.</p>
       </div>
 
-      <div className="learning-processing-steps">
-        {[
-          "Materia incarcata",
-          "Citim continutul",
-          "Construim capitolele",
-          "Pregatim testele",
-          "Finalizam"
-        ].map((step, index) => {
-          const stepProgress = (index + 1) * 20;
-          return (
-            <span key={step} className={progress >= stepProgress ? "is-done" : progress >= stepProgress - 20 ? "is-active" : ""}>
-              {step}
-            </span>
-          );
-        })}
-      </div>
+      <ProcessingStageTracker kind="learning" stage={processingStage} status={jobSnapshot?.status} />
 
       <div className="learning-study-footer">
         <Link className="btn-link secondary" href="/materiale/activitate">
           Vezi activitatea
-        </Link>
-        <Link className="btn-link secondary" href="/materiale/invata">
-          Incarca alta materie
         </Link>
       </div>
     </section>
@@ -1056,8 +1058,8 @@ export function LearningStudySetClient({ studySet }) {
         setRetryMessage(result.error || "Nu am putut relua procesarea.");
         return;
       }
-      setRetryMessage("Procesarea a fost reluata. Actualizam pagina...");
-      window.location.reload();
+      setRetryMessage("Procesarea a fost reluata.");
+      router.refresh();
     } finally {
       setIsRetrying(false);
     }

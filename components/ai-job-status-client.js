@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { deleteQuestionBankUploadAction } from "@/app/ai/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { ProcessingStageTracker } from "@/components/processing-stage-tracker";
 import {
   formatGenerationError,
   getJobPresentation
@@ -499,6 +500,8 @@ export function AIJobStatusClient({ initialJob }) {
     job.status === "pending" || job.status === "processing"
       ? presentation.stageLabel
       : presentation.statusLabel;
+  const isActiveProcessing = !presentation.isTerminal;
+  const processingKind = job.kind === "learning" || job.kind === "import" ? job.kind : "questions";
 
   return (
     <div className="job-status-stack">
@@ -512,20 +515,17 @@ export function AIJobStatusClient({ initialJob }) {
         <div className="workspace-job-badge">
           <span className={`status-pill ${presentation.tone}`}>{statusLabel}</span>
         </div>
-        {presentation.shouldShowProgressPercent ? (
-          <div className="progress-bar-container job-progress-bar" aria-label="Progres procesare">
-            <div className="progress-fill" style={{ width: `${presentation.progressPercent}%` }} />
-          </div>
-        ) : null}
-
         <div className="job-status-copy workspace-job-copy">
           {job.status === "processing" || job.status === "pending" ? <LoadingGlyph /> : null}
-          <strong>{presentation.progressLabel}</strong>
+          <strong>{isActiveProcessing ? presentation.stageLabel : presentation.progressLabel}</strong>
           <p>{presentation.primaryMessage}</p>
+          {isActiveProcessing ? (
+            <ProcessingStageTracker kind={processingKind} stage={job.stage} status={job.status} />
+          ) : null}
           <div className="job-failure-detail">
             {presentation.isTerminal
               ? `${presentation.elapsedCaption}: ${presentation.elapsedLabel}. ${presentation.activityCaption}: ${presentation.lastActivityLabel}.`
-              : `Astepti de ${presentation.elapsedLabel}. Activ ${presentation.lastActivityLabel}.`}
+              : `Procesarea continua. Ultima actualizare: ${presentation.lastActivityLabel}.`}
           </div>
           {presentation.detailMessage ? (
             <div className="job-failure-detail">{presentation.detailMessage}</div>
@@ -573,17 +573,15 @@ export function AIJobStatusClient({ initialJob }) {
             <strong>{job.metadata?.subjectLabel || "Materie selectata"}</strong>
           </article>
           <article>
-            <span>Progres</span>
-            <strong>{presentation.progressLabel}</strong>
-          </article>
-          <article>
             <span>Intrebari pregatite</span>
             <strong>{job.resultQuestionCount || 0}</strong>
           </article>
-          <article>
-            <span>Stare</span>
-            <strong>{presentation.statusLabel}</strong>
-          </article>
+          {!isActiveProcessing ? (
+            <article>
+              <span>Stare</span>
+              <strong>{presentation.statusLabel}</strong>
+            </article>
+          ) : null}
           <article>
             <span>{presentation.elapsedCaption}</span>
             <strong>{presentation.elapsedLabel}</strong>
@@ -668,10 +666,10 @@ export function AIJobStatusClient({ initialJob }) {
           <PendingNavigationLink
             className="btn-link secondary"
             href="/materiale"
-            pendingLabel="Se revine..."
+            pendingLabel="Se deschide activitatea..."
             pendingMode="replace"
           >
-            <IconText icon={ArrowLeft}>Inapoi</IconText>
+            <IconText icon={ArrowLeft}>Vezi activitatea</IconText>
           </PendingNavigationLink>
         </div>
       </section>

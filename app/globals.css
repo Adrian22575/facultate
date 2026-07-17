@@ -3378,6 +3378,10 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
 }
 
 @media (max-width: 720px) {
+  .processing-stage-tracker {
+    grid-template-columns: 1fr;
+  }
+
   .job-failure-summary-grid {
     grid-template-columns: 1fr;
   }
@@ -16705,35 +16709,68 @@ td {
   line-height: 1.45;
 }
 
-.learning-processing-steps {
+.processing-stage-tracker {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
+  width: min(100%, 760px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
 }
 
-.learning-processing-steps span {
-  min-height: 40px;
+.processing-stage-tracker li {
   display: grid;
-  place-items: center;
-  padding: 8px;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 10px;
   border: 1px solid #d5e2f4;
-  border-radius: 14px;
+  border-radius: 15px;
   background: #fff;
   color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 900;
-  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.25;
 }
 
-.learning-processing-steps span.is-active {
-  border-color: rgba(37, 99, 235, 0.35);
+.processing-stage-tracker-icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #cbdcf1;
+  border-radius: 999px;
+  color: #7891b1;
+}
+
+.processing-stage-tracker li.is-active {
+  border-color: rgba(37, 99, 235, 0.42);
+  background: #eff6ff;
+  color: var(--primary-dark);
+}
+
+.processing-stage-tracker li.is-active .processing-stage-tracker-icon {
+  border-color: var(--primary);
   background: var(--primary);
   color: #fff;
 }
 
-.learning-processing-steps span.is-done {
+.processing-stage-tracker li.is-active svg {
+  animation: learning-processing-spin 900ms linear infinite;
+}
+
+.processing-stage-tracker li.is-done {
   border-color: #bfe4ce;
   background: #edf9f1;
+  color: #0f6b4b;
+}
+
+.processing-stage-tracker li.is-done .processing-stage-tracker-icon {
+  border-color: #8bceaa;
+  background: #dff4e7;
   color: #0f6b4b;
 }
 
@@ -17238,7 +17275,6 @@ td {
   }
 
   .learning-upload-source-grid,
-  .learning-processing-steps,
   .learning-competition-kpis,
   .workspace-flow-page .ai-workspace-source-tabs,
   .workspace-flow-page .import-method-tabs {
@@ -17596,6 +17632,40 @@ td {
   border-radius: inherit;
   background: linear-gradient(90deg, var(--primary), #20a464);
   transition: width 240ms ease;
+}
+
+.learning-processing-result {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 26px;
+  border: 1px solid #bfe4ce;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #ffffff 0%, #edf9f1 100%);
+  box-shadow: var(--shadow-soft);
+}
+
+.learning-processing-result.is-error {
+  border-color: #f1d7aa;
+  background: linear-gradient(135deg, #ffffff 0%, #fff8ec 100%);
+}
+
+.learning-processing-result h1,
+.learning-processing-result p {
+  margin: 0;
+}
+
+.learning-processing-result h1 {
+  color: var(--ink);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.04;
+}
+
+.learning-processing-result p {
+  max-width: 640px;
+  color: var(--muted);
+  font-weight: 750;
+  line-height: 1.55;
 }
 
 @keyframes learning-spin {
