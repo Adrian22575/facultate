@@ -130,9 +130,6 @@ export function PublicHomePage() {
             <Link href="#intrebari" className="nota5plus-nav-link">
               Intrebari
             </Link>
-            <Link href="/instrumente" className="public-home-tools-link">
-              Instrumente gratuite
-            </Link>
             <Link href="/auth/login?next=/" className="public-home-login-link">
               Intra in cont
             </Link>
