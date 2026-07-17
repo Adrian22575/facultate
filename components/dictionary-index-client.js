@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpenText, Search, X } from "lucide-react";
+import { BookOpenText, Brain, Search, Sparkles, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 function normalize(value) {
@@ -19,9 +19,9 @@ function matches(term, query) {
   return normalize([term.term, term.short_definition, term.category?.name, ...(term.synonyms || [])].join(" ")).includes(needle);
 }
 
-function TermCard({ term }) {
+function TermCard({ term, featured = false }) {
   return (
-    <Link className="dictionary-term-card" href={`/dictionar/${term.slug}`} data-usage-event="dictionary_term_opened">
+    <Link className={`dictionary-term-card${featured ? " is-featured" : ""}`} href={`/dictionar/${term.slug}`} data-usage-event="dictionary_term_opened">
       <span className="dictionary-term-card-letter" aria-hidden="true">{term.initial}</span>
       <span className="dictionary-term-card-copy">
         <strong>{term.term}</strong>
@@ -55,18 +55,22 @@ export function DictionaryIndexClient({ categories, terms, recent, total }) {
     <>
       <section className="dictionary-hero" aria-labelledby="dictionary-title">
         <div>
-          <span className="dictionary-eyebrow">Bibliotecă publică Nota 5+</span>
+          <span className="dictionary-eyebrow"><Sparkles aria-hidden="true" size={14} />Bibliotecă publică Nota 5+</span>
           <h1 id="dictionary-title">Dicționar pentru învățare și examene</h1>
           <p>Înțelege simplu termenii pe care îi întâlnești când înveți, te pregătești pentru examene sau îți organizezi materia.</p>
         </div>
-        <div className="dictionary-total" aria-label={`${total} termeni publicați`}>
-          <BookOpenText aria-hidden="true" size={23} />
-          <strong>{total}</strong>
-          <span>termeni explicați clar</span>
-        </div>
+        <div className="dictionary-hero-visual" aria-hidden="true"><Brain size={74} strokeWidth={1.45} /><span className="dictionary-visual-card is-top">întrebare</span><span className="dictionary-visual-card is-bottom">înțelegere</span></div>
       </section>
 
-      <section className="dictionary-search-panel" aria-label="Caută în dicționar">
+      {recent.length ? (
+        <section className="dictionary-recent-section" aria-labelledby="dictionary-recent-title">
+          <div className="dictionary-section-head"><div><span>De explorat</span><h2 id="dictionary-recent-title">Adăugate recent</h2></div><p>Idei noi, separate de rezultatele căutării.</p></div>
+          <div className="dictionary-recent-grid">{recent.map((term) => <TermCard key={term.id} term={term} featured />)}</div>
+        </section>
+      ) : null}
+
+      <section className="dictionary-search-panel" aria-labelledby="dictionary-search-title">
+        <div className="dictionary-search-head"><div><span>Găsește rapid</span><h2 id="dictionary-search-title">Caută în dicționar</h2></div><span><BookOpenText aria-hidden="true" size={16} />{total} termeni</span></div>
         <label className="dictionary-search-field">
           <Search aria-hidden="true" size={20} />
           <span className="sr-only">Caută un termen</span>
@@ -85,15 +89,8 @@ export function DictionaryIndexClient({ categories, terms, recent, total }) {
         </div>
       </section>
 
-      {recent.length ? (
-        <section className="dictionary-recent-section" aria-labelledby="dictionary-recent-title">
-          <div className="dictionary-section-head"><div><span>Adăugate recent</span><h2 id="dictionary-recent-title">Termeni utili pentru următoarea sesiune</h2></div></div>
-          <div className="dictionary-recent-grid">{recent.map((term) => <TermCard key={term.id} term={term} />)}</div>
-        </section>
-      ) : null}
-
       <section className="dictionary-list-section" aria-labelledby="dictionary-list-title">
-        <div className="dictionary-section-head"><div><span>Toți termenii</span><h2 id="dictionary-list-title">Alege un termen</h2></div><strong>{filteredTerms.length} {filteredTerms.length === 1 ? "rezultat" : "rezultate"}</strong></div>
+        <div className="dictionary-section-head"><div><span>Rezultatele tale</span><h2 id="dictionary-list-title">Alege un termen</h2></div><strong aria-live="polite">{filteredTerms.length} {filteredTerms.length === 1 ? "rezultat" : "rezultate"}</strong></div>
         {filteredTerms.length ? <div className="dictionary-term-list">{filteredTerms.map((term) => <TermCard key={term.id} term={term} />)}</div> : <div className="dictionary-empty"><Search aria-hidden="true" size={23} /><h2>Nu am găsit un termen potrivit</h2><p>Încearcă un cuvânt mai scurt sau elimină unul dintre filtre.</p><button type="button" onClick={clearFilters}>Resetează filtrele</button></div>}
       </section>
     </>
