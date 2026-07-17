@@ -15387,7 +15387,8 @@ td {
   justify-content: flex-end;
 }
 
-.public-home-login-link {
+.public-home-login-link,
+.public-home-tools-link {
   min-height: 42px;
   display: inline-flex;
   align-items: center;
@@ -15399,6 +15400,23 @@ td {
   color: #0b3474;
   text-decoration: none;
   font-weight: 850;
+}
+
+.public-home-tools-link {
+  padding: 0 14px;
+  border: 1px solid #a8c4ed;
+  border-radius: 999px;
+  background: #edf5ff;
+  color: #0b4aa4;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.public-home-tools-link:hover,
+.public-home-tools-link:focus-visible {
+  border-color: #0b4aa4;
+  background: #dfeeff;
+  color: #062f70;
 }
 
 .public-home-hero {
@@ -15736,9 +15754,14 @@ td {
   }
 
   .public-home-login-link,
+  .public-home-tools-link,
   .public-home-actions .nota5plus-btn,
   .public-home-google-wrap,
   .public-home-final .nota5plus-btn {
+    width: 100%;
+  }
+
+  .public-home-nav-actions {
     width: 100%;
   }
 
