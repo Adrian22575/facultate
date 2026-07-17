@@ -14,6 +14,11 @@ export const metadata = {
   description: "Testeaza rapid cum inveti cu Nota 5+ inainte sa intri cu Google."
 };
 
+function getDemoModeHref(subjectId, mode) {
+  const destination = `/materii/${subjectId}/${mode}`;
+  return `/auth/demo-login?next=${encodeURIComponent(destination)}`;
+}
+
 export default async function DemoPage() {
   const user = await getOptionalUser();
 
@@ -42,7 +47,7 @@ export default async function DemoPage() {
 
         <div className="demo-guide-grid">
           <LearningModeCard
-            href={demoSubjectId ? `/materii/${demoSubjectId}/interactiv` : "/demo"}
+            href={demoSubjectId ? getDemoModeHref(demoSubjectId, "interactiv") : "/demo"}
             mode="interactive"
             eyebrow="Rapid"
             title="Interactiv"
@@ -50,7 +55,7 @@ export default async function DemoPage() {
             variant="showcase"
           />
           <LearningModeCard
-            href={demoSubjectId ? `/materii/${demoSubjectId}/studiu` : "/demo"}
+            href={demoSubjectId ? getDemoModeHref(demoSubjectId, "studiu") : "/demo"}
             mode="study"
             eyebrow="Calm"
             title="Studiaza"
@@ -58,7 +63,7 @@ export default async function DemoPage() {
             variant="showcase"
           />
           <LearningModeCard
-            href={demoSubjectId ? `/materii/${demoSubjectId}/test` : "/demo"}
+            href={demoSubjectId ? getDemoModeHref(demoSubjectId, "test") : "/demo"}
             mode="test"
             eyebrow="Verificare"
             title="Test"
