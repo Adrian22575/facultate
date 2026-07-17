@@ -10948,6 +10948,21 @@ td {
 .free-tool-result-actions { gap: 7px; }
 .free-tool-result-actions button { width: 38px; padding: 0; }
 
+.free-tool-reset:hover,
+.free-tool-reset:focus-visible,
+.free-tool-result-actions button:hover,
+.free-tool-result-actions button:focus-visible {
+  border-color: #8fb6e8;
+  color: #123f7d;
+  background: #e9f3ff;
+  transform: none;
+}
+
+.free-tool-reset svg,
+.free-tool-result-actions button svg {
+  color: currentColor;
+}
+
 .free-tool-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
