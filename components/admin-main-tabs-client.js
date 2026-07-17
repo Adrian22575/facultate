@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, Database, ServerCog } from "lucide-react";
+import { AlertTriangle, BookText, Database, ServerCog } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
@@ -15,6 +15,10 @@ function normalizeTab(value) {
 
   if (value === "uploads") {
     return "uploads";
+  }
+
+  if (value === "dictionary") {
+    return "dictionary";
   }
 
   return "platform";
@@ -49,7 +53,8 @@ export function AdminMainTabsClient({
   tabActionCounts = {},
   platformContent,
   openaiContent,
-  uploadsContent
+  uploadsContent,
+  dictionaryContent
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(normalizeTab(defaultTab));
@@ -134,6 +139,19 @@ export function AdminMainTabsClient({
           >
             <AdminTabContent icon={AlertTriangle} label="Upload-uri cu erori" count={tabCounts.uploads} actionCount={visibleActionCounts.uploads} />
           </button>
+          <button
+            id="admin-tab-dictionary"
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "dictionary"}
+            aria-controls="admin-panel-dictionary"
+            tabIndex={activeTab === "dictionary" ? 0 : -1}
+            aria-label="Dicționar"
+            className={`btn-link secondary admin-main-tab ${activeTab === "dictionary" ? "is-active-filter" : ""}`}
+            onClick={() => switchTab("dictionary")}
+          >
+            <AdminTabContent icon={BookText} label="Dicționar" count={tabCounts.dictionary} />
+          </button>
         </AdminTabsContainer>
       </section>
 
@@ -166,6 +184,16 @@ export function AdminMainTabsClient({
         hidden={activeTab !== "uploads"}
       >
         {uploadsContent}
+      </div>
+      <div
+        id="admin-panel-dictionary"
+        className="admin-main-tab-panel"
+        role="tabpanel"
+        aria-labelledby="admin-tab-dictionary"
+        aria-hidden={activeTab !== "dictionary"}
+        hidden={activeTab !== "dictionary"}
+      >
+        {dictionaryContent}
       </div>
     </div>
   );

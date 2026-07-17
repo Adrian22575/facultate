@@ -1,9 +1,11 @@
 import { getPublicSiteUrl } from "@/lib/site";
 import { freeTools } from "@/lib/free-tools";
+import { getDictionarySitemapEntries } from "@/lib/dictionary/server";
 
-export default function sitemap() {
+export default async function sitemap() {
   const siteUrl = getPublicSiteUrl();
   const now = new Date();
+  const dictionaryTerms = await getDictionarySitemapEntries().catch(() => []);
 
   return [
     {
@@ -42,6 +44,18 @@ export default function sitemap() {
       changeFrequency: "weekly",
       priority: 0.9
     },
+    {
+      url: `${siteUrl}/dictionar`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
+    ...dictionaryTerms.map((term) => ({
+      url: `${siteUrl}/dictionar/${term.slug}`,
+      lastModified: new Date(term.updated_at || now),
+      changeFrequency: "monthly",
+      priority: 0.75
+    })),
     ...freeTools.map((tool) => ({
       url: `${siteUrl}/instrumente/${tool.slug}`,
       lastModified: now,

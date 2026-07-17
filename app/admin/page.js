@@ -5,7 +5,9 @@ import { AdminCenterClient } from "@/components/admin-center-client";
 import { AdminMainTabsClient } from "@/components/admin-main-tabs-client";
 import { AdminOpenAILogsPanel } from "@/components/admin-openai-logs-panel";
 import { AdminUploadErrorsPanel } from "@/components/admin-upload-errors-panel";
+import { AdminDictionaryPanel } from "@/components/admin-dictionary-panel";
 import { requireAdmin } from "@/lib/admin";
+import { getDictionaryAdminOverview } from "@/lib/dictionary/server";
 import {
   getAdminAcademicStructureOverview,
   getAdminBillingOverview,
@@ -64,6 +66,8 @@ export default async function AdminPage({ searchParams }) {
       ? "processing"
       : resolvedSearchParams?.admin_tab === "uploads"
         ? "uploads"
+        : resolvedSearchParams?.admin_tab === "dictionary"
+          ? "dictionary"
         : "platform";
 
   let platformData = null;
@@ -71,6 +75,7 @@ export default async function AdminPage({ searchParams }) {
   let openAILogs = [];
   let openAICostDashboard = null;
   let openAILogsWarning = null;
+  let dictionaryData = null;
 
   if (adminTab === "platform") {
     const [
@@ -124,10 +129,15 @@ export default async function AdminPage({ searchParams }) {
     failedUploads = await getAdminFailedUploadsOverview();
   }
 
+  if (adminTab === "dictionary") {
+    dictionaryData = await getDictionaryAdminOverview();
+  }
+
   const adminActionSummary = {
     platform: 0,
     processing: openAILogs.filter((row) => row.status === "failed" || row.job_status === "failed").length,
     uploads: failedUploads.length,
+    dictionary: 0,
     billing: 0,
     testimonials: 0
   };
@@ -184,7 +194,8 @@ export default async function AdminPage({ searchParams }) {
         tabCounts={{
           platform: null,
           processing: adminTab === "processing" ? openAILogs.length : null,
-          uploads: adminTab === "uploads" ? failedUploads.length : null
+          uploads: adminTab === "uploads" ? failedUploads.length : null,
+          dictionary: adminTab === "dictionary" ? dictionaryData?.terms.length || 0 : null
         }}
         tabActionCounts={adminActionSummary}
         platformContent={
@@ -215,6 +226,7 @@ export default async function AdminPage({ searchParams }) {
           ) : null
         }
         uploadsContent={adminTab === "uploads" ? <AdminUploadErrorsPanel rows={failedUploads} /> : null}
+        dictionaryContent={adminTab === "dictionary" ? <AdminDictionaryPanel {...dictionaryData} /> : null}
       />
     </main>
   );

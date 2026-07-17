@@ -3,9 +3,7 @@
   "installCommand": "npm install",
   "buildCommand": "npm run vercel:preflight && npm run build",
   "crons": [
-    {
-      "path": "/api/cron/learning-jobs",
-      "schedule": "0 3 * * *"
-    }
+    { "path": "/api/cron/learning-jobs", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/dictionary", "schedule": "0 8 * * *" }
   ]
 }

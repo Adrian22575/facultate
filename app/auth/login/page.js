@@ -84,6 +84,9 @@ export default async function LoginPage({ searchParams }) {
           </a>
 
           <div className="nota5plus-nav-links">
+            <a className="nota5plus-nav-link" href="/dictionar">
+              Dicționar
+            </a>
             <a className="nota5plus-nav-link nota5plus-tools-link" href="/instrumente">
               Instrumente gratuite
             </a>
