@@ -1,4 +1,5 @@
 import { getPublicSiteUrl } from "@/lib/site";
+import { freeTools } from "@/lib/free-tools";
 
 export default function sitemap() {
   const siteUrl = getPublicSiteUrl();
@@ -34,6 +35,18 @@ export default function sitemap() {
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.4
-    }
+    },
+    {
+      url: `${siteUrl}/instrumente`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
+    ...freeTools.map((tool) => ({
+      url: `${siteUrl}/instrumente/${tool.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8
+    }))
   ];
 }
