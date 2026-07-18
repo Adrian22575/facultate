@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -18,16 +19,30 @@ export async function POST(request, { params }) {
   const { data: article, error } = await admin.from("editorial_articles").select("*").eq("id", articleId).maybeSingle();
   if (error || !article) return NextResponse.json({ error: "not_found" }, { status: 404 });
   if (parsed.data.action === "withdraw") {
-    await admin.from("editorial_articles").update({ status: "withdrawn" }).eq("id", articleId);
+    const { error: withdrawError } = await admin.from("editorial_articles").update({ status: "withdrawn" }).eq("id", articleId);
+    if (withdrawError) return NextResponse.json({ error: "withdraw_failed" }, { status: 500 });
+    revalidatePath("/articole");
+    revalidatePath(`/articole/${article.slug}`);
+    revalidatePath("/sitemap.xml");
     return NextResponse.json({ ok: true, status: "withdrawn" });
   }
   if (parsed.data.action === "fact_check") {
-    const report = await runEditorialFactCheck(article);
-    const status = report.passed && report.unsupportedClaimCount === 0 ? "passed" : "failed";
-    await admin.from("editorial_articles").update({ fact_check_status: status, fact_check_report: report, last_reviewed_at: new Date().toISOString() }).eq("id", articleId);
-    return NextResponse.json({ ok: true, factCheckStatus: status, report });
+    try {
+      const report = await runEditorialFactCheck(article);
+      const status = report.passed && report.unsupportedClaimCount === 0 ? "passed" : "failed";
+      const { error: factCheckError } = await admin.from("editorial_articles").update({ fact_check_status: status, fact_check_report: report, last_reviewed_at: new Date().toISOString() }).eq("id", articleId);
+      if (factCheckError) return NextResponse.json({ error: "fact_check_save_failed" }, { status: 500 });
+      return NextResponse.json({ ok: true, factCheckStatus: status, report });
+    } catch (factCheckError) {
+      console.error("admin_editorial_fact_check_failed", { articleId, message: factCheckError instanceof Error ? factCheckError.message : "unknown_error" });
+      return NextResponse.json({ error: "fact_check_failed" }, { status: 500 });
+    }
   }
   if (article.fact_check_status !== "passed" || Number(article.quality_score) < 85) return NextResponse.json({ error: "publication_quality_not_met" }, { status: 422 });
-  await admin.from("editorial_articles").update({ status: "published", published_at: article.published_at || new Date().toISOString() }).eq("id", articleId);
+  const { error: publishError } = await admin.from("editorial_articles").update({ status: "published", published_at: article.published_at || new Date().toISOString() }).eq("id", articleId);
+  if (publishError) return NextResponse.json({ error: "publish_failed" }, { status: 500 });
+  revalidatePath("/articole");
+  revalidatePath(`/articole/${article.slug}`);
+  revalidatePath("/sitemap.xml");
   return NextResponse.json({ ok: true, status: "published" });
 }

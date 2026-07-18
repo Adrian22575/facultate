@@ -97,13 +97,13 @@ function RelatedResources({ links }) {
   );
 }
 
-export function EditorialArticlePage({ article, siteUrl }) {
+export function EditorialArticlePage({ article, siteUrl, isPreview = false }) {
   const sections = (article.sections || []).map((section, index) => ({ ...section, id: sectionId(section.title, index) }));
 
   return (
     <>
-      <EditorialReadingTracker />
-      <ArticleStructuredData article={article} siteUrl={siteUrl} />
+      {isPreview ? null : <EditorialReadingTracker />}
+      {isPreview ? null : <ArticleStructuredData article={article} siteUrl={siteUrl} />}
       <EditorialBreadcrumbs article={article} />
       <article className="editorial-article">
         <header className="editorial-article-hero">

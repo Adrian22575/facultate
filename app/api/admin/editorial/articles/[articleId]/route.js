@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -21,8 +22,17 @@ export async function PATCH(request, { params }) {
   const knownSources = new Set(value.sources.map((source) => source.id));
   if (value.sections.some((section) => section.sourceIds.some((id) => !knownSources.has(id)))) return NextResponse.json({ error: "unknown_source_reference" }, { status: 422 });
   const admin = createAdminClient();
-  const { data: updated, error } = await admin.from("editorial_articles").update({ title: value.title, subtitle: value.subtitle, summary: value.summary, primary_topic: value.primaryTopic, categories: value.categories, key_takeaways: value.keyTakeaways, sections: value.sections, student_implications: value.studentImplications, weekly_term: value.weeklyTerm, conclusion: value.conclusion, sources: value.sources, internal_links: value.internalLinks, seo_title: value.seoTitle, meta_description: value.metaDescription, social_description: value.socialDescription, correction_note: value.correctionNote || null }).eq("id", articleId).select("id, slug").maybeSingle();
+  const { data: current, error: currentError } = await admin.from("editorial_articles").select("id, status").eq("id", articleId).maybeSingle();
+  if (currentError) return NextResponse.json({ error: "save_failed" }, { status: 500 });
+  if (!current) return NextResponse.json({ error: "not_found" }, { status: 404 });
+  const nextStatus = current.status === "published" ? "withdrawn" : current.status;
+  const { data: updated, error } = await admin.from("editorial_articles").update({ title: value.title, subtitle: value.subtitle, summary: value.summary, primary_topic: value.primaryTopic, categories: value.categories, key_takeaways: value.keyTakeaways, sections: value.sections, student_implications: value.studentImplications, weekly_term: value.weeklyTerm, conclusion: value.conclusion, sources: value.sources, internal_links: value.internalLinks, seo_title: value.seoTitle, meta_description: value.metaDescription, social_description: value.socialDescription, correction_note: value.correctionNote || null, status: nextStatus, fact_check_status: "needs_review" }).eq("id", articleId).select("id, slug, status, fact_check_status").maybeSingle();
   if (error) return NextResponse.json({ error: "save_failed" }, { status: 500 });
   if (!updated) return NextResponse.json({ error: "not_found" }, { status: 404 });
+  if (current.status === "published") {
+    revalidatePath("/articole");
+    revalidatePath(`/articole/${updated.slug}`);
+    revalidatePath("/sitemap.xml");
+  }
   return NextResponse.json({ ok: true, article: updated });
 }
