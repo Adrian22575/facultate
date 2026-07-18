@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import { AppHeader } from "@/components/app-header";
 import { AdminCenterClient } from "@/components/admin-center-client";
 import { AdminMainTabsClient } from "@/components/admin-main-tabs-client";
@@ -29,36 +27,6 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Admin Center | Nota 5+"
 };
-
-function getAdminFocus({ processing = 0, uploads = 0 }) {
-  if (uploads > 0) {
-    return {
-      label: "Necesită atenție",
-      title: "Upload-uri de verificat",
-      detail: `${uploads} upload-uri au nevoie de revizuire înainte de a continua procesarea.`,
-      action: "Vezi upload-urile",
-      href: "/admin?admin_tab=uploads"
-    };
-  }
-
-  if (processing > 0) {
-    return {
-      label: "Necesită atenție",
-      title: "Procesări oprite",
-      detail: `${processing} procesări nu s-au finalizat și au nevoie de verificare.`,
-      action: "Vezi procesările",
-      href: "/admin?admin_tab=processing"
-    };
-  }
-
-  return {
-    label: "Operațiuni",
-    title: "Alege zona pe care o gestionezi",
-    detail: "Datele se deschid numai pentru tabul selectat, ca administrarea să rămână rapidă.",
-    action: "Vezi platforma",
-    href: "/admin"
-  };
-}
 
 export default async function AdminPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
@@ -148,53 +116,9 @@ export default async function AdminPage({ searchParams }) {
     billing: 0,
     testimonials: 0
   };
-  const adminFocus = getAdminFocus(adminActionSummary);
-
   return (
     <main className="app-shell">
-      <AppHeader
-        suppressAdminActionCount
-        action={
-          <Link className="btn-back" href="/">
-            Inapoi la aplicatie
-          </Link>
-        }
-        title="Admin Center"
-        subtitle="Urmărești ce are nevoie de atenție și gestionezi platforma."
-      />
-
-      <section className="admin-control-strip" aria-label="Sumar administrare">
-        <div className="admin-focus-card">
-          <div>
-            <span className="ui-section-label">{adminFocus.label}</span>
-            <h2>{adminFocus.title}</h2>
-            <p>{adminFocus.detail}</p>
-          </div>
-          <Link className="btn-link" href={adminFocus.href}>
-            {adminFocus.action}
-          </Link>
-        </div>
-
-        {platformData ? (
-          <div className="admin-overview-grid admin-overview-grid-compact">
-            <article className="admin-overview-card">
-              <span className="admin-overview-label">Utilizatori</span>
-              <strong>{platformData.usersData.length}</strong>
-              <span className="status-pill is-muted">înregistrări recente</span>
-            </article>
-            <article className="admin-overview-card">
-              <span className="admin-overview-label">Materiale</span>
-              <strong>{platformData.learningAnalytics.totalStudySets}</strong>
-              <span className="status-pill is-muted">pregătite</span>
-            </article>
-            <article className="admin-overview-card">
-              <span className="admin-overview-label">Activitate</span>
-              <strong>{platformData.usageAnalytics.totalEvents}</strong>
-              <span className="status-pill is-muted">ultimele 30 zile</span>
-            </article>
-          </div>
-        ) : null}
-      </section>
+      <AppHeader suppressAdminActionCount hidePageTitle />
 
       <AdminMainTabsClient
         defaultTab={adminTab}

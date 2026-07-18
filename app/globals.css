@@ -10553,64 +10553,6 @@ td {
   }
 }
 
-/* Admin Center: un spațiu de lucru, nu o colecție de carduri. */
-.admin-control-strip {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-  gap: 28px;
-  align-items: center;
-  padding: 8px 0 24px;
-  border-bottom: 1px solid #dce6f3;
-}
-
-.admin-control-strip .admin-focus-card {
-  min-height: 0;
-  padding: 8px 0 8px 18px;
-  border: 0;
-  border-left: 3px solid var(--primary);
-  border-radius: 0;
-  background: transparent;
-}
-
-.admin-control-strip .admin-focus-card h2 {
-  max-width: 620px;
-  font-size: clamp(1.35rem, 2.15vw, 1.85rem);
-}
-
-.admin-control-strip .admin-focus-card p {
-  max-width: 650px;
-  font-weight: 600;
-}
-
-.admin-control-strip .admin-overview-grid {
-  gap: 0;
-  border-left: 1px solid #dce6f3;
-}
-
-.admin-control-strip .admin-overview-card {
-  min-height: 76px;
-  align-content: center;
-  padding: 4px 14px;
-  border: 0;
-  border-radius: 0;
-  border-right: 1px solid #dce6f3;
-  background: transparent;
-}
-
-.admin-control-strip .admin-overview-card strong {
-  font-size: 1.35rem;
-}
-
-.admin-control-strip .status-pill {
-  width: fit-content;
-  min-height: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  font-size: 0.76rem;
-}
-
 .admin-main-tabs-shell {
   gap: 22px;
   margin-top: 18px;
@@ -10779,17 +10721,6 @@ td {
 }
 
 @media (max-width: 820px) {
-  .admin-control-strip {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .admin-control-strip .admin-overview-grid {
-    border-left: 0;
-    border-top: 1px solid #dce6f3;
-    padding-top: 14px;
-  }
-
   .admin-section-navigation {
     display: grid;
     grid-template-columns: 1fr;
@@ -10798,26 +10729,6 @@ td {
 }
 
 @media (max-width: 640px) {
-  .admin-control-strip {
-    padding-bottom: 18px;
-  }
-
-  .admin-control-strip .admin-focus-card {
-    gap: 14px;
-    padding-left: 14px;
-  }
-
-  .admin-control-strip .admin-overview-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .admin-control-strip .admin-overview-card {
-    min-height: 0;
-    padding: 4px 0;
-    border-right: 0;
-  }
-
   .admin-main-tabs-surface .admin-tabs-container,
   .admin-section-navigation .admin-tabs-container {
     width: 100%;
