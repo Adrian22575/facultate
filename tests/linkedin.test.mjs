@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { createLinkedInPostWithConfig, exchangeLinkedInCodeWithConfig, getLinkedInUserInfoWithFetch } from "../lib/linkedin/client-core.js";
+import { normalizeLinkedInModel } from "../lib/linkedin/models.js";
 import { buildLinkedInFullPost, hashOAuthState, isConnectionUsable, validateLinkedInDraft } from "../lib/linkedin/shared.js";
 
 const config = { clientId: "client", clientSecret: "secret", redirectUri: "https://nota5plus.ro/api/admin/linkedin/oauth/callback", apiVersion: "202606" };
@@ -47,6 +48,12 @@ test("recalculates canonical character count", () => {
   const result = validateLinkedInDraft(validDraft({ characterCount: 1 }), { article, articleUrl });
   assert.equal(result.valid, true);
   assert.equal(result.draft.characterCount, result.draft.fullPost.length);
+});
+
+test("normalizeaza aliasul GPT-5.6 la Sol si accepta numai modelele disponibile", () => {
+  assert.equal(normalizeLinkedInModel("gpt-5.6"), "gpt-5.6-sol");
+  assert.equal(normalizeLinkedInModel("gpt-5.6-terra"), "gpt-5.6-terra");
+  assert.equal(normalizeLinkedInModel("unrecognized-model"), "gpt-5.6-sol");
 });
 
 test("respinge informațiile care nu există în articol și întrebările generice", () => {

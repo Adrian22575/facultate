@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { isAdminUser } from "@/lib/admin";
+import { LINKEDIN_MODELS } from "@/lib/linkedin/models";
 import { LINKEDIN_MODES } from "@/lib/linkedin/shared";
 import { saveLinkedInSettings } from "@/lib/linkedin/server";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 
-const schema = z.object({ mode: z.enum(LINKEDIN_MODES), notifyTelegram: z.boolean(), model: z.string().trim().min(2).max(80) });
+const schema = z.object({ mode: z.enum(LINKEDIN_MODES), notifyTelegram: z.boolean(), model: z.enum(LINKEDIN_MODELS) });
 
 export async function PATCH(request) {
   const supabase = await createClient();

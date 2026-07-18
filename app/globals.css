@@ -10606,7 +10606,9 @@ td {
   border-radius: 14px;
   background: #f7faff;
 }
-.admin-linkedin-controls > label:first-child { display: grid; gap: 5px; min-width: 190px; }
+.admin-linkedin-controls > label:first-child,
+.admin-linkedin-model { display: grid; gap: 5px; min-width: 190px; }
+.admin-linkedin-model > span { display: inline-flex; align-items: center; gap: 5px; }
 .admin-linkedin-controls label > span { color: #385979; font-size: .78rem; font-weight: 800; }
 .admin-linkedin-controls select,
 .admin-linkedin-create-row select {
@@ -10784,7 +10786,8 @@ td {
   .admin-linkedin-head { grid-template-columns: auto minmax(0, 1fr); }
   .admin-linkedin-connection-state { grid-column: 2; justify-self: start; }
   .admin-linkedin-controls { display: grid; grid-template-columns: 1fr; }
-  .admin-linkedin-controls > label:first-child { min-width: 0; }
+  .admin-linkedin-controls > label:first-child,
+  .admin-linkedin-model { min-width: 0; }
   .admin-linkedin-controls > *,
   .admin-linkedin-connect,
   .admin-linkedin-disconnect { width: 100%; }

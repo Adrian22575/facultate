@@ -3,6 +3,7 @@
 import {
   BellRing,
   CheckCircle2,
+  Cpu,
   ExternalLink,
   FileText,
   LoaderCircle,
@@ -17,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
+import { LINKEDIN_MODEL_OPTIONS, normalizeLinkedInModel } from "@/lib/linkedin/models";
 
 const MODE_OPTIONS = [
   ["approval_required", "Necesită aprobare"],
@@ -54,7 +56,7 @@ function humanError(value) {
 
 export function AdminLinkedInDistribution({ data, articles = [], initialPostId = "" }) {
   const router = useRouter();
-  const [settings, setSettings] = useState(data?.settings || { mode: "approval_required", notify_telegram: true, model: "gpt-5.6" });
+  const [settings, setSettings] = useState(() => ({ ...(data?.settings || { mode: "approval_required", notify_telegram: true }), model: normalizeLinkedInModel(data?.settings?.model) }));
   const [connection, setConnection] = useState(data?.connection || null);
   const [posts, setPosts] = useState(data?.posts || []);
   const [selectedId, setSelectedId] = useState(initialPostId || data?.posts?.[0]?.id || "");
@@ -83,7 +85,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
     const response = await fetch("/api/admin/linkedin/settings", {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: settings.model || "gpt-5.6" })
+      body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: normalizeLinkedInModel(settings.model) })
     }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
@@ -168,6 +170,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
 
       <div className="admin-linkedin-controls">
         <label><span>Mod de lucru</span><select value={settings.mode} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, mode: event.target.value }))}>{MODE_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+        <label className="admin-linkedin-model"><span><Cpu size={14} />Model postare</span><select value={normalizeLinkedInModel(settings.model)} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, model: event.target.value }))}>{LINKEDIN_MODEL_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label} — {option.description}</option>)}</select></label>
         <label className="admin-linkedin-telegram"><input type="checkbox" checked={settings.notify_telegram} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, notify_telegram: event.target.checked }))} /><BellRing size={15} /><span>Notificări Telegram</span></label>
         <button type="button" className="btn-back admin-linkedin-secondary" onClick={saveSettings} disabled={Boolean(busy)}>{busy === "settings" ? <LoaderCircle className="is-spinning" size={16} /> : <Save size={16} />}Salvează modul</button>
         {connected ? <button type="button" className="admin-linkedin-disconnect" onClick={disconnect} disabled={Boolean(busy)}>{busy === "disconnect" ? <LoaderCircle className="is-spinning" size={16} /> : <Unplug size={16} />}Deconectează</button> : <a className={`admin-linkedin-connect${data?.config?.ready ? "" : " is-disabled"}`} href={data?.config?.ready ? "/api/admin/linkedin/oauth/start" : undefined}><span className="admin-linkedin-brand-glyph is-small" aria-hidden="true">in</span>Conectează LinkedIn</a>}
