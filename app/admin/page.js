@@ -163,7 +163,7 @@ export default async function AdminPage({ searchParams }) {
         subtitle="Urmărești ce are nevoie de atenție și gestionezi platforma."
       />
 
-      <section className="surface admin-hero">
+      <section className="admin-control-strip" aria-label="Sumar administrare">
         <div className="admin-focus-card">
           <div>
             <span className="ui-section-label">{adminFocus.label}</span>

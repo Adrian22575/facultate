@@ -96,7 +96,7 @@ export function AdminMainTabsClient({
 
   return (
     <div className="admin-main-tabs-shell">
-      <section className="surface admin-main-tabs-surface">
+      <section className="admin-main-tabs-surface">
         <AdminTabsContainer
           role="tablist"
           aria-label="Sectiuni principale admin"

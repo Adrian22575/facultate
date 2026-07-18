@@ -1169,20 +1169,33 @@ export function AdminCenterClient({
 
   return (
     <>
-      <section className="surface admin-section-tabs-surface">
-        <AdminTabsContainer role="group" aria-label="Sectiuni admin">
-          <FilterButton active={section === "feedback"} onClick={() => setSection("feedback")} selected={section === "feedback"} icon={MessageSquareText} count={sectionCounts.feedback}>Feedback</FilterButton>
-          <FilterButton active={section === "billing"} onClick={() => setSection("billing")} selected={section === "billing"} icon={CreditCard} count={sectionCounts.billing} actionCount={visibleAdminActionSummary.billing || 0}>Plati</FilterButton>
-          <FilterButton active={section === "users"} onClick={() => setSection("users")} selected={section === "users"} icon={Users} count={sectionCounts.users}>Utilizatori</FilterButton>
-          <FilterButton active={section === "analytics"} onClick={() => setSection("analytics")} selected={section === "analytics"} icon={BarChart3} count={sectionCounts.analytics}>Analytics</FilterButton>
-          <FilterButton active={section === "subjects"} onClick={() => setSection("subjects")} selected={section === "subjects"} icon={GraduationCap} count={sectionCounts.subjects}>Materii</FilterButton>
-          <FilterButton active={section === "academic"} onClick={() => setSection("academic")} selected={section === "academic"} icon={Building2} count={sectionCounts.academic}>Structura academica</FilterButton>
-          <FilterButton active={section === "free-access"} onClick={() => setSection("free-access")} selected={section === "free-access"} icon={KeyRound} count={sectionCounts.freeAccess}>Acces gratuit</FilterButton>
-          <FilterButton active={section === "testimonials"} onClick={() => setSection("testimonials")} selected={section === "testimonials"} icon={Star} count={sectionCounts.testimonials} actionCount={visibleAdminActionSummary.testimonials || 0}>Testimoniale</FilterButton>
-        </AdminTabsContainer>
+      <section className="admin-section-navigation" aria-label="Sectiuni platforma">
+        <div className="admin-section-nav-group">
+          <span>Gestionare</span>
+          <AdminTabsContainer role="group" aria-label="Gestionare platforma">
+            <FilterButton active={section === "feedback"} onClick={() => setSection("feedback")} selected={section === "feedback"} icon={MessageSquareText} count={sectionCounts.feedback}>Feedback</FilterButton>
+            <FilterButton active={section === "users"} onClick={() => setSection("users")} selected={section === "users"} icon={Users} count={sectionCounts.users}>Utilizatori</FilterButton>
+            <FilterButton active={section === "free-access"} onClick={() => setSection("free-access")} selected={section === "free-access"} icon={KeyRound} count={sectionCounts.freeAccess}>Acces gratuit</FilterButton>
+            <FilterButton active={section === "testimonials"} onClick={() => setSection("testimonials")} selected={section === "testimonials"} icon={Star} count={sectionCounts.testimonials} actionCount={visibleAdminActionSummary.testimonials || 0}>Testimoniale</FilterButton>
+          </AdminTabsContainer>
+        </div>
+        <div className="admin-section-nav-group">
+          <span>Catalog</span>
+          <AdminTabsContainer role="group" aria-label="Catalog academic">
+            <FilterButton active={section === "subjects"} onClick={() => setSection("subjects")} selected={section === "subjects"} icon={GraduationCap} count={sectionCounts.subjects}>Materii</FilterButton>
+            <FilterButton active={section === "academic"} onClick={() => setSection("academic")} selected={section === "academic"} icon={Building2} count={sectionCounts.academic}>Structura academică</FilterButton>
+          </AdminTabsContainer>
+        </div>
+        <div className="admin-section-nav-group">
+          <span>Monitorizare</span>
+          <AdminTabsContainer role="group" aria-label="Monitorizare platforma">
+            <FilterButton active={section === "analytics"} onClick={() => setSection("analytics")} selected={section === "analytics"} icon={BarChart3} count={sectionCounts.analytics}>Statistici</FilterButton>
+            <FilterButton active={section === "billing"} onClick={() => setSection("billing")} selected={section === "billing"} icon={CreditCard} count={sectionCounts.billing} actionCount={visibleAdminActionSummary.billing || 0}>Plăți</FilterButton>
+          </AdminTabsContainer>
+        </div>
       </section>
 
-      <section className={`surface admin-panel ${section === "feedback" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "feedback"}>
+      <section className={`admin-panel ${section === "feedback" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "feedback"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Inbox feedback</h2>
@@ -1250,7 +1263,7 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`surface admin-panel ${section === "billing" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "billing"}>
+      <section className={`admin-panel ${section === "billing" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "billing"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Monitorizare plati</h2>
@@ -1371,7 +1384,7 @@ export function AdminCenterClient({
         </div>
       </section>
 
-      <section className={`surface admin-panel ${section === "users" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "users"}>
+      <section className={`admin-panel ${section === "users" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "users"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Utilizatori</h2>
@@ -1446,7 +1459,7 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`surface admin-panel ${section === "analytics" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "analytics"}>
+      <section className={`admin-panel ${section === "analytics" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "analytics"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Analytics utilizare</h2>
@@ -1747,7 +1760,7 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`surface admin-panel ${section === "subjects" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "subjects"}>
+      <section className={`admin-panel ${section === "subjects" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "subjects"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Materii</h2>
@@ -1807,7 +1820,7 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`surface admin-panel ${section === "academic" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "academic"}>
+      <section className={`admin-panel ${section === "academic" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "academic"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Structura academica</h2>
@@ -1919,7 +1932,7 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`surface admin-panel ${section === "free-access" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "free-access"}>
+      <section className={`admin-panel ${section === "free-access" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "free-access"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Acces gratuit</h2>
@@ -2019,7 +2032,7 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`surface admin-panel ${section === "testimonials" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "testimonials"}>
+      <section className={`admin-panel ${section === "testimonials" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "testimonials"}>
         <div className="dashboard-header admin-section-intro">
           <div>
             <h2>Testimoniale</h2>

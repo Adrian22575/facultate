@@ -899,7 +899,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
   const total30dCost = costDashboard?.overview?.last30d?.totalCostUsd || 0;
 
   return (
-    <section className="surface admin-panel is-visible" aria-hidden={false}>
+    <section className="admin-panel is-visible" aria-hidden={false}>
       <div className="dashboard-header admin-section-intro">
         <div>
           <h2>Loguri procesare</h2>
