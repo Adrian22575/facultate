@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 const updateSchema = z.object({
   enabled: z.boolean(),
   frequencyDays: z.number().int().min(1).max(30),
+  scheduledHour: z.number().int().min(0).max(23),
   model: z.enum(AUTOMATION_MODELS),
   notifyTelegram: z.boolean()
 });
@@ -35,11 +36,12 @@ export async function PATCH(request, { params }) {
       workflow,
       enabled: value.enabled,
       frequency_days: value.frequencyDays,
+      scheduled_hour: value.scheduledHour,
       model: value.model,
       notify_telegram: value.notifyTelegram,
       updated_by: user.id
     }, { onConflict: "workflow" })
-    .select("workflow, enabled, frequency_days, model, notify_telegram, last_scheduled_for, updated_at")
+    .select("workflow, enabled, frequency_days, scheduled_hour, model, notify_telegram, last_scheduled_for, updated_at")
     .single();
   if (error) {
     console.error("admin_editorial_automation_update_failed", { workflow, message: error.message });

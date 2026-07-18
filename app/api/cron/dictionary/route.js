@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 
 import { runDictionaryGeneration } from "@/lib/dictionary/automation";
 import { runEditorialGeneration } from "@/lib/editorial/automation";
+import { synchronizeEditorialSchedulerSecret } from "@/lib/editorial/scheduler";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -19,9 +20,11 @@ function hasValidCronAuthorization(request) {
 export async function GET(request) {
   if (!hasValidCronAuthorization(request)) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   try {
+    await synchronizeEditorialSchedulerSecret();
+    const now = new Date();
     const [dictionary, editorial] = await Promise.all([
-      runDictionaryGeneration({ triggerSource: "cron" }),
-      runEditorialGeneration({ triggerSource: "cron" })
+      runDictionaryGeneration({ triggerSource: "cron", now }),
+      runEditorialGeneration({ triggerSource: "cron", date: now })
     ]);
     const ok = dictionary.ok && editorial.ok;
     return NextResponse.json({ ok, dictionary, editorial }, { status: ok ? 200 : 422 });
