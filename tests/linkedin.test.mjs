@@ -141,13 +141,17 @@ test("respinge structured output invalid, placeholder-ele si formularile interzi
     hook: "Viitorul este deja aici, iar calendarul examenelor schimba planificarea."
   }), { article, articleUrl });
   assert.ok(banned.reasons.includes("banned_language_detected"));
+
+  const invalidHashtag = validateLinkedInDraft(validDraft({ hashtags: ["#Educatie", "fara_diez", "#Studenti"] }), { article, articleUrl });
+  assert.ok(invalidHashtag.reasons.includes("invalid_hashtag"));
 });
 
 test("OAuth cere state si permisiunile minime, iar callbackul consuma state o singura data", async () => {
-  const [configSource, startRoute, callbackRoute] = await Promise.all([
+  const [configSource, startRoute, callbackRoute, middleware] = await Promise.all([
     readFile(new URL("../lib/linkedin/config.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/admin/linkedin/oauth/start/route.js", import.meta.url), "utf8"),
-    readFile(new URL("../app/api/admin/linkedin/oauth/callback/route.js", import.meta.url), "utf8")
+    readFile(new URL("../app/api/admin/linkedin/oauth/callback/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../middleware.js", import.meta.url), "utf8")
   ]);
   assert.match(configSource, /\["openid", "profile", "w_member_social"\]/);
   assert.match(configSource, /searchParams\.set\("state", state\)/);
@@ -158,6 +162,7 @@ test("OAuth cere state si permisiunile minime, iar callbackul consuma state o si
   assert.match(callbackRoute, /\.gt\("expires_at", now\)/);
   assert.match(callbackRoute, /authorization_cancelled/);
   assert.match(callbackRoute, /callback_failed/);
+  assert.match(middleware, /api\/admin\/linkedin\/oauth\/callback/);
 });
 
 test("schimbul OAuth si profilul trateaza raspunsurile esuate", async () => {
