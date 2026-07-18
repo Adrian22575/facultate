@@ -69,6 +69,8 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
   const publishedArticles = articles.filter((article) => article.status === "published");
+  const articleActivity = data?.articleActivity || {};
+  const selectedArticleActivity = articleActivity[articleId] || { total: 0, published: 0, lastPublishedAt: null, latestEdition: 0 };
   const selectedStatus = STATUS[selected?.status] || [selected?.status || "Necunoscut", "draft"];
 
   function patchPost(postId, patch) {
@@ -112,8 +114,9 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
 
   async function generate() {
     if (!articleId || busy) return;
+    if (selectedArticleActivity.published && !window.confirm(`Acest articol are deja ${selectedArticleActivity.published} postări publicate. Creezi o variantă nouă pentru verificare?`)) return;
     setBusy("generate");
-    setMessage("Pregătim textul. Poți reveni în această zonă după finalizare.");
+    setMessage(selectedArticleActivity.published ? "Pregătim o variantă nouă. Nu modifică și nu republică postările existente." : "Pregătim textul. Poți reveni în această zonă după finalizare.");
     const response = await fetch(`/api/admin/linkedin/articles/${articleId}/generate`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ templateKey: manualTemplate }) }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
@@ -193,7 +196,8 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
 
       <div className="admin-linkedin-create-row">
         <label><span>Articol publicat</span><select value={articleId} disabled={!connected || Boolean(busy)} onChange={(event) => setArticleId(event.target.value)}><option value="">Alege articolul</option>{publishedArticles.map((article) => <option key={article.id} value={article.id}>{article.title}</option>)}</select></label>
-        <button type="button" className="btn-link" onClick={generate} disabled={!connected || !articleId || Boolean(busy)}>{busy === "generate" ? <LoaderCircle className="is-spinning" size={16} /> : <FileText size={16} />}{busy === "generate" ? "Se pregătește…" : "Pregătește postarea"}</button>
+        {articleId ? <p className="admin-linkedin-article-activity"><strong>{selectedArticleActivity.published ? `Publicată de ${selectedArticleActivity.published} ori` : "Încă nepublicată pe LinkedIn"}</strong><span>{selectedArticleActivity.lastPublishedAt ? `Ultima: ${formatDate(selectedArticleActivity.lastPublishedAt)}` : "Va intra la aprobare înainte de publicare."}</span></p> : null}
+        <button type="button" className="btn-link" onClick={generate} disabled={!connected || !articleId || Boolean(busy)}>{busy === "generate" ? <LoaderCircle className="is-spinning" size={16} /> : <FileText size={16} />}{busy === "generate" ? "Se pregătește…" : selectedArticleActivity.published ? "Creează variantă nouă" : "Pregătește postarea"}</button>
       </div>
 
       {posts.length ? (
@@ -206,7 +210,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
           </nav>
 
           {selected ? <div className="admin-linkedin-editor" aria-busy={Boolean(busy)}>
-            <div className="admin-linkedin-editor-head"><div><span className={`admin-linkedin-status is-${selectedStatus[1]}`}>{selectedStatus[0]}</span><small className="admin-linkedin-template-chip">{LINKEDIN_POST_TEMPLATES.find((template) => template.key === selected.template_key)?.label || "Format salvat"}</small><h3>{selected.article?.title || "Postare LinkedIn"}</h3></div>{selected.status === "published" && selected.linkedin_post_url ? <a href={selected.linkedin_post_url} target="_blank" rel="noreferrer">Deschide pe LinkedIn <ExternalLink size={15} /></a> : null}</div>
+            <div className="admin-linkedin-editor-head"><div><span className={`admin-linkedin-status is-${selectedStatus[1]}`}>{selectedStatus[0]}</span><small className="admin-linkedin-template-chip">Varianta {selected.edition_number || 1} · {LINKEDIN_POST_TEMPLATES.find((template) => template.key === selected.template_key)?.label || "Format salvat"}</small><h3>{selected.article?.title || "Postare LinkedIn"}</h3></div>{selected.status === "published" && selected.linkedin_post_url ? <a href={selected.linkedin_post_url} target="_blank" rel="noreferrer">Deschide pe LinkedIn <ExternalLink size={15} /></a> : null}</div>
             {selected.generation_started_at && selected.status === "not_generated" ? <div className="admin-linkedin-generating"><LoaderCircle className="is-spinning" size={18} /><span><strong>Textul se pregătește</strong><small>Poți părăsi pagina. Starea rămâne salvată.</small></span></div> : null}
             <label className="admin-linkedin-text"><span>Textul postării <small>{text.length}/3.000</small></span><textarea value={text} onChange={(event) => setText(event.target.value)} disabled={["publishing", "published"].includes(selected.status) || Boolean(busy)} rows={14} /></label>
             {selected.last_error ? <p className="admin-linkedin-error"><XCircle size={16} />{humanError(selected.last_error)}</p> : null}
@@ -217,7 +221,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
               {selected.status === "approved" ? <button type="button" className="btn-link" onClick={() => action("publish")} disabled={Boolean(busy)}>{busy === "publish" ? <LoaderCircle className="is-spinning" size={16} /> : <Send size={16} />}{busy === "publish" ? "Se publică…" : "Publică pe LinkedIn"}</button> : null}
               {selected.status === "failed" && !ambiguous ? <button type="button" className="btn-link" onClick={() => action("retry")} disabled={Boolean(busy)}>{busy === "retry" ? <LoaderCircle className="is-spinning" size={16} /> : <RefreshCw size={16} />}Reîncearcă</button> : null}
             </div>
-            <footer><span>Generată: {formatDate(selected.generated_at)}</span><span>Aprobată: {formatDate(selected.approved_at)}</span><span>Publicată: {formatDate(selected.published_at)}</span></footer>
+            <footer><span>Varianta: {selected.edition_number || 1}</span><span>Format: {LINKEDIN_POST_TEMPLATES.find((template) => template.key === selected.template_key)?.label || "—"}</span><span>Model: {selected.model || "—"}</span><span>Generată: {formatDate(selected.generated_at)}</span><span>Aprobată: {formatDate(selected.approved_at)}</span><span>Publicată: {formatDate(selected.published_at)}</span></footer>
           </div> : null}
         </div>
       ) : <div className="admin-linkedin-empty"><span className="admin-linkedin-brand-glyph" aria-hidden="true">in</span><div><strong>Nicio postare pregătită</strong><p>Conectează profilul și alege un articol publicat. Modul implicit cere aprobarea ta înainte de publicare.</p></div></div>}

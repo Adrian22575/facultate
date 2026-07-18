@@ -10716,13 +10716,16 @@ td {
 
 .admin-linkedin-create-row {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) auto;
+  grid-template-columns: minmax(260px, 1fr) minmax(180px, .7fr) auto;
   align-items: end;
   gap: 10px;
 }
 .admin-linkedin-create-row label { display: grid; gap: 5px; }
 .admin-linkedin-create-row label > span { color: #385979; font-size: .78rem; font-weight: 800; }
 .admin-linkedin-create-row .btn-link { min-height: 40px; }
+.admin-linkedin-article-activity { display: grid; min-height: 40px; gap: 2px; margin: 0; padding: 7px 10px; border-left: 3px solid #0a66c2; border-radius: 9px; color: #315779; background: #f3f8ff; font-size: .76rem; line-height: 1.25; }
+.admin-linkedin-article-activity strong { color: #194b7d; font-size: .79rem; }
+.admin-linkedin-article-activity span { color: #667f9b; }
 
 .admin-linkedin-template-bar { display: grid; grid-template-columns: minmax(220px, .9fr) minmax(220px, .9fr) minmax(260px, 1.25fr); align-items: end; gap: 10px; padding: 12px; border: 1px solid #cfdef0; border-radius: 14px; background: linear-gradient(135deg, #f7fbff, #fff); }
 .admin-linkedin-template-bar label { display: grid; min-width: 0; gap: 5px; }

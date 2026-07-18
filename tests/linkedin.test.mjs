@@ -66,6 +66,20 @@ test("formatele LinkedIn sunt finite, au un implicit sigur si hashtagurile raman
   assert.equal(validateLinkedInDraft(draft, { article, articleUrl }).valid, true);
 });
 
+test("un articol poate avea ediții LinkedIn distincte, fără a rescrie publicarea existentă", async () => {
+  const [migration, server, ui] = await Promise.all([
+    readFile(new URL("../supabase/migrations/20260718153000_linkedin_post_editions.sql", import.meta.url), "utf8"),
+    readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
+  ]);
+  assert.match(migration, /drop constraint if exists linkedin_editorial_posts_article_id_connection_id_key/i);
+  assert.match(migration, /unique \(article_id, connection_id, edition_number\)/i);
+  assert.match(server, /createNextEdition/);
+  assert.match(server, /if \(!force\) return \{ ok: true, skipped: true, reason: "already_published", post \}/);
+  assert.match(ui, /Creează variantă nouă/);
+  assert.match(ui, /Publicată de/);
+});
+
 test("respinge informațiile care nu există în articol și întrebările generice", () => {
   const unsupported = validateLinkedInDraft(validDraft({ claims: ["Bugetul educației a crescut cu 40%.", "Studenții trebuie să verifice și pagina universității."] }), { article, articleUrl });
   assert.equal(unsupported.valid, false);
@@ -222,7 +236,7 @@ test("fluxurile draft, aprobare, respingere, auto-publicare si articol nepublica
   ]);
   assert.match(server, /settings\.mode === "approval_required" \? "pending_approval"/);
   assert.match(server, /settings\.mode === "auto_publish" \? "approved"/);
-  assert.match(server, /if \(settings\.mode === "auto_publish"\) return publishLinkedInPost/);
+  assert.match(server, /if \(settings\.mode === "auto_publish" && !force\) return publishLinkedInPost/);
   assert.match(server, /if \(data\.status !== "published"\) throw new Error\("article_not_published"\)/);
   assert.match(server, /if \(post\.article\?\.status !== "published"\) throw new Error\("article_not_published"\)/);
   assert.match(actionRoute, /approveLinkedInPost/);
