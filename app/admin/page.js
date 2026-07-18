@@ -8,6 +8,7 @@ import { AdminEditorialPanel } from "@/components/admin-editorial-panel";
 import { requireAdmin } from "@/lib/admin";
 import { getDictionaryAdminOverview } from "@/lib/dictionary/server";
 import { getEditorialAdminOverview } from "@/lib/editorial/server";
+import { getLinkedInAdminOverview } from "@/lib/linkedin/server";
 import {
   getAdminAcademicStructureOverview,
   getAdminBillingOverview,
@@ -49,6 +50,7 @@ export default async function AdminPage({ searchParams }) {
   let openAILogsWarning = null;
   let dictionaryData = null;
   let editorialData = null;
+  let linkedInData = null;
 
   if (adminTab === "platform") {
     const [
@@ -105,7 +107,12 @@ export default async function AdminPage({ searchParams }) {
   if (adminTab === "dictionary") {
     dictionaryData = await getDictionaryAdminOverview();
   }
-  if (adminTab === "editorial") editorialData = await getEditorialAdminOverview();
+  if (adminTab === "editorial") {
+    [editorialData, linkedInData] = await Promise.all([
+      getEditorialAdminOverview(),
+      getLinkedInAdminOverview()
+    ]);
+  }
 
   const adminActionSummary = {
     platform: 0,
@@ -159,7 +166,7 @@ export default async function AdminPage({ searchParams }) {
         }
         uploadsContent={adminTab === "uploads" ? <AdminUploadErrorsPanel rows={failedUploads} /> : null}
         dictionaryContent={adminTab === "dictionary" ? <AdminDictionaryPanel {...dictionaryData} /> : null}
-        editorialContent={adminTab === "editorial" ? <AdminEditorialPanel {...editorialData} /> : null}
+        editorialContent={adminTab === "editorial" ? <AdminEditorialPanel {...editorialData} linkedIn={linkedInData} initialLinkedInPostId={resolvedSearchParams?.linkedin_post || ""} /> : null}
       />
     </main>
   );

@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
+import { AdminLinkedInDistribution } from "@/components/admin-linkedin-distribution";
 
 const ACTIVE_RUN_STATUSES = new Set(["started", "researching", "validated_research", "drafted", "fact_checked"]);
 const RUN_PROGRESS = { started: 8, researching: 32, validated_research: 56, drafted: 78, fact_checked: 92 };
@@ -95,7 +96,7 @@ function ActionMessage({ message }) {
   return <p className={`admin-editorial-action-message is-${message.tone || "info"}`} role="status" aria-live="polite" aria-atomic="true">{message.text}</p>;
 }
 
-export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning }) {
+export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "" }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(articles[0]?.id || "");
   const selected = useMemo(() => articles.find((article) => article.id === selectedId) || null, [articles, selectedId]);
@@ -309,6 +310,8 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
       ) : null}
       {persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
+
+      <AdminLinkedInDistribution data={linkedIn} articles={articles} initialPostId={initialLinkedInPostId} />
 
       <div className="admin-editorial-layout">
         <div className="admin-editorial-list">

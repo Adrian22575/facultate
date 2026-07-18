@@ -1,9 +1,10 @@
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { z } from "zod";
 
 import { isAdminUser } from "@/lib/admin";
 import { runEditorialFactCheck } from "@/lib/editorial/automation";
+import { prepareLinkedInDraft } from "@/lib/linkedin/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -44,5 +45,14 @@ export async function POST(request, { params }) {
   revalidatePath("/articole");
   revalidatePath(`/articole/${article.slug}`);
   revalidatePath("/sitemap.xml");
-  return NextResponse.json({ ok: true, status: "published" });
+  after(async () => {
+    const result = await prepareLinkedInDraft(article.id).catch((linkedinError) => ({
+      ok: false,
+      reason: linkedinError instanceof Error ? linkedinError.message : "linkedin_distribution_failed"
+    }));
+    if (!result.ok && !result.skipped) {
+      console.error("linkedin_distribution_after_publication_failed", { articleId: article.id, reason: result.reason });
+    }
+  });
+  return NextResponse.json({ ok: true, status: "published", linkedinQueued: true });
 }
