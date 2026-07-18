@@ -10891,6 +10891,7 @@ td {
 .admin-run-history summary { color: #315b8f; font-size: .85rem; font-weight: 850; cursor: pointer; }
 .admin-run-history > p { margin: 10px 0 0; color: #607895; font-size: .86rem; }
 .admin-run-history .admin-dictionary-runs, .admin-run-history .admin-editorial-runs { margin-top: 10px; }
+.admin-editorial-run-attempts { display: grid; gap: 2px; padding: 7px 9px; border-left: 2px solid #bdd4f5; background: #f5f9ff; }
 .admin-dictionary-list button { grid-template-columns: auto minmax(0, 1fr); min-width: 0; overflow: hidden; }
 .admin-dictionary-list span, .admin-dictionary-list strong, .admin-dictionary-list small { min-width: 0; max-width: 100%; overflow: hidden; }
 .admin-dictionary-list strong { display: -webkit-box; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; }

@@ -13,6 +13,27 @@ function parseJson(value, label) {
   try { return JSON.parse(value); } catch { throw new Error(`${label} trebuie să fie JSON valid.`); }
 }
 
+function runStatusLabel(status) {
+  return {
+    started: "pornită",
+    researching: "în cercetare",
+    validated_research: "cercetare validată",
+    drafted: "ciornă în pregătire",
+    fact_checked: "verificare terminată",
+    draft: "ciornă gata de revizuire",
+    published: "publicat",
+    rejected: "necesită revizuire",
+    failed: "oprită"
+  }[status] || status;
+}
+
+function researchAttemptLabel(attempt, index) {
+  const label = attempt?.strategy === "recent_fallback" ? "Cercetare alternativă" : "Cercetare săptămânală";
+  const sourceCount = attempt?.validatedSourceCount ?? 0;
+  const topicCount = attempt?.topicCount ?? 0;
+  return `${index + 1}. ${label}: ${sourceCount} surse verificate, ${topicCount} subiecte.`;
+}
+
 export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning }) {
   const [selectedId, setSelectedId] = useState(articles[0]?.id || "");
   const selected = useMemo(() => articles.find((article) => article.id === selectedId) || null, [articles, selectedId]);
@@ -33,8 +54,19 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
     setMessage("");
     const response = await fetch("/api/admin/editorial/generate", { method: "POST" }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
-    setBusy("");
-    setMessage(response?.ok ? "Ciorna a fost creată. Reîncarcă pagina pentru a o edita sau publica." : result?.reason === "research_validation_failed" ? "Cercetarea nu a avut suficiente surse verificabile. Detaliile sunt în istoric." : "Rularea nu s-a finalizat. Verifică istoricul.");
+    if (!response) {
+      setBusy("");
+      setMessage("Nu am putut contacta serviciul de generare. Încearcă din nou.");
+      return;
+    }
+
+    const outcome = response.ok
+      ? "Ciorna a fost creată."
+      : result?.reason === "research_validation_failed"
+        ? "Nu a fost creată o ciornă, deoarece nici cercetarea alternativă nu a avut suficiente surse verificabile."
+        : "Rularea s-a încheiat fără o ciornă.";
+    setMessage(`${outcome} Actualizăm istoricul…`);
+    window.setTimeout(() => window.location.reload(), 500);
   }
 
   async function runAction(action) {
@@ -70,7 +102,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
         <button type="button" className="btn-link" onClick={generateDraft} disabled={Boolean(busy)}><FlaskConical size={16} />{busy === "generate" ? "Se pregătește…" : "Generează un articol"}</button>
       </div>
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
-      {message ? <p className="admin-dictionary-message">{message}</p> : null}
+      {message ? <p className="admin-dictionary-message" role="status" aria-live="polite" aria-atomic="true">{message}</p> : null}
       <div className="admin-editorial-layout">
         <div className="admin-editorial-list">{articles.map((article) => <button type="button" key={article.id} className={article.id === selectedId ? "is-selected" : ""} onClick={() => select(article)}><FilePenLine size={16} /><span><strong>{article.title}</strong><small>{article.status} · {article.quality_score}/100</small></span></button>)}</div>
         {selected && form ? <div className="admin-editorial-editor">
@@ -81,7 +113,25 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
           <div className="admin-editorial-actions"><button type="button" className="btn-link" onClick={save} disabled={Boolean(busy)}><Save size={16} />{busy === "save" ? "Se salvează…" : "Salvează"}</button><button type="button" className="btn-back" onClick={() => runAction("fact_check")} disabled={Boolean(busy)}><ShieldCheck size={16} />{busy === "fact_check" ? "Se verifică…" : "Verifică faptele"}</button><button type="button" className="btn-link" onClick={() => runAction("publish")} disabled={Boolean(busy)}><Send size={16} />Confirmă publicarea</button><button type="button" className="btn-text" onClick={() => runAction("withdraw")} disabled={Boolean(busy)}>Retrage</button><a href={`/articole/${selected.slug}`} target="_blank" rel="noreferrer">Vezi pagina</a></div>
         </div> : <div className="admin-editorial-editor is-empty">Alege un articol pentru editare.</div>}
       </div>
-      <details className="admin-run-history"><summary>Istoric ({runs.length})</summary>{runs.length ? <div className="admin-editorial-runs">{runs.map((run) => <article key={run.id}><strong>{run.run_date || `${run.week_start} – ${run.week_end}`}</strong><span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {run.status} · {run.model || "model necunoscut"} · {run.quality_score ?? "—"}/100</span>{run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}</article>)}</div> : <p>Nu există rulări încă.</p>}</details>
+      <details className="admin-run-history" open={["rejected", "failed"].includes(runs[0]?.status)}>
+        <summary>Istoric ({runs.length})</summary>
+        {runs.length ? (
+          <div className="admin-editorial-runs">
+            {runs.map((run) => {
+              const attempts = run.validation_report?.researchAttempts || [];
+              return (
+                <article key={run.id}>
+                  <strong>{run.run_date || `${run.week_start} – ${run.week_end}`}</strong>
+                  <span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.model || "model necunoscut"} · {run.quality_score ?? "—"}/100</span>
+                  <small>{`${run.source_count ?? 0} surse verificate · ${run.topic_count ?? 0} subiecte selectate`}</small>
+                  {attempts.length ? <div className="admin-editorial-run-attempts">{attempts.map((attempt, index) => <small key={`${attempt.strategy}-${index}`}>{researchAttemptLabel(attempt, index)}</small>)}</div> : null}
+                  {run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}
+                </article>
+              );
+            })}
+          </div>
+        ) : <p>Nu există rulări încă.</p>}
+      </details>
     </section>
   );
 }
