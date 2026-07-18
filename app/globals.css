@@ -10897,6 +10897,27 @@ td {
 .admin-dictionary-list small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 980px) { .admin-content-toolbar { align-items: stretch; flex-direction: column; }.admin-content-toolbar > .btn-link { align-self: flex-start; }.admin-automation-compact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }.admin-automation-compact > label, .admin-automation-compact > button { min-width: 0 !important; } }
 @media (max-width: 560px) { .admin-automation-compact { grid-template-columns: 1fr; }.admin-content-toolbar > .btn-link { width: 100%; justify-content: center; }.admin-automation-switch { justify-content: center; }.admin-automation-compact .btn-link { justify-content: center; } }
+
+/* Admin: instrucțiuni inspectabile, fără a încărca setările de rulare. */
+.admin-generation-preview { flex: 1 0 100%; min-width: 0; border-top: 1px solid #dce6f3; padding-top: 11px; }
+.admin-generation-preview > summary { width: fit-content; color: #245c9f; font-size: .84rem; font-weight: 850; cursor: pointer; }
+.admin-generation-preview-body { display: grid; gap: 12px; margin-top: 12px; }
+.admin-generation-preview-body > p { max-width: 760px; margin: 0; color: #58708f; font-size: .84rem; line-height: 1.5; }
+.admin-generation-preview-meta { display: flex; flex-wrap: wrap; gap: 7px; }
+.admin-generation-preview-meta span { padding: 5px 8px; border: 1px solid #d3e1f3; border-radius: 999px; color: #506b8d; font-size: .76rem; background: #f8fbff; }
+.admin-generation-preview-meta strong { color: #1d4e83; }
+.admin-generation-preview-list { display: grid; gap: 10px; }
+.admin-generation-preview-list article { display: grid; gap: 9px; min-width: 0; padding: 13px; border: 1px solid #d7e4f4; border-radius: 13px; background: #fbfdff; }
+.admin-generation-preview-list header { display: flex; align-items: center; gap: 9px; }
+.admin-generation-preview-list header > span { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; color: #0e58bb; font-size: .75rem; font-weight: 850; background: #e7f1ff; }
+.admin-generation-preview-list header div { display: grid; gap: 2px; min-width: 0; }
+.admin-generation-preview-list header strong { color: #244875; font-size: .9rem; }
+.admin-generation-preview-list header small { color: #69809e; font-size: .76rem; }
+.admin-generation-preview-list section { display: grid; gap: 5px; min-width: 0; }
+.admin-generation-preview-list section > span, .admin-generation-preview-tools, .admin-generation-preview-context { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: #557294; font-size: .78rem; font-weight: 750; }
+.admin-generation-preview-list pre { max-height: 260px; margin: 0; overflow: auto; padding: 11px; border: 1px solid #dce7f4; border-radius: 9px; color: #24466f; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; line-height: 1.52; white-space: pre-wrap; overflow-wrap: anywhere; background: #f6faff; }
+.admin-generation-preview-context { color: #397158; }
+.admin-generation-preview-note { padding: 10px 11px; border-radius: 10px; color: #49698e !important; background: #eef6ff; }
 @media (max-width: 620px) { .admin-automation-title { grid-template-columns: auto minmax(0, 1fr); }.admin-automation-state { grid-column: 2; justify-self: start; }.admin-automation-controls { grid-template-columns: 1fr; }.admin-automation-footer { align-items: stretch; flex-direction: column; }.admin-automation-footer .btn-link { justify-content: center; } }
 
 .admin-automation-toggle { display: flex !important; align-items: center; gap: 9px; }.admin-automation-toggle input { position: relative; width: 30px; height: 18px; margin: 0; appearance: none; border: 0; border-radius: 999px; opacity: 1; outline: none; background: #b6c5d6; box-shadow: inset 0 0 0 1px #a2b3c7; cursor: pointer; transition: background .16s ease; }.admin-automation-toggle input::after { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(21, 61, 106, .3); content: ""; transition: transform .16s ease; }.admin-automation-toggle input:checked { background: #1861ca; box-shadow: inset 0 0 0 1px #1557b3; }.admin-automation-toggle input:checked::after { transform: translateX(12px); }.admin-automation-toggle input:focus-visible { outline: 2px solid #1764d5; outline-offset: 3px; }.admin-automation-toggle span::before, .admin-automation-toggle span::after { content: none; }

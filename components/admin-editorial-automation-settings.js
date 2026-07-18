@@ -3,6 +3,8 @@
 import { BellRing, Check, Cpu, LoaderCircle, Save } from "lucide-react";
 import { useState } from "react";
 
+import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
+
 const MODEL_OPTIONS = [
   ["gpt-5.6-sol", "GPT-5.6 Sol"],
   ["gpt-5.6-terra", "GPT-5.6 Terra"],
@@ -23,7 +25,7 @@ function initialState(workflow, settings) {
 
 const hourLabel = (value) => `${String(value).padStart(2, "0")}:00`;
 
-export function AdminEditorialAutomationSettings({ workflow, settings }) {
+export function AdminEditorialAutomationSettings({ workflow, settings, generationPreview }) {
   const [form, setForm] = useState(() => initialState(workflow, settings));
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
@@ -89,6 +91,7 @@ export function AdminEditorialAutomationSettings({ workflow, settings }) {
         {saving ? "Se salvează…" : "Salvează"}
       </button>
       {status ? <span className="admin-automation-compact-message" role="status">{status}</span> : null}
+      <AdminGenerationPromptPreview preview={generationPreview ? { ...generationPreview, model: form.model } : null} />
     </div>
   );
 }

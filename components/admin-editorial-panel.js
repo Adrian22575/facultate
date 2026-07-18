@@ -13,7 +13,7 @@ function parseJson(value, label) {
   try { return JSON.parse(value); } catch { throw new Error(`${label} trebuie să fie JSON valid.`); }
 }
 
-export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, warning }) {
+export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning }) {
   const [selectedId, setSelectedId] = useState(articles[0]?.id || "");
   const selected = useMemo(() => articles.find((article) => article.id === selectedId) || null, [articles, selectedId]);
   const [form, setForm] = useState(() => selected ? formFrom(selected) : null);
@@ -66,7 +66,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
   return (
     <section className="surface admin-editorial-panel">
       <div className="admin-content-toolbar">
-        <AdminEditorialAutomationSettings workflow="editorial" settings={automationSettings} />
+        <AdminEditorialAutomationSettings workflow="editorial" settings={automationSettings} generationPreview={generationPreview} />
         <button type="button" className="btn-link" onClick={generateDraft} disabled={Boolean(busy)}><FlaskConical size={16} />{busy === "generate" ? "Se pregătește…" : "Generează un articol"}</button>
       </div>
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}

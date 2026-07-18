@@ -24,7 +24,7 @@ function formFromTerm(term) {
   };
 }
 
-export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], automationSettings, warning }) {
+export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], automationSettings, generationPreview, warning }) {
   const [selectedId, setSelectedId] = useState(terms[0]?.id || "");
   const selected = useMemo(() => terms.find((term) => term.id === selectedId) || null, [selectedId, terms]);
   const [form, setForm] = useState(() => selected ? formFromTerm(selected) : null);
@@ -72,7 +72,7 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
   return (
     <section className="surface admin-dictionary-panel">
       <div className="admin-content-toolbar">
-        <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} />
+        <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} generationPreview={generationPreview} />
         <button type="button" className="btn-link" onClick={generate} disabled={generating}><RefreshCw size={16} className={generating ? "is-spinning" : ""} />{generating ? "Se pregătește…" : "Generează un termen"}</button>
       </div>
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
