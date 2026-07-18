@@ -9,7 +9,7 @@ La ora 08:00 UTC, rularea este la 10:00 în Europe/Bucharest iarna (EET) și 11:
 ## Configurare
 
 - `OPENAI_API_KEY` este necesară pentru cercetare, redactare și verificare.
-- `OPENAI_EDITORIAL_MODEL=gpt-5.6` este modelul implicit; nu există fallback automat. Dacă proiectul nu are acces la acest model, setează explicit un model modern verificat (de exemplu `gpt-5.4`) înainte de a activa rularea; dacă modelul configurat eșuează, articolul nu se publică.
+- `OPENAI_EDITORIAL_MODEL=gpt-5.4` este modelul implicit pentru compatibilitate; nu există fallback automat. Din Admin poți alege un model disponibil pentru fluxul editorial. Dacă modelul configurat eșuează, articolul nu se publică.
 - `CRON_SECRET` (minimum 24 caractere) autorizează apelurile Vercel.
 - `SUPABASE_SERVICE_ROLE_KEY` salvează rulările și conținutul.
 - `TELEGRAM_BOT_TOKEN`, `TELEGRAM_ADMIN_CHAT_ID` și `TELEGRAM_NOTIFICATIONS_ENABLED` activează notificările administrative. Nu se folosește `TELEGRAM_CHAT_ID` separat.
