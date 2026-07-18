@@ -4,6 +4,9 @@ import { BellRing, CalendarClock, Check, Cpu, LoaderCircle, Power, Save } from "
 import { useState } from "react";
 
 const MODEL_OPTIONS = [
+  ["gpt-5.6-sol", "GPT-5.6 Sol — calitate maximă"],
+  ["gpt-5.6-terra", "GPT-5.6 Terra — echilibru calitate/cost"],
+  ["gpt-5.6-luna", "GPT-5.6 Luna — volum mare, cost redus"],
   ["gpt-5.4", "GPT-5.4 — echilibru"],
   ["gpt-5.4-mini", "GPT-5.4 mini — mai rapid"]
 ];
