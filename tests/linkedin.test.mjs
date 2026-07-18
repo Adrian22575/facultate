@@ -50,6 +50,10 @@ test("respinge informațiile care nu există în articol și întrebările gener
   const generic = validateLinkedInDraft(validDraft({ closingQuestion: "Ce părere aveți despre asta?" }), { article, articleUrl });
   assert.equal(generic.valid, false);
   assert.ok(generic.reasons.includes("generic_closing_question"));
+
+  const wrongUrl = validateLinkedInDraft(validDraft({ articleUrl: "not-a-public-article-url" }), { article, articleUrl });
+  assert.equal(wrongUrl.valid, false);
+  assert.ok(wrongUrl.reasons.includes("article_url_mismatch"));
 });
 
 test("consideră conexiunea utilizabilă numai cu scope și token neexpirat", () => {
