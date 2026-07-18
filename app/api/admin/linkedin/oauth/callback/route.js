@@ -13,7 +13,7 @@ function adminRedirect(request, key, value) {
   const url = new URL("/admin", request.url);
   url.searchParams.set("admin_tab", "editorial");
   url.searchParams.set(key, value);
-  url.hash = "linkedin-distribution";
+  url.hash = "editorial-workspace";
   return NextResponse.redirect(url);
 }
 

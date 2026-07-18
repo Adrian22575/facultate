@@ -8,6 +8,7 @@ import {
   FlaskConical,
   LoaderCircle,
   Save,
+  Search,
   Send,
   ShieldCheck,
   Undo2
@@ -98,8 +99,18 @@ function ActionMessage({ message }) {
 
 export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "" }) {
   const router = useRouter();
-  const [selectedId, setSelectedId] = useState(articles[0]?.id || "");
-  const selected = useMemo(() => articles.find((article) => article.id === selectedId) || null, [articles, selectedId]);
+  const initialLinkedInPost = linkedIn?.posts?.find((post) => post.id === initialLinkedInPostId) || null;
+  const [selectedId, setSelectedId] = useState(initialLinkedInPost?.article_id || initialLinkedInPost?.article?.id || articles[0]?.id || "");
+  const [activePane, setActivePane] = useState(initialLinkedInPost ? "linkedin" : "article");
+  const [articleQuery, setArticleQuery] = useState("");
+  const [searchedArticles, setSearchedArticles] = useState([]);
+  const [loadedArticles, setLoadedArticles] = useState([]);
+  const [searchBusy, setSearchBusy] = useState(false);
+  const allArticles = useMemo(() => {
+    const known = new Set(articles.map((article) => article.id));
+    return [...articles, ...loadedArticles.filter((article) => !known.has(article.id))];
+  }, [articles, loadedArticles]);
+  const selected = useMemo(() => allArticles.find((article) => article.id === selectedId) || null, [allArticles, selectedId]);
   const [articlePatches, setArticlePatches] = useState({});
   const effectiveSelected = selected ? { ...selected, ...(articlePatches[selected.id] || {}) } : null;
   const [form, setForm] = useState(() => selected ? formFrom(selected) : null);
@@ -115,6 +126,44 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
   const persistedGenerationMessage = generationMessage || (!liveRun && ["failed", "rejected"].includes(latestRun?.status)
     ? { tone: "error", text: latestRun.rejection_reason || latestRun.error_message || "Ultima generare nu a produs o ciornă. Vezi detaliile în istoric." }
     : null);
+  const filteredArticles = useMemo(() => {
+    const query = articleQuery.trim().toLocaleLowerCase("ro-RO");
+    if (!query) return articles;
+    if (query.length >= 2) return searchedArticles;
+    return articles.filter((article) => [article.title, article.primary_topic, article.summary, ...(article.categories || [])]
+      .filter(Boolean)
+      .join(" ")
+      .toLocaleLowerCase("ro-RO")
+      .includes(query));
+  }, [articleQuery, articles, searchedArticles]);
+
+  useEffect(() => {
+    const query = articleQuery.trim();
+    if (query.length < 2) {
+      setSearchedArticles([]);
+      setSearchBusy(false);
+      return undefined;
+    }
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setSearchBusy(true);
+      const response = await fetch(`/api/admin/editorial/articles/search?q=${encodeURIComponent(query)}`, { signal: controller.signal }).catch(() => null);
+      const result = await response?.json().catch(() => ({}));
+      if (!controller.signal.aborted && response?.ok) {
+        const next = result.articles || [];
+        setSearchedArticles(next);
+        setLoadedArticles((current) => {
+          const known = new Set(current.map((article) => article.id));
+          return [...current, ...next.filter((article) => !known.has(article.id))];
+        });
+      }
+      if (!controller.signal.aborted) setSearchBusy(false);
+    }, 250);
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [articleQuery]);
 
   useEffect(() => {
     if (!selected) return;
@@ -141,6 +190,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
     setForm(formFrom(article));
     setFormArticleId(article.id);
     setDirty(false);
+    setActivePane("article");
     setArticleMessage(null);
     setConfirmation("");
   }
@@ -311,11 +361,14 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
       {persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
 
-      <AdminLinkedInDistribution data={linkedIn} articles={articles} initialPostId={initialLinkedInPostId} />
-
-      <div className="admin-editorial-layout">
+      <div id="editorial-workspace" className="admin-editorial-layout">
         <div className="admin-editorial-list">
-          {articles.map((article) => {
+          <label className="admin-editorial-search" aria-label="Caută articole">
+            {searchBusy ? <LoaderCircle className="is-spinning" size={16} aria-hidden="true" /> : <Search size={16} aria-hidden="true" />}
+            <input value={articleQuery} onChange={(event) => setArticleQuery(event.target.value)} placeholder="Caută după titlu" />
+          </label>
+          <p className="admin-editorial-list-count">{articleQuery.trim().length >= 2 ? searchBusy ? "Căutăm articole…" : `${filteredArticles.length} rezultate` : `${articles.length} articole recente`}</p>
+          {filteredArticles.map((article) => {
             const displayed = { ...article, ...(articlePatches[article.id] || {}) };
             const displayedStatus = articleStatus(displayed.status);
             return (
@@ -328,10 +381,16 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
               </button>
             );
           })}
+          {filteredArticles.length === 0 ? <div className="admin-editorial-list-empty">Nu am găsit niciun articol pentru această căutare.</div> : null}
         </div>
 
         {effectiveSelected && form ? (
           <div className="admin-editorial-editor" aria-busy={Boolean(busy)} inert={busy ? true : undefined}>
+            <nav className="admin-editorial-tabs" aria-label="Spațiul articolului">
+              <button type="button" className={activePane === "article" ? "is-active" : ""} onClick={() => setActivePane("article")} disabled={Boolean(busy)}><FilePenLine size={16} />Articol</button>
+              <button type="button" className={activePane === "linkedin" ? "is-active" : ""} onClick={() => setActivePane("linkedin")} disabled={Boolean(busy)}><Send size={16} />LinkedIn</button>
+            </nav>
+            {activePane === "article" ? <>
             <div className="admin-editorial-statebar">
               <div className={`is-${statusInfo.tone}`}><span>Stare</span><strong>{statusInfo.label}</strong><small>{statusInfo.help}</small></div>
               <div className={`is-${factInfo.tone}`}><span>Verificare</span><strong>{dirty ? "Modificări nesalvate" : factInfo.label}</strong><small>{dirty ? "Salvează înainte de verificare sau previzualizare." : factInfo.help}</small></div>
@@ -384,6 +443,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
 
               <ActionMessage message={articleMessage} />
             </section>
+            </> : <AdminLinkedInDistribution data={linkedIn} article={effectiveSelected} initialPostId={initialLinkedInPostId} />}
           </div>
         ) : <div className="admin-editorial-editor is-empty">Alege un articol pentru editare.</div>}
       </div>
