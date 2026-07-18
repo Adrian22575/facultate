@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BookOpen, CheckCircle2, Layers3, LoaderCircle, RotateCcw, Target, Trash2, XCircle } from "lucide-react";
+import { ArrowRight, BookOpen, Brain, CheckCircle2, ListChecks, LoaderCircle, RotateCcw, Target, Trash2, XCircle } from "lucide-react";
 
 import {
   deleteLearningStudySetAction,
@@ -252,16 +252,15 @@ function LearningProcessingPanel({ studySet }) {
         <div>
           <span className="ui-section-label">Procesare</span>
           <h1>{studySet.title}</h1>
-          <p>{statusDetail}</p>
+          <p role="status" aria-live="polite" aria-atomic="true">{message || statusDetail}</p>
         </div>
       </div>
 
-      <div className="learning-processing-status" role="status" aria-atomic="true">
-        <strong>{message || statusDetail}</strong>
-        <p>Poti reveni oricand din Activitate. Materialul este pastrat si nu trebuie incarcat din nou.</p>
-      </div>
-
       <ProcessingStageTracker kind="learning" stage={processingStage} status={jobSnapshot?.status} />
+
+      <p className="learning-processing-note">
+        Poți reveni oricând din Activitate. Materialul este păstrat și nu trebuie încărcat din nou.
+      </p>
 
       <div className="learning-study-footer">
         <Link className="btn-link secondary" href="/materiale/activitate">
@@ -474,6 +473,7 @@ function TestTab({
   const [isSaving, setIsSaving] = useState(false);
   const attemptKeyRef = useRef("");
   const unansweredCount = activeQuestions.filter((question) => answers[question.id] === undefined).length;
+  const answeredCount = activeQuestions.length - unansweredCount;
 
   function resetTest() {
     setAnswers({});
@@ -489,6 +489,13 @@ function TestTab({
   function startAnotherTest() {
     const nextQuestions = shuffleArray(questionPool).slice(0, Math.min(questionLimit, questionPool.length));
     setQuestionSession(nextQuestions);
+    resetTest();
+  }
+
+  function startMistakesReview() {
+    onTestModeChange("mistakes");
+    setQuestionSession([]);
+    setDifficulty("all");
     resetTest();
   }
 
@@ -614,7 +621,7 @@ function TestTab({
             <option value="greu">Greu</option>
           </select>
         </label>
-        <span>{`${activeQuestions.length} intrebari`}</span>
+        <span>{`${answeredCount}/${activeQuestions.length} răspunsuri`}</span>
       </div>
 
       <div className="learning-question-list">
@@ -643,8 +650,10 @@ function TestTab({
 
       {result ? (
         <>
-          <div className={`learning-test-result ${result.type === "warning" ? "is-warning" : "is-done"}`}>
-            {result.type === "warning" ? <XCircle aria-hidden="true" /> : <CheckCircle2 aria-hidden="true" />}
+          <div className={`learning-test-result is-${result.type}`} role="status" aria-live="polite">
+            {result.type === "warning" ? <XCircle aria-hidden="true" /> : null}
+            {result.type === "saving" ? <LoaderCircle className="learning-result-spinner" aria-hidden="true" /> : null}
+            {result.type === "done" ? <CheckCircle2 aria-hidden="true" /> : null}
             <div>
               <strong>
                 {result.type === "warning"
@@ -667,29 +676,39 @@ function TestTab({
       ) : null}
 
       <div className="learning-test-actions">
-        <button
-          type="button"
-          data-usage-event="learning_quiz_completed"
-          data-usage-label={testMode === "mistakes" ? "Test greseli" : "Test invatare"}
-          onClick={finishTest}
-          disabled={isSaving}
-        >
-          {isSaving ? "Se salveaza..." : "Vezi rezultatul"}
-        </button>
-        <button
-          type="button"
-          className="secondary"
-          onClick={resetTest}
-        >
-          Repeta testul
-        </button>
-        <button
-          type="button"
-          className="secondary"
-          onClick={startAnotherTest}
-        >
-          Mai fa un test
-        </button>
+        {result?.type === "done" ? (
+          <>
+            {result.wrong.length ? (
+              <button type="button" onClick={startMistakesReview}>Repetă greșelile</button>
+            ) : (
+              <button type="button" onClick={startAnotherTest}>Mai fă un test</button>
+            )}
+            <button
+              type="button"
+              className="secondary"
+              onClick={result.wrong.length ? startAnotherTest : resetTest}
+            >
+              {result.wrong.length ? "Alte întrebări" : "Repetă același test"}
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              type="button"
+              data-usage-event="learning_quiz_completed"
+              data-usage-label={testMode === "mistakes" ? "Test greseli" : "Test invatare"}
+              onClick={finishTest}
+              disabled={isSaving}
+            >
+              {isSaving ? "Se salvează..." : "Vezi rezultatul"}
+            </button>
+            {answeredCount ? (
+              <button type="button" className="secondary" disabled={isSaving} onClick={resetTest}>
+                Resetează răspunsurile
+              </button>
+            ) : null}
+          </>
+        )}
       </div>
     </section>
   );
@@ -1109,15 +1128,15 @@ export function LearningStudySetClient({ studySet }) {
     <section className="learning-study-set">
       <div className="learning-study-hero">
         <div>
-          <span className="ui-section-label">Materia este gata</span>
+          <span className="ui-section-label">Material gata de învățat</span>
           <h1>{studySet.title}</h1>
           <p>
-            Ai capitole, flashcards, intrebari si un plan simplu. Incepe cu recomandarea sau mergi
-            direct la modulul dorit.
+            {`${studySet.chapterCount} capitole, ${studySet.flashcardCount} flashcards și ${studySet.questionCount} întrebări pregătite.`}
           </p>
         </div>
         <div className="learning-study-next">
           <Target aria-hidden="true" />
+          <span>Recomandat pentru început</span>
           <strong>{nextChapter ? `Incepe cu ${nextChapter.title}` : "Incepe cu flashcards"}</strong>
           <button
             type="button"
@@ -1125,7 +1144,7 @@ export function LearningStudySetClient({ studySet }) {
             data-usage-label={nextChapter ? "Continua capitole" : "Continua flashcards"}
             onClick={() => setActiveTab(nextChapter ? "chapters" : "flashcards")}
           >
-            Continua invatarea
+            {nextChapter ? "Deschide primul capitol" : "Începe cu flashcards"}
           </button>
           {studySet.isOwner ? (
             publishedAt ? (
@@ -1227,8 +1246,7 @@ export function LearningStudySetClient({ studySet }) {
         <KpiCard label="Capitole" value={studySet.chapterCount} detail={`${studySet.estimatedPages} pagini estimate`} />
         <KpiCard label="Concepte" value={studySet.conceptCount} detail={studySet.recommendedLevel} />
         <KpiCard label="Flashcards" value={studySet.flashcardCount} detail="pentru repetare" />
-        <KpiCard label="Intrebari" value={studySet.questionCount} detail="test rapid" />
-        <KpiCard label="Plan" value={`${studySet.recommendedDays} zile`} detail={`${studySet.recommendedMinutesPerDay} min/zi`} />
+        <KpiCard label="Întrebări" value={studySet.questionCount} detail="pentru verificare" />
       </div>
 
       <div
@@ -1281,42 +1299,51 @@ export function LearningStudySetClient({ studySet }) {
         aria-label={`Modul ${activeTabLabel}`}
       >
       {activeTab === "overview" ? (
-        <div className="learning-overview-grid">
-          <article className="surface learning-overview-card">
-            <BookOpen aria-hidden="true" />
-            <div>
-              <h2>Recomandarea de azi</h2>
-              <p>
-                Parcurge primul capitol, apoi fa flashcards si un test scurt. Daca gresesti,
-                greselile apar in tabul dedicat.
-              </p>
-            </div>
-          </article>
-          <article className="surface learning-overview-card">
-            <Layers3 aria-hidden="true" />
-            <div>
-              <h2>{publishedAt ? "Publicat in comunitate" : studySet.isOwner ? "Material privat" : "Material din comunitate"}</h2>
-              <p>
-                {publishedAt
-                  ? "Colegi din comunitatea ta pot folosi acest material fara o incarcare noua."
-                  : studySet.isOwner
-                    ? "Setul ramane in contul tau pana il publici manual pentru comunitate."
-                    : "Folosesti un material publicat de un coleg din comunitatea ta."}
-              </p>
-            </div>
-          </article>
-          <article className="surface learning-overview-card">
-            <CheckCircle2 aria-hidden="true" />
-            <div>
-              <h2>Progres salvat</h2>
-              <p>
-                {studySet.attempts.length
-                  ? `Ai ${studySet.attempts.length} runde recente salvate. Ultimul scor: ${studySet.attempts[0].score}%.`
-                  : "Primele rezultate apar aici dupa flashcards sau test."}
-              </p>
-            </div>
-          </article>
-        </div>
+        <section className="learning-start-panel" aria-labelledby="learning-start-title">
+          <div className="learning-start-head">
+            <span className="ui-section-label">Alege un mod</span>
+            <h2 id="learning-start-title">Cum vrei să începi?</h2>
+            <p>Poți schimba modul oricând. Progresul se salvează automat.</p>
+          </div>
+          <div className="learning-start-options">
+            <button
+              type="button"
+              disabled={!studySet.flashcardCount}
+              onClick={() => setActiveTab("flashcards")}
+            >
+              <span className="learning-start-icon" aria-hidden="true"><Brain /></span>
+              <span>
+                <strong>Repetă cu flashcards</strong>
+                <small>{`${studySet.flashcardCount} carduri · ritm rapid`}</small>
+              </span>
+              <ArrowRight aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              disabled={!studySet.questionCount}
+              onClick={() => setActiveTab("test")}
+            >
+              <span className="learning-start-icon" aria-hidden="true"><ListChecks /></span>
+              <span>
+                <strong>Verifică prin întrebări</strong>
+                <small>{`${studySet.questionCount} întrebări · răspuns imediat`}</small>
+              </span>
+              <ArrowRight aria-hidden="true" />
+            </button>
+          </div>
+          {nextChapter ? (
+            <button type="button" className="learning-start-chapter" onClick={() => setActiveTab("chapters")}>
+              <BookOpen aria-hidden="true" />
+              <span><small>Preferi să citești?</small><strong>Deschide {nextChapter.title}</strong></span>
+              <ArrowRight aria-hidden="true" />
+            </button>
+          ) : null}
+          {studySet.attempts.length ? (
+            <p className="learning-start-progress" role="status">
+              {`Ultimul rezultat salvat: ${studySet.attempts[0].score}% · ${studySet.attempts.length} ${studySet.attempts.length === 1 ? "rundă" : "runde"}`}
+            </p>
+          ) : null}
+        </section>
       ) : null}
 
       {activeTab === "chapters" ? (

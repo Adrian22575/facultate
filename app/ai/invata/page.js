@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { LearningUploadForm } from "@/components/learning-upload-form";
 import { WorkspaceUploadShell } from "@/components/workspace-upload-shell";
 import {
-  getAcademicCommunityLabel,
   getAcademicContext,
   getOnboardingHref,
   isAcademicContextComplete
@@ -17,7 +16,7 @@ import { getLearningSetupErrorMessage } from "@/lib/supabase/setup-status";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Invata din materia ta | Nota 5+"
+  title: "Învață din materia ta | Nota 5+"
 };
 
 export default async function LearningUploadPage({ searchParams }) {
@@ -63,13 +62,8 @@ export default async function LearningUploadPage({ searchParams }) {
     typeof resolvedSearchParams?.error === "string" ? resolvedSearchParams.error : null;
   const message =
     typeof resolvedSearchParams?.message === "string" ? resolvedSearchParams.message : null;
-  const communityLabel = getAcademicCommunityLabel(academicContext);
-  const title = "Invata din materia ta";
-  const subtitle = "Incarca un curs, notite sau prezentari si primesti capitole, flashcards si teste.";
-  const meta = [
-    `${billingSnapshot.aiCredits || 0} incarcari disponibile`,
-    communityLabel
-  ].filter(Boolean);
+  const title = "Învață din materia ta";
+  const subtitle = "Încarcă un curs, notițe sau prezentări și primești capitole, flashcards și teste.";
   const alerts = (
     <>
       {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
@@ -82,7 +76,6 @@ export default async function LearningUploadPage({ searchParams }) {
     <WorkspaceUploadShell
       title={title}
       subtitle={subtitle}
-      meta={meta}
       alerts={alerts}
     >
       <LearningUploadForm

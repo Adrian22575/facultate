@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
-import { Check, ClipboardPaste, FileUp, LoaderCircle, Upload } from "lucide-react";
+import { Check, ClipboardPaste, FileText, FileUp, LoaderCircle, Upload, X } from "lucide-react";
 
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -78,7 +78,7 @@ function ProcessingPanel({ status, sourceMode, sourceSaved }) {
       : "Pregatim continutul pentru procesare.";
 
   return (
-    <section className="learning-processing-panel" role="status" aria-atomic="true">
+    <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
       <span className="learning-processing-icon" aria-hidden="true">
         <LoaderCircle size={20} strokeWidth={2.3} />
       </span>
@@ -96,7 +96,9 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     subjects.some((subject) => subject.id === initialSubjectId) ? initialSubjectId : ""
   );
   const [selectedFile, setSelectedFile] = useState(null);
+  const [customSubjectName, setCustomSubjectName] = useState("");
   const [manualText, setManualText] = useState("");
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
   const [clientError, setClientError] = useState("");
   const [errorActionHref, setErrorActionHref] = useState("");
   const [status, setStatus] = useState("");
@@ -116,9 +118,25 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
   const textTooShort = sourceMode === "text" && textLength > 0 && textLength < MIN_TEXT_LENGTH;
   const textReady = sourceMode === "text" && textLength >= MIN_TEXT_LENGTH;
   const sourceReady = fileReady || textReady;
-  const subjectReady = Boolean(selectedSubjectId);
+  const selectedSubject = subjects.find((subject) => subject.id === selectedSubjectId);
+  const subjectReady = Boolean(
+    selectedSubjectId && (selectedSubjectId !== "custom" || customSubjectName.trim().length >= 2)
+  );
   const disabled = Boolean(setupWarning) || noCredits || isSubmitting;
   const submitDisabled = disabled || !sourceReady || !subjectReady;
+  const subjectLabel = selectedSubject?.title || (customSubjectName.trim() || "Materie nouă");
+  const sourceLabel = sourceMode === "file"
+    ? selectedFile?.name || "Niciun fișier ales"
+    : textReady
+      ? `${textLength.toLocaleString("ro-RO")} caractere`
+      : "Text incomplet";
+  const readinessMessage = !subjectReady
+    ? "Alege materia materialului."
+    : !sourceReady
+      ? sourceMode === "file"
+        ? "Alege fișierul pe care vrei să îl transformi."
+        : `Mai adaugă ${Math.max(0, MIN_TEXT_LENGTH - textLength)} caractere.`
+      : "Totul este pregătit. Materialul rămâne privat până alegi să îl distribui.";
   const visibleError =
     clientError ||
     (selectedFileUnsupported ? "Tip de fisier neacceptat. Alege PDF, DOCX, PPTX sau TXT." : "") ||
@@ -142,6 +160,13 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
     setErrorActionHref("");
     setStatus("");
     setSourceSaved(false);
+  }
+
+  function handleFileDrop(event) {
+    event.preventDefault();
+    setIsDraggingFile(false);
+    if (isSubmitting) return;
+    updateSelectedFile(event.dataTransfer.files?.[0] || null);
   }
 
   async function uploadSelectedFile() {
@@ -254,184 +279,220 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
       {noCredits ? (
         <div className="learning-upload-credit-warning" role="status">
           <div>
-            <strong>Ai nevoie de o incarcare disponibila.</strong>
-            <span>Alege un pachet, apoi revii automat aici pentru upload.</span>
+            <strong>Ai nevoie de o încărcare disponibilă.</strong>
+            <span>Alege un pachet, apoi revii automat aici.</span>
           </div>
           <Link className="btn-link secondary" href={creditPurchaseHref}>
             Vezi pachetele
           </Link>
         </div>
       ) : null}
-      {!isSubmitting ? <form className="surface learning-upload-form" onSubmit={handleSubmit}>
-        <div className="learning-upload-section-head">
-          <div>
-            <h2>Adauga materialul</h2>
-          </div>
-          <span className="learning-upload-cost-meta">Consuma 1 incarcare</span>
-        </div>
-
-        <section className="learning-upload-subject-section" aria-labelledby="learning-upload-subject-title">
-          <div className="learning-upload-subject-head">
+      {!isSubmitting ? (
+        <form className="surface learning-upload-form" onSubmit={handleSubmit}>
+          <div className="learning-upload-section-head">
             <div>
-              <h3 id="learning-upload-subject-title">Materia</h3>
-              <p>Alege materia căreia îi aparține conținutul.</p>
+              <h2>Încarcă materialul</h2>
+              <p>Trei pași simpli. Tu alegi, noi pregătim modurile de învățare.</p>
             </div>
+            <span className="learning-upload-cost-meta">
+              {`${billingSnapshot.aiCredits || 0} disponibile · consumă 1`}
+            </span>
           </div>
 
-          <label className="learning-upload-field">
-            <span className="sr-only">Materia</span>
-            <select
-              className="input-search"
-              name="subjectId"
-              value={selectedSubjectId}
-              required
-              disabled={isSubmitting}
-              onChange={(event) => {
-                setSelectedSubjectId(event.target.value);
-                setClientError("");
-                setErrorActionHref("");
-              }}
-            >
-              <option value="" disabled>
-                Alege materia
-              </option>
-              {subjects.map((subject) => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.title}
-                </option>
-              ))}
-              <option value="custom">+ Adaugă o materie nouă</option>
-            </select>
-          </label>
+          <ol className="learning-upload-flow" aria-label="Pașii încărcării">
+            <li className={subjectReady ? "is-done" : "is-active"}>
+              <span>{subjectReady ? <Check aria-hidden="true" size={14} /> : "1"}</span>
+              Materie
+            </li>
+            <li className={sourceReady ? "is-done" : subjectReady ? "is-active" : ""}>
+              <span>{sourceReady ? <Check aria-hidden="true" size={14} /> : "2"}</span>
+              Conținut
+            </li>
+            <li className={sourceReady && subjectReady ? "is-active" : ""}>
+              <span>3</span>
+              Confirmare
+            </li>
+          </ol>
 
-          {selectedSubjectId === "custom" ? (
-            <label className="learning-upload-field learning-upload-new-subject">
-              Numele materiei noi
-              <input
+          <section className="learning-upload-subject-section" aria-labelledby="learning-upload-subject-title">
+            <div className="learning-upload-subject-head">
+              <div>
+                <span className="learning-upload-step-number" aria-hidden="true">1</span>
+                <div>
+                  <h3 id="learning-upload-subject-title">Alege materia</h3>
+                  <p>Așa găsești ușor materialul mai târziu.</p>
+                </div>
+              </div>
+            </div>
+
+            <label className="learning-upload-field">
+              <span className="sr-only">Materia</span>
+              <select
                 className="input-search"
-                name="subjectCustomName"
-                placeholder="Ex: Economie internațională"
-                type="text"
-                minLength={2}
-                maxLength={160}
+                name="subjectId"
+                value={selectedSubjectId}
                 required
-                disabled={isSubmitting}
-                autoFocus
-              />
-              <span className="learning-upload-field-note">
-                O adăugăm pentru acest material; îl poți publica ulterior pentru comunitatea ta.
-              </span>
-            </label>
-          ) : null}
-
-          <p className="learning-upload-subject-helper">
-            Nu găsești materia? Alege „Adaugă o materie nouă”.
-          </p>
-        </section>
-
-        <div className="learning-upload-source-grid" aria-label="Tipuri sursa">
-          <SourceOption
-            icon={FileUp}
-            title="Incarca fisier"
-            copy="PDF, DOCX, PPTX sau TXT"
-            active={sourceMode === "file"}
-            disabled={isSubmitting}
-            onClick={() => switchSourceMode("file")}
-          />
-          <SourceOption
-            icon={ClipboardPaste}
-            title="Lipeste text"
-            copy="Lipeste continutul direct"
-            active={sourceMode === "text"}
-            disabled={isSubmitting}
-            onClick={() => switchSourceMode("text")}
-          />
-        </div>
-
-        {sourceMode === "file" ? (
-          <div className="learning-upload-file-box">
-            <label className="learning-upload-file-drop" htmlFor={fileInputId}>
-              <Upload aria-hidden="true" size={22} strokeWidth={2.2} />
-              <strong>{selectedFile ? selectedFile.name : "Alege PDF, DOCX, PPTX sau TXT"}</strong>
-              <span>
-                {selectedFile
-                  ? `${formatFileSize(selectedFile.size)} din ${AI_SOURCE_UPLOAD_MAX_LABEL}`
-                  : `Un singur fisier, maxim ${AI_SOURCE_UPLOAD_MAX_LABEL}.`}
-              </span>
-              <input
-                id={fileInputId}
-                ref={fileInputRef}
-                type="file"
-                name="sourceFile"
-                accept=".pdf,.docx,.pptx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
-                disabled={isSubmitting}
-                onChange={(event) => updateSelectedFile(event.target.files?.[0] || null)}
-              />
-            </label>
-            {selectedFile ? (
-          <button
-            type="button"
-            className="btn-link secondary"
-            data-usage-event="learning_file_removed"
-            data-usage-label="Sterge fisierul invatare"
-            disabled={isSubmitting}
-            onClick={() => {
-                  updateSelectedFile(null);
-                  if (fileInputRef.current) fileInputRef.current.value = "";
+                onChange={(event) => {
+                  setSelectedSubjectId(event.target.value);
+                  if (event.target.value !== "custom") setCustomSubjectName("");
+                  setClientError("");
+                  setErrorActionHref("");
                 }}
               >
-                Sterge fisierul
-              </button>
+                <option value="" disabled>Alege materia</option>
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>{subject.title}</option>
+                ))}
+                <option value="custom">+ Adaugă o materie nouă</option>
+              </select>
+            </label>
+
+            {selectedSubjectId === "custom" ? (
+              <label className="learning-upload-field learning-upload-new-subject">
+                Numele materiei noi
+                <input
+                  className="input-search"
+                  name="subjectCustomName"
+                  placeholder="Ex: Economie internațională"
+                  type="text"
+                  minLength={2}
+                  maxLength={160}
+                  required
+                  value={customSubjectName}
+                  autoFocus
+                  onChange={(event) => setCustomSubjectName(event.target.value)}
+                />
+                <span className="learning-upload-field-note">O adăugăm acum, iar materialul rămâne privat.</span>
+              </label>
             ) : null}
-          </div>
-        ) : (
-          <label className="learning-upload-field">
-            Textul materiei
-            <textarea
-              className="input-search learning-upload-textarea"
-              name="manualText"
-              placeholder="Lipeste aici cursul, notitele sau continutul capitolului..."
-              value={manualText}
-              readOnly={isSubmitting}
-              minLength={MIN_TEXT_LENGTH}
-              onChange={(event) => {
-                setManualText(event.target.value);
-                setClientError("");
-                setErrorActionHref("");
-                setStatus("");
-              }}
-            />
-            <span className="learning-upload-field-note">
-              {textLength ? `${textLength}/${MIN_TEXT_LENGTH} caractere minime` : "Textul lipit ramane alternativa rapida."}
-            </span>
-          </label>
-        )}
+          </section>
 
-        <input type="hidden" name="uploadedSourceDocumentId" value="" />
-        <input type="hidden" name="idempotencyKey" value={idempotencyKeyRef.current} />
+          <section className="learning-upload-content-section" aria-labelledby="learning-upload-content-title">
+            <div className="learning-upload-subject-head">
+              <div>
+                <span className="learning-upload-step-number" aria-hidden="true">2</span>
+                <div>
+                  <h3 id="learning-upload-content-title">Adaugă conținutul</h3>
+                  <p>Încarcă un fișier sau lipește textul.</p>
+                </div>
+              </div>
+            </div>
 
-        <div className="learning-upload-submit-row">
-          <p>
-            {status || (!subjectReady
-              ? "Alege materia înainte să pornești procesarea."
-              : "Materialul rămâne privat. Îl poți publica pentru comunitatea ta mai târziu.")}
-          </p>
-          <button
-            type="submit"
-            data-usage-event="learning_upload_started"
-            data-usage-label={sourceMode === "file" ? "Upload fisier invatare" : "Upload text invatare"}
-            disabled={submitDisabled}
-          >
-            {isSubmitting
-                ? "Se proceseaza..."
-                : noCredits
-                  ? "Ai nevoie de o incarcare"
-                  : !subjectReady
-                    ? "Alege materia"
-                : "Proceseaza materia"}
-          </button>
-        </div>
-      </form> : null}
+            <div className="learning-upload-source-grid" aria-label="Tipul conținutului">
+              <SourceOption
+                icon={FileUp}
+                title="Încarcă fișier"
+                copy="PDF, DOCX, PPTX sau TXT"
+                active={sourceMode === "file"}
+                onClick={() => switchSourceMode("file")}
+              />
+              <SourceOption
+                icon={ClipboardPaste}
+                title="Lipește text"
+                copy="Curs sau notițe copiate"
+                active={sourceMode === "text"}
+                onClick={() => switchSourceMode("text")}
+              />
+            </div>
+
+            {sourceMode === "file" ? (
+              <div className="learning-upload-file-box">
+                <label
+                  className={`learning-upload-file-drop${isDraggingFile ? " is-dragging" : ""}${selectedFile ? " is-selected" : ""}`}
+                  htmlFor={fileInputId}
+                  onDragEnter={(event) => {
+                    event.preventDefault();
+                    setIsDraggingFile(true);
+                  }}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDragLeave={() => setIsDraggingFile(false)}
+                  onDrop={handleFileDrop}
+                >
+                  <span className="learning-upload-file-icon" aria-hidden="true">
+                    {selectedFile ? <FileText size={24} strokeWidth={2.1} /> : <Upload size={24} strokeWidth={2.1} />}
+                  </span>
+                  <strong>{selectedFile ? selectedFile.name : "Trage fișierul aici"}</strong>
+                  <span>
+                    {selectedFile
+                      ? `${formatFileSize(selectedFile.size)} · apasă pentru a-l schimba`
+                      : `sau apasă pentru a-l alege · maxim ${AI_SOURCE_UPLOAD_MAX_LABEL}`}
+                  </span>
+                  <input
+                    id={fileInputId}
+                    ref={fileInputRef}
+                    type="file"
+                    name="sourceFile"
+                    accept=".pdf,.docx,.pptx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain"
+                    onChange={(event) => updateSelectedFile(event.target.files?.[0] || null)}
+                  />
+                </label>
+                {selectedFile ? (
+                  <button
+                    type="button"
+                    className="learning-upload-file-remove"
+                    data-usage-event="learning_file_removed"
+                    data-usage-label="Elimină fișierul"
+                    onClick={() => {
+                      updateSelectedFile(null);
+                      if (fileInputRef.current) fileInputRef.current.value = "";
+                    }}
+                  >
+                    <X aria-hidden="true" size={16} />
+                    Elimină fișierul
+                  </button>
+                ) : null}
+              </div>
+            ) : (
+              <label className="learning-upload-field">
+                Textul materialului
+                <textarea
+                  className="input-search learning-upload-textarea"
+                  name="manualText"
+                  placeholder="Lipește aici cursul, notițele sau conținutul capitolului..."
+                  value={manualText}
+                  minLength={MIN_TEXT_LENGTH}
+                  onChange={(event) => {
+                    setManualText(event.target.value);
+                    setClientError("");
+                    setErrorActionHref("");
+                    setStatus("");
+                  }}
+                />
+                <span className="learning-upload-field-note">
+                  {textLength
+                    ? `${textLength.toLocaleString("ro-RO")} caractere · minimum ${MIN_TEXT_LENGTH}`
+                    : `Minimum ${MIN_TEXT_LENGTH} de caractere.`}
+                </span>
+              </label>
+            )}
+          </section>
+
+          <input type="hidden" name="uploadedSourceDocumentId" value="" />
+          <input type="hidden" name="idempotencyKey" value={idempotencyKeyRef.current} />
+
+          <section className="learning-upload-review" aria-labelledby="learning-upload-review-title">
+            <div className="learning-upload-review-head">
+              <span className="learning-upload-step-number" aria-hidden="true">3</span>
+              <div>
+                <h3 id="learning-upload-review-title">Verifică și pornește</h3>
+                <p>{readinessMessage}</p>
+              </div>
+            </div>
+            <dl className="learning-upload-summary">
+              <div><dt>Materie</dt><dd>{subjectReady ? subjectLabel : "Nealeasă"}</dd></div>
+              <div><dt>Conținut</dt><dd>{sourceLabel}</dd></div>
+            </dl>
+            <button
+              type="submit"
+              data-usage-event="learning_upload_started"
+              data-usage-label={sourceMode === "file" ? "Upload fisier invatare" : "Upload text invatare"}
+              disabled={submitDisabled}
+            >
+              {noCredits ? "Ai nevoie de o încărcare" : "Pregătește materialul"}
+            </button>
+          </section>
+        </form>
+      ) : null}
     </>
   );
 }

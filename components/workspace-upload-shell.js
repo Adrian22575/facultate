@@ -30,7 +30,7 @@ export function WorkspaceUploadShell({
 
       {alerts}
 
-      <section className="workspace-import-hero">
+      <section className={`workspace-import-hero${meta.length ? "" : " is-simple"}`}>
         <div className="workspace-import-hero-copy">
           <h1>{title}</h1>
           <p>{subtitle}</p>
