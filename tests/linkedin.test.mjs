@@ -5,7 +5,7 @@ import test from "node:test";
 import { createLinkedInPostWithConfig, exchangeLinkedInCodeWithConfig, getLinkedInUserInfoWithFetch } from "../lib/linkedin/client-core.js";
 import { normalizeLinkedInModel } from "../lib/linkedin/models.js";
 import { buildLinkedInFullPost, hashOAuthState, isConnectionUsable, validateLinkedInDraft } from "../lib/linkedin/shared.js";
-import { DEFAULT_LINKEDIN_POST_TEMPLATE, getLinkedInPostTemplate, LINKEDIN_POST_TEMPLATES } from "../lib/linkedin/templates.js";
+import { DEFAULT_LINKEDIN_POST_OBJECTIVE, DEFAULT_LINKEDIN_POST_TEMPLATE, DEFAULT_LINKEDIN_POST_VOICE, getLinkedInPostObjective, getLinkedInPostTemplate, getLinkedInPostVoice, LINKEDIN_POST_TEMPLATES } from "../lib/linkedin/templates.js";
 
 const config = { clientId: "client", clientSecret: "secret", redirectUri: "https://nota5plus.ro/api/admin/linkedin/oauth/callback", apiVersion: "202606" };
 const article = {
@@ -26,9 +26,9 @@ function validDraft(overrides = {}) {
     hook: "Calendarul examenelor din iulie schimbă planificarea pentru studenți.",
     body: "Ministerul a publicat calendarul, iar universitățile păstrează responsabilitatea detaliilor locale. Pentru studenți, verificarea paginii facultății rămâne pasul practic înainte de organizarea sesiunii.",
     articleUrl,
-    closingQuestion: "Ce informație ar trebui publicată prima de fiecare facultate pentru ca studenții să își poată planifica sesiunea?",
+    closingCta: "Ce informație ar trebui publicată prima de fiecare facultate pentru ca studenții să își poată planifica sesiunea?",
     hashtags: ["#Educatie", "#Studenti", "#Digitalizare"],
-    tone: "profesional-analitic",
+    tone: "analitic",
     claims: ["Ministerul a publicat calendarul examenelor pentru luna iulie.", "Studenții trebuie să verifice și pagina universității."],
     sourceArticleId: article.id
   };
@@ -66,6 +66,22 @@ test("formatele LinkedIn sunt finite, au un implicit sigur si hashtagurile raman
   assert.equal(validateLinkedInDraft(draft, { article, articleUrl }).valid, true);
 });
 
+test("postarea are obiectiv si voce explicite, fara instructiuni pentru imagini", async () => {
+  const [server, migration, ui] = await Promise.all([
+    readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/20260718210000_linkedin_post_quality_controls.sql", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
+  ]);
+  assert.equal(getLinkedInPostObjective("missing").key, DEFAULT_LINKEDIN_POST_OBJECTIVE);
+  assert.equal(getLinkedInPostVoice("missing").key, DEFAULT_LINKEDIN_POST_VOICE);
+  assert.match(server, /Nu rezuma articolul/);
+  assert.match(server, /Nu propune imagine, document, carousel, video/);
+  assert.match(migration, /default_objective/);
+  assert.match(migration, /default_voice/);
+  assert.match(ui, /Obiectiv implicit/);
+  assert.match(ui, /Voce implicit/);
+});
+
 test("un articol poate avea ediții LinkedIn distincte, fără a rescrie publicarea existentă", async () => {
   const [migration, server, ui] = await Promise.all([
     readFile(new URL("../supabase/migrations/20260718153000_linkedin_post_editions.sql", import.meta.url), "utf8"),
@@ -84,9 +100,9 @@ test("respinge informațiile care nu există în articol și întrebările gener
   const unsupported = validateLinkedInDraft(validDraft({ claims: ["Bugetul educației a crescut cu 40%.", "Studenții trebuie să verifice și pagina universității."] }), { article, articleUrl });
   assert.equal(unsupported.valid, false);
   assert.match(unsupported.reasons.join(" "), /unsupported_claim/);
-  const generic = validateLinkedInDraft(validDraft({ closingQuestion: "Ce părere aveți despre asta?" }), { article, articleUrl });
+  const generic = validateLinkedInDraft(validDraft({ closingCta: "Ce părere aveți despre asta?" }), { article, articleUrl });
   assert.equal(generic.valid, false);
-  assert.ok(generic.reasons.includes("generic_closing_question"));
+  assert.ok(generic.reasons.includes("generic_closing_cta"));
 
   const wrongUrl = validateLinkedInDraft(validDraft({ articleUrl: "not-a-public-article-url" }), { article, articleUrl });
   assert.equal(wrongUrl.valid, false);

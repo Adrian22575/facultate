@@ -3,11 +3,11 @@ import { z } from "zod";
 
 import { isAdminUser } from "@/lib/admin";
 import { prepareLinkedInDraft } from "@/lib/linkedin/server";
-import { LINKEDIN_POST_TEMPLATE_KEYS } from "@/lib/linkedin/templates";
+import { LINKEDIN_POST_OBJECTIVE_KEYS, LINKEDIN_POST_TEMPLATE_KEYS, LINKEDIN_POST_VOICE_KEYS } from "@/lib/linkedin/templates";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 
-const schema = z.object({ templateKey: z.enum(LINKEDIN_POST_TEMPLATE_KEYS).optional() });
+const schema = z.object({ templateKey: z.enum(LINKEDIN_POST_TEMPLATE_KEYS).optional(), objectiveKey: z.enum(LINKEDIN_POST_OBJECTIVE_KEYS).optional(), voiceKey: z.enum(LINKEDIN_POST_VOICE_KEYS).optional() });
 
 export async function POST(request, { params }) {
   const supabase = await createClient();
@@ -18,7 +18,7 @@ export async function POST(request, { params }) {
   if (!parsed.success) return NextResponse.json({ error: "invalid_template" }, { status: 400 });
   try {
     await assertRateLimit({ action: "linkedin_article_generate", subject: `user:${user.id}`, windowSeconds: 300, maxRequests: 8 });
-    const result = await prepareLinkedInDraft(articleId, { force: true, templateKey: parsed.data.templateKey });
+    const result = await prepareLinkedInDraft(articleId, { force: true, templateKey: parsed.data.templateKey, objectiveKey: parsed.data.objectiveKey, voiceKey: parsed.data.voiceKey });
     return NextResponse.json(result, { status: result.ok ? 200 : 422 });
   } catch (error) {
     const code = error?.code === "RATE_LIMITED" ? "rate_limited" : error?.message || "generation_failed";

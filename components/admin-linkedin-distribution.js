@@ -20,7 +20,14 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
 import { LINKEDIN_MODEL_OPTIONS, normalizeLinkedInModel } from "@/lib/linkedin/models";
-import { DEFAULT_LINKEDIN_POST_TEMPLATE, LINKEDIN_POST_TEMPLATES } from "@/lib/linkedin/templates";
+import {
+  DEFAULT_LINKEDIN_POST_OBJECTIVE,
+  DEFAULT_LINKEDIN_POST_TEMPLATE,
+  DEFAULT_LINKEDIN_POST_VOICE,
+  LINKEDIN_POST_OBJECTIVES,
+  LINKEDIN_POST_TEMPLATES,
+  LINKEDIN_POST_VOICES
+} from "@/lib/linkedin/templates";
 
 const MODE_OPTIONS = [
   ["approval_required", "Necesită aprobare"],
@@ -62,17 +69,30 @@ function postArticleId(post) {
 
 export function AdminLinkedInDistribution({ data, article, initialPostId = "" }) {
   const router = useRouter();
-  const [settings, setSettings] = useState(() => ({ ...(data?.settings || { mode: "approval_required", notify_telegram: true, default_template: DEFAULT_LINKEDIN_POST_TEMPLATE }), model: normalizeLinkedInModel(data?.settings?.model), default_template: data?.settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE }));
+  const [settings, setSettings] = useState(() => ({ ...(data?.settings || { mode: "approval_required", notify_telegram: true, default_template: DEFAULT_LINKEDIN_POST_TEMPLATE, default_objective: DEFAULT_LINKEDIN_POST_OBJECTIVE, default_voice: DEFAULT_LINKEDIN_POST_VOICE }), model: normalizeLinkedInModel(data?.settings?.model), default_template: data?.settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE, default_objective: data?.settings?.default_objective || DEFAULT_LINKEDIN_POST_OBJECTIVE, default_voice: data?.settings?.default_voice || DEFAULT_LINKEDIN_POST_VOICE }));
   const [connection, setConnection] = useState(data?.connection || null);
   const [posts, setPosts] = useState(data?.posts || []);
   const [selectedId, setSelectedId] = useState(initialPostId || "");
   const [text, setText] = useState("");
   const [manualTemplate, setManualTemplate] = useState(data?.settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE);
+  const [manualObjective, setManualObjective] = useState(data?.settings?.default_objective || DEFAULT_LINKEDIN_POST_OBJECTIVE);
+  const [manualVoice, setManualVoice] = useState(data?.settings?.default_voice || DEFAULT_LINKEDIN_POST_VOICE);
+  const [promptPreview, setPromptPreview] = useState(() => data?.generationPreviews?.find((preview) => preview.template?.key === (data?.settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE)) || null);
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
 
   useEffect(() => setPosts(data?.posts || []), [data?.posts]);
   useEffect(() => setConnection(data?.connection || null), [data?.connection]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const params = new URLSearchParams({ template: manualTemplate, objective: manualObjective, voice: manualVoice, model: normalizeLinkedInModel(settings.model) });
+    fetch(`/api/admin/linkedin/prompt-preview?${params}`, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((result) => { if (!controller.signal.aborted && result?.preview) setPromptPreview(result.preview); })
+      .catch(() => null);
+    return () => controller.abort();
+  }, [manualObjective, manualTemplate, manualVoice, settings.model]);
 
   const articlePosts = useMemo(
     () => posts.filter((post) => postArticleId(post) === article?.id).sort((a, b) => (b.edition_number || 1) - (a.edition_number || 1)),
@@ -113,7 +133,7 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     const response = await fetch("/api/admin/linkedin/settings", {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: normalizeLinkedInModel(settings.model), defaultTemplate: settings.default_template })
+      body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: normalizeLinkedInModel(settings.model), defaultTemplate: settings.default_template, defaultObjective: settings.default_objective, defaultVoice: settings.default_voice })
     }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
@@ -140,7 +160,7 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     if (articleActivity.published && !window.confirm(`Acest articol are deja ${articleActivity.published} postări publicate. Creezi o variantă nouă pentru verificare?`)) return;
     setBusy("generate");
     setMessage(articleActivity.published ? "Pregătim o variantă nouă. Nu modifică postările deja publicate." : "Pregătim textul. Poți reveni la articol după finalizare.");
-    const response = await fetch(`/api/admin/linkedin/articles/${article.id}/generate`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ templateKey: manualTemplate }) }).catch(() => null);
+    const response = await fetch(`/api/admin/linkedin/articles/${article.id}/generate`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ templateKey: manualTemplate, objectiveKey: manualObjective, voiceKey: manualVoice }) }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
     if (!response?.ok || !result?.post) {
@@ -170,7 +190,7 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     if (!selected || busy) return;
     setBusy(action);
     setMessage("");
-    const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, templateKey: manualTemplate }) }).catch(() => null);
+    const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, templateKey: manualTemplate, objectiveKey: manualObjective, voiceKey: manualVoice }) }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
     if (!response?.ok || !result?.post) {
@@ -204,18 +224,26 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
         {!data?.config?.ready ? <p className="admin-linkedin-config-note"><ShieldCheck size={16} />Completează variabilele LinkedIn și cheia de criptare înainte de conectare.</p> : null}
         {connection ? <div className="admin-linkedin-profile"><div><span className="admin-linkedin-brand-glyph is-small" aria-hidden="true">in</span></div><span><strong>{connection.display_name || "Profil LinkedIn"}</strong><small>{connected ? `Acces valabil până la ${formatDate(connection.token_expires_at)}` : "Publicarea este oprită"}</small></span>{connection.last_published_at ? <small>Ultima publicare: {formatDate(connection.last_published_at)}</small> : null}</div> : null}
         <label className="admin-linkedin-default-template"><span>Format implicit pentru automatizare</span><select value={settings.default_template} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, default_template: event.target.value }))}>{LINKEDIN_POST_TEMPLATES.map((template) => <option key={template.key} value={template.key}>{template.label} — {template.description}</option>)}</select></label>
+        <div className="admin-linkedin-default-controls">
+          <label><span>Obiectiv implicit</span><select value={settings.default_objective} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, default_objective: event.target.value }))}>{LINKEDIN_POST_OBJECTIVES.map((objective) => <option key={objective.key} value={objective.key}>{objective.label} — {objective.description}</option>)}</select></label>
+          <label><span>Voce implicită</span><select value={settings.default_voice} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, default_voice: event.target.value }))}>{LINKEDIN_POST_VOICES.map((voice) => <option key={voice.key} value={voice.key}>{voice.label} — {voice.description}</option>)}</select></label>
+        </div>
       </details>
 
       {data?.warning ? <p className="admin-linkedin-message is-error">{data.warning}</p> : null}
       {message ? <p className="admin-linkedin-message" role="status" aria-live="polite">{message}</p> : null}
 
       {article?.status !== "published" ? <div className="admin-linkedin-empty"><span className="admin-linkedin-brand-glyph" aria-hidden="true">in</span><div><strong>Articolul nu este publicat încă</strong><p>Publică articolul mai întâi, apoi poți pregăti și aproba postările LinkedIn pentru el.</p></div></div> : <>
+        <div className="admin-linkedin-manual-controls">
+          <label><span>Obiectiv</span><select value={manualObjective} disabled={!connected || Boolean(busy)} onChange={(event) => setManualObjective(event.target.value)}>{LINKEDIN_POST_OBJECTIVES.map((objective) => <option key={objective.key} value={objective.key}>{objective.label} — {objective.description}</option>)}</select></label>
+          <label><span>Voce</span><select value={manualVoice} disabled={!connected || Boolean(busy)} onChange={(event) => setManualVoice(event.target.value)}>{LINKEDIN_POST_VOICES.map((voice) => <option key={voice.key} value={voice.key}>{voice.label} — {voice.description}</option>)}</select></label>
+        </div>
         <div className="admin-linkedin-create-row is-article-context">
           <div className="admin-linkedin-article-activity"><strong>{articleActivity.published ? `Publicată de ${articleActivity.published} ori` : "Încă nepublicată pe LinkedIn"}</strong><span>{articleActivity.lastPublishedAt ? `Ultima: ${formatDate(articleActivity.lastPublishedAt)}` : "Fiecare variantă nouă intră la aprobare înainte de publicare."}</span></div>
           <label><span>Format pentru următoarea postare</span><select value={manualTemplate} disabled={!connected || Boolean(busy)} onChange={(event) => setManualTemplate(event.target.value)}>{LINKEDIN_POST_TEMPLATES.map((template) => <option key={template.key} value={template.key}>{template.label} — {template.description}</option>)}</select></label>
           <button type="button" className="btn-link" onClick={generate} disabled={!canPrepare || Boolean(busy)}>{busy === "generate" ? <LoaderCircle className="is-spinning" size={16} /> : <FileText size={16} />}{busy === "generate" ? "Se pregătește…" : articleActivity.published ? "Creează variantă nouă" : "Pregătește postarea"}</button>
         </div>
-        <AdminGenerationPromptPreview preview={{ ...(data?.generationPreviews?.find((preview) => preview.template?.key === manualTemplate) || null), model: settings.model }} />
+        <AdminGenerationPromptPreview preview={promptPreview ? { ...promptPreview, model: settings.model } : null} />
 
         {articlePosts.length ? <div className="admin-linkedin-workspace is-article-context">
           <nav className="admin-linkedin-list" aria-label="Variantele postării LinkedIn">

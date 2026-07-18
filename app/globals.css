@@ -10806,6 +10806,16 @@ td {
 .admin-linkedin-default-template { display: grid; gap: 5px; }
 .admin-linkedin-default-template > span { color: #385979; font-size: .78rem; font-weight: 800; }
 .admin-linkedin-default-template select { width: 100%; min-height: 40px; padding: 0 10px; border: 1px solid #bfd3eb; border-radius: 10px; color: #173c68; font: inherit; background: #fff; }
+.admin-linkedin-default-controls,
+.admin-linkedin-manual-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.admin-linkedin-default-controls { margin: 0 12px 12px; }
+.admin-linkedin-default-controls label,
+.admin-linkedin-manual-controls label { display: grid; gap: 5px; min-width: 0; }
+.admin-linkedin-default-controls label > span,
+.admin-linkedin-manual-controls label > span { color: #385979; font-size: .78rem; font-weight: 800; }
+.admin-linkedin-default-controls select,
+.admin-linkedin-manual-controls select { width: 100%; min-width: 0; min-height: 40px; padding: 0 10px; border: 1px solid #bfd3eb; border-radius: 10px; color: #173c68; font: inherit; background: #fff; }
+.admin-linkedin-manual-controls { padding: 12px; border: 1px solid #cfdef0; border-radius: 14px; background: #fbfdff; }
 .admin-linkedin-create-row.is-article-context { grid-template-columns: minmax(180px, .82fr) minmax(230px, 1fr) auto; padding: 12px; border: 1px solid #cfdef0; border-radius: 14px; background: linear-gradient(135deg, #f7fbff, #fff); }
 .admin-linkedin-create-row.is-article-context > label { display: grid; gap: 5px; }
 .admin-linkedin-create-row.is-article-context > label > span { color: #385979; font-size: .78rem; font-weight: 800; }
@@ -10829,6 +10839,8 @@ td {
   .admin-linkedin-controls > label:first-child,
   .admin-linkedin-model { min-width: 0; }
   .admin-linkedin-template-bar { grid-template-columns: 1fr; }
+  .admin-linkedin-default-controls,
+  .admin-linkedin-manual-controls { grid-template-columns: 1fr; }
   .admin-linkedin-template-bar > p { grid-column: auto; }
   .admin-linkedin-controls > *,
   .admin-linkedin-connect,
