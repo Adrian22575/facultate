@@ -43,6 +43,12 @@ test("validează draftul structurat și reconstruiește textul canonic", () => {
   assert.equal(result.draft.characterCount, result.draft.fullPost.length);
 });
 
+test("recalculates canonical character count", () => {
+  const result = validateLinkedInDraft(validDraft({ characterCount: 1 }), { article, articleUrl });
+  assert.equal(result.valid, true);
+  assert.equal(result.draft.characterCount, result.draft.fullPost.length);
+});
+
 test("respinge informațiile care nu există în articol și întrebările generice", () => {
   const unsupported = validateLinkedInDraft(validDraft({ claims: ["Bugetul educației a crescut cu 40%.", "Studenții trebuie să verifice și pagina universității."] }), { article, articleUrl });
   assert.equal(unsupported.valid, false);
