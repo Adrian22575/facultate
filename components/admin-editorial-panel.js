@@ -29,9 +29,11 @@ function runStatusLabel(status) {
 
 function researchAttemptLabel(attempt, index) {
   const label = attempt?.strategy === "recent_fallback" ? "Cercetare alternativă" : "Cercetare săptămânală";
-  const sourceCount = attempt?.validatedSourceCount ?? 0;
+  const returnedSourceCount = attempt?.returnedSourceCount ?? attempt?.validatedSourceCount ?? 0;
+  const eligibleSourceCount = attempt?.eligibleSourceCount ?? attempt?.validatedSourceCount ?? 0;
+  const verifiedUrlCount = attempt?.verifiedUrlCount ?? attempt?.validatedSourceCount ?? 0;
   const topicCount = attempt?.topicCount ?? 0;
-  return `${index + 1}. ${label}: ${sourceCount} surse verificate, ${topicCount} subiecte.`;
+  return `${index + 1}. ${label}: ${returnedSourceCount} surse găsite → ${eligibleSourceCount} eligibile → ${verifiedUrlCount} linkuri confirmate; ${topicCount} subiecte.`;
 }
 
 export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning }) {
