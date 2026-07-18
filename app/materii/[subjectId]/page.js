@@ -3,13 +3,11 @@ import { notFound, redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { ModeGrid } from "@/components/mode-grid";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
-import { SubjectLearningHub } from "@/components/subject-learning-hub";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
-import { getAccessibleSubjectById, getDemoSubject, getSubjectById, getSubjectProgressSnapshot } from "@/lib/data";
+import { getAccessibleSubjectById, getDemoSubject, getSubjectById } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getLearningModesLockHref, hasLearningModesAccess } from "@/lib/learning-access";
-import { getLearningStudySetsForSubject } from "@/lib/learning/study-sets";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
 export async function generateMetadata({ params }) {
@@ -58,22 +56,11 @@ export default async function SubjectPage({ params, searchParams }) {
     billingSnapshot = await getBillingSnapshot(user.id);
   }
   const canUseLearningModes = await hasLearningModesAccess({ user, demoMode, billingSnapshot });
-  const [progress, studySets] = demoMode
-    ? [null, []]
-    : await Promise.all([
-        getSubjectProgressSnapshot(user.id, subject.id),
-        getLearningStudySetsForSubject({
-          subjectId: subject.id,
-          userId: user.id,
-          academicContext,
-          limit: 6
-        })
-      ]);
-
   const hasAvailableWelcomePremium =
     !demoMode && !billingSnapshot?.activePremium && billingSnapshot?.welcomePremiumStatus === "available";
   const welcomeState =
     typeof resolvedSearchParams?.welcome === "string" ? resolvedSearchParams.welcome : null;
+  const lockHref = getLearningModesLockHref(`/materii/${subject.id}`);
 
   return (
     <main className="app-shell">
@@ -90,31 +77,16 @@ export default async function SubjectPage({ params, searchParams }) {
         }
         kicker="Materia ta"
         title={subject.title}
-        subtitle="Materiale, teste si progres pentru aceeasi materie."
+        subtitle={canUseLearningModes ? "Alege cum vrei sa lucrezi materia." : "Activeaza un plan pentru a incepe sa lucrezi materia."}
       />
-      <SubjectLearningHub
+      <ModeGrid
         subject={subject}
-        studySets={studySets}
-        progress={progress}
         locked={!canUseLearningModes}
-        lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
+        lockHref={lockHref}
+        showWelcomePremium={hasAvailableWelcomePremium}
+        welcomeReturnTo={`/materii/${subject.id}`}
+        welcomeState={welcomeState}
       />
-      <details id="moduri" className="subject-mode-disclosure">
-        <summary>
-          <span>Alte moduri de invatare</span>
-          <small>Interactiv, Studiu sau Test</small>
-        </summary>
-        <div className="subject-mode-disclosure-content">
-          <ModeGrid
-            subject={subject}
-            locked={!canUseLearningModes}
-            lockHref={getLearningModesLockHref(`/materii/${subject.id}`)}
-            showWelcomePremium={hasAvailableWelcomePremium}
-            welcomeReturnTo={`/materii/${subject.id}`}
-            welcomeState={welcomeState}
-          />
-        </div>
-      </details>
     </main>
   );
 }

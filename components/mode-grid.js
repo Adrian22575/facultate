@@ -1,7 +1,6 @@
-import Link from "next/link";
-
 import { activateWelcomePremiumAction } from "@/app/cont/actions";
 import { LearningModeCard } from "@/components/learning-mode-card";
+import { PendingNavigationLink } from "@/components/pending-navigation-link";
 
 function WelcomePremiumInlineCard({ returnTo }) {
   return (
@@ -32,8 +31,7 @@ export function ModeGrid({
   welcomeReturnTo = `/materii/${subject.id}`,
   welcomeState = null
 }) {
-  const lockMessage = "Ai nevoie de plan activ pentru Interactiv, Studiaza si Test.";
-  const showPlanFallback = locked && !showWelcomePremium;
+  const lockMessage = "Alege un plan pentru Interactiv, Studiu si Test.";
 
   return (
     <section className="mode-grid-panel">
@@ -42,62 +40,45 @@ export function ModeGrid({
           Premium activ. Spor la invatat!
         </div>
       ) : null}
-      {locked ? (
-        showWelcomePremium ? null : (
-          <div className="mode-lock-banner" role="status">
-            <strong>Plan activ necesar</strong>
-            <p>{lockMessage}</p>
-          </div>
-        )
-      ) : null}
-      {showWelcomePremium ? (
-        <WelcomePremiumInlineCard returnTo={welcomeReturnTo} />
-      ) : null}
-      <div className="mode-grid" aria-label="Moduri disponibile">
-        <LearningModeCard
-          href={`/materii/${subject.id}/interactiv`}
-          mode="interactive"
-          eyebrow="Rapid"
-          title="Interactiv"
-          description="Raspunzi si vezi imediat."
-          variant="compact"
-          primary
-          disabled={locked}
-        />
-        <LearningModeCard
-          href={`/materii/${subject.id}/studiu`}
-          mode="study"
-          eyebrow="Calm"
-          title="Studiaza"
-          description="Vezi tot, fara graba."
-          variant="compact"
-          disabled={locked}
-        />
-        <LearningModeCard
-          href={`/materii/${subject.id}/test`}
-          mode="test"
-          eyebrow="Verificare"
-          title="Test"
-          description="Te verifici rapid."
-          variant="compact"
-          disabled={locked}
-        />
-      </div>
-      {showPlanFallback ? (
+      {locked ? <div className="mode-lock-banner" role="status"><strong>Plan activ necesar</strong><p>{lockMessage}</p></div> : null}
+      {!locked ? (
+        <div className="mode-grid" aria-label="Alege modul de invatare">
+          <LearningModeCard
+            href={`/materii/${subject.id}/interactiv`}
+            mode="interactive"
+            eyebrow="Raspuns imediat"
+            title="Interactiv"
+            description="Raspunzi pe rand si vezi corect."
+            variant="compact"
+            primary
+          />
+          <LearningModeCard
+            href={`/materii/${subject.id}/studiu`}
+            mode="study"
+            eyebrow="Parcurgere"
+            title="Studiu"
+            description="Vezi intrebarile in ritmul tau."
+            variant="compact"
+          />
+          <LearningModeCard
+            href={`/materii/${subject.id}/test`}
+            mode="test"
+            eyebrow="Simulare"
+            title="Test"
+            description="Lucrezi un test si iti vezi rezultatul."
+            variant="compact"
+          />
+        </div>
+      ) : (
         <div className="mode-lock-actions">
-          <p>{lockMessage}</p>
-          <Link className="btn-back" href={lockHref}>
+          <p>Modurile de invatare se deschid dupa activare.</p>
+          <PendingNavigationLink className="btn-link" href={lockHref} pendingLabel="Se deschid planurile...">
             Alege un plan
-          </Link>
+          </PendingNavigationLink>
         </div>
-      ) : null}
+      )}
       {locked && showWelcomePremium ? (
-        <div className="mode-lock-actions mode-lock-actions-soft">
-          <p>Nu vrei bonusul acum?</p>
-          <Link className="btn-back" href={lockHref}>
-            Vezi planuri
-          </Link>
-        </div>
+        <WelcomePremiumInlineCard returnTo={welcomeReturnTo} />
       ) : null}
     </section>
   );
