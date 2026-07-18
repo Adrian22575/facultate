@@ -113,7 +113,7 @@ const REQUIRED_RELATIONS = [
   },
   {
     table: "linkedin_automation_settings",
-    columns: "singleton,mode,model,notify_telegram,include_article_image,fallback_to_text,updated_by"
+    columns: "singleton,mode,model,default_template,notify_telegram,include_article_image,fallback_to_text,updated_by"
   },
   {
     table: "linkedin_oauth_states",
@@ -122,7 +122,7 @@ const REQUIRED_RELATIONS = [
   {
     table: "linkedin_editorial_posts",
     columns:
-      "id,article_id,connection_id,status,generated_text,edited_text,linkedin_post_urn,linkedin_post_url,publish_request_key"
+      "id,article_id,connection_id,status,generated_text,edited_text,template_key,linkedin_post_urn,linkedin_post_url,publish_request_key"
   }
 ];
 

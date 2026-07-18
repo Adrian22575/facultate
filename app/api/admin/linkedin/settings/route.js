@@ -4,11 +4,12 @@ import { z } from "zod";
 import { isAdminUser } from "@/lib/admin";
 import { LINKEDIN_MODELS } from "@/lib/linkedin/models";
 import { LINKEDIN_MODES } from "@/lib/linkedin/shared";
+import { LINKEDIN_POST_TEMPLATE_KEYS } from "@/lib/linkedin/templates";
 import { saveLinkedInSettings } from "@/lib/linkedin/server";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 
-const schema = z.object({ mode: z.enum(LINKEDIN_MODES), notifyTelegram: z.boolean(), model: z.enum(LINKEDIN_MODELS) });
+const schema = z.object({ mode: z.enum(LINKEDIN_MODES), notifyTelegram: z.boolean(), model: z.enum(LINKEDIN_MODELS), defaultTemplate: z.enum(LINKEDIN_POST_TEMPLATE_KEYS) });
 
 export async function PATCH(request) {
   const supabase = await createClient();

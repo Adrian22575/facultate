@@ -5,6 +5,7 @@ import test from "node:test";
 import { createLinkedInPostWithConfig, exchangeLinkedInCodeWithConfig, getLinkedInUserInfoWithFetch } from "../lib/linkedin/client-core.js";
 import { normalizeLinkedInModel } from "../lib/linkedin/models.js";
 import { buildLinkedInFullPost, hashOAuthState, isConnectionUsable, validateLinkedInDraft } from "../lib/linkedin/shared.js";
+import { DEFAULT_LINKEDIN_POST_TEMPLATE, getLinkedInPostTemplate, LINKEDIN_POST_TEMPLATES } from "../lib/linkedin/templates.js";
 
 const config = { clientId: "client", clientSecret: "secret", redirectUri: "https://nota5plus.ro/api/admin/linkedin/oauth/callback", apiVersion: "202606" };
 const article = {
@@ -32,6 +33,7 @@ function validDraft(overrides = {}) {
     sourceArticleId: article.id
   };
   const merged = { ...base, ...overrides };
+  if (!merged.body.includes(merged.hashtags[0])) merged.body = `${merged.body}\n\n${merged.hashtags.join(" ")}`;
   merged.fullPost = overrides.fullPost || buildLinkedInFullPost(merged);
   merged.characterCount = overrides.characterCount ?? merged.fullPost.length;
   return merged;
@@ -54,6 +56,14 @@ test("normalizeaza aliasul GPT-5.6 la Sol si accepta numai modelele disponibile"
   assert.equal(normalizeLinkedInModel("gpt-5.6"), "gpt-5.6-sol");
   assert.equal(normalizeLinkedInModel("gpt-5.6-terra"), "gpt-5.6-terra");
   assert.equal(normalizeLinkedInModel("unrecognized-model"), "gpt-5.6-sol");
+});
+
+test("formatele LinkedIn sunt finite, au un implicit sigur si hashtagurile raman in text", () => {
+  assert.equal(LINKEDIN_POST_TEMPLATES.length, 5);
+  assert.equal(getLinkedInPostTemplate("missing").key, DEFAULT_LINKEDIN_POST_TEMPLATE);
+  const draft = validDraft();
+  assert.equal(draft.fullPost.endsWith(draft.hashtags.join(" ")), false);
+  assert.equal(validateLinkedInDraft(draft, { article, articleUrl }).valid, true);
 });
 
 test("respinge informațiile care nu există în articol și întrebările generice", () => {

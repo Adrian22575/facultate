@@ -19,6 +19,7 @@ import { useMemo, useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
 import { LINKEDIN_MODEL_OPTIONS, normalizeLinkedInModel } from "@/lib/linkedin/models";
+import { DEFAULT_LINKEDIN_POST_TEMPLATE, LINKEDIN_POST_TEMPLATES } from "@/lib/linkedin/templates";
 
 const MODE_OPTIONS = [
   ["approval_required", "Necesită aprobare"],
@@ -46,6 +47,7 @@ function formatDate(value) {
 
 function humanError(value) {
   const code = String(value || "");
+  if (code.includes("hashtag_count_invalid")) return "Textul trebuie să conțină între 1 și 3 hashtaguri integrate firesc în text.";
   if (code.includes("linkedin_publish_result_unknown") || code.includes("linkedin_publish_confirmation_missing") || code.includes("linkedin_publish_confirmation_persistence_failed")) return "Confirmarea publicării nu este completă. Verifică profilul înainte de orice nouă publicare.";
   if (code.includes("connection_expired")) return "Conexiunea a expirat. Reconectează profilul.";
   if (code.includes("article_url_missing")) return "Textul trebuie să păstreze linkul articolului.";
@@ -56,13 +58,14 @@ function humanError(value) {
 
 export function AdminLinkedInDistribution({ data, articles = [], initialPostId = "" }) {
   const router = useRouter();
-  const [settings, setSettings] = useState(() => ({ ...(data?.settings || { mode: "approval_required", notify_telegram: true }), model: normalizeLinkedInModel(data?.settings?.model) }));
+  const [settings, setSettings] = useState(() => ({ ...(data?.settings || { mode: "approval_required", notify_telegram: true, default_template: DEFAULT_LINKEDIN_POST_TEMPLATE }), model: normalizeLinkedInModel(data?.settings?.model), default_template: data?.settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE }));
   const [connection, setConnection] = useState(data?.connection || null);
   const [posts, setPosts] = useState(data?.posts || []);
   const [selectedId, setSelectedId] = useState(initialPostId || data?.posts?.[0]?.id || "");
   const selected = useMemo(() => posts.find((post) => post.id === selectedId) || posts[0] || null, [posts, selectedId]);
   const [text, setText] = useState(selected?.edited_text || selected?.generated_text || "");
   const [articleId, setArticleId] = useState(articles.find((article) => article.status === "published")?.id || "");
+  const [manualTemplate, setManualTemplate] = useState(data?.settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE);
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
   const publishedArticles = articles.filter((article) => article.status === "published");
@@ -85,7 +88,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
     const response = await fetch("/api/admin/linkedin/settings", {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: normalizeLinkedInModel(settings.model) })
+      body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: normalizeLinkedInModel(settings.model), defaultTemplate: settings.default_template })
     }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
@@ -111,7 +114,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
     if (!articleId || busy) return;
     setBusy("generate");
     setMessage("Pregătim textul. Poți reveni în această zonă după finalizare.");
-    const response = await fetch(`/api/admin/linkedin/articles/${articleId}/generate`, { method: "POST" }).catch(() => null);
+    const response = await fetch(`/api/admin/linkedin/articles/${articleId}/generate`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ templateKey: manualTemplate }) }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
     if (!response?.ok || !result?.post) {
@@ -142,7 +145,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
     if (!selected || busy) return;
     setBusy(action);
     setMessage("");
-    const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action }) }).catch(() => null);
+    const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, templateKey: manualTemplate }) }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
     if (!response?.ok || !result?.post) {
@@ -174,13 +177,19 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
         <label className="admin-linkedin-telegram"><input type="checkbox" checked={settings.notify_telegram} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, notify_telegram: event.target.checked }))} /><BellRing size={15} /><span>Notificări Telegram</span></label>
         <button type="button" className="btn-back admin-linkedin-secondary" onClick={saveSettings} disabled={Boolean(busy)}>{busy === "settings" ? <LoaderCircle className="is-spinning" size={16} /> : <Save size={16} />}Salvează setările</button>
         {connected ? <button type="button" className="admin-linkedin-disconnect" onClick={disconnect} disabled={Boolean(busy)}>{busy === "disconnect" ? <LoaderCircle className="is-spinning" size={16} /> : <Unplug size={16} />}Deconectează</button> : <a className={`admin-linkedin-connect${data?.config?.ready ? "" : " is-disabled"}`} href={data?.config?.ready ? "/api/admin/linkedin/oauth/start" : undefined}><span className="admin-linkedin-brand-glyph is-small" aria-hidden="true">in</span>Conectează LinkedIn</a>}
-        <AdminGenerationPromptPreview preview={data?.generationPreview ? { ...data.generationPreview, model: settings.model } : null} />
       </div>
 
       {!data?.config?.ready ? <p className="admin-linkedin-config-note"><ShieldCheck size={16} />Completează variabilele LinkedIn și cheia de criptare înainte de conectare. Interfața rămâne inactivă până atunci.</p> : null}
       {connection ? <div className="admin-linkedin-profile"><div><span className="admin-linkedin-brand-glyph is-small" aria-hidden="true">in</span></div><span><strong>{connection.display_name || "Profil LinkedIn"}</strong><small>{connected ? `Acces valabil până la ${formatDate(connection.token_expires_at)}` : "Publicarea este oprită"}</small></span>{connection.last_published_at ? <small>Ultima publicare: {formatDate(connection.last_published_at)}</small> : null}</div> : null}
       {data?.warning ? <p className="admin-linkedin-message is-error">{data.warning}</p> : null}
       {message ? <p className="admin-linkedin-message" role="status" aria-live="polite">{message}</p> : null}
+
+      <div className="admin-linkedin-template-bar">
+        <label><span>Format implicit pentru automatizare</span><select value={settings.default_template} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, default_template: event.target.value }))}>{LINKEDIN_POST_TEMPLATES.map((template) => <option key={template.key} value={template.key}>{template.label} — {template.description}</option>)}</select></label>
+        <label><span>Format pentru următoarea postare</span><select value={manualTemplate} disabled={Boolean(busy)} onChange={(event) => setManualTemplate(event.target.value)}>{LINKEDIN_POST_TEMPLATES.map((template) => <option key={template.key} value={template.key}>{template.label} — {template.description}</option>)}</select></label>
+        <p><strong>Automatizare:</strong> la publicarea automată se folosește formatul implicit salvat în setările de mai sus. Aici poți alege temporar alt format pentru generarea manuală.</p>
+        <AdminGenerationPromptPreview preview={{ ...(data?.generationPreviews?.find((preview) => preview.template?.key === manualTemplate) || null), model: settings.model }} />
+      </div>
 
       <div className="admin-linkedin-create-row">
         <label><span>Articol publicat</span><select value={articleId} disabled={!connected || Boolean(busy)} onChange={(event) => setArticleId(event.target.value)}><option value="">Alege articolul</option>{publishedArticles.map((article) => <option key={article.id} value={article.id}>{article.title}</option>)}</select></label>
@@ -197,7 +206,7 @@ export function AdminLinkedInDistribution({ data, articles = [], initialPostId =
           </nav>
 
           {selected ? <div className="admin-linkedin-editor" aria-busy={Boolean(busy)}>
-            <div className="admin-linkedin-editor-head"><div><span className={`admin-linkedin-status is-${selectedStatus[1]}`}>{selectedStatus[0]}</span><h3>{selected.article?.title || "Postare LinkedIn"}</h3></div>{selected.status === "published" && selected.linkedin_post_url ? <a href={selected.linkedin_post_url} target="_blank" rel="noreferrer">Deschide pe LinkedIn <ExternalLink size={15} /></a> : null}</div>
+            <div className="admin-linkedin-editor-head"><div><span className={`admin-linkedin-status is-${selectedStatus[1]}`}>{selectedStatus[0]}</span><small className="admin-linkedin-template-chip">{LINKEDIN_POST_TEMPLATES.find((template) => template.key === selected.template_key)?.label || "Format salvat"}</small><h3>{selected.article?.title || "Postare LinkedIn"}</h3></div>{selected.status === "published" && selected.linkedin_post_url ? <a href={selected.linkedin_post_url} target="_blank" rel="noreferrer">Deschide pe LinkedIn <ExternalLink size={15} /></a> : null}</div>
             {selected.generation_started_at && selected.status === "not_generated" ? <div className="admin-linkedin-generating"><LoaderCircle className="is-spinning" size={18} /><span><strong>Textul se pregătește</strong><small>Poți părăsi pagina. Starea rămâne salvată.</small></span></div> : null}
             <label className="admin-linkedin-text"><span>Textul postării <small>{text.length}/3.000</small></span><textarea value={text} onChange={(event) => setText(event.target.value)} disabled={["publishing", "published"].includes(selected.status) || Boolean(busy)} rows={14} /></label>
             {selected.last_error ? <p className="admin-linkedin-error"><XCircle size={16} />{humanError(selected.last_error)}</p> : null}
