@@ -7,6 +7,7 @@ import {
   FolderOpen,
   HelpCircle,
   Keyboard,
+  LoaderCircle,
   Upload
 } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
@@ -788,7 +789,7 @@ export function LicentaImportWorkspaceClient({
   }
 
   return (
-    <div className="licenta-import-workspace">
+    <div className="licenta-import-workspace upload-refresh-flow">
       {mainMode === "licenta" ? (
         <>
           {demoMode ? (
@@ -802,6 +803,17 @@ export function LicentaImportWorkspaceClient({
               <span>{activeError}</span>
               {activeErrorActionHref ? <Link href={activeErrorActionHref}>Continua</Link> : null}
             </div>
+          ) : null}
+          {isBusy ? (
+            <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
+              <span className="learning-processing-icon" aria-hidden="true">
+                <LoaderCircle size={20} strokeWidth={2.3} />
+              </span>
+              <div className="learning-processing-copy">
+                <strong>Pregătim setul de grile...</strong>
+                <p>Păstrează pagina deschisă. Următorul pas apare automat când procesarea este gata.</p>
+              </div>
+            </section>
           ) : null}
         </>
       ) : null}
@@ -867,10 +879,21 @@ export function LicentaImportWorkspaceClient({
             </section>
           ) : (
             <>
+          <ol className="learning-upload-flow upload-refresh-steps" aria-label="Pașii pregătirii licenței">
+            <li className="is-done"><span>1</span>Format</li>
+            <li className={licentaImportMode === "auto" ? (autoFileReady ? "is-done" : "is-active") : (setInputReady ? "is-done" : "is-active")}>
+              <span>2</span>Conținut
+            </li>
+            <li><span>3</span>Verificare</li>
+          </ol>
           <section className="workspace-form-panel ui-panel-card import-method-panel">
             <div className="workspace-form-head">
-              <div>
-                <h2>Alege cum adaugi materialul</h2>
+              <div className="upload-refresh-step-head">
+                <span className="learning-upload-step-number" aria-hidden="true">1</span>
+                <div>
+                  <h2>Cum sunt organizate grilele?</h2>
+                  <p>Alege varianta care seamănă cu materialul tău.</p>
+                </div>
               </div>
             </div>
             <div
@@ -889,7 +912,11 @@ export function LicentaImportWorkspaceClient({
                 className={`ui-segmented-tab secondary import-method-tab ${licentaImportMode === "set" ? "is-active" : ""}`}
                 onClick={() => setLicentaImportMode("set")}
               >
-                <IconText icon={FolderOpen}>Import pe seturi</IconText>
+                <span className="ai-workspace-source-tab-icon" aria-hidden="true"><FolderOpen size={19} /></span>
+                <span className="upload-refresh-option-copy">
+                  <strong>Pe seturi</strong>
+                  <small>Recomandat pentru materiale mari</small>
+                </span>
                 <span className="ui-chip is-good import-method-badge">Recomandat</span>
               </button>
               <button
@@ -905,7 +932,11 @@ export function LicentaImportWorkspaceClient({
                   setActiveError("");
                 }}
               >
-                <IconText icon={FileText}>Fisier complet</IconText>
+                <span className="ai-workspace-source-tab-icon" aria-hidden="true"><FileText size={19} /></span>
+                <span className="upload-refresh-option-copy">
+                  <strong>Fișier complet</strong>
+                  <small>Când toate grilele sunt într-un singur document</small>
+                </span>
               </button>
             </div>
             <div className={`ai-workspace-credit-summary licenta-import-credit-summary${noCredits ? " is-warning" : ""}`}>
@@ -924,11 +955,14 @@ export function LicentaImportWorkspaceClient({
           {licentaImportMode === "auto" ? (
             <form className="workspace-form-panel ui-panel-card import-mode-card import-mode-card-single" onSubmit={submitAuto}>
               <div className="workspace-form-head">
-                <div>
-                  <h2>Incarca fisierul complet</h2>
+                <div className="upload-refresh-step-head">
+                  <span className="learning-upload-step-number" aria-hidden="true">2</span>
+                  <div>
+                    <h2>Încarcă fișierul complet</h2>
                   <p>
-                    Potrivit cand fisierul este ordonat si raspunsurile sunt usor de identificat.
+                    Folosește această variantă când întrebările și răspunsurile sunt deja bine ordonate.
                   </p>
+                  </div>
                 </div>
               </div>
               <div className="selector-container ai-workspace-source-panel">
@@ -1023,26 +1057,32 @@ export function LicentaImportWorkspaceClient({
                   </button>
                 </div>
               ) : null}
-              <div className="inline-actions import-actions-row">
+              <div className="inline-actions import-actions-row upload-refresh-final-action">
+                <div className="upload-refresh-action-label">
+                  <span className="learning-upload-step-number" aria-hidden="true">3</span>
+                  <div>
+                    <strong>Trimite spre verificare</strong>
+                    <p className="ai-workspace-submit-action-hint" aria-live="polite">{autoInputHint}</p>
+                  </div>
+                </div>
                 <button type="submit" disabled={autoSubmitDisabled}>
                   <LoadingIconText icon={Upload} loading={isBusy} loadingLabel="Pornim...">
-                    Incarca fisier
+                    Verifică fișierul
                   </LoadingIconText>
                 </button>
-                <p className="ai-workspace-submit-action-hint" aria-live="polite">
-                  {autoInputHint}
-                </p>
               </div>
             </form>
           ) : (
             <form className="workspace-form-panel ui-panel-card import-mode-card import-mode-card-single" onSubmit={submitSet}>
               <div className="workspace-form-head">
-                <div>
-                  <h2>Proceseaza licenta pe seturi</h2>
+                <div className="upload-refresh-step-head">
+                  <span className="learning-upload-step-number" aria-hidden="true">2</span>
+                  <div>
+                  <h2>Adaugă primul set</h2>
                   <p>
-                    Recomandat pentru materiale mari sau neclare. Seturile raman in aceeasi licenta,
-                    iar incarcarea se consuma doar la final.
+                    După verificare poți adăuga următorul set în aceeași licență.
                   </p>
+                  </div>
                 </div>
                 <button type="button" className="btn-link secondary import-examples-trigger" onClick={() => setShowExamples(true)}>
                   <IconText icon={HelpCircle}>Vezi exemple</IconText>
@@ -1070,7 +1110,8 @@ export function LicentaImportWorkspaceClient({
                     setActiveErrorActionHref("");
                   }}
                 >
-                  <IconText icon={Keyboard}>Lipesc text</IconText>
+                  <span className="ai-workspace-source-tab-icon" aria-hidden="true"><Keyboard size={19} /></span>
+                  <span className="upload-refresh-option-copy"><strong>Lipește text</strong><small>Întrebări copiate</small></span>
                 </button>
                 <button
                   id="licenta-set-source-tab-file"
@@ -1087,7 +1128,8 @@ export function LicentaImportWorkspaceClient({
                     setActiveErrorActionHref("");
                   }}
                 >
-                  <IconText icon={Upload}>Urc fisier</IconText>
+                  <span className="ai-workspace-source-tab-icon" aria-hidden="true"><Upload size={19} /></span>
+                  <span className="upload-refresh-option-copy"><strong>Încarcă fișier</strong><small>PDF, DOCX sau TXT</small></span>
                 </button>
               </div>
 
@@ -1252,15 +1294,19 @@ export function LicentaImportWorkspaceClient({
                 </div>
               )}
 
-              <div className="inline-actions import-actions-row">
+              <div className="inline-actions import-actions-row upload-refresh-final-action">
+                <div className="upload-refresh-action-label">
+                  <span className="learning-upload-step-number" aria-hidden="true">3</span>
+                  <div>
+                    <strong>Trimite setul spre verificare</strong>
+                    <p className="ai-workspace-submit-action-hint" aria-live="polite">{setInputHint}</p>
+                  </div>
+                </div>
                 <button type="submit" disabled={setSubmitDisabled}>
                   <LoadingIconText icon={ClipboardList} loading={isBusy} loadingLabel="Procesam...">
-                    Proceseaza setul
+                    Verifică setul
                   </LoadingIconText>
                 </button>
-                <p className="ai-workspace-submit-action-hint" aria-live="polite">
-                  {setInputHint}
-                </p>
               </div>
             </form>
           )}

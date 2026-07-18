@@ -18199,6 +18199,33 @@ td {
   font-weight: 850;
 }
 
+.workspace-import-hero-aside {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  justify-self: end;
+  width: min(100%, 320px);
+}
+
+.workspace-import-hero-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #cfe0f5;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #f7fbff, #e8f2ff);
+  color: var(--primary);
+  box-shadow: 0 12px 24px rgba(18, 80, 177, 0.1);
+}
+
+.workspace-import-hero-aside.is-licenta .workspace-import-hero-icon {
+  border-color: #d7e5d9;
+  background: linear-gradient(145deg, #f7fcf8, #e9f6ee);
+  color: #168251;
+}
+
 .workspace-import-layout {
   grid-template-columns: minmax(0, 1fr) 280px;
 }
@@ -18549,6 +18576,184 @@ td {
 .workspace-flow-page .import-actions-row button {
   min-width: 190px;
   white-space: nowrap;
+}
+
+.upload-refresh-flow {
+  gap: 18px;
+}
+
+.upload-refresh-flow > .learning-processing-panel {
+  position: sticky;
+  top: 12px;
+  z-index: 8;
+  margin-bottom: 0;
+}
+
+.upload-refresh-steps {
+  margin: 0;
+  padding: 14px 18px;
+  border: 1px solid #d9e5f4;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.upload-refresh-step-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.upload-refresh-step-head > div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.upload-refresh-step-head h2,
+.upload-refresh-step-head p,
+.upload-refresh-step-head strong {
+  margin: 0;
+}
+
+.upload-refresh-step-head > .learning-upload-step-number {
+  flex: 0 0 auto;
+}
+
+.upload-refresh-option-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  text-align: left;
+}
+
+.upload-refresh-option-copy strong {
+  color: inherit;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.upload-refresh-option-copy small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.upload-refresh-flow .ai-workspace-source-tab,
+.upload-refresh-flow .import-method-tab {
+  min-height: 76px;
+}
+
+.upload-refresh-flow .import-method-tab {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+}
+
+.upload-refresh-flow .import-method-badge {
+  align-self: start;
+  white-space: nowrap;
+}
+
+.upload-refresh-flow .workspace-form-panel,
+.upload-refresh-flow .workspace-submit-card,
+.upload-refresh-flow .licenta-flow-card {
+  overflow: hidden;
+}
+
+.upload-refresh-flow .ai-workspace-source-panel {
+  margin-top: 2px;
+}
+
+.upload-refresh-flow .ai-workspace-answer-key-control {
+  padding: 14px;
+  border: 1px solid #dbe6f4;
+  border-radius: 16px;
+  background: #f8fbff;
+}
+
+.upload-refresh-flow .ai-workspace-submit-card {
+  border-color: #bcd3f3;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.upload-refresh-flow .ai-workspace-submit-row button,
+.upload-refresh-flow .import-actions-row button[type="submit"] {
+  min-height: 48px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.upload-refresh-flow .ai-workspace-submit-row button:hover:not(:disabled),
+.upload-refresh-flow .ai-workspace-submit-row button:focus-visible:not(:disabled),
+.upload-refresh-flow .import-actions-row button[type="submit"]:hover:not(:disabled),
+.upload-refresh-flow .import-actions-row button[type="submit"]:focus-visible:not(:disabled) {
+  background: var(--primary-dark);
+  color: #fff;
+}
+
+.upload-refresh-flow .ai-workspace-submit-row button:disabled,
+.upload-refresh-flow .import-actions-row button[type="submit"]:disabled {
+  background: #dbe5f2;
+  color: #71829a;
+  opacity: 1;
+}
+
+.upload-refresh-final-action {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #c9dbf2;
+  border-radius: 18px;
+  background: #f4f9ff;
+}
+
+.upload-refresh-action-label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.upload-refresh-action-label > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.upload-refresh-action-label strong,
+.upload-refresh-action-label p {
+  margin: 0;
+}
+
+.upload-refresh-action-label p {
+  text-align: left;
+}
+
+@media (max-width: 700px) {
+  .workspace-import-hero-aside {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .upload-refresh-flow .import-method-tab {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+
+  .upload-refresh-flow .import-method-badge {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .upload-refresh-final-action {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-refresh-final-action button {
+    width: 100%;
+  }
 }
 
 .learning-upload-recent-list {

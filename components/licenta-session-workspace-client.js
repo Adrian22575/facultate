@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, ClipboardList, ExternalLink, FileText, Keyboard, ListPlus, Trash2, Upload, X } from "lucide-react";
+import { CheckCircle2, ClipboardList, ExternalLink, FileText, Keyboard, ListPlus, LoaderCircle, Trash2, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { ImportJobStatusClient } from "@/components/import-job-status-client";
@@ -588,8 +588,17 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
   }
 
   return (
-    <div className="licenta-session-workspace">
+    <div className="licenta-session-workspace upload-refresh-flow">
       {feedback ? <div className="success-state" role="status">{feedback}</div> : null}
+      {isBusy && !isFinalizing ? (
+        <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
+          <span className="learning-processing-icon" aria-hidden="true"><LoaderCircle size={20} strokeWidth={2.3} /></span>
+          <div className="learning-processing-copy">
+            <strong>Pregătim setul...</strong>
+            <p>Păstrează pagina deschisă. Vei vedea automat întrebările imediat ce sunt gata.</p>
+          </div>
+        </section>
+      ) : null}
       {isFinalizing ? (
         <div className="workspace-credit-alert import-warning-panel" aria-live="polite">
           <div>
@@ -760,12 +769,15 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
               onSubmit={submitSet}
             >
               <div className="workspace-form-head">
-                <div>
-                  <span className="ui-section-label ai-workspace-step-label">
-                    {snapshot.jobs.length ? "Set nou" : "Primul set"}
-                  </span>
-                  <h2>{snapshot.jobs.length ? "Proceseaza setul urmator" : "Proceseaza primul set"}</h2>
-                  <p>Foloseste text sau un fisier pentru setul curent. Setul nu intra in licenta pana nu il salvezi dupa review.</p>
+                <div className="upload-refresh-step-head">
+                  <span className="learning-upload-step-number" aria-hidden="true">{nextSetNumber}</span>
+                  <div>
+                    <span className="ui-section-label ai-workspace-step-label">
+                      {snapshot.jobs.length ? "Set nou" : "Primul set"}
+                    </span>
+                    <h2>{snapshot.jobs.length ? "Adaugă setul următor" : "Adaugă primul set"}</h2>
+                    <p>Alege text sau fișier. Verifici întrebările înainte ca setul să intre în licență.</p>
+                  </div>
                 </div>
               </div>
 
@@ -789,7 +801,8 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     setErrorMessage("");
                   }}
                 >
-                  <IconText icon={Keyboard}>Input text</IconText>
+                  <span className="ai-workspace-source-tab-icon" aria-hidden="true"><Keyboard size={19} /></span>
+                  <span className="upload-refresh-option-copy"><strong>Lipește text</strong><small>Întrebări copiate</small></span>
                 </button>
                 <button
                   id="licenta-session-source-tab-file"
@@ -805,7 +818,8 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     setErrorMessage("");
                   }}
                 >
-                  <IconText icon={Upload}>Fisier</IconText>
+                  <span className="ai-workspace-source-tab-icon" aria-hidden="true"><Upload size={19} /></span>
+                  <span className="upload-refresh-option-copy"><strong>Încarcă fișier</strong><small>PDF, DOCX sau TXT</small></span>
                 </button>
               </div>
 

@@ -17,13 +17,13 @@ import { getOptionalUser } from "@/lib/supabase/guards";
 const PAGE_CONTENT = {
   test: {
     path: "/materiale/importa",
-    title: "Importa intrebari existente",
-    subtitle: "Urca grilele, verifica rapid intrebarile si publica testul la materia potrivita."
+    title: "Adaugă un set de grile",
+    subtitle: "Alege materia, încarcă fișierul sau lipește întrebările, apoi verifică înainte de publicare."
   },
   licenta: {
     path: "/materiale/licenta",
-    title: "Pregateste licenta",
-    subtitle: "Adauga seturile, corecteaza ce trebuie si finalizeaza simularea cand totul este verificat."
+    title: "Pregătește grilele pentru licență",
+    subtitle: "Adaugă seturile pe rând și pornește simularea când banca de întrebări este verificată."
   }
 };
 
@@ -81,6 +81,7 @@ export async function ImportWorkspacePage({ mode, searchParams }) {
       title={page.title}
       subtitle={page.subtitle}
       meta={meta}
+      variant={mode}
     >
       <LicentaImportWorkspaceClient
         fixedMode={mode}

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ClipboardPaste, FileUp } from "lucide-react";
+import { Check, ClipboardPaste, FileUp, LoaderCircle } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
@@ -476,12 +476,23 @@ export function WorkspaceGenerateForm({
       {message ? <div className="success-state" role="status">{message}</div> : null}
       {error ? <div className="error-state" role="alert">{error}</div> : null}
       {visibleError ? <div className="error-state" role="alert">{visibleError}</div> : null}
+      {isSubmitting ? (
+        <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
+          <span className="learning-processing-icon" aria-hidden="true">
+            <LoaderCircle size={20} strokeWidth={2.3} />
+          </span>
+          <div className="learning-processing-copy">
+            <strong>{uploadStatus || "Pregătim grilele..."}</strong>
+            <p>Păstrează pagina deschisă. Te ducem automat la verificare când încărcarea este gata.</p>
+          </div>
+        </section>
+      ) : null}
 
       <form
         action="/api/materiale/generate"
         method="post"
         encType="multipart/form-data"
-        className="ai-form ai-workspace-form"
+        className="ai-form ai-workspace-form upload-refresh-flow"
         aria-busy={isSubmitting}
         onSubmit={async (event) => {
           if (submitDisabled || selectedFileTooLarge || submittingRef.current) {
@@ -577,10 +588,29 @@ Raspuns corect: B`}</pre>
           ) : null}
         </section>
 
+        <ol className="learning-upload-flow upload-refresh-steps" aria-label="Pașii importului de grile">
+          <li className={sourceReady ? "is-done" : "is-active"}>
+            <span>{sourceReady ? <Check aria-hidden="true" size={14} /> : "1"}</span>
+            Grile
+          </li>
+          <li className={destinationReady ? "is-done" : sourceReady ? "is-active" : ""}>
+            <span>{destinationReady ? <Check aria-hidden="true" size={14} /> : "2"}</span>
+            Materie
+          </li>
+          <li className={uploadReady ? "is-active" : ""}>
+            <span>3</span>
+            Confirmare
+          </li>
+        </ol>
+
         <section className="workspace-form-panel ui-panel-card ai-workspace-step-panel">
           <div className="workspace-form-head">
-            <div>
-              <h2>Adauga grilele</h2>
+            <div className="upload-refresh-step-head">
+              <span className="learning-upload-step-number" aria-hidden="true">1</span>
+              <div>
+                <h2>Adaugă grilele</h2>
+                <p>Încarcă un fișier sau lipește direct întrebările și răspunsurile.</p>
+              </div>
             </div>
           </div>
 
@@ -607,7 +637,10 @@ Raspuns corect: B`}</pre>
               <span className="ai-workspace-source-tab-icon" aria-hidden="true">
                 <FileUp size={19} strokeWidth={2.3} />
               </span>
-              <span>Urc fisier</span>
+              <span className="upload-refresh-option-copy">
+                <strong>Încarcă fișier</strong>
+                <small>PDF, DOCX sau TXT</small>
+              </span>
             </button>
             <button
               id="workspace-source-tab-text"
@@ -626,7 +659,10 @@ Raspuns corect: B`}</pre>
               <span className="ai-workspace-source-tab-icon" aria-hidden="true">
                 <ClipboardPaste size={19} strokeWidth={2.3} />
               </span>
-              <span>Lipesc text</span>
+              <span className="upload-refresh-option-copy">
+                <strong>Lipește text</strong>
+                <small>Întrebări și răspunsuri copiate</small>
+              </span>
             </button>
           </div>
 
@@ -839,8 +875,12 @@ Raspuns corect: B`}</pre>
           }`}
         >
           <div className="workspace-form-head">
-            <div>
-              <h2>{isLicentaFlow ? "Alege tipul de test" : "Alege materia"}</h2>
+            <div className="upload-refresh-step-head">
+              <span className="learning-upload-step-number" aria-hidden="true">2</span>
+              <div>
+                <h2>{isLicentaFlow ? "Alege tipul de test" : "Alege materia"}</h2>
+                <p>{isLicentaFlow ? "Întrebările intră în simularea generală." : "Așa găsești ușor grilele și testele mai târziu."}</p>
+              </div>
             </div>
           </div>
 
@@ -1034,8 +1074,13 @@ Raspuns corect: B`}</pre>
 
         <div className="workspace-submit-card ui-panel-card ai-workspace-submit-card">
           <div className="ai-workspace-submit-copy">
-            <strong>{submitTitle}</strong>
-            <p>{submitDescription}</p>
+            <div className="upload-refresh-step-head">
+              <span className="learning-upload-step-number" aria-hidden="true">3</span>
+              <div>
+                <strong>{submitTitle}</strong>
+                <p>{submitDescription}</p>
+              </div>
+            </div>
             <div className={`ai-workspace-credit-summary${noCredits ? " is-warning" : ""}`}>
               <span className={`ui-chip ${noCredits ? "is-warning" : "is-good"}`}>
                 {creditCountLabel}
