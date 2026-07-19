@@ -57,8 +57,9 @@ test("automatizarea acceptă fallback-ul după ora locală, dar rulează o singu
 });
 
 test("schedulerul și Admin folosesc livrare observabilă, căutare globală și data creării", async () => {
-  const [migration, securityMigration, preflight, cronRoute, searchRoute, adminUi] = await Promise.all([
+  const [migration, timeoutMigration, securityMigration, preflight, cronRoute, searchRoute, adminUi] = await Promise.all([
     readFile(new URL("../supabase/migrations/20260719093254_fix_dictionary_scheduler_delivery.sql", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/20260719095200_increase_dictionary_scheduler_timeout.sql", import.meta.url), "utf8"),
     readFile(new URL("../supabase/migrations/20260719094037_restrict_editorial_scheduler_token.sql", import.meta.url), "utf8"),
     readFile(new URL("../scripts/vercel-preflight.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/api/cron/dictionary/route.js", import.meta.url), "utf8"),
@@ -67,6 +68,7 @@ test("schedulerul și Admin folosesc livrare observabilă, căutare globală și
   ]);
   assert.match(migration, /net\.http_get/);
   assert.match(migration, /raise exception 'editorial_scheduler_token is not configured'/);
+  assert.match(timeoutMigration, /timeout_milliseconds := 300000/);
   assert.match(securityMigration, /from anon/);
   assert.match(securityMigration, /from authenticated/);
   assert.match(securityMigration, /to service_role/);
