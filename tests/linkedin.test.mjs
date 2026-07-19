@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { createLinkedInPostWithConfig, exchangeLinkedInCodeWithConfig, getLinkedInUserInfoWithFetch } from "../lib/linkedin/client-core.js";
+import { createLinkedInCommentWithConfig, createLinkedInPostWithConfig, exchangeLinkedInCodeWithConfig, getLinkedInUserInfoWithFetch } from "../lib/linkedin/client-core.js";
 import { normalizeLinkedInModel } from "../lib/linkedin/models.js";
 import { buildLinkedInFullPost, hashOAuthState, isConnectionUsable, validateLinkedInDraft } from "../lib/linkedin/shared.js";
 import { DEFAULT_LINKEDIN_POST_OBJECTIVE, DEFAULT_LINKEDIN_POST_TEMPLATE, DEFAULT_LINKEDIN_POST_VOICE, getLinkedInPostObjective, getLinkedInPostTemplate, getLinkedInPostVoice, LINKEDIN_POST_TEMPLATES } from "../lib/linkedin/templates.js";
+import { LINKEDIN_PROMPT_VERSION } from "../lib/linkedin/prompts/banned-phrases.js";
 
 const config = { clientId: "client", clientSecret: "secret", redirectUri: "https://nota5plus.ro/api/admin/linkedin/oauth/callback", apiVersion: "202606" };
 const article = {
@@ -26,14 +27,19 @@ function validDraft(overrides = {}) {
     hook: "Calendarul examenelor din iulie schimbă planificarea pentru studenți.",
     body: "Ministerul a publicat calendarul, iar universitățile păstrează responsabilitatea detaliilor locale. Pentru studenți, verificarea paginii facultății rămâne pasul practic înainte de organizarea sesiunii.",
     articleUrl,
-    closingCta: "Ce informație ar trebui publicată prima de fiecare facultate pentru ca studenții să își poată planifica sesiunea?",
+    cta: "Ce informație ar trebui publicată prima de fiecare facultate pentru ca studenții să își poată planifica sesiunea?",
+    linkSentence: null,
+    linkPlacement: "end",
     hashtags: ["#Educatie", "#Studenti", "#Digitalizare"],
-    tone: "analitic",
+    angle: "Calendarul comun și responsabilitatea detaliilor locale",
+    objective: "authority",
+    qualityScore: 8.7,
+    warnings: [],
+    promptVersion: LINKEDIN_PROMPT_VERSION,
     claims: ["Ministerul a publicat calendarul examenelor pentru luna iulie.", "Studenții trebuie să verifice și pagina universității."],
     sourceArticleId: article.id
   };
   const merged = { ...base, ...overrides };
-  if (!merged.body.includes(merged.hashtags[0])) merged.body = `${merged.body}\n\n${merged.hashtags.join(" ")}`;
   merged.fullPost = overrides.fullPost || buildLinkedInFullPost(merged);
   merged.characterCount = overrides.characterCount ?? merged.fullPost.length;
   return merged;
@@ -59,27 +65,27 @@ test("normalizeaza aliasul GPT-5.6 la Sol si accepta numai modelele disponibile"
 });
 
 test("formatele LinkedIn sunt finite, au un implicit sigur si hashtagurile raman in text", () => {
-  assert.equal(LINKEDIN_POST_TEMPLATES.length, 5);
+  assert.equal(LINKEDIN_POST_TEMPLATES.length, 11);
   assert.equal(getLinkedInPostTemplate("missing").key, DEFAULT_LINKEDIN_POST_TEMPLATE);
   const draft = validDraft();
-  assert.equal(draft.fullPost.endsWith(draft.hashtags.join(" ")), false);
+  assert.equal(draft.fullPost.endsWith(draft.hashtags.join(" ")), true);
   assert.equal(validateLinkedInDraft(draft, { article, articleUrl }).valid, true);
 });
 
-test("postarea are obiectiv si voce explicite, fara instructiuni pentru imagini", async () => {
-  const [server, migration, ui] = await Promise.all([
-    readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
-    readFile(new URL("../supabase/migrations/20260718210000_linkedin_post_quality_controls.sql", import.meta.url), "utf8"),
+test("postarea are scop, ton si reguli editoriale explicite", async () => {
+  const [prompts, migration, ui] = await Promise.all([
+    readFile(new URL("../lib/linkedin/prompts/builders.js", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/20260719080458_linkedin_generator_v2.sql", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
   ]);
   assert.equal(getLinkedInPostObjective("missing").key, DEFAULT_LINKEDIN_POST_OBJECTIVE);
   assert.equal(getLinkedInPostVoice("missing").key, DEFAULT_LINKEDIN_POST_VOICE);
-  assert.match(server, /Nu rezuma articolul/);
-  assert.match(server, /Nu propune imagine, document, carousel, video/);
+  assert.match(prompts, /Nu rezuma articolul/);
+  assert.match(prompts, /Nu inventezi experiențe, opinii, clienți/);
   assert.match(migration, /default_objective/);
   assert.match(migration, /default_voice/);
-  assert.match(ui, /Obiectiv implicit/);
-  assert.match(ui, /Voce implicit/);
+  assert.match(ui, /LinkedInGenerationOptions/);
+  assert.match(ui, /Strategia următoarei variante/);
 });
 
 test("un articol poate avea ediții LinkedIn distincte, fără a rescrie publicarea existentă", async () => {
@@ -100,7 +106,7 @@ test("respinge informațiile care nu există în articol și întrebările gener
   const unsupported = validateLinkedInDraft(validDraft({ claims: ["Bugetul educației a crescut cu 40%.", "Studenții trebuie să verifice și pagina universității."] }), { article, articleUrl });
   assert.equal(unsupported.valid, false);
   assert.match(unsupported.reasons.join(" "), /unsupported_claim/);
-  const generic = validateLinkedInDraft(validDraft({ closingCta: "Ce părere aveți despre asta?" }), { article, articleUrl });
+  const generic = validateLinkedInDraft(validDraft({ cta: "Ce părere aveți despre asta?" }), { article, articleUrl });
   assert.equal(generic.valid, false);
   assert.ok(generic.reasons.includes("generic_closing_cta"));
 
@@ -244,6 +250,18 @@ test("Posts API clasifica rate limitul si confirmarea lipsa fara a produce dupli
   );
 });
 
+test("primul comentariu foloseste endpointul socialActions si pastreaza rezultatele ambigue", async () => {
+  let request;
+  const result = await createLinkedInCommentWithConfig({ accessToken: "token", authorUrn: "urn:li:person:member_123", postUrn: "urn:li:share:123456789", text: `Articolul complet: ${articleUrl}` }, config, { fetchImpl: async (url, options) => {
+    request = { url, options };
+    return new Response(null, { status: 201, headers: { "x-restli-id": "987654321" } });
+  } });
+  assert.equal(request.url, "https://api.linkedin.com/rest/socialActions/urn%3Ali%3Ashare%3A123456789/comments");
+  assert.equal(JSON.parse(request.options.body).actor, "urn:li:person:member_123");
+  assert.equal(result.commentId, "987654321");
+  await assert.rejects(() => createLinkedInCommentWithConfig({ accessToken: "token", authorUrn: "urn:li:person:x", postUrn: "urn:li:share:1", text: articleUrl }, config, { fetchImpl: async () => { throw new Error("network"); } }), (error) => error.code === "linkedin_comment_result_unknown" && error.ambiguous === true);
+});
+
 test("fluxurile draft, aprobare, respingere, auto-publicare si articol nepublicat sunt impuse pe server", async () => {
   const [server, actionRoute, publishHook] = await Promise.all([
     readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
@@ -279,20 +297,22 @@ test("crearea manuală rămâne disponibilă când automatizarea este oprită, i
   assert.match(editorialUi, /linkedin: publicationLinkedIn/);
 });
 
-test("retry-ul repetat păstrează dovezi din articol, creează o ediție nouă la cerere și notifică fiecare eșec distinct", async () => {
-  const [server, generateRoute, telegram, ui] = await Promise.all([
+test("retry-ul repetat păstrează pipeline-ul factual, creează o ediție nouă la cerere și notifică fiecare eșec distinct", async () => {
+  const [server, pipeline, generateRoute, telegram, ui] = await Promise.all([
     readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/linkedin/pipeline.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/admin/linkedin/articles/[articleId]/generate/route.js", import.meta.url), "utf8"),
     readFile(new URL("../lib/notifications/telegram.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
   ]);
-  assert.match(server, /sourceClaimsForArticle/);
-  assert.match(server, /claims: sourceClaims\.length >= 2 \? sourceClaims/);
+  assert.match(server, /generateLinkedInDraftPipeline/);
+  assert.match(pipeline, /buildArticleEvidence/);
+  assert.match(pipeline, /exactClaims/);
   assert.match(server, /createNewEdition && post\.status !== "not_generated"/);
   assert.match(generateRoute, /createNewEdition: true/);
   assert.match(telegram, /linkedin_failed:\$\{postId\}:\$\{stage\}:\$\{occurrence\}/);
   assert.match(ui, /Postarea a fost pregătită din nou pentru aprobare/);
-  assert.match(ui, /Textul nu a putut fi legat sigur de articol/);
+  assert.match(ui, /afirmație care nu poate fi susținută din articol/);
 });
 
 test("orice ediție nouă pornește cu valori compatibile cu validările bazei de date și reîncearcă sigur la concurență", async () => {

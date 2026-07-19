@@ -1,21 +1,15 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
 import { isAdminUser } from "@/lib/admin";
-import { LINKEDIN_MODELS } from "@/lib/linkedin/models";
-import { LINKEDIN_MODES } from "@/lib/linkedin/shared";
-import { LINKEDIN_POST_OBJECTIVE_KEYS, LINKEDIN_POST_TEMPLATE_KEYS, LINKEDIN_POST_VOICE_KEYS } from "@/lib/linkedin/templates";
+import { linkedinSettingsSchema } from "@/lib/linkedin/requests";
 import { saveLinkedInSettings } from "@/lib/linkedin/server";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
-
-const schema = z.object({ mode: z.enum(LINKEDIN_MODES), notifyTelegram: z.boolean(), model: z.enum(LINKEDIN_MODELS), defaultTemplate: z.enum(LINKEDIN_POST_TEMPLATE_KEYS), defaultObjective: z.enum(LINKEDIN_POST_OBJECTIVE_KEYS), defaultVoice: z.enum(LINKEDIN_POST_VOICE_KEYS) });
 
 export async function PATCH(request) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user || !(await isAdminUser(user))) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  const parsed = schema.safeParse(await request.json().catch(() => null));
+  const parsed = linkedinSettingsSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
   try {
     await assertRateLimit({ action: "linkedin_settings", subject: `user:${user.id}`, windowSeconds: 60, maxRequests: 12 });

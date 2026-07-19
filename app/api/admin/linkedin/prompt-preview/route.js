@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { isAdminUser } from "@/lib/admin";
 import { getLinkedInGenerationPreviewForTemplate } from "@/lib/linkedin/server";
 import { normalizeLinkedInModel } from "@/lib/linkedin/models";
-import { getLinkedInPostObjective, getLinkedInPostTemplate, getLinkedInPostVoice } from "@/lib/linkedin/templates";
+import { linkedinGenerationOptionsSchema } from "@/lib/linkedin/requests";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request) {
@@ -12,9 +12,18 @@ export async function GET(request) {
   if (!user || !(await isAdminUser(user))) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
   const params = new URL(request.url).searchParams;
-  const template = getLinkedInPostTemplate(params.get("template"));
-  const objective = getLinkedInPostObjective(params.get("objective"));
-  const voice = getLinkedInPostVoice(params.get("voice"));
-  const preview = getLinkedInGenerationPreviewForTemplate(normalizeLinkedInModel(params.get("model")), template.key, objective.key, voice.key);
+  const parsed = linkedinGenerationOptionsSchema.safeParse({
+    templateKey: params.get("template") || undefined,
+    objectiveKey: params.get("objective") || undefined,
+    voiceKey: params.get("voice") || undefined,
+    audienceKey: params.get("audience") || undefined,
+    customAudience: params.get("customAudience") || undefined,
+    ctaKey: params.get("cta") || undefined,
+    narrativeKey: params.get("narrative") || undefined,
+    lengthKey: params.get("length") || undefined,
+    linkPlacementKey: params.get("linkPlacement") || undefined
+  });
+  if (!parsed.success) return NextResponse.json({ error: "invalid_generation_options" }, { status: 400 });
+  const preview = getLinkedInGenerationPreviewForTemplate(normalizeLinkedInModel(params.get("model")), parsed.data);
   return NextResponse.json({ preview });
 }

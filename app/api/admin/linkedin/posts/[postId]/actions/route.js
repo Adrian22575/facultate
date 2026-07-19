@@ -2,13 +2,17 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { isAdminUser } from "@/lib/admin";
-import { approveLinkedInPost, prepareLinkedInDraft, publishLinkedInPost, rejectLinkedInPost } from "@/lib/linkedin/server";
-import { LINKEDIN_POST_OBJECTIVE_KEYS, LINKEDIN_POST_TEMPLATE_KEYS, LINKEDIN_POST_VOICE_KEYS } from "@/lib/linkedin/templates";
+import { LINKEDIN_REFINEMENT_ACTIONS, linkedinGenerationOptionsShape } from "@/lib/linkedin/requests";
+import { approveLinkedInPost, prepareLinkedInDraft, publishLinkedInPost, refineLinkedInPost, rejectLinkedInPost, retryLinkedInFirstComment, saveLinkedInPostFeedback } from "@/lib/linkedin/server";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-const schema = z.object({ action: z.enum(["generate", "approve", "reject", "publish", "retry"]), templateKey: z.enum(LINKEDIN_POST_TEMPLATE_KEYS).optional(), objectiveKey: z.enum(LINKEDIN_POST_OBJECTIVE_KEYS).optional(), voiceKey: z.enum(LINKEDIN_POST_VOICE_KEYS).optional() });
+const schema = z.object({
+  ...linkedinGenerationOptionsShape,
+  action: z.enum(["generate", "approve", "reject", "publish", "retry", "retry_comment", "feedback", ...LINKEDIN_REFINEMENT_ACTIONS]),
+  feedback: z.enum(["up", "down"]).optional()
+});
 
 export async function POST(request, { params }) {
   const supabase = await createClient();
@@ -21,6 +25,9 @@ export async function POST(request, { params }) {
     await assertRateLimit({ action: `linkedin_post_${parsed.data.action}`, subject: `user:${user.id}`, windowSeconds: 60, maxRequests: 10 });
     if (parsed.data.action === "approve") return NextResponse.json({ ok: true, post: await approveLinkedInPost(postId, user.id) });
     if (parsed.data.action === "reject") return NextResponse.json({ ok: true, post: await rejectLinkedInPost(postId) });
+    if (parsed.data.action === "feedback") return NextResponse.json({ ok: true, post: await saveLinkedInPostFeedback(postId, parsed.data.feedback) });
+    if (parsed.data.action === "retry_comment") return NextResponse.json({ ok: true, post: await retryLinkedInFirstComment(postId) });
+    if (LINKEDIN_REFINEMENT_ACTIONS.includes(parsed.data.action)) return NextResponse.json({ ok: true, post: await refineLinkedInPost(postId, parsed.data.action) });
     if (parsed.data.action === "publish") {
       const result = await publishLinkedInPost(postId);
       return NextResponse.json(result, { status: result.ok ? 200 : 422 });
@@ -33,7 +40,8 @@ export async function POST(request, { params }) {
       const result = await publishLinkedInPost(postId, { admin });
       return NextResponse.json(result, { status: result.ok ? 200 : 422 });
     }
-    const result = await prepareLinkedInDraft(post.article_id, { force: true, manual: true, templateKey: parsed.data.templateKey, objectiveKey: parsed.data.objectiveKey, voiceKey: parsed.data.voiceKey });
+    const { action, feedback, ...generationOptions } = parsed.data;
+    const result = await prepareLinkedInDraft(post.article_id, { force: true, manual: true, ...generationOptions });
     return NextResponse.json(result, { status: result.ok ? 200 : 422 });
   } catch (error) {
     const code = error?.code === "RATE_LIMITED" ? "rate_limited" : error?.message || "action_failed";

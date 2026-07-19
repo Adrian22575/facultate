@@ -5,16 +5,11 @@ import { z } from "zod";
 import { isAdminUser } from "@/lib/admin";
 import { runEditorialFactCheck } from "@/lib/editorial/automation";
 import { prepareLinkedInDraft } from "@/lib/linkedin/server";
-import { LINKEDIN_POST_OBJECTIVE_KEYS, LINKEDIN_POST_TEMPLATE_KEYS, LINKEDIN_POST_VOICE_KEYS } from "@/lib/linkedin/templates";
+import { linkedinGenerationOptionsSchema } from "@/lib/linkedin/requests";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-const linkedinPostSchema = z.object({
-  templateKey: z.enum(LINKEDIN_POST_TEMPLATE_KEYS).optional(),
-  objectiveKey: z.enum(LINKEDIN_POST_OBJECTIVE_KEYS).optional(),
-  voiceKey: z.enum(LINKEDIN_POST_VOICE_KEYS).optional()
-});
-const schema = z.object({ action: z.enum(["publish", "withdraw", "fact_check"]), linkedin: linkedinPostSchema.optional() });
+const schema = z.object({ action: z.enum(["publish", "withdraw", "fact_check"]), linkedin: linkedinGenerationOptionsSchema.optional() });
 async function requireApiAdmin() { const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser(); return user && await isAdminUser(user) ? user : null; }
 
 export async function POST(request, { params }) {

@@ -18,12 +18,16 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
 import { AdminLinkedInDistribution } from "@/components/admin-linkedin-distribution";
+import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
 import {
+  DEFAULT_LINKEDIN_POST_AUDIENCE,
+  DEFAULT_LINKEDIN_POST_CTA,
+  DEFAULT_LINKEDIN_POST_LENGTH,
+  DEFAULT_LINKEDIN_POST_LINK_PLACEMENT,
+  DEFAULT_LINKEDIN_POST_NARRATIVE,
   DEFAULT_LINKEDIN_POST_OBJECTIVE,
   DEFAULT_LINKEDIN_POST_TEMPLATE,
-  DEFAULT_LINKEDIN_POST_VOICE,
-  LINKEDIN_POST_OBJECTIVES,
-  LINKEDIN_POST_VOICES
+  DEFAULT_LINKEDIN_POST_VOICE
 } from "@/lib/linkedin/templates";
 
 const ACTIVE_RUN_STATUSES = new Set(["started", "researching", "validated_research", "drafted", "fact_checked"]);
@@ -108,7 +112,13 @@ function autoLinkedInOptions(settings) {
   return {
     templateKey: settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE,
     objectiveKey: settings?.default_objective || DEFAULT_LINKEDIN_POST_OBJECTIVE,
-    voiceKey: settings?.default_voice || DEFAULT_LINKEDIN_POST_VOICE
+    voiceKey: settings?.default_voice || DEFAULT_LINKEDIN_POST_VOICE,
+    audienceKey: settings?.default_audience || DEFAULT_LINKEDIN_POST_AUDIENCE,
+    customAudience: settings?.default_custom_audience || "",
+    ctaKey: settings?.default_cta || DEFAULT_LINKEDIN_POST_CTA,
+    narrativeKey: settings?.default_narrative || DEFAULT_LINKEDIN_POST_NARRATIVE,
+    lengthKey: settings?.default_length || DEFAULT_LINKEDIN_POST_LENGTH,
+    linkPlacementKey: settings?.default_link_placement || DEFAULT_LINKEDIN_POST_LINK_PLACEMENT
   };
 }
 
@@ -457,10 +467,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
               {!isPublished ? <fieldset className="admin-editorial-linkedin-options" disabled={Boolean(busy)}>
                 <legend>Postarea LinkedIn pregătită după publicare</legend>
                 <p>Aceste alegeri se aplică doar articolului curent. Setările globale rămân neschimbate.</p>
-                <div>
-                  <label><span>Obiectiv</span><select value={publicationLinkedIn.objectiveKey} onChange={(event) => setPublicationLinkedIn((current) => ({ ...current, objectiveKey: event.target.value }))}>{LINKEDIN_POST_OBJECTIVES.map((objective) => <option key={objective.key} value={objective.key}>{objective.label} — {objective.description}</option>)}</select></label>
-                  <label><span>Voce</span><select value={publicationLinkedIn.voiceKey} onChange={(event) => setPublicationLinkedIn((current) => ({ ...current, voiceKey: event.target.value }))}>{LINKEDIN_POST_VOICES.map((voice) => <option key={voice.key} value={voice.key}>{voice.label} — {voice.description}</option>)}</select></label>
-                </div>
+                <LinkedInGenerationOptions value={publicationLinkedIn} onChange={setPublicationLinkedIn} disabled={Boolean(busy)} compact />
               </fieldset> : null}
 
               {confirmation ? (
