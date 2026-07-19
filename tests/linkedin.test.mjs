@@ -260,7 +260,23 @@ test("fluxurile draft, aprobare, respingere, auto-publicare si articol nepublica
   assert.match(actionRoute, /publishLinkedInPost/);
   assert.match(actionRoute, /prepareLinkedInDraft/);
   assert.match(publishHook, /after\(async \(\) =>/);
-  assert.match(publishHook, /prepareLinkedInDraft\(article\.id\)/);
+  assert.match(publishHook, /prepareLinkedInDraft\(article\.id, parsed\.data\.linkedin \|\| \{\}\)/);
+});
+
+test("crearea manuală rămâne disponibilă când automatizarea este oprită, iar publicarea articolului transmite opțiunile editoriale", async () => {
+  const [server, generateRoute, postActionsRoute, publishHook, editorialUi] = await Promise.all([
+    readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/linkedin/articles/[articleId]/generate/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/linkedin/posts/[postId]/actions/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/editorial/articles/[articleId]/actions/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-editorial-panel.js", import.meta.url), "utf8")
+  ]);
+  assert.match(server, /settings\.mode === "disabled" && !manual/);
+  assert.match(generateRoute, /manual: true/);
+  assert.match(postActionsRoute, /manual: true/);
+  assert.match(publishHook, /parsed\.data\.linkedin \|\| \{\}/);
+  assert.match(editorialUi, /Postarea LinkedIn preg/);
+  assert.match(editorialUi, /linkedin: publicationLinkedIn/);
 });
 
 test("retry-ul este blocat pentru rezultate ambigue si concurenta revendica o singura publicare", async () => {

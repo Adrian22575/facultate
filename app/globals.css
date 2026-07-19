@@ -11115,6 +11115,69 @@ td {
   text-transform: none !important;
 }
 
+.admin-editorial-linkedin-options {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 13px;
+  border: 1px solid #cfdef0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f7fbff, #fff);
+}
+
+.admin-editorial-linkedin-options legend {
+  padding: 0 5px;
+  color: #214a75;
+  font-size: .82rem;
+  font-weight: 850;
+}
+
+.admin-editorial-linkedin-options > p {
+  margin: 0;
+  color: #627a96;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.admin-editorial-linkedin-options > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.admin-editorial-linkedin-options label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.admin-editorial-linkedin-options label > span {
+  color: #385979;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.admin-editorial-linkedin-options select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid #bfd3eb;
+  border-radius: 10px;
+  color: #173c68;
+  font: inherit;
+  background: #fff;
+}
+
+.admin-editorial-linkedin-options select:focus-visible {
+  border-color: #0a66c2;
+  outline: 3px solid rgb(10 102 194 / 14%);
+}
+
+@media (max-width: 680px) {
+  .admin-editorial-linkedin-options > div { grid-template-columns: 1fr; }
+}
+
 .admin-editorial-withdraw {
   display: inline-flex;
   align-items: center;

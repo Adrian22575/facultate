@@ -18,6 +18,13 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
 import { AdminLinkedInDistribution } from "@/components/admin-linkedin-distribution";
+import {
+  DEFAULT_LINKEDIN_POST_OBJECTIVE,
+  DEFAULT_LINKEDIN_POST_TEMPLATE,
+  DEFAULT_LINKEDIN_POST_VOICE,
+  LINKEDIN_POST_OBJECTIVES,
+  LINKEDIN_POST_VOICES
+} from "@/lib/linkedin/templates";
 
 const ACTIVE_RUN_STATUSES = new Set(["started", "researching", "validated_research", "drafted", "fact_checked"]);
 const RUN_PROGRESS = { started: 8, researching: 32, validated_research: 56, drafted: 78, fact_checked: 92 };
@@ -97,6 +104,14 @@ function ActionMessage({ message }) {
   return <p className={`admin-editorial-action-message is-${message.tone || "info"}`} role="status" aria-live="polite" aria-atomic="true">{message.text}</p>;
 }
 
+function autoLinkedInOptions(settings) {
+  return {
+    templateKey: settings?.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE,
+    objectiveKey: settings?.default_objective || DEFAULT_LINKEDIN_POST_OBJECTIVE,
+    voiceKey: settings?.default_voice || DEFAULT_LINKEDIN_POST_VOICE
+  };
+}
+
 export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "" }) {
   const router = useRouter();
   const initialLinkedInPost = linkedIn?.posts?.find((post) => post.id === initialLinkedInPostId) || null;
@@ -120,6 +135,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
   const [generationMessage, setGenerationMessage] = useState(null);
   const [busy, setBusy] = useState("");
   const [confirmation, setConfirmation] = useState("");
+  const [publicationLinkedIn, setPublicationLinkedIn] = useState(() => autoLinkedInOptions(linkedIn?.settings));
   const activeRun = useMemo(() => runs.find((run) => ACTIVE_RUN_STATUSES.has(run.status)) || null, [runs]);
   const liveRun = activeRun || (busy === "generate" ? { status: "started", started_at: new Date().toISOString() } : null);
   const latestRun = runs[0] || null;
@@ -173,6 +189,10 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
       setDirty(false);
     }
   }, [formArticleId, selected]);
+
+  useEffect(() => {
+    setPublicationLinkedIn(autoLinkedInOptions(linkedIn?.settings));
+  }, [linkedIn?.settings, selectedId]);
 
   useEffect(() => {
     if (!liveRun) return undefined;
@@ -237,7 +257,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
     const response = await fetch(`/api/admin/editorial/articles/${effectiveSelected.id}/actions`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ action })
+      body: JSON.stringify(action === "publish" ? { action, linkedin: publicationLinkedIn } : { action })
     }).catch(() => null);
     const result = await response?.json().catch(() => ({}));
     setBusy("");
@@ -433,6 +453,15 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
                   </div>
                 </article>
               </div>
+
+              {!isPublished ? <fieldset className="admin-editorial-linkedin-options" disabled={Boolean(busy)}>
+                <legend>Postarea LinkedIn pregătită după publicare</legend>
+                <p>Aceste alegeri se aplică doar articolului curent. Setările globale rămân neschimbate.</p>
+                <div>
+                  <label><span>Obiectiv</span><select value={publicationLinkedIn.objectiveKey} onChange={(event) => setPublicationLinkedIn((current) => ({ ...current, objectiveKey: event.target.value }))}>{LINKEDIN_POST_OBJECTIVES.map((objective) => <option key={objective.key} value={objective.key}>{objective.label} — {objective.description}</option>)}</select></label>
+                  <label><span>Voce</span><select value={publicationLinkedIn.voiceKey} onChange={(event) => setPublicationLinkedIn((current) => ({ ...current, voiceKey: event.target.value }))}>{LINKEDIN_POST_VOICES.map((voice) => <option key={voice.key} value={voice.key}>{voice.label} — {voice.description}</option>)}</select></label>
+                </div>
+              </fieldset> : null}
 
               {confirmation ? (
                 <div className={`admin-editorial-confirmation is-${confirmation}`}>

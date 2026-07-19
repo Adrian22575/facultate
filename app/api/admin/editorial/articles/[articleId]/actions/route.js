@@ -5,10 +5,16 @@ import { z } from "zod";
 import { isAdminUser } from "@/lib/admin";
 import { runEditorialFactCheck } from "@/lib/editorial/automation";
 import { prepareLinkedInDraft } from "@/lib/linkedin/server";
+import { LINKEDIN_POST_OBJECTIVE_KEYS, LINKEDIN_POST_TEMPLATE_KEYS, LINKEDIN_POST_VOICE_KEYS } from "@/lib/linkedin/templates";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-const schema = z.object({ action: z.enum(["publish", "withdraw", "fact_check"]) });
+const linkedinPostSchema = z.object({
+  templateKey: z.enum(LINKEDIN_POST_TEMPLATE_KEYS).optional(),
+  objectiveKey: z.enum(LINKEDIN_POST_OBJECTIVE_KEYS).optional(),
+  voiceKey: z.enum(LINKEDIN_POST_VOICE_KEYS).optional()
+});
+const schema = z.object({ action: z.enum(["publish", "withdraw", "fact_check"]), linkedin: linkedinPostSchema.optional() });
 async function requireApiAdmin() { const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser(); return user && await isAdminUser(user) ? user : null; }
 
 export async function POST(request, { params }) {
@@ -46,7 +52,7 @@ export async function POST(request, { params }) {
   revalidatePath(`/articole/${article.slug}`);
   revalidatePath("/sitemap.xml");
   after(async () => {
-    const result = await prepareLinkedInDraft(article.id).catch((linkedinError) => ({
+    const result = await prepareLinkedInDraft(article.id, parsed.data.linkedin || {}).catch((linkedinError) => ({
       ok: false,
       reason: linkedinError instanceof Error ? linkedinError.message : "linkedin_distribution_failed"
     }));

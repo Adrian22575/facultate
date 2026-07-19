@@ -33,7 +33,7 @@ export async function POST(request, { params }) {
       const result = await publishLinkedInPost(postId, { admin });
       return NextResponse.json(result, { status: result.ok ? 200 : 422 });
     }
-    const result = await prepareLinkedInDraft(post.article_id, { force: true, templateKey: parsed.data.templateKey, objectiveKey: parsed.data.objectiveKey, voiceKey: parsed.data.voiceKey });
+    const result = await prepareLinkedInDraft(post.article_id, { force: true, manual: true, templateKey: parsed.data.templateKey, objectiveKey: parsed.data.objectiveKey, voiceKey: parsed.data.voiceKey });
     return NextResponse.json(result, { status: result.ok ? 200 : 422 });
   } catch (error) {
     const code = error?.code === "RATE_LIMITED" ? "rate_limited" : error?.message || "action_failed";
