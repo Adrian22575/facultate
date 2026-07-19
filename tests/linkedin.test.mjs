@@ -279,6 +279,22 @@ test("crearea manuală rămâne disponibilă când automatizarea este oprită, i
   assert.match(editorialUi, /linkedin: publicationLinkedIn/);
 });
 
+test("retry-ul repetat păstrează dovezi din articol, creează o ediție nouă la cerere și notifică fiecare eșec distinct", async () => {
+  const [server, generateRoute, telegram, ui] = await Promise.all([
+    readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/linkedin/articles/[articleId]/generate/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/notifications/telegram.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
+  ]);
+  assert.match(server, /sourceClaimsForArticle/);
+  assert.match(server, /claims: sourceClaims\.length >= 2 \? sourceClaims/);
+  assert.match(server, /createNewEdition && post\.status !== "not_generated"/);
+  assert.match(generateRoute, /createNewEdition: true/);
+  assert.match(telegram, /linkedin_failed:\$\{postId\}:\$\{stage\}:\$\{occurrence\}/);
+  assert.match(ui, /Postarea a fost pregătită din nou pentru aprobare/);
+  assert.match(ui, /Textul nu a putut fi legat sigur de articol/);
+});
+
 test("retry-ul este blocat pentru rezultate ambigue si concurenta revendica o singura publicare", async () => {
   const [server, actionsRoute] = await Promise.all([
     readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),

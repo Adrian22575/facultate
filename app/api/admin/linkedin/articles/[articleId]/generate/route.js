@@ -18,7 +18,7 @@ export async function POST(request, { params }) {
   if (!parsed.success) return NextResponse.json({ error: "invalid_template" }, { status: 400 });
   try {
     await assertRateLimit({ action: "linkedin_article_generate", subject: `user:${user.id}`, windowSeconds: 300, maxRequests: 8 });
-    const result = await prepareLinkedInDraft(articleId, { force: true, manual: true, templateKey: parsed.data.templateKey, objectiveKey: parsed.data.objectiveKey, voiceKey: parsed.data.voiceKey });
+    const result = await prepareLinkedInDraft(articleId, { force: true, manual: true, createNewEdition: true, templateKey: parsed.data.templateKey, objectiveKey: parsed.data.objectiveKey, voiceKey: parsed.data.voiceKey });
     return NextResponse.json(result, { status: result.ok ? 200 : 422 });
   } catch (error) {
     const code = error?.code === "RATE_LIMITED" ? "rate_limited" : error?.message || "generation_failed";

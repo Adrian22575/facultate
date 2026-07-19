@@ -60,6 +60,7 @@ function humanError(value) {
   if (code.includes("connection_expired")) return "Conexiunea a expirat. Reconectează profilul.";
   if (code.includes("article_url_missing")) return "Textul trebuie să păstreze linkul articolului.";
   if (code.includes("text_length_invalid")) return "Textul trebuie să aibă între 120 și 3.000 de caractere.";
+  if (code.includes("linkedin_draft_validation_failed:unsupported_claim")) return "Textul nu a putut fi legat sigur de articol. Pregătirea a fost oprită înainte de publicare; poți reîncerca.";
   return code ? "Acțiunea nu a putut fi finalizată. Detaliul tehnic este păstrat în istoric." : "";
 }
 
@@ -200,7 +201,7 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     }
     patchPost(selected.id, result.post);
     setText(result.post.edited_text || result.post.generated_text || text);
-    setMessage(action === "approve" ? "Postarea este aprobată. O poți publica acum." : action === "reject" ? "Postarea a fost respinsă și rămâne în istoric." : action === "publish" || action === "retry" ? "Postarea a fost publicată pe LinkedIn." : "Postarea a fost actualizată.");
+    setMessage(action === "approve" ? "Postarea este aprobată. O poți publica acum." : action === "reject" ? "Postarea a fost respinsă și rămâne în istoric." : action === "publish" ? "Postarea a fost publicată pe LinkedIn." : action === "retry" && result.post.status === "published" ? "Postarea a fost publicată pe LinkedIn." : action === "retry" ? "Postarea a fost pregătită din nou pentru aprobare." : "Postarea a fost actualizată.");
     router.refresh();
   }
 
