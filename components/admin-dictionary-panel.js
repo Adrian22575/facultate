@@ -364,9 +364,15 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
             const displayed = { ...term, ...(termPatches[term.id] || {}) };
             const displayedStatus = termStatus(displayed.status);
             return (
-              <button type="button" key={term.id} className={term.id === selectedId ? "is-selected" : ""} onClick={() => select(displayed)} disabled={Boolean(busy)}>
+              <button type="button" key={term.id} className={`admin-dictionary-list-item${term.id === selectedId ? " is-selected" : ""}`} onClick={() => select(displayed)} disabled={Boolean(busy)}>
                 <BookOpenCheck size={16} />
-                <span><strong>{displayed.term}</strong><small>{displayedStatus.label} · {displayed.quality_score ?? "—"}/100</small><small>Creat {formatDateTime(displayed.created_at)}</small></span>
+                <span className="admin-dictionary-list-copy">
+                  <strong>{displayed.term}</strong>
+                  <small className="admin-dictionary-list-meta"><b>{displayedStatus.label}</b><i aria-hidden="true">·</i> Calitate {displayed.quality_score ?? "—"}/100</small>
+                  <time className="admin-dictionary-list-created" dateTime={displayed.created_at || undefined} title={`Creat la ${formatDateTime(displayed.created_at)}`}>
+                    <Clock3 size={13} aria-hidden="true" /> Creat: {formatDateTime(displayed.created_at)}
+                  </time>
+                </span>
               </button>
             );
           })}

@@ -10553,6 +10553,22 @@ td {
   }
 }
 
+/* Admin dicționar: fiecare termen trebuie să poată fi identificat fără hover. */
+.admin-dictionary-list button.admin-dictionary-list-item { position: relative; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 10px; min-height: 112px; overflow: visible; padding: 13px 12px; border-color: #d7e4f4; border-radius: 14px; color: #244b78; background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%); box-shadow: 0 3px 10px rgba(32, 73, 123, .035); transition: border-color .16s ease, background .16s ease, box-shadow .16s ease, transform .16s ease; }
+.admin-dictionary-list button.admin-dictionary-list-item > svg { margin-top: 3px; color: #4773a3; }
+.admin-dictionary-list button.admin-dictionary-list-item:hover:not(:disabled), .admin-dictionary-list button.admin-dictionary-list-item:focus-visible { border-color: #8db4e5; background: #f5f9ff; box-shadow: 0 8px 18px rgba(31, 83, 145, .1); transform: translateY(-1px); outline: none; }
+.admin-dictionary-list button.admin-dictionary-list-item.is-selected { border-color: #4f89d0; background: linear-gradient(135deg, #e9f2ff 0%, #f6faff 100%); box-shadow: inset 3px 0 #1764d5, 0 7px 16px rgba(28, 91, 169, .1); }
+.admin-dictionary-list button.admin-dictionary-list-item.is-selected > svg { color: #145dbd; }
+.admin-dictionary-list-copy { display: grid !important; gap: 6px !important; overflow: visible !important; }
+.admin-dictionary-list-copy strong { color: #183d6a; line-height: 1.22; }
+.admin-dictionary-list-meta { display: flex !important; flex-wrap: wrap; align-items: center; gap: 4px; overflow: visible !important; color: #627b9b !important; font-size: .76rem !important; line-height: 1.25; white-space: normal !important; }
+.admin-dictionary-list-meta b { color: #26624d; font-weight: 850; }
+.admin-dictionary-list-meta i { color: #9ab0c8; font-style: normal; }
+.admin-dictionary-list-created { display: inline-flex; align-items: flex-start; gap: 5px; overflow: visible !important; color: #476a91 !important; font-size: .75rem; font-style: normal; font-weight: 750; line-height: 1.35; white-space: normal !important; }
+.admin-dictionary-list-created svg { flex: 0 0 auto; margin-top: 1px; color: #5c82ad; }
+.admin-dictionary-list button.admin-dictionary-list-item.is-selected .admin-dictionary-list-meta b, .admin-dictionary-list button.admin-dictionary-list-item.is-selected .admin-dictionary-list-created { color: #1c5a9c !important; }
+@media (max-width: 760px) { .admin-dictionary-list button.admin-dictionary-list-item { min-height: 96px; } }
+
 /* Admin editorial distribution: compact, action-first and isolated from global button hover rules. */
 .admin-linkedin-section {
   display: grid;
