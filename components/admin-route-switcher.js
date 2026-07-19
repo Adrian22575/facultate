@@ -4,14 +4,15 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { ADMIN_ROUTE_GROUPS } from "@/lib/admin-routes";
 
-export function AdminMobileNavigation() {
+export function AdminRouteSwitcher() {
   const pathname = usePathname();
   const router = useRouter();
+  const currentPath = pathname === "/admin" ? "/admin" : pathname;
 
   return (
-    <label className="admin-mobile-navigation">
-      <span>Secțiune Admin</span>
-      <select value={pathname === "/admin" ? "/admin" : pathname} onChange={(event) => router.push(event.target.value)}>
+    <label className="admin-route-switcher">
+      <span>Schimbă pagina</span>
+      <select value={currentPath} onChange={(event) => router.push(event.target.value)}>
         <option value="/admin">Prezentare generală</option>
         {ADMIN_ROUTE_GROUPS.map((group) => (
           <optgroup key={group.id} label={group.label}>

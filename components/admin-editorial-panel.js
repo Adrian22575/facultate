@@ -122,11 +122,11 @@ function autoLinkedInOptions(settings) {
   };
 }
 
-export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "", initialPane = "article" }) {
+export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "", initialPane = "article", fixedPane = "" }) {
   const router = useRouter();
   const initialLinkedInPost = linkedIn?.posts?.find((post) => post.id === initialLinkedInPostId) || null;
   const [selectedId, setSelectedId] = useState(initialLinkedInPost?.article_id || initialLinkedInPost?.article?.id || articles[0]?.id || "");
-  const [activePane, setActivePane] = useState(initialLinkedInPost || initialPane === "linkedin" ? "linkedin" : "article");
+  const visiblePane = fixedPane || (initialLinkedInPost || initialPane === "linkedin" ? "linkedin" : "article");
   const [articleQuery, setArticleQuery] = useState("");
   const [searchedArticles, setSearchedArticles] = useState([]);
   const [loadedArticles, setLoadedArticles] = useState([]);
@@ -205,10 +205,10 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
   }, [linkedIn?.settings, selectedId]);
 
   useEffect(() => {
-    if (!liveRun) return undefined;
+    if (visiblePane !== "article" || !liveRun) return undefined;
     const timer = window.setInterval(() => router.refresh(), 4500);
     return () => window.clearInterval(timer);
-  }, [liveRun?.status, liveRun?.id, router]);
+  }, [liveRun?.status, liveRun?.id, router, visiblePane]);
 
   function patchArticle(articleId, patch) {
     setArticlePatches((current) => ({ ...current, [articleId]: { ...(current[articleId] || {}), ...patch } }));
@@ -220,7 +220,6 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
     setForm(formFrom(article));
     setFormArticleId(article.id);
     setDirty(false);
-    setActivePane("article");
     setArticleMessage(null);
     setConfirmation("");
   }
@@ -372,6 +371,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
 
   return (
     <section className="surface admin-editorial-panel">
+      {visiblePane === "article" ? <>
       <div className="admin-content-toolbar">
         <AdminEditorialAutomationSettings workflow="editorial" settings={automationSettings} generationPreview={generationPreview} />
         <button type="button" className="btn-link" onClick={generateDraft} disabled={Boolean(busy) || Boolean(activeRun)}>
@@ -396,37 +396,38 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
       ) : null}
       {persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
+      </> : null}
 
       <div id="editorial-workspace" className="admin-editorial-layout">
-        <div className="admin-editorial-list">
-          <label className="admin-editorial-search" aria-label="Caută articole">
-            {searchBusy ? <LoaderCircle className="is-spinning" size={16} aria-hidden="true" /> : <Search size={16} aria-hidden="true" />}
-            <input value={articleQuery} onChange={(event) => setArticleQuery(event.target.value)} placeholder="Caută după titlu" />
-          </label>
-          <p className="admin-editorial-list-count">{articleQuery.trim().length >= 2 ? searchBusy ? "Căutăm articole…" : `${filteredArticles.length} rezultate` : `${articles.length} articole recente`}</p>
-          {filteredArticles.map((article) => {
-            const displayed = { ...article, ...(articlePatches[article.id] || {}) };
-            const displayedStatus = articleStatus(displayed.status);
-            return (
-              <button type="button" key={article.id} className={article.id === selectedId ? "is-selected" : ""} onClick={() => select(displayed)} disabled={Boolean(busy)}>
-                <FilePenLine size={16} />
-                <span>
-                  <strong>{displayed.title}</strong>
-                  <small>{displayedStatus.label} · {displayed.quality_score ?? "—"}/100</small>
-                </span>
-              </button>
-            );
-          })}
-          {filteredArticles.length === 0 ? <div className="admin-editorial-list-empty">Nu am găsit niciun articol pentru această căutare.</div> : null}
+        <div className="admin-editorial-picker">
+          <div className="admin-editorial-picker-controls">
+            <label className="admin-editorial-search" aria-label="Caută articole">
+              {searchBusy ? <LoaderCircle className="is-spinning" size={16} aria-hidden="true" /> : <Search size={16} aria-hidden="true" />}
+              <input value={articleQuery} onChange={(event) => setArticleQuery(event.target.value)} placeholder="Caută după titlu" />
+            </label>
+            <p className="admin-editorial-list-count">{articleQuery.trim().length >= 2 ? searchBusy ? "Căutăm articole…" : `${filteredArticles.length} rezultate` : `${articles.length} articole recente`}</p>
+          </div>
+          <div className="admin-editorial-list" role="group" aria-label="Alege articolul de lucru">
+            {filteredArticles.map((article) => {
+              const displayed = { ...article, ...(articlePatches[article.id] || {}) };
+              const displayedStatus = articleStatus(displayed.status);
+              return (
+                <button type="button" key={article.id} className={article.id === selectedId ? "is-selected" : ""} onClick={() => select(displayed)} disabled={Boolean(busy)} aria-pressed={article.id === selectedId}>
+                  <FilePenLine size={16} />
+                  <span>
+                    <strong>{displayed.title}</strong>
+                    <small>{displayedStatus.label} · {displayed.quality_score ?? "—"}/100</small>
+                  </span>
+                </button>
+              );
+            })}
+            {filteredArticles.length === 0 ? <div className="admin-editorial-list-empty">Nu am găsit niciun articol pentru această căutare.</div> : null}
+          </div>
         </div>
 
         {effectiveSelected && form ? (
           <div className="admin-editorial-editor" aria-busy={Boolean(busy)} inert={busy ? true : undefined}>
-            <nav className="admin-editorial-tabs" aria-label="Spațiul articolului">
-              <button type="button" className={activePane === "article" ? "is-active" : ""} onClick={() => setActivePane("article")} disabled={Boolean(busy)}><FilePenLine size={16} />Articol</button>
-              <button type="button" className={activePane === "linkedin" ? "is-active" : ""} onClick={() => setActivePane("linkedin")} disabled={Boolean(busy)}><Send size={16} />LinkedIn</button>
-            </nav>
-            {activePane === "article" ? <>
+            {visiblePane === "article" ? <>
             <div className="admin-editorial-statebar">
               <div className={`is-${statusInfo.tone}`}><span>Stare</span><strong>{statusInfo.label}</strong><small>{statusInfo.help}</small></div>
               <div className={`is-${factInfo.tone}`}><span>Verificare</span><strong>{dirty ? "Modificări nesalvate" : factInfo.label}</strong><small>{dirty ? "Salvează înainte de verificare sau previzualizare." : factInfo.help}</small></div>
@@ -490,7 +491,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
         ) : <div className="admin-editorial-editor is-empty">Alege un articol pentru editare.</div>}
       </div>
 
-      <details className="admin-run-history" open={runs.some((run) => ["rejected", "failed"].includes(run.status))}>
+      {visiblePane === "article" ? <details className="admin-run-history" open={runs.some((run) => ["rejected", "failed"].includes(run.status))}>
         <summary>Istoric generări ({runs.length})</summary>
         {runs.length ? (
           <div className="admin-editorial-runs">
@@ -508,7 +509,7 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
             })}
           </div>
         ) : <p>Nu există rulări încă.</p>}
-      </details>
+      </details> : null}
     </section>
   );
 }

@@ -122,6 +122,7 @@ export default async function AdminSubpage({ params, searchParams }) {
         {...editorialData}
         linkedIn={linkedInData}
         initialPane={route.pane}
+        fixedPane={route.pane}
         initialLinkedInPostId={resolvedSearchParams?.linkedin_post || ""}
       />
     );

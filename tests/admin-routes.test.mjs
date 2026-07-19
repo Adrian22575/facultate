@@ -55,19 +55,31 @@ test("URL-urile Admin vechi sunt redirecționate și își păstrează contextul
   assert.equal(getLegacyAdminRedirect({}), null);
 });
 
-test("shell-ul folosește navigație semantică, stare curentă și încărcare selectivă", async () => {
-  const [shell, subpage, overview] = await Promise.all([
+test("Admin păstrează o singură navigație persistentă și încarcă selectiv", async () => {
+  const [shell, switcher, editorial, linkedIn, subpage, overview] = await Promise.all([
     readFile(new URL("../components/admin-page-shell.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-route-switcher.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-editorial-panel.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8"),
     readFile(new URL("../app/admin/[...adminPath]/page.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-overview.js", import.meta.url), "utf8")
   ]);
 
   assert.match(shell, /aria-current=.*page/);
-  assert.match(shell, /aria-label="Breadcrumb"/);
-  assert.match(shell, /admin-route-sidebar/);
+  assert.match(shell, /aria-label="Locație Admin"/);
+  assert.match(shell, /AdminRouteSwitcher/);
+  assert.doesNotMatch(shell, /admin-route-sidebar/);
+  assert.match(switcher, /<optgroup/);
+  assert.match(switcher, /router\.push/);
   assert.match(overview, /ADMIN_ROUTE_GROUPS\.map/);
   assert.match(subpage, /if \(route\.section === "feedback"\)/);
   assert.match(subpage, /if \(route\.section === "analytics"\)/);
   assert.match(subpage, /showSectionNavigation=\{false\}/);
+  assert.match(subpage, /fixedPane=\{route\.pane\}/);
   assert.match(subpage, /key=\{route\.path\}/);
+  assert.match(editorial, /const visiblePane = fixedPane/);
+  assert.match(editorial, /admin-editorial-picker/);
+  assert.doesNotMatch(editorial, /admin-editorial-tabs/);
+  assert.match(linkedIn, /className="admin-linkedin-list" role="group"/);
+  assert.doesNotMatch(linkedIn, /<nav className="admin-linkedin-list"/);
 });
