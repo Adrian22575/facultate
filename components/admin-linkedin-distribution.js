@@ -58,6 +58,8 @@ function humanError(value) {
   if (code.includes("hashtag_count_invalid")) return "Textul trebuie să conțină între 1 și 3 hashtaguri integrate firesc în text.";
   if (code.includes("linkedin_publish_result_unknown") || code.includes("linkedin_publish_confirmation_missing") || code.includes("linkedin_publish_confirmation_persistence_failed")) return "Confirmarea publicării nu este completă. Verifică profilul înainte de orice nouă publicare.";
   if (code.includes("connection_expired")) return "Conexiunea a expirat. Reconectează profilul.";
+  if (code.includes("rate_limited")) return "Ai trimis mai multe cereri într-un interval scurt. Așteaptă câteva minute și reîncearcă.";
+  if (code.includes("linkedin_post_edition_conflict") || code.includes("linkedin_post_edition_not_created") || code.includes("linkedin_editorial_posts_template_key_check")) return "Nu am putut rezerva următoarea variantă. Reîncarcă pagina și încearcă din nou; postările existente rămân neschimbate.";
   if (code.includes("article_url_missing")) return "Textul trebuie să păstreze linkul articolului.";
   if (code.includes("text_length_invalid")) return "Textul trebuie să aibă între 120 și 3.000 de caractere.";
   if (code.includes("linkedin_draft_validation_failed:unsupported_claim")) return "Textul nu a putut fi legat sigur de articol. Pregătirea a fost oprită înainte de publicare; poți reîncerca.";

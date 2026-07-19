@@ -295,6 +295,21 @@ test("retry-ul repetat păstrează dovezi din articol, creează o ediție nouă 
   assert.match(ui, /Textul nu a putut fi legat sigur de articol/);
 });
 
+test("orice ediție nouă pornește cu valori compatibile cu validările bazei de date și reîncearcă sigur la concurență", async () => {
+  const [migration, server, generateRoute, ui] = await Promise.all([
+    readFile(new URL("../supabase/migrations/20260719080000_fix_linkedin_post_defaults.sql", import.meta.url), "utf8"),
+    readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/linkedin/articles/[articleId]/generate/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
+  ]);
+  assert.match(migration, /alter column template_key set default 'what_matters_now'/i);
+  assert.match(server, /DEFAULT_POST_CONFIGURATION/);
+  assert.match(server, /attempt < 3/);
+  assert.match(server, /linkedin_post_edition_conflict/);
+  assert.match(generateRoute, /Nu s-a putut crea o variantă nouă/);
+  assert.match(ui, /Nu am putut rezerva următoarea variantă/);
+});
+
 test("retry-ul este blocat pentru rezultate ambigue si concurenta revendica o singura publicare", async () => {
   const [server, actionsRoute] = await Promise.all([
     readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),

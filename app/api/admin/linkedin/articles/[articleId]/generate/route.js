@@ -22,6 +22,7 @@ export async function POST(request, { params }) {
     return NextResponse.json(result, { status: result.ok ? 200 : 422 });
   } catch (error) {
     const code = error?.code === "RATE_LIMITED" ? "rate_limited" : error?.message || "generation_failed";
+    console.error("[linkedin] Nu s-a putut crea o variantă nouă", { articleId, code, databaseCode: error?.code || null });
     return NextResponse.json({ error: code }, { status: error?.code === "RATE_LIMITED" ? 429 : 422 });
   }
 }
