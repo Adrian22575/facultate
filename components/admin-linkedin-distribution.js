@@ -47,10 +47,15 @@ function settingsFromOptions(settings, options) {
 }
 function humanError(value) {
   const code = String(value || "");
+  if (code.includes("invalid_generation_options") || code.includes("custom_audience_required")) return "Completează audiența personalizată sau alege o audiență din listă.";
   if (code.includes("hashtag_count_invalid")) return "Textul poate conține cel mult patru hashtaguri relevante.";
   if (code.includes("publish_result_unknown") || code.includes("confirmation_missing") || code.includes("ambiguous_result")) return "Confirmarea publicării este neclară. Verifică profilul înainte de o nouă încercare.";
   if (code.includes("comment_permission_missing")) return "Postarea a fost publicată, dar conexiunea actuală nu permite publicarea primului comentariu.";
   if (code.includes("connection_expired")) return "Conexiunea a expirat. Reconectează profilul.";
+  if (code.includes("connection_changed")) return "Varianta aparține unei conexiuni LinkedIn anterioare. Creează o variantă nouă pentru profilul conectat acum.";
+  if (code.includes("already_publishing")) return "Varianta este deja în curs de publicare. Așteaptă confirmarea înainte de o nouă încercare.";
+  if (code.includes("already_published")) return "Varianta este deja publicată pe LinkedIn.";
+  if (code.includes("already_prepared")) return "Varianta este deja pregătită și poate fi selectată din istoric.";
   if (code.includes("rate_limited")) return "Ai trimis mai multe cereri într-un interval scurt. Așteaptă câteva minute și reîncearcă.";
   if (code.includes("article_url_missing")) return "Textul trebuie să păstreze linkul articolului pentru poziționarea aleasă.";
   if (code.includes("text_length_invalid")) return "Textul trebuie să aibă între 120 și 3.000 de caractere.";
@@ -129,7 +134,15 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     setBusy("generate"); showMessage("Analizăm articolul, alegem unghiul și verificăm varianta finală.", "info");
     const response = await fetch(`/api/admin/linkedin/articles/${article.id}/generate`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(manualOptions) }).catch(() => null);
     const result = await response?.json().catch(() => ({})); setBusy("");
-    if (!response?.ok || !result?.post) return showMessage(result?.reason === "linkedin_not_connected" ? "Conectează profilul înainte de generare." : humanError(result?.reason || result?.error) || "Textul nu a putut fi pregătit.", "error");
+    if (!response?.ok || !result?.post || result?.skipped) {
+      const skippedMessage = {
+        linkedin_not_connected: "Conectează profilul înainte de generare.",
+        already_publishing: "O variantă este deja în curs de publicare. Așteaptă confirmarea înainte de o nouă încercare.",
+        already_prepared: "Există deja o variantă pregătită pentru acest articol. Selecteaz-o din istoric.",
+        already_published: "Varianta selectată este deja publicată. Creează o variantă nouă din secțiunea de generare."
+      }[result?.reason];
+      return showMessage(skippedMessage || humanError(result?.reason || result?.error) || "Textul nu a putut fi pregătit.", "error");
+    }
     const next = { ...result.post, article: { id: article.id, slug: article.slug, title: article.title, status: article.status, published_at: article.published_at } };
     setPosts((current) => [next, ...current.filter((item) => item.id !== next.id)]); choose(next); showMessage("Varianta este pregătită pentru verificare."); router.refresh();
   }
@@ -146,9 +159,9 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
   async function action(actionName, extra = {}) {
     if (!selected || busy) return;
     setBusy(actionName); setMessage("");
-    const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: actionName, ...manualOptions, ...extra }) }).catch(() => null);
+    const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: actionName, ...extra }) }).catch(() => null);
     const result = await response?.json().catch(() => ({})); setBusy("");
-    if (!response?.ok || !result?.post) { showMessage(humanError(result?.reason || result?.error) || "Acțiunea nu a putut fi finalizată.", "error"); router.refresh(); return; }
+    if (!response?.ok || !result?.post || result?.skipped) { showMessage(humanError(result?.reason || result?.error) || "Acțiunea nu a putut fi finalizată.", "error"); router.refresh(); return; }
     patchPost(selected.id, result.post);
     if (!["feedback"].includes(actionName)) setText(result.post.edited_text || result.post.generated_text || text);
     const messages = { approve: "Postarea este aprobată.", reject: "Postarea a fost respinsă și rămâne în istoric.", publish: result.warning ? "Postarea a fost publicată, dar primul comentariu necesită atenție." : "Postarea a fost publicată pe LinkedIn.", retry: "Postarea a fost pregătită din nou pentru aprobare.", retry_comment: "Primul comentariu a fost publicat.", feedback: "Feedbackul a fost salvat." };

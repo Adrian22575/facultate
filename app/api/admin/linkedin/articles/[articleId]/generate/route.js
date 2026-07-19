@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAdminUser } from "@/lib/admin";
 import { prepareLinkedInDraft } from "@/lib/linkedin/server";
-import { linkedinGenerationOptionsSchema } from "@/lib/linkedin/requests";
+import { linkedinGenerationOptionsSchema, summarizeLinkedInValidationIssues } from "@/lib/linkedin/requests";
 import { assertRateLimit } from "@/lib/rate-limit";
 import { createClient } from "@/lib/supabase/server";
 
@@ -11,7 +11,10 @@ export async function POST(request, { params }) {
   if (!user || !(await isAdminUser(user))) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const { articleId } = await params;
   const parsed = linkedinGenerationOptionsSchema.safeParse(await request.json().catch(() => ({})));
-  if (!parsed.success) return NextResponse.json({ error: "invalid_generation_options" }, { status: 400 });
+  if (!parsed.success) {
+    console.warn("linkedin_generation_options_invalid", { articleId, issues: summarizeLinkedInValidationIssues(parsed.error) });
+    return NextResponse.json({ error: "invalid_generation_options", fields: parsed.error.issues.map((issue) => issue.path.join(".")).filter(Boolean) }, { status: 400 });
+  }
   try {
     await assertRateLimit({ action: "linkedin_article_generate", subject: `user:${user.id}`, windowSeconds: 300, maxRequests: 8 });
     const result = await prepareLinkedInDraft(articleId, { force: true, manual: true, createNewEdition: true, ...parsed.data });

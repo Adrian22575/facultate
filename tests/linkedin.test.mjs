@@ -298,10 +298,11 @@ test("crearea manuală rămâne disponibilă când automatizarea este oprită, i
 });
 
 test("retry-ul repetat păstrează pipeline-ul factual, creează o ediție nouă la cerere și notifică fiecare eșec distinct", async () => {
-  const [server, pipeline, generateRoute, telegram, ui] = await Promise.all([
+  const [server, pipeline, generateRoute, actionsRoute, telegram, ui] = await Promise.all([
     readFile(new URL("../lib/linkedin/server.js", import.meta.url), "utf8"),
     readFile(new URL("../lib/linkedin/pipeline.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/admin/linkedin/articles/[articleId]/generate/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/linkedin/posts/[postId]/actions/route.js", import.meta.url), "utf8"),
     readFile(new URL("../lib/notifications/telegram.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8")
   ]);
@@ -309,9 +310,13 @@ test("retry-ul repetat păstrează pipeline-ul factual, creează o ediție nouă
   assert.match(pipeline, /buildArticleEvidence/);
   assert.match(pipeline, /exactClaims/);
   assert.match(server, /createNewEdition && post\.status !== "not_generated"/);
+  assert.match(server, /targetPostId \? optionsFromPost\(post\)/);
   assert.match(generateRoute, /createNewEdition: true/);
+  assert.match(actionsRoute, /targetPostId: postId/);
+  assert.doesNotMatch(actionsRoute, /generationOptions/);
   assert.match(telegram, /linkedin_failed:\$\{postId\}:\$\{stage\}:\$\{occurrence\}/);
   assert.match(ui, /Postarea a fost pregătită din nou pentru aprobare/);
+  assert.doesNotMatch(ui, /action: actionName, \.\.\.manualOptions/);
   assert.match(ui, /afirmație care nu poate fi susținută din articol/);
 });
 

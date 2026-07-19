@@ -262,6 +262,10 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
 
   async function runAction(action) {
     if (!effectiveSelected || dirty || busy) return;
+    if (action === "publish" && publicationLinkedIn.audienceKey === "custom" && publicationLinkedIn.customAudience.trim().length < 2) {
+      setArticleMessage({ tone: "error", text: "Completează audiența personalizată pentru postarea LinkedIn sau alege o audiență din listă." });
+      return;
+    }
     setBusy(action);
     setArticleMessage(null);
     const response = await fetch(`/api/admin/editorial/articles/${effectiveSelected.id}/actions`, {
@@ -281,6 +285,8 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
     if (!response.ok) {
       const text = result?.error === "publication_quality_not_met"
         ? "Publicarea este blocată până când verificarea trece și scorul articolului este cel puțin 85."
+        : result?.error === "invalid_action" && result?.fields?.some((field) => field.includes("customAudience"))
+          ? "Completează audiența personalizată pentru postarea LinkedIn sau alege o audiență din listă."
         : result?.error === "fact_check_failed"
           ? "Verificarea nu a putut fi terminată. Conținutul nu a fost modificat."
           : "Acțiunea nu a fost salvată. Încearcă din nou.";

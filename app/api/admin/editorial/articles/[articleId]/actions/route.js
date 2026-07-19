@@ -5,7 +5,7 @@ import { z } from "zod";
 import { isAdminUser } from "@/lib/admin";
 import { runEditorialFactCheck } from "@/lib/editorial/automation";
 import { prepareLinkedInDraft } from "@/lib/linkedin/server";
-import { linkedinGenerationOptionsSchema } from "@/lib/linkedin/requests";
+import { linkedinGenerationOptionsSchema, summarizeLinkedInValidationIssues } from "@/lib/linkedin/requests";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -15,8 +15,11 @@ async function requireApiAdmin() { const supabase = await createClient(); const 
 export async function POST(request, { params }) {
   if (!(await requireApiAdmin())) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const parsed = schema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) return NextResponse.json({ error: "invalid_action" }, { status: 400 });
   const { articleId } = await params;
+  if (!parsed.success) {
+    console.warn("admin_editorial_action_invalid", { articleId, issues: summarizeLinkedInValidationIssues(parsed.error) });
+    return NextResponse.json({ error: "invalid_action", fields: parsed.error.issues.map((issue) => issue.path.join(".")).filter(Boolean) }, { status: 400 });
+  }
   const admin = createAdminClient();
   const { data: article, error } = await admin.from("editorial_articles").select("*").eq("id", articleId).maybeSingle();
   if (error || !article) return NextResponse.json({ error: "not_found" }, { status: 404 });

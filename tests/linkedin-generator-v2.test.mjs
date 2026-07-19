@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { linkedinArticleFixtures } from "./fixtures/linkedin-articles.mjs";
-import { linkedinSettingsSchema } from "../lib/linkedin/requests.js";
+import { linkedinGenerationOptionsSchema, linkedinSettingsSchema } from "../lib/linkedin/requests.js";
 import { estimateOpenAIRequestCost } from "../lib/openai/pricing.js";
 import { findBannedLinkedInLanguage, LINKEDIN_PROMPT_VERSION } from "../lib/linkedin/prompts/banned-phrases.js";
 import { buildArticleAnalysisPrompt, buildCritiquePrompt, buildLinkedInSystemPrompt, buildPostGenerationPrompt } from "../lib/linkedin/prompts/builders.js";
@@ -21,6 +21,16 @@ test("setarile cer descrierea atunci cand audienta implicita este personalizata"
   const base = { mode: "approval_required", notifyTelegram: true, model: "gpt-5.6-terra", defaultTemplate: "lesson", defaultObjective: "authority", defaultVoice: "professional_human", defaultAudience: "custom", defaultCta: "auto", defaultNarrative: "neutral_editorial", defaultLength: "auto", defaultLinkPlacement: "end" };
   assert.equal(linkedinSettingsSchema.safeParse(base).success, false);
   assert.equal(linkedinSettingsSchema.safeParse({ ...base, defaultCustomAudience: "directori de licee private" }).success, true);
+});
+
+test("optiunile accepta audienta goala cand campul nu se aplica, dar o cer pentru audienta personalizata", () => {
+  const standard = linkedinGenerationOptionsSchema.safeParse({ audienceKey: "professionals", customAudience: "" });
+  assert.equal(standard.success, true);
+  assert.equal(standard.data.customAudience, undefined);
+
+  const custom = linkedinGenerationOptionsSchema.safeParse({ audienceKey: "custom", customAudience: "   " });
+  assert.equal(custom.success, false);
+  assert.equal(custom.error.issues.some((issue) => issue.path.join(".") === "customAudience"), true);
 });
 
 test("costul Terra este calculat cu preturile curente", () => {
