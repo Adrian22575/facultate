@@ -270,6 +270,23 @@ console.log("- Stripe webhook endpoint secret matches the target environment");
 console.log("- Vercel Cron schedule is supported by the target plan");
 console.log("- Telegram admin notifications tested if review/import approvals are expected");
 
+async function synchronizeProductionSchedulerToken() {
+  if (targetEnvironment !== "production" || missingKeys.length || configurationErrors.length) return;
+  try {
+    const { createClient } = await import("@supabase/supabase-js");
+    const admin = createClient(supabaseUrl, supabaseServiceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    const { error } = await admin.rpc("configure_editorial_scheduler_token", { scheduler_secret: getEnvValue("CRON_SECRET", localFallback) });
+    if (error) throw error;
+    console.log("- Supabase scheduler token: synchronized");
+  } catch (error) {
+    const message = `Supabase scheduler token synchronization failed: ${error instanceof Error ? error.message : "unknown_error"}`;
+    configurationErrors.push(message);
+    console.error(`- ${message}`);
+  }
+}
+
+await synchronizeProductionSchedulerToken();
+
 if (missingKeys.length || configurationErrors.length) {
   process.exit(1);
 }

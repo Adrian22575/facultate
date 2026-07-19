@@ -5,10 +5,12 @@ import {
   BadgeCheck,
   BookOpenCheck,
   CheckCircle2,
+  Clock3,
   Eye,
   LoaderCircle,
   RefreshCw,
   Save,
+  Search,
   Send,
   Undo2
 } from "lucide-react";
@@ -20,6 +22,35 @@ import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-a
 const ACTIVE_RUN_STATUSES = new Set(["started", "generated", "validated"]);
 const RUN_PROGRESS = { started: 12, generated: 62, validated: 88 };
 const splitLines = (value) => String(value || "").split("\n").map((item) => item.trim()).filter(Boolean);
+const normalizeSearch = (value) => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("ro-RO").replace(/[^a-z0-9]+/g, " ").trim();
+
+function formatDateTime(value) {
+  if (!value) return "—";
+  return new Intl.DateTimeFormat("ro-RO", { timeZone: "Europe/Bucharest", dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
+}
+
+function todayInBucharest(date = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Bucharest", year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
+}
+
+function hourInBucharest(date = new Date()) {
+  return Number(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Bucharest", hour: "2-digit", hourCycle: "h23" }).format(date));
+}
+
+function automationState(settings, runs, activeRun) {
+  const hour = Number(settings?.scheduled_hour ?? 10);
+  if (!settings?.enabled) return { tone: "muted", title: "Automatizarea este oprită", detail: "Activeaz-o și salvează setările pentru a relua generarea programată." };
+  if (activeRun?.trigger_source === "cron") return { tone: "running", title: "Rularea programată este în curs", detail: `Pornită la ${formatDateTime(activeRun.started_at)}.` };
+  const scheduledRun = runs.find((run) => run.trigger_source === "cron");
+  if (scheduledRun?.run_date === todayInBucharest()) {
+    if (scheduledRun.status === "published") return { tone: "success", title: "Termenul de astăzi a fost publicat", detail: `${formatDateTime(scheduledRun.finished_at)} · Telegram ${scheduledRun.notification_sent ? "trimis" : "omis din setări"}.` };
+    if (scheduledRun.status === "notification_failed") return { tone: "warning", title: "Termen publicat, notificare netrimisă", detail: `${formatDateTime(scheduledRun.finished_at)} · Verifică detaliul în istoricul generărilor.` };
+    if (scheduledRun.status === "failed") return { tone: "error", title: "Rularea de astăzi a eșuat", detail: scheduledRun.error_message || scheduledRun.rejection_reason || "Detaliul tehnic este păstrat în istoric." };
+    return { tone: "running", title: "Rularea programată este în curs", detail: `Pornită la ${formatDateTime(scheduledRun.started_at)}.` };
+  }
+  if (hourInBucharest() >= hour) return { tone: "error", title: "Nicio rulare înregistrată astăzi", detail: `Ora programată, ${String(hour).padStart(2, "0")}:00, a trecut. Sistemul va marca aici imediat următoarea încercare.` };
+  return { tone: "scheduled", title: `Programat astăzi la ${String(hour).padStart(2, "0")}:00`, detail: "Ora este afișată pentru România. Rezultatul și notificarea vor apărea aici." };
+}
 
 function formFromTerm(term) {
   return {
@@ -66,7 +97,16 @@ function ActionMessage({ message }) {
 export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], automationSettings, generationPreview, warning }) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(terms[0]?.id || "");
-  const selected = useMemo(() => terms.find((term) => term.id === selectedId) || null, [selectedId, terms]);
+  const [termQuery, setTermQuery] = useState("");
+  const [searchedTerms, setSearchedTerms] = useState([]);
+  const [loadedTerms, setLoadedTerms] = useState([]);
+  const [searchBusy, setSearchBusy] = useState(false);
+  const [searchError, setSearchError] = useState(false);
+  const allTerms = useMemo(() => {
+    const known = new Set(terms.map((term) => term.id));
+    return [...terms, ...loadedTerms.filter((term) => !known.has(term.id))];
+  }, [loadedTerms, terms]);
+  const selected = useMemo(() => allTerms.find((term) => term.id === selectedId) || null, [allTerms, selectedId]);
   const [termPatches, setTermPatches] = useState({});
   const effectiveSelected = selected ? { ...selected, ...(termPatches[selected.id] || {}) } : null;
   const [form, setForm] = useState(() => selected ? formFromTerm(selected) : null);
@@ -82,6 +122,46 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
   const persistedGenerationMessage = generationMessage || (!liveRun && latestRun?.status === "failed"
     ? { tone: "error", text: latestRun.error_message || latestRun.rejection_reason || "Ultima generare nu a produs un termen. Detaliile sunt în istoric." }
     : null);
+  const visibleTerms = useMemo(() => {
+    const query = normalizeSearch(termQuery);
+    if (!query) return terms;
+    if (query.length >= 2) return searchedTerms;
+    return terms.filter((term) => normalizeSearch([term.term, term.slug, ...(term.synonyms || [])].join(" ")).includes(query));
+  }, [searchedTerms, termQuery, terms]);
+  const scheduleState = automationState(automationSettings, runs, activeRun);
+
+  useEffect(() => {
+    const query = termQuery.trim();
+    if (query.length < 2) {
+      setSearchedTerms([]);
+      setSearchBusy(false);
+      setSearchError(false);
+      return undefined;
+    }
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setSearchBusy(true);
+      setSearchError(false);
+      const response = await fetch(`/api/admin/dictionary/terms/search?q=${encodeURIComponent(query)}`, { signal: controller.signal }).catch(() => null);
+      const result = await response?.json().catch(() => ({}));
+      if (!controller.signal.aborted && response?.ok) {
+        const next = result.terms || [];
+        setSearchedTerms(next);
+        setLoadedTerms((current) => {
+          const known = new Set(current.map((term) => term.id));
+          return [...current, ...next.filter((term) => !known.has(term.id))];
+        });
+      } else if (!controller.signal.aborted) {
+        setSearchedTerms([]);
+        setSearchError(true);
+      }
+      if (!controller.signal.aborted) setSearchBusy(false);
+    }, 250);
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [termQuery]);
 
   useEffect(() => {
     if (!selected) return;
@@ -266,19 +346,32 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
       ) : null}
       {persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
+      <section className={`admin-dictionary-schedule-status is-${scheduleState.tone}`} aria-live="polite">
+        <Clock3 size={19} aria-hidden="true" />
+        <div><span>Automatizare dicționar</span><strong>{scheduleState.title}</strong><small>{scheduleState.detail}</small></div>
+      </section>
 
       <div className="admin-dictionary-grid">
         <div className="admin-dictionary-list">
-          {terms.map((term) => {
+          <div className="admin-dictionary-list-tools">
+            <label className="admin-dictionary-search" aria-label="Caută termeni">
+              {searchBusy ? <LoaderCircle className="is-spinning" size={16} aria-hidden="true" /> : <Search size={16} aria-hidden="true" />}
+              <input type="search" value={termQuery} onChange={(event) => setTermQuery(event.target.value)} placeholder="Caută după termen" autoComplete="off" />
+            </label>
+            <p className="admin-dictionary-list-count" aria-live="polite">{termQuery.trim().length >= 2 ? searchBusy ? "Căutăm în dicționar…" : searchError ? "Căutarea nu este disponibilă" : `${visibleTerms.length} rezultate` : `${terms.length} termeni recenți`}</p>
+          </div>
+          {visibleTerms.map((term) => {
             const displayed = { ...term, ...(termPatches[term.id] || {}) };
             const displayedStatus = termStatus(displayed.status);
             return (
               <button type="button" key={term.id} className={term.id === selectedId ? "is-selected" : ""} onClick={() => select(displayed)} disabled={Boolean(busy)}>
                 <BookOpenCheck size={16} />
-                <span><strong>{displayed.term}</strong><small>{displayedStatus.label} · {displayed.quality_score ?? "—"}/100</small></span>
+                <span><strong>{displayed.term}</strong><small>{displayedStatus.label} · {displayed.quality_score ?? "—"}/100</small><small>Creat {formatDateTime(displayed.created_at)}</small></span>
               </button>
             );
           })}
+          {!searchBusy && !searchError && visibleTerms.length === 0 ? <div className="admin-dictionary-list-empty"><strong>Niciun termen găsit</strong><span>Încearcă o formulare mai scurtă sau fără semne speciale.</span></div> : null}
+          {searchError ? <div className="admin-dictionary-list-empty is-error"><strong>Căutarea nu a răspuns</strong><span>Termenii recenți rămân disponibili. Încearcă din nou.</span></div> : null}
         </div>
 
         {effectiveSelected && form ? (

@@ -12301,6 +12301,28 @@ td {
 .admin-dictionary-list span, .admin-dictionary-list strong, .admin-dictionary-list small { min-width: 0; max-width: 100%; overflow: hidden; }
 .admin-dictionary-list strong { display: -webkit-box; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; }
 .admin-dictionary-list small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-dictionary-list-tools { position: sticky; z-index: 2; top: 0; display: grid; gap: 6px; padding: 0 0 8px; background: linear-gradient(#fff 78%, rgba(255,255,255,0)); }
+.admin-dictionary-search { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 10px; border: 1px solid #c7d9f1; border-radius: 11px; color: #537294; background: #fff; box-shadow: 0 5px 14px rgba(28, 66, 113, .05); }
+.admin-dictionary-search:focus-within { border-color: #1764d5; box-shadow: 0 0 0 3px rgba(23, 100, 213, .12); }
+.admin-dictionary-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: #173c68; font: inherit; background: transparent; }
+.admin-dictionary-search input::-webkit-search-cancel-button { cursor: pointer; }
+.admin-dictionary-list-count { margin: 0 2px; color: #71839b; font-size: .75rem; font-weight: 750; }
+.admin-dictionary-list-empty { display: grid; gap: 4px; padding: 14px 12px; border: 1px dashed #c6d8ec; border-radius: 11px; color: #617a98; font-size: .8rem; line-height: 1.4; background: #f9fbfe; }
+.admin-dictionary-list-empty strong { display: block; color: #36587f; font-size: .84rem; }
+.admin-dictionary-list-empty.is-error { border-color: #efb6b6; color: #8c3c3c; background: #fff6f6; }
+.admin-dictionary-schedule-status { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; padding: 12px 14px; border: 1px solid #cbdcf0; border-radius: 14px; color: #416484; background: #f7fbff; }
+.admin-dictionary-schedule-status > div { display: grid; gap: 2px; min-width: 0; }
+.admin-dictionary-schedule-status span { color: #6d809a; font-size: .68rem; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; }
+.admin-dictionary-schedule-status strong { color: #244d78; font-size: .9rem; }
+.admin-dictionary-schedule-status small { color: #607995; font-size: .77rem; line-height: 1.4; }
+.admin-dictionary-schedule-status.is-success { border-color: #b7ddca; color: #167456; background: #f1fbf6; }
+.admin-dictionary-schedule-status.is-success strong { color: #176447; }
+.admin-dictionary-schedule-status.is-warning { border-color: #eed19a; color: #9a641c; background: #fff9ec; }
+.admin-dictionary-schedule-status.is-warning strong { color: #855211; }
+.admin-dictionary-schedule-status.is-error { border-color: #efb6b6; color: #a13030; background: #fff3f3; }
+.admin-dictionary-schedule-status.is-error strong { color: #902929; }
+.admin-dictionary-schedule-status.is-running { border-color: #bad4f3; color: #1764b7; background: #edf6ff; }
+.admin-dictionary-schedule-status.is-muted { color: #78899d; background: #f5f7fa; }
 @media (max-width: 980px) { .admin-content-toolbar { align-items: stretch; flex-direction: column; }.admin-content-toolbar > .btn-link { align-self: flex-start; }.admin-automation-compact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }.admin-automation-compact > label, .admin-automation-compact > button { min-width: 0 !important; } }
 @media (max-width: 560px) { .admin-automation-compact { grid-template-columns: 1fr; }.admin-content-toolbar > .btn-link { width: 100%; justify-content: center; }.admin-automation-switch { justify-content: center; }.admin-automation-compact .btn-link { justify-content: center; } }
 

@@ -47,7 +47,7 @@ export function AdminEditorialAutomationSettings({ workflow, settings, generatio
     const result = await response?.json().catch(() => ({}));
     setSaving(false);
     if (!response?.ok) {
-      setStatus("Setările nu au putut fi salvate. Încearcă din nou.");
+      setStatus(result?.error === "scheduler_sync_failed" ? "Programarea tehnică nu a putut fi sincronizată. Setările nu au fost schimbate." : "Setările nu au putut fi salvate. Încearcă din nou.");
       return;
     }
     setForm(initialState(workflow, result.settings));

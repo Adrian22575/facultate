@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { dictionarySlug, normalizeDictionaryText, scoreDictionaryTerm } from "../lib/dictionary/shared.js";
+import { isAutomationDue } from "../lib/editorial/automation-schedule.js";
 
 const term = {
   term: "Repetare spațiată",
@@ -44,4 +46,34 @@ test("întrebările frecvente duplicate sunt respinse", () => {
   const result = scoreDictionaryTerm(invalid);
   assert.equal(result.valid, false);
   assert.ok(result.reasons.some((reason) => reason.includes("distincte")));
+});
+
+test("automatizarea acceptă fallback-ul după ora locală, dar rulează o singură dată pe interval", () => {
+  const settings = { enabled: true, scheduled_hour: 10, frequency_days: 1, last_scheduled_for: null };
+  assert.equal(isAutomationDue(settings, new Date("2026-07-19T06:30:00Z")), false);
+  assert.equal(isAutomationDue(settings, new Date("2026-07-19T07:00:00Z")), true);
+  assert.equal(isAutomationDue(settings, new Date("2026-07-19T08:00:00Z")), true);
+  assert.equal(isAutomationDue({ ...settings, last_scheduled_for: "2026-07-19" }, new Date("2026-07-19T08:00:00Z")), false);
+});
+
+test("schedulerul și Admin folosesc livrare observabilă, căutare globală și data creării", async () => {
+  const [migration, securityMigration, preflight, cronRoute, searchRoute, adminUi] = await Promise.all([
+    readFile(new URL("../supabase/migrations/20260719093254_fix_dictionary_scheduler_delivery.sql", import.meta.url), "utf8"),
+    readFile(new URL("../supabase/migrations/20260719094037_restrict_editorial_scheduler_token.sql", import.meta.url), "utf8"),
+    readFile(new URL("../scripts/vercel-preflight.mjs", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/cron/dictionary/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/admin/dictionary/terms/search/route.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-dictionary-panel.js", import.meta.url), "utf8")
+  ]);
+  assert.match(migration, /net\.http_get/);
+  assert.match(migration, /raise exception 'editorial_scheduler_token is not configured'/);
+  assert.match(securityMigration, /from anon/);
+  assert.match(securityMigration, /from authenticated/);
+  assert.match(securityMigration, /to service_role/);
+  assert.match(preflight, /configure_editorial_scheduler_token/);
+  assert.match(cronRoute, /dictionary_cron_completed/);
+  assert.match(searchRoute, /searchDictionaryAdminTerms/);
+  assert.match(adminUi, /Caută după termen/);
+  assert.match(adminUi, /displayed\.created_at/);
+  assert.match(adminUi, /Nicio rulare înregistrată astăzi/);
 });

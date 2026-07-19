@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { isAdminUser } from "@/lib/admin";
 import { AUTOMATION_MODELS, AUTOMATION_WORKFLOWS } from "@/lib/editorial/automation-settings";
+import { synchronizeEditorialSchedulerSecret } from "@/lib/editorial/scheduler";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -27,6 +28,13 @@ export async function PATCH(request, { params }) {
   if (!AUTOMATION_WORKFLOWS.includes(workflow)) return NextResponse.json({ error: "not_found" }, { status: 404 });
   const parsed = updateSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
+
+  try {
+    await synchronizeEditorialSchedulerSecret();
+  } catch (error) {
+    console.error("admin_editorial_scheduler_sync_failed", { workflow, message: error instanceof Error ? error.message : "unknown_error" });
+    return NextResponse.json({ error: "scheduler_sync_failed" }, { status: 503 });
+  }
 
   const value = parsed.data;
   const admin = createAdminClient();

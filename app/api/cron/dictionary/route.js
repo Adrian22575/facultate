@@ -27,6 +27,11 @@ export async function GET(request) {
       runEditorialGeneration({ triggerSource: "cron", date: now })
     ]);
     const ok = dictionary.ok && editorial.ok;
+    console.info("dictionary_cron_completed", {
+      invokedAt: now.toISOString(),
+      dictionary: { ok: dictionary.ok, skipped: Boolean(dictionary.skipped), reason: dictionary.reason || null, termId: dictionary.term?.id || null, notificationSent: Boolean(dictionary.notificationSent) },
+      editorial: { ok: editorial.ok, skipped: Boolean(editorial.skipped), reason: editorial.reason || null, articleId: editorial.article?.id || null, notificationSent: Boolean(editorial.notificationSent) }
+    });
     return NextResponse.json({ ok, dictionary, editorial }, { status: ok ? 200 : 422 });
   } catch (error) {
     console.error("dictionary_cron_failed", { message: error instanceof Error ? error.message : "unknown_error" });
