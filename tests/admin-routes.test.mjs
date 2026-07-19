@@ -82,4 +82,5 @@ test("Admin păstrează o singură navigație persistentă și încarcă selecti
   assert.doesNotMatch(editorial, /admin-editorial-tabs/);
   assert.match(linkedIn, /className="admin-linkedin-list" role="group"/);
   assert.doesNotMatch(linkedIn, /<nav className="admin-linkedin-list"/);
+  assert.match(linkedIn, /timeZone: "Europe\/Bucharest"/);
 });

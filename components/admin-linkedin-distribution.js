@@ -27,7 +27,7 @@ const REFINEMENTS = [
   ["more_personal", "Mai personal"], ["less_promotional", "Mai puțin promoțional"], ["more_provocative", "Mai provocator"]
 ];
 
-function formatDate(value) { return value ? new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value)) : "—"; }
+function formatDate(value) { return value ? new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest" }).format(new Date(value)) : "—"; }
 function postArticleId(post) { return post?.article_id || post?.article?.id || ""; }
 function optionsFromSettings(settings = {}) {
   return {
