@@ -122,11 +122,11 @@ function autoLinkedInOptions(settings) {
   };
 }
 
-export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "" }) {
+export function AdminEditorialPanel({ articles = [], runs = [], automationSettings, generationPreview, warning, linkedIn, initialLinkedInPostId = "", initialPane = "article" }) {
   const router = useRouter();
   const initialLinkedInPost = linkedIn?.posts?.find((post) => post.id === initialLinkedInPostId) || null;
   const [selectedId, setSelectedId] = useState(initialLinkedInPost?.article_id || initialLinkedInPost?.article?.id || articles[0]?.id || "");
-  const [activePane, setActivePane] = useState(initialLinkedInPost ? "linkedin" : "article");
+  const [activePane, setActivePane] = useState(initialLinkedInPost || initialPane === "linkedin" ? "linkedin" : "article");
   const [articleQuery, setArticleQuery] = useState("");
   const [searchedArticles, setSearchedArticles] = useState([]);
   const [loadedArticles, setLoadedArticles] = useState([]);

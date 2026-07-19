@@ -41,6 +41,7 @@
     "test:dictionary": "node --test tests/dictionary.test.mjs",
     "test:editorial": "node --test tests/editorial.test.mjs",
     "test:linkedin": "node --test tests/linkedin.test.mjs tests/linkedin-generator-v2.test.mjs",
+    "test:admin": "node --test tests/admin-routes.test.mjs",
     "linkedin:eval": "node --use-system-ca --env-file=.env.local scripts/linkedin-generator-eval.mjs",
     "editorial:web-search:check": "node --use-system-ca scripts/editorial-web-search-check.mjs",
     "workspace:audit": "powershell -ExecutionPolicy Bypass -File scripts/workspace-audit.ps1",

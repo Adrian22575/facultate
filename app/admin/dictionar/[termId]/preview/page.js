@@ -26,7 +26,7 @@ export default async function AdminDictionaryPreviewPage({ params }) {
           <span>Previzualizare privată</span>
           <strong>Vezi termenul exact cum va arăta, fără să îl publici.</strong>
         </div>
-        <Link href="/admin?admin_tab=dictionary">Înapoi la editare</Link>
+        <Link href="/admin/continut/dictionar">Înapoi la editare</Link>
       </aside>
       <DictionaryTermPage term={term} siteUrl={getPublicSiteUrl()} isPreview />
     </DictionaryShell>

@@ -10,8 +10,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 function adminRedirect(request, key, value) {
-  const url = new URL("/admin", request.url);
-  url.searchParams.set("admin_tab", "editorial");
+  const url = new URL("/admin/continut/linkedin", request.url);
   url.searchParams.set(key, value);
   url.hash = "editorial-workspace";
   return NextResponse.redirect(url);

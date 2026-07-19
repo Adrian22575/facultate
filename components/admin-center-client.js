@@ -118,10 +118,6 @@ function parseAdminStateFromSource(source = {}) {
   };
 }
 
-function parseAdminStateFromUrl() {
-  return parseAdminStateFromSource(Object.fromEntries(new URLSearchParams(window.location.search).entries()));
-}
-
 function formatDate(value) {
   if (!value) {
     return "-";
@@ -382,9 +378,19 @@ export function AdminCenterClient({
   usageAnalytics = null,
   learningAnalytics = null,
   adminActionSummary = {},
-  currentAdminUserId = ""
+  currentAdminUserId = "",
+  fixedSection = "",
+  fixedBillingView = "",
+  fixedAcademicView = "",
+  routeBase = "/admin",
+  showSectionNavigation = true
 }) {
-  const initialState = useMemo(() => parseAdminStateFromSource(initialQuery), [initialQuery]);
+  const initialState = useMemo(() => parseAdminStateFromSource({
+    ...initialQuery,
+    ...(fixedSection ? { section: fixedSection } : {}),
+    ...(fixedBillingView ? { billing: fixedBillingView } : {}),
+    ...(fixedAcademicView ? { academic_tab: fixedAcademicView } : {})
+  }), [fixedAcademicView, fixedBillingView, fixedSection, initialQuery]);
 
   const [section, setSection] = useState(initialState.section);
   const [feedbackFilter, setFeedbackFilter] = useState(initialState.feedbackFilter);
@@ -437,7 +443,12 @@ export function AdminCenterClient({
 
   useEffect(() => {
     function syncFromUrl() {
-      const next = parseAdminStateFromUrl();
+      const next = parseAdminStateFromSource({
+        ...Object.fromEntries(new URLSearchParams(window.location.search).entries()),
+        ...(fixedSection ? { section: fixedSection } : {}),
+        ...(fixedBillingView ? { billing: fixedBillingView } : {}),
+        ...(fixedAcademicView ? { academic_tab: fixedAcademicView } : {})
+      });
       setSection(next.section);
       setFeedbackFilter(next.feedbackFilter);
       setBillingFilter(next.billingFilter);
@@ -470,7 +481,7 @@ export function AdminCenterClient({
     return () => {
       window.removeEventListener("popstate", syncFromUrl);
     };
-  }, []);
+  }, [fixedAcademicView, fixedBillingView, fixedSection]);
 
   useEffect(() => {
     setFeedbackPage(1);
@@ -525,12 +536,12 @@ export function AdminCenterClient({
 
   useEffect(() => {
     const params = new URLSearchParams();
-    params.set("section", section);
+    if (!fixedSection) params.set("section", section);
 
     if (feedbackFilter !== "all") {
       params.set("feedback", feedbackFilter);
     }
-    if (billingFilter !== "all") {
+    if (!fixedBillingView && billingFilter !== "all") {
       params.set("billing", billingFilter);
     }
     if (usersFilter !== "all") {
@@ -539,7 +550,7 @@ export function AdminCenterClient({
     if (subjectsFilter !== "all") {
       params.set("subjects", subjectsFilter);
     }
-    if (academicSubtab !== "institutions") {
+    if (!fixedAcademicView && academicSubtab !== "institutions") {
       params.set("academic_tab", academicSubtab);
     }
     if (feedbackSearch.trim()) {
@@ -604,7 +615,7 @@ export function AdminCenterClient({
     }
 
     const nextQuery = params.toString();
-    const nextUrl = nextQuery ? `/admin?${nextQuery}` : "/admin";
+    const nextUrl = nextQuery ? `${routeBase}?${nextQuery}` : routeBase;
     window.history.replaceState(window.history.state, "", nextUrl);
   }, [
     section,
@@ -632,7 +643,11 @@ export function AdminCenterClient({
     creditsPage,
     webhooksPage,
     freeAccessPage,
-    testimonialsPage
+    testimonialsPage,
+    fixedAcademicView,
+    fixedBillingView,
+    fixedSection,
+    routeBase
   ]);
 
   const filteredFeedbackEntries = useMemo(() => {
@@ -819,7 +834,11 @@ export function AdminCenterClient({
   const freeAccessPageData = paginateRows(filteredFreeAccessRows, freeAccessPage);
   const testimonialsPageData = paginateRows(filteredTestimonials, testimonialsPage);
 
-  const visibleBillingSections = billingFilter === "all" ? ["premium", "credits", "webhooks"] : [billingFilter];
+  const visibleBillingSections = fixedBillingView
+    ? [fixedBillingView]
+    : billingFilter === "all"
+      ? ["premium", "credits", "webhooks"]
+      : [billingFilter];
   const selectedInstitution = academicData.institutionRows.find((institution) => institution.id === facultyInstitution);
   const feedbackCounts = {
     all: feedbackEntries.length,
@@ -870,6 +889,10 @@ export function AdminCenterClient({
   };
 
   function jumpToFaculties(institutionId) {
+    if (fixedAcademicView) {
+      window.location.assign(`/admin/catalog/facultati?faculty_institution=${encodeURIComponent(institutionId)}`);
+      return;
+    }
     setAcademicSubtab("faculties");
     setFacultyInstitution(institutionId);
     setFacultiesPage(1);
@@ -1169,7 +1192,7 @@ export function AdminCenterClient({
 
   return (
     <>
-      <section className="admin-section-navigation" aria-label="Sectiuni platforma">
+      {showSectionNavigation ? <section className="admin-section-navigation" aria-label="Sectiuni platforma">
         <div className="admin-section-nav-group">
           <span>Gestionare</span>
           <AdminTabsContainer role="group" aria-label="Gestionare platforma">
@@ -1193,7 +1216,7 @@ export function AdminCenterClient({
             <FilterButton active={section === "billing"} onClick={() => setSection("billing")} selected={section === "billing"} icon={CreditCard} count={sectionCounts.billing} actionCount={visibleAdminActionSummary.billing || 0}>Plăți</FilterButton>
           </AdminTabsContainer>
         </div>
-      </section>
+      </section> : null}
 
       <section className={`admin-panel ${section === "feedback" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "feedback"}>
         <div className="dashboard-header admin-section-intro">
@@ -1273,12 +1296,12 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre plati">
+          {!fixedBillingView ? <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre plati">
             <FilterButton active={billingFilter === "all"} onClick={() => setBillingFilter("all")} selected={billingFilter === "all"} icon={ReceiptText} count={billingCounts.all}>Toate</FilterButton>
             <FilterButton active={billingFilter === "premium"} onClick={() => setBillingFilter("premium")} selected={billingFilter === "premium"} icon={ShieldCheck} count={billingCounts.premium}>Premium</FilterButton>
             <FilterButton active={billingFilter === "credits"} onClick={() => setBillingFilter("credits")} selected={billingFilter === "credits"} icon={Upload} count={billingCounts.credits}>Incarcari</FilterButton>
             <FilterButton active={billingFilter === "webhooks"} onClick={() => setBillingFilter("webhooks")} selected={billingFilter === "webhooks"} icon={Sparkles} count={billingCounts.webhooks} actionCount={visibleAdminActionSummary.billing || 0}>Webhook-uri</FilterButton>
-          </AdminTabsContainer>
+          </AdminTabsContainer> : null}
           <SearchInput value={billingSearch} onChange={setBillingSearch} placeholder="Cauta utilizator, plan, sesiune Stripe sau eveniment" />
         </div>
 
@@ -1830,10 +1853,10 @@ export function AdminCenterClient({
         </div>
 
         <div className="admin-toolbar admin-toolbar--academic">
-          <AdminTabsContainer role="group" aria-label="Subsectiuni structura academica">
+          {!fixedAcademicView ? <AdminTabsContainer role="group" aria-label="Subsectiuni structura academica">
             <FilterButton active={academicSubtab === "institutions"} onClick={() => setAcademicSubtab("institutions")} selected={academicSubtab === "institutions"} icon={Building2} count={academicCounts.institutions}>Institutii</FilterButton>
             <FilterButton active={academicSubtab === "faculties"} onClick={() => setAcademicSubtab("faculties")} selected={academicSubtab === "faculties"} icon={GraduationCap} count={academicCounts.faculties}>Facultati</FilterButton>
-          </AdminTabsContainer>
+          </AdminTabsContainer> : null}
 
           {academicSubtab === "institutions" ? (
             <SearchInput value={institutionsSearch} onChange={setInstitutionsSearch} placeholder="Cauta institutie, oras sau sursa" />

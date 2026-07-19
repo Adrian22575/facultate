@@ -27,7 +27,7 @@ export default async function AdminEditorialPreviewPage({ params }) {
           <span>Previzualizare privată</span>
           <strong>Vezi articolul exact cum va arăta, fără să îl publici.</strong>
         </div>
-        <Link href="/admin?admin_tab=editorial">Înapoi la editare</Link>
+        <Link href="/admin/continut/articole">Înapoi la editare</Link>
       </aside>
       <EditorialArticlePage article={article} siteUrl={getPublicSiteUrl()} isPreview />
     </EditorialShell>
