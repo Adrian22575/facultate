@@ -1,10 +1,11 @@
 "use client";
 
-import { ArrowRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { SubjectLibraryCard } from "@/components/subject-library-card";
+import { sortSubjectLibrary } from "@/lib/subject-library";
 
 function normalizeText(value) {
   return String(value || "")
@@ -28,56 +29,61 @@ function formatAllocationContext(allocation, userType) {
   return `${allocation.schoolClass || "Clasa nesetata"} / ${semester}`;
 }
 
-function createSubjectRows(subjects, subjectAllocations, userType) {
+function createSubjectRows(subjects, subjectLibrary, subjectAllocations, userType) {
   const allocationsBySubject = new Map();
+  const libraryBySubject = new Map(subjectLibrary.map((subject) => [subject.id, subject]));
 
   for (const allocation of subjectAllocations) {
-    if (allocation.userType !== userType) {
-      continue;
-    }
+    if (allocation.userType !== userType) continue;
 
     const existing = allocationsBySubject.get(allocation.subjectId) || [];
     existing.push(allocation);
     allocationsBySubject.set(allocation.subjectId, existing);
   }
 
-  return subjects
-    .map((subject) => {
-      const allocations = allocationsBySubject.get(subject.id) || [];
-      const contextLabels = allocations.length
-        ? uniqueSorted(allocations.map((allocation) => formatAllocationContext(allocation, userType)))
-        : ["Fara an/semestru setat"];
+  return subjects.map((subject) => {
+    const allocations = allocationsBySubject.get(subject.id) || [];
+    const contextLabels = allocations.length
+      ? uniqueSorted(allocations.map((allocation) => formatAllocationContext(allocation, userType)))
+      : ["Fara an/semestru setat"];
+    const librarySubject = libraryBySubject.get(subject.id) || {
+      ...subject,
+      questionCount: 0,
+      progress: { percent: 0 },
+      lastActivityAt: null,
+      lastMode: null
+    };
 
-      return {
-        subject,
-        allocations,
-        contextLabels,
-        searchText: normalizeText([subject.title, subject.id, ...contextLabels].join(" "))
-      };
-    })
-    .sort((left, right) => left.subject.title.localeCompare(right.subject.title, "ro"));
+    return {
+      ...librarySubject,
+      allocations,
+      searchText: normalizeText([subject.title, subject.id, ...contextLabels].join(" "))
+    };
+  });
 }
 
 export function SubjectsListClient({
   subjects = [],
+  subjectLibrary = [],
   subjectAllocations = [],
+  licentaExam = null,
   userType = "student",
   sectionId = "materii-list",
   embedded = false,
   title = "Alege materia",
-  description = "Vezi toate materiile disponibile si filtreaza doar daca vrei sa restrangi lista.",
-  headerAction = null,
-  recentSubjects = []
+  description = "Gaseste materia si alege cum vrei sa lucrezi.",
+  headerAction = null
 }) {
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("recent");
   const [yearFilter, setYearFilter] = useState("all");
   const [semesterFilter, setSemesterFilter] = useState("all");
   const [classFilter, setClassFilter] = useState("all");
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const rows = useMemo(
-    () => createSubjectRows(subjects, subjectAllocations, userType),
-    [subjectAllocations, subjects, userType]
+    () => createSubjectRows(subjects, subjectLibrary, subjectAllocations, userType),
+    [subjectAllocations, subjectLibrary, subjects, userType]
   );
 
   const filterOptions = useMemo(() => {
@@ -99,92 +105,69 @@ export function SubjectsListClient({
   const filteredRows = useMemo(() => {
     const normalizedQuery = normalizeText(query.trim());
 
-    return rows.filter((row) => {
-      if (normalizedQuery && !row.searchText.includes(normalizedQuery)) {
-        return false;
-      }
+    return sortSubjectLibrary(
+      rows.filter((row) => {
+        if (normalizedQuery && !row.searchText.includes(normalizedQuery)) return false;
 
-      if (yearFilter !== "all") {
-        const matchesYear = row.allocations.some(
-          (allocation) => allocation.studyYear === Number(yearFilter)
-        );
-
-        if (!matchesYear) {
+        if (
+          yearFilter !== "all" &&
+          !row.allocations.some((allocation) => allocation.studyYear === Number(yearFilter))
+        ) {
           return false;
         }
-      }
 
-      if (semesterFilter !== "all") {
-        const matchesSemester = row.allocations.some(
-          (allocation) => allocation.semester === Number(semesterFilter)
-        );
-
-        if (!matchesSemester) {
+        if (
+          semesterFilter !== "all" &&
+          !row.allocations.some((allocation) => allocation.semester === Number(semesterFilter))
+        ) {
           return false;
         }
-      }
 
-      if (classFilter !== "all") {
-        const matchesClass = row.allocations.some(
-          (allocation) => normalizeText(allocation.schoolClass) === normalizeText(classFilter)
-        );
-
-        if (!matchesClass) {
+        if (
+          classFilter !== "all" &&
+          !row.allocations.some(
+            (allocation) => normalizeText(allocation.schoolClass) === normalizeText(classFilter)
+          )
+        ) {
           return false;
         }
-      }
 
-      return true;
-    });
-  }, [classFilter, query, rows, semesterFilter, yearFilter]);
+        return true;
+      }),
+      sort
+    );
+  }, [classFilter, query, rows, semesterFilter, sort, yearFilter]);
 
   const hasFilters =
     filterOptions.years.length > 0 ||
     filterOptions.semesters.length > 0 ||
     filterOptions.classes.length > 0;
   const hasActiveFilters = yearFilter !== "all" || semesterFilter !== "all" || classFilter !== "all";
+  const normalizedQuery = normalizeText(query.trim());
+  const showLicenta =
+    Number(licentaExam?.questionCount || 0) > 0 &&
+    (!normalizedQuery || normalizeText("licenta").includes(normalizedQuery));
+  const totalVisible = filteredRows.length + (showLicenta ? 1 : 0);
+  const isSearchEmpty = Boolean(query.trim() || hasActiveFilters) && !totalVisible;
 
   return (
     <section
       id={sectionId}
-      className={`section-card subjects-section-card${embedded ? " is-embedded" : ""}`}
+      className={`section-card subjects-section-card subjects-library${embedded ? " is-embedded" : ""}`}
     >
       {title ? (
-        <div className="dashboard-header">
-          <h2>{title}</h2>
-          <span className="subject-count">{`${filteredRows.length} din ${rows.length} materii`}</span>
+        <div className="subjects-library-heading">
+          <div>
+            <h1>{title}</h1>
+            {description ? <p>{description}</p> : null}
+          </div>
+          <span className="subject-count">{`${totalVisible} ${totalVisible === 1 ? "optiune" : "optiuni"}`}</span>
         </div>
       ) : null}
 
-      {description ? <p className="section-sub">{description}</p> : null}
+      {headerAction ? <div className="subjects-library-header-action">{headerAction}</div> : null}
 
-      {headerAction ? <div className="subjects-section-action">{headerAction}</div> : null}
-
-      {recentSubjects.length ? (
-        <section className="subjects-recent" aria-label="Materii de continuat">
-          <div className="subjects-recent-list">
-            {recentSubjects.map((subject) => (
-              <PendingNavigationLink
-                key={subject.id}
-                className="subjects-recent-row"
-                href={`/materii/${subject.id}`}
-                pendingLabel="Se deschide materia..."
-              >
-                <span>
-                  <strong>{subject.title}</strong>
-                  <small>{subject.description}</small>
-                </span>
-                <em>
-                  Continua
-                  <ArrowRight size={16} strokeWidth={2.5} aria-hidden="true" />
-                </em>
-              </PendingNavigationLink>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <div className="subjects-toolbar" aria-label="Filtre pentru materii">
+      <div className="subjects-toolbar" aria-label="Cautare si sortare materii">
         <label className="subjects-search-field">
           <span className="sr-only">Cauta materia</span>
           <Search size={18} strokeWidth={2.5} aria-hidden="true" />
@@ -197,6 +180,14 @@ export function SubjectsListClient({
           />
         </label>
 
+        <label className="subjects-sort-field">
+          <span>Sortare</span>
+          <select value={sort} onChange={(event) => setSort(event.target.value)}>
+            <option value="recent">Activitate recenta</option>
+            <option value="progress">Progres</option>
+            <option value="alphabetical">Ordine alfabetica</option>
+          </select>
+        </label>
       </div>
 
       {hasFilters ? (
@@ -213,9 +204,7 @@ export function SubjectsListClient({
                 <select value={yearFilter} onChange={(event) => setYearFilter(event.target.value)}>
                   <option value="all">Toti anii</option>
                   {filterOptions.years.map((year) => (
-                    <option key={year} value={year}>
-                      {`Anul ${year}`}
-                    </option>
+                    <option key={year} value={year}>{`Anul ${year}`}</option>
                   ))}
                 </select>
               </label>
@@ -227,9 +216,7 @@ export function SubjectsListClient({
                 <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
                   <option value="all">Toate clasele</option>
                   {filterOptions.classes.map((schoolClass) => (
-                    <option key={schoolClass} value={schoolClass}>
-                      {schoolClass}
-                    </option>
+                    <option key={schoolClass} value={schoolClass}>{schoolClass}</option>
                   ))}
                 </select>
               </label>
@@ -238,15 +225,10 @@ export function SubjectsListClient({
             {filterOptions.semesters.length ? (
               <label className="subject-filter-field">
                 <span>Semestru</span>
-                <select
-                  value={semesterFilter}
-                  onChange={(event) => setSemesterFilter(event.target.value)}
-                >
+                <select value={semesterFilter} onChange={(event) => setSemesterFilter(event.target.value)}>
                   <option value="all">Toate semestrele</option>
                   {filterOptions.semesters.map((semester) => (
-                    <option key={semester} value={semester}>
-                      {`Semestrul ${semester}`}
-                    </option>
+                    <option key={semester} value={semester}>{`Semestrul ${semester}`}</option>
                   ))}
                 </select>
               </label>
@@ -255,51 +237,53 @@ export function SubjectsListClient({
         </details>
       ) : null}
 
-      {filteredRows.length ? (
-        <div className="subjects-table-shell">
-          <table className="subjects-table">
-            <thead>
-              <tr>
-                <th scope="col">Materie</th>
-                <th scope="col"><span className="sr-only">Actiune</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRows.map((row) => (
-                <tr key={row.subject.id}>
-                  <td data-label="Materie">
-                    <div className="subject-title-cell">
-                      <strong>{row.subject.title}</strong>
-                    </div>
-                  </td>
-                  <td data-label="">
-                    <PendingNavigationLink
-                      className="subject-table-action is-primary"
-                      href={`/materii/${row.subject.id}`}
-                      pendingLabel="Se deschide materia..."
-                    >
-                      Deschide materia
-                      <ArrowRight size={16} strokeWidth={2.5} aria-hidden="true" />
-                    </PendingNavigationLink>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {totalVisible ? (
+        <div className="subjects-grid">
+          {filteredRows.map((subject) => (
+            <SubjectLibraryCard key={subject.id} subject={subject} />
+          ))}
+          {showLicenta ? (
+            <SubjectLibraryCard
+              subject={{
+                id: "licenta",
+                title: "Licenta",
+                questionCount: licentaExam.questionCount,
+                progress: { percent: 0 }
+              }}
+              href="/licenta-exam"
+              kind="licenta"
+              pendingLabel="Se deschide Licenta..."
+            />
+          ) : null}
+        </div>
+      ) : isSearchEmpty ? (
+        <div className="subjects-empty-state">
+          <strong>Nu am gasit aceasta materie</strong>
+          <p>Verifica denumirea sau reseteaza cautarea.</p>
+          <button
+            type="button"
+            className="btn-link secondary"
+            onClick={() => {
+              setQuery("");
+              setYearFilter("all");
+              setSemesterFilter("all");
+              setClassFilter("all");
+            }}
+          >
+            Reseteaza cautarea
+          </button>
         </div>
       ) : (
-        <div className="empty-state">
-          {hasFilters || query.trim()
-            ? "Nu exista materii pentru filtrele alese. Sterge cautarea sau alege Toate."
-            : "Nu exista materii disponibile momentan. Le poti adauga din Materiale."}
+        <div className="subjects-empty-state">
+          <strong>Nu ai inca nicio materie</strong>
+          <p>Adauga prima materie sau un set de grile pentru a incepe sa inveti.</p>
+          <Link className="subject-empty-action" href="/materiale">Adauga o materie</Link>
         </div>
       )}
 
       <div className="subject-helper-note">
         <span>Nu gasesti materia?</span>
-        <Link href="/materiale">
-          Adauga o materie sau un set de grile din Materiale.
-        </Link>
+        <Link href="/materiale">Adauga o materie sau un set de grile din Materiale.</Link>
       </div>
     </section>
   );

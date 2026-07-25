@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { useDialogFocus } from "@/lib/ui/dialog";
 
 function IconText({ icon: Icon, children, badgeCount = 0 }) {
   return (
@@ -59,7 +60,12 @@ export function AppHeaderNavigation({
   const [desktopCollapsed, setDesktopCollapsed] = useState(false);
   const menuRootRef = useRef(null);
   const menuButtonRef = useRef(null);
-  const menuPanelRef = useRef(null);
+  const menuCloseButtonRef = useRef(null);
+  const menuPanelRef = useDialogFocus(
+    mobileMenuOpen,
+    () => setMobileMenuOpen(false),
+    menuCloseButtonRef
+  );
   const links = showPrivateNav
     ? [
         { href: "/", label: "Home", icon: Home },
@@ -86,33 +92,14 @@ export function AppHeaderNavigation({
   useEffect(() => {
     if (!mobileMenuOpen) return undefined;
 
-    function closeMenu({ restoreFocus = false } = {}) {
-      setMobileMenuOpen(false);
-      if (restoreFocus) {
-        window.requestAnimationFrame(() => menuButtonRef.current?.focus());
-      }
-    }
-
     function handlePointerDown(event) {
-      if (!menuRootRef.current?.contains(event.target)) closeMenu();
-    }
-
-    function handleKeyDown(event) {
-      if (event.key === "Escape") closeMenu({ restoreFocus: true });
+      if (!menuRootRef.current?.contains(event.target)) setMobileMenuOpen(false);
     }
 
     document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.requestAnimationFrame(() => {
-      menuPanelRef.current?.querySelector("a, button")?.focus();
-    });
 
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
     };
   }, [mobileMenuOpen]);
 
@@ -147,7 +134,7 @@ export function AppHeaderNavigation({
     });
   }
 
-  function SidebarContent({ variant }) {
+  function SidebarContent({ variant, closeButtonRef = null }) {
     const isDesktop = variant === "desktop";
     const collapsed = isDesktop && desktopCollapsed;
 
@@ -183,6 +170,7 @@ export function AppHeaderNavigation({
             </button>
           ) : (
             <button
+              ref={closeButtonRef}
               type="button"
               className="app-sidebar-toggle"
               aria-label="Inchide meniul"
@@ -250,9 +238,11 @@ export function AppHeaderNavigation({
             id="app-mobile-navigation"
             className="header-mobile-menu-panel app-sidebar-mobile"
             ref={menuPanelRef}
+            role="dialog"
+            aria-modal="true"
             aria-label="Meniu principal"
           >
-            <SidebarContent variant="mobile" />
+            <SidebarContent variant="mobile" closeButtonRef={menuCloseButtonRef} />
           </aside>
         </div>
       ) : null}

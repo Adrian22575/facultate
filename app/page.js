@@ -6,10 +6,9 @@ import { isAdminUser } from "@/lib/admin";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
 import { getAdminActionSummary } from "@/lib/admin-center";
-import { getAccessibleSubjectsForUser, getUserSubjectProgress } from "@/lib/data";
+import { getLicentaExamAvailability, getSubjectLibraryForUser } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getGamificationSummary } from "@/lib/gamification";
-import { getCommunityLearningStudySets, getUserLearningStudySets } from "@/lib/learning/study-sets";
 import { getPublicSiteUrl } from "@/lib/site";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
@@ -125,21 +124,16 @@ export default async function HomePage() {
   }
 
   const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
-  const [accessibleCatalog, billingSnapshot, gamificationSummary, ownedLearningStudySets, communityLearningStudySets, recentSubjectProgress] = await Promise.all([
-    getAccessibleSubjectsForUser({
+  const [subjectLibraryData, licentaExam, billingSnapshot, gamificationSummary] = await Promise.all([
+    getSubjectLibraryForUser({
       userId: user.id,
       membership: academicContext?.membership,
       userType
     }),
+    getLicentaExamAvailability({ userId: user.id, membership: academicContext?.membership }).catch(() => ({ questionCount: 0, subjectCount: 0 })),
     getBillingSnapshot(user.id).catch(() => null),
-    getGamificationSummary(user.id),
-    getUserLearningStudySets(user.id, 1).catch(() => []),
-    getCommunityLearningStudySets({ userId: user.id, academicContext, limit: 1 }).catch(() => []),
-    getUserSubjectProgress(user.id, 3).catch(() => [])
+    getGamificationSummary(user.id)
   ]);
-  const recommendedLearningStudySet = ownedLearningStudySets[0] || communityLearningStudySets[0] || null;
-  const accessibleSubjectIds = new Set(accessibleCatalog.subjects.map((subject) => subject.id));
-  const recentSubjects = recentSubjectProgress.filter((subject) => accessibleSubjectIds.has(subject.id));
   const isAdmin = await adminStatePromise;
   const adminActionCount = isAdmin
     ? await getAdminActionSummary(user.id).then((summary) => summary.total || 0).catch(() => 0)
@@ -148,16 +142,16 @@ export default async function HomePage() {
   return (
     <main className="app-shell">
       <DashboardPageClient
-        subjects={accessibleCatalog.subjects}
-        subjectAllocations={accessibleCatalog.subjectAllocations}
+        subjects={subjectLibraryData.subjects}
+        subjectAllocations={subjectLibraryData.subjectAllocations}
+        subjectLibrary={subjectLibraryData.subjectLibrary}
+        licentaExam={licentaExam}
         userType={userType}
         isAuthenticated
         isAdmin={isAdmin}
         adminActionCount={adminActionCount}
         billingSnapshot={billingSnapshot}
         gamificationSummary={gamificationSummary}
-        recommendedLearningStudySet={recommendedLearningStudySet}
-        recentSubjects={recentSubjects}
       />
     </main>
   );

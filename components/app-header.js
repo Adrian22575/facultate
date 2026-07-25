@@ -50,7 +50,7 @@ export async function AppHeader({
 
   return (
     <header className="app-header">
-      <div className="app-header-row">
+      <div className="app-header-row app-mobile-navigation-bar">
         <PendingNavigationLink
           className="brand"
           href={brandHref}
