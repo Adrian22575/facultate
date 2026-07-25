@@ -55,8 +55,12 @@ export function SubjectLibraryCard({
         <strong className="subject-library-card-title">{subject.title}</strong>
         <span className="subject-library-card-meta">
           {formatQuestionCount(subject.questionCount)}
-          <span aria-hidden="true">·</span>
-          <span>{isLicenta ? "Pregatire pentru examen" : "Interactiv, Studiu, Test"}</span>
+          {isLicenta ? (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>Pregatire pentru examen</span>
+            </>
+          ) : null}
         </span>
 
         {isLicenta ? (

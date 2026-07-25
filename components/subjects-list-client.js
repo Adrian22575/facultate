@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -155,17 +155,18 @@ export function SubjectsListClient({
       id={sectionId}
       className={`section-card subjects-section-card subjects-library${embedded ? " is-embedded" : ""}`}
     >
-      {title ? (
-        <div className="subjects-library-heading">
-          <div>
-            <h1>{title}</h1>
-            {description ? <p>{description}</p> : null}
-          </div>
-          <span className="subject-count">{`${totalVisible} ${totalVisible === 1 ? "optiune" : "optiuni"}`}</span>
+      {title || headerAction ? (
+        <div className="subjects-library-topbar">
+          {title ? (
+            <div className="subjects-library-heading">
+              <h1>{title}</h1>
+              {description ? <p>{description}</p> : null}
+            </div>
+          ) : null}
+
+          {headerAction ? <div className="subjects-library-header-action">{headerAction}</div> : null}
         </div>
       ) : null}
-
-      {headerAction ? <div className="subjects-library-header-action">{headerAction}</div> : null}
 
       <div className="subjects-toolbar" aria-label="Cautare si sortare materii">
         <label className="subjects-search-field">
@@ -181,22 +182,28 @@ export function SubjectsListClient({
         </label>
 
         <label className="subjects-sort-field">
-          <span>Sortare</span>
-          <select value={sort} onChange={(event) => setSort(event.target.value)}>
+          <span className="sr-only">Sorteaza materiile</span>
+          <select
+            value={sort}
+            aria-label="Sorteaza materiile"
+            onChange={(event) => setSort(event.target.value)}
+          >
             <option value="recent">Activitate recenta</option>
             <option value="progress">Progres</option>
             <option value="alphabetical">Ordine alfabetica</option>
           </select>
         </label>
-      </div>
 
-      {hasFilters ? (
-        <details
-          className="subjects-filter-disclosure"
-          open={filtersOpen}
-          onToggle={(event) => setFiltersOpen(event.currentTarget.open)}
-        >
-          <summary>{hasActiveFilters ? "Filtre active" : "Filtreaza lista"}</summary>
+        {hasFilters ? (
+          <details
+            className="subjects-filter-disclosure"
+            open={filtersOpen}
+            onToggle={(event) => setFiltersOpen(event.currentTarget.open)}
+          >
+            <summary>
+              <SlidersHorizontal size={16} strokeWidth={2.2} aria-hidden="true" />
+              {hasActiveFilters ? "Filtre active" : "Filtre"}
+            </summary>
           <div className="subjects-filter-options">
             {userType === "student" && filterOptions.years.length ? (
               <label className="subject-filter-field">
@@ -234,8 +241,9 @@ export function SubjectsListClient({
               </label>
             ) : null}
           </div>
-        </details>
-      ) : null}
+          </details>
+        ) : null}
+      </div>
 
       {totalVisible ? (
         <div className="subjects-grid">

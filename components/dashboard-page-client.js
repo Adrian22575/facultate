@@ -11,25 +11,6 @@ import { SubjectsListClient } from "@/components/subjects-list-client";
 import { getLastSession } from "@/lib/session-storage";
 import { getSubjectResumeCandidate } from "@/lib/subject-library";
 
-function buildResumeDetail(subject, mode) {
-  const progress = subject?.progress;
-  if (!progress) return mode || "Reia materia";
-
-  if (mode === "Studiu" && progress.study?.total > 0) {
-    return `${progress.study.viewed} din ${progress.study.total} intrebari`;
-  }
-
-  if (mode === "Interactiv" && progress.interactive?.total > 0) {
-    return `${progress.interactive.answered} din ${progress.interactive.total} intrebari`;
-  }
-
-  if (subject.questionCount > 0) {
-    return `${subject.questionCount} ${subject.questionCount === 1 ? "intrebare" : "intrebari"}`;
-  }
-
-  return mode || "Reia materia";
-}
-
 export function DashboardPageClient({
   subjects,
   subjectLibrary = [],
@@ -54,9 +35,7 @@ export function DashboardPageClient({
 
     return {
       href: candidate.href,
-      title: candidate.subject.title,
-      mode: candidate.mode,
-      detail: buildResumeDetail(candidate.subject, candidate.mode)
+      title: candidate.subject.title
     };
   }, [lastSession, subjectLibrary]);
 
@@ -67,9 +46,8 @@ export function DashboardPageClient({
       pendingLabel="Se reia sesiunea..."
       pendingMode="replace"
     >
-      <span>Continua invatarea</span>
+      <span>Continua:</span>
       <strong>{resumeSession.title}</strong>
-      <em>{`${resumeSession.mode} · ${resumeSession.detail}`}</em>
       <ArrowRight aria-hidden="true" size={17} strokeWidth={2.4} />
     </PendingNavigationLink>
   ) : null;
