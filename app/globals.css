@@ -573,7 +573,7 @@ p {
 .app-sidebar-brand-copy small {
   color: var(--muted);
   font-size: 0.72rem;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .app-sidebar-toggle {
@@ -863,7 +863,7 @@ p {
 .header-progress-badge-copy span {
   color: var(--muted);
   font-size: 0.74rem;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .header-desktop-navigation {
@@ -989,7 +989,7 @@ p {
 .header-side-menu-top span {
   color: var(--muted);
   font-size: 0.76rem;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .header-side-menu-top strong {
@@ -1157,7 +1157,7 @@ p {
 .header-credit-detail {
   color: var(--muted);
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -1364,7 +1364,7 @@ p {
 .dashboard-resume-link > span {
   color: var(--muted);
   font-size: 0.76rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .dashboard-resume-link strong {
@@ -2345,7 +2345,7 @@ p {
   color: var(--muted);
   font-size: 0.8rem;
   font-style: normal;
-  font-weight: 750;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2383,7 +2383,7 @@ p {
 .subjects-sort-field > span {
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .subjects-sort-field select,
@@ -2396,17 +2396,17 @@ p {
   background: var(--surface);
   color: var(--ink);
   font: inherit;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .subjects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: 16px;
+  gap: 18px;
 }
 
 .subject-library-card {
-  min-height: 242px;
+  min-height: 270px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -2452,11 +2452,11 @@ p {
 .subject-library-cover.is-palette-5 { background: linear-gradient(135deg, #183f72, #386aaf); }
 
 .subject-library-card-body {
-  min-height: 150px;
+  min-height: 178px;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  padding: 15px 16px 16px;
+  padding: 17px 18px 18px;
 }
 
 .subject-library-card-title {
@@ -2473,11 +2473,11 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: 6px;
+  margin-top: 8px;
   color: var(--muted);
   font-size: 0.78rem;
   line-height: 1.4;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .subject-library-progress,
@@ -2485,13 +2485,13 @@ p {
   display: grid;
   gap: 7px;
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: 20px;
 }
 
 .subject-library-license-note {
   color: var(--muted);
   font-size: 0.8rem;
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.35;
 }
 
@@ -2502,7 +2502,7 @@ p {
   gap: 10px;
   color: var(--muted);
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .subject-library-progress-label strong {
@@ -2527,7 +2527,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 14px;
+  margin-top: 16px;
   color: var(--primary-dark);
   font-size: 0.85rem;
   font-weight: 900;
@@ -2602,7 +2602,7 @@ p {
   }
 
   .subject-library-card {
-    min-height: 248px;
+    min-height: 270px;
   }
 
   .subject-helper-note {
@@ -2719,7 +2719,7 @@ p {
   gap: 7px;
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .subjects-search-field {
@@ -23508,7 +23508,7 @@ td {
 .learning-library-origin {
   color: var(--muted);
   font-size: 0.76rem;
-  font-weight: 750;
+  font-weight: 500;
   text-align: right;
 }
 
@@ -23554,7 +23554,7 @@ td {
   gap: 5px;
   color: var(--muted);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .learning-library-subject-form select {
@@ -24081,7 +24081,7 @@ td {
 .gamification-result-panel p {
   color: var(--muted);
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.45;
 }
 
@@ -24155,7 +24155,7 @@ td {
 .dashboard-gamification-head p {
   color: var(--muted);
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.45;
 }
 
@@ -24172,7 +24172,7 @@ td {
   min-width: 0;
   color: var(--muted);
   font-size: 0.84rem;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.35;
 }
 
@@ -24223,7 +24223,7 @@ td {
 .gamification-hero p {
   max-width: 580px;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -24269,7 +24269,7 @@ td {
 .gamification-rhythm-card div > span {
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.4;
 }
 
@@ -24364,7 +24364,7 @@ td {
 .gamification-empty-copy {
   color: var(--muted);
   font-size: 0.9rem;
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.45;
 }
 
@@ -24404,7 +24404,7 @@ td {
 .gamification-details summary small {
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .gamification-details-marker {
@@ -24491,7 +24491,7 @@ td {
 .gamification-achievement-list p {
   color: var(--muted);
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.45;
 }
 
@@ -24499,7 +24499,7 @@ td {
 .gamification-achievement-list small {
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .gamification-empty-copy {
