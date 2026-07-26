@@ -13012,8 +13012,9 @@ td {
 .admin-linkedin-empty strong { color: #214a75; }
 .admin-linkedin-empty p { margin: 4px 0 0; color: #637b98; font-size: .84rem; line-height: 1.45; }
 
-.admin-linkedin-center { display: grid; gap: 16px; min-width: 0; }
-.admin-linkedin-center-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #dce7f4; }
+.admin-route-content > .admin-linkedin-center { padding: var(--layout-card-padding); }
+.admin-linkedin-center { display: grid; gap: var(--space-4); min-width: 0; }
+.admin-linkedin-center-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding-bottom: var(--space-4); border-bottom: 1px solid #dce7f4; }
 .admin-linkedin-center-head > div:nth-child(2) { min-width: 0; }
 .admin-linkedin-center-head > div:nth-child(2) > span { color: #54708f; font-size: .74rem; font-weight: 850; letter-spacing: .03em; }
 .admin-linkedin-center-head h2 { margin: 2px 0 3px; color: #153b68; font-family: Georgia, "Times New Roman", serif; font-size: 1.38rem; }
@@ -13046,6 +13047,7 @@ td {
 .admin-linkedin-center-empty > div { min-width: 0; }
 
 @media (max-width: 760px) {
+  .admin-route-content > .admin-linkedin-center { padding: var(--layout-card-padding-compact); }
   .admin-linkedin-center-head { grid-template-columns: auto minmax(0, 1fr); }
   .admin-linkedin-center-head > .admin-linkedin-connection-state { grid-column: 2; justify-self: start; }
   .admin-linkedin-queue-toolbar { align-items: stretch; flex-direction: column; }

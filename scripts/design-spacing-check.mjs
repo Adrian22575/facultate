@@ -44,6 +44,16 @@ for (const selector of [".app-shell", ".admin-route-shell", ".admin-route-topbar
   }
 }
 
+const linkedInCardSelector = ".admin-route-content > .admin-linkedin-center";
+const linkedInCardStart = css.indexOf(linkedInCardSelector);
+const linkedInCardEnd = css.indexOf("}", linkedInCardStart);
+const linkedInCardDeclaration = linkedInCardStart >= 0 && linkedInCardEnd >= linkedInCardStart
+  ? css.slice(linkedInCardStart, linkedInCardEnd + 1)
+  : "";
+if (!/padding:\s*var\(--layout-card-padding\)/.test(linkedInCardDeclaration)) {
+  failures.push("Cardul principal LinkedIn trebuie să declare paddingul standard de layout.");
+}
+
 const guardIndex = css.lastIndexOf(guard);
 if (guardIndex < 0) {
   failures.push("Lipsește markerul DESIGN-SPACING-GUARD din app/globals.css.");

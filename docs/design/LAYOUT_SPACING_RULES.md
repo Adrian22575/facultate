@@ -35,6 +35,7 @@ viewport
 - Doar containerul de pagină stabilește gutter-ul exterior: `--page-gutter`.
 - Doar un părinte stabilește distanța dintre secțiuni: `gap: var(--layout-section-gap)`.
 - Cardurile folosesc `--layout-card-padding`; pe mobil pot folosi `--layout-card-padding-compact`.
+- Orice componentă care intră direct în `.admin-route-content` și devine card prin shell își declară explicit paddingul. Un fundal și o bordură fără padding sunt defecte de layout, nu o alegere de densitate.
 - Pentru elemente consecutive, preferă `display: grid`/`flex` + `gap`; nu adăuga `margin-top` pe fiecare copil.
 - Un copil nu compensează paddingul părintelui cu margini negative sau cu `margin` mare.
 - Nu se împachetează o secțiune într-un card numai pentru a crea spațiu. Spațiul dintre secțiuni este responsabilitatea layoutului părinte.
