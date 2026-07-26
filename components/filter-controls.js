@@ -214,3 +214,16 @@ export function FilterSelect({
 export function FilterSortSelect(props) {
   return <FilterSelect icon={ArrowUpDown} label="Sorteaza" {...props} />;
 }
+
+export function FilterResetButton({ onClick, label = "Reseteaza filtrele", className = "" }) {
+  return (
+    <button
+      type="button"
+      className={joinClassNames("filter-reset-button", className)}
+      onClick={onClick}
+    >
+      <X size={16} strokeWidth={2.3} aria-hidden="true" />
+      <span>{label}</span>
+    </button>
+  );
+}

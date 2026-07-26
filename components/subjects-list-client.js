@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import {
   FilterSearch,
+  FilterResetButton,
   FilterSelect,
   FilterSortSelect,
   FiltersToolbar
@@ -143,11 +144,8 @@ export function SubjectsListClient({
     );
   }, [classFilter, query, rows, semesterFilter, sort, yearFilter]);
 
-  const hasFilters =
-    filterOptions.years.length > 0 ||
-    filterOptions.semesters.length > 0 ||
-    filterOptions.classes.length > 0;
   const hasActiveFilters = yearFilter !== "all" || semesterFilter !== "all" || classFilter !== "all";
+  const hasActiveToolbarControls = hasActiveFilters || sort !== "recent";
   const normalizedQuery = normalizeText(query.trim());
   const showLicenta =
     Number(licentaExam?.questionCount || 0) > 0 &&
@@ -158,6 +156,11 @@ export function SubjectsListClient({
     setYearFilter("all");
     setSemesterFilter("all");
     setClassFilter("all");
+  }
+
+  function resetToolbarControls() {
+    resetAcademicFilters();
+    setSort("recent");
   }
 
   return (
@@ -252,11 +255,9 @@ export function SubjectsListClient({
         />
       </FiltersToolbar>
 
-      {hasFilters && hasActiveFilters ? (
+      {hasActiveToolbarControls ? (
         <div className="subjects-toolbar-actions">
-          <button type="button" className="subjects-toolbar-reset" onClick={resetAcademicFilters}>
-            Reseteaza filtrele
-          </button>
+          <FilterResetButton onClick={resetToolbarControls} />
         </div>
       ) : null}
 
