@@ -1,26 +1,16 @@
 "use client";
 
-import { CheckCircle2, Cpu, ExternalLink, Eye, FilePenLine, FileText, LoaderCircle, RefreshCw, Save, Send, Settings2, ShieldCheck, ThumbsDown, ThumbsUp, Unplug, WandSparkles, XCircle } from "lucide-react";
+import { CheckCircle2, ExternalLink, Eye, FilePenLine, FileText, LoaderCircle, RefreshCw, Save, Send, ThumbsDown, ThumbsUp, WandSparkles, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
+import { getLinkedInOptionsFromSettings, LinkedInDistributionSettings } from "@/components/linkedin-distribution-settings";
 import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
-import { LINKEDIN_MODEL_OPTIONS, normalizeLinkedInModel } from "@/lib/linkedin/models";
-import {
-  DEFAULT_LINKEDIN_POST_AUDIENCE,
-  DEFAULT_LINKEDIN_POST_CTA,
-  DEFAULT_LINKEDIN_POST_LENGTH,
-  DEFAULT_LINKEDIN_POST_LINK_PLACEMENT,
-  DEFAULT_LINKEDIN_POST_NARRATIVE,
-  DEFAULT_LINKEDIN_POST_OBJECTIVE,
-  DEFAULT_LINKEDIN_POST_TEMPLATE,
-  DEFAULT_LINKEDIN_POST_VOICE,
-  LINKEDIN_POST_TEMPLATES
-} from "@/lib/linkedin/templates";
+import { normalizeLinkedInModel } from "@/lib/linkedin/models";
+import { LINKEDIN_POST_TEMPLATES } from "@/lib/linkedin/templates";
 
-const MODE_OPTIONS = [["approval_required", "Necesită aprobare"], ["draft_only", "Doar ciornă"], ["auto_publish", "Publică automat"], ["disabled", "Dezactivat"]];
 const STATUS = { not_generated: ["În pregătire", "attention"], draft: ["Ciornă", "draft"], pending_approval: ["De verificat", "attention"], approved: ["Aprobată", "ready"], publishing: ["Se publică", "attention"], published: ["Publicată", "published"], failed: ["Eșuată", "failed"], connection_expired: ["Conexiune expirată", "failed"], rejected: ["Respinsă", "rejected"] };
 const REFINEMENTS = [
   ["alternate_angle", "Alt unghi"], ["alternate_hook", "Alt hook"], ["shorter", "Mai scurt"], ["more_direct", "Mai direct"],
@@ -29,22 +19,6 @@ const REFINEMENTS = [
 
 function formatDate(value) { return value ? new Intl.DateTimeFormat("ro-RO", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest" }).format(new Date(value)) : "—"; }
 function postArticleId(post) { return post?.article_id || post?.article?.id || ""; }
-function optionsFromSettings(settings = {}) {
-  return {
-    templateKey: settings.default_template || DEFAULT_LINKEDIN_POST_TEMPLATE,
-    objectiveKey: settings.default_objective || DEFAULT_LINKEDIN_POST_OBJECTIVE,
-    voiceKey: settings.default_voice || DEFAULT_LINKEDIN_POST_VOICE,
-    audienceKey: settings.default_audience || DEFAULT_LINKEDIN_POST_AUDIENCE,
-    customAudience: settings.default_custom_audience || "",
-    ctaKey: settings.default_cta || DEFAULT_LINKEDIN_POST_CTA,
-    narrativeKey: settings.default_narrative || DEFAULT_LINKEDIN_POST_NARRATIVE,
-    lengthKey: settings.default_length || DEFAULT_LINKEDIN_POST_LENGTH,
-    linkPlacementKey: settings.default_link_placement || DEFAULT_LINKEDIN_POST_LINK_PLACEMENT
-  };
-}
-function settingsFromOptions(settings, options) {
-  return { ...settings, default_template: options.templateKey, default_objective: options.objectiveKey, default_voice: options.voiceKey, default_audience: options.audienceKey, default_custom_audience: options.audienceKey === "custom" ? options.customAudience : null, default_cta: options.ctaKey, default_narrative: options.narrativeKey, default_length: options.lengthKey, default_link_placement: options.linkPlacementKey };
-}
 function humanError(value) {
   const code = String(value || "");
   if (code.includes("invalid_generation_options") || code.includes("custom_audience_required")) return "Completează audiența personalizată sau alege o audiență din listă.";
@@ -72,7 +46,7 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
   const [posts, setPosts] = useState(data?.posts || []);
   const [selectedId, setSelectedId] = useState(initialPostId);
   const [text, setText] = useState("");
-  const [manualOptions, setManualOptions] = useState(() => optionsFromSettings(data?.settings));
+  const [manualOptions, setManualOptions] = useState(() => getLinkedInOptionsFromSettings(data?.settings));
   const [promptPreview, setPromptPreview] = useState(() => data?.generationPreviews?.[0] || null);
   const [editorView, setEditorView] = useState("edit");
   const [busy, setBusy] = useState("");
@@ -108,25 +82,6 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
   function patchPost(postId, patch) { setPosts((current) => current.map((post) => post.id === postId ? { ...post, ...patch } : post)); }
   function choose(post) { setSelectedId(post.id); setText(post.edited_text || post.generated_text || ""); setEditorView("edit"); setMessage(""); }
   function showMessage(text, tone = "success") { setMessage(text); setMessageTone(tone); }
-
-  async function saveSettings() {
-    if (busy) return;
-    setBusy("settings"); setMessage("");
-    const configuredDefaults = optionsFromSettings(settings);
-    const response = await fetch("/api/admin/linkedin/settings", { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ mode: settings.mode, notifyTelegram: settings.notify_telegram, model: normalizeLinkedInModel(settings.model), defaultTemplate: configuredDefaults.templateKey, defaultObjective: configuredDefaults.objectiveKey, defaultVoice: configuredDefaults.voiceKey, defaultAudience: configuredDefaults.audienceKey, defaultCustomAudience: configuredDefaults.audienceKey === "custom" ? configuredDefaults.customAudience : null, defaultCta: configuredDefaults.ctaKey, defaultNarrative: configuredDefaults.narrativeKey, defaultLength: configuredDefaults.lengthKey, defaultLinkPlacement: configuredDefaults.linkPlacementKey }) }).catch(() => null);
-    const result = await response?.json().catch(() => ({})); setBusy("");
-    if (!response?.ok) return showMessage("Setările nu au putut fi salvate.", "error");
-    setSettings(result.settings); showMessage("Setările LinkedIn au fost salvate.");
-  }
-
-  async function disconnect() {
-    if (!connection || busy || !window.confirm("Deconectezi profilul LinkedIn? Orice publicare viitoare se oprește imediat.")) return;
-    setBusy("disconnect"); setMessage("");
-    const response = await fetch(`/api/admin/linkedin/connections/${connection.id}/disconnect`, { method: "POST" }).catch(() => null);
-    const result = await response?.json().catch(() => ({})); setBusy("");
-    if (!response?.ok) return showMessage("Profilul nu a putut fi deconectat.", "error");
-    setConnection(result.connection); showMessage("Profilul a fost deconectat. Publicarea este oprită."); router.refresh();
-  }
 
   async function generate() {
     if (!canPrepare || busy) return;
@@ -168,7 +123,6 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     showMessage(messages[actionName] || "Varianta a fost rafinată și a revenit la aprobare.", result.warning ? "warning" : "success"); router.refresh();
   }
 
-  const defaults = optionsFromSettings(settings);
   const finalPayload = selected?.generated_payload?.final || {};
   const quality = selected?.quality_score == null ? null : Number(selected.quality_score);
   const commentAmbiguous = ["linkedin_comment_result_unknown", "linkedin_comment_confirmation_missing"].includes(selected?.link_comment_error);
@@ -177,13 +131,15 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     <section className="admin-linkedin-article" aria-labelledby="linkedin-article-title">
       <header className="admin-linkedin-article-head"><div className="admin-linkedin-title-mark"><span className="admin-linkedin-brand-glyph" aria-hidden="true">in</span></div><div><span>Distribuire editorială</span><h3 id="linkedin-article-title">Postări LinkedIn</h3><p>Fiecare variantă păstrează strategia, scorul și istoricul editărilor.</p></div><span className={`admin-linkedin-connection-state is-${connected ? "connected" : "offline"}`}>{connected ? "Conectat" : connection?.status === "connection_expired" ? "Expirat" : "Neconectat"}</span></header>
 
-      <details className="admin-linkedin-settings">
-        <summary><Settings2 size={16} />Setări LinkedIn și automatizare</summary>
-        <div className="admin-linkedin-controls"><label><span>Mod de lucru</span><select value={settings.mode} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, mode: event.target.value }))}>{MODE_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><label className="admin-linkedin-model"><span><Cpu size={14} />Model postare</span><select value={normalizeLinkedInModel(settings.model)} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, model: event.target.value }))}>{LINKEDIN_MODEL_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label} — {option.description}</option>)}</select></label><button type="button" className="btn-back admin-linkedin-secondary" onClick={saveSettings} disabled={Boolean(busy)}>{busy === "settings" ? <LoaderCircle className="is-spinning" size={16} /> : <Save size={16} />}Salvează setările</button>{connected ? <button type="button" className="admin-linkedin-disconnect" onClick={disconnect} disabled={Boolean(busy)}><Unplug size={16} />Deconectează</button> : <a className={`admin-linkedin-connect${data?.config?.ready ? "" : " is-disabled"}`} href={data?.config?.ready ? "/api/admin/linkedin/oauth/start" : undefined}>Conectează LinkedIn</a>}</div>
-        <label className="admin-linkedin-telegram"><input type="checkbox" checked={settings.notify_telegram} disabled={Boolean(busy)} onChange={(event) => setSettings((current) => ({ ...current, notify_telegram: event.target.checked }))} /><span>Notificări Telegram</span></label>
-        <LinkedInGenerationOptions value={defaults} onChange={(next) => setSettings((current) => settingsFromOptions(current, next))} disabled={Boolean(busy)} compact />
-        {!data?.config?.ready ? <p className="admin-linkedin-config-note"><ShieldCheck size={16} />Completează variabilele LinkedIn și cheia de criptare înainte de conectare.</p> : null}
-      </details>
+      <LinkedInDistributionSettings
+        data={data}
+        disabled={Boolean(busy)}
+        onSettingsSaved={(nextSettings) => {
+          setSettings(nextSettings);
+          setManualOptions(getLinkedInOptionsFromSettings(nextSettings));
+        }}
+        onConnectionChanged={setConnection}
+      />
 
       {data?.warning ? <p className="admin-linkedin-message is-error">{data.warning}</p> : null}
       {message ? <p className={`admin-linkedin-message is-${messageTone}`} role="status" aria-live="polite">{message}</p> : null}

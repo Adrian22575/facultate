@@ -185,12 +185,18 @@ export function AdminEditorialArticlePage({
   initialArticle,
   runs = [],
   linkedIn,
+  initialTab = "",
   initialLinkedInPostId = ""
 }) {
   const router = useRouter();
   const [article, setArticle] = useState(initialArticle);
   const [form, setForm] = useState(() => formFrom(initialArticle));
-  const [activeTab, setActiveTab] = useState("overview");
+  const requestedTab = initialTab === "linkedin" || initialLinkedInPostId ? "linkedin" : "overview";
+  const [activeTab, setActiveTab] = useState(requestedTab);
+
+  useEffect(() => {
+    setActiveTab(requestedTab);
+  }, [initialTab, initialLinkedInPostId, requestedTab]);
   const [dirty, setDirty] = useState(false);
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState(null);

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { AdminCenterClient } from "@/components/admin-center-client";
 import { AdminDictionaryPanel } from "@/components/admin-dictionary-panel";
 import { AdminEditorialArticlesPage } from "@/components/admin-editorial-articles-page";
-import { AdminEditorialPanel } from "@/components/admin-editorial-panel";
+import { AdminLinkedInDistributionCenter } from "@/components/admin-linkedin-distribution-center";
 import { AdminOpenAILogsPanel } from "@/components/admin-openai-logs-panel";
 import { AdminPageShell } from "@/components/admin-page-shell";
 import { AdminUploadErrorsPanel } from "@/components/admin-upload-errors-panel";
@@ -114,20 +114,17 @@ export default async function AdminSubpage({ params, searchParams }) {
 
   if (route.kind === "editorial") {
     const editorialData = await getEditorialAdminOverview();
-    if (route.pane === "article") {
-      content = <AdminEditorialArticlesPage key={route.path} {...editorialData} />;
-    } else {
-      content = (
-        <AdminEditorialPanel
-          key={route.path}
-          {...editorialData}
-          linkedIn={await getLinkedInAdminOverview()}
-          initialPane={route.pane}
-          fixedPane={route.pane}
-          initialLinkedInPostId={resolvedSearchParams?.linkedin_post || ""}
-        />
-      );
-    }
+    content = <AdminEditorialArticlesPage key={route.path} {...editorialData} />;
+  }
+
+  if (route.kind === "linkedin") {
+    content = (
+      <AdminLinkedInDistributionCenter
+        key={route.path}
+        data={await getLinkedInAdminOverview()}
+        initialPostId={resolvedSearchParams?.linkedin_post || ""}
+      />
+    );
   }
 
   return <AdminPageShell activeRoute={route}>{content}</AdminPageShell>;

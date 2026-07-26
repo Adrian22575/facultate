@@ -24,7 +24,7 @@ test("Admin are o hartă unică de subpagini, cu maximum două niveluri", () => 
 });
 
 test("zonele cu risc operațional au destinații canonice clare", () => {
-  assert.equal(getAdminRoute("/admin/continut/linkedin")?.pane, "linkedin");
+  assert.equal(getAdminRoute("/admin/continut/linkedin")?.kind, "linkedin");
   assert.equal(getAdminRoute("/admin/financiar/evenimente-plati")?.billingView, "webhooks");
   assert.equal(getAdminRoute("/admin/catalog/facultati")?.academicView, "faculties");
   assert.equal(getAdminRoute("/admin/operatiuni/procesari")?.kind, "processing");
@@ -56,12 +56,16 @@ test("URL-urile Admin vechi sunt redirecționate și își păstrează contextul
 });
 
 test("Admin păstrează o singură navigație persistentă și încarcă selectiv", async () => {
-  const [shell, switcher, editorial, linkedIn, subpage, overview] = await Promise.all([
+  const [shell, switcher, editorial, linkedIn, linkedInCenter, subpage, articleRoute, articleEditor, telegram, overview] = await Promise.all([
     readFile(new URL("../components/admin-page-shell.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-route-switcher.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-editorial-panel.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-linkedin-distribution-center.js", import.meta.url), "utf8"),
     readFile(new URL("../app/admin/[...adminPath]/page.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/admin/continut/articole/[articleId]/page.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-editorial-article-page.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/notifications/telegram.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-overview.js", import.meta.url), "utf8")
   ]);
 
@@ -75,7 +79,9 @@ test("Admin păstrează o singură navigație persistentă și încarcă selecti
   assert.match(subpage, /if \(route\.section === "feedback"\)/);
   assert.match(subpage, /if \(route\.section === "analytics"\)/);
   assert.match(subpage, /showSectionNavigation=\{false\}/);
-  assert.match(subpage, /fixedPane=\{route\.pane\}/);
+  assert.match(subpage, /route\.kind === "linkedin"/);
+  assert.match(subpage, /AdminLinkedInDistributionCenter/);
+  assert.doesNotMatch(subpage, /fixedPane=\{route\.pane\}/);
   assert.match(subpage, /key=\{route\.path\}/);
   assert.match(editorial, /const visiblePane = fixedPane/);
   assert.match(editorial, /admin-editorial-picker/);
@@ -83,4 +89,9 @@ test("Admin păstrează o singură navigație persistentă și încarcă selecti
   assert.match(linkedIn, /className="admin-linkedin-list" role="group"/);
   assert.doesNotMatch(linkedIn, /<nav className="admin-linkedin-list"/);
   assert.match(linkedIn, /timeZone: "Europe\/Bucharest"/);
+  assert.match(linkedInCenter, /Necesită atenție/);
+  assert.match(linkedInCenter, /tab=linkedin&linkedin_post=/);
+  assert.match(articleRoute, /initialTab=\{resolvedSearchParams\?\.tab \|\| ""\}/);
+  assert.match(articleEditor, /initialTab === "linkedin" \|\| initialLinkedInPostId/);
+  assert.match(telegram, /tab=linkedin&linkedin_post=/);
 });

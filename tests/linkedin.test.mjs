@@ -374,8 +374,11 @@ test("toate rutele de administrare sunt protejate, iar UI-ul expune actiunile ce
     assert.match(route, /isAdminUser/);
     assert.match(route, /unauthorized|auth\/login/);
   }
-  const ui = await readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8");
-  const normalizedUi = ui.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const [ui, settingsUi] = await Promise.all([
+    readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/linkedin-distribution-settings.js", import.meta.url), "utf8")
+  ]);
+  const normalizedUi = `${ui}\n${settingsUi}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   for (const label of ["Conecteaz", "Deconecteaz", "Aprob", "Respinge", "Public", "Reincearca", "Deschide pe LinkedIn"]) {
     assert.match(normalizedUi, new RegExp(label, "i"));
   }

@@ -37,6 +37,7 @@ export default async function AdminEditorialArticleRoute({ params, searchParams 
         initialArticle={article}
         runs={runs}
         linkedIn={linkedIn}
+        initialTab={resolvedSearchParams?.tab || ""}
         initialLinkedInPostId={resolvedSearchParams?.linkedin_post || ""}
       />
     </AdminPageShell>
