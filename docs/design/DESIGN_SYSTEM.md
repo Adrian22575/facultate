@@ -37,6 +37,7 @@ Folosește tokenurile existente, nu culori noi hardcodate, cu excepția situați
 ## Spacing, borders and elevation
 
 - Folosește scara `4, 8, 12, 16, 24, 32, 48px` și valorile apropiate doar când un tipar existent o cere.
+- Regulile obligatorii de container, ierarhie și verificare automată sunt în [LAYOUT_SPACING_RULES.md](./LAYOUT_SPACING_RULES.md). Pentru layout nou, tokenurile `--space-*` sunt obligatorii; nu se adaugă valori brute de spațiere.
 - Tokenurile existente sunt `--radius: 26px`, `--radius-soft: 20px`, `--shadow` și `--shadow-soft`. Reutilizează-le în locul unor valori noi.
 - Bordurile sunt subtile, de regulă cu `--line` sau `--line-strong`. Umbrele puternice nu sunt pentru conținut obișnuit.
 - Nu împacheta fiecare secțiune într-un card.

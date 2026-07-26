@@ -37,6 +37,7 @@
     "vercel:preflight": "node scripts/vercel-preflight.mjs",
     "production:smoke": "node --use-system-ca scripts/production-smoke.mjs",
     "ui:check": "node scripts/ui-static-check.mjs",
+    "design:check": "node scripts/design-spacing-check.mjs",
     "test:tools": "node --test tests/free-tools.test.mjs",
     "test:dictionary": "node --test tests/dictionary.test.mjs",
     "test:editorial": "node --test tests/editorial.test.mjs",
@@ -45,7 +46,7 @@
     "linkedin:eval": "node --use-system-ca --env-file=.env.local scripts/linkedin-generator-eval.mjs",
     "editorial:web-search:check": "node --use-system-ca scripts/editorial-web-search-check.mjs",
     "workspace:audit": "powershell -ExecutionPolicy Bypass -File scripts/workspace-audit.ps1",
-    "prebuild": "node scripts/ui-static-check.mjs",
+    "prebuild": "node scripts/design-spacing-check.mjs && node scripts/ui-static-check.mjs",
     "build": "node --use-system-ca node_modules/next/dist/bin/next build",
     "start": "node --use-system-ca node_modules/next/dist/bin/next start"
   },
