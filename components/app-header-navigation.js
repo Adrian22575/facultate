@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { BarChart3, ChevronLeft, Home, LogOut, Menu, PanelLeftClose, PanelLeftOpen, Shield, Trophy, Upload, UserCircle } from "lucide-react";
+import { BarChart3, Home, LogOut, Menu, PanelLeftClose, PanelLeftOpen, Shield, Trophy, Upload, UserCircle, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { HeaderCreditStatus } from "@/components/header-credit-status";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
@@ -58,7 +59,7 @@ export function AppHeaderNavigation({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopCollapsed, setDesktopCollapsed] = useState(false);
-  const menuRootRef = useRef(null);
+  const [portalTarget, setPortalTarget] = useState(null);
   const menuButtonRef = useRef(null);
   const menuCloseButtonRef = useRef(null);
   const menuPanelRef = useDialogFocus(
@@ -86,20 +87,19 @@ export function AppHeaderNavigation({
   }, []);
 
   useEffect(() => {
+    setPortalTarget(document.body);
+  }, []);
+
+  useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return undefined;
-
-    function handlePointerDown(event) {
-      if (!menuRootRef.current?.contains(event.target)) setMobileMenuOpen(false);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
+    document.body.classList.add("app-mobile-menu-open");
 
     return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
+      document.body.classList.remove("app-mobile-menu-open");
     };
   }, [mobileMenuOpen]);
 
@@ -140,22 +140,22 @@ export function AppHeaderNavigation({
 
     return (
       <>
-        <div className="app-sidebar-top">
-          <PendingNavigationLink
-            className="app-sidebar-brand"
-            href="/"
-            aria-label="Nota 5+"
-            pendingLabel="Se deschide pagina principala..."
-            pendingMode="replace"
-          >
-            <span className="brand-mark">5+</span>
-            <span className="app-sidebar-brand-copy">
-              <strong>Nota 5+</strong>
-              <small>Invata mai usor</small>
-            </span>
-          </PendingNavigationLink>
+        {isDesktop ? (
+          <div className="app-sidebar-top">
+            <PendingNavigationLink
+              className="app-sidebar-brand"
+              href="/"
+              aria-label="Nota 5+"
+              pendingLabel="Se deschide pagina principala..."
+              pendingMode="replace"
+            >
+              <span className="brand-mark">5+</span>
+              <span className="app-sidebar-brand-copy">
+                <strong>Nota 5+</strong>
+                <small>Invata mai usor</small>
+              </span>
+            </PendingNavigationLink>
 
-          {isDesktop ? (
             <button
               type="button"
               className="app-sidebar-toggle"
@@ -168,22 +168,31 @@ export function AppHeaderNavigation({
                 <PanelLeftClose aria-hidden="true" size={18} strokeWidth={2.25} />
               )}
             </button>
-          ) : (
+          </div>
+        ) : (
+          <div className="header-side-menu-top">
+            <div>
+              <span>Navigare</span>
+              <strong>Meniu principal</strong>
+            </div>
             <button
               ref={closeButtonRef}
               type="button"
-              className="app-sidebar-toggle"
+              className="header-side-menu-collapse"
               aria-label="Inchide meniul"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <ChevronLeft aria-hidden="true" size={18} strokeWidth={2.35} />
+              <X aria-hidden="true" size={19} strokeWidth={2.35} />
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {showPrivateNav ? (
           <nav className="app-sidebar-links" aria-label="Navigare principala">
-            {navigationLinks("app-sidebar-link")}
+            {navigationLinks(
+              "app-sidebar-link",
+              isDesktop ? undefined : () => setMobileMenuOpen(false)
+            )}
           </nav>
         ) : null}
 
@@ -203,7 +212,7 @@ export function AppHeaderNavigation({
   }
 
   return (
-    <div className="header-actions" ref={menuRootRef}>
+    <div className="header-actions">
       {showPrivateNav ? (
         <aside className={`app-sidebar ${desktopCollapsed ? "is-collapsed" : ""}`} aria-label="Meniu aplicatie">
           <SidebarContent variant="desktop" />
@@ -218,6 +227,11 @@ export function AppHeaderNavigation({
           aria-haspopup="true"
           aria-expanded={mobileMenuOpen}
           aria-controls="app-mobile-navigation"
+          aria-label={
+            adminActionCount > 0
+              ? `Deschide meniul. ${adminActionCount} notificari.`
+              : "Deschide meniul"
+          }
           onClick={() => setMobileMenuOpen((current) => !current)}
         >
           <Menu aria-hidden="true" size={21} strokeWidth={2.2} />
@@ -226,26 +240,30 @@ export function AppHeaderNavigation({
         </button>
       ) : null}
 
-      {mobileMenuOpen ? (
-        <div className="header-side-menu-layer" role="presentation">
-          <button
-            className="header-side-menu-scrim"
-            type="button"
-            aria-label="Inchide meniul"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-          <aside
-            id="app-mobile-navigation"
-            className="header-mobile-menu-panel app-sidebar-mobile"
-            ref={menuPanelRef}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Meniu principal"
-          >
-            <SidebarContent variant="mobile" closeButtonRef={menuCloseButtonRef} />
-          </aside>
-        </div>
-      ) : null}
+      {portalTarget && mobileMenuOpen
+        ? createPortal(
+            <div className="header-side-menu-layer" role="presentation">
+              <button
+                className="header-side-menu-scrim"
+                type="button"
+                aria-label="Inchide meniul"
+                onClick={() => setMobileMenuOpen(false)}
+              />
+              <aside
+                id="app-mobile-navigation"
+                className="header-mobile-menu-panel app-sidebar-mobile"
+                ref={menuPanelRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Meniu principal"
+                tabIndex={-1}
+              >
+                <SidebarContent variant="mobile" closeButtonRef={menuCloseButtonRef} />
+              </aside>
+            </div>,
+            portalTarget
+          )
+        : null}
     </div>
   );
 }

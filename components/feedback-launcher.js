@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ImagePlus, MonitorUp, X } from "lucide-react";
+import { ImagePlus, MessageSquareText, MonitorUp, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import {
@@ -248,13 +248,15 @@ export function FeedbackLauncher() {
       <button
         type="button"
         className="feedback-fab"
+        aria-label="Trimite feedback"
         onClick={() => {
           setError("");
           setSuccess("");
           setIsOpen(true);
         }}
       >
-        Feedback
+        <MessageSquareText className="feedback-fab-icon" aria-hidden="true" size={20} strokeWidth={2.2} />
+        <span className="feedback-fab-label">Feedback</span>
       </button>
 
       {isOpen ? (
