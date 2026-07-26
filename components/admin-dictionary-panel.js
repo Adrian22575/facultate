@@ -2,6 +2,7 @@
 
 import {
   AlertTriangle,
+  ArrowLeft,
   BadgeCheck,
   BookOpenCheck,
   CheckCircle2,
@@ -13,6 +14,7 @@ import {
   Send,
   Undo2
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -94,7 +96,15 @@ function ActionMessage({ message }) {
   return <p className={`admin-dictionary-action-message is-${message.tone || "info"}`} role="status" aria-live="polite" aria-atomic="true">{message.text}</p>;
 }
 
-export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], automationSettings, generationPreview, warning }) {
+export function AdminDictionaryPanel({
+  categories = [],
+  terms = [],
+  runs = [],
+  automationSettings,
+  generationPreview,
+  warning,
+  detail = false
+}) {
   const router = useRouter();
   const [selectedId, setSelectedId] = useState(terms[0]?.id || "");
   const [termQuery, setTermQuery] = useState("");
@@ -321,16 +331,23 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
   const selectedCategory = categories.find((category) => category.id === form?.categoryId)?.name || effectiveSelected?.category?.name || "—";
 
   return (
-    <section className="surface admin-dictionary-panel">
-      <div className="admin-content-toolbar">
-        <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} generationPreview={generationPreview} />
-        <button type="button" className="btn-link" onClick={generate} disabled={Boolean(busy) || Boolean(activeRun) || dirty} title={dirty ? "Salvează modificările înainte de a genera alt termen." : undefined}>
-          {liveRun ? <LoaderCircle size={16} className="is-spinning" /> : <RefreshCw size={16} />}
-          {liveRun ? "Generare în curs" : "Generează un termen"}
-        </button>
-      </div>
+    <section className={`surface admin-dictionary-panel${detail ? " is-detail" : ""}`}>
+      {detail ? (
+        <header className="admin-dictionary-detail-head">
+          <Link href="/admin/continut/dictionar" className="btn-back"><ArrowLeft size={16} aria-hidden="true" />Înapoi la termeni</Link>
+          <div><span>Editor Dicționar</span><h1>{effectiveSelected?.term || "Editează termenul"}</h1><p>Revizuiește conținutul, previzualizarea și publicarea într-un singur loc.</p></div>
+        </header>
+      ) : (
+        <div className="admin-content-toolbar">
+          <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} generationPreview={generationPreview} />
+          <button type="button" className="btn-link" onClick={generate} disabled={Boolean(busy) || Boolean(activeRun) || dirty} title={dirty ? "Salvează modificările înainte de a genera alt termen." : undefined}>
+            {liveRun ? <LoaderCircle size={16} className="is-spinning" /> : <RefreshCw size={16} />}
+            {liveRun ? "Generare în curs" : "Generează un termen"}
+          </button>
+        </div>
+      )}
 
-      {liveRun ? (
+      {!detail && liveRun ? (
         <section className="admin-dictionary-live-run" aria-live="polite">
           <LoaderCircle className="is-spinning" aria-hidden="true" size={23} />
           <div>
@@ -344,15 +361,15 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
           </div>
         </section>
       ) : null}
-      {persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
+      {!detail && persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
       {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
-      <section className={`admin-dictionary-schedule-status is-${scheduleState.tone}`} aria-live="polite">
+      {!detail ? <section className={`admin-dictionary-schedule-status is-${scheduleState.tone}`} aria-live="polite">
         <Clock3 size={19} aria-hidden="true" />
         <div><span>Automatizare dicționar</span><strong>{scheduleState.title}</strong><small>{scheduleState.detail}</small></div>
-      </section>
+      </section> : null}
 
-      <div className="admin-dictionary-grid">
-        <div className="admin-dictionary-list">
+      <div className={`admin-dictionary-grid${detail ? " is-detail" : ""}`}>
+        {!detail ? <div className="admin-dictionary-list">
           <div className="admin-dictionary-list-tools">
             <FilterSearch
               value={termQuery}
@@ -384,7 +401,7 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
           })}
           {!searchBusy && !searchError && visibleTerms.length === 0 ? <div className="admin-dictionary-list-empty"><strong>Niciun termen găsit</strong><span>Încearcă o formulare mai scurtă sau fără semne speciale.</span></div> : null}
           {searchError ? <div className="admin-dictionary-list-empty is-error"><strong>Căutarea nu a răspuns</strong><span>Termenii recenți rămân disponibili. Încearcă din nou.</span></div> : null}
-        </div>
+        </div> : null}
 
         {effectiveSelected && form ? (
           <div className="admin-dictionary-editor" aria-busy={Boolean(busy)} inert={busy ? true : undefined}>
@@ -458,10 +475,10 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
         ) : <div className="admin-dictionary-editor is-empty">Alege un termen pentru editare.</div>}
       </div>
 
-      <details className="admin-run-history" open={runs.some((run) => run.status === "failed")}>
+      {!detail ? <details className="admin-run-history" open={runs.some((run) => run.status === "failed")}>
         <summary>Istoric generări ({runs.length})</summary>
         {runs.length ? <div className="admin-dictionary-runs">{runs.map((run) => <article key={run.id}><strong>{run.candidate_term || "Fără termen"}</strong><span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.model || "model necunoscut"}</span><small>{run.quality_score == null ? "Scor indisponibil" : `${run.quality_score}/100`}</small>{run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}</article>)}</div> : <p>Nu există rulări încă.</p>}
-      </details>
+      </details> : null}
     </section>
   );
 }

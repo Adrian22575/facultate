@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { AdminCenterClient } from "@/components/admin-center-client";
-import { AdminDictionaryPanel } from "@/components/admin-dictionary-panel";
+import { AdminDictionaryIndex } from "@/components/admin-dictionary-index";
 import { AdminEditorialArticlesPage } from "@/components/admin-editorial-articles-page";
 import { AdminLinkedInDistributionCenter } from "@/components/admin-linkedin-distribution-center";
 import { AdminOpenAILogsPanel } from "@/components/admin-openai-logs-panel";
@@ -109,7 +109,7 @@ export default async function AdminSubpage({ params, searchParams }) {
   }
 
   if (route.kind === "dictionary") {
-    content = <AdminDictionaryPanel key={route.path} {...await getDictionaryAdminOverview()} />;
+    content = <AdminDictionaryIndex key={route.path} {...await getDictionaryAdminOverview()} />;
   }
 
   if (route.kind === "editorial") {

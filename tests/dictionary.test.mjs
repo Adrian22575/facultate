@@ -56,15 +56,18 @@ test("automatizarea acceptă fallback-ul după ora locală, dar rulează o singu
   assert.equal(isAutomationDue({ ...settings, last_scheduled_for: "2026-07-19" }, new Date("2026-07-19T08:00:00Z")), false);
 });
 
-test("schedulerul și Admin folosesc livrare observabilă, căutare globală și data creării", async () => {
-  const [migration, timeoutMigration, securityMigration, preflight, cronRoute, searchRoute, adminUi] = await Promise.all([
+test("schedulerul și Admin folosesc livrare observabilă, bibliotecă și editor separat", async () => {
+  const [migration, timeoutMigration, securityMigration, preflight, cronRoute, searchRoute, adminUi, dictionaryIndex, dictionaryRoute, dictionaryServer] = await Promise.all([
     readFile(new URL("../supabase/migrations/20260719093254_fix_dictionary_scheduler_delivery.sql", import.meta.url), "utf8"),
     readFile(new URL("../supabase/migrations/20260719095200_increase_dictionary_scheduler_timeout.sql", import.meta.url), "utf8"),
     readFile(new URL("../supabase/migrations/20260719094037_restrict_editorial_scheduler_token.sql", import.meta.url), "utf8"),
     readFile(new URL("../scripts/vercel-preflight.mjs", import.meta.url), "utf8"),
     readFile(new URL("../app/api/cron/dictionary/route.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/admin/dictionary/terms/search/route.js", import.meta.url), "utf8"),
-    readFile(new URL("../components/admin-dictionary-panel.js", import.meta.url), "utf8")
+    readFile(new URL("../components/admin-dictionary-panel.js", import.meta.url), "utf8"),
+    readFile(new URL("../components/admin-dictionary-index.js", import.meta.url), "utf8"),
+    readFile(new URL("../app/admin/continut/dictionar/[termId]/page.js", import.meta.url), "utf8"),
+    readFile(new URL("../lib/dictionary/server.js", import.meta.url), "utf8")
   ]);
   assert.match(migration, /net\.http_get/);
   assert.match(migration, /raise exception 'editorial_scheduler_token is not configured'/);
@@ -78,4 +81,8 @@ test("schedulerul și Admin folosesc livrare observabilă, căutare globală și
   assert.match(adminUi, /Caută după termen/);
   assert.match(adminUi, /displayed\.created_at/);
   assert.match(adminUi, /Nicio rulare înregistrată astăzi/);
+  assert.match(dictionaryIndex, /Deschide termenul/);
+  assert.match(dictionaryIndex, /Necesită atenție/);
+  assert.match(dictionaryRoute, /AdminDictionaryPanel categories=\{categories\} terms=\{\[term\]\} detail/);
+  assert.match(dictionaryServer, /getDictionaryAdminEditorWorkspace/);
 });
