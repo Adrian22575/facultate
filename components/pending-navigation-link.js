@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
@@ -42,13 +42,11 @@ export function PendingNavigationLink({
   ...props
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const routeKey = `${pathname}?${searchParams.toString()}`;
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
     setPending(false);
-  }, [routeKey]);
+  }, [pathname]);
 
   useEffect(() => {
     function resetNavigation() {

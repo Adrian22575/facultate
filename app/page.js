@@ -124,7 +124,21 @@ export default async function HomePage() {
   }
 
   const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
-  const [subjectLibraryData, licentaExam, billingSnapshot, gamificationSummary] = await Promise.all([
+  const adminActionCountPromise = adminStatePromise.then((isAdmin) =>
+    isAdmin
+      ? getAdminActionSummary(user.id)
+          .then((summary) => summary.total || 0)
+          .catch(() => 0)
+      : 0
+  );
+  const [
+    subjectLibraryData,
+    licentaExam,
+    billingSnapshot,
+    gamificationSummary,
+    isAdmin,
+    adminActionCount
+  ] = await Promise.all([
     getSubjectLibraryForUser({
       userId: user.id,
       membership: academicContext?.membership,
@@ -132,12 +146,10 @@ export default async function HomePage() {
     }),
     getLicentaExamAvailability({ userId: user.id, membership: academicContext?.membership }).catch(() => ({ questionCount: 0, subjectCount: 0 })),
     getBillingSnapshot(user.id).catch(() => null),
-    getGamificationSummary(user.id)
+    getGamificationSummary(user.id),
+    adminStatePromise,
+    adminActionCountPromise
   ]);
-  const isAdmin = await adminStatePromise;
-  const adminActionCount = isAdmin
-    ? await getAdminActionSummary(user.id).then((summary) => summary.total || 0).catch(() => 0)
-    : 0;
 
   return (
     <main className="app-shell">

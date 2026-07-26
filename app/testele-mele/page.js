@@ -39,7 +39,18 @@ export default async function MyTestsPage() {
     redirect("/auth/login?next=/testele-mele");
   }
 
-  const academicContext = !demoMode ? await getAcademicContext(user.id) : null;
+  const academicContextPromise = !demoMode
+    ? getAcademicContext(user.id)
+    : Promise.resolve(null);
+  const testsPromise = !demoMode
+    ? getPrivateGeneratedTests(user.id, { academicContextPromise })
+        .then((value) => ({ value, error: null }))
+        .catch((error) => ({ value: null, error }))
+    : Promise.resolve({ value: null, error: null });
+  const [academicContext, testsResult] = await Promise.all([
+    academicContextPromise,
+    testsPromise
+  ]);
 
   if (!demoMode && !isAcademicContextComplete(academicContext)) {
     redirect(getOnboardingHref("/testele-mele"));
@@ -49,10 +60,10 @@ export default async function MyTestsPage() {
   let setupWarning = null;
 
   if (!demoMode) {
-    try {
-      tests = await getPrivateGeneratedTests(user.id);
-    } catch {
+    if (testsResult.error) {
       setupWarning = "Testele nu au putut fi incarcate momentan.";
+    } else if (testsResult.value) {
+      tests = testsResult.value;
     }
   }
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getImportJobMonitor } from "@/lib/ai/import-pipeline";
 import { getQuestionBankJobMonitor } from "@/lib/ai/question-bank-pipeline";
+import { getDemoUser } from "@/lib/demo-session";
 import { getLearningStudySetJobMonitor } from "@/lib/learning/study-set-pipeline";
 import { createClient } from "@/lib/supabase/server";
 
@@ -37,6 +38,22 @@ function mergeAllMonitors(generationMonitor, importMonitor, learningMonitor) {
 }
 
 export async function GET() {
+  const demoUser = await getDemoUser();
+  if (demoUser) {
+    return NextResponse.json(
+      {
+        activeJobs: [],
+        terminalJob: null,
+        generatedAt: new Date().toISOString()
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, max-age=0"
+        }
+      }
+    );
+  }
+
   const supabase = await createClient();
   const {
     data: { user }

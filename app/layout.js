@@ -4,7 +4,6 @@ import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AIJobGlobalNotifier } from "@/components/ai-job-global-notifier";
-import { FeedbackLauncherServer } from "@/components/feedback-launcher-server";
 import { GlobalNavigationFeedback } from "@/components/global-navigation-feedback";
 import { UsageTracker } from "@/components/usage-tracker";
 import { getPublicSiteUrl } from "@/lib/site";
@@ -50,16 +49,17 @@ export default function RootLayout({ children }) {
         <div id="main-content" tabIndex={-1}>
           {children}
         </div>
-        <UsageTracker />
+        <Suspense fallback={null}>
+          <UsageTracker />
+        </Suspense>
         <Suspense fallback={null}>
           <GlobalNavigationFeedback />
         </Suspense>
         <AIJobGlobalNotifier />
         <Suspense fallback={null}>
-          <FeedbackLauncherServer />
+          <Analytics />
+          <SpeedInsights />
         </Suspense>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

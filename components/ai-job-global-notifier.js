@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { FeedbackLauncher } from "@/components/feedback-launcher";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 
 const DISMISSED_KEY = "ai_job_notifier_dismissed";
@@ -96,6 +97,7 @@ function isActiveJob(job) {
 export function AIJobGlobalNotifier() {
   const [monitor, setMonitor] = useState({ activeJobs: [], terminalJob: null });
   const [dismissedIds, setDismissedIds] = useState([]);
+  const [authenticationState, setAuthenticationState] = useState("checking");
   const [isReady, setIsReady] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
   const activeJobsRef = useRef([]);
@@ -144,9 +146,14 @@ export function AIJobGlobalNotifier() {
 
         if (response.status === 401) {
           if (!isCancelled) {
+            setAuthenticationState("anonymous");
             setMonitor({ activeJobs: [], terminalJob: null });
           }
           return;
+        }
+
+        if (!isCancelled) {
+          setAuthenticationState("authenticated");
         }
 
         if (!response.ok) {
@@ -336,8 +343,22 @@ export function AIJobGlobalNotifier() {
     return null;
   }, [dismissedIds, monitor]);
 
+  const feedbackLauncher =
+    authenticationState === "authenticated" ? <FeedbackLauncher /> : null;
+
+  function dismiss() {
+    if (!notification) {
+      return;
+    }
+
+    const { job, kind } = notification;
+    const nextIds = [...dismissedIds, dismissalKey(job, kind)];
+    setDismissedIds(nextIds);
+    writeDismissedIds(nextIds);
+  }
+
   if (!notification) {
-    return null;
+    return feedbackLauncher;
   }
 
   const { kind, job, extraCount } = notification;
@@ -346,76 +367,73 @@ export function AIJobGlobalNotifier() {
   const href = jobHref(job);
   const presentation = getJobPresentation(job, nowMs);
 
-  function dismiss() {
-    const nextIds = [...dismissedIds, dismissalKey(job, kind)];
-    setDismissedIds(nextIds);
-    writeDismissedIds(nextIds);
-  }
-
   return (
-    <aside
-      className={`ai-job-notifier ${isActive ? "is-active" : ""} ${isFailed ? "is-failed" : "is-ready"}`}
-      role="status"
-      aria-live="polite"
-    >
-      <div className="ai-job-notifier-top">
-        <span className="ai-job-notifier-dot" aria-hidden="true" />
-        <div className="ai-job-notifier-copy">
-          <strong>{presentation.title}</strong>
-          <span>{jobTitle(job)}</span>
+    <>
+      {feedbackLauncher}
+      <aside
+        className={`ai-job-notifier ${isActive ? "is-active" : ""} ${isFailed ? "is-failed" : "is-ready"}`}
+        role="status"
+        aria-live="polite"
+      >
+        <div className="ai-job-notifier-top">
+          <span className="ai-job-notifier-dot" aria-hidden="true" />
+          <div className="ai-job-notifier-copy">
+            <strong>{presentation.title}</strong>
+            <span>{jobTitle(job)}</span>
+          </div>
+          <button
+            type="button"
+            className="ai-job-notifier-close feedback-modal-close"
+            onClick={dismiss}
+            aria-label="Inchide notificarea"
+          >
+            Inchide
+          </button>
         </div>
-        <button
-          type="button"
-          className="ai-job-notifier-close feedback-modal-close"
-          onClick={dismiss}
-          aria-label="Inchide notificarea"
-        >
-          Inchide
-        </button>
-      </div>
 
-      {isActive ? (
-        <>
-          {presentation.shouldShowProgressPercent ? (
-            <div className="ai-job-notifier-progress" aria-label={`Progres ${presentation.progressPercent}%`}>
-              <span style={{ width: `${presentation.progressPercent}%` }} />
+        {isActive ? (
+          <>
+            {presentation.shouldShowProgressPercent ? (
+              <div className="ai-job-notifier-progress" aria-label={`Progres ${presentation.progressPercent}%`}>
+                <span style={{ width: `${presentation.progressPercent}%` }} />
+              </div>
+            ) : null}
+            <div className="ai-job-notifier-meta">
+              <span>{presentation.progressLabel}</span>
+              <span>{presentation.stageLabel}</span>
+              <span>{formatTimeEstimate(job.estimatedRemainingSeconds)}</span>
             </div>
-          ) : null}
-          <div className="ai-job-notifier-meta">
-            <span>{presentation.progressLabel}</span>
-            <span>{presentation.stageLabel}</span>
-            <span>{formatTimeEstimate(job.estimatedRemainingSeconds)}</span>
-          </div>
-          <div className="ai-job-notifier-meta">
-            <span>{`astepti ${presentation.elapsedLabel}`}</span>
-            <span>{`activ ${presentation.lastActivityLabel}`}</span>
-          </div>
-          {presentation.detailMessage || presentation.primaryMessage ? (
-            <p className="ai-job-notifier-message">
-              {presentation.detailMessage || presentation.primaryMessage}
-            </p>
-          ) : null}
-          {extraCount ? <div className="ai-job-notifier-extra">{`+ inca ${extraCount} in procesare`}</div> : null}
-        </>
-      ) : (
-        <>
-          {presentation.shouldShowProgressPercent ? (
-            <div className="ai-job-notifier-progress" aria-label={`Progres ${presentation.progressPercent}%`}>
-              <span style={{ width: `${presentation.progressPercent}%` }} />
+            <div className="ai-job-notifier-meta">
+              <span>{`astepti ${presentation.elapsedLabel}`}</span>
+              <span>{`activ ${presentation.lastActivityLabel}`}</span>
             </div>
-          ) : null}
-          <div className="ai-job-notifier-meta">
-            <span>{presentation.progressLabel}</span>
-            <span>{presentation.statusLabel}</span>
-            <span>{`${presentation.elapsedCaption.toLowerCase()} ${presentation.elapsedLabel}`}</span>
-          </div>
-          <p className="ai-job-notifier-message">{presentation.primaryMessage}</p>
-        </>
-      )}
+            {presentation.detailMessage || presentation.primaryMessage ? (
+              <p className="ai-job-notifier-message">
+                {presentation.detailMessage || presentation.primaryMessage}
+              </p>
+            ) : null}
+            {extraCount ? <div className="ai-job-notifier-extra">{`+ inca ${extraCount} in procesare`}</div> : null}
+          </>
+        ) : (
+          <>
+            {presentation.shouldShowProgressPercent ? (
+              <div className="ai-job-notifier-progress" aria-label={`Progres ${presentation.progressPercent}%`}>
+                <span style={{ width: `${presentation.progressPercent}%` }} />
+              </div>
+            ) : null}
+            <div className="ai-job-notifier-meta">
+              <span>{presentation.progressLabel}</span>
+              <span>{presentation.statusLabel}</span>
+              <span>{`${presentation.elapsedCaption.toLowerCase()} ${presentation.elapsedLabel}`}</span>
+            </div>
+            <p className="ai-job-notifier-message">{presentation.primaryMessage}</p>
+          </>
+        )}
 
-      <Link className="ai-job-notifier-link" href={href}>
-        {isActive ? "Vezi progresul" : isFailed ? "Vezi detaliile" : "Deschide"}
-      </Link>
-    </aside>
+        <Link className="ai-job-notifier-link" href={href}>
+          {isActive ? "Vezi progresul" : isFailed ? "Vezi detaliile" : "Deschide"}
+        </Link>
+      </aside>
+    </>
   );
 }

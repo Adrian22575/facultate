@@ -86,7 +86,7 @@ export default async function AIActivityPage({ searchParams }) {
       }),
       getUserLicentaImportSessions(user.id, 12),
       getUserQuestionBankMaterials(user.id, 60),
-      getPrivateGeneratedTests(user.id)
+      getPrivateGeneratedTests(user.id, { academicContext })
     ]);
 
     activityJobs = [...jobs, ...importJobs, ...learningJobs].sort(
