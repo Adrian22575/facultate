@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BarChart3, FileText, Files, ListFilter, ReceiptText } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
+import { FilterSearch } from "@/components/filter-controls";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
@@ -105,16 +106,7 @@ function FilterButton({ active, onClick, children, icon: Icon = null, count = nu
 }
 
 function SearchInput({ value, onChange, placeholder }) {
-  return (
-    <input
-      type="search"
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      className="admin-search-input"
-      placeholder={placeholder}
-      aria-label={placeholder}
-    />
-  );
+  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
 }
 
 function PaginationControls({ page, totalPages, onChange }) {

@@ -8,7 +8,6 @@ import {
   FlaskConical,
   LoaderCircle,
   Save,
-  Search,
   Send,
   ShieldCheck,
   Undo2
@@ -18,6 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
 import { AdminLinkedInDistribution } from "@/components/admin-linkedin-distribution";
+import { FilterSearch } from "@/components/filter-controls";
 import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
 import {
   DEFAULT_LINKEDIN_POST_AUDIENCE,
@@ -401,10 +401,15 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
       <div id="editorial-workspace" className="admin-editorial-layout">
         <div className="admin-editorial-picker">
           <div className="admin-editorial-picker-controls">
-            <label className="admin-editorial-search" aria-label="Caută articole">
-              {searchBusy ? <LoaderCircle className="is-spinning" size={16} aria-hidden="true" /> : <Search size={16} aria-hidden="true" />}
-              <input value={articleQuery} onChange={(event) => setArticleQuery(event.target.value)} placeholder="Caută după titlu" />
-            </label>
+            <FilterSearch
+              value={articleQuery}
+              onChange={setArticleQuery}
+              placeholder="Caută după titlu"
+              ariaLabel="Caută articole"
+              compact
+              loading={searchBusy}
+              className="admin-editorial-search"
+            />
             <p className="admin-editorial-list-count">{articleQuery.trim().length >= 2 ? searchBusy ? "Căutăm articole…" : `${filteredArticles.length} rezultate` : `${articles.length} articole recente`}</p>
           </div>
           <div className="admin-editorial-list" role="group" aria-label="Alege articolul de lucru">

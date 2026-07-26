@@ -27,6 +27,7 @@ import {
   XCircle
 } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
+import { FilterSearch } from "@/components/filter-controls";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
@@ -170,16 +171,7 @@ function FilterButton({ active, onClick, children, icon: Icon = null, count = nu
 }
 
 function SearchInput({ value, onChange, placeholder }) {
-  return (
-    <input
-      type="search"
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      className="admin-search-input"
-      placeholder={placeholder}
-      aria-label={placeholder}
-    />
-  );
+  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
 }
 
 function EmptyState({ title, subtitle }) {

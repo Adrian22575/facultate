@@ -1,6 +1,6 @@
 "use client";
 
-import { CircleAlert, CheckCircle2, Edit3, Plus, Save, Trash2, X } from "lucide-react";
+import { CircleAlert, CheckCircle2, Edit3, ListFilter, Plus, Save, Trash2, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -10,6 +10,7 @@ import {
   deleteQuestionBankItemAction,
   updateQuestionBankItemAction
 } from "@/app/ai/actions";
+import { FilterSearch, FilterSelect } from "@/components/filter-controls";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { normalizeSearchText, truncateText } from "@/lib/quiz";
 import { useDialogFocus } from "@/lib/ui/dialog";
@@ -809,37 +810,33 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                     );
                   })}
                 </div>
-                <label className="review-search-control">
-                  <span>Cauta</span>
-                  <input
-                    className="input-search"
-                    type="search"
-                    inputMode="search"
-                    placeholder="Numar, intrebare sau raspuns"
-                    value={searchQuery}
-                    onChange={(event) => {
-                      setSearchQuery(event.target.value);
-                      setVisiblePage(1);
-                    }}
-                  />
-                </label>
-                <label>
-                  <span>Afiseaza</span>
-                  <select
-                    value={String(pageSize)}
-                    onChange={(event) => {
-                      const value = event.target.value === "all" ? "all" : Number(event.target.value);
-                      setPageSize(value);
-                      setVisiblePage(1);
-                    }}
-                  >
-                    {REVIEW_PAGE_SIZE_OPTIONS.map((option) => (
-                      <option key={String(option)} value={String(option)}>
-                        {option === "all" ? "Toate" : `${option} intrebari`}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <FilterSearch
+                  value={searchQuery}
+                  onChange={(value) => {
+                    setSearchQuery(value);
+                    setVisiblePage(1);
+                  }}
+                  placeholder="Numar, intrebare sau raspuns"
+                  ariaLabel="Cauta intrebarile"
+                  compact
+                  className="review-search-control"
+                  inputProps={{ inputMode: "search" }}
+                />
+                <FilterSelect
+                  label="Afiseaza"
+                  value={String(pageSize)}
+                  onChange={(value) => {
+                    setPageSize(value === "all" ? "all" : Number(value));
+                    setVisiblePage(1);
+                  }}
+                  icon={ListFilter}
+                  ariaLabel="Numar de intrebari afisate"
+                  compact
+                  options={REVIEW_PAGE_SIZE_OPTIONS.map((option) => ({
+                    value: String(option),
+                    label: option === "all" ? "Toate" : `${option} intrebari`
+                  }))}
+                />
                 <span className="review-list-range">
                   {`${searchedItems.length ? visibleStart + 1 : 0}-${visibleEnd} din ${searchedItems.length}`}
                 </span>

@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { cloneElement, isValidElement, useMemo, useState } from "react";
-import { ArrowRight, Building2, GraduationCap, Search, School, Sparkles } from "lucide-react";
+import { ArrowRight, Building2, GraduationCap, School, Sparkles } from "lucide-react";
+
+import { FilterSearch } from "@/components/filter-controls";
 
 const SELECTION_VISUALS = {
   institution: { icon: Building2, label: "instituția" },
@@ -111,28 +113,14 @@ export function OnboardingSelectionStep({
         <>
           {showSearch ? (
             <div className="onboarding-picker-search">
-              <div className="onboarding-search-row">
-                <Search aria-hidden="true" size={19} strokeWidth={2.3} />
-                <input
-                  className="input-search"
-                  type="search"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder={searchPlaceholder}
-                  aria-label={searchPlaceholder}
-                  autoComplete="off"
-                />
-                {normalizedQuery ? (
-                  <button
-                    type="button"
-                    className="btn-link secondary onboarding-search-clear"
-                    onClick={() => setQuery("")}
-                    aria-label="Șterge căutarea"
-                  >
-                    Șterge
-                  </button>
-                ) : null}
-              </div>
+              <FilterSearch
+                value={query}
+                onChange={setQuery}
+                placeholder={searchPlaceholder}
+                ariaLabel={searchPlaceholder}
+                clearable
+                inputProps={{ autoComplete: "off" }}
+              />
               {visibleCountLabel ? (
                 <p className="micro-copy onboarding-search-status" aria-live="polite">
                   {visibleCountLabel}

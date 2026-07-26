@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpenText, Brain, Search, Sparkles, X } from "lucide-react";
+import { BookOpenText, Brain, Search, Sparkles, Tags } from "lucide-react";
 import { useMemo, useState } from "react";
+
+import { FilterSearch, FilterSelect, FiltersToolbar } from "@/components/filter-controls";
 
 function normalize(value) {
   return String(value || "")
@@ -71,21 +73,36 @@ export function DictionaryIndexClient({ categories, terms, recent, total }) {
 
       <section className="dictionary-search-panel" aria-labelledby="dictionary-search-title">
         <div className="dictionary-search-head"><div><span>Găsește rapid</span><h2 id="dictionary-search-title">Caută în dicționar</h2></div><span><BookOpenText aria-hidden="true" size={16} />{total} termeni</span></div>
-        <label className="dictionary-search-field">
-          <Search aria-hidden="true" size={20} />
-          <span className="sr-only">Caută un termen</span>
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Caută un termen sau o expresie" data-usage-event="dictionary_search_used" />
-          {query ? <button type="button" onClick={() => setQuery("")} aria-label="Șterge căutarea"><X size={17} /></button> : null}
-        </label>
+        <FiltersToolbar layout="two" ariaLabel="Cautare si filtrare dictionar">
+          <FilterSearch
+            value={query}
+            onChange={setQuery}
+            placeholder="Caută un termen sau o expresie"
+            ariaLabel="Caută un termen"
+            clearable
+            inputProps={{ "data-usage-event": "dictionary_search_used" }}
+          />
+          <FilterSelect
+            label="Categorie"
+            value={activeCategory}
+            onChange={setActiveCategory}
+            icon={Tags}
+            ariaLabel="Filtrează după categorie"
+            dataUsageEvent="dictionary_category_filtered"
+            options={[
+              { value: "toate", label: "Toate categoriile" },
+              ...categories.map((category) => ({
+                value: category.slug,
+                label: category.name
+              }))
+            ]}
+          />
+        </FiltersToolbar>
         <div className="dictionary-letter-filter" aria-label="Filtrează după literă">
           {letters.map((letter) => {
             const available = letter === "Toate" || availableLetters.has(letter);
             return <button key={letter} type="button" disabled={!available} className={activeLetter === letter ? "is-active" : ""} onClick={() => setActiveLetter(letter)} data-usage-event="dictionary_letter_filtered">{letter}</button>;
           })}
-        </div>
-        <div className="dictionary-category-filter" aria-label="Filtrează după categorie">
-          <button type="button" className={activeCategory === "toate" ? "is-active" : ""} onClick={() => setActiveCategory("toate")} data-usage-event="dictionary_category_filtered">Toate categoriile</button>
-          {categories.map((category) => <button key={category.slug} type="button" className={activeCategory === category.slug ? "is-active" : ""} onClick={() => setActiveCategory(category.slug)} data-usage-event="dictionary_category_filtered">{category.name}</button>)}
         </div>
       </section>
 

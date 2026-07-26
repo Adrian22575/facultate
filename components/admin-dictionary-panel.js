@@ -10,7 +10,6 @@ import {
   LoaderCircle,
   RefreshCw,
   Save,
-  Search,
   Send,
   Undo2
 } from "lucide-react";
@@ -18,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
+import { FilterSearch } from "@/components/filter-controls";
 
 const ACTIVE_RUN_STATUSES = new Set(["started", "generated", "validated"]);
 const RUN_PROGRESS = { started: 12, generated: 62, validated: 88 };
@@ -354,10 +354,16 @@ export function AdminDictionaryPanel({ categories = [], terms = [], runs = [], a
       <div className="admin-dictionary-grid">
         <div className="admin-dictionary-list">
           <div className="admin-dictionary-list-tools">
-            <label className="admin-dictionary-search" aria-label="Caută termeni">
-              {searchBusy ? <LoaderCircle className="is-spinning" size={16} aria-hidden="true" /> : <Search size={16} aria-hidden="true" />}
-              <input type="search" value={termQuery} onChange={(event) => setTermQuery(event.target.value)} placeholder="Caută după termen" autoComplete="off" />
-            </label>
+            <FilterSearch
+              value={termQuery}
+              onChange={setTermQuery}
+              placeholder="Caută după termen"
+              ariaLabel="Caută termeni"
+              compact
+              loading={searchBusy}
+              className="admin-dictionary-search"
+              inputProps={{ autoComplete: "off" }}
+            />
             <p className="admin-dictionary-list-count" aria-live="polite">{termQuery.trim().length >= 2 ? searchBusy ? "Căutăm în dicționar…" : searchError ? "Căutarea nu este disponibilă" : `${visibleTerms.length} rezultate` : `${terms.length} termeni recenți`}</p>
           </div>
           {visibleTerms.map((term) => {

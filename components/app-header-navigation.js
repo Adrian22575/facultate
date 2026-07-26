@@ -59,6 +59,7 @@ export function AppHeaderNavigation({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+  const [pageScrolled, setPageScrolled] = useState(false);
   const [portalTarget, setPortalTarget] = useState(null);
   const menuButtonRef = useRef(null);
   const menuCloseButtonRef = useRef(null);
@@ -88,6 +89,19 @@ export function AppHeaderNavigation({
 
   useEffect(() => {
     setPortalTarget(document.body);
+  }, []);
+
+  useEffect(() => {
+    function updateScrollState() {
+      setPageScrolled(window.scrollY > 8);
+    }
+
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateScrollState);
+    };
   }, []);
 
   useEffect(() => {
@@ -212,7 +226,7 @@ export function AppHeaderNavigation({
   }
 
   return (
-    <div className="header-actions">
+    <div className="header-actions" data-page-scrolled={pageScrolled ? "true" : "false"}>
       {showPrivateNav ? (
         <aside className={`app-sidebar ${desktopCollapsed ? "is-collapsed" : ""}`} aria-label="Meniu aplicatie">
           <SidebarContent variant="desktop" />

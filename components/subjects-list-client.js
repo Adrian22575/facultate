@@ -1,9 +1,15 @@
 "use client";
 
-import { Search, SlidersHorizontal } from "lucide-react";
+import { CalendarDays, GraduationCap } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
+import {
+  FilterSearch,
+  FilterSelect,
+  FilterSortSelect,
+  FiltersToolbar
+} from "@/components/filter-controls";
 import { SubjectLibraryCard } from "@/components/subject-library-card";
 import { sortSubjectLibrary } from "@/lib/subject-library";
 
@@ -79,9 +85,6 @@ export function SubjectsListClient({
   const [yearFilter, setYearFilter] = useState("all");
   const [semesterFilter, setSemesterFilter] = useState("all");
   const [classFilter, setClassFilter] = useState("all");
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const mobileFiltersRef = useRef(null);
-  const mobileFiltersButtonRef = useRef(null);
 
   const rows = useMemo(
     () => createSubjectRows(subjects, subjectLibrary, subjectAllocations, userType),
@@ -145,110 +148,16 @@ export function SubjectsListClient({
     filterOptions.semesters.length > 0 ||
     filterOptions.classes.length > 0;
   const hasActiveFilters = yearFilter !== "all" || semesterFilter !== "all" || classFilter !== "all";
-  const activeFilterCount = [yearFilter, semesterFilter, classFilter].filter(
-    (value) => value !== "all"
-  ).length;
   const normalizedQuery = normalizeText(query.trim());
   const showLicenta =
     Number(licentaExam?.questionCount || 0) > 0 &&
     (!normalizedQuery || normalizeText("licenta").includes(normalizedQuery));
   const totalVisible = filteredRows.length + (showLicenta ? 1 : 0);
   const isSearchEmpty = Boolean(query.trim() || hasActiveFilters) && !totalVisible;
-  const mobileFilterPanelId = `${sectionId}-mobile-filter-panel`;
-
-  useEffect(() => {
-    if (!filtersOpen) return undefined;
-
-    function handlePointerDown(event) {
-      if (!mobileFiltersRef.current?.contains(event.target)) {
-        setFiltersOpen(false);
-      }
-    }
-
-    function handleKeyDown(event) {
-      if (event.key !== "Escape") return;
-      setFiltersOpen(false);
-      mobileFiltersButtonRef.current?.focus();
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [filtersOpen]);
-
   function resetAcademicFilters() {
     setYearFilter("all");
     setSemesterFilter("all");
     setClassFilter("all");
-  }
-
-  function renderAcademicFilters(variant) {
-    const isInline = variant === "inline";
-    const fieldClassName = `subject-filter-field${isInline ? " is-inline" : ""}`;
-
-    return (
-      <>
-        {userType === "student" && filterOptions.years.length ? (
-          <label className={`${fieldClassName} is-year`}>
-            <span className={isInline ? "sr-only" : undefined}>An</span>
-            <select
-              value={yearFilter}
-              aria-label="Filtreaza dupa anul de studiu"
-              onChange={(event) => setYearFilter(event.target.value)}
-            >
-              <option value="all">{isInline ? "An: Toti anii" : "Toti anii"}</option>
-              {filterOptions.years.map((year) => (
-                <option key={year} value={year}>
-                  {isInline ? `An: ${year}` : `Anul ${year}`}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-
-        {userType === "elev" && filterOptions.classes.length ? (
-          <label className={`${fieldClassName} is-class`}>
-            <span className={isInline ? "sr-only" : undefined}>Clasa</span>
-            <select
-              value={classFilter}
-              aria-label="Filtreaza dupa clasa"
-              onChange={(event) => setClassFilter(event.target.value)}
-            >
-              <option value="all">{isInline ? "Clasa: Toate" : "Toate clasele"}</option>
-              {filterOptions.classes.map((schoolClass) => (
-                <option key={schoolClass} value={schoolClass}>
-                  {isInline ? `Clasa: ${schoolClass}` : schoolClass}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-
-        {filterOptions.semesters.length ? (
-          <label className={`${fieldClassName} is-semester`}>
-            <span className={isInline ? "sr-only" : undefined}>Semestru</span>
-            <select
-              value={semesterFilter}
-              aria-label="Filtreaza dupa semestru"
-              onChange={(event) => setSemesterFilter(event.target.value)}
-            >
-              <option value="all">
-                {isInline ? "Semestru: Toate semestrele" : "Toate semestrele"}
-              </option>
-              {filterOptions.semesters.map((semester) => (
-                <option key={semester} value={semester}>
-                  {isInline ? `Semestru: ${semester}` : `Semestrul ${semester}`}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-      </>
-    );
   }
 
   return (
@@ -269,94 +178,87 @@ export function SubjectsListClient({
         </div>
       ) : null}
 
-      <div className="subjects-toolbar" aria-label="Cautare, sortare si filtrare materii">
-        <label className="subjects-search-field">
-          <span className="sr-only">Cauta materia</span>
-          <Search size={18} strokeWidth={2.5} aria-hidden="true" />
-          <input
-            className="input-search"
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Cauta materia"
+      <FiltersToolbar
+        className="subjects-toolbar"
+        layout="subjects"
+        ariaLabel="Cautare, sortare si filtrare materii"
+      >
+        <FilterSearch
+          value={query}
+          onChange={setQuery}
+          placeholder="Cauta materia"
+          ariaLabel="Cauta materia"
+        />
+
+        {userType === "student" && filterOptions.years.length ? (
+          <FilterSelect
+            label="An"
+            value={yearFilter}
+            onChange={setYearFilter}
+            icon={GraduationCap}
+            ariaLabel="Filtreaza dupa anul de studiu"
+            options={[
+              { value: "all", label: "Toti anii" },
+              ...filterOptions.years.map((year) => ({ value: year, label: `Anul ${year}` }))
+            ]}
           />
-        </label>
+        ) : userType === "elev" && filterOptions.classes.length ? (
+          <FilterSelect
+            label="Clasa"
+            value={classFilter}
+            onChange={setClassFilter}
+            icon={GraduationCap}
+            ariaLabel="Filtreaza dupa clasa"
+            options={[
+              { value: "all", label: "Toate clasele" },
+              ...filterOptions.classes.map((schoolClass) => ({
+                value: schoolClass,
+                label: schoolClass
+              }))
+            ]}
+          />
+        ) : (
+          <span className="subjects-toolbar-placeholder" aria-hidden="true" />
+        )}
 
-        <div className="subjects-toolbar-controls">
-          <label className="subjects-sort-field">
-            <span className="sr-only">Sorteaza materiile</span>
-            <select
-              value={sort}
-              aria-label="Sorteaza materiile"
-              onChange={(event) => setSort(event.target.value)}
-            >
-              <option value="recent">Sorteaza: Activitate recenta</option>
-              <option value="progress">Sorteaza: Progres</option>
-              <option value="alphabetical">Sorteaza: Ordine alfabetica</option>
-            </select>
-          </label>
+        {filterOptions.semesters.length ? (
+          <FilterSelect
+            label="Semestru"
+            value={semesterFilter}
+            onChange={setSemesterFilter}
+            icon={CalendarDays}
+            ariaLabel="Filtreaza dupa semestru"
+            options={[
+              { value: "all", label: "Toate semestrele" },
+              ...filterOptions.semesters.map((semester) => ({
+                value: semester,
+                label: `Semestrul ${semester}`
+              }))
+            ]}
+          />
+        ) : (
+          <span className="subjects-toolbar-placeholder" aria-hidden="true" />
+        )}
 
-          {hasFilters ? (
-            <div className="subjects-desktop-filters">
-              {renderAcademicFilters("inline")}
+        <FilterSortSelect
+          value={sort}
+          onChange={setSort}
+          ariaLabel="Sorteaza materiile"
+          options={[
+            { value: "recent", label: "Activitate recenta" },
+            { value: "progress", label: "Progres" },
+            { value: "alphabetical", label: "Ordine alfabetica" }
+          ]}
+        />
+      </FiltersToolbar>
 
-              {hasActiveFilters ? (
-                <button
-                  type="button"
-                  className="subjects-toolbar-reset"
-                  onClick={resetAcademicFilters}
-                >
-                  Reseteaza
-                </button>
-              ) : null}
-            </div>
-          ) : null}
-
-          {hasFilters ? (
-            <div className="subjects-mobile-filter" ref={mobileFiltersRef}>
-              <button
-                ref={mobileFiltersButtonRef}
-                type="button"
-                className="subjects-mobile-filter-trigger"
-                aria-expanded={filtersOpen}
-                aria-controls={mobileFilterPanelId}
-                aria-label={
-                  activeFilterCount ? `Filtre, ${activeFilterCount} active` : "Filtre"
-                }
-                onClick={() => setFiltersOpen((current) => !current)}
-              >
-                <SlidersHorizontal size={16} strokeWidth={2.2} aria-hidden="true" />
-                <span>Filtre</span>
-                {activeFilterCount ? (
-                  <span className="subjects-filter-count" aria-hidden="true">
-                    {activeFilterCount}
-                  </span>
-                ) : null}
-              </button>
-
-              {filtersOpen ? (
-                <div
-                  id={mobileFilterPanelId}
-                  className="subjects-filter-options"
-                  role="region"
-                  aria-label="Filtre academice"
-                >
-                  <div className="subjects-filter-panel-head">
-                    <strong>Filtre academice</strong>
-                    {hasActiveFilters ? (
-                      <button type="button" onClick={resetAcademicFilters}>
-                        Reseteaza
-                      </button>
-                    ) : null}
-                  </div>
-
-                  {renderAcademicFilters("panel")}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
+      {hasFilters && hasActiveFilters ? (
+        <div className="subjects-toolbar-actions">
+          <button type="button" className="subjects-toolbar-reset" onClick={resetAcademicFilters}>
+            Reseteaza filtrele
+          </button>
         </div>
-      </div>
+      ) : null}
 
       {totalVisible ? (
         <div className="subjects-grid">

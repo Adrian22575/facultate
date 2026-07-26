@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CalendarDays, Clock3, Search, ShieldCheck, X } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock3, ShieldCheck, Tags } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+
+import { FilterSearch, FilterSelect, FiltersToolbar } from "@/components/filter-controls";
 
 function dateLabel(value) {
   return value ? new Intl.DateTimeFormat("ro-RO", { day: "numeric", month: "long", year: "numeric" }).format(new Date(value)) : "";
@@ -117,22 +119,44 @@ export function EditorialIndexClient({ featured, articles, categories }) {
             <span>Arhivă</span>
             <h2 id="archive-title">Ediții anterioare</h2>
           </div>
-          <div className="editorial-filter-panel">
-            <label className="editorial-search">
-              <Search size={19} />
-              <span className="sr-only">Caută în articole</span>
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Caută un subiect" data-usage-event="editorial_search_used" />
-              {query ? <button type="button" aria-label="Șterge căutarea" onClick={() => setQuery("")}><X size={16} /></button> : null}
-            </label>
-            <div className="editorial-filter-row">
-              <div>{["Toate", ...categories].map((item) => <button key={item} className={category === item ? "is-active" : ""} type="button" onClick={() => setCategory(item)} data-usage-event="editorial_category_filtered">{item}</button>)}</div>
-              <select value={period} onChange={(event) => setPeriod(event.target.value)} aria-label="Filtrează după perioadă">
-                <option value="toate">Oricând</option>
-                <option value="30">Ultimele 30 zile</option>
-                <option value="90">Ultimele 3 luni</option>
-              </select>
-            </div>
-          </div>
+          <FiltersToolbar
+            className="editorial-filter-panel"
+            layout="three"
+            ariaLabel="Cautare si filtrare articole"
+          >
+            <FilterSearch
+              value={query}
+              onChange={setQuery}
+              placeholder="Caută un subiect"
+              ariaLabel="Caută în articole"
+              clearable
+              inputProps={{ "data-usage-event": "editorial_search_used" }}
+            />
+            <FilterSelect
+              label="Categorie"
+              value={category}
+              onChange={setCategory}
+              icon={Tags}
+              ariaLabel="Filtrează după categorie"
+              dataUsageEvent="editorial_category_filtered"
+              options={["Toate", ...categories].map((item) => ({
+                value: item,
+                label: item === "Toate" ? "Toate categoriile" : item
+              }))}
+            />
+            <FilterSelect
+              label="Perioada"
+              value={period}
+              onChange={setPeriod}
+              icon={CalendarDays}
+              ariaLabel="Filtrează după perioadă"
+              options={[
+                { value: "toate", label: "Oricând" },
+                { value: "30", label: "Ultimele 30 zile" },
+                { value: "90", label: "Ultimele 3 luni" }
+              ]}
+            />
+          </FiltersToolbar>
           <p className="editorial-results-count" aria-live="polite">{filtered.length} {filtered.length === 1 ? "ediție găsită" : "ediții găsite"}</p>
           {filtered.length ? (
             <>

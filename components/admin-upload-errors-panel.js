@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { FilterSearch } from "@/components/filter-controls";
+
 const PAGE_SIZE = 10;
 
 function normalizeText(value) {
@@ -57,16 +59,7 @@ function paginateRows(rows, page) {
 }
 
 function SearchInput({ value, onChange, placeholder }) {
-  return (
-    <input
-      type="search"
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      className="admin-search-input"
-      placeholder={placeholder}
-      aria-label={placeholder}
-    />
-  );
+  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
 }
 
 function PaginationControls({ page, totalPages, onChange }) {
