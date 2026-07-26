@@ -6,7 +6,6 @@ import { useMemo, useState } from "react";
 
 import {
   FilterSearch,
-  FilterResetButton,
   FilterSelect,
   FilterSortSelect,
   FiltersToolbar
@@ -145,7 +144,6 @@ export function SubjectsListClient({
   }, [classFilter, query, rows, semesterFilter, sort, yearFilter]);
 
   const hasActiveFilters = yearFilter !== "all" || semesterFilter !== "all" || classFilter !== "all";
-  const hasActiveToolbarControls = hasActiveFilters || sort !== "recent";
   const normalizedQuery = normalizeText(query.trim());
   const showLicenta =
     Number(licentaExam?.questionCount || 0) > 0 &&
@@ -156,11 +154,6 @@ export function SubjectsListClient({
     setYearFilter("all");
     setSemesterFilter("all");
     setClassFilter("all");
-  }
-
-  function resetToolbarControls() {
-    resetAcademicFilters();
-    setSort("recent");
   }
 
   return (
@@ -191,6 +184,8 @@ export function SubjectsListClient({
           onChange={setQuery}
           placeholder="Cauta materia"
           ariaLabel="Cauta materia"
+          clearable
+          onClear={() => setQuery("")}
         />
 
         {userType === "student" && filterOptions.years.length ? (
@@ -200,6 +195,8 @@ export function SubjectsListClient({
             onChange={setYearFilter}
             icon={GraduationCap}
             ariaLabel="Filtreaza dupa anul de studiu"
+            clearable
+            onClear={() => setYearFilter("all")}
             options={[
               { value: "all", label: "Toti anii" },
               ...filterOptions.years.map((year) => ({ value: year, label: `Anul ${year}` }))
@@ -212,6 +209,8 @@ export function SubjectsListClient({
             onChange={setClassFilter}
             icon={GraduationCap}
             ariaLabel="Filtreaza dupa clasa"
+            clearable
+            onClear={() => setClassFilter("all")}
             options={[
               { value: "all", label: "Toate clasele" },
               ...filterOptions.classes.map((schoolClass) => ({
@@ -231,6 +230,8 @@ export function SubjectsListClient({
             onChange={setSemesterFilter}
             icon={CalendarDays}
             ariaLabel="Filtreaza dupa semestru"
+            clearable
+            onClear={() => setSemesterFilter("all")}
             options={[
               { value: "all", label: "Toate semestrele" },
               ...filterOptions.semesters.map((semester) => ({
@@ -254,12 +255,6 @@ export function SubjectsListClient({
           ]}
         />
       </FiltersToolbar>
-
-      {hasActiveToolbarControls ? (
-        <div className="subjects-toolbar-actions">
-          <FilterResetButton onClick={resetToolbarControls} />
-        </div>
-      ) : null}
 
       {totalVisible ? (
         <div className="subjects-grid">

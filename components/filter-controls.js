@@ -83,6 +83,10 @@ export function FilterSelect({
   compact = false,
   disabled = false,
   dataUsageEvent,
+  clearable = false,
+  clearValue = "all",
+  onClear,
+  clearLabel,
   className = ""
 }) {
   const [open, setOpen] = useState(false);
@@ -154,6 +158,7 @@ export function FilterSelect({
       className={joinClassNames(
         "filter-select",
         compact && "is-compact",
+        clearable && value !== clearValue && "is-clearable",
         open && "is-open",
         className
       )}
@@ -206,6 +211,19 @@ export function FilterSelect({
             </button>
           ))}
         </div>
+      ) : null}
+      {clearable && value !== clearValue ? (
+        <button
+          type="button"
+          className="filter-select-clear"
+          aria-label={clearLabel || `Elimina filtrul ${label}`}
+          onClick={() => {
+            (onClear || (() => onChange(clearValue)))();
+            triggerRef.current?.focus();
+          }}
+        >
+          <X size={15} strokeWidth={2.3} aria-hidden="true" />
+        </button>
       ) : null}
     </div>
   );

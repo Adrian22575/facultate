@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AdminCenterClient } from "@/components/admin-center-client";
 import { AdminDictionaryPanel } from "@/components/admin-dictionary-panel";
+import { AdminEditorialArticlesPage } from "@/components/admin-editorial-articles-page";
 import { AdminEditorialPanel } from "@/components/admin-editorial-panel";
 import { AdminOpenAILogsPanel } from "@/components/admin-openai-logs-panel";
 import { AdminPageShell } from "@/components/admin-page-shell";
@@ -112,20 +113,21 @@ export default async function AdminSubpage({ params, searchParams }) {
   }
 
   if (route.kind === "editorial") {
-    const [editorialData, linkedInData] = await Promise.all([
-      getEditorialAdminOverview(),
-      getLinkedInAdminOverview()
-    ]);
-    content = (
-      <AdminEditorialPanel
-        key={route.path}
-        {...editorialData}
-        linkedIn={linkedInData}
-        initialPane={route.pane}
-        fixedPane={route.pane}
-        initialLinkedInPostId={resolvedSearchParams?.linkedin_post || ""}
-      />
-    );
+    const editorialData = await getEditorialAdminOverview();
+    if (route.pane === "article") {
+      content = <AdminEditorialArticlesPage key={route.path} {...editorialData} />;
+    } else {
+      content = (
+        <AdminEditorialPanel
+          key={route.path}
+          {...editorialData}
+          linkedIn={await getLinkedInAdminOverview()}
+          initialPane={route.pane}
+          fixedPane={route.pane}
+          initialLinkedInPostId={resolvedSearchParams?.linkedin_post || ""}
+        />
+      );
+    }
   }
 
   return <AdminPageShell activeRoute={route}>{content}</AdminPageShell>;
