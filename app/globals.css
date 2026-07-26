@@ -1371,6 +1371,7 @@ p {
   overflow: hidden;
   color: var(--ink);
   font-size: 0.86rem;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2235,13 +2236,13 @@ p {
 }
 
 .subject-helper-note span {
-  color: var(--ink);
-  font-weight: 800;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .subject-helper-note a {
   color: var(--primary-dark);
-  font-weight: 900;
+  font-weight: 500;
   text-decoration: none;
 }
 
@@ -2308,13 +2309,14 @@ p {
 .subjects-resume-link > span {
   color: var(--primary-dark);
   font-size: 0.84rem;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .subjects-resume-link strong {
   overflow: hidden;
   color: var(--ink);
   font-size: 0.88rem;
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2662,7 +2664,7 @@ p {
 .subjects-recent-row strong,
 .subjects-recent-row small { display: block; }
 .subjects-recent-row strong { color: var(--ink); }
-.subjects-recent-row small { margin-top: 3px; color: var(--muted); font-size: .86rem; font-weight: 700; }
+.subjects-recent-row small { margin-top: 3px; color: var(--muted); font-size: .86rem; font-weight: 500; }
 .subjects-recent-row em { display: inline-flex; align-items: center; gap: 6px; color: var(--primary-dark); font-size: .86rem; font-style: normal; font-weight: 850; }
 .subjects-recent-row:hover { border-color: #b8d0ef; background: #fff; }
 
@@ -2672,7 +2674,7 @@ p {
   gap: 7px;
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .subjects-search-field {
@@ -7444,6 +7446,14 @@ select {
   border-radius: var(--radius);
   color: var(--ink);
   font-size: 16px;
+  font-weight: 400;
+}
+
+.input-search::placeholder,
+.nav-search::placeholder {
+  color: var(--muted);
+  font-weight: 400;
+  opacity: 1;
 }
 
 select {
@@ -20968,7 +20978,7 @@ td {
 .learning-processing-result p {
   max-width: 640px;
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -21000,7 +21010,7 @@ td {
   max-width: 760px;
   margin: 14px 0 0;
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -21359,7 +21369,7 @@ td {
 .learning-start-chapter small {
   color: var(--muted);
   font-size: 0.78rem;
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.35;
 }
 
@@ -21418,7 +21428,7 @@ td {
 .learning-chapter-card p,
 .learning-question-card p {
   color: var(--muted);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -21495,7 +21505,7 @@ td {
   padding: 0 13px 10px;
   color: var(--muted);
   font-size: 0.88rem;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.5;
 }
 
@@ -21535,7 +21545,7 @@ td {
 .learning-test-toolbar span,
 .learning-question-meta {
   color: var(--muted);
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .learning-flashcard {
@@ -21664,7 +21674,7 @@ td {
   max-width: 780px;
   margin: 8px 0 0;
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -21727,7 +21737,7 @@ td {
 .learning-model-answer small {
   margin: 0;
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.5;
 }
 
@@ -21797,7 +21807,7 @@ td {
   max-width: 760px;
   margin: 8px 0 0;
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -21848,7 +21858,7 @@ td {
   display: block;
   margin-top: 2px;
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .learning-leaderboard-list b {
@@ -21890,13 +21900,13 @@ td {
 .learning-test-result p,
 .learning-finish-panel p {
   margin: 4px 0 0;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .learning-empty-panel {
   padding: 18px;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .learning-plan-list {
@@ -21925,7 +21935,7 @@ td {
 .learning-plan-card p {
   margin: 0;
   color: var(--muted);
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .learning-study-footer {
