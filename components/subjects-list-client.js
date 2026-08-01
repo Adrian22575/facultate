@@ -9,7 +9,7 @@ import {
   FilterSelect,
   FilterSortSelect,
   FiltersToolbar
-} from "@/components/filter-controls";
+} from "@/components/ui/collection-controls";
 import { SubjectLibraryCard } from "@/components/subject-library-card";
 import { Button } from "@/components/ui/action";
 import { EmptyState } from "@/components/ui/state";
@@ -177,8 +177,7 @@ export function SubjectsListClient({
       ) : null}
 
       <FiltersToolbar
-        className="subjects-toolbar"
-        layout="subjects"
+        layout="four"
         ariaLabel="Cautare, sortare si filtrare materii"
       >
         <FilterSearch

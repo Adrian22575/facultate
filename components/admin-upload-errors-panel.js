@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 
 const PAGE_SIZE = 10;
 
@@ -60,34 +60,6 @@ function paginateRows(rows, page) {
 
 function SearchInput({ value, onChange, placeholder }) {
   return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
-}
-
-function PaginationControls({ page, totalPages, onChange }) {
-  if (totalPages <= 1) {
-    return null;
-  }
-
-  return (
-    <div className="admin-pagination">
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page - 1)}
-        disabled={page <= 1}
-      >
-        Inapoi
-      </button>
-      <span className="admin-pagination-label">{`Pagina ${page} din ${totalPages}`}</span>
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page + 1)}
-        disabled={page >= totalPages}
-      >
-        Inainte
-      </button>
-    </div>
-  );
 }
 
 function CellPill({ children, tone = "default" }) {
@@ -272,10 +244,10 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
         </table>
       </div>
 
-      <PaginationControls
+      <Pagination
         page={paginated.page}
         totalPages={paginated.totalPages}
-        onChange={setPage}
+        onPageChange={setPage}
       />
     </section>
   );

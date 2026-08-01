@@ -33,7 +33,8 @@ const primitiveCssEntries = [
   "components/ui/form-field.module.css",
   "components/ui/status.module.css",
   "components/ui/surface-card.module.css",
-  "components/ui/state.module.css"
+  "components/ui/state.module.css",
+  "components/ui/collection-controls.module.css"
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -128,7 +129,7 @@ for (const { relativePath, css } of cssSources) {
   }
 
   if (relativePath === "app/globals.css") {
-    const forbiddenPatternName = /(?:^|-)(?:card|panel|surface|empty|loading|error|success|callout|notice|placeholder)(?:$|-)/;
+    const forbiddenPatternName = /(?:^|-)(?:card|panel|surface|empty|loading|error|success|callout|notice|placeholder|toolbar|filter|search|sort|results|pagination|pager|table|data-grid|list-controls|bulk-actions)(?:$|-)/;
     const newPatternNames = new Set(
       Array.from(governedCss.matchAll(/\.([A-Za-z_][\w-]*)/g), (match) => match[1])
         .filter((className) => forbiddenPatternName.test(className))
@@ -184,7 +185,14 @@ const legacySelectorCeilings = {
   ".surface": 12,
   ".ui-panel-card": 2,
   ".draft-card": 4,
-  ".empty-state": 3
+  ".empty-state": 3,
+  ".admin-toolbar": 15,
+  ".admin-filter-row": 3,
+  ".review-list-controls": 7,
+  ".review-pagination": 2,
+  ".table-scroll": 1,
+  ".admin-table-scroll": 3,
+  ".admin-table": 59
 };
 
 for (const [selector, ceiling] of Object.entries(legacySelectorCeilings)) {
@@ -204,7 +212,13 @@ for (const removedSelector of [
   ".route-error-card",
   ".route-error-icon",
   ".route-error-actions",
-  ".route-error-action"
+  ".route-error-action",
+  ".filters-toolbar",
+  ".filter-search",
+  ".filter-select",
+  ".filter-control-icon",
+  ".filter-reset-button",
+  ".admin-pagination"
 ]) {
   if (legacyCss.includes(removedSelector)) {
     failures.push(`Selectorul retras ${removedSelector} nu poate fi reintrodus în app/globals.css.`);

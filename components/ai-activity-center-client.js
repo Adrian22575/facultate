@@ -23,6 +23,7 @@ import { deleteQuestionBanksAction } from "@/app/ai/actions";
 import { assignLearningStudySetSubjectAction } from "@/app/ai/invata/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { Pagination } from "@/components/ui/collection-controls";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -123,34 +124,6 @@ function paginateRows(rows, page, pageSize) {
     page: safePage,
     totalPages
   };
-}
-
-function PaginationControls({ page, totalPages, onChange }) {
-  if (totalPages <= 1) {
-    return null;
-  }
-
-  return (
-    <div className="admin-pagination ai-activity-pagination">
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page - 1)}
-        disabled={page <= 1}
-      >
-        Anterior
-      </button>
-      <span className="admin-pagination-label">{`Pagina ${page} din ${totalPages}`}</span>
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page + 1)}
-        disabled={page >= totalPages}
-      >
-        Urmator
-      </button>
-    </div>
-  );
 }
 
 function IconText({ icon: Icon, children }) {
@@ -820,7 +793,14 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
           </tbody>
         </table>
       </div>
-      <PaginationControls page={paginated.page} totalPages={paginated.totalPages} onChange={setPage} />
+      <Pagination
+        page={paginated.page}
+        totalPages={paginated.totalPages}
+        onPageChange={setPage}
+        previousLabel="Anterior"
+        nextLabel="Urmator"
+        className="ai-activity-pagination"
+      />
       <DeleteMaterialDialog
         target={deleteTarget}
         confirmText={confirmText}
@@ -1015,7 +995,14 @@ function LicentaTable({ rows, onSourceDocumentAttached }) {
           </tbody>
         </table>
       </div>
-      <PaginationControls page={paginated.page} totalPages={paginated.totalPages} onChange={setPage} />
+      <Pagination
+        page={paginated.page}
+        totalPages={paginated.totalPages}
+        onPageChange={setPage}
+        previousLabel="Anterior"
+        nextLabel="Urmator"
+        className="ai-activity-pagination"
+      />
     </>
   );
 }
@@ -1091,7 +1078,14 @@ function ActivityTable({ jobs }) {
           </tbody>
         </table>
       </div>
-      <PaginationControls page={paginated.page} totalPages={paginated.totalPages} onChange={setPage} />
+      <Pagination
+        page={paginated.page}
+        totalPages={paginated.totalPages}
+        onPageChange={setPage}
+        previousLabel="Anterior"
+        nextLabel="Urmator"
+        className="ai-activity-pagination"
+      />
     </>
   );
 }
@@ -1174,7 +1168,14 @@ function TestsTable({ testGroups }) {
           </tbody>
         </table>
       </div>
-      <PaginationControls page={paginated.page} totalPages={paginated.totalPages} onChange={setPage} />
+      <Pagination
+        page={paginated.page}
+        totalPages={paginated.totalPages}
+        onPageChange={setPage}
+        previousLabel="Anterior"
+        nextLabel="Urmator"
+        className="ai-activity-pagination"
+      />
     </>
   );
 }

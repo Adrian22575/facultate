@@ -27,7 +27,7 @@ import {
   XCircle
 } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
@@ -247,34 +247,6 @@ function paginateRows(rows, page) {
     page: safePage,
     totalPages
   };
-}
-
-function PaginationControls({ page, totalPages, onChange }) {
-  if (totalPages <= 1) {
-    return null;
-  }
-
-  return (
-    <div className="admin-pagination">
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page - 1)}
-        disabled={page <= 1}
-      >
-        Inapoi
-      </button>
-      <span className="admin-pagination-label">{`Pagina ${page} din ${totalPages}`}</span>
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page + 1)}
-        disabled={page >= totalPages}
-      >
-        Inainte
-      </button>
-    </div>
-  );
 }
 
 function matchesSearch(target, query) {
@@ -1271,7 +1243,7 @@ export function AdminCenterClient({
                 </tr>
               ))}
             </AdminTable>
-            <PaginationControls page={feedbackPageData.page} totalPages={feedbackPageData.totalPages} onChange={setFeedbackPage} />
+            <Pagination page={feedbackPageData.page} totalPages={feedbackPageData.totalPages} onPageChange={setFeedbackPage} />
           </>
         ) : (
           <EmptyState title="Nu exista feedback pentru filtrul ales." subtitle="Schimba filtrul sau revino mai tarziu." />
@@ -1321,7 +1293,7 @@ export function AdminCenterClient({
                       </tr>
                     ))}
                   </AdminTable>
-                  <PaginationControls page={premiumPageData.page} totalPages={premiumPageData.totalPages} onChange={setPremiumPage} />
+                  <Pagination page={premiumPageData.page} totalPages={premiumPageData.totalPages} onPageChange={setPremiumPage} />
                 </>
               ) : (
                 <EmptyState title="Nu exista granturi premium pentru filtrul ales." subtitle="Incearca alt filtru sau revino mai tarziu." />
@@ -1352,7 +1324,7 @@ export function AdminCenterClient({
                       </tr>
                     ))}
                   </AdminTable>
-                  <PaginationControls page={creditsPageData.page} totalPages={creditsPageData.totalPages} onChange={setCreditsPage} />
+                  <Pagination page={creditsPageData.page} totalPages={creditsPageData.totalPages} onPageChange={setCreditsPage} />
                 </>
               ) : (
                 <EmptyState title="Nu exista incarcari pentru filtrul ales." subtitle="Incearca alt filtru sau revino mai tarziu." />
@@ -1389,7 +1361,7 @@ export function AdminCenterClient({
                     );
                     })}
                   </AdminTable>
-                  <PaginationControls page={webhooksPageData.page} totalPages={webhooksPageData.totalPages} onChange={setWebhooksPage} />
+                  <Pagination page={webhooksPageData.page} totalPages={webhooksPageData.totalPages} onPageChange={setWebhooksPage} />
                 </>
               ) : (
                 <EmptyState title="Nu exista webhook-uri pentru filtrul ales." subtitle="Incearca alt filtru sau revino mai tarziu." />
@@ -1467,7 +1439,7 @@ export function AdminCenterClient({
                 );
               })}
             </AdminTable>
-            <PaginationControls page={usersPageData.page} totalPages={usersPageData.totalPages} onChange={setUsersPage} />
+            <Pagination page={usersPageData.page} totalPages={usersPageData.totalPages} onPageChange={setUsersPage} />
           </>
         ) : (
           <EmptyState title="Nu exista utilizatori pentru filtrul ales." subtitle="Schimba filtrul sau revino mai tarziu." />
@@ -1828,7 +1800,7 @@ export function AdminCenterClient({
                 </tr>
               ))}
             </AdminTable>
-            <PaginationControls page={subjectsPageData.page} totalPages={subjectsPageData.totalPages} onChange={setSubjectsPage} />
+            <Pagination page={subjectsPageData.page} totalPages={subjectsPageData.totalPages} onPageChange={setSubjectsPage} />
           </>
         ) : (
           <EmptyState title="Nu exista materii pentru filtrul ales." subtitle="Schimba filtrul sau revino mai tarziu." />
@@ -1893,7 +1865,7 @@ export function AdminCenterClient({
                     </tr>
                   ))}
                 </AdminTable>
-                <PaginationControls page={institutionsPageData.page} totalPages={institutionsPageData.totalPages} onChange={setInstitutionsPage} />
+                <Pagination page={institutionsPageData.page} totalPages={institutionsPageData.totalPages} onPageChange={setInstitutionsPage} />
               </>
             ) : (
               <EmptyState title="Nu exista institutii disponibile." subtitle="Revino dupa ce apar primele comunitati." />
@@ -1938,7 +1910,7 @@ export function AdminCenterClient({
                     </tr>
                   ))}
                 </AdminTable>
-                <PaginationControls page={facultiesPageData.page} totalPages={facultiesPageData.totalPages} onChange={setFacultiesPage} />
+                <Pagination page={facultiesPageData.page} totalPages={facultiesPageData.totalPages} onPageChange={setFacultiesPage} />
               </>
             ) : (
               <EmptyState title="Nu exista facultati disponibile." subtitle="Revino dupa ce sunt create primele unitati academice." />
@@ -2040,7 +2012,7 @@ export function AdminCenterClient({
                 </tr>
               ))}
             </AdminTable>
-            <PaginationControls page={freeAccessPageData.page} totalPages={freeAccessPageData.totalPages} onChange={setFreeAccessPage} />
+            <Pagination page={freeAccessPageData.page} totalPages={freeAccessPageData.totalPages} onPageChange={setFreeAccessPage} />
           </>
         ) : (
           <EmptyState title="Nu exista emailuri pentru filtrul ales." subtitle="Adauga colegii in lista sau schimba cautarea." />
@@ -2151,7 +2123,7 @@ export function AdminCenterClient({
                 </tr>
               ))}
             </AdminTable>
-            <PaginationControls page={testimonialsPageData.page} totalPages={testimonialsPageData.totalPages} onChange={setTestimonialsPage} />
+            <Pagination page={testimonialsPageData.page} totalPages={testimonialsPageData.totalPages} onPageChange={setTestimonialsPage} />
           </>
         ) : (
           <EmptyState title="Nu exista testimoniale pentru filtrul ales." subtitle="Cand un utilizator trimite review, apare aici pentru aprobare." />

@@ -11,7 +11,9 @@ const ROUTE_ALIASES = [/^\/materiale(?:\/.*)?$/];
 const LEGACY_UI_TOKENS = [
   "btn-back", "btn-link", "secondary", "test-link", "nav-btn",
   "input-search", "textarea-input", "status-pill", "error-state", "success-state",
-  "surface", "ui-panel-card", "draft-card", "empty-state"
+  "surface", "ui-panel-card", "draft-card", "empty-state",
+  "admin-toolbar", "admin-filter-row", "review-list-controls", "review-pagination",
+  "table-scroll", "admin-table-scroll", "admin-table"
 ];
 const CANONICAL_EXPORT_PATHS = {
   Button: "components/ui/action.js",
@@ -24,7 +26,13 @@ const CANONICAL_EXPORT_PATHS = {
   SurfaceCard: "components/ui/surface-card.js",
   EmptyState: "components/ui/state.js",
   LoadingState: "components/ui/state.js",
-  FeedbackState: "components/ui/state.js"
+  FeedbackState: "components/ui/state.js",
+  FiltersToolbar: "components/ui/collection-controls.js",
+  FilterSearch: "components/ui/collection-controls.js",
+  FilterSelect: "components/ui/collection-controls.js",
+  FilterSortSelect: "components/ui/collection-controls.js",
+  ResultsSummary: "components/ui/collection-controls.js",
+  Pagination: "components/ui/collection-controls.js"
 };
 const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
   SurfaceCard: new Set(["components/ui/surface-card.js"]),
@@ -34,7 +42,13 @@ const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
     "components/ai-activity-center-client.js"
   ]),
   LoadingState: new Set(["components/ui/state.js"]),
-  FeedbackState: new Set(["components/ui/state.js"])
+  FeedbackState: new Set(["components/ui/state.js"]),
+  FiltersToolbar: new Set(["components/ui/collection-controls.js"]),
+  FilterSearch: new Set(["components/ui/collection-controls.js"]),
+  FilterSelect: new Set(["components/ui/collection-controls.js"]),
+  FilterSortSelect: new Set(["components/ui/collection-controls.js"]),
+  ResultsSummary: new Set(["components/ui/collection-controls.js"]),
+  Pagination: new Set(["components/ui/collection-controls.js"])
 };
 const LEGACY_UI_BASELINE = {
   "app/ai/activitate/page.js": { "btn-link": 1, secondary: 1, "error-state": 1, "btn-back": 1 },
@@ -141,6 +155,21 @@ const LEGACY_SURFACE_BASELINE = {
   "components/workspace-generate-form.js": { "ui-panel-card": 7 },
   "components/workspace-job-history-client.js": { "ui-panel-card": 2, "draft-card": 1 },
   "components/workspace-subject-picker.js": { "ui-panel-card": 2, "empty-state": 1 }
+};
+const LEGACY_COLLECTION_BASELINE = {
+  "app/setup/page.js": { "admin-table-scroll": 2, "admin-table": 2 },
+  "components/admin-center-client.js": { "table-scroll": 1, "admin-table-scroll": 1, "admin-table": 1, "admin-toolbar": 7, "admin-filter-row": 5 },
+  "components/admin-openai-logs-panel.js": { "table-scroll": 1, "admin-table-scroll": 1, "admin-table": 1, "admin-toolbar": 1, "admin-filter-row": 1 },
+  "components/admin-upload-errors-panel.js": { "admin-toolbar": 1, "table-scroll": 1, "admin-table-scroll": 1, "admin-table": 1 },
+  "components/ai-activity-center-client.js": { "table-scroll": 4, "admin-table-scroll": 4, "admin-table": 4 },
+  "components/ai-question-bank-review-client.js": { "review-list-controls": 1, "review-pagination": 1 }
+};
+const NATIVE_TABLE_BASELINE = {
+  "app/setup/page.js": 2,
+  "components/admin-center-client.js": 1,
+  "components/admin-openai-logs-panel.js": 1,
+  "components/admin-upload-errors-panel.js": 1,
+  "components/ai-activity-center-client.js": 4
 };
 const MOJIBAKE_TOKENS = ["Ã", "Äƒ", "Ä‚", "È™", "Èš", "È›", "Â·", "â€™", "â€œ", "â€", "â€“", "â€”", "�"];
 
@@ -317,6 +346,9 @@ function inspectElement(filePath, node, context, ancestors) {
   }
   if (name === "button" && classAttribute && staticAttributeValue(classAttribute) === "") {
     report(filePath, opening, "Butonul nu poate declara className gol.");
+  }
+  if (name === "table") {
+    context.nativeTableCount += 1;
   }
 
   for (const relation of ["aria-labelledby", "aria-controls"]) {
@@ -530,11 +562,12 @@ function collectIdPatterns(node, patterns = []) {
   return patterns;
 }
 
-function verifyLegacyBaseline(filePath, counts) {
+function verifyLegacyBaseline(filePath, counts, nativeTableCount) {
   const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
   const baseline = {
     ...(LEGACY_UI_BASELINE[relativePath] || {}),
-    ...(LEGACY_SURFACE_BASELINE[relativePath] || {})
+    ...(LEGACY_SURFACE_BASELINE[relativePath] || {}),
+    ...(LEGACY_COLLECTION_BASELINE[relativePath] || {})
   };
   for (const [token, count] of Object.entries(counts)) {
     const ceiling = baseline[token] || 0;
@@ -548,11 +581,27 @@ function verifyLegacyBaseline(filePath, counts) {
       });
     }
   }
+
+  const tableCeiling = NATIVE_TABLE_BASELINE[relativePath] || 0;
+  if (nativeTableCount > tableCeiling) {
+    failures.push({
+      file: relativePath,
+      line: 1,
+      message: `Numărul de tabele native a crescut peste baseline (${tableCeiling} → ${nativeTableCount}). Planifică migrarea prin patternul canonic înainte de a adăuga alt tabel.`
+    });
+  }
 }
 
 for (const filePath of sourceFiles) {
   const source = fs.readFileSync(filePath, "utf8");
   const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+  if (source.includes("@/components/filter-controls")) {
+    failures.push({
+      file: relativePath,
+      line: source.slice(0, source.indexOf("@/components/filter-controls")).split("\n").length,
+      message: "Importul legacy components/filter-controls a fost retras; folosește components/ui/collection-controls."
+    });
+  }
   for (const [exportName, canonicalPath] of Object.entries(CANONICAL_EXPORT_PATHS)) {
     const exportPattern = new RegExp(`\\bexport\\s+(?:const|function|class)\\s+${exportName}\\b`);
     if (exportPattern.test(source) && relativePath !== canonicalPath) {
@@ -599,10 +648,11 @@ for (const filePath of sourceFiles) {
       ids: collectStaticIds(ast),
       idPatterns: collectIdPatterns(ast),
       labelTargets: collectLabelTargets(ast),
-      legacyCounts: {}
+      legacyCounts: {},
+      nativeTableCount: 0
     };
     traverse(filePath, ast, context);
-    verifyLegacyBaseline(filePath, context.legacyCounts);
+    verifyLegacyBaseline(filePath, context.legacyCounts, context.nativeTableCount);
   } catch (error) {
     report(filePath, error, `Fisierul nu a putut fi analizat: ${error.message}`);
   }

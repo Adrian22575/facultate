@@ -18,7 +18,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
 import { AdminLinkedInDistribution } from "@/components/admin-linkedin-distribution";
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch } from "@/components/ui/collection-controls";
 import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
 import {
   DEFAULT_LINKEDIN_POST_AUDIENCE,

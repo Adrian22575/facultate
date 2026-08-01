@@ -4,7 +4,7 @@ import { ArrowRight, CircleAlert, Clock3, Search, Send } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch } from "@/components/ui/collection-controls";
 import { LinkedInDistributionSettings } from "@/components/linkedin-distribution-settings";
 
 const FILTERS = [

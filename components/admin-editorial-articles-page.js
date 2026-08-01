@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch } from "@/components/ui/collection-controls";
 
 const ACTIVE_RUN_STATUSES = new Set([
   "started",

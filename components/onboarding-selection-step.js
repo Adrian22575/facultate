@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cloneElement, isValidElement, useMemo, useState } from "react";
 import { ArrowRight, Building2, GraduationCap, School, Sparkles } from "lucide-react";
 
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch } from "@/components/ui/collection-controls";
 
 const SELECTION_VISUALS = {
   institution: { icon: Building2, label: "instituția" },

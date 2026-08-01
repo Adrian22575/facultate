@@ -10,7 +10,7 @@ import {
   deleteQuestionBankItemAction,
   updateQuestionBankItemAction
 } from "@/app/ai/actions";
-import { FilterSearch, FilterSelect } from "@/components/filter-controls";
+import { FilterSearch, FilterSelect } from "@/components/ui/collection-controls";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { normalizeSearchText, truncateText } from "@/lib/quiz";
 import { useDialogFocus } from "@/lib/ui/dialog";
@@ -832,6 +832,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                   icon={ListFilter}
                   ariaLabel="Numar de intrebari afisate"
                   compact
+                  className="review-page-size-control"
                   options={REVIEW_PAGE_SIZE_OPTIONS.map((option) => ({
                     value: String(option),
                     label: option === "all" ? "Toate" : `${option} intrebari`

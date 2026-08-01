@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BarChart3, FileText, Files, ListFilter, ReceiptText } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
-import { FilterSearch } from "@/components/filter-controls";
+import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
@@ -107,34 +107,6 @@ function FilterButton({ active, onClick, children, icon: Icon = null, count = nu
 
 function SearchInput({ value, onChange, placeholder }) {
   return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
-}
-
-function PaginationControls({ page, totalPages, onChange }) {
-  if (totalPages <= 1) {
-    return null;
-  }
-
-  return (
-    <div className="admin-pagination">
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page - 1)}
-        disabled={page <= 1}
-      >
-        Inapoi
-      </button>
-      <span className="admin-pagination-label">{`Pagina ${page} din ${totalPages}`}</span>
-      <button
-        type="button"
-        className="btn-link secondary admin-pagination-btn"
-        onClick={() => onChange(page + 1)}
-        disabled={page >= totalPages}
-      >
-        Inainte
-      </button>
-    </div>
-  );
 }
 
 function AdminTable({ columns, children, minWidth = 1180 }) {
@@ -1047,7 +1019,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
                 );
                 })}
               </AdminTable>
-              <PaginationControls page={pageData.page} totalPages={pageData.totalPages} onChange={setPage} />
+              <Pagination page={pageData.page} totalPages={pageData.totalPages} onPageChange={setPage} />
             </>
           ) : (
             <div className="workspace-context-summary">

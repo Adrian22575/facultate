@@ -4,7 +4,12 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, Clock3, ShieldCheck, Tags } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
-import { FilterSearch, FilterSelect, FiltersToolbar } from "@/components/filter-controls";
+import {
+  FilterSearch,
+  FilterSelect,
+  FiltersToolbar,
+  ResultsSummary
+} from "@/components/ui/collection-controls";
 
 function dateLabel(value) {
   return value ? new Intl.DateTimeFormat("ro-RO", { day: "numeric", month: "long", year: "numeric" }).format(new Date(value)) : "";
@@ -119,45 +124,43 @@ export function EditorialIndexClient({ featured, articles, categories }) {
             <span>Arhivă</span>
             <h2 id="archive-title">Ediții anterioare</h2>
           </div>
-          <FiltersToolbar
-            className="editorial-filter-panel"
-            layout="three"
-            ariaLabel="Cautare si filtrare articole"
-          >
-            <FilterSearch
-              value={query}
-              onChange={setQuery}
-              placeholder="Caută un subiect"
-              ariaLabel="Caută în articole"
-              clearable
-              inputProps={{ "data-usage-event": "editorial_search_used" }}
-            />
-            <FilterSelect
-              label="Categorie"
-              value={category}
-              onChange={setCategory}
-              icon={Tags}
-              ariaLabel="Filtrează după categorie"
-              dataUsageEvent="editorial_category_filtered"
-              options={["Toate", ...categories].map((item) => ({
-                value: item,
-                label: item === "Toate" ? "Toate categoriile" : item
-              }))}
-            />
-            <FilterSelect
-              label="Perioada"
-              value={period}
-              onChange={setPeriod}
-              icon={CalendarDays}
-              ariaLabel="Filtrează după perioadă"
-              options={[
-                { value: "toate", label: "Oricând" },
-                { value: "30", label: "Ultimele 30 zile" },
-                { value: "90", label: "Ultimele 3 luni" }
-              ]}
-            />
-          </FiltersToolbar>
-          <p className="editorial-results-count" aria-live="polite">{filtered.length} {filtered.length === 1 ? "ediție găsită" : "ediții găsite"}</p>
+          <div className="editorial-filter-panel">
+            <FiltersToolbar layout="three" ariaLabel="Cautare si filtrare articole">
+              <FilterSearch
+                value={query}
+                onChange={setQuery}
+                placeholder="Caută un subiect"
+                ariaLabel="Caută în articole"
+                clearable
+                inputProps={{ "data-usage-event": "editorial_search_used" }}
+              />
+              <FilterSelect
+                label="Categorie"
+                value={category}
+                onChange={setCategory}
+                icon={Tags}
+                ariaLabel="Filtrează după categorie"
+                dataUsageEvent="editorial_category_filtered"
+                options={["Toate", ...categories].map((item) => ({
+                  value: item,
+                  label: item === "Toate" ? "Toate categoriile" : item
+                }))}
+              />
+              <FilterSelect
+                label="Perioada"
+                value={period}
+                onChange={setPeriod}
+                icon={CalendarDays}
+                ariaLabel="Filtrează după perioadă"
+                options={[
+                  { value: "toate", label: "Oricând" },
+                  { value: "30", label: "Ultimele 30 zile" },
+                  { value: "90", label: "Ultimele 3 luni" }
+                ]}
+              />
+            </FiltersToolbar>
+          </div>
+          <ResultsSummary className="editorial-results-count">{filtered.length} {filtered.length === 1 ? "ediție găsită" : "ediții găsite"}</ResultsSummary>
           {filtered.length ? (
             <>
               <div className="editorial-card-grid">{filtered.slice(0, visibleCount).map((article) => <EditorialCard article={article} key={article.id} />)}</div>

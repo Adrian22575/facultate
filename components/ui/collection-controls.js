@@ -4,6 +4,15 @@ import { ArrowUpDown, ChevronDown, Search, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
+import { Button } from "@/components/ui/action";
+
+import styles from "./collection-controls.module.css";
+
+const TOOLBAR_LAYOUT_CLASSES = {
+  two: styles.toolbarTwo,
+  three: styles.toolbarThree,
+  four: ""
+};
 
 function joinClassNames(...values) {
   return values.filter(Boolean).join(" ");
@@ -12,18 +21,17 @@ function joinClassNames(...values) {
 export function FiltersToolbar({
   children,
   className = "",
-  compact = false,
-  layout = "auto",
+  layout = "four",
   ariaLabel = "Cautare si filtrare"
 }) {
   return (
     <div
       className={joinClassNames(
-        "filters-toolbar",
-        `filters-toolbar--${layout}`,
-        compact && "is-compact",
+        styles.toolbar,
+        TOOLBAR_LAYOUT_CLASSES[layout] || TOOLBAR_LAYOUT_CLASSES.four,
         className
       )}
+      role="group"
       aria-label={ariaLabel}
     >
       {children}
@@ -44,8 +52,8 @@ export function FilterSearch({
   inputProps = {}
 }) {
   return (
-    <label className={joinClassNames("filter-search", compact && "is-compact", className)}>
-      <span className="filter-control-icon" aria-hidden="true">
+    <label className={joinClassNames(styles.search, compact && styles.compact, className)}>
+      <span className={styles.controlIcon} aria-hidden="true">
         {loading ? (
           <LoadingSpinner size={compact ? 16 : 18} />
         ) : (
@@ -64,7 +72,7 @@ export function FilterSearch({
       {clearable && value ? (
         <button
           type="button"
-          className="filter-search-clear"
+          className={styles.searchClear}
           aria-label="Sterge cautarea"
           onClick={() => (onClear ? onClear() : onChange(""))}
         >
@@ -158,17 +166,17 @@ export function FilterSelect({
     <div
       ref={rootRef}
       className={joinClassNames(
-        "filter-select",
-        compact && "is-compact",
-        clearable && value !== clearValue && "is-clearable",
-        open && "is-open",
+        styles.select,
+        compact && styles.compact,
+        clearable && value !== clearValue && styles.clearable,
+        open && styles.open,
         className
       )}
     >
       <button
         ref={triggerRef}
         type="button"
-        className="filter-select-trigger"
+        className={styles.selectTrigger}
         aria-label={ariaLabel || `${label}: ${selectedOption?.label || ""}`}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -180,18 +188,18 @@ export function FilterSelect({
         }}
         onKeyDown={handleTriggerKeyDown}
       >
-        <span className="filter-control-icon" aria-hidden="true">
+        <span className={styles.controlIcon} aria-hidden="true">
           {Icon ? <Icon size={compact ? 16 : 18} strokeWidth={2.1} /> : null}
         </span>
-        <span className="filter-select-copy">
+        <span className={styles.selectCopy}>
           <small>{label}</small>
           <strong>{selectedOption?.label}</strong>
         </span>
-        <ChevronDown className="filter-select-chevron" size={17} aria-hidden="true" />
+        <ChevronDown className={styles.selectChevron} size={17} aria-hidden="true" />
       </button>
 
       {open ? (
-        <div id={listboxId} className="filter-select-menu" role="listbox" aria-label={label}>
+        <div id={listboxId} className={styles.selectMenu} role="listbox" aria-label={label}>
           {options.map((option, index) => (
             <button
               key={option.value}
@@ -202,10 +210,7 @@ export function FilterSelect({
               data-usage-event={dataUsageEvent}
               role="option"
               aria-selected={option.value === value}
-              className={joinClassNames(
-                "filter-select-option",
-                option.value === value && "is-selected"
-              )}
+              className={option.value === value ? styles.selected : ""}
               onClick={() => selectOption(option)}
               onKeyDown={(event) => handleOptionKeyDown(event, index)}
             >
@@ -217,7 +222,7 @@ export function FilterSelect({
       {clearable && value !== clearValue ? (
         <button
           type="button"
-          className="filter-select-clear"
+          className={styles.selectClear}
           aria-label={clearLabel || `Elimina filtrul ${label}`}
           onClick={() => {
             (onClear || (() => onChange(clearValue)))();
@@ -235,15 +240,57 @@ export function FilterSortSelect(props) {
   return <FilterSelect icon={ArrowUpDown} label="Sorteaza" {...props} />;
 }
 
-export function FilterResetButton({ onClick, label = "Reseteaza filtrele", className = "" }) {
+export function ResultsSummary({ as: Component = "p", className = "", children, ...props }) {
   return (
-    <button
-      type="button"
-      className={joinClassNames("filter-reset-button", className)}
-      onClick={onClick}
-    >
-      <X size={16} strokeWidth={2.3} aria-hidden="true" />
-      <span>{label}</span>
-    </button>
+    <Component {...props} className={className} aria-live={props["aria-live"] || "polite"}>
+      {children}
+    </Component>
+  );
+}
+
+export function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+  previousLabel = "Inapoi",
+  nextLabel = "Inainte",
+  ariaLabel = "Paginare rezultate",
+  className = ""
+}) {
+  const normalizedTotalPages = Math.max(1, Number(totalPages) || 1);
+  const normalizedPage = Math.min(Math.max(1, Number(page) || 1), normalizedTotalPages);
+
+  if (normalizedTotalPages <= 1) {
+    return null;
+  }
+
+  function changePage(nextPage) {
+    onPageChange(Math.min(Math.max(1, nextPage), normalizedTotalPages));
+  }
+
+  return (
+    <nav className={joinClassNames(styles.pagination, className)} aria-label={ariaLabel}>
+      <Button
+        variant="secondary"
+        size="compact"
+        className={styles.paginationButton}
+        onClick={() => changePage(normalizedPage - 1)}
+        disabled={normalizedPage <= 1}
+      >
+        {previousLabel}
+      </Button>
+      <span className={styles.paginationLabel} aria-live="polite" aria-atomic="true">
+        {`Pagina ${normalizedPage} din ${normalizedTotalPages}`}
+      </span>
+      <Button
+        variant="secondary"
+        size="compact"
+        className={styles.paginationButton}
+        onClick={() => changePage(normalizedPage + 1)}
+        disabled={normalizedPage >= normalizedTotalPages}
+      >
+        {nextLabel}
+      </Button>
+    </nav>
   );
 }

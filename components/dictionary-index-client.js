@@ -4,7 +4,12 @@ import Link from "next/link";
 import { BookOpenText, Brain, Search, Sparkles, Tags } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { FilterSearch, FilterSelect, FiltersToolbar } from "@/components/filter-controls";
+import {
+  FilterSearch,
+  FilterSelect,
+  FiltersToolbar,
+  ResultsSummary
+} from "@/components/ui/collection-controls";
 
 function normalize(value) {
   return String(value || "")
@@ -107,7 +112,7 @@ export function DictionaryIndexClient({ categories, terms, recent, total }) {
       </section>
 
       <section className="dictionary-list-section" aria-labelledby="dictionary-list-title">
-        <div className="dictionary-section-head"><div><span>Rezultatele tale</span><h2 id="dictionary-list-title">Alege un termen</h2></div><strong aria-live="polite">{filteredTerms.length} {filteredTerms.length === 1 ? "rezultat" : "rezultate"}</strong></div>
+        <div className="dictionary-section-head"><div><span>Rezultatele tale</span><h2 id="dictionary-list-title">Alege un termen</h2></div><ResultsSummary as="strong">{filteredTerms.length} {filteredTerms.length === 1 ? "rezultat" : "rezultate"}</ResultsSummary></div>
         {filteredTerms.length ? <div className="dictionary-term-list">{filteredTerms.map((term) => <TermCard key={term.id} term={term} />)}</div> : <div className="dictionary-empty"><Search aria-hidden="true" size={23} /><h2>Nu am găsit un termen potrivit</h2><p>Încearcă un cuvânt mai scurt sau elimină unul dintre filtre.</p><button type="button" onClick={clearFilters}>Resetează filtrele</button></div>}
       </section>
     </>
