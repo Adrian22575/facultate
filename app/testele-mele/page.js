@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { EmptyState } from "@/components/ui/state";
+import { InlineFeedback } from "@/components/ui/status";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import {
   getAcademicCommunityLabel,
   getAcademicContext,
@@ -11,6 +14,8 @@ import {
 import { isDemoUser } from "@/lib/demo-user";
 import { getPrivateGeneratedTests } from "@/lib/private-tests";
 import { getOptionalUser } from "@/lib/supabase/guards";
+
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -82,19 +87,21 @@ export default async function MyTestsPage() {
         subtitle="Aici vezi testele active, cele in verificare si testele din comunitate."
       />
 
-      <section className="surface">
+      <SurfaceCard className={styles.section}>
         {communityLabel ? (
-          <div className="success-state" role="status">{`Comunitate activa: ${communityLabel}`}</div>
+          <InlineFeedback className={styles.successFeedback} tone="success" role="status">
+            {`Comunitate activa: ${communityLabel}`}
+          </InlineFeedback>
         ) : null}
         {demoMode ? (
-          <div className="error-state" role="alert">
+          <InlineFeedback tone="error" role="alert">
             In modul demo aceasta pagina afiseaza doar structura.
-          </div>
+          </InlineFeedback>
         ) : null}
-        {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
-      </section>
+        {setupWarning ? <InlineFeedback tone="error" role="alert">{setupWarning}</InlineFeedback> : null}
+      </SurfaceCard>
 
-      <section className="surface">
+      <SurfaceCard className={styles.section}>
         <div className="dashboard-header">
           <h2>Teste din comunitate</h2>
           <PendingNavigationLink className="btn-link secondary" href="/onboarding?edit=1&source=query" pendingLabel="Se deschide comunitatea..." pendingMode="replace">
@@ -116,15 +123,15 @@ export default async function MyTestsPage() {
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            {demoMode
+          <EmptyState
+            description={demoMode
               ? "In modul demo nu incarcam teste din comunitate."
               : "Nu exista inca teste active publicate pentru comunitatea ta."}
-          </div>
+          />
         )}
-      </section>
+      </SurfaceCard>
 
-      <section className="surface">
+      <SurfaceCard className={styles.section}>
         <div className="dashboard-header">
           <h2>Testele mele active</h2>
           <PendingNavigationLink className="btn-link secondary" href="/materiale" pendingLabel="Se deschid materialele..." pendingMode="replace">
@@ -151,13 +158,13 @@ export default async function MyTestsPage() {
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            {demoMode ? "In modul demo nu incarcam teste active reale." : "Nu ai inca teste active."}
-          </div>
+          <EmptyState
+            description={demoMode ? "In modul demo nu incarcam teste active reale." : "Nu ai inca teste active."}
+          />
         )}
-      </section>
+      </SurfaceCard>
 
-      <section className="surface">
+      <SurfaceCard className={styles.section}>
         <h2>Teste in verificare</h2>
         {tests.drafts.length ? (
           <div className="draft-list">
@@ -176,11 +183,11 @@ export default async function MyTestsPage() {
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            {demoMode ? "In modul demo nu exista teste in verificare." : "Nu exista teste in verificare."}
-          </div>
+          <EmptyState
+            description={demoMode ? "In modul demo nu exista teste in verificare." : "Nu exista teste in verificare."}
+          />
         )}
-      </section>
+      </SurfaceCard>
     </main>
   );
 }

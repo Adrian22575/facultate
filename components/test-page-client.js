@@ -9,6 +9,8 @@ import { shuffleArray } from "@/lib/quiz";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { InlineFeedback } from "@/components/ui/status";
 
 function sanitizeQuestions(questions) {
   if (!Array.isArray(questions)) {
@@ -470,7 +472,7 @@ export function TestPageClient({
 
   if (phase === "setup") {
     return (
-      <section className="surface">
+      <SurfaceCard>
         <div className="test-recommended-start">
           <span className="ui-section-label">Test recomandat</span>
           <strong>
@@ -529,7 +531,7 @@ export function TestPageClient({
             </div>
           </div>
         </details>
-      </section>
+      </SurfaceCard>
     );
   }
 
@@ -621,7 +623,7 @@ export function TestPageClient({
   }
 
   if (!currentQuestion) {
-    return <div className="error-state" role="alert">Nu am putut incarca intrebarile pentru acest test.</div>;
+    return <InlineFeedback tone="error" role="alert">Nu am putut incarca intrebarile pentru acest test.</InlineFeedback>;
   }
 
   const progressPercent = testQuestions.length
@@ -647,7 +649,7 @@ export function TestPageClient({
   }
 
   return (
-    <section className="surface">
+    <SurfaceCard>
       <div className="progress-bar-container" aria-label="Progres test">
         <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
       </div>
@@ -698,6 +700,6 @@ export function TestPageClient({
           {currentIndex === testQuestions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
         </button>
       </div>
-    </section>
+    </SurfaceCard>
   );
 }

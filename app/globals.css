@@ -15911,42 +15911,6 @@ td {
   font-size: 1.65rem;
 }
 
-.demo-guide-surface {
-  margin-bottom: 22px;
-  padding: 28px;
-}
-
-.demo-guide-intro {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 22px;
-}
-
-.demo-guide-intro h2,
-.demo-guide-convert h2 {
-  margin: 0;
-  font-size: clamp(1.85rem, 3.8vw, 2.8rem);
-  line-height: 1.02;
-  letter-spacing: -0.04em;
-}
-
-.demo-guide-intro .demo-guide-status {
-  width: fit-content;
-}
-
-.demo-guide-subject {
-  margin: 0;
-  color: #60708d;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.demo-guide-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
 .learning-mode-card {
   display: grid;
   gap: 16px;
@@ -16289,35 +16253,6 @@ td {
   top: 60px;
 }
 
-.demo-guide-convert {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px 24px;
-  align-items: center;
-}
-
-.demo-guide-convert-copy {
-  display: grid;
-  gap: 8px;
-}
-
-.demo-guide-convert-kicker {
-  color: #1250b1;
-  font-size: 0.8rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.demo-guide-convert .section-sub {
-  margin: 0;
-}
-
-.demo-guide-google-wrap {
-  display: grid;
-  gap: 12px;
-}
-
 @media (max-width: 980px) {
   .nota5plus-hero,
   .nota5plus-flow,
@@ -16325,9 +16260,7 @@ td {
   .nota5plus-upload-guide,
   .nota5plus-anti-section,
   .nota5plus-community,
-  .nota5plus-final-cta,
-  .demo-guide-grid,
-  .demo-guide-convert {
+  .nota5plus-final-cta {
     grid-template-columns: 1fr;
   }
 
@@ -16438,8 +16371,7 @@ td {
     grid-template-columns: 1fr;
   }
 
-  .dashboard-demo-banner,
-  .demo-guide-convert {
+  .dashboard-demo-banner {
     align-items: flex-start;
   }
 }
@@ -16673,7 +16605,6 @@ td {
     text-align: center;
   }
 
-  .demo-guide-surface,
   .learning-mode-card {
     padding: 20px;
   }

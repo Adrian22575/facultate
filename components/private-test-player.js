@@ -6,6 +6,7 @@ import { useState } from "react";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
 import { EmptyState } from "@/components/ui/state";
+import { SurfaceCard } from "@/components/ui/surface-card";
 
 export function PrivateTestPlayer({ test, questions }) {
   const [safeQuestions, setSafeQuestions] = useState(questions);
@@ -129,7 +130,7 @@ export function PrivateTestPlayer({ test, questions }) {
   }
 
   return (
-    <section className="surface">
+    <SurfaceCard>
       <div className="progress-bar-container" aria-label="Progres test privat">
         <div
           className="progress-fill"
@@ -183,6 +184,6 @@ export function PrivateTestPlayer({ test, questions }) {
           {currentIndex === safeQuestions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
         </button>
       </div>
-    </section>
+    </SurfaceCard>
   );
 }

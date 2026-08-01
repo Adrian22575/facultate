@@ -3,10 +3,13 @@ import { redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { LearningModeCard } from "@/components/learning-mode-card";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { StatusPill } from "@/components/ui/status";
 import { getDemoSubject } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
+
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -39,14 +42,14 @@ export default async function DemoPage() {
     <main className="app-shell">
       <AppHeader title="Esti in demo" subtitle="Alege cum vrei sa inveti." />
 
-      <section className="surface demo-guide-surface">
-        <div className="demo-guide-intro">
-          <StatusPill className="demo-guide-status" tone="warning">Demo</StatusPill>
-          <h2>Alege cum vrei sa inveti</h2>
-          <p className="demo-guide-subject">{`Materia demo: ${demoSubjectTitle}`}</p>
+      <SurfaceCard className={styles.surface}>
+        <div className={styles.intro}>
+          <StatusPill className={styles.status} tone="warning">Demo</StatusPill>
+          <h2 className={styles.heading}>Alege cum vrei sa inveti</h2>
+          <p className={styles.subject}>{`Materia demo: ${demoSubjectTitle}`}</p>
         </div>
 
-        <div className="demo-guide-grid">
+        <div className={styles.grid}>
           <LearningModeCard
             href={demoSubjectId ? getDemoModeHref(demoSubjectId, "interactiv") : "/demo"}
             mode="interactive"
@@ -72,24 +75,24 @@ export default async function DemoPage() {
             variant="showcase"
           />
         </div>
-      </section>
+      </SurfaceCard>
 
-      <section className="surface demo-guide-convert">
-        <div className="demo-guide-convert-copy">
-          <span className="demo-guide-convert-kicker">Pasul urmator</span>
-          <h2>Vrei progres real?</h2>
-          <p className="section-sub">Intra cu Google.</p>
+      <SurfaceCard className={styles.convert}>
+        <div className={styles.convertCopy}>
+          <span className={styles.kicker}>Pasul urmator</span>
+          <h2 className={styles.heading}>Vrei progres real?</h2>
+          <p className={styles.subtitle}>Intra cu Google.</p>
         </div>
 
         <GoogleSignInButton
           next="/"
-          className="demo-guide-google-wrap"
+          className={styles.googleWrap}
           buttonClassName="nota5plus-btn nota5plus-btn-secondary nota5plus-google-btn"
           errorClassName="nota5plus-inline-error"
         >
           Intra cu Google
         </GoogleSignInButton>
-      </section>
+      </SurfaceCard>
     </main>
   );
 }

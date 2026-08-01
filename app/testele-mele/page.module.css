@@ -1,0 +1,7 @@
+.section + .section {
+  margin-top: var(--space-4);
+}
+
+.successFeedback {
+  --feedback-padding: var(--space-4);
+}

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { InlineFeedback } from "@/components/ui/status";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { shuffleArray } from "@/lib/quiz";
@@ -125,7 +127,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
   }
 
   if (!currentQuestion) {
-    return <div className="error-state" role="alert">Fisierul de intrebari este gol sau format gresit.</div>;
+    return <InlineFeedback tone="error" role="alert">Fisierul de intrebari este gol sau format gresit.</InlineFeedback>;
   }
 
   const selectedAnswer = userAnswers[currentIndex];
@@ -140,7 +142,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
 
   return (
     <>
-      <section className="surface">
+      <SurfaceCard>
         <div className="progress-bar-container">
           <div className="progress-bar-interactive" style={{ width: `${progressPercent}%` }} />
         </div>
@@ -255,7 +257,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
             </button>
           </div>
         ) : null}
-      </section>
+      </SurfaceCard>
     </>
   );
 }
