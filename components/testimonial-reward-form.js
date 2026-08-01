@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Clock, Gift, MessageSquareQuote, Upload } from "lucide-react";
 
 import { activateTestimonialRewardAction, submitTestimonialRewardAction } from "@/app/review-reward/actions";
+import { Button } from "@/components/ui/action";
 import {
   TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH,
   TESTIMONIAL_REWARD_OPTIONS,
@@ -107,9 +108,9 @@ function ExistingReviewStatusCard({ latestSubmission }) {
           <form action={activateTestimonialRewardAction} className="testimonial-claim-form">
             <input type="hidden" name="submissionId" value={latestSubmission.id} />
             <input type="hidden" name="returnTo" value="/review-reward" />
-            <button type="submit" className="btn-primary">
+            <Button type="submit" className="testimonial-primary-action">
               Activeaza recompensa
-            </button>
+            </Button>
             <span className="micro-copy">Porneste-o doar cand ai nevoie de ea.</span>
           </form>
         ) : null}
@@ -364,9 +365,9 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
               })}
             </div>
             <div className="testimonial-form-actions">
-              <button type="submit" className="btn-primary" disabled={!allFilled}>
+              <Button type="submit" className="testimonial-primary-action" disabled={!allFilled}>
                 Trimite review
-              </button>
+              </Button>
               <span className="micro-copy">Dupa aprobare, recompensa ramane pregatita pana o activezi.</span>
             </div>
           </section>

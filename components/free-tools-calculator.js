@@ -4,6 +4,11 @@ import { Clipboard, RefreshCcw, Share2 } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import {
+  SelectField as CanonicalSelectField,
+  TextField
+} from "@/components/ui/form-field";
+
+import {
   calculateDailyQuestions,
   calculateExamScore,
   calculateFinishDate,
@@ -30,30 +35,47 @@ const defaults = {
 
 function NumberField({ id, label, hint, value, onChange, min = 0, max, step = 1 }) {
   return (
-    <label className="free-tool-field" htmlFor={id}>
-      <span>{label}</span>
-      <input id={id} type="number" min={min} max={max} step={step} value={value} onChange={(event) => onChange(event.target.value)} />
-      {hint ? <small>{hint}</small> : null}
-    </label>
+    <TextField
+      id={id}
+      label={label}
+      hint={hint}
+      fieldClassName="free-tool-field"
+      type="number"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+    />
   );
 }
 
 function DateField({ id, label, hint, value, onChange, min }) {
   return (
-    <label className="free-tool-field" htmlFor={id}>
-      <span>{label}</span>
-      <input id={id} type="date" min={min} value={value} onChange={(event) => onChange(event.target.value)} />
-      {hint ? <small>{hint}</small> : null}
-    </label>
+    <TextField
+      id={id}
+      label={label}
+      hint={hint}
+      fieldClassName="free-tool-field"
+      type="date"
+      min={min}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+    />
   );
 }
 
 function SelectField({ id, label, value, onChange, children }) {
   return (
-    <label className="free-tool-field" htmlFor={id}>
-      <span>{label}</span>
-      <select id={id} value={value} onChange={(event) => onChange(event.target.value)}>{children}</select>
-    </label>
+    <CanonicalSelectField
+      id={id}
+      label={label}
+      fieldClassName="free-tool-field"
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+    >
+      {children}
+    </CanonicalSelectField>
   );
 }
 

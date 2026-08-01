@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Target, Upload } from "lucide-react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
+import { InlineFeedback } from "@/components/ui/status";
 import { createClient } from "@/lib/supabase/client";
 
 function GoogleLogo() {
@@ -96,7 +97,9 @@ export function GoogleSignInButton({
         </span>
       </button>
       {errorMessage ? (
-        <div className={errorClassName || "error-state"} role="alert">{errorMessage}</div>
+        <InlineFeedback className={errorClassName} tone="error" role="alert">
+          {errorMessage}
+        </InlineFeedback>
       ) : null}
     </div>
   );

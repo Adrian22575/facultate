@@ -1,8 +1,9 @@
 "use client";
 
 import { CircleAlert } from "lucide-react";
-import Link from "next/link";
 import { useEffect } from "react";
+
+import { ActionLink, Button } from "@/components/ui/action";
 
 export default function GlobalRouteError({ error, reset }) {
   useEffect(() => {
@@ -19,12 +20,12 @@ export default function GlobalRouteError({ error, reset }) {
         <h1>A aparut o problema temporara.</h1>
         <p>Progresul salvat nu este afectat. Incearca din nou sau revino la pagina principala.</p>
         <div className="route-error-actions">
-          <button type="button" onClick={reset}>
+          <Button className="route-error-action" onClick={reset}>
             Incearca din nou
-          </button>
-          <Link className="btn-link secondary" href="/">
+          </Button>
+          <ActionLink className="route-error-action" href="/" variant="secondary">
             Mergi la pagina principala
-          </Link>
+          </ActionLink>
         </div>
       </section>
     </main>

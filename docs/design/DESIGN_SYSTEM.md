@@ -13,7 +13,7 @@ El stabilește:
 - regulile pentru acțiuni, suprafețe, formulare și navigare;
 - procesul de extindere a sistemului.
 
-`app/globals.css` implementează acest contract, dar nu îl înlocuiește.
+Foundations, shell-ul global, `app/globals.css` și primitivele canonice din `components/ui/` implementează împreună acest contract, dar nu îl înlocuiesc.
 
 Dacă `app/globals.css` contrazice acest document sau celelalte reguli autoritare din `docs/design/`, contradicția este un defect care trebuie semnalat. Nu transforma automat un selector sau un override existent într-un pattern recomandat.
 
@@ -96,7 +96,7 @@ Reguli:
 - nu crea ierarhie numai prin font-size; folosește și poziție, spațiu și grupare;
 - nu introduce paragrafe lungi pentru a explica o interfață care poate fi clarificată prin structură și etichete.
 
-Greutățile și dimensiunile concrete trebuie să provină din tokenurile sau tiparele aprobate din `app/globals.css`, nu din valori locale arbitrare.
+Greutățile și dimensiunile concrete trebuie să provină din tokenurile sau tiparele aprobate ale sistemului, nu din valori locale arbitrare.
 
 ## 6. Spacing și layout
 
@@ -176,6 +176,19 @@ O primitivă este justificată numai dacă:
 - poate fi folosită fără override-uri majore;
 - reduce inconsistența reală.
 
+### 8.2.1 Catalogul primitivelor canonice
+
+| Familie | API JSX | CSS | Variante | Utilizare recomandată și baseline migrat |
+| --- | --- | --- | --- | --- |
+| Acțiuni | `Button`, `ActionLink` din `components/ui/action.js` | `components/ui/action.module.css` | `primary`, `secondary`, `text`, `destructive`; dimensiuni `default`, `compact`, `icon`; `fullWidth` | Pentru butoane și linkuri cu rol de acțiune. Migrarea inițială include erorile globale, 404 și acțiunile formularului testimonial. |
+| Câmpuri | `TextField`, `SelectField`, `TextareaField` din `components/ui/form-field.js` | `components/ui/form-field.module.css` | label vizibil, hint, error și control nativ | Pentru controale text-like cu etichetă. Migrarea inițială include câmpurile Number, Date și Select din calculatorul public. Checkbox, radio, file, hidden și controalele speciale rămân native când componenta nu aduce valoare. |
+| Status | `StatusPill` din `components/ui/status.js` | `components/ui/status.module.css` | `neutral`, `info`, `success`, `warning`, `danger` | Pentru stări scurte, nu pentru acțiuni. Migrarea inițială include statusurile din `/demo` și `/setup`. |
+| Feedback inline | `InlineFeedback` din `components/ui/status.js` | `components/ui/status.module.css` | `error`, `success` | Pentru feedback accesibil asociat unei acțiuni sau unui formular. Eroarea are implicit `role="alert"`, succesul `role="status"`. Migrarea inițială include feedback-ul `GoogleSignInButton`. |
+
+`Button` folosește implicit `type="button"`. Pentru submit, declară explicit `type="submit"`. `ActionLink` cere `href` și acceptă `as` pentru un component de navigare compatibil, inclusiv `PendingNavigationLink`.
+
+Consumatorii legacy existenți sunt grandfathered și pot fi migrați incremental. Nu adăuga utilizări noi pentru `.btn-back`, `.btn-link`, `.secondary`, `.test-link`, `.nav-btn`, `.input-search`, `.textarea-input`, `.status-pill`, `.error-state` sau `.success-state`. Nu crea exporturi paralele cu numele API-urilor canonice în alte fișiere.
+
 ### 8.3 Patterns
 
 Compoziții reutilizabile pentru o sarcină, de exemplu:
@@ -211,19 +224,18 @@ O pagină nu trebuie să introducă propriul mini-design-system prin selectori g
 
 ## 9. Responsabilitatea CSS
 
-### În `app/globals.css` pot rămâne
+### În stylesheet-urile globale pot rămâne
 
-- tokenurile;
-- resetul;
-- stilurile elementelor de bază;
-- shell-ul aplicației;
-- primitivele folosite în mai multe fluxuri;
+- tokenurile și foundations în `app/styles/foundations/`;
+- shell-ul și navigarea în `app/styles/shell/`;
+- stilurile legacy încă folosite în `app/globals.css`;
 - patterns globale demonstrate;
 - utilitare aprobate;
 - reguli de focus și accesibilitate.
 
 ### CSS-ul local sau colocat conține
 
+- implementarea izolată a primitivelor canonice prin CSS Modules;
 - layout-ul unui singur modul;
 - ajustări specifice unei pagini;
 - stări care depind de structura locală;

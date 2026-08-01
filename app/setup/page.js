@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { AppHeader } from "@/components/app-header";
+import { StatusPill } from "@/components/ui/status";
 import { requireAdmin } from "@/lib/admin";
 import {
   getSourceBucketStatus,
@@ -30,9 +31,9 @@ function StepCard({ title, children, ready }) {
     <article className="draft-card">
       <div className="draft-card-head">
         <strong>{title}</strong>
-        <span className={`status-pill ${ready ? "is-good" : "is-muted"}`}>
+        <StatusPill tone={ready ? "success" : "info"}>
           {ready ? "gata" : "lipseste setup"}
-        </span>
+        </StatusPill>
       </div>
       <div className="status-copy">{children}</div>
     </article>
@@ -43,9 +44,9 @@ function DiagnosticStatusRow({ label, ready, readyLabel = "prezent", missingLabe
   return (
     <div className="status-row">
       <strong>{label}</strong>
-      <span className={`status-pill ${ready ? "is-good" : "is-warning"}`}>
+      <StatusPill tone={ready ? "success" : "warning"}>
         {ready ? readyLabel : missingLabel}
-      </span>
+      </StatusPill>
     </div>
   );
 }
@@ -130,9 +131,9 @@ export default async function SetupPage() {
         <div className="status-stack">
           <div className="status-row">
             <strong>Stare generala env</strong>
-            <span className={`status-pill ${overallReady ? "is-good" : "is-warning"}`}>
+            <StatusPill tone={overallReady ? "success" : "warning"}>
               {overallReady ? "baza este completa" : "mai lipsesc configurari"}
-            </span>
+            </StatusPill>
           </div>
         </div>
 

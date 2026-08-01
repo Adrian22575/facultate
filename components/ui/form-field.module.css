@@ -1,0 +1,80 @@
+:where(.field) {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+:where(.label) {
+  color: inherit;
+}
+
+.control {
+  --control-padding-block: 13px;
+  --control-padding-inline: 14px;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--touch-target);
+  padding: var(--control-padding-block) var(--control-padding-inline);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  outline: none;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.control:focus,
+.control:focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(18, 80, 177, 0.14);
+}
+
+.control:disabled {
+  cursor: not-allowed;
+  background: #edf3fb;
+  color: #71829a;
+}
+
+.control[aria-invalid="true"] {
+  border-color: #dc626d;
+  background: #fff7f7;
+  color: #8f1d27;
+}
+
+.select {
+  --control-padding-inline: 14px;
+  --select-padding-right: 40px;
+  padding-right: var(--select-padding-right);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 13 13'%3E%3Cpath fill='%23647084' d='M6.5 9 2 4h9z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+:where(.hint) {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+:where(.error) {
+  color: var(--bad);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.4;
+}

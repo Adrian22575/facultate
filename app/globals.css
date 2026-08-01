@@ -22,8 +22,7 @@ button,
 .test-link,
 .nav-btn,
 .reset-btn,
-.header-shortcut-link,
-.btn-primary {
+.header-shortcut-link {
   user-select: none;
 }
 
@@ -6772,9 +6771,7 @@ button,
     opacity 0.16s ease;
 }
 
-.btn-primary,
 button:not([class]),
-button[class=""],
 button.is-disabled-soft,
 .restart-btn,
 .test-link.primary,
@@ -6790,9 +6787,7 @@ button.is-disabled-soft,
   font-weight: 800;
 }
 
-.btn-primary:hover,
 button:not([class]):hover,
-button[class=""]:hover,
 button.is-disabled-soft:hover,
 .restart-btn:hover,
 .test-link.primary:hover,
@@ -15948,7 +15943,7 @@ td {
   letter-spacing: -0.04em;
 }
 
-.demo-guide-intro .status-pill {
+.demo-guide-intro .demo-guide-status {
   width: fit-content;
 }
 
@@ -17722,7 +17717,7 @@ td {
   margin-top: 14px;
 }
 
-.testimonial-claim-form .btn-primary {
+.testimonial-claim-form .testimonial-primary-action {
   min-height: 44px;
 }
 
@@ -17865,7 +17860,7 @@ td {
   font-weight: 800;
 }
 
-.testimonial-form-actions .btn-primary[disabled] {
+.testimonial-form-actions .testimonial-primary-action[disabled] {
   opacity: 0.58;
   cursor: not-allowed;
   transform: none;
@@ -25475,7 +25470,7 @@ td {
   }
 
   .route-error-actions,
-  .route-error-actions .btn-link {
+  .route-error-actions .route-error-action {
     width: 100%;
   }
 }

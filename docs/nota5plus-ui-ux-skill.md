@@ -84,6 +84,9 @@ Wireframe-ul nu trebuie să conțină conținut inventat sau elemente introduse 
 
 ## Pentru implementare
 
+- Verifică mai întâi catalogul din `docs/design/DESIGN_SYSTEM.md` și primitivele din `components/ui/`.
+- Pentru acțiuni, câmpuri text-like, selecturi, textarea, statusuri și feedback inline folosește API-ul canonic când semantica se potrivește.
+- Clasele legacy rămân numai pentru consumatorii existenți; nu le folosi în cod nou și nu crea butoane native fără clasă.
 - Refolosește componentele numai când semantica și stările sunt aceleași.
 - Respectă documentele de design.
 - Implementează responsive explicit.

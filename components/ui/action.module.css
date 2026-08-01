@@ -1,0 +1,117 @@
+.action {
+  --action-padding-inline: 18px;
+  min-height: var(--touch-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--action-padding-inline);
+  color: inherit;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.action:hover {
+  transform: translateY(-1px);
+}
+
+.action:focus-visible {
+  outline: 3px solid rgba(24, 79, 144, 0.28);
+  outline-offset: 3px;
+}
+
+.action:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.action:disabled,
+.action[aria-disabled="true"] {
+  opacity: 0.42;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.primary {
+  border-color: transparent;
+  background: var(--primary);
+  color: #fff;
+}
+
+.primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--primary-dark);
+}
+
+.secondary {
+  --action-padding-inline: 14px;
+  --action-padding-block: 10px;
+  width: fit-content;
+  border-color: var(--line-strong);
+  padding-block: var(--action-padding-block);
+  background: var(--surface);
+  color: var(--primary-dark);
+}
+
+.secondary:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.text {
+  --action-padding-inline: var(--space-2);
+  min-height: 44px;
+  border-color: transparent;
+  padding-block: var(--space-2);
+  background: transparent;
+  color: var(--primary-dark);
+}
+
+.text:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  transform: none;
+}
+
+.destructive {
+  border-color: var(--bad);
+  background: var(--bad);
+  color: #fff;
+}
+
+.destructive:hover:not(:disabled):not([aria-disabled="true"]) {
+  border-color: #8f1d27;
+  background: #8f1d27;
+}
+
+.defaultSize {
+  min-height: var(--touch-target);
+}
+
+.compact {
+  --action-padding-inline: 14px;
+  min-height: 44px;
+  padding-block: var(--space-2);
+}
+
+.icon {
+  width: var(--touch-target);
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding: var(--space-0);
+}
+
+.fullWidth {
+  width: 100%;
+}

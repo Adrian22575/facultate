@@ -165,6 +165,9 @@ Reguli:
 - reutilizează tokenurile și tiparele potrivite;
 - implementează explicit responsive și stările relevante;
 - nu copia automat un pattern existent dacă acesta este cauza problemei.
+- caută mai întâi primitivele canonice din `components/ui/` pentru acțiuni, câmpuri, statusuri și feedback inline;
+- nu adăuga butoane native fără `className` și nu introduce utilizări noi ale claselor legacy `.btn-back`, `.btn-link`, `.secondary`, `.test-link`, `.nav-btn`, `.input-search`, `.textarea-input`, `.status-pill`, `.error-state` sau `.success-state`;
+- extinde o primitivă canonică numai când varianta are semantică repetabilă în mai multe fluxuri, nu pentru un singur ecran.
 
 ### 6.5 Corecție punctuală
 

@@ -8,6 +8,92 @@ const { parse } = require("next/dist/compiled/babel/eslint-parser");
 const ROOT = process.cwd();
 const SOURCE_ROOTS = ["app", "components"];
 const ROUTE_ALIASES = [/^\/materiale(?:\/.*)?$/];
+const LEGACY_UI_TOKENS = [
+  "btn-back", "btn-link", "secondary", "test-link", "nav-btn",
+  "input-search", "textarea-input", "status-pill", "error-state", "success-state"
+];
+const CANONICAL_EXPORT_PATHS = {
+  Button: "components/ui/action.js",
+  ActionLink: "components/ui/action.js",
+  TextField: "components/ui/form-field.js",
+  SelectField: "components/ui/form-field.js",
+  TextareaField: "components/ui/form-field.js",
+  StatusPill: "components/ui/status.js",
+  InlineFeedback: "components/ui/status.js"
+};
+const LEGACY_UI_BASELINE = {
+  "app/ai/activitate/page.js": { "btn-link": 1, secondary: 1, "error-state": 1, "btn-back": 1 },
+  "app/ai/drafts/[testId]/page.js": { "btn-back": 1, "success-state": 1, "input-search": 2, button: 3, "btn-link": 1, secondary: 1, "textarea-input": 2 },
+  "app/ai/imports/[importId]/page.js": { "btn-back": 1 },
+  "app/ai/invata/page.js": { "error-state": 2 },
+  "app/ai/invata/[studySetId]/page.js": { "btn-back": 2, "error-state": 1 },
+  "app/ai/jobs/[jobId]/page.js": { "btn-back": 1 },
+  "app/ai/licenta/[sessionId]/page.js": { "btn-back": 1 },
+  "app/ai/page.js": { "btn-link": 1, secondary: 1 },
+  "app/ai/review/[bankId]/page.js": { "btn-back": 1, "success-state": 1, "status-pill": 3 },
+  "app/billing/cancel/page.js": { "btn-back": 1 },
+  "app/billing/success/page.js": { "btn-back": 1 },
+  "app/cont/page.js": { button: 2, "error-state": 4, "success-state": 4 },
+  "app/global-error.js": { button: 1 },
+  "app/materii/[subjectId]/interactiv/page.js": { "btn-back": 1 },
+  "app/materii/[subjectId]/page.js": { "btn-back": 1 },
+  "app/materii/[subjectId]/studiu/page.js": { "btn-back": 1 },
+  "app/materii/[subjectId]/test/page.js": { "btn-back": 1 },
+  "app/onboarding/page.js": { "btn-link": 1, secondary: 1, "btn-back": 1, "error-state": 2 },
+  "app/review-reward/page.js": { "btn-back": 1 },
+  "app/setup/page.js": { "btn-back": 2, "btn-link": 2, secondary: 2, "error-state": 2 },
+  "app/testele-mele/page.js": { "btn-back": 2, "success-state": 1, "error-state": 2, "btn-link": 4, secondary: 4 },
+  "app/testele-mele/[testId]/page.js": { "btn-back": 1 },
+  "components/account-billing-tabs-client.js": { secondary: 2, "error-state": 2 },
+  "components/account-danger-zone.js": { "error-state": 1 },
+  "components/admin-center-client.js": { "btn-link": 11, secondary: 11, "status-pill": 16, "btn-back": 1 },
+  "components/admin-dictionary-index.js": { "btn-link": 1, button: 1 },
+  "components/admin-dictionary-panel.js": { "btn-back": 5, "btn-link": 3 },
+  "components/admin-editorial-article-page.js": { "btn-link": 5, "btn-back": 4 },
+  "components/admin-editorial-articles-page.js": { "btn-link": 1, button: 1 },
+  "components/admin-editorial-automation-settings.js": { "btn-link": 1 },
+  "components/admin-editorial-panel.js": { "btn-link": 3, "btn-back": 5 },
+  "components/admin-linkedin-distribution-center.js": { "btn-back": 2 },
+  "components/admin-linkedin-distribution.js": { "btn-link": 3, "btn-back": 1 },
+  "components/admin-openai-logs-panel.js": { "btn-link": 6, secondary: 6, "error-state": 2, "status-pill": 3 },
+  "components/admin-upload-errors-panel.js": { "btn-link": 3, secondary: 3, "status-pill": 1 },
+  "components/ai-activity-center-client.js": { "btn-link": 5, secondary: 14, "status-pill": 2, "btn-back": 1, "input-search": 1, "error-state": 1, "success-state": 2 },
+  "components/ai-job-status-client.js": { secondary: 6, "btn-link": 4, "error-state": 3, "status-pill": 2, "btn-back": 3 },
+  "components/ai-question-bank-review-client.js": { "status-pill": 1, "btn-link": 11, secondary: 15, "textarea-input": 4, "input-search": 2, button: 2, "success-state": 1, "error-state": 1 },
+  "components/ai-workspace-highlight-card.js": { "status-pill": 2, "btn-link": 1, secondary: 1 },
+  "components/app-header.js": { "status-pill": 1 },
+  "components/billing-plan-card.js": { button: 1 },
+  "components/billing-success-redirect.js": { "btn-back": 1 },
+  "components/dictionary-index-client.js": { button: 1 },
+  "components/editorial-index-client.js": { button: 1 },
+  "components/exam-page-client.js": { "btn-link": 6, secondary: 14, button: 4 },
+  "components/feedback-launcher.js": { "textarea-input": 1, "btn-link": 2, secondary: 2, "input-search": 1, "error-state": 1, "success-state": 1, button: 1 },
+  "components/free-tools-calculator.js": { button: 2 },
+  "components/gamification-result-panel.js": { "btn-link": 1, secondary: 1 },
+  "components/home-page-client.js": { "test-link": 3 },
+  "components/import-job-status-client.js": { "textarea-input": 2, "btn-link": 24, secondary: 27, "input-search": 3, button: 3, "status-pill": 3, "error-state": 6, "success-state": 1, "btn-back": 2 },
+  "components/interactive-quiz.js": { "error-state": 1, "nav-btn": 2, secondary: 1 },
+  "components/learning-study-set-client.js": { secondary: 18, "btn-link": 3, button: 9 },
+  "components/learning-upload-form.js": { "error-state": 1, "btn-link": 1, secondary: 1, "input-search": 3, button: 1 },
+  "components/licenta-import-workspace-client.js": { "status-pill": 2, "error-state": 5, "btn-back": 3, button: 3, "success-state": 1, secondary: 9, "btn-link": 5, "textarea-input": 1 },
+  "components/licenta-session-workspace-client.js": { "success-state": 1, "status-pill": 3, "error-state": 1, "btn-link": 17, secondary: 20, "btn-back": 2, "textarea-input": 1, "input-search": 1, button: 2 },
+  "components/linkedin-distribution-settings.js": { "btn-back": 1 },
+  "components/mode-grid.js": { button: 1, "btn-link": 1 },
+  "components/onboarding-action-form.js": { "input-search": 1 },
+  "components/onboarding-selection-step.js": { "test-link": 1, secondary: 2 },
+  "components/overall-stats-dashboard.js": { "btn-link": 4, secondary: 2 },
+  "components/private-test-player.js": { "btn-link": 1, secondary: 1, button: 2 },
+  "components/question-correction-button.js": { secondary: 3, button: 1 },
+  "components/review-publish-bar.js": { button: 1, "btn-back": 1 },
+  "components/subjects-list-client.js": { "btn-link": 1, secondary: 1 },
+  "components/test-page-client.js": { "btn-link": 3, secondary: 7, button: 2, "error-state": 1 },
+  "components/testimonial-reward-form.js": { "textarea-input": 1 },
+  "components/workspace-generate-form.js": { "error-state": 4, "success-state": 1, "btn-link": 4, secondary: 8, "textarea-input": 1, "input-search": 1, button: 1 },
+  "components/workspace-job-history-client.js": { secondary: 5, "btn-link": 3, "success-state": 1, "error-state": 1, "status-pill": 1, "btn-back": 1 },
+  "components/workspace-main-tabs-client.js": { secondary: 2 },
+  "components/workspace-subject-picker.js": { "input-search": 2, "btn-link": 2, secondary: 2, "success-state": 1, "error-state": 1, button: 1 },
+  "components/workspace-upload-shell.js": { "btn-back": 1 }
+};
 const MOJIBAKE_TOKENS = ["Ã", "Äƒ", "Ä‚", "È™", "Èš", "È›", "Â·", "â€™", "â€œ", "â€", "â€“", "â€”", "�"];
 
 function walkFiles(directory, predicate) {
@@ -50,6 +136,39 @@ function staticExpressionValue(node) {
     return node.quasis.map((quasi) => quasi.value?.cooked || "").join("");
   }
   return null;
+}
+
+function collectStaticClassParts(node, parts = []) {
+  if (!node) return parts;
+  if (node.type === "Literal" && typeof node.value === "string") {
+    parts.push(node.value);
+    return parts;
+  }
+  if (node.type === "TemplateLiteral") {
+    for (const quasi of node.quasis) parts.push(quasi.value?.cooked || "");
+    for (const expression of node.expressions) collectStaticClassParts(expression, parts);
+    return parts;
+  }
+  if (node.type === "ConditionalExpression") {
+    collectStaticClassParts(node.consequent, parts);
+    collectStaticClassParts(node.alternate, parts);
+    return parts;
+  }
+  if (node.type === "LogicalExpression" || node.type === "BinaryExpression") {
+    collectStaticClassParts(node.left, parts);
+    collectStaticClassParts(node.right, parts);
+  }
+  return parts;
+}
+
+function staticClassTokens(attribute) {
+  if (!attribute?.value) return new Set();
+  const parts = attribute.value.type === "Literal"
+    ? [String(attribute.value.value || "")]
+    : attribute.value.type === "JSXExpressionContainer"
+      ? collectStaticClassParts(attribute.value.expression)
+      : [];
+  return new Set(parts.flatMap((part) => part.split(/\s+/)).filter(Boolean));
 }
 
 function attributeTemplatePattern(attribute) {
@@ -135,7 +254,22 @@ function inspectElement(filePath, node, context, ancestors) {
   const opening = node.openingElement;
   const name = jsxName(opening.name);
   const role = staticAttributeValue(getAttribute(opening, "role"));
-  const className = staticAttributeValue(getAttribute(opening, "className")) || "";
+  const classAttribute = getAttribute(opening, "className");
+  const className = staticAttributeValue(classAttribute) || "";
+  const classTokens = staticClassTokens(classAttribute);
+
+  for (const token of LEGACY_UI_TOKENS) {
+    if (classTokens.has(token)) {
+      context.legacyCounts[token] = (context.legacyCounts[token] || 0) + 1;
+    }
+  }
+
+  if (name === "button" && !classAttribute) {
+    context.legacyCounts.button = (context.legacyCounts.button || 0) + 1;
+  }
+  if (name === "button" && classAttribute && staticAttributeValue(classAttribute) === "") {
+    report(filePath, opening, "Butonul nu poate declara className gol.");
+  }
 
   for (const relation of ["aria-labelledby", "aria-controls"]) {
     const targets = staticAttributeValue(getAttribute(opening, relation));
@@ -183,7 +317,8 @@ function inspectElement(filePath, node, context, ancestors) {
     report(filePath, opening, "Mesajul de feedback nu are role sau aria-live.");
   }
 
-  if (name === "button" && !hasAccessibleAttribute(opening) && !hasPotentialText(node.children)) {
+  const isCanonicalButtonHost = path.relative(ROOT, filePath).replaceAll("\\", "/") === "components/ui/action.js";
+  if (name === "button" && !isCanonicalButtonHost && !hasAccessibleAttribute(opening) && !hasPotentialText(node.children)) {
     report(filePath, opening, "Butonul fara text vizibil nu are nume accesibil.");
   }
   if (name === "button" && !getAttribute(opening, "type")) {
@@ -347,8 +482,36 @@ function collectIdPatterns(node, patterns = []) {
   return patterns;
 }
 
+function verifyLegacyBaseline(filePath, counts) {
+  const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+  const baseline = LEGACY_UI_BASELINE[relativePath] || {};
+  for (const [token, count] of Object.entries(counts)) {
+    const ceiling = baseline[token] || 0;
+    if (count > ceiling) {
+      failures.push({
+        file: relativePath,
+        line: 1,
+        message: token === "button"
+          ? `Numărul de butoane native fără className a crescut peste baseline (${ceiling} → ${count}).`
+          : `Clasa legacy ${token} a crescut peste baseline (${ceiling} → ${count}).`
+      });
+    }
+  }
+}
+
 for (const filePath of sourceFiles) {
   const source = fs.readFileSync(filePath, "utf8");
+  const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+  for (const [exportName, canonicalPath] of Object.entries(CANONICAL_EXPORT_PATHS)) {
+    const exportPattern = new RegExp(`\\bexport\\s+(?:const|function|class)\\s+${exportName}\\b`);
+    if (exportPattern.test(source) && relativePath !== canonicalPath) {
+      failures.push({
+        file: relativePath,
+        line: source.slice(0, source.search(exportPattern)).split("\n").length,
+        message: `${exportName} poate fi exportat numai din ${canonicalPath}.`
+      });
+    }
+  }
   const mojibakeToken = MOJIBAKE_TOKENS.find((token) => source.includes(token));
   if (mojibakeToken) {
     const index = source.indexOf(mojibakeToken);
@@ -371,11 +534,14 @@ for (const filePath of sourceFiles) {
         parserOpts: { plugins: ["jsx"] }
       }
     });
-    traverse(filePath, ast, {
+    const context = {
       ids: collectStaticIds(ast),
       idPatterns: collectIdPatterns(ast),
-      labelTargets: collectLabelTargets(ast)
-    });
+      labelTargets: collectLabelTargets(ast),
+      legacyCounts: {}
+    };
+    traverse(filePath, ast, context);
+    verifyLegacyBaseline(filePath, context.legacyCounts);
   } catch (error) {
     report(filePath, error, `Fisierul nu a putut fi analizat: ${error.message}`);
   }

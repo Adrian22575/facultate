@@ -1,0 +1,57 @@
+.pill {
+  --status-padding-inline: 10px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--status-padding-inline);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.neutral {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+.info {
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+.success {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+.warning {
+  background: #fff1c4;
+  color: #8a5a00;
+}
+
+.danger {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+:where(.feedback) {
+  --feedback-padding: 18px;
+  padding: var(--feedback-padding);
+  border-radius: var(--radius);
+  text-align: center;
+  font-weight: 800;
+}
+
+:where(.feedbackError) {
+  border: 1px solid #efc5c9;
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+:where(.feedbackSuccess) {
+  border: 1px solid #9bd0b0;
+  background: var(--good-soft);
+  color: var(--good);
+}

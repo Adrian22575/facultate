@@ -28,12 +28,21 @@ const globalCssEntries = [
     importPath: "./globals.css"
   }
 ];
+const primitiveCssEntries = [
+  "components/ui/action.module.css",
+  "components/ui/form-field.module.css",
+  "components/ui/status.module.css"
+];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
 const guard = "/* DESIGN-SPACING-GUARD: new layout spacing below this marker must use spacing tokens. */";
 const cssSources = globalCssEntries.map((entry) => ({
   ...entry,
   css: fs.readFileSync(path.join(root, entry.relativePath), "utf8")
+}));
+const primitiveCssSources = primitiveCssEntries.map((relativePath) => ({
+  relativePath,
+  css: fs.readFileSync(path.join(root, relativePath), "utf8")
 }));
 const tokensCss = cssSources[0].css;
 const shellCss = cssSources.find(({ relativePath }) => relativePath === "app/styles/shell/app-shell.css").css;
@@ -117,10 +126,60 @@ for (const { relativePath, css } of cssSources) {
   }
 }
 
+const moduleRawSpacing = /(?<![-\w])(?:margin|padding|gap|row-gap|column-gap)(?:-[a-z]+)?\s*:\s*[^;}{]*\b-?\d+(?:\.\d+)?px/g;
+const broadElementSelector = /^(?:button|input|select|textarea|label)(?=[\s.#:[>+~]|$)/;
+
+for (const { relativePath, css } of primitiveCssSources) {
+  const uncommentedCss = css.replaceAll(/\/\*[\s\S]*?\*\//g, "");
+  const rawSpacing = uncommentedCss.match(moduleRawSpacing) || [];
+  if (rawSpacing.length) {
+    failures.push(`${relativePath} folosește spațiere brută: ${rawSpacing.join(", ")}.`);
+  }
+  if (uncommentedCss.includes("!important")) {
+    failures.push(`${relativePath} nu poate folosi !important.`);
+  }
+
+  for (const match of uncommentedCss.matchAll(/([^{}]+)\{/g)) {
+    const selectorGroup = match[1].trim();
+    if (selectorGroup.startsWith("@")) continue;
+    for (const selector of selectorGroup.split(",")) {
+      if (broadElementSelector.test(selector.trim())) {
+        failures.push(`${relativePath} conține selectorul HTML larg: ${selector.trim()}.`);
+      }
+    }
+  }
+}
+
+if (legacyCss.includes('button[class=""]')) {
+  failures.push('Selectorul legacy button[class=""] trebuie eliminat complet.');
+}
+
+const legacySelectorCeilings = {
+  "button:not([class])": 2,
+  ".btn-back": 21,
+  ".btn-link": 38,
+  ".secondary": 15,
+  ".test-link": 18,
+  ".nav-btn": 9,
+  ".input-search": 10,
+  ".textarea-input": 3,
+  ".status-pill": 4,
+  ".error-state": 2,
+  ".success-state": 1
+};
+
+for (const [selector, ceiling] of Object.entries(legacySelectorCeilings)) {
+  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const count = legacyCss.match(new RegExp(escapedSelector, "g"))?.length || 0;
+  if (count > ceiling) {
+    failures.push(`Selectorul legacy ${selector} a crescut de la limita ${ceiling} la ${count} ramuri.`);
+  }
+}
+
 if (failures.length) {
   console.error("Design spacing check failed:\n");
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log(`Design spacing check passed (${cssSources.length} fișiere CSS globale).`);
+console.log(`Design spacing check passed (${cssSources.length} fișiere CSS globale, ${primitiveCssSources.length} module canonice).`);

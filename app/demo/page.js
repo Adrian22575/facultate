@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { LearningModeCard } from "@/components/learning-mode-card";
+import { StatusPill } from "@/components/ui/status";
 import { getDemoSubject } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
@@ -40,7 +41,7 @@ export default async function DemoPage() {
 
       <section className="surface demo-guide-surface">
         <div className="demo-guide-intro">
-          <span className="status-pill is-warning">Demo</span>
+          <StatusPill className="demo-guide-status" tone="warning">Demo</StatusPill>
           <h2>Alege cum vrei sa inveti</h2>
           <p className="demo-guide-subject">{`Materia demo: ${demoSubjectTitle}`}</p>
         </div>
