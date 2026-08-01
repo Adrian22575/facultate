@@ -24,6 +24,7 @@ import { assignLearningStudySetSubjectAction } from "@/app/ai/invata/actions";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { Pagination } from "@/components/ui/collection-controls";
+import { DataTable } from "@/components/ui/data-table";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -701,31 +702,34 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
           </button>
         </div>
       ) : null}
-      <div className="table-scroll admin-table-scroll ai-activity-table-scroll">
-        <table className="admin-table ai-activity-table">
-          <thead>
-            <tr>
-              <th className="ai-activity-select-cell">
+      <DataTable
+        caption="Materii urcate"
+        minWidth={1120}
+        responsive="cards"
+        columns={[
+          {
+            key: "selection",
+            label: (
                 <input
                   type="checkbox"
                   aria-label="Selecteaza materialele vizibile"
                   checked={allVisibleSelected}
                   onChange={toggleVisibleSelected}
                 />
-              </th>
-              <th>Material</th>
-              <th>Tip</th>
-              <th>Materie</th>
-              <th className="table-center">Intrebari</th>
-              <th>Status</th>
-              <th>Ultima actualizare</th>
-              <th>Actiuni</th>
-            </tr>
-          </thead>
-          <tbody>
+            )
+          },
+          { key: "material", label: "Material" },
+          { key: "type", label: "Tip" },
+          { key: "subject", label: "Materie" },
+          { key: "questions", label: "Intrebari", align: "center" },
+          { key: "status", label: "Status" },
+          { key: "updatedAt", label: "Ultima actualizare" },
+          { key: "actions", label: "Actiuni" }
+        ]}
+      >
             {paginated.rows.map((material) => (
               <tr key={material.id}>
-                <td className="ai-activity-select-cell" data-label="Selecteaza">
+                <td data-label="Selecteaza" data-table-cell="selection">
                   <input
                     type="checkbox"
                     aria-label={`Selecteaza ${material.title}`}
@@ -733,19 +737,19 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
                     onChange={() => toggleSelected(material.id)}
                   />
                 </td>
-                <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Material" data-mobile-wide="true">
+                <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Material" data-table-wide="true">
                   {material.title}
                 </td>
                 <td className="admin-table-text-cell" data-label="Tip">{material.typeLabel}</td>
                 <td className="admin-table-text-cell" data-label="Materie">{material.subjectLabel}</td>
-                <td className="table-center admin-table-count-cell" data-label="Intrebari">{material.questionCount}</td>
+                <td className="admin-table-count-cell" data-label="Intrebari" data-table-align="center">{material.questionCount}</td>
                 <td data-label="Status">
                   <span className={`admin-table-pill ${materialStatusTone(material.status)}`}>
                     {materialStatusLabel(material.status)}
                   </span>
                 </td>
                 <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(material.updatedAt)}</td>
-                <td data-label="Actiuni" data-mobile-wide="true">
+                <td data-label="Actiuni" data-table-wide="true">
                   <div className="inline-actions ai-activity-table-actions">
                       {material.reviewHref ? (
                         <PendingNavigationLink
@@ -790,9 +794,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
+      </DataTable>
       <Pagination
         page={paginated.page}
         totalPages={paginated.totalPages}
@@ -936,38 +938,38 @@ function LicentaTable({ rows, onSourceDocumentAttached }) {
 
   return (
     <>
-      <div className="table-scroll admin-table-scroll ai-activity-table-scroll">
-        <table className="admin-table ai-activity-table">
-          <thead>
-            <tr>
-              <th>Licenta</th>
-              <th className="table-center">Seturi</th>
-              <th className="table-center">Intrebari</th>
-              <th>Status</th>
-              <th>Ultima actualizare</th>
-              <th>Actiuni</th>
-            </tr>
-          </thead>
-          <tbody>
+      <DataTable
+        caption="Materiale pentru licenta"
+        minWidth={1120}
+        responsive="cards"
+        columns={[
+          { key: "license", label: "Licenta" },
+          { key: "sets", label: "Seturi", align: "center" },
+          { key: "questions", label: "Intrebari", align: "center" },
+          { key: "status", label: "Status" },
+          { key: "updatedAt", label: "Ultima actualizare" },
+          { key: "actions", label: "Actiuni" }
+        ]}
+      >
             {paginated.rows.map((row) => {
               const actions = getLicentaActions(row);
               return (
                 <tr key={row.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Licenta" data-mobile-wide="true">
+                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Licenta" data-table-wide="true">
                     <div className="ai-activity-name-cell">
                       <strong>{row.title}</strong>
                       <span>{`${row.completedSetCount || 0}/${row.setCount || 0} seturi salvate`}</span>
                     </div>
                   </td>
-                  <td className="table-center admin-table-count-cell" data-label="Seturi">{row.setCount || 0}</td>
-                  <td className="table-center admin-table-count-cell" data-label="Intrebari">{row.questionsWithAnswers || row.totalQuestions || 0}</td>
+                  <td className="admin-table-count-cell" data-label="Seturi" data-table-align="center">{row.setCount || 0}</td>
+                  <td className="admin-table-count-cell" data-label="Intrebari" data-table-align="center">{row.questionsWithAnswers || row.totalQuestions || 0}</td>
                   <td data-label="Status">
                     <span className={`admin-table-pill ${getLicentaStatusTone(row)}`}>
                       {getLicentaStatusLabel(row)}
                     </span>
                   </td>
                   <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(row.updatedAt || row.completedAt || row.createdAt)}</td>
-                  <td data-label="Actiuni" data-mobile-wide="true">
+                  <td data-label="Actiuni" data-table-wide="true">
                     <div className="inline-actions ai-activity-table-actions">
                       {actions.map((action, index) => (
                         <PendingNavigationLink
@@ -992,9 +994,7 @@ function LicentaTable({ rows, onSourceDocumentAttached }) {
                 </tr>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+      </DataTable>
       <Pagination
         page={paginated.page}
         totalPages={paginated.totalPages}
@@ -1025,24 +1025,24 @@ function ActivityTable({ jobs }) {
 
   return (
     <>
-      <div className="table-scroll admin-table-scroll ai-activity-table-scroll">
-        <table className="admin-table ai-activity-table">
-          <thead>
-            <tr>
-              <th>Procesare</th>
-              <th>Tip</th>
-              <th>Status</th>
-              <th>Progres</th>
-              <th>Ultima actualizare</th>
-              <th>Actiuni</th>
-            </tr>
-          </thead>
-          <tbody>
+      <DataTable
+        caption="Uploaduri si verificari"
+        minWidth={1120}
+        responsive="cards"
+        columns={[
+          { key: "processing", label: "Procesare" },
+          { key: "type", label: "Tip" },
+          { key: "status", label: "Status" },
+          { key: "progress", label: "Progres" },
+          { key: "updatedAt", label: "Ultima actualizare" },
+          { key: "actions", label: "Actiuni" }
+        ]}
+      >
             {paginated.rows.map((job) => {
               const presentation = getJobPresentation(job);
               return (
                 <tr key={`${job.kind || "job"}-${job.id}`}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Procesare" data-mobile-wide="true">
+                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Procesare" data-table-wide="true">
                     <div className="ai-activity-name-cell">
                       <strong>{activityTitle(job)}</strong>
                       <span>{presentation.primaryMessage}</span>
@@ -1052,7 +1052,7 @@ function ActivityTable({ jobs }) {
                   <td data-label="Status">
                     <span className={`status-pill ${presentation.tone}`}>{presentation.statusLabel}</span>
                   </td>
-                  <td className="admin-table-text-cell" data-label="Progres" data-mobile-wide="true">
+                  <td className="admin-table-text-cell" data-label="Progres" data-table-wide="true">
                     {presentation.isTerminal
                       ? `${presentation.progressLabel} - ${presentation.elapsedCaption}: ${presentation.elapsedLabel}`
                       : `${presentation.progressLabel} - astepti de ${presentation.elapsedLabel}`}
@@ -1075,9 +1075,7 @@ function ActivityTable({ jobs }) {
                 </tr>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+      </DataTable>
       <Pagination
         page={paginated.page}
         totalPages={paginated.totalPages}
@@ -1116,31 +1114,31 @@ function TestsTable({ testGroups }) {
 
   return (
     <>
-      <div className="table-scroll admin-table-scroll ai-activity-table-scroll">
-        <table className="admin-table ai-activity-table">
-          <thead>
-            <tr>
-              <th>Test</th>
-              <th>Status</th>
-              <th className="table-center">Intrebari</th>
-              <th>Creat</th>
-              <th>Actiuni</th>
-            </tr>
-          </thead>
-          <tbody>
+      <DataTable
+        caption="Teste generate"
+        minWidth={1120}
+        responsive="cards"
+        columns={[
+          { key: "test", label: "Test" },
+          { key: "status", label: "Status" },
+          { key: "questions", label: "Intrebari", align: "center" },
+          { key: "createdAt", label: "Creat" },
+          { key: "actions", label: "Actiuni" }
+        ]}
+      >
             {paginated.rows.map((test) => {
               const isActive = test.status === "active";
               return (
                 <tr key={test.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Test" data-mobile-wide="true">{test.title}</td>
+                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Test" data-table-wide="true">{test.title}</td>
                   <td data-label="Status">
                     <span className={`admin-table-pill ${isActive ? "is-good" : "is-warning"}`}>
                       {test.displayStatus}
                     </span>
                   </td>
-                  <td className="table-center admin-table-count-cell" data-label="Intrebari">{test.total_questions}</td>
+                  <td className="admin-table-count-cell" data-label="Intrebari" data-table-align="center">{test.total_questions}</td>
                   <td className="admin-table-date-cell" data-label="Creat">{formatDate(test.published_at || test.created_at)}</td>
-                  <td data-label="Actiuni" data-mobile-wide="true">
+                  <td data-label="Actiuni" data-table-wide="true">
                     <div className="inline-actions ai-activity-table-actions">
                       {isActive ? (
                         <PendingNavigationLink
@@ -1165,9 +1163,7 @@ function TestsTable({ testGroups }) {
                 </tr>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+      </DataTable>
       <Pagination
         page={paginated.page}
         totalPages={paginated.totalPages}

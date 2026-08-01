@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { AppHeader } from "@/components/app-header";
+import { DataTable } from "@/components/ui/data-table";
 import { StatusPill } from "@/components/ui/status";
 import { requireAdmin } from "@/lib/admin";
 import {
@@ -286,18 +287,16 @@ export default async function SetupPage() {
         ) : null}
 
         {notificationEvents.rows.length ? (
-          <div className="admin-table-scroll">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Tip</th>
-                  <th>Status</th>
-                  <th>Eroare</th>
-                  <th>Creat la</th>
-                  <th>Trimis la</th>
-                </tr>
-              </thead>
-              <tbody>
+          <DataTable
+            caption="Notificari admin recente"
+            columns={[
+              { key: "type", label: "Tip" },
+              { key: "status", label: "Status" },
+              { key: "error", label: "Eroare" },
+              { key: "createdAt", label: "Creat la" },
+              { key: "sentAt", label: "Trimis la" }
+            ]}
+          >
                 {notificationEvents.rows.map((event) => (
                   <tr key={`${event.event_type}:${event.created_at}`}>
                     <td className="admin-table-code-cell">{formatNotificationEventType(event.event_type)}</td>
@@ -319,9 +318,7 @@ export default async function SetupPage() {
                     <td className="admin-table-date-cell">{formatSetupTimestamp(event.sent_at)}</td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
-          </div>
+          </DataTable>
         ) : !notificationEvents.warning ? (
           <div className="empty-state">
             Nu exista inca notificari admin. Trimite feedback sau testeaza o plata dupa configurarea Telegram.
@@ -342,19 +339,17 @@ export default async function SetupPage() {
         ) : null}
 
         {openAIDiagnostics.rows.length ? (
-          <div className="admin-table-scroll">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Operatie</th>
-                  <th>Scope</th>
-                  <th>Model</th>
-                  <th>Cod</th>
-                  <th>Eroare</th>
-                  <th>Creat la</th>
-                </tr>
-              </thead>
-              <tbody>
+          <DataTable
+            caption="Erori recente de procesare"
+            columns={[
+              { key: "operation", label: "Operatie" },
+              { key: "scope", label: "Scope" },
+              { key: "model", label: "Model" },
+              { key: "code", label: "Cod" },
+              { key: "error", label: "Eroare" },
+              { key: "createdAt", label: "Creat la" }
+            ]}
+          >
                 {openAIDiagnostics.rows.map((event) => (
                   <tr key={`${event.operation}:${event.request_scope}:${event.created_at}`}>
                     <td className="admin-table-code-cell">{event.operation || "-"}</td>
@@ -369,9 +364,7 @@ export default async function SetupPage() {
                     <td className="admin-table-date-cell">{formatSetupTimestamp(event.created_at)}</td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
-          </div>
+          </DataTable>
         ) : !openAIDiagnostics.warning ? (
           <div className="empty-state">Nu exista erori recente de procesare.</div>
         ) : null}

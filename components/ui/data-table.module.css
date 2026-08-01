@@ -1,0 +1,195 @@
+.container {
+  --data-table-wrapper-margin-top: 2px;
+  --data-table-header-padding-block: 11px;
+  --data-table-header-padding-inline: 14px;
+  --data-table-cell-padding-block: 10px;
+  --data-table-cell-padding-inline: 14px;
+  --data-table-card-list-gap: 12px;
+  --data-table-card-row-gap: 0px;
+  --data-table-card-row-column-gap: 16px;
+  --data-table-card-row-padding-block: 14px;
+  --data-table-card-row-padding-inline: 16px;
+  --data-table-card-cell-gap: 4px;
+  --data-table-card-cell-padding-block: 9px;
+  --data-table-card-cell-padding-inline: 0px;
+  --data-table-selection-gap: 10px;
+
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: var(--data-table-wrapper-margin-top);
+  border: 1px solid #dce6f3;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cards {
+  border-radius: 18px;
+}
+
+:global(.admin-table-section--flat) .container {
+  --data-table-wrapper-margin-top: 0px;
+}
+
+.table {
+  width: max-content;
+  min-width: var(--data-table-min-width, 100%);
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.table thead th {
+  padding: var(--data-table-header-padding-block) var(--data-table-header-padding-inline);
+  border-bottom: 1px solid #dfe7f1;
+  background: #f7faff;
+  color: #58708f;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: var(--data-table-cell-padding-block) var(--data-table-cell-padding-inline);
+  border-bottom: 1px solid #dfe7f1;
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody tr:hover {
+  background: #f4f8fe;
+}
+
+.table tbody tr[data-table-tone="review"] {
+  background: rgba(255, 247, 247, 0.58);
+}
+
+.table tbody tr[data-table-tone="review"]:hover {
+  background: rgba(255, 239, 239, 0.72);
+}
+
+.table [data-table-align="center"] {
+  text-align: center;
+}
+
+.table [data-table-cell="selection"],
+.table thead th:has(input[type="checkbox"]) {
+  width: 44px;
+  min-width: 44px;
+  text-align: center;
+}
+
+.table [data-table-cell="selection"] input,
+.table thead th:has(input[type="checkbox"]) input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .cards {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .cards .table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cards .table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .cards .table tbody {
+    display: grid;
+    gap: var(--data-table-card-list-gap);
+  }
+
+  .cards .table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--data-table-card-row-column-gap);
+    row-gap: var(--data-table-card-row-gap);
+    padding: var(--data-table-card-row-padding-block) var(--data-table-card-row-padding-inline);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #ffffff;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .cards .table tbody td {
+    display: grid;
+    min-width: 0;
+    width: auto;
+    gap: var(--data-table-card-cell-gap);
+    padding: var(--data-table-card-cell-padding-block) var(--data-table-card-cell-padding-inline);
+    border: 0;
+    text-align: left;
+  }
+
+  .cards .table tbody td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .cards .table tbody td[data-table-wide="true"] {
+    grid-column: 1 / -1;
+  }
+
+  .cards .table tbody td[data-table-cell="selection"] {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--data-table-selection-gap);
+  }
+
+  .cards .table tbody td[data-table-cell="selection"]::before {
+    order: 2;
+  }
+}
+
+@media (max-width: 360px) {
+  .cards .table tbody tr {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cards .table tbody td[data-table-wide="true"] {
+    grid-column: auto;
+  }
+}

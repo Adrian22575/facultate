@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
 import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
+import { DataTable } from "@/components/ui/data-table";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
@@ -212,28 +213,6 @@ function TableSection({ title, subtitle, count, actions = null, children, varian
       </div>
       {children}
     </section>
-  );
-}
-
-function AdminTable({ columns, children, minWidth = 960 }) {
-  return (
-    <div className="table-scroll admin-table-scroll">
-      <table className="admin-table" style={{ minWidth }}>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th
-                key={column.key}
-                className={column.align === "center" ? "table-center" : undefined}
-              >
-                {column.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{children}</tbody>
-      </table>
-    </div>
   );
 }
 
@@ -1203,8 +1182,8 @@ export function AdminCenterClient({
 
         {filteredFeedbackEntries.length ? (
           <>
-            <AdminTable minWidth={1200} columns={[
-              { key: "review", label: "" },
+            <DataTable caption="Feedback utilizatori" minWidth={1200} columns={[
+              { key: "review", label: "", ariaLabel: "De verificat" },
               { key: "type", label: "Tip" },
               { key: "message", label: "Mesaj" },
               { key: "detail", label: "Detaliu" },
@@ -1215,7 +1194,7 @@ export function AdminCenterClient({
               { key: "createdAt", label: "Trimis la" }
             ]}>
               {feedbackPageData.rows.map((entry) => (
-                <tr key={entry.id} className={entry.feedback_type === "problem" ? "has-admin-review" : undefined}>
+                <tr key={entry.id} data-table-tone={entry.feedback_type === "problem" ? "review" : undefined}>
                   <td className="admin-review-cell">
                     <ReviewDot show={entry.feedback_type === "problem"} label="Problema de verificat" />
                   </td>
@@ -1242,7 +1221,7 @@ export function AdminCenterClient({
                   <td><TableDate value={entry.created_at} /></td>
                 </tr>
               ))}
-            </AdminTable>
+            </DataTable>
             <Pagination page={feedbackPageData.page} totalPages={feedbackPageData.totalPages} onPageChange={setFeedbackPage} />
           </>
         ) : (
@@ -1274,7 +1253,7 @@ export function AdminCenterClient({
             <TableSection title="Granturi premium" subtitle="Vezi ce planuri au fost activate si pana cand sunt valabile." count={filteredPremiumRows.length}>
               {filteredPremiumRows.length ? (
                 <>
-                  <AdminTable minWidth={1040} columns={[
+                  <DataTable caption="Granturi premium" minWidth={1040} columns={[
                     { key: "user", label: "Utilizator" },
                     { key: "plan", label: "Plan" },
                     { key: "source", label: "Sursa" },
@@ -1292,7 +1271,7 @@ export function AdminCenterClient({
                         <td><TableDate value={row.ends_at} /></td>
                       </tr>
                     ))}
-                  </AdminTable>
+                  </DataTable>
                   <Pagination page={premiumPageData.page} totalPages={premiumPageData.totalPages} onPageChange={setPremiumPage} />
                 </>
               ) : (
@@ -1305,7 +1284,7 @@ export function AdminCenterClient({
             <TableSection title="Incarcari materiale" subtitle="Vezi pachetele cumparate pentru materiale si actualizarile recente." count={filteredCreditRows.length}>
               {filteredCreditRows.length ? (
                 <>
-                  <AdminTable minWidth={1040} columns={[
+                  <DataTable caption="Incarcari materiale" minWidth={1040} columns={[
                     { key: "user", label: "Utilizator" },
                     { key: "plan", label: "Pachet" },
                     { key: "delta", label: "Valoare" },
@@ -1323,7 +1302,7 @@ export function AdminCenterClient({
                         <td><TableDate value={row.created_at} /></td>
                       </tr>
                     ))}
-                  </AdminTable>
+                  </DataTable>
                   <Pagination page={creditsPageData.page} totalPages={creditsPageData.totalPages} onPageChange={setCreditsPage} />
                 </>
               ) : (
@@ -1336,8 +1315,8 @@ export function AdminCenterClient({
             <TableSection title="Webhook-uri Stripe" subtitle="Vezi daca evenimentele au intrat corect si daca exista erori de procesare." count={filteredWebhookRows.length}>
               {filteredWebhookRows.length ? (
                 <>
-                  <AdminTable minWidth={1040} columns={[
-                    { key: "review", label: "" },
+                  <DataTable caption="Evenimente webhook" minWidth={1040} columns={[
+                    { key: "review", label: "", ariaLabel: "De verificat" },
                     { key: "event", label: "Eveniment" },
                     { key: "status", label: "Status" },
                     { key: "stripeEvent", label: "Stripe event" },
@@ -1348,7 +1327,7 @@ export function AdminCenterClient({
                       const needsReview = row.status === "failed" || Boolean(row.last_error);
 
                       return (
-                      <tr key={row.id} className={needsReview ? "has-admin-review" : undefined}>
+                      <tr key={row.id} data-table-tone={needsReview ? "review" : undefined}>
                         <td className="admin-review-cell">
                           <ReviewDot show={needsReview} label="Webhook de verificat" />
                         </td>
@@ -1360,7 +1339,7 @@ export function AdminCenterClient({
                       </tr>
                     );
                     })}
-                  </AdminTable>
+                  </DataTable>
                   <Pagination page={webhooksPageData.page} totalPages={webhooksPageData.totalPages} onPageChange={setWebhooksPage} />
                 </>
               ) : (
@@ -1396,7 +1375,7 @@ export function AdminCenterClient({
 
         {filteredUsers.length ? (
           <>
-            <AdminTable minWidth={1220} columns={[
+            <DataTable caption="Utilizatori" minWidth={1220} columns={[
               { key: "name", label: "Nume" },
               { key: "email", label: "Email" },
               { key: "type", label: "Tip" },
@@ -1438,7 +1417,7 @@ export function AdminCenterClient({
                   </tr>
                 );
               })}
-            </AdminTable>
+            </DataTable>
             <Pagination page={usersPageData.page} totalPages={usersPageData.totalPages} onPageChange={setUsersPage} />
           </>
         ) : (
@@ -1523,7 +1502,7 @@ export function AdminCenterClient({
                 <div className="admin-analytics-grid">
                   <TableSection title="Top materiale invatare" subtitle="Materiale cu folosire reala in teste si flashcards." count={learningAnalytics?.topStudySets?.length || 0}>
                     {learningAnalytics?.topStudySets?.length ? (
-                      <AdminTable minWidth={760} columns={[
+                      <DataTable caption="Top materiale de invatare" minWidth={760} columns={[
                         { key: "title", label: "Material" },
                         { key: "status", label: "Status" },
                         { key: "users", label: "Useri" },
@@ -1541,7 +1520,7 @@ export function AdminCenterClient({
                             <td>{formatUsageLabel(row.visibility_scope)}</td>
                           </tr>
                         ))}
-                      </AdminTable>
+                      </DataTable>
                     ) : (
                       <EmptyState title="Nu exista materiale folosite inca." subtitle="Topul apare dupa teste sau flashcards salvate." />
                     )}
@@ -1549,7 +1528,7 @@ export function AdminCenterClient({
 
                   <TableSection title="Top contributori" subtitle="Autori ale caror materiale publicate sunt refolosite de colegi." count={learningAnalytics?.topContributors?.length || 0}>
                     {learningAnalytics?.topContributors?.length ? (
-                      <AdminTable minWidth={760} columns={[
+                      <DataTable caption="Top contributori" minWidth={760} columns={[
                         { key: "user", label: "Utilizator" },
                         { key: "published", label: "Publicate" },
                         { key: "reuse", label: "Reutilizari" },
@@ -1565,7 +1544,7 @@ export function AdminCenterClient({
                             <td><TableDate value={row.last_published_at} /></td>
                           </tr>
                         ))}
-                      </AdminTable>
+                      </DataTable>
                     ) : (
                       <EmptyState title="Nu exista contributori cu reutilizari inca." subtitle="Aici apar materialele publicate si folosite de colegi." />
                     )}
@@ -1574,7 +1553,7 @@ export function AdminCenterClient({
 
                 <TableSection title="Erori procesare invatare" subtitle="Ultimele uploaduri sau procesari care nu au ajuns la material gata." count={learningAnalytics?.processingErrors?.length || 0}>
                   {learningAnalytics?.processingErrors?.length ? (
-                    <AdminTable minWidth={980} columns={[
+                    <DataTable caption="Erori procesare invatare" minWidth={980} columns={[
                       { key: "date", label: "Data" },
                       { key: "title", label: "Material" },
                       { key: "user", label: "Utilizator" },
@@ -1592,7 +1571,7 @@ export function AdminCenterClient({
                           <td className="admin-table-text-cell">{row.error || "Eroare necunoscuta"}</td>
                         </tr>
                       ))}
-                    </AdminTable>
+                    </DataTable>
                   ) : (
                     <EmptyState title="Nu exista erori recente in modulul de invatare." subtitle="Aici apar uploadurile sau procesarile care au esuat." />
                   )}
@@ -1602,7 +1581,7 @@ export function AdminCenterClient({
 
                 <TableSection title="Materiale de invatare recente" subtitle="Ultimele study sets generate sau publicate." count={learningAnalytics?.recentStudySets?.length || 0}>
                   {learningRows?.length ? (
-                    <AdminTable minWidth={1280} columns={[
+                    <DataTable caption="Materiale de invatare recente" minWidth={1280} columns={[
                       { key: "date", label: "Data" },
                       { key: "title", label: "Titlu" },
                       { key: "user", label: "Utilizator" },
@@ -1649,7 +1628,7 @@ export function AdminCenterClient({
                           </td>
                         </tr>
                       ))}
-                    </AdminTable>
+                    </DataTable>
                   ) : (
                     <EmptyState title="Nu exista materiale de invatare inca." subtitle="Primele materiale apar aici dupa procesare." />
                   )}
@@ -1692,7 +1671,7 @@ export function AdminCenterClient({
 
             <TableSection title="Utilizatori activi" subtitle="Cei mai activi utilizatori din fereastra curenta." count={usageAnalytics?.topUsers?.length || 0}>
               {usageAnalytics?.topUsers?.length ? (
-                <AdminTable minWidth={1100} columns={[
+                <DataTable caption="Utilizatori activi" minWidth={1100} columns={[
                   { key: "user", label: "Utilizator" },
                   { key: "events", label: "Evenimente" },
                   { key: "pageViews", label: "Pagini" },
@@ -1712,7 +1691,7 @@ export function AdminCenterClient({
                       <td><TableDate value={row.last_seen_at} /></td>
                     </tr>
                   ))}
-                </AdminTable>
+                </DataTable>
               ) : (
                 <EmptyState title="Nu exista utilizatori activi inca." subtitle="Vor aparea dupa primele evenimente cu utilizatori logati." />
               )}
@@ -1720,7 +1699,7 @@ export function AdminCenterClient({
 
             <TableSection title="Evenimente recente" subtitle="Ultimele interactiuni salvate pentru audit rapid." count={usageAnalytics?.recentEvents?.length || 0}>
               {usageAnalytics?.recentEvents?.length ? (
-                <AdminTable minWidth={1180} columns={[
+                <DataTable caption="Evenimente recente" minWidth={1180} columns={[
                   { key: "date", label: "Data" },
                   { key: "user", label: "Utilizator" },
                   { key: "event", label: "Eveniment" },
@@ -1738,7 +1717,7 @@ export function AdminCenterClient({
                       <td>{formatUsageLabel(row.device_type || "unknown")}</td>
                     </tr>
                   ))}
-                </AdminTable>
+                </DataTable>
               ) : (
                 <EmptyState title="Nu exista evenimente recente." subtitle="Trackerul va popula tabelul dupa primele navigari." />
               )}
@@ -1773,7 +1752,7 @@ export function AdminCenterClient({
 
         {filteredSubjects.length ? (
           <>
-            <AdminTable minWidth={1260} columns={[
+            <DataTable caption="Materii" minWidth={1260} columns={[
               { key: "title", label: "Materie" },
               { key: "id", label: "ID" },
               { key: "questions", label: "Fisier intrebari" },
@@ -1787,7 +1766,7 @@ export function AdminCenterClient({
                   <td className="admin-table-name-cell admin-table-name-cell--xl">{subject.title}</td>
                   <td className="admin-table-code-cell">{subject.id}</td>
                   <td className="admin-table-text-cell admin-table-wide-cell admin-table-wide-cell--xl">{subject.questions_file || "Fara fisier"}</td>
-                  <td className="table-center admin-table-count-cell">{subject.allocation_count}</td>
+                  <td className="admin-table-count-cell" data-table-align="center">{subject.allocation_count}</td>
                   <td>
                     <div className="admin-cell-pill-list">
                       {subject.contexts.length ? subject.contexts.map((context) => (
@@ -1799,7 +1778,7 @@ export function AdminCenterClient({
                   <td><TableDate value={subject.created_at} /></td>
                 </tr>
               ))}
-            </AdminTable>
+            </DataTable>
             <Pagination page={subjectsPageData.page} totalPages={subjectsPageData.totalPages} onPageChange={setSubjectsPage} />
           </>
         ) : (
@@ -1838,7 +1817,7 @@ export function AdminCenterClient({
           >
             {filteredInstitutions.length ? (
               <>
-                <AdminTable minWidth={1260} columns={[
+                <DataTable caption="Institutii" minWidth={1260} columns={[
                   { key: "name", label: "Nume" },
                   { key: "type", label: "Tip" },
                   { key: "city", label: "Oras" },
@@ -1858,13 +1837,13 @@ export function AdminCenterClient({
                       <td><CellPill>{institution.type === "school" ? "School" : "University"}</CellPill></td>
                       <td>{institution.city}</td>
                       <td>{institution.source}</td>
-                      <td className="table-center admin-table-count-cell">{institution.faculty_count}</td>
-                      <td className="table-center admin-table-count-cell">{institution.cohort_count}</td>
-                      <td className="table-center admin-table-count-cell">{institution.membership_count}</td>
+                      <td className="admin-table-count-cell" data-table-align="center">{institution.faculty_count}</td>
+                      <td className="admin-table-count-cell" data-table-align="center">{institution.cohort_count}</td>
+                      <td className="admin-table-count-cell" data-table-align="center">{institution.membership_count}</td>
                       <td><TableDate value={institution.created_at} /></td>
                     </tr>
                   ))}
-                </AdminTable>
+                </DataTable>
                 <Pagination page={institutionsPageData.page} totalPages={institutionsPageData.totalPages} onPageChange={setInstitutionsPage} />
               </>
             ) : (
@@ -1887,7 +1866,7 @@ export function AdminCenterClient({
           >
             {filteredFaculties.length ? (
               <>
-                <AdminTable minWidth={1320} columns={[
+                <DataTable caption="Facultati" minWidth={1320} columns={[
                   { key: "name", label: "Nume" },
                   { key: "institution", label: "Institutie" },
                   { key: "unitType", label: "Tip unitate" },
@@ -1903,13 +1882,13 @@ export function AdminCenterClient({
                       <td className="admin-table-name-cell admin-table-name-cell--xl">{faculty.institution_name}</td>
                       <td><CellPill>{faculty.unit_type}</CellPill></td>
                       <td>{faculty.source}</td>
-                      <td className="table-center admin-table-count-cell">{faculty.program_count}</td>
-                      <td className="table-center admin-table-count-cell">{faculty.cohort_count}</td>
-                      <td className="table-center admin-table-count-cell">{faculty.membership_count}</td>
+                      <td className="admin-table-count-cell" data-table-align="center">{faculty.program_count}</td>
+                      <td className="admin-table-count-cell" data-table-align="center">{faculty.cohort_count}</td>
+                      <td className="admin-table-count-cell" data-table-align="center">{faculty.membership_count}</td>
                       <td><TableDate value={faculty.created_at} /></td>
                     </tr>
                   ))}
-                </AdminTable>
+                </DataTable>
                 <Pagination page={facultiesPageData.page} totalPages={facultiesPageData.totalPages} onPageChange={setFacultiesPage} />
               </>
             ) : (
@@ -1973,7 +1952,7 @@ export function AdminCenterClient({
 
         {filteredFreeAccessRows.length ? (
           <>
-            <AdminTable minWidth={1100} columns={[
+            <DataTable caption="Acces gratuit" minWidth={1100} columns={[
               { key: "email", label: "Email" },
               { key: "status", label: "Status" },
               { key: "grant", label: "Grant" },
@@ -2011,7 +1990,7 @@ export function AdminCenterClient({
                   </td>
                 </tr>
               ))}
-            </AdminTable>
+            </DataTable>
             <Pagination page={freeAccessPageData.page} totalPages={freeAccessPageData.totalPages} onPageChange={setFreeAccessPage} />
           </>
         ) : (
@@ -2049,8 +2028,8 @@ export function AdminCenterClient({
 
         {filteredTestimonials.length ? (
           <>
-            <AdminTable minWidth={1320} columns={[
-              { key: "review", label: "" },
+            <DataTable caption="Testimoniale" minWidth={1320} columns={[
+              { key: "review", label: "", ariaLabel: "De verificat" },
               { key: "status", label: "Status" },
               { key: "email", label: "Email" },
               { key: "reward", label: "Recompensa" },
@@ -2060,7 +2039,7 @@ export function AdminCenterClient({
               { key: "actions", label: "Actiuni" }
             ]}>
               {testimonialsPageData.rows.map((row) => (
-                <tr key={row.id} className={row.status === "pending" ? "has-admin-review" : undefined}>
+                <tr key={row.id} data-table-tone={row.status === "pending" ? "review" : undefined}>
                   <td className="admin-review-cell">
                     <ReviewDot show={row.status === "pending"} label="Testimonial de aprobat" />
                   </td>
@@ -2122,7 +2101,7 @@ export function AdminCenterClient({
                   </td>
                 </tr>
               ))}
-            </AdminTable>
+            </DataTable>
             <Pagination page={testimonialsPageData.page} totalPages={testimonialsPageData.totalPages} onPageChange={setTestimonialsPage} />
           </>
         ) : (

@@ -187,12 +187,13 @@ O primitivă este justificată numai dacă:
 | Suprafețe | `SurfaceCard` din `components/ui/surface-card.js` | `components/ui/surface-card.module.css` | Fără variante vizuale | Pentru un grup autonom care are nevoie de suprafața standard. Nu controlează distanța dintre secțiuni și nu trebuie folosit numai pentru padding. Migrarea inițială include stările structurale de rută. |
 | Stări structurale | `EmptyState`, `LoadingState`, `FeedbackState` din `components/ui/state.js` | `components/ui/state.module.css` | Empty `compact`/`section`; feedback `neutral`/`warning`; loading full-page | Pentru absența conținutului sau pentru stări care înlocuiesc structura principală. Migrarea inițială include 404, error boundary, loading-urile comune, lista de materii și testul fără întrebări. |
 | Controale de colecție | `FiltersToolbar`, `FilterSearch`, `FilterSelect`, `FilterSortSelect`, `ResultsSummary`, `Pagination` din `components/ui/collection-controls.js` | `components/ui/collection-controls.module.css` | toolbar `two`/`three`/`four`; controale `default`/`compact`; paginare precedent/următor | Pentru căutare, filtrare, sortare, sumar și paginare asociate unei colecții. Migrarea inițială include materiile, dicționarul, articolele, searchurile comune admin/Workspace și paginarea comună. Nu înlocuiește searchurile de navigare, formularele submit sau filtrele specializate. |
+| Tabele de date | `DataTable` din `components/ui/data-table.js` | `components/ui/data-table.module.css` | responsive `scroll`/`cards`; aliniere `start`/`center` | Pentru comparație pe rânduri și coloane. Caption-ul este obligatoriu, headerele sunt generate cu `scope="col"`, iar strategia cards cere `data-label` pe fiecare celulă. Celulele, acțiunile, selecția și stările rămân responsabilitatea consumatorului. |
 
 `Button` folosește implicit `type="button"`. Pentru submit, declară explicit `type="submit"`. `ActionLink` cere `href` și acceptă `as` pentru un component de navigare compatibil, inclusiv `PendingNavigationLink`.
 
 `FiltersToolbar` grupează controalele și gestionează numai geometria comună responsive. `FilterSearch` și `FilterSelect` păstrează labelul accesibil, iar selectul gestionează tastatura și restaurarea focusului. `ResultsSummary` nu impune geometrie vizuală. `Pagination` nu se afișează pentru o singură pagină și compune butoanele canonice.
 
-Clasele contextuale pot păstra temporar diferențele admin sau Workspace, dar nu trebuie să depindă de clasele interne ale CSS Module-ului. Tabelele și strategiile lor mobile rămân în stratul legacy până la o migrare separată.
+Clasele contextuale pot păstra temporar diferențele admin sau Workspace, dar nu trebuie să depindă de clasele interne ale CSS Module-ului. `DataTable` controlează numai structura, caption-ul, headerele și strategiile responsive finite; acțiunile pe rând, stările și controalele colecției se compun separat.
 
 Consumatorii legacy existenți sunt grandfathered și pot fi migrați incremental. Nu adăuga utilizări noi pentru `.btn-back`, `.btn-link`, `.secondary`, `.test-link`, `.nav-btn`, `.input-search`, `.textarea-input`, `.status-pill`, `.error-state` sau `.success-state`. Nu crea exporturi paralele cu numele API-urilor canonice în alte fișiere.
 
@@ -351,6 +352,7 @@ Pentru geometria standard folosește `SurfaceCard`. Părintele rămâne propriet
 - Tabelul este folosit când utilizatorul trebuie să compare rânduri și coloane.
 - Lista este folosită când ordinea și scanarea elementelor sunt mai importante decât comparația exactă.
 - Cardurile nu înlocuiesc automat un tabel pe mobil.
+- Folosește `DataTable` pentru tabele noi și alege explicit `scroll` sau `cards`; varianta cards păstrează ordinea DOM și cere eticheta fiecărei celule prin `data-label`.
 - Pentru mobil, definește câmpurile prioritare, detaliul la cerere sau scroll-ul local justificat.
 - Loading, empty, error, success și disabled trebuie să păstreze ierarhia paginii.
 - Empty state-ul explică ce lipsește și următorul pas posibil, fără copy promoțional.

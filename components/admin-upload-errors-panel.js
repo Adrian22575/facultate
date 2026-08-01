@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
+import { DataTable } from "@/components/ui/data-table";
 
 const PAGE_SIZE = 10;
 
@@ -169,27 +170,26 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
         />
       </div>
 
-      <div className="table-scroll admin-table-scroll">
-        <table className="admin-table" style={{ minWidth: 1420 }}>
-          <thead>
-            <tr>
-              <th aria-label="De verificat"></th>
-              <th>Creat la</th>
-              <th>Utilizator</th>
-              <th>Fisier</th>
-              <th>Tip</th>
-              <th>Status</th>
-              <th>Etapa</th>
-              <th>Eroare utilizator</th>
-              <th>Detaliu tehnic</th>
-              <th>Motiv</th>
-              <th>Fisier sursa</th>
-            </tr>
-          </thead>
-          <tbody>
+      <DataTable
+        caption="Upload-uri cu erori"
+        minWidth={1420}
+        columns={[
+          { key: "review", label: "", ariaLabel: "De verificat" },
+          { key: "createdAt", label: "Creat la" },
+          { key: "user", label: "Utilizator" },
+          { key: "file", label: "Fisier" },
+          { key: "type", label: "Tip" },
+          { key: "status", label: "Status" },
+          { key: "stage", label: "Etapa" },
+          { key: "userError", label: "Eroare utilizator" },
+          { key: "technicalDetail", label: "Detaliu tehnic" },
+          { key: "reason", label: "Motiv" },
+          { key: "source", label: "Fisier sursa" }
+        ]}
+      >
             {paginated.rows.length ? (
               paginated.rows.map((entry) => (
-                <tr key={entry.id} className="has-admin-review">
+                <tr key={entry.id} data-table-tone="review">
                   <td className="admin-review-cell">
                     <ReviewDot show label="Upload de verificat" />
                   </td>
@@ -240,9 +240,7 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
                 </td>
               </tr>
             )}
-          </tbody>
-        </table>
-      </div>
+      </DataTable>
 
       <Pagination
         page={paginated.page}

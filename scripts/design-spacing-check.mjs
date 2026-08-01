@@ -34,7 +34,8 @@ const primitiveCssEntries = [
   "components/ui/status.module.css",
   "components/ui/surface-card.module.css",
   "components/ui/state.module.css",
-  "components/ui/collection-controls.module.css"
+  "components/ui/collection-controls.module.css",
+  "components/ui/data-table.module.css"
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -189,10 +190,7 @@ const legacySelectorCeilings = {
   ".admin-toolbar": 15,
   ".admin-filter-row": 3,
   ".review-list-controls": 7,
-  ".review-pagination": 2,
-  ".table-scroll": 1,
-  ".admin-table-scroll": 3,
-  ".admin-table": 59
+  ".review-pagination": 2
 };
 
 for (const [selector, ceiling] of Object.entries(legacySelectorCeilings)) {
@@ -218,9 +216,26 @@ for (const removedSelector of [
   ".filter-select",
   ".filter-control-icon",
   ".filter-reset-button",
-  ".admin-pagination"
+  ".admin-pagination",
+  ".table-scroll",
+  ".admin-table-scroll",
+  ".admin-table",
+  ".table-center",
+  ".has-admin-review",
+  ".ai-activity-table-scroll",
+  ".ai-activity-table",
+  ".ai-activity-select-cell",
+  ".subjects-table-shell",
+  ".subjects-table",
+  ".subject-title-cell",
+  ".subject-context-list",
+  ".subject-context-pill",
+  ".subject-actions-row",
+  ".subject-table-action"
 ]) {
-  if (legacyCss.includes(removedSelector)) {
+  const escapedSelector = removedSelector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const selectorPattern = new RegExp(`${escapedSelector}(?=[\\s.#:[>+~,\\{])`);
+  if (selectorPattern.test(legacyCss)) {
     failures.push(`Selectorul retras ${removedSelector} nu poate fi reintrodus în app/globals.css.`);
   }
 }

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BarChart3, FileText, Files, ListFilter, ReceiptText } from "lucide-react";
 import { AdminTabsContainer } from "@/components/admin-tabs-container";
 import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
+import { DataTable } from "@/components/ui/data-table";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
@@ -107,23 +108,6 @@ function FilterButton({ active, onClick, children, icon: Icon = null, count = nu
 
 function SearchInput({ value, onChange, placeholder }) {
   return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
-}
-
-function AdminTable({ columns, children, minWidth = 1180 }) {
-  return (
-    <div className="table-scroll admin-table-scroll">
-      <table className="admin-table" style={{ minWidth }}>
-        <thead>
-          <tr>
-            {columns.map((column) => (
-              <th key={column.key}>{column.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>{children}</tbody>
-      </table>
-    </div>
-  );
 }
 
 function formatScopeLabel(value) {
@@ -267,9 +251,9 @@ function CostTableSection({ title, copy, columns, children, minWidth = 820 }) {
           <p className="page-copy">{copy}</p>
         </div>
       </div>
-      <AdminTable columns={columns} minWidth={minWidth}>
+      <DataTable caption={title} columns={columns} minWidth={minWidth}>
         {children}
-      </AdminTable>
+      </DataTable>
     </section>
   );
 }
@@ -952,10 +936,11 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
 
           {filteredRows.length ? (
             <>
-              <AdminTable
+              <DataTable
+                caption="Loguri de procesare"
                 minWidth={1300}
                 columns={[
-                  { key: "review", label: "" },
+                  { key: "review", label: "", ariaLabel: "De verificat" },
                   { key: "createdAt", label: "Cand" },
                   { key: "scope", label: "Tip" },
                   { key: "operation", label: "Endpoint" },
@@ -974,7 +959,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
                   const needsReview = row.status === "failed" || row.job_status === "failed";
 
                   return (
-                  <tr key={row.id} className={needsReview ? "has-admin-review" : undefined}>
+                  <tr key={row.id} data-table-tone={needsReview ? "review" : undefined}>
                     <td className="admin-review-cell">
                       <ReviewDot show={needsReview} label="Procesare de verificat" />
                     </td>
@@ -1018,7 +1003,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
                   </tr>
                 );
                 })}
-              </AdminTable>
+              </DataTable>
               <Pagination page={pageData.page} totalPages={pageData.totalPages} onPageChange={setPage} />
             </>
           ) : (

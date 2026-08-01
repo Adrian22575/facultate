@@ -32,7 +32,8 @@ const CANONICAL_EXPORT_PATHS = {
   FilterSelect: "components/ui/collection-controls.js",
   FilterSortSelect: "components/ui/collection-controls.js",
   ResultsSummary: "components/ui/collection-controls.js",
-  Pagination: "components/ui/collection-controls.js"
+  Pagination: "components/ui/collection-controls.js",
+  DataTable: "components/ui/data-table.js"
 };
 const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
   SurfaceCard: new Set(["components/ui/surface-card.js"]),
@@ -48,7 +49,8 @@ const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
   FilterSelect: new Set(["components/ui/collection-controls.js"]),
   FilterSortSelect: new Set(["components/ui/collection-controls.js"]),
   ResultsSummary: new Set(["components/ui/collection-controls.js"]),
-  Pagination: new Set(["components/ui/collection-controls.js"])
+  Pagination: new Set(["components/ui/collection-controls.js"]),
+  DataTable: new Set(["components/ui/data-table.js"])
 };
 const LEGACY_UI_BASELINE = {
   "app/ai/activitate/page.js": { "btn-link": 1, secondary: 1, "error-state": 1, "btn-back": 1 },
@@ -157,19 +159,13 @@ const LEGACY_SURFACE_BASELINE = {
   "components/workspace-subject-picker.js": { "ui-panel-card": 2, "empty-state": 1 }
 };
 const LEGACY_COLLECTION_BASELINE = {
-  "app/setup/page.js": { "admin-table-scroll": 2, "admin-table": 2 },
-  "components/admin-center-client.js": { "table-scroll": 1, "admin-table-scroll": 1, "admin-table": 1, "admin-toolbar": 7, "admin-filter-row": 5 },
-  "components/admin-openai-logs-panel.js": { "table-scroll": 1, "admin-table-scroll": 1, "admin-table": 1, "admin-toolbar": 1, "admin-filter-row": 1 },
-  "components/admin-upload-errors-panel.js": { "admin-toolbar": 1, "table-scroll": 1, "admin-table-scroll": 1, "admin-table": 1 },
-  "components/ai-activity-center-client.js": { "table-scroll": 4, "admin-table-scroll": 4, "admin-table": 4 },
+  "components/admin-center-client.js": { "admin-toolbar": 7, "admin-filter-row": 5 },
+  "components/admin-openai-logs-panel.js": { "admin-toolbar": 1, "admin-filter-row": 1 },
+  "components/admin-upload-errors-panel.js": { "admin-toolbar": 1 },
   "components/ai-question-bank-review-client.js": { "review-list-controls": 1, "review-pagination": 1 }
 };
 const NATIVE_TABLE_BASELINE = {
-  "app/setup/page.js": 2,
-  "components/admin-center-client.js": 1,
-  "components/admin-openai-logs-panel.js": 1,
-  "components/admin-upload-errors-panel.js": 1,
-  "components/ai-activity-center-client.js": 4
+  "components/ui/data-table.js": 1
 };
 const MOJIBAKE_TOKENS = ["Ã", "Äƒ", "Ä‚", "È™", "Èš", "È›", "Â·", "â€™", "â€œ", "â€", "â€“", "â€”", "�"];
 
@@ -349,6 +345,27 @@ function inspectElement(filePath, node, context, ancestors) {
   }
   if (name === "table") {
     context.nativeTableCount += 1;
+    if (!filePath.endsWith(path.join("components", "ui", "data-table.js"))) {
+      report(filePath, opening, "Tabelele native sunt rezervate componentei canonice DataTable.");
+    }
+  }
+  if (name === "th" && staticAttributeValue(getAttribute(opening, "scope")) !== "col") {
+    report(filePath, opening, "Headerul de tabel trebuie sa declare scope=\"col\".");
+  }
+  if (name === "DataTable" && !getAttribute(opening, "caption")) {
+    report(filePath, opening, "DataTable necesita un caption accesibil.");
+  }
+  if (
+    name === "td" &&
+    ancestors.some((ancestor) => {
+      if (ancestor.type !== "JSXElement") return false;
+      const ancestorOpening = ancestor.openingElement;
+      return jsxName(ancestorOpening?.name) === "DataTable" &&
+        staticAttributeValue(getAttribute(ancestorOpening, "responsive")) === "cards";
+    }) &&
+    !getAttribute(opening, "data-label")
+  ) {
+    report(filePath, opening, "Celulele DataTable cu responsive=\"cards\" necesita data-label.");
   }
 
   for (const relation of ["aria-labelledby", "aria-controls"]) {
