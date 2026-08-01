@@ -1,0 +1,47 @@
+:root {
+  --bg: #f5f8fd;
+  --surface: #ffffff;
+  --surface-soft: #f7fbff;
+  --ink: #14213d;
+  --muted: #60708d;
+  --line: #dbe5f2;
+  --line-strong: #cfddf0;
+  --primary: #1250b1;
+  --primary-dark: #0b367d;
+  --primary-soft: #eaf2ff;
+  --good: #1f9d63;
+  --good-soft: #e7f5ed;
+  --bad: #b4232c;
+  --bad-soft: #fae9ea;
+  --shadow: 0 24px 70px rgba(20, 50, 100, 0.12);
+  --shadow-soft: 0 14px 32px rgba(20, 50, 100, 0.07);
+  --radius: 26px;
+  --radius-soft: 20px;
+  --container: 1180px;
+  --touch-target: 48px;
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --page-gutter: var(--space-6);
+  --page-block-start: var(--space-6);
+  --page-block-end: var(--space-7);
+  --layout-section-gap: var(--space-5);
+  --layout-card-padding: var(--space-5);
+  --layout-card-padding-compact: var(--space-4);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --page-gutter: var(--space-4);
+    --page-block-start: var(--space-4);
+    --page-block-end: var(--space-6);
+  }
+}
+
+/* DESIGN-SPACING-GUARD: new layout spacing below this marker must use spacing tokens. */

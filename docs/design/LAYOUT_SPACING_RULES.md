@@ -406,9 +406,18 @@ npm run build
 - valorile brute de `margin`, `padding` și `gap`;
 - regulile globale periculoase când sunt acoperite de verificare.
 
-Markerul `DESIGN-SPACING-GUARD` din `app/globals.css` trebuie păstrat în poziția cerută de scripturile proiectului.
+Fiecare stylesheet global importat de `app/layout.js` trebuie să conțină exact un marker `DESIGN-SPACING-GUARD`.
 
-Nu muta sau șterge markerul fără actualizarea verificărilor.
+În arhitectura incrementală actuală, verificarea acoperă:
+
+- `app/styles/foundations/tokens.css`;
+- `app/styles/foundations/reset.css`;
+- `app/styles/foundations/accessibility.css`;
+- `app/globals.css`.
+
+CSS-ul existent deasupra markerului reprezintă baseline-ul acceptat. Orice reguli adăugate după marker sunt verificate pentru valori brute de `margin`, `padding` și `gap`.
+
+Nu muta, duplica sau șterge markerii fără actualizarea verificărilor și nu schimba ordinea importurilor foundations → legacy din `app/layout.js`.
 
 ## 20. Verificare vizuală
 

@@ -2,10 +2,34 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const cssPath = path.join(root, "app", "globals.css");
+const globalCssEntries = [
+  {
+    relativePath: "app/styles/foundations/tokens.css",
+    importPath: "./styles/foundations/tokens.css"
+  },
+  {
+    relativePath: "app/styles/foundations/reset.css",
+    importPath: "./styles/foundations/reset.css"
+  },
+  {
+    relativePath: "app/styles/foundations/accessibility.css",
+    importPath: "./styles/foundations/accessibility.css"
+  },
+  {
+    relativePath: "app/globals.css",
+    importPath: "./globals.css"
+  }
+];
+const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
 const guard = "/* DESIGN-SPACING-GUARD: new layout spacing below this marker must use spacing tokens. */";
-const css = fs.readFileSync(cssPath, "utf8");
+const cssSources = globalCssEntries.map((entry) => ({
+  ...entry,
+  css: fs.readFileSync(path.join(root, entry.relativePath), "utf8")
+}));
+const tokensCss = cssSources[0].css;
+const legacyCss = cssSources.at(-1).css;
+const layout = fs.readFileSync(layoutPath, "utf8").replaceAll("\r\n", "\n");
 const rules = fs.readFileSync(rulesPath, "utf8");
 const failures = [];
 
@@ -22,19 +46,26 @@ const expectedTokens = {
 };
 
 for (const [token, value] of Object.entries(expectedTokens)) {
-  if (!new RegExp(`${token}:\\s*${value.replace(".", "\\.")}`).test(css)) {
+  if (!new RegExp(`${token}:\\s*${value.replace(".", "\\.")}`).test(tokensCss)) {
     failures.push(`Token lipsă sau modificat: ${token} (${value}).`);
   }
 }
 
-for (const requiredRule of ["--page-gutter", "--layout-section-gap", "--layout-card-padding", "Nu se introduc valori noi", "DESIGN-SPACING-GUARD"]) {
+for (const requiredRule of ["--page-gutter", "--layout-section-gap", "--layout-card-padding", "DESIGN-SPACING-GUARD"]) {
   if (!rules.includes(requiredRule)) failures.push(`Documentația nu conține regula obligatorie: ${requiredRule}.`);
 }
 
+const expectedImportBlock = globalCssEntries
+  .map((entry) => `import "${entry.importPath}";`)
+  .join("\n");
+if (!layout.startsWith(`${expectedImportBlock}\n`)) {
+  failures.push("Importurile CSS globale din app/layout.js lipsesc, nu sunt consecutive sau nu respectă ordinea foundations → legacy.");
+}
+
 for (const selector of [".app-shell", ".admin-route-shell", ".admin-route-topbar", ".admin-route-header"]) {
-  const start = css.indexOf(selector);
-  const end = css.indexOf("}", start);
-  const declaration = start >= 0 && end >= start ? css.slice(start, end + 1) : "";
+  const start = legacyCss.indexOf(selector);
+  const end = legacyCss.indexOf("}", start);
+  const declaration = start >= 0 && end >= start ? legacyCss.slice(start, end + 1) : "";
   if (!declaration) {
     failures.push(`Lipsește contractul de layout pentru ${selector}.`);
     continue;
@@ -45,24 +76,28 @@ for (const selector of [".app-shell", ".admin-route-shell", ".admin-route-topbar
 }
 
 const linkedInCardSelector = ".admin-route-content > .admin-linkedin-center";
-const linkedInCardStart = css.indexOf(linkedInCardSelector);
-const linkedInCardEnd = css.indexOf("}", linkedInCardStart);
+const linkedInCardStart = legacyCss.indexOf(linkedInCardSelector);
+const linkedInCardEnd = legacyCss.indexOf("}", linkedInCardStart);
 const linkedInCardDeclaration = linkedInCardStart >= 0 && linkedInCardEnd >= linkedInCardStart
-  ? css.slice(linkedInCardStart, linkedInCardEnd + 1)
+  ? legacyCss.slice(linkedInCardStart, linkedInCardEnd + 1)
   : "";
 if (!/padding:\s*var\(--layout-card-padding\)/.test(linkedInCardDeclaration)) {
   failures.push("Cardul principal LinkedIn trebuie să declare paddingul standard de layout.");
 }
 
-const guardIndex = css.lastIndexOf(guard);
-if (guardIndex < 0) {
-  failures.push("Lipsește markerul DESIGN-SPACING-GUARD din app/globals.css.");
-} else {
+for (const { relativePath, css } of cssSources) {
+  const guardCount = css.split(guard).length - 1;
+  const guardIndex = css.lastIndexOf(guard);
+  if (guardCount !== 1 || guardIndex < 0) {
+    failures.push(`${relativePath} trebuie să conțină exact un marker DESIGN-SPACING-GUARD.`);
+    continue;
+  }
+
   const governedCss = css.slice(guardIndex + guard.length).replaceAll(/\/\*[\s\S]*?\*\//g, "");
   const rawSpacing = /\b(?:margin|padding|gap|row-gap|column-gap)(?:-[a-z]+)?\s*:\s*[^;}{]*\b-?\d+(?:\.\d+)?px/g;
   const violations = governedCss.match(rawSpacing) || [];
   if (violations.length) {
-    failures.push(`CSS nou folosește spațiere brută după marker: ${violations.join(", ")}.`);
+    failures.push(`${relativePath} folosește spațiere brută după marker: ${violations.join(", ")}.`);
   }
 }
 
@@ -72,4 +107,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("Design spacing check passed.");
+console.log(`Design spacing check passed (${cssSources.length} fișiere CSS globale).`);

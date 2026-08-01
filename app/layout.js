@@ -1,3 +1,6 @@
+import "./styles/foundations/tokens.css";
+import "./styles/foundations/reset.css";
+import "./styles/foundations/accessibility.css";
 import "./globals.css";
 
 import { Suspense } from "react";

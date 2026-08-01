@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 0;
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
+  background: var(--bg);
+  background:
+    radial-gradient(circle at top left, rgba(18, 80, 177, 0.1), transparent 28%),
+    radial-gradient(circle at top right, rgba(255, 176, 32, 0.1), transparent 24%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+select,
+input,
+textarea {
+  font: inherit;
+}
+
+/* DESIGN-SPACING-GUARD: new layout spacing below this marker must use spacing tokens. */
