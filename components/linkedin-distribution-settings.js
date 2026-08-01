@@ -1,10 +1,11 @@
 "use client";
 
-import { Cpu, LoaderCircle, Save, Settings2, ShieldCheck, Unplug } from "lucide-react";
+import { Cpu, Save, Settings2, ShieldCheck, Unplug } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { LINKEDIN_MODEL_OPTIONS, normalizeLinkedInModel } from "@/lib/linkedin/models";
 import {
   DEFAULT_LINKEDIN_POST_AUDIENCE,
@@ -163,7 +164,7 @@ export function LinkedInDistributionSettings({
           </select>
         </label>
         <button type="button" className="btn-back admin-linkedin-secondary" onClick={saveSettings} disabled={isBusy}>
-          {busy === "settings" ? <LoaderCircle className="is-spinning" size={16} /> : <Save size={16} />}
+          {busy === "settings" ? <LoadingSpinner size={16} /> : <Save size={16} />}
           Salvează setările
         </button>
         {connected ? (

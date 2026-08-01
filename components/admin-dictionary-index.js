@@ -6,12 +6,13 @@ import {
   CheckCircle2,
   Clock3,
   FilePenLine,
-  LoaderCircle,
   RefreshCw,
   Settings2,
   ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -209,7 +210,7 @@ export function AdminDictionaryIndex({
           onClick={generateTerm}
           disabled={Boolean(busy) || Boolean(activeRun)}
         >
-          {liveRun ? <LoaderCircle className="is-spinning" size={17} aria-hidden="true" /> : <RefreshCw size={17} aria-hidden="true" />}
+          {liveRun ? <LoadingSpinner size={17} /> : <RefreshCw size={17} aria-hidden="true" />}
           {liveRun ? "Generare în curs" : "Generează un termen"}
         </button>
       </div>
@@ -236,7 +237,7 @@ export function AdminDictionaryIndex({
 
       {liveRun ? (
         <section className="admin-editorial-live-run" aria-live="polite">
-          <LoaderCircle className="is-spinning" aria-hidden="true" size={23} />
+          <LoadingSpinner size={23} />
           <div><span>Generare în curs</span><strong>{runStatusLabel(liveRun.status)}</strong><p>Poți părăsi pagina. Starea se actualizează automat când revii.</p></div>
           <div className="admin-editorial-live-progress" aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 12}%`}>
             <span>{RUN_PROGRESS[liveRun.status] || 12}%</span><i style={{ width: `${RUN_PROGRESS[liveRun.status] || 12}%` }} />

@@ -6,12 +6,13 @@ import {
   Clock3,
   FilePenLine,
   FlaskConical,
-  LoaderCircle,
   Newspaper,
   Settings2,
   ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -249,7 +250,7 @@ export function AdminEditorialArticlesPage({
           disabled={Boolean(busy) || Boolean(activeRun)}
         >
           {liveRun ? (
-            <LoaderCircle className="is-spinning" size={17} aria-hidden="true" />
+            <LoadingSpinner size={17} />
           ) : (
             <FlaskConical size={17} aria-hidden="true" />
           )}
@@ -290,7 +291,7 @@ export function AdminEditorialArticlesPage({
 
       {liveRun ? (
         <section className="admin-editorial-live-run" aria-live="polite">
-          <LoaderCircle className="is-spinning" aria-hidden="true" size={23} />
+          <LoadingSpinner size={23} />
           <div>
             <span>Generare în curs</span>
             <strong>{runStatusLabel(liveRun.status)}</strong>

@@ -9,7 +9,6 @@ import {
   FileText,
   History,
   Link2,
-  LoaderCircle,
   Save,
   SearchCheck,
   Send,
@@ -17,6 +16,8 @@ import {
   Undo2
 } from "lucide-react";
 import Link from "next/link";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -685,7 +686,7 @@ export function AdminEditorialArticlePage({
                   disabled={dirty || Boolean(busy)}
                 >
                   {busy === "fact_check" ? (
-                    <LoaderCircle className="is-spinning" size={16} aria-hidden="true" />
+                    <LoadingSpinner size={16} />
                   ) : (
                     <ShieldCheck size={16} aria-hidden="true" />
                   )}
@@ -885,7 +886,7 @@ export function AdminEditorialArticlePage({
             disabled={!dirty || Boolean(busy)}
           >
             {busy === "save" ? (
-              <LoaderCircle className="is-spinning" size={16} aria-hidden="true" />
+              <LoadingSpinner size={16} />
             ) : (
               <Save size={16} aria-hidden="true" />
             )}

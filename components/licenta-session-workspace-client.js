@@ -1,10 +1,10 @@
 "use client";
 
-import { CheckCircle2, ClipboardList, ExternalLink, FileText, Keyboard, ListPlus, LoaderCircle, Trash2, Upload, X } from "lucide-react";
+import { CheckCircle2, ClipboardList, ExternalLink, FileText, Keyboard, ListPlus, Trash2, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { ImportJobStatusClient } from "@/components/import-job-status-client";
-import { LoadingIconText } from "@/components/loading-spinner";
+import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -592,7 +592,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       {feedback ? <div className="success-state" role="status">{feedback}</div> : null}
       {isBusy && !isFinalizing ? (
         <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
-          <span className="learning-processing-icon" aria-hidden="true"><LoaderCircle size={20} strokeWidth={2.3} /></span>
+          <span className="learning-processing-icon" aria-hidden="true"><LoadingSpinner size={20} /></span>
           <div className="learning-processing-copy">
             <strong>Pregătim setul...</strong>
             <p>Păstrează pagina deschisă. Vei vedea automat întrebările imediat ce sunt gata.</p>

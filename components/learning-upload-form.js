@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
-import { Check, ClipboardPaste, FileText, FileUp, LoaderCircle, Upload, X } from "lucide-react";
+import { Check, ClipboardPaste, FileText, FileUp, Upload, X } from "lucide-react";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -80,7 +82,7 @@ function ProcessingPanel({ status, sourceMode, sourceSaved }) {
   return (
     <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
       <span className="learning-processing-icon" aria-hidden="true">
-        <LoaderCircle size={20} strokeWidth={2.3} />
+        <LoadingSpinner size={20} />
       </span>
       <div className="learning-processing-copy">
         <strong>{status || "Pregatim materialul..."}</strong>

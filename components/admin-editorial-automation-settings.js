@@ -1,9 +1,10 @@
 "use client";
 
-import { BellRing, Check, Cpu, LoaderCircle, Save } from "lucide-react";
+import { BellRing, Check, Cpu, Save } from "lucide-react";
 import { useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 const MODEL_OPTIONS = [
   ["gpt-5.6-sol", "GPT-5.6 Sol"],
@@ -136,7 +137,7 @@ export function AdminEditorialAutomationSettings({ workflow, settings, generatio
         <span><BellRing size={14} />Telegram</span>
       </label>
       <button type="button" className="btn-link" onClick={save} disabled={saving}>
-        {saving ? <LoaderCircle size={16} className="is-spinning" /> : status ? <Check size={16} /> : <Save size={16} />}
+        {saving ? <LoadingSpinner size={16} /> : status ? <Check size={16} /> : <Save size={16} />}
         {saving ? "Se salvează…" : "Salvează"}
       </button>
       {status ? <span className="admin-automation-compact-message" role="status">{status}</span> : null}

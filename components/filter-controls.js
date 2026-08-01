@@ -1,7 +1,9 @@
 "use client";
 
-import { ArrowUpDown, ChevronDown, LoaderCircle, Search, X } from "lucide-react";
+import { ArrowUpDown, ChevronDown, Search, X } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 function joinClassNames(...values) {
   return values.filter(Boolean).join(" ");
@@ -45,7 +47,7 @@ export function FilterSearch({
     <label className={joinClassNames("filter-search", compact && "is-compact", className)}>
       <span className="filter-control-icon" aria-hidden="true">
         {loading ? (
-          <LoaderCircle className="is-spinning" size={compact ? 16 : 18} strokeWidth={2.2} />
+          <LoadingSpinner size={compact ? 16 : 18} />
         ) : (
           <Search size={compact ? 16 : 18} strokeWidth={2.2} />
         )}

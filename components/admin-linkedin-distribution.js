@@ -1,10 +1,11 @@
 "use client";
 
-import { CheckCircle2, ExternalLink, Eye, FilePenLine, FileText, LoaderCircle, RefreshCw, Save, Send, ThumbsDown, ThumbsUp, WandSparkles, XCircle } from "lucide-react";
+import { CheckCircle2, ExternalLink, Eye, FilePenLine, FileText, RefreshCw, Save, Send, ThumbsDown, ThumbsUp, WandSparkles, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
+import { LoadingSpinner as LoaderCircle } from "@/components/loading-spinner";
 import { getLinkedInOptionsFromSettings, LinkedInDistributionSettings } from "@/components/linkedin-distribution-settings";
 import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";

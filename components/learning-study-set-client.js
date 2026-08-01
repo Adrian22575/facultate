@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, BookOpen, Brain, CheckCircle2, ListChecks, LoaderCircle, RotateCcw, Target, Trash2, XCircle } from "lucide-react";
+import { ArrowRight, BookOpen, Brain, CheckCircle2, ListChecks, RotateCcw, Target, Trash2, XCircle } from "lucide-react";
 
 import {
   deleteLearningStudySetAction,
@@ -14,6 +14,7 @@ import {
   saveLearningQuizAttemptAction
 } from "@/app/ai/invata/actions";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { ProcessingStageTracker } from "@/components/processing-stage-tracker";
 import { shuffleArray } from "@/lib/quiz";
 import { saveLastSession } from "@/lib/session-storage";
@@ -248,7 +249,7 @@ function LearningProcessingPanel({ studySet }) {
   return (
     <section className="learning-processing-view" aria-busy="true">
       <div className="learning-processing-hero">
-        <LoaderCircle aria-hidden="true" />
+        <LoadingSpinner size={54} />
         <div>
           <span className="ui-section-label">Procesare</span>
           <h1>{studySet.title}</h1>
@@ -652,7 +653,7 @@ function TestTab({
         <>
           <div className={`learning-test-result is-${result.type}`} role="status" aria-live="polite">
             {result.type === "warning" ? <XCircle aria-hidden="true" /> : null}
-            {result.type === "saving" ? <LoaderCircle className="learning-result-spinner" aria-hidden="true" /> : null}
+            {result.type === "saving" ? <LoadingSpinner size={24} /> : null}
             {result.type === "done" ? <CheckCircle2 aria-hidden="true" /> : null}
             <div>
               <strong>

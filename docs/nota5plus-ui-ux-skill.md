@@ -1,155 +1,100 @@
 # Nota 5+ UI/UX Skill
 
-Acest document este sursa de adevar pentru designul vizibil al aplicatiei `Nota 5+`.
-Se aplica pentru login, onboarding, cont, dashboard, pricing si paginile principale de produs.
+## Rol
 
-## 1. Identitate vizuala
+Acest skill este punctul de intrare pentru orice task de UI, UX, wireframe, layout sau redesign în `Nota 5+`.
 
-- Branding vizibil: `Nota 5+`
-- Brand mark: patrat rotunjit cu `5+`, gradient albastru
-- Personalitate: calma, academica, clara, optimista
-- Impresie generala: produs modern pentru sesiune si examene, nu dashboard generic
+El nu definește tokenuri, reguli de spacing, responsive sau arhitectură în detaliu.
+Pentru acestea se folosesc documentele autoritare din `docs/design/`.
 
-## 2. Tipografie si ton
+## Ordinea de citire
 
-- Se pastreaza fontul global actual al proiectului
-- Nu se introduce font nou doar pentru pagini de marketing sau branding
-- Headline-urile pot fi puternice, dar restul paginii trebuie sa ramana calm
-- Copy-ul trebuie sa fie scurt, clar si orientat pe rezultat
-- Ton: incurajator, direct, fara jargon tehnic
+Pentru orice task UI/UX, citește în această ordine:
 
-Ierarhia de greutate:
-- `900` doar pentru headline-uri majore, preturi si CTA-ul principal
-- `700` pentru titluri scurte, labels importante si badge-uri relevante
-- `500/600` pentru descrieri, microcopy, texte comparative si explicatii
+1. `AGENTS.md`;
+2. acest skill;
+3. `docs/design/PRODUCT_UX_PRINCIPLES.md`;
+4. `docs/design/PAGE_STRUCTURE_RULES.md`;
+5. `docs/design/DESIGN_SYSTEM.md`;
+6. `docs/design/LAYOUT_SPACING_RULES.md`;
+7. `docs/design/RESPONSIVE_RULES.md`;
+8. fișierele și componentele direct afectate.
 
-Nu afisa in interfata:
-- termeni de infrastructura
-- termeni interni de platforma
-- nume de provideri tehnici
-- explicatii de setup
+La final folosește:
 
-## 3. Paleta si sistem vizual
+- `docs/design/UX_REVIEW_CHECKLIST.md`.
 
-- Albastru principal: `#1250b1`
-- Albastru inchis: `#0b367d`
-- Albastru soft: `#eaf2ff`
-- Text principal: `#14213d`
-- Text secundar: `#60708d`
-- Border: `#dbe5f2`
-- Background public si privat: gradient rece, luminos, cu accente radiale discrete
-- Accent verde: pentru stari pozitive
-- Accent portocaliu: doar atmosferic sau pentru callout-uri calde, nu pentru CTA principal
+Nu copia automat un pattern existent dacă acesta contrazice documentele autoritare.
 
-Stil general:
-- colturi rotunjite mari
-- umbre soft, ample
-- suprafete curate, aerisite
-- contrast bun intre text si fundal
-- fara bold inutil doar pentru impresie vizuala
+## Clasificarea taskului
 
-## 4. Reguli de compozitie
+Înainte de modificări, stabilește tipul taskului:
 
-### Pentru paginile publice
+- `audit` — analizează, fără modificări;
+- `arhitectură/redesign` — definește structura înainte de implementare;
+- `wireframe` — propune layout low-fidelity, fără logică de business;
+- `implementare UI` — implementează numai structura cerută sau aprobată;
+- `corecție punctuală` — repară strict problema locală;
+- `responsive` — adaptează structura și prioritatea informației, nu doar dimensiunile.
 
-- primul ecran trebuie sa functioneze ca un poster de brand
-- nav simplu, putine elemente
-- structura hero in 2 coloane pe desktop
-- stanga: promisiune + CTA principal
-- dreapta: mockup, proof sau context vizual de incredere
-- sub hero: sectiuni scurte de tip `cum functioneaza`, `de ce`, `comunitate`
+Urmează workflow-ul definit în `AGENTS.md` pentru tipul ales.
 
-### Pentru paginile private
+## Reguli obligatorii
 
-- raman mai sobre decat landing-ul, dar cu acelasi ADN vizual
-- folosesc aceleasi culori, aceleasi umbre si aceeasi forma a cardurilor
-- cardurile apar doar cand au rol clar: rezumat, decizie, progres, actiune
-- nu copiaza mecanic hero-ul public, dar pot avea sectiuni expressive si bine aerisite
+- Păstrează logica de business, datele, permisiunile și contractele existente.
+- Nu inventa funcționalități, metrici, texte, recomandări, testimoniale sau stări.
+- Nu afișa toate datele doar pentru că există.
+- Nu transforma automat o pagină într-un dashboard.
+- Nu adăuga carduri, grafice, CTA-uri sau explicații doar pentru a umple spațiul.
+- Nu adăuga un al doilea sidebar fără aprobare explicită.
+- Nu introduce termeni tehnici interziși în interfața utilizatorului.
+- Nu extinde scopul taskului.
+- Nu introduce valori CSS, tokenuri sau componente globale fără justificare.
+- Nu declara QA vizual făcut dacă pagina nu a fost verificată în browser.
 
-### Pentru CTA
+## Pentru pagini noi sau redesign-uri
 
-- un singur CTA principal per zona importanta
-- CTA-ul principal trebuie sa fie foarte clar si dominant vizual
-- CTA-urile secundare sunt luminoase, conturate si mai calme
-- iconografia trebuie sa sustina actiunea, nu sa o incarce
+Înainte de implementare, definește:
 
-### Pentru carduri
+```text
+Scopul paginii:
+Utilizatorul:
+Decizia principală:
+Acțiunea principală:
+Informația necesară:
+Informația amânată:
+Structura desktop:
+Structura mobil:
+Ce se elimină, mută sau ascunde:
+```
 
-- cardurile trebuie sa fie putine si cu rol clar
-- evita dashboard mosaics si grile fara ierarhie
-- daca un element nu ajuta utilizatorul sa decida sau sa continue, se elimina
-- cardurile de pret trebuie sa includa context util, nu doar nume + suma
+Detaliile despre pagini, taburi, drawer-e, modaluri, dashboard-uri, liste, tabele și formulare sunt în `PAGE_STRUCTURE_RULES.md`.
 
-## 5. Pattern-uri recomandate
+## Pentru wireframe-uri
 
-- brand sus stanga, foarte clar
-- headline mare, 2-3 randuri
-- paragraf de suport scurt
-- section label / pill de context
-- un CTA dominant
-- 3-4 carduri de rezumat cand pagina chiar are nevoie de scanare rapida
-- 3 pasi explicativi sub hero cand explici un flux
-- spatiere generoasa
-- max 1-2 idei vizuale dominante per ecran
+Wireframe-ul trebuie să arate:
 
-Primitivele recomandate in CSS:
-- `ui-panel-card`
-- `ui-dark-cta-panel`
-- `ui-icon-box`
-- `ui-chip`
-- `ui-section-label`
-- `ui-section-head`
-- `ui-segmented-tabs`
-- `ui-price-card`
-- `ui-actions-row`
+- ordinea conținutului;
+- ierarhia;
+- dimensiunea relativă a zonelor;
+- acțiunea principală;
+- desktop și mobil când sunt relevante.
 
-## 6. Pricing
+Wireframe-ul nu trebuie să conțină conținut inventat sau elemente introduse doar pentru decor.
 
-Terminologie:
-- `Acces`
-- `Materiale incarcate`
-- `Incarcari de materiale`
+## Pentru implementare
 
-Reguli:
-- pretul este vizibil imediat
-- cardul recomandat poate avea badge discret
-- comparative copy sta in card, nu separat, daca ajuta decizia
-- descrierea trebuie sa explice momentul de folosire, nu doar durata
+- Refolosește componentele numai când semantica și stările sunt aceleași.
+- Respectă documentele de design.
+- Implementează responsive explicit.
+- Verifică stările relevante.
+- Nu adăuga secțiuni sau acțiuni necerute.
+- Nu transforma o corecție locală într-un redesign global.
 
-Exemple bune:
-- `Acces 24 ore` + `Mai putin decat o cafea.`
-- `Acces 7 zile` + `Cat 2 drumuri cu metroul pana la facultate si inapoi.`
-- `Acces 30 zile` + `Mai ieftin pe zi decat un snack rapid din campus.`
+## Verificare
 
-## 7. Ce este interzis
+Pentru taskuri UI folosește verificările relevante definite în `AGENTS.md`.
 
-- multe butoane primare concurente in aceeasi zona
-- explicatii tehnice sau de setup in pagini publice
-- card grids generice de tip SaaS fara ierarhie
-- texte lungi de onboarding in zona de brand public
-- UI aglomerat cu explicatii redundante
-- bold excesiv pe pill-uri, microcopy si descrieri
+La final parcurge `UX_REVIEW_CHECKLIST.md`.
 
-## 8. Aplicare practica
-
-La orice pagina noua `Nota 5+`, verifica:
-
-1. brandul este imediat recognoscibil
-2. exista o actiune principala clara
-3. headline-ul spune clar de ce exista pagina
-4. copy-ul poate fi scanat in cateva secunde
-5. suprafetele au aer si nu par ingramadite
-6. badge-urile, pills si icon-boxes respecta acelasi limbaj vizual
-7. designul nu arata ca un admin generic
-
-## 9. Implementari de referinta
-
-Implementarile de referinta pentru acest sistem sunt:
-- `app/auth/login/page.js`
-- `app/cont/page.js`
-
-Aceste pagini stabilesc:
-- tonul public al produsului
-- tonul privat al produsului
-- stilul CTA-ului principal
-- relatia dintre branding, comunitate, pricing si invatare rapida
+Dacă o verificare nu poate fi făcută, raportează exact ce a rămas neverificat.

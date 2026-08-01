@@ -6,12 +6,13 @@ import {
   Eye,
   FilePenLine,
   FlaskConical,
-  LoaderCircle,
   Save,
   Send,
   ShieldCheck,
   Undo2
 } from "lucide-react";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -375,14 +376,14 @@ export function AdminEditorialPanel({ articles = [], runs = [], automationSettin
       <div className="admin-content-toolbar">
         <AdminEditorialAutomationSettings workflow="editorial" settings={automationSettings} generationPreview={generationPreview} />
         <button type="button" className="btn-link" onClick={generateDraft} disabled={Boolean(busy) || Boolean(activeRun)}>
-          {liveRun ? <LoaderCircle className="is-spinning" size={16} /> : <FlaskConical size={16} />}
+          {liveRun ? <LoadingSpinner size={16} /> : <FlaskConical size={16} />}
           {liveRun ? "Generare în curs" : "Generează un articol"}
         </button>
       </div>
 
       {liveRun ? (
         <section className="admin-editorial-live-run" aria-live="polite">
-          <LoaderCircle className="is-spinning" aria-hidden="true" size={23} />
+          <LoadingSpinner size={23} />
           <div>
             <span>Generare în curs</span>
             <strong>{runStatusLabel(liveRun.status)}</strong>

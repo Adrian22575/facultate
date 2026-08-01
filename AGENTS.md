@@ -1,196 +1,388 @@
 # AGENTS
 
-## Scop
+## 1. Rolul acestui fișier
 
-Acest repo contine aplicatia `Teste Facultate`, migrata la Next.js App Router si extinsa spre un produs SaaS cu:
+Acest fișier este ghidul principal de lucru pentru agenții care modifică repository-ul.
 
-- Google Auth prin Supabase
-- Stripe Checkout + webhook
-- generare si procesare materiale cu OpenAI in backend
-- comunitati academice pentru elevi si studenti
-- importuri de seturi pentru licenta
+El definește:
 
-## Reguli rapide pentru agenti
+- ordinea în care se citește contextul;
+- regulile operaționale și de siguranță;
+- clasificarea taskurilor;
+- limitele de scop;
+- verificările obligatorii.
 
-- Nu expune niciodata cheile din `.env.local` in cod, loguri sau documentatie.
-- Nu mentiona AI, OpenAI sau credite AI in interfata pentru utilizatorul final. Foloseste "procesare", "generare", "materiale", "incarcari" si "Workspace". Termenii tehnici pot ramane in cod intern, rute/API interne, loguri admin sau documentatie de agent.
-- Nu opri si nu porni serverul local doar pentru verificari de rutina. Utilizatorul prefera sa gestioneze serverul din terminal. Ruleaza build/teste headless cand sunt suficiente.
-- Cand schimbi schema Supabase, adauga o migrare noua in `supabase/migrations/`.
-- Pentru orientare rapida, citeste mai intai:
-  - `docs/agent-repo-map.md`
-  - `docs/agent-playbook.md`
-  - `docs/agent-lessons.md`
-- Daca ai nevoie de audit rapid al workspace-ului, ruleaza `npm run workspace:audit`.
-- Dupa reorganizari de fisiere sau documentatie de agent, ruleaza `npm run agent:check`.
-- Pentru pluginul Supabase, foloseste `docs/supabase-plugin.md`, `npm run supabase:check` si `npm run supabase:check:live`.
-- Pentru pluginul OpenAI Developers si verificarea cheilor/modelelor, foloseste `docs/openai-developers-plugin.md` si `npm run openai:check`.
-- Pentru workflow-uri repetitive de mentenanta, foloseste skill-ul local `.codex/skills/teste-facultate-maintenance/SKILL.md`.
+Nu duplică în detaliu design system-ul, regulile UX sau lecțiile de debugging. Pentru acestea folosește documentele autoritare indicate mai jos.
 
-## Zone sensibile
+## 2. Contextul produsului
 
-### Onboarding si comunitati
+Repository-ul conține aplicația Next.js App Router cunoscută intern ca `Teste Facultate`.
 
-Daca modifici flow-ul de onboarding sau comunitati, verifica si:
+Brandul vizibil pentru utilizator este `Nota 5+`.
 
-- `app/onboarding`
-- `app/auth/callback/route.js`
-- `lib/academic/*`
-- `lib/private-tests.js`
+Produsul include:
 
-### Generare, importuri si review de materiale
+- autentificare Google prin Supabase;
+- checkout și webhook Stripe;
+- procesare și generare de materiale în backend;
+- comunități academice pentru elevi și studenți;
+- importuri de seturi pentru licență;
+- zone pentru materii, teste, cont și administrare.
 
-Daca modifici generarea sau importul de materiale, verifica si:
+## 3. Ordinea de autoritate
 
-- `app/api/ai/generate/route.js`
-- `app/ai/actions.js`
-- `app/api/import/*`
-- `app/api/licenta-import/*`
-- `lib/ai/*`
-- functiile SQL din migratii
+Pentru orice task, aplică regulile în această ordine:
+
+1. cerința explicită a utilizatorului;
+2. acest fișier, `AGENTS.md`;
+3. documentația specifică zonei afectate;
+4. skill-ul canonic relevant;
+5. implementarea și tiparele existente;
+6. presupunerile agentului.
+
+Pentru taskuri UI/UX, citește în această ordine:
+
+1. fișierul canonic `nota5plus-ui-ux-skill.md`;
+2. `docs/design/PRODUCT_UX_PRINCIPLES.md`;
+3. `docs/design/PAGE_STRUCTURE_RULES.md`;
+4. `docs/design/RESPONSIVE_RULES.md`;
+5. `docs/design/LAYOUT_SPACING_RULES.md`;
+6. `docs/design/DESIGN_SYSTEM.md`;
+7. componentele și stilurile fluxului afectat.
+
+Dacă implementarea existentă contrazice documentele autoritare, nu o copia automat.
+Păstrează logica de business și corectează numai partea aflată în scopul taskului.
+
+Nu trata mai multe skill-uri UI drept surse paralele. Trebuie să existe un singur skill UI/UX canonic.
+
+## 4. Reguli operaționale obligatorii
+
+- Nu expune niciodată cheile sau valorile din `.env.local` în cod, loguri, capturi sau documentație.
+- Nu afișa în interfața utilizatorului termeni precum `AI`, `OpenAI`, `credite AI`, `Supabase`, `Stripe`, `API key`, `webhook`, `database`, `setup` sau `billing`.
+- Termenii tehnici pot rămâne în cod, rute interne, loguri administrative și documentația pentru agenți.
+- Nu modifica migrații Supabase vechi. Pentru schimbări de schemă, adaugă o migrare nouă în `supabase/migrations/`.
+- Nu modifica logica de business, permisiunile, API-urile sau contractele de date într-un task exclusiv vizual, decât dacă utilizatorul cere explicit acest lucru.
+- Nu face refactorizări fără legătură cu cerința.
+- Nu reorganiza directoare sau nu introduce abstracții globale fără un beneficiu repetat și demonstrabil.
+- Nu inventa funcționalități, date, metrici, texte finale sau stări care nu sunt susținute de produs.
+- Nu declara un task finalizat dacă verificarea relevantă nu a fost făcută sau dacă există probleme cunoscute neraportate.
+
+## 5. Orientare inițială
+
+Pentru un task obișnuit, citește:
+
+1. `AGENTS.md`;
+2. `docs/agent-repo-map.md`;
+3. fișierele direct afectate de task.
+
+Citește suplimentar:
+
+- `docs/agent-playbook.md` pentru workflow-uri și comenzi;
+- `docs/agent-lessons.md` când taskul atinge o zonă sensibilă, localhost, tabele admin, butoane sau probleme deja întâlnite;
+- documentația pluginului relevant când taskul implică Supabase sau OpenAI Developers;
+- skill-ul local de mentenanță pentru operațiuni repetitive de repository.
+
+Nu încărca automat directoare mari precum:
+
+- `node_modules/`;
+- `.next/`;
+- `backup/`;
+- loguri;
+- capturi de QA.
+
+Inspectează-le numai când taskul o cere.
+
+## 6. Clasificarea taskului
+
+Înainte de a modifica fișiere, clasifică taskul într-unul dintre modurile următoare.
+
+### 6.1 Audit
+
+Exemple:
+
+- analizează pagina;
+- identifică problemele;
+- compară implementarea cu design system-ul;
+- propune priorități.
+
+Reguli:
+
+- nu modifica fișiere;
+- nu scrie implementare;
+- raportează problemele, impactul și ordinea recomandată;
+- separă problemele de UX, UI, responsive și cod.
+
+### 6.2 Arhitectură sau redesign amplu
+
+Exemple:
+
+- reorganizează o pagină aglomerată;
+- decide ce trebuie mutat în alte pagini;
+- creează un flux nou;
+- reconstruiește informația și navigarea.
+
+Reguli:
+
+- inspectează mai întâi produsul și componentele;
+- definește scopul, decizia, acțiunea principală și informația necesară;
+- produce o structură desktop/mobile înainte de implementare;
+- arată ce se elimină, mută sau ascunde;
+- nu scrie cod în etapa de propunere dacă utilizatorul a cerut explicit doar analiză, structură sau wireframe.
+
+Dacă utilizatorul cere explicit implementarea completă și cerințele sunt suficient de clare, nu bloca taskul într-un ciclu artificial de aprobare. Prezintă concis structura aleasă și continuă implementarea în același task.
+
+### 6.3 Wireframe
+
+Exemple:
+
+- creează wireframe-ul unei pagini;
+- arată layout-ul înainte de cod;
+- propune variante de structură.
+
+Reguli:
+
+- nu implementa logica de business;
+- nu transforma wireframe-ul în landing page decorativ;
+- folosește conținut realist și cantități realiste;
+- nu adăuga secțiuni doar pentru a umple spațiul;
+- arată desktop și mobil când ambele sunt relevante;
+- precizează ce rămâne, ce se mută, ce se ascunde și ce se elimină.
+
+### 6.4 Implementare UI
+
+Exemple:
+
+- implementează pagina aprobată;
+- construiește componenta;
+- aplică wireframe-ul;
+- refă layout-ul după cerințe clare.
+
+Reguli:
+
+- păstrează logica de business;
+- implementează numai structura cerută;
+- nu adăuga secțiuni sau acțiuni neaprobate;
+- reutilizează tokenurile și tiparele potrivite;
+- implementează explicit responsive și stările relevante;
+- nu copia automat un pattern existent dacă acesta este cauza problemei.
+
+### 6.5 Corecție punctuală
+
+Exemple:
+
+- repară spacing-ul;
+- aliniază toolbar-ul;
+- corectează hover-ul;
+- elimină overflow-ul;
+- ajustează o coloană de tabel.
+
+Reguli:
+
+- fă cea mai mică modificare robustă;
+- nu cere wireframe;
+- nu redesena pagina;
+- nu crea primitive globale pentru un singur caz;
+- verifică exact starea și dimensiunile afectate;
+- oprește-te când defectul cerut este rezolvat.
+
+### 6.6 Backend, date sau infrastructură
+
+Reguli:
+
+- citește documentația zonei;
+- păstrează compatibilitatea contractelor;
+- tratează separat schema, runtime-ul, cache-ul și interfața;
+- nu modifica UI-ul în afara feedbackului necesar pentru starea backendului.
+
+## 7. Limitele de scop
+
+Înainte de implementare, identifică:
+
+```text
+Fișiere direct afectate:
+Componente reutilizate:
+Logică de business care trebuie păstrată:
+Modificări permise:
+Modificări interzise:
+Verificări necesare:
+```
+
+În timpul taskului:
+
+- nu repara probleme fără legătură doar pentru că le-ai observat;
+- notează separat problemele din afara scopului;
+- nu înlocui o soluție locală funcțională cu o arhitectură nouă fără motiv;
+- nu schimba copy-ul final decât dacă taskul include conținut sau copy;
+- nu muta informații între pagini fără o justificare de produs.
+
+## 8. Zone sensibile
+
+### Onboarding și comunități
+
+Când modifici onboarding-ul sau comunitățile, verifică:
+
+- `app/onboarding`;
+- `app/auth/callback/route.js`;
+- `lib/academic/*`;
+- `lib/private-tests.js`.
+
+### Procesare, importuri și review de materiale
+
+Când modifici generarea, procesarea sau importurile, verifică:
+
+- `app/api/ai/generate/route.js`;
+- `app/ai/actions.js`;
+- `app/api/import/*`;
+- `app/api/licenta-import/*`;
+- `lib/ai/*`;
+- funcțiile SQL relevante din migrații.
 
 ### Billing
 
-Daca modifici billing, verifica si:
+Când modifici billing-ul, verifică:
 
-- `app/api/stripe/*`
-- `lib/billing.js`
-- `lib/stripe/*`
+- `app/api/stripe/*`;
+- `lib/billing.js`;
+- `lib/stripe/*`.
 
-## Comenzi utile
+### Admin și tabele
+
+Când modifici liste administrative:
+
+- verifică lecțiile existente despre tabele și acțiuni textuale;
+- prioritizează scanarea, filtrarea și densitatea;
+- nu transforma tabelele în grile de carduri fără un motiv funcțional;
+- verifică coloanele lungi, datele, wrapping-ul, înălțimea rândurilor și toolbar-ul.
+
+## 9. Serverul local
+
+Utilizatorul gestionează de regulă serverul local din terminal.
+
+Pentru verificări de rutină:
+
+- nu porni;
+- nu opri;
+- nu reseta serverul;
+- nu șterge `.next`.
+
+Folosește mai întâi:
+
+- build;
+- teste headless;
+- verificări statice;
+- serverul deja pornit, dacă este disponibil.
+
+Poți folosi comenzi care afectează serverul numai când:
+
+- utilizatorul cere explicit;
+- problema investigată este chiar runtime-ul local;
+- verificarea nu este posibilă altfel;
+- explici clar motivul.
+
+Dacă verificarea vizuală nu este posibilă fără pornirea sau resetarea serverului și nu ai permisiunea necesară, nu pretinde că ai făcut QA vizual. Raportează exact ce ai verificat și ce a rămas neverificat.
+
+Pentru probleme recurente de localhost, citește `docs/agent-lessons.md` înainte de intervenție.
+
+## 10. Verificări
+
+Alege verificările în funcție de schimbare, nu le rula mecanic pe toate.
+
+### După schimbări de cod
 
 ```powershell
-npm run workspace:audit
-npm run agent:check
-npm run supabase:check
-npm run openai:check
 npm run build
+```
+
+### După reorganizări de fișiere, documentație sau skill-uri
+
+```powershell
+npm run agent:check
+```
+
+### După schimbări UI
+
+```powershell
+npm run design:check
+npm run ui:check
+npm run build
+```
+
+Dacă serverul este deja disponibil, verifică vizual dimensiunile relevante definite în documentația de design.
+
+### Pentru Supabase
+
+```powershell
+npm run supabase:check
+npm run supabase:check:live
+```
+
+Rulează verificarea live numai când este relevantă și mediul este configurat.
+
+### Pentru OpenAI Developers
+
+```powershell
+npm run openai:check
+```
+
+### Pentru diagnostic local fără restart
+
+```powershell
 npm run dev:doctor
 npm run local:probe
 npm run server:status
 ```
 
-Comenzi care pot afecta serverul local si trebuie folosite doar cand sunt necesare sau cerute:
+### Pentru audit de workspace
 
 ```powershell
-npm run dev
-npm run dev:reset
-npm run start:reset
-npm run server:stop
+npm run workspace:audit
 ```
 
-## Migrații actuale
+Nu folosi auditul complet pentru fiecare schimbare mică.
 
-Ruleaza migratiile Supabase in ordine numerica din `supabase/migrations/`. Nu modifica migratii vechi deja create; adauga una noua pentru schimbari de schema.
+## 11. Verificare UI și responsive
 
-## Cand apare o pagina alba in localhost
+Când taskul include implementare UI și mediul permite verificarea în browser:
 
-Semn tipic:
+1. verifică pagina reală, nu doar build-ul;
+2. verifică dimensiunile relevante dintre `1440px`, `1024px`, `768px` și `390px`;
+3. verifică:
+   - ierarhia;
+   - spacing-ul;
+   - alinierea;
+   - overflow-ul;
+   - wrapping-ul;
+   - ordinea mobilă;
+   - vizibilitatea acțiunii principale;
+   - focus-ul;
+   - hover-ul;
+   - stările empty, loading, error, success și disabled când sunt relevante;
+   - conținutul foarte lung;
+   - spațiul gol;
+4. corectează problemele observate;
+5. repetă verificarea după corecții.
 
-- `/_next/static/...` raspunde cu `404` sau `500`
-- logul contine `MODULE_NOT_FOUND` pentru fisiere din `.next`
+Nu marca taskul drept verificat vizual doar pentru că build-ul trece.
 
-Remediere, doar daca utilizatorul cere sau daca este crucial pentru verificare:
+## 12. Raportul final
 
-1. opreste procesul `node` care asculta pe portul folosit
-2. sterge folderul `.next`
-3. porneste din nou serverul potrivit
+Răspunsul final trebuie să fie proporțional cu taskul.
 
-## Frontend and UX workflow
+Pentru implementare, include:
 
-For every frontend, layout, page structure, or redesign task:
+- cauza sau scopul schimbării;
+- fișierele modificate;
+- modificările principale;
+- verificările rulate;
+- ce nu a putut fi verificat;
+- riscuri sau probleme rămase, dacă există.
 
-### Phase 1: Understand
+Pentru audit, include:
 
-Before writing code:
+- problemele prioritizate;
+- dovezile din cod;
+- impactul;
+- recomandarea;
+- ce informație lipsește pentru o concluzie sigură.
 
-1. Read the relevant files from `/docs/design`.
-2. Inspect the current page and reusable components.
-3. Identify:
-   - the user of the page;
-   - the primary goal;
-   - the primary decision;
-   - the primary action;
-   - required information;
-   - secondary information;
-   - information that should be hidden or moved.
-4. Do not assume the page should be a dashboard.
-5. Do not begin implementation before producing a UX structure proposal.
-
-### Phase 2: Structure
-
-Provide:
-
-1. Page purpose.
-2. Primary action.
-3. Information hierarchy.
-4. Desktop structure.
-5. Mobile structure.
-6. Tab, modal, drawer, and page separation strategy.
-7. Elements to remove, merge, or hide.
-8. Three major UX risks.
-
-Do not write implementation code during this phase.
-
-### Phase 3: Wireframe
-
-Create a static wireframe or mockup first.
-
-The wireframe must:
-
-- reuse the existing typography and design system;
-- use realistic application data;
-- show desktop and mobile layouts;
-- contain no invented functionality;
-- contain no decorative components without a purpose;
-- use one clear primary action.
-
-Do not implement business logic before the wireframe is approved.
-
-### Phase 4: Implementation
-
-After approval:
-
-1. Reuse existing components and tokens.
-2. Keep all existing business logic.
-3. Do not add unapproved sections or actions.
-4. Implement responsive behavior explicitly.
-5. Include loading, empty, error, success, and disabled states where relevant.
-
-### Phase 5: Visual QA
-
-After implementation:
-
-1. Run the application.
-2. Open the page in a browser.
-3. Capture screenshots at:
-   - 1440px;
-   - 1024px;
-   - 768px;
-   - 390px.
-4. Check:
-   - hierarchy;
-   - spacing;
-   - alignment;
-   - overflow;
-   - mobile behavior;
-   - action visibility;
-   - text wrapping;
-   - empty space;
-   - consistency with the existing site.
-5. Fix all visible problems.
-6. Repeat screenshots after fixes.
-7. Do not mark the task complete without visual QA.
-
-### Mandatory UX constraints
-
-- One primary action per page.
-- Maximum two visible secondary actions.
-- Do not show secondary information by default.
-- Do not use more than one sidebar unless explicitly approved.
-- Do not use cards for every section.
-- Do not place desktop tables on mobile without a mobile strategy.
-- Interactive targets should be at least 44px on mobile.
-- No horizontal scrolling on mobile.
-- Do not use placeholder text as final content.
-- Do not use generic dashboard statistics unless they support a decision.
-- Do not add decorative charts without a user need.
+Nu folosi formulări precum „totul este perfect” sau „gata complet” când există limitări de verificare.

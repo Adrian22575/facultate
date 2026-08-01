@@ -8,12 +8,13 @@ import {
   CheckCircle2,
   Clock3,
   Eye,
-  LoaderCircle,
   RefreshCw,
   Save,
   Send,
   Undo2
 } from "lucide-react";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -341,7 +342,7 @@ export function AdminDictionaryPanel({
         <div className="admin-content-toolbar">
           <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} generationPreview={generationPreview} />
           <button type="button" className="btn-link" onClick={generate} disabled={Boolean(busy) || Boolean(activeRun) || dirty} title={dirty ? "Salvează modificările înainte de a genera alt termen." : undefined}>
-            {liveRun ? <LoaderCircle size={16} className="is-spinning" /> : <RefreshCw size={16} />}
+            {liveRun ? <LoadingSpinner size={16} /> : <RefreshCw size={16} />}
             {liveRun ? "Generare în curs" : "Generează un termen"}
           </button>
         </div>
@@ -349,7 +350,7 @@ export function AdminDictionaryPanel({
 
       {!detail && liveRun ? (
         <section className="admin-dictionary-live-run" aria-live="polite">
-          <LoaderCircle className="is-spinning" aria-hidden="true" size={23} />
+          <LoadingSpinner size={23} />
           <div>
             <span>Generare în curs</span>
             <strong>{runStatusLabel(liveRun.status)}</strong>

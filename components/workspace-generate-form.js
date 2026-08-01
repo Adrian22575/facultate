@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Check, ClipboardPaste, FileUp, LoaderCircle } from "lucide-react";
+import { Check, ClipboardPaste, FileUp } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { LoadingIconText } from "@/components/loading-spinner";
+import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 import { WorkspaceSubjectPicker } from "@/components/workspace-subject-picker";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -479,7 +479,7 @@ export function WorkspaceGenerateForm({
       {isSubmitting ? (
         <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
           <span className="learning-processing-icon" aria-hidden="true">
-            <LoaderCircle size={20} strokeWidth={2.3} />
+            <LoadingSpinner size={20} />
           </span>
           <div className="learning-processing-copy">
             <strong>{uploadStatus || "Pregătim grilele..."}</strong>

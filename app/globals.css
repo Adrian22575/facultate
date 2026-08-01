@@ -4131,33 +4131,6 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
   margin-bottom: 6px;
 }
 
-.job-loading-svg {
-  width: 86px;
-  height: 86px;
-}
-
-.job-loading-track {
-  fill: rgba(18, 80, 177, 0.06);
-  stroke: rgba(18, 80, 177, 0.12);
-  stroke-width: 4;
-}
-
-.job-loading-ring {
-  fill: none;
-  stroke: #1250b1;
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-dasharray: 92 54;
-  transform-origin: 32px 32px;
-  animation: workspaceJobSpin 1.25s linear infinite;
-}
-
-.job-loading-core {
-  fill: #1250b1;
-  opacity: 0.92;
-  animation: workspaceJobPulse 1.6s ease-in-out infinite;
-}
-
 .job-failure-surface {
   display: grid;
   gap: 18px;
@@ -4263,29 +4236,6 @@ button.workspace-subject-result.is-selected .workspace-subject-result-mark {
   color: var(--primary-dark);
   border: 1px solid var(--line);
   transform: none;
-}
-
-@keyframes workspaceJobSpin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes workspaceJobPulse {
-  0%,
-  100% {
-    transform: scale(0.86);
-    opacity: 0.72;
-  }
-
-  50% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
 .workspace-modal-close:hover,
@@ -19418,8 +19368,19 @@ td {
 }
 
 .ui-loading-spinner {
+  width: var(--ui-loading-spinner-size);
+  height: var(--ui-loading-spinner-size);
+  display: inline-grid;
   flex: 0 0 auto;
-  color: currentColor;
+  place-items: center;
+  border-radius: max(3px, calc(var(--ui-loading-spinner-size) * 0.14));
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.ui-loading-spinner svg {
+  width: 48%;
+  height: 48%;
   animation: uiLoadingSpin 0.8s linear infinite;
 }
 
@@ -19455,16 +19416,6 @@ td {
   grid-template-columns: auto minmax(0, 1fr);
   gap: 18px;
   align-items: center;
-}
-
-.route-loading-mark {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  background: var(--primary-soft);
-  color: var(--primary);
 }
 
 .route-loading-kicker {
@@ -20995,31 +20946,6 @@ td {
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
-.ai-workspace-choice-card::after {
-  content: "";
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(18, 80, 177, 0.18);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.ai-workspace-choice-card[data-navigation-pending="true"]::after {
-  opacity: 1;
-  animation: ai-workspace-choice-spin 700ms linear infinite;
-}
-
-@keyframes ai-workspace-choice-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .ai-workspace-choice-card[data-navigation-pending="true"] {
   pointer-events: none;
   border-color: #9ebee9;
@@ -21671,14 +21597,6 @@ td {
   color: #fff;
 }
 
-.learning-processing-icon svg {
-  animation: learning-processing-spin 900ms linear infinite;
-}
-
-@keyframes learning-processing-spin {
-  to { transform: rotate(360deg); }
-}
-
 .learning-processing-copy {
   display: grid;
   gap: 4px;
@@ -21749,10 +21667,6 @@ td {
   border-color: var(--primary);
   background: var(--primary);
   color: #fff;
-}
-
-.processing-stage-tracker li.is-active svg {
-  animation: learning-processing-spin 900ms linear infinite;
 }
 
 .processing-stage-tracker li.is-done {
@@ -22744,16 +22658,6 @@ td {
   box-shadow: var(--shadow-soft);
 }
 
-.learning-processing-hero svg {
-  width: 54px;
-  height: 54px;
-  padding: 13px;
-  border-radius: 18px;
-  background: var(--primary);
-  color: #fff;
-  animation: learning-spin 1.4s linear infinite;
-}
-
 .learning-processing-hero h1,
 .learning-processing-hero p {
   margin: 0;
@@ -22850,12 +22754,6 @@ td {
   color: var(--muted);
   font-weight: 500;
   line-height: 1.55;
-}
-
-@keyframes learning-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .learning-study-hero {
@@ -23761,10 +23659,6 @@ td {
   border-color: #c6d9f2;
   background: #f0f6ff;
   color: var(--primary-dark);
-}
-
-.learning-result-spinner {
-  animation: learning-spin 1s linear infinite;
 }
 
 .learning-test-result p,

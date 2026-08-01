@@ -7,12 +7,11 @@ import {
   FolderOpen,
   HelpCircle,
   Keyboard,
-  LoaderCircle,
   Upload
 } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { LoadingIconText } from "@/components/loading-spinner";
+import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { WorkspaceGenerateForm } from "@/components/workspace-generate-form";
 import {
@@ -807,7 +806,7 @@ export function LicentaImportWorkspaceClient({
           {isBusy ? (
             <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
               <span className="learning-processing-icon" aria-hidden="true">
-                <LoaderCircle size={20} strokeWidth={2.3} />
+                <LoadingSpinner size={20} />
               </span>
               <div className="learning-processing-copy">
                 <strong>Pregătim setul de grile...</strong>

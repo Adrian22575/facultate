@@ -1,4 +1,6 @@
-import { Check, LoaderCircle } from "lucide-react";
+import { Check } from "lucide-react";
+
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 const PROCESSING_FLOWS = {
   learning: [
@@ -58,7 +60,7 @@ export function ProcessingStageTracker({ kind = "questions", stage, status }) {
             >
               <span className="processing-stage-tracker-icon" aria-hidden="true">
                 {isDone ? <Check size={15} strokeWidth={2.8} /> : null}
-                {isActive ? <LoaderCircle size={15} strokeWidth={2.4} /> : null}
+                {isActive ? <LoadingSpinner size={15} /> : null}
                 {!isDone && !isActive ? <span /> : null}
               </span>
               <span>{item.label}</span>

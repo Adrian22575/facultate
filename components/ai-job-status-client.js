@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 import { deleteQuestionBankUploadAction } from "@/app/ai/actions";
-import { LoadingIconText } from "@/components/loading-spinner";
+import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ProcessingStageTracker } from "@/components/processing-stage-tracker";
 import {
@@ -194,11 +194,7 @@ function buildTerminalFailedJob(job, { errorMessage, statusDetail }) {
 function LoadingGlyph() {
   return (
     <div className="job-loading-glyph" aria-hidden="true">
-      <svg viewBox="0 0 64 64" className="job-loading-svg">
-        <circle className="job-loading-track" cx="32" cy="32" r="22" />
-        <circle className="job-loading-ring" cx="32" cy="32" r="22" />
-        <circle className="job-loading-core" cx="32" cy="32" r="6" />
-      </svg>
+      <LoadingSpinner size={54} />
     </div>
   );
 }

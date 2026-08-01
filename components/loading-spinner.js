@@ -1,18 +1,22 @@
 "use client";
 
 export function LoadingSpinner({ size = 16, className = "" }) {
+  const resolvedClassName = className
+    .split(" ")
+    .filter((name) => name && name !== "is-spinning")
+    .join(" ");
+
   return (
-    <svg
-      className={`ui-loading-spinner${className ? ` ${className}` : ""}`}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
+    <span
+      className={`ui-loading-spinner${resolvedClassName ? ` ${resolvedClassName}` : ""}`}
       aria-hidden="true"
-      focusable="false"
+      style={{ "--ui-loading-spinner-size": `${size}px` }}
     >
-      <circle className="ui-loading-spinner-track" cx="12" cy="12" r="9" />
-      <path className="ui-loading-spinner-ring" d="M21 12a9 9 0 0 1-9 9" />
-    </svg>
+      <svg viewBox="0 0 24 24" focusable="false">
+        <circle className="ui-loading-spinner-track" cx="12" cy="12" r="9" />
+        <path className="ui-loading-spinner-ring" d="M21 12a9 9 0 0 1-9 9" />
+      </svg>
+    </span>
   );
 }
 
