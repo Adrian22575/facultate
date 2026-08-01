@@ -1,0 +1,474 @@
+.page {
+  min-height: 100vh;
+  padding: 18px 0 64px;
+  background:
+    radial-gradient(circle at 14% 2%, rgba(204, 224, 255, 0.76), transparent 31rem),
+    linear-gradient(180deg, #f7fbff 0%, #edf5ff 100%);
+}
+
+.container {
+  width: min(100% - 40px, 1180px);
+  margin: 0 auto;
+}
+
+.nav,
+.nav > div,
+.breadcrumbs,
+.final,
+.card > a {
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  min-height: 66px;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav > div {
+  gap: 22px;
+}
+
+.navLink {
+  color: #345273;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: var(--primary-dark);
+}
+
+.login,
+.finalLink {
+  border-radius: 14px;
+  color: #fff;
+  background: #1557bd;
+  box-shadow: 0 12px 24px rgba(21, 87, 189, 0.18);
+  font-weight: 850;
+}
+
+.login {
+  padding: 10px 15px;
+  font-size: 0.88rem;
+}
+
+.breadcrumbs {
+  gap: 8px;
+  margin-top: 32px;
+  color: #647996;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.breadcrumbs a {
+  color: #315b90;
+}
+
+.hero {
+  width: min(760px, 100%);
+  margin: 58px auto 52px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #1354af;
+  background: #e8f1ff;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.hero h1,
+.toolHero h1,
+.final h2,
+.toolFaq h2,
+.faq h2 {
+  margin: 14px 0 0;
+  color: #10284e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 5.7vw, 4.3rem);
+  line-height: 1.02;
+}
+
+.hero p,
+.toolHero p {
+  margin: 18px auto 0;
+  color: #506987;
+  font-size: 1.08rem;
+  line-height: 1.65;
+}
+
+.group {
+  margin-top: 44px;
+}
+
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.groupHead > span {
+  color: #153b6d;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.groupHead p {
+  margin: 0;
+  color: #617998;
+  font-size: 0.9rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  min-height: 286px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 19px;
+  padding: 24px;
+  border: 1px solid #cbdcf2;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 30px rgba(31, 72, 125, 0.06);
+}
+
+.card.featured {
+  border-color: #9fc1f3;
+  background: linear-gradient(145deg, #fff 0%, #eef6ff 100%);
+}
+
+.cardIcon,
+.toolHeroIcon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #c8ddfa;
+  border-radius: 15px;
+  color: #1355b2;
+  background: #eaf3ff;
+}
+
+.card > div:nth-child(2) {
+  display: grid;
+  gap: 8px;
+}
+
+.card > div:nth-child(2) > span {
+  color: #6d85a3;
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.card h2,
+.card p,
+.faq h3,
+.faq p,
+.toolFaq h3,
+.toolFaq p {
+  margin: 0;
+}
+
+.card h2 {
+  color: #13345f;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.card p {
+  color: #607794;
+  font-size: 0.91rem;
+  line-height: 1.55;
+}
+
+.card > a {
+  gap: 8px;
+  min-height: 44px;
+  margin-top: auto;
+  color: #1454b5;
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.card > a svg {
+  transition: transform 160ms ease;
+}
+
+.card > a:hover svg,
+.card > a:focus-visible svg {
+  transform: translateX(3px);
+}
+
+.faq,
+.toolFaq {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.82fr) minmax(0, 1.18fr);
+  gap: 48px;
+  margin-top: 68px;
+  padding: 34px;
+  border: 1px solid #c7d9f0;
+  border-radius: 24px;
+  background: #fff;
+}
+
+.faq h2,
+.toolFaq h2 {
+  font-size: clamp(1.8rem, 3vw, 2.45rem);
+  line-height: 1.08;
+}
+
+.faq > div:last-child,
+.toolFaqList {
+  display: grid;
+  gap: 20px;
+}
+
+.faq article,
+.toolFaq article {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e9f5;
+}
+
+.faq article:last-child,
+.toolFaq article:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.faq h3,
+.toolFaq h3 {
+  color: #1f416e;
+  font-size: 1rem;
+}
+
+.faq p,
+.toolFaq p {
+  margin-top: 6px;
+  color: #607794;
+  font-size: 0.92rem;
+  line-height: 1.58;
+}
+
+.final {
+  justify-content: space-between;
+  gap: 26px;
+  margin-top: 28px;
+  padding: 34px;
+  border-radius: 24px;
+  color: #fff;
+  background: #123b75;
+}
+
+.final h2 {
+  max-width: 650px;
+  color: #fff;
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
+  line-height: 1.08;
+}
+
+.final .eyebrow {
+  color: #dcecff;
+  background: rgba(220, 236, 255, 0.14);
+}
+
+.finalLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 12px 17px;
+  white-space: nowrap;
+  background: #fff;
+  color: #124a9e;
+  box-shadow: none;
+}
+
+.toolHero {
+  width: min(830px, 100%);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin: 38px 0 34px;
+}
+
+.toolHero h1 {
+  font-size: clamp(2.2rem, 4.7vw, 3.8rem);
+  line-height: 1.04;
+}
+
+.toolHero p {
+  margin: 12px 0 0;
+}
+
+.login:hover,
+.login:focus-visible,
+.finalLink:hover,
+.finalLink:focus-visible {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
+.toolContent {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 52px;
+}
+
+.toolContent article {
+  padding: 19px;
+  border-top: 2px solid #b7d3f6;
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.toolContent h2,
+.toolContent p {
+  margin: 0;
+}
+
+.toolContent h2 {
+  color: #1a426f;
+  font-size: 1rem;
+}
+
+.toolContent p {
+  margin-top: 8px;
+  color: #607895;
+  font-size: 0.89rem;
+  line-height: 1.58;
+}
+
+.toolRelated {
+  margin-top: 54px;
+}
+
+.updated {
+  margin: 34px 0 0;
+  color: #6b82a0;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .grid,
+  .toolContent {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card {
+    min-height: 248px;
+  }
+}
+
+@media (max-width: 680px) {
+  .page {
+    padding-top: 8px;
+    overflow-x: clip;
+  }
+
+  .container {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .nav {
+    min-height: 58px;
+    gap: 12px;
+  }
+
+  .nav > div {
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .nav :global(.nota5plus-brand) {
+    min-width: 0;
+  }
+
+  .navLink {
+    display: none;
+  }
+
+  .login {
+    min-width: 0;
+    white-space: normal;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .breadcrumbs {
+    flex-wrap: wrap;
+    row-gap: 4px;
+    margin-top: 19px;
+    white-space: normal;
+  }
+
+  .hero {
+    margin: 38px auto 38px;
+    text-align: left;
+  }
+
+  .hero h1 {
+    font-size: 2.45rem;
+  }
+
+  .groupHead {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .grid,
+  .toolContent,
+  .faq,
+  .toolFaq {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .faq,
+  .toolFaq,
+  .final {
+    gap: 24px;
+    padding: 23px;
+  }
+
+  .final {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolHero {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 31px;
+  }
+}

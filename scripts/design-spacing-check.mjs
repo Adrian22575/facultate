@@ -37,6 +37,10 @@ const primitiveCssEntries = [
   "components/ui/collection-controls.module.css",
   "components/ui/data-table.module.css"
 ];
+const colocatedCssEntries = [
+  "components/free-tools-page.module.css",
+  "components/free-tools-calculator.module.css"
+];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
 const guard = "/* DESIGN-SPACING-GUARD: new layout spacing below this marker must use spacing tokens. */";
@@ -45,6 +49,10 @@ const cssSources = globalCssEntries.map((entry) => ({
   css: fs.readFileSync(path.join(root, entry.relativePath), "utf8")
 }));
 const primitiveCssSources = primitiveCssEntries.map((relativePath) => ({
+  relativePath,
+  css: fs.readFileSync(path.join(root, relativePath), "utf8")
+}));
+const colocatedCssSources = colocatedCssEntries.map((relativePath) => ({
   relativePath,
   css: fs.readFileSync(path.join(root, relativePath), "utf8")
 }));
@@ -167,6 +175,27 @@ for (const { relativePath, css } of primitiveCssSources) {
   }
 }
 
+for (const { relativePath, css } of colocatedCssSources) {
+  const uncommentedCss = css.replaceAll(/\/\*[\s\S]*?\*\//g, "");
+  if (uncommentedCss.includes("!important")) {
+    failures.push(`${relativePath} nu poate folosi !important.`);
+  }
+
+  for (const match of uncommentedCss.matchAll(/([^{}]+)\{/g)) {
+    const selectorGroup = match[1].trim();
+    if (selectorGroup.startsWith("@")) continue;
+    for (const selector of selectorGroup.split(",")) {
+      if (broadElementSelector.test(selector.trim())) {
+        failures.push(`${relativePath} conține selectorul HTML larg: ${selector.trim()}.`);
+      }
+    }
+  }
+}
+
+if (/\.free-tools?-[A-Za-z_][\w-]*/.test(legacyCss)) {
+  failures.push("Selectorii globali free-tool-* și free-tools-* au fost retrași; folosește CSS Modules colocate.");
+}
+
 if (legacyCss.includes('button[class=""]')) {
   failures.push('Selectorul legacy button[class=""] trebuie eliminat complet.');
 }
@@ -246,4 +275,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Design spacing check passed (${cssSources.length} fișiere CSS globale, ${primitiveCssSources.length} module canonice).`);
+console.log(`Design spacing check passed (${cssSources.length} fișiere CSS globale, ${primitiveCssSources.length} module canonice, ${colocatedCssSources.length} module colocate).`);

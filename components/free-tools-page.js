@@ -4,6 +4,7 @@ import { ArrowRight, Calculator, CalendarClock, CalendarDays, ListChecks, Trendi
 import { FreeToolsCalculator } from "@/components/free-tools-calculator";
 import { FREE_TOOLS_LAST_UPDATED, freeTools } from "@/lib/free-tools";
 import { getPublicSiteUrl } from "@/lib/site";
+import styles from "./free-tools-page.module.css";
 
 const icons = { ListChecks, CalendarClock, CalendarDays, Calculator, TrendingUp };
 
@@ -78,26 +79,26 @@ export function ToolsStructuredData({ tool = null }) {
 }
 
 function ToolsNavigation() {
-  return <nav className="free-tools-nav" aria-label="Navigare principală">
+  return <nav className={styles.nav} aria-label="Navigare principală">
     <Link className="nota5plus-brand" href="/">
       <span className="nota5plus-brand-mark">5+</span>
       <span>Nota 5+</span>
     </Link>
     <div>
-      <Link href="/articole" className="free-tools-nav-link">Articole</Link>
-      <Link href="/instrumente" className="free-tools-nav-link">Instrumente gratuite</Link>
-      <Link href="/auth/exit-demo?target=login" className="free-tools-login" data-usage-event="free_tools_login_clicked">Intră în cont</Link>
+      <Link href="/articole" className={styles.navLink}>Articole</Link>
+      <Link href="/instrumente" className={styles.navLink}>Instrumente gratuite</Link>
+      <Link href="/auth/exit-demo?target=login" className={styles.login} data-usage-event="free_tools_login_clicked">Intră în cont</Link>
     </div>
   </nav>;
 }
 
 function Breadcrumbs({ tool }) {
-  return <nav className="free-tools-breadcrumbs" aria-label="Breadcrumb"><Link href="/">Acasă</Link><span aria-hidden="true">/</span><Link href="/instrumente">Instrumente gratuite</Link>{tool ? <><span aria-hidden="true">/</span><span aria-current="page">{tool.shortTitle}</span></> : null}</nav>;
+  return <nav className={styles.breadcrumbs} aria-label="Breadcrumb"><Link href="/">Acasă</Link><span aria-hidden="true">/</span><Link href="/instrumente">Instrumente gratuite</Link>{tool ? <><span aria-hidden="true">/</span><span aria-current="page">{tool.shortTitle}</span></> : null}</nav>;
 }
 
 function ToolCard({ tool, featured = false }) {
-  return <article className={`free-tools-card${featured ? " is-featured" : ""}`}>
-    <div className="free-tools-card-icon"><ToolIcon tool={tool} /></div>
+  return <article className={`${styles.card}${featured ? ` ${styles.featured}` : ""}`}>
+    <div className={styles.cardIcon}><ToolIcon tool={tool} /></div>
     <div><span>{tool.category}</span><h2>{tool.title}</h2><p>{tool.description}</p></div>
     <Link href={`/instrumente/${tool.slug}`} data-usage-event="free_tool_opened">Deschide instrumentul <ArrowRight size={17} aria-hidden="true" /></Link>
   </article>;
@@ -106,19 +107,19 @@ function ToolCard({ tool, featured = false }) {
 export function FreeToolsIndexPage() {
   const groups = ["Planificare", "Examene și simulări"].map((category) => ({ category, tools: freeTools.filter((tool) => tool.category === category) }));
 
-  return <main className="free-tools-page">
+  return <main className={styles.page}>
     <ToolsStructuredData />
-    <div className="free-tools-container">
+    <div className={styles.container}>
       <ToolsNavigation />
       <Breadcrumbs />
-      <header className="free-tools-hero">
-        <span className="free-tools-eyebrow">Instrumente gratuite</span>
+      <header className={styles.hero}>
+        <span className={styles.eyebrow}>Instrumente gratuite</span>
         <h1>Planifică mai simplu. Învață cu un obiectiv clar.</h1>
         <p>Cinci calculatoare rapide pentru grile, materie, simulări și punctaj. Funcționează direct, fără cont.</p>
       </header>
-      {groups.map(({ category, tools }) => <section className="free-tools-group" key={category} aria-labelledby={`group-${category}`}><div className="free-tools-group-head"><span>{category}</span><p>{category === "Planificare" ? "Începe cu ce ai de parcurs și timpul pe care îl ai." : "Verifică scorul și ajustează următoarea sesiune."}</p></div><div className="free-tools-grid">{tools.map((tool, index) => <ToolCard tool={tool} featured={category === "Planificare" && index === 0} key={tool.slug} />)}</div></section>)}
-      <section className="free-tools-faq" aria-labelledby="tools-faq-title"><div><span className="free-tools-eyebrow">Întrebări frecvente</span><h2 id="tools-faq-title">Rezultatele sunt gratuite și rămân la tine.</h2></div><div>{[["Trebuie să îmi fac cont?", "Nu. Instrumentele sunt publice, iar calculele se fac direct în browser."], ["Sunt formulele exacte?", "Rezultatele respectă formulele afișate pe fiecare pagină. Le poți ajusta imediat prin valorile din formular."], ["Ce fac după ce am un plan?", "Poți intra în Nota 5+ pentru a lucra pe materia ta, grile și simulări într-un singur loc."]].map(([question, answer]) => <article key={question}><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
-      <section className="free-tools-final"><div><span className="free-tools-eyebrow">Următorul pas</span><h2>Ai planul. Acum lucrează materia într-un ritm care se vede.</h2></div><Link href="/auth/exit-demo?target=login&next=/materiale/invata" className="free-tools-final-link" data-usage-event="free_tools_cta_clicked">Începe cu materialul tău <ArrowRight size={17} /></Link></section>
+      {groups.map(({ category, tools }) => <section className={styles.group} key={category} aria-labelledby={`group-${category}`}><div className={styles.groupHead}><span>{category}</span><p>{category === "Planificare" ? "Începe cu ce ai de parcurs și timpul pe care îl ai." : "Verifică scorul și ajustează următoarea sesiune."}</p></div><div className={styles.grid}>{tools.map((tool, index) => <ToolCard tool={tool} featured={category === "Planificare" && index === 0} key={tool.slug} />)}</div></section>)}
+      <section className={styles.faq} aria-labelledby="tools-faq-title"><div><span className={styles.eyebrow}>Întrebări frecvente</span><h2 id="tools-faq-title">Rezultatele sunt gratuite și rămân la tine.</h2></div><div>{[["Trebuie să îmi fac cont?", "Nu. Instrumentele sunt publice, iar calculele se fac direct în browser."], ["Sunt formulele exacte?", "Rezultatele respectă formulele afișate pe fiecare pagină. Le poți ajusta imediat prin valorile din formular."], ["Ce fac după ce am un plan?", "Poți intra în Nota 5+ pentru a lucra pe materia ta, grile și simulări într-un singur loc."]].map(([question, answer]) => <article key={question}><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
+      <section className={styles.final}><div><span className={styles.eyebrow}>Următorul pas</span><h2>Ai planul. Acum lucrează materia într-un ritm care se vede.</h2></div><Link href="/auth/exit-demo?target=login&next=/materiale/invata" className={styles.finalLink} data-usage-event="free_tools_cta_clicked">Începe cu materialul tău <ArrowRight size={17} /></Link></section>
     </div>
   </main>;
 }
@@ -127,17 +128,17 @@ export function FreeToolPage({ tool }) {
   const related = freeTools.filter((item) => item.slug !== tool.slug).slice(0, 3);
   const faq = toolFaq[tool.slug] || [];
 
-  return <main className="free-tools-page">
+  return <main className={styles.page}>
     <ToolsStructuredData tool={tool} />
-    <div className="free-tools-container">
+    <div className={styles.container}>
       <ToolsNavigation />
       <Breadcrumbs tool={tool} />
-      <header className="free-tool-hero"><div className="free-tool-hero-icon"><ToolIcon tool={tool} size={28} /></div><div><span className="free-tools-eyebrow">{tool.category}</span><h1>{tool.title}</h1><p>{tool.description}</p></div></header>
+      <header className={styles.toolHero}><div className={styles.toolHeroIcon}><ToolIcon tool={tool} size={28} /></div><div><span className={styles.eyebrow}>{tool.category}</span><h1>{tool.title}</h1><p>{tool.description}</p></div></header>
       <FreeToolsCalculator tool={tool} />
-      <section className="free-tool-content" aria-label="Explicații pentru calculator"><article><h2>Ce înseamnă rezultatul?</h2><p>{tool.directAnswer}</p></article><article><h2>Cum se calculează?</h2><p>Rezultatul folosește exclusiv valorile din formular și o formulă fixă, afișată după calcul. Nu sunt folosite estimări ascunse.</p></article><article><h2>Exemplu completat</h2><p>{tool.example}</p></article></section>
-      <section className="free-tool-faq" aria-labelledby="tool-faq-title"><div><span className="free-tools-eyebrow">Întrebări frecvente</span><h2 id="tool-faq-title">Răspunsuri scurte înainte să începi.</h2></div><div className="free-tool-faq-list">{faq.map(([question, answer]) => <article key={question}><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
-      <section className="free-tool-related" aria-labelledby="related-title"><div className="free-tools-group-head"><span id="related-title">Instrumente similare</span><p>Alege următoarea întrebare practică.</p></div><div className="free-tools-grid">{related.map((item) => <ToolCard key={item.slug} tool={item} />)}</div></section>
-      <p className="free-tools-updated">Ultima actualizare: {new Intl.DateTimeFormat("ro-RO", { day: "numeric", month: "long", year: "numeric" }).format(new Date(`${FREE_TOOLS_LAST_UPDATED}T12:00:00`))}</p>
+      <section className={styles.toolContent} aria-label="Explicații pentru calculator"><article><h2>Ce înseamnă rezultatul?</h2><p>{tool.directAnswer}</p></article><article><h2>Cum se calculează?</h2><p>Rezultatul folosește exclusiv valorile din formular și o formulă fixă, afișată după calcul. Nu sunt folosite estimări ascunse.</p></article><article><h2>Exemplu completat</h2><p>{tool.example}</p></article></section>
+      <section className={styles.toolFaq} aria-labelledby="tool-faq-title"><div><span className={styles.eyebrow}>Întrebări frecvente</span><h2 id="tool-faq-title">Răspunsuri scurte înainte să începi.</h2></div><div className={styles.toolFaqList}>{faq.map(([question, answer]) => <article key={question}><h3>{question}</h3><p>{answer}</p></article>)}</div></section>
+      <section className={styles.toolRelated} aria-labelledby="related-title"><div className={styles.groupHead}><span id="related-title">Instrumente similare</span><p>Alege următoarea întrebare practică.</p></div><div className={styles.grid}>{related.map((item) => <ToolCard key={item.slug} tool={item} />)}</div></section>
+      <p className={styles.updated}>Ultima actualizare: {new Intl.DateTimeFormat("ro-RO", { day: "numeric", month: "long", year: "numeric" }).format(new Date(`${FREE_TOOLS_LAST_UPDATED}T12:00:00`))}</p>
     </div>
   </main>;
 }
