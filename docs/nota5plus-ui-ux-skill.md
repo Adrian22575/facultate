@@ -88,6 +88,9 @@ Wireframe-ul nu trebuie să conțină conținut inventat sau elemente introduse 
 - Pentru acțiuni, câmpuri text-like, selecturi, textarea, statusuri și feedback inline folosește API-ul canonic când semantica se potrivește.
 - Clasele legacy rămân numai pentru consumatorii existenți; nu le folosi în cod nou și nu crea butoane native fără clasă.
 - Refolosește componentele numai când semantica și stările sunt aceleași.
+- Pentru suprafețe și stări structurale verifică `SurfaceCard`, `EmptyState`, `LoadingState` și `FeedbackState` înainte să creezi un container nou.
+- Stilurile specifice unei singure pagini rămân într-un CSS Module colocat; nu adăuga o clasă globală nouă de tip card, panel, surface sau state.
+- O variantă canonică nouă cere cel puțin două utilizări reale și trebuie înregistrată în component map.
 - Respectă documentele de design.
 - Implementează responsive explicit.
 - Verifică stările relevante.

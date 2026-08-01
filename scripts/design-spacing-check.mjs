@@ -31,7 +31,9 @@ const globalCssEntries = [
 const primitiveCssEntries = [
   "components/ui/action.module.css",
   "components/ui/form-field.module.css",
-  "components/ui/status.module.css"
+  "components/ui/status.module.css",
+  "components/ui/surface-card.module.css",
+  "components/ui/state.module.css"
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -124,6 +126,19 @@ for (const { relativePath, css } of cssSources) {
   if (violations.length) {
     failures.push(`${relativePath} folosește spațiere brută după marker: ${violations.join(", ")}.`);
   }
+
+  if (relativePath === "app/globals.css") {
+    const forbiddenPatternName = /(?:^|-)(?:card|panel|surface|empty|loading|error|success|callout|notice|placeholder)(?:$|-)/;
+    const newPatternNames = new Set(
+      Array.from(governedCss.matchAll(/\.([A-Za-z_][\w-]*)/g), (match) => match[1])
+        .filter((className) => forbiddenPatternName.test(className))
+    );
+    if (newPatternNames.size) {
+      failures.push(
+        `app/globals.css adaugă patternuri component-specific după marker: ${Array.from(newPatternNames).join(", ")}. Folosește componenta canonică sau un CSS Module colocat.`
+      );
+    }
+  }
 }
 
 const moduleRawSpacing = /(?<![-\w])(?:margin|padding|gap|row-gap|column-gap)(?:-[a-z]+)?\s*:\s*[^;}{]*\b-?\d+(?:\.\d+)?px/g;
@@ -165,7 +180,11 @@ const legacySelectorCeilings = {
   ".textarea-input": 3,
   ".status-pill": 4,
   ".error-state": 2,
-  ".success-state": 1
+  ".success-state": 1,
+  ".surface": 12,
+  ".ui-panel-card": 2,
+  ".draft-card": 4,
+  ".empty-state": 3
 };
 
 for (const [selector, ceiling] of Object.entries(legacySelectorCeilings)) {
@@ -173,6 +192,22 @@ for (const [selector, ceiling] of Object.entries(legacySelectorCeilings)) {
   const count = legacyCss.match(new RegExp(escapedSelector, "g"))?.length || 0;
   if (count > ceiling) {
     failures.push(`Selectorul legacy ${selector} a crescut de la limita ${ceiling} la ${count} ramuri.`);
+  }
+}
+
+for (const removedSelector of [
+  ".subjects-empty-state",
+  ".route-loading-shell",
+  ".route-loading-card",
+  ".route-loading-kicker",
+  ".route-error-shell",
+  ".route-error-card",
+  ".route-error-icon",
+  ".route-error-actions",
+  ".route-error-action"
+]) {
+  if (legacyCss.includes(removedSelector)) {
+    failures.push(`Selectorul retras ${removedSelector} nu poate fi reintrodus în app/globals.css.`);
   }
 }
 

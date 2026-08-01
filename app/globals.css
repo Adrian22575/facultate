@@ -1927,19 +1927,6 @@ p {
   font-weight: 900;
 }
 
-.subjects-empty-state {
-  display: grid;
-  justify-items: start;
-  gap: 7px;
-  padding: 28px;
-  border: 1px dashed #c3d4ea;
-  border-radius: var(--radius-soft);
-  background: var(--surface-soft);
-}
-
-.subjects-empty-state strong { color: var(--ink); }
-.subjects-empty-state p { margin: 0; color: var(--muted); line-height: 1.5; }
-
 .subject-empty-action {
   min-height: 44px;
   display: inline-flex;
@@ -18328,42 +18315,6 @@ td {
   }
 }
 
-.route-loading-shell {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-}
-
-.route-loading-card {
-  width: min(100%, 540px);
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 18px;
-  align-items: center;
-}
-
-.route-loading-kicker {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--primary);
-  font-size: 0.8rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.route-loading-card h1 {
-  margin: 0;
-  font-size: 1.55rem;
-  line-height: 1.15;
-}
-
-.route-loading-card p {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-weight: 700;
-}
-
 .public-home-page {
   min-height: 100vh;
   padding: 26px 20px 64px;
@@ -25409,70 +25360,6 @@ td {
 .email-auth-legal-copy a {
   color: var(--primary-dark);
   font-weight: 850;
-}
-
-.route-error-shell {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-}
-
-.route-error-card {
-  width: min(100%, 560px);
-  display: grid;
-  gap: 14px;
-  text-align: center;
-}
-
-.route-error-icon {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  justify-self: center;
-  border: 1px solid #cbdcf0;
-  border-radius: 8px;
-  color: var(--primary);
-  background: var(--primary-soft);
-}
-
-.route-error-icon.is-warning {
-  border-color: #ead7a8;
-  color: #925a00;
-  background: #fff7df;
-}
-
-.route-error-card h1,
-.route-error-card p {
-  margin: 0;
-}
-
-.route-error-card p {
-  color: var(--muted);
-  line-height: 1.55;
-}
-
-.route-error-card button {
-  justify-self: center;
-}
-
-.route-error-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-
-@media (max-width: 480px) {
-  .route-error-card {
-    padding: 22px 18px;
-  }
-
-  .route-error-actions,
-  .route-error-actions .route-error-action {
-    width: 100%;
-  }
 }
 
 @media (max-width: 980px) {

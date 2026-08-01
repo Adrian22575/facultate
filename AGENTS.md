@@ -168,6 +168,9 @@ Reguli:
 - caută mai întâi primitivele canonice din `components/ui/` pentru acțiuni, câmpuri, statusuri și feedback inline;
 - nu adăuga butoane native fără `className` și nu introduce utilizări noi ale claselor legacy `.btn-back`, `.btn-link`, `.secondary`, `.test-link`, `.nav-btn`, `.input-search`, `.textarea-input`, `.status-pill`, `.error-state` sau `.success-state`;
 - extinde o primitivă canonică numai când varianta are semantică repetabilă în mai multe fluxuri, nu pentru un singur ecran.
+- pentru suprafețe și stări structurale caută mai întâi `SurfaceCard`, `EmptyState`, `LoadingState` și `FeedbackState` din `components/ui/`;
+- nu introduce utilizări noi pentru `.surface`, `.ui-panel-card`, `.draft-card` sau `.empty-state` și nu adăuga o geometrie nouă de card, panel sau state în `app/globals.css`;
+- păstrează CSS-ul unui singur flux în CSS Module-ul colocat și documentează în component map numai patternurile demonstrate de cel puțin două utilizări reale.
 
 ### 6.5 Corecție punctuală
 

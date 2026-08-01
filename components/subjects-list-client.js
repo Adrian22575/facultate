@@ -11,6 +11,8 @@ import {
   FiltersToolbar
 } from "@/components/filter-controls";
 import { SubjectLibraryCard } from "@/components/subject-library-card";
+import { Button } from "@/components/ui/action";
+import { EmptyState } from "@/components/ui/state";
 import { sortSubjectLibrary } from "@/lib/subject-library";
 
 function normalizeText(value) {
@@ -276,26 +278,29 @@ export function SubjectsListClient({
           ) : null}
         </div>
       ) : isSearchEmpty ? (
-        <div className="subjects-empty-state">
-          <strong>Nu am gasit aceasta materie</strong>
-          <p>Verifica denumirea sau reseteaza cautarea.</p>
-          <button
-            type="button"
-            className="btn-link secondary"
-            onClick={() => {
-              setQuery("");
-              resetAcademicFilters();
-            }}
-          >
-            Reseteaza cautarea
-          </button>
-        </div>
+        <EmptyState
+          variant="section"
+          title="Nu am gasit aceasta materie"
+          description="Verifica denumirea sau reseteaza cautarea."
+          actions={
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setQuery("");
+                resetAcademicFilters();
+              }}
+            >
+              Reseteaza cautarea
+            </Button>
+          }
+        />
       ) : (
-        <div className="subjects-empty-state">
-          <strong>Nu ai inca nicio materie</strong>
-          <p>Adauga prima materie sau un set de grile pentru a incepe sa inveti.</p>
-          <Link className="subject-empty-action" href="/materiale">Adauga o materie</Link>
-        </div>
+        <EmptyState
+          variant="section"
+          title="Nu ai inca nicio materie"
+          description="Adauga prima materie sau un set de grile pentru a incepe sa inveti."
+          actions={<Link className="subject-empty-action" href="/materiale">Adauga o materie</Link>}
+        />
       )}
 
       <div className="subject-helper-note">

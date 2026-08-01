@@ -1,0 +1,14 @@
+:where(.card) {
+  --surface-card-padding: 28px;
+  padding: var(--surface-card-padding);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-soft);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 760px) {
+  :where(.card) {
+    --surface-card-padding: 22px;
+  }
+}

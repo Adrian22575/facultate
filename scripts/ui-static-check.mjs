@@ -10,7 +10,8 @@ const SOURCE_ROOTS = ["app", "components"];
 const ROUTE_ALIASES = [/^\/materiale(?:\/.*)?$/];
 const LEGACY_UI_TOKENS = [
   "btn-back", "btn-link", "secondary", "test-link", "nav-btn",
-  "input-search", "textarea-input", "status-pill", "error-state", "success-state"
+  "input-search", "textarea-input", "status-pill", "error-state", "success-state",
+  "surface", "ui-panel-card", "draft-card", "empty-state"
 ];
 const CANONICAL_EXPORT_PATHS = {
   Button: "components/ui/action.js",
@@ -19,7 +20,21 @@ const CANONICAL_EXPORT_PATHS = {
   SelectField: "components/ui/form-field.js",
   TextareaField: "components/ui/form-field.js",
   StatusPill: "components/ui/status.js",
-  InlineFeedback: "components/ui/status.js"
+  InlineFeedback: "components/ui/status.js",
+  SurfaceCard: "components/ui/surface-card.js",
+  EmptyState: "components/ui/state.js",
+  LoadingState: "components/ui/state.js",
+  FeedbackState: "components/ui/state.js"
+};
+const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
+  SurfaceCard: new Set(["components/ui/surface-card.js"]),
+  EmptyState: new Set([
+    "components/ui/state.js",
+    "components/admin-center-client.js",
+    "components/ai-activity-center-client.js"
+  ]),
+  LoadingState: new Set(["components/ui/state.js"]),
+  FeedbackState: new Set(["components/ui/state.js"])
 };
 const LEGACY_UI_BASELINE = {
   "app/ai/activitate/page.js": { "btn-link": 1, secondary: 1, "error-state": 1, "btn-back": 1 },
@@ -93,6 +108,39 @@ const LEGACY_UI_BASELINE = {
   "components/workspace-main-tabs-client.js": { secondary: 2 },
   "components/workspace-subject-picker.js": { "input-search": 2, "btn-link": 2, secondary: 2, "success-state": 1, "error-state": 1, button: 1 },
   "components/workspace-upload-shell.js": { "btn-back": 1 }
+};
+const LEGACY_SURFACE_BASELINE = {
+  "app/ai/activitate/page.js": { surface: 1, "ui-panel-card": 1 },
+  "app/ai/drafts/[testId]/page.js": { surface: 5, "draft-card": 1 },
+  "app/ai/review/[bankId]/page.js": { surface: 2 },
+  "app/billing/success/page.js": { surface: 1 },
+  "app/cont/page.js": { surface: 2 },
+  "app/demo/page.js": { surface: 2 },
+  "app/onboarding/page.js": { surface: 8, "draft-card": 9 },
+  "app/setup/page.js": { surface: 6, "draft-card": 1, "empty-state": 2 },
+  "app/testele-mele/page.js": { surface: 4, "draft-card": 3, "empty-state": 3 },
+  "components/admin-dictionary-panel.js": { surface: 1 },
+  "components/admin-editorial-panel.js": { surface: 1 },
+  "components/ai-activity-center-client.js": { surface: 1, "ui-panel-card": 1 },
+  "components/ai-job-status-client.js": { surface: 4 },
+  "components/ai-question-bank-review-client.js": { surface: 4, "draft-card": 4 },
+  "components/ai-workspace-highlight-card.js": { "ui-panel-card": 1 },
+  "components/exam-page-client.js": { surface: 5 },
+  "components/gamification-progress-page.js": { surface: 4 },
+  "components/home-page-client.js": { surface: 3 },
+  "components/import-job-status-client.js": { surface: 4, "draft-card": 8 },
+  "components/interactive-quiz.js": { surface: 1 },
+  "components/learning-upload-form.js": { surface: 1 },
+  "components/licenta-import-workspace-client.js": { "ui-panel-card": 6, "draft-card": 1 },
+  "components/licenta-session-workspace-client.js": { surface: 5, "draft-card": 1 },
+  "components/onboarding-selection-step.js": { "empty-state": 1 },
+  "components/overall-stats-dashboard.js": { surface: 7 },
+  "components/private-test-player.js": { surface: 1 },
+  "components/test-page-client.js": { surface: 2 },
+  "components/testimonial-reward-form.js": { surface: 8 },
+  "components/workspace-generate-form.js": { "ui-panel-card": 7 },
+  "components/workspace-job-history-client.js": { "ui-panel-card": 2, "draft-card": 1 },
+  "components/workspace-subject-picker.js": { "ui-panel-card": 2, "empty-state": 1 }
 };
 const MOJIBAKE_TOKENS = ["Ã", "Äƒ", "Ä‚", "È™", "Èš", "È›", "Â·", "â€™", "â€œ", "â€", "â€“", "â€”", "�"];
 
@@ -484,7 +532,10 @@ function collectIdPatterns(node, patterns = []) {
 
 function verifyLegacyBaseline(filePath, counts) {
   const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
-  const baseline = LEGACY_UI_BASELINE[relativePath] || {};
+  const baseline = {
+    ...(LEGACY_UI_BASELINE[relativePath] || {}),
+    ...(LEGACY_SURFACE_BASELINE[relativePath] || {})
+  };
   for (const [token, count] of Object.entries(counts)) {
     const ceiling = baseline[token] || 0;
     if (count > ceiling) {
@@ -509,6 +560,16 @@ for (const filePath of sourceFiles) {
         file: relativePath,
         line: source.slice(0, source.search(exportPattern)).split("\n").length,
         message: `${exportName} poate fi exportat numai din ${canonicalPath}.`
+      });
+    }
+  }
+  for (const [componentName, allowedPaths] of Object.entries(CANONICAL_PATTERN_DEFINITION_ALLOWLIST)) {
+    const definitionPattern = new RegExp(`\\b(?:function|const|class)\\s+${componentName}\\b`);
+    if (definitionPattern.test(source) && !allowedPaths.has(relativePath)) {
+      failures.push({
+        file: relativePath,
+        line: source.slice(0, source.search(definitionPattern)).split("\n").length,
+        message: `${componentName} poate fi definit numai în componenta canonică sau într-un consumator legacy allowlisted.`
       });
     }
   }

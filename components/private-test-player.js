@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
+import { EmptyState } from "@/components/ui/state";
 
 export function PrivateTestPlayer({ test, questions }) {
   const [safeQuestions, setSafeQuestions] = useState(questions);
@@ -64,7 +65,7 @@ export function PrivateTestPlayer({ test, questions }) {
   }
 
   if (!safeQuestions.length) {
-    return <div className="empty-state">Testul activ nu contine inca intrebari.</div>;
+    return <EmptyState description="Testul activ nu contine inca intrebari." />;
   }
 
   if (phase === "result") {

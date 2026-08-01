@@ -184,10 +184,14 @@ O primitivă este justificată numai dacă:
 | Câmpuri | `TextField`, `SelectField`, `TextareaField` din `components/ui/form-field.js` | `components/ui/form-field.module.css` | label vizibil, hint, error și control nativ | Pentru controale text-like cu etichetă. Migrarea inițială include câmpurile Number, Date și Select din calculatorul public. Checkbox, radio, file, hidden și controalele speciale rămân native când componenta nu aduce valoare. |
 | Status | `StatusPill` din `components/ui/status.js` | `components/ui/status.module.css` | `neutral`, `info`, `success`, `warning`, `danger` | Pentru stări scurte, nu pentru acțiuni. Migrarea inițială include statusurile din `/demo` și `/setup`. |
 | Feedback inline | `InlineFeedback` din `components/ui/status.js` | `components/ui/status.module.css` | `error`, `success` | Pentru feedback accesibil asociat unei acțiuni sau unui formular. Eroarea are implicit `role="alert"`, succesul `role="status"`. Migrarea inițială include feedback-ul `GoogleSignInButton`. |
+| Suprafețe | `SurfaceCard` din `components/ui/surface-card.js` | `components/ui/surface-card.module.css` | Fără variante vizuale | Pentru un grup autonom care are nevoie de suprafața standard. Nu controlează distanța dintre secțiuni și nu trebuie folosit numai pentru padding. Migrarea inițială include stările structurale de rută. |
+| Stări structurale | `EmptyState`, `LoadingState`, `FeedbackState` din `components/ui/state.js` | `components/ui/state.module.css` | Empty `compact`/`section`; feedback `neutral`/`warning`; loading full-page | Pentru absența conținutului sau pentru stări care înlocuiesc structura principală. Migrarea inițială include 404, error boundary, loading-urile comune, lista de materii și testul fără întrebări. |
 
 `Button` folosește implicit `type="button"`. Pentru submit, declară explicit `type="submit"`. `ActionLink` cere `href` și acceptă `as` pentru un component de navigare compatibil, inclusiv `PendingNavigationLink`.
 
 Consumatorii legacy existenți sunt grandfathered și pot fi migrați incremental. Nu adăuga utilizări noi pentru `.btn-back`, `.btn-link`, `.secondary`, `.test-link`, `.nav-btn`, `.input-search`, `.textarea-input`, `.status-pill`, `.error-state` sau `.success-state`. Nu crea exporturi paralele cu numele API-urilor canonice în alte fișiere.
+
+Același contract se aplică familiilor structurale `.surface`, `.ui-panel-card`, `.draft-card` și `.empty-state`: utilizările existente pot rămâne până la migrarea fluxului lor, dar nu sunt API pentru cod nou. Funcțiile locale `EmptyState` din admin și Workspace sunt compatibilitate internă, nu alternative la componenta canonică.
 
 ### 8.3 Patterns
 
@@ -313,6 +317,8 @@ Nu folosi cardul:
 
 Un card nu are automat nevoie de CTA, icon, badge, umbră și descriere.
 
+Pentru geometria standard folosește `SurfaceCard`. Părintele rămâne proprietarul distanței dintre carduri sau secțiuni, iar stilurile specifice consumatorului intră în CSS Module-ul acelui consumator. Nu adăuga în `app/globals.css` o clasă nouă de tip card, panel sau surface pentru un singur flux.
+
 ## 12. Formulare
 
 - Folosește controale native când sunt suficiente.
@@ -344,6 +350,9 @@ Un card nu are automat nevoie de CTA, icon, badge, umbră și descriere.
 - Loading, empty, error, success și disabled trebuie să păstreze ierarhia paginii.
 - Empty state-ul explică ce lipsește și următorul pas posibil, fără copy promoțional.
 - Nu adăuga ilustrații sau blocuri mari doar pentru a umple o stare goală.
+- Folosește `EmptyState` pentru absența conținutului, `LoadingState` pentru încărcarea structurală de rută și `FeedbackState` pentru un rezultat structural cu heading și acțiuni.
+- Pentru mesaje asociate unui formular sau unei acțiuni folosește `InlineFeedback`; nu transforma feedback-ul inline într-un card structural.
+- Nu adăuga o variantă `success`, `danger` sau o densitate nouă doar pentru simetrie. Varianta trebuie demonstrată de cel puțin două fluxuri cu aceeași semantică.
 
 ## 15. Extinderea sistemului
 
