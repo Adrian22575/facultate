@@ -40,7 +40,7 @@ Nu folosi spacing-ul ca remediu local pentru:
 
 ## 3. Scara obligatorie
 
-Pentru spacing nou se folosesc numai tokenurile definite în `app/globals.css`.
+Pentru spacing nou se folosesc numai tokenurile definite în `app/styles/foundations/tokens.css`.
 
 | Token | Valoare | Rol principal |
 | --- | ---: | --- |
@@ -413,11 +413,15 @@ Fiecare stylesheet global importat de `app/layout.js` trebuie să conțină exac
 - `app/styles/foundations/tokens.css`;
 - `app/styles/foundations/reset.css`;
 - `app/styles/foundations/accessibility.css`;
+- `app/styles/shell/app-shell.css`;
+- `app/styles/shell/navigation.css`;
 - `app/globals.css`.
+
+Contractul general pentru `.app-shell`, header și navigarea globală este deținut de fișierele din `app/styles/shell/`. Stilurile dashboard, admin, Workspace și de rută rămân în stylesheet-ul legacy până la fazele lor dedicate.
 
 CSS-ul existent deasupra markerului reprezintă baseline-ul acceptat. Orice reguli adăugate după marker sunt verificate pentru valori brute de `margin`, `padding` și `gap`.
 
-Nu muta, duplica sau șterge markerii fără actualizarea verificărilor și nu schimba ordinea importurilor foundations → legacy din `app/layout.js`.
+Nu muta, duplica sau șterge markerii fără actualizarea verificărilor și nu schimba ordinea importurilor foundations → shell → legacy din `app/layout.js`.
 
 ## 20. Verificare vizuală
 

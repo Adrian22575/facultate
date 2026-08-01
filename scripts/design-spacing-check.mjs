@@ -16,6 +16,14 @@ const globalCssEntries = [
     importPath: "./styles/foundations/accessibility.css"
   },
   {
+    relativePath: "app/styles/shell/app-shell.css",
+    importPath: "./styles/shell/app-shell.css"
+  },
+  {
+    relativePath: "app/styles/shell/navigation.css",
+    importPath: "./styles/shell/navigation.css"
+  },
+  {
     relativePath: "app/globals.css",
     importPath: "./globals.css"
   }
@@ -28,6 +36,7 @@ const cssSources = globalCssEntries.map((entry) => ({
   css: fs.readFileSync(path.join(root, entry.relativePath), "utf8")
 }));
 const tokensCss = cssSources[0].css;
+const shellCss = cssSources.find(({ relativePath }) => relativePath === "app/styles/shell/app-shell.css").css;
 const legacyCss = cssSources.at(-1).css;
 const layout = fs.readFileSync(layoutPath, "utf8").replaceAll("\r\n", "\n");
 const rules = fs.readFileSync(rulesPath, "utf8");
@@ -62,10 +71,17 @@ if (!layout.startsWith(`${expectedImportBlock}\n`)) {
   failures.push("Importurile CSS globale din app/layout.js lipsesc, nu sunt consecutive sau nu respectă ordinea foundations → legacy.");
 }
 
-for (const selector of [".app-shell", ".admin-route-shell", ".admin-route-topbar", ".admin-route-header"]) {
-  const start = legacyCss.indexOf(selector);
-  const end = legacyCss.indexOf("}", start);
-  const declaration = start >= 0 && end >= start ? legacyCss.slice(start, end + 1) : "";
+const layoutContracts = [
+  { selector: ".app-shell", css: shellCss },
+  { selector: ".admin-route-shell", css: legacyCss },
+  { selector: ".admin-route-topbar", css: legacyCss },
+  { selector: ".admin-route-header", css: legacyCss }
+];
+
+for (const { selector, css } of layoutContracts) {
+  const start = css.indexOf(selector);
+  const end = css.indexOf("}", start);
+  const declaration = start >= 0 && end >= start ? css.slice(start, end + 1) : "";
   if (!declaration) {
     failures.push(`Lipsește contractul de layout pentru ${selector}.`);
     continue;
