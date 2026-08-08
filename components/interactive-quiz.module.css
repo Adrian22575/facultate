@@ -1,0 +1,62 @@
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-soft);
+}
+
+.questionCounter {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 12px;
+  border: 1px solid #cfddf0;
+  border-radius: var(--radius);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.navigation {
+  margin-top: 14px;
+}
+
+.navigationActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.navigationActions > * {
+  flex: 1;
+}
+
+.resetAction {
+  margin-top: 14px;
+}
+
+.finishActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .navigationActions,
+  .navigationActions > *,
+  .finishActions,
+  .finishActions > * {
+    width: 100%;
+  }
+}

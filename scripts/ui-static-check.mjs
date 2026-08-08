@@ -356,6 +356,9 @@ function inspectElement(filePath, node, context, ancestors) {
     if (/^(?:billing-success|testimonial|referral-stat)-/.test(token)) {
       report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat pentru Cont și Billing.`);
     }
+    if (/^(?:question-correction|question-source|test-recommended|test-mistakes)-/.test(token) || ["test-customize", "test-setup-actions"].includes(token)) {
+      report(filePath, opening, `Clasa globala retrasa ${token} trebuie inlocuita cu CSS Module-ul colocat pentru teste.`);
+    }
     if ([
       "pricing-section",
       "plan-grid",

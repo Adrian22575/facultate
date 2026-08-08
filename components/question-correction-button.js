@@ -3,7 +3,11 @@
 import { ExternalLink, Pencil, Plus, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { Button } from "@/components/ui/action";
+import { InlineFeedback } from "@/components/ui/status";
 import { useDialogFocus } from "@/lib/ui/dialog";
+
+import styles from "./question-correction-button.module.css";
 
 function answerLabel(index) {
   return String.fromCharCode(65 + index);
@@ -132,7 +136,7 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
     <>
       <button
         type="button"
-        className="question-correction-trigger"
+        className={styles.trigger}
         onClick={() => setOpen(true)}
       >
         <Pencil aria-hidden="true" size={15} strokeWidth={2.2} />
@@ -140,28 +144,28 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
       </button>
 
       {open ? (
-        <div className="question-correction-layer" role="presentation">
+        <div className={styles.layer} role="presentation">
           <button
-            className="question-correction-scrim"
+            className={styles.scrim}
             type="button"
             aria-label="Inchide editorul"
             onClick={() => setOpen(false)}
           />
           <section
             ref={dialogRef}
-            className="question-correction-dialog"
+            className={styles.dialog}
             role="dialog"
             aria-modal="true"
             aria-labelledby="question-correction-title"
           >
-            <div className="question-correction-head">
+            <div className={styles.head}>
               <div>
                 <h2 id="question-correction-title">Corecteaza intrebarea</h2>
                 <p>Modificarile se aplica pentru contul tau. Poti scrie formule ca text: x^2, sqrt(x), a/b sau LaTeX.</p>
               </div>
               <button
                 ref={closeRef}
-                className="question-correction-close"
+                className={styles.close}
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Inchide"
@@ -170,10 +174,10 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
               </button>
             </div>
 
-            <form className="question-correction-form" onSubmit={saveCorrection}>
+            <form className={styles.form} onSubmit={saveCorrection}>
               {correction.sourceDocumentHref ? (
                 <a
-                  className="question-source-link"
+                  className={styles.sourceLink}
                   href={correction.sourceDocumentHref}
                   target="_blank"
                   rel="noreferrer"
@@ -182,10 +186,10 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
                   Deschide fisierul original
                 </a>
               ) : (
-                <p className="question-source-muted">Fisierul original nu este disponibil pentru aceasta intrebare.</p>
+                <p className={styles.sourceMuted}>Fisierul original nu este disponibil pentru aceasta intrebare.</p>
               )}
 
-              <label className="question-correction-field">
+              <label className={styles.field}>
                 <span>Text intrebare</span>
                 <textarea
                   value={questionText}
@@ -195,18 +199,18 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
                 />
               </label>
 
-              <div className="question-correction-answers">
-                <div className="question-correction-subhead">
+              <div className={styles.answers}>
+                <div className={styles.subhead}>
                   <strong>Raspunsuri</strong>
-                  <button type="button" className="secondary question-correction-add" onClick={addAnswer} disabled={!canAddAnswer}>
+                  <Button variant="secondary" onClick={addAnswer} disabled={!canAddAnswer}>
                     <Plus aria-hidden="true" size={15} strokeWidth={2.2} />
                     {addAnswerLabel}
-                  </button>
+                  </Button>
                 </div>
 
                 {answers.map((answer, index) => (
-                  <div className="question-correction-answer-row" key={`correction-answer-${index}`}>
-                    <label className="question-correction-radio">
+                  <div className={styles.answerRow} key={`correction-answer-${index}`}>
+                    <label className={styles.radio}>
                       <input
                         type="radio"
                         name="correct-answer"
@@ -224,7 +228,7 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
                     />
                     <button
                       type="button"
-                      className="question-correction-remove"
+                      className={styles.remove}
                       onClick={() => removeAnswer(index)}
                       disabled={answers.length <= 2}
                       aria-label={`Sterge raspunsul ${answerLabel(index)}`}
@@ -234,18 +238,18 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
                   </div>
                 ))}
 
-                <button
-                  type="button"
-                  className="secondary question-correction-add question-correction-add-inline"
+                <Button
+                  variant="secondary"
+                  className={styles.addInline}
                   onClick={addAnswer}
                   disabled={!canAddAnswer}
                 >
                   <Plus aria-hidden="true" size={15} strokeWidth={2.2} />
                   {addAnswerLabel}
-                </button>
+                </Button>
               </div>
 
-              <label className="question-correction-field">
+              <label className={styles.field}>
                 <span>Explicatie optionala</span>
                 <textarea
                   value={explanation}
@@ -255,18 +259,18 @@ export function QuestionCorrectionButton({ question, label = "Corecteaza", onSav
               </label>
 
               {message ? (
-                <p className={`question-correction-message is-${status}`} role={status === "error" ? "alert" : "status"}>
+                <InlineFeedback className={styles.message} tone={status === "error" ? "error" : "success"} role={status === "error" ? "alert" : "status"}>
                   {message}
-                </p>
+                </InlineFeedback>
               ) : null}
 
-              <div className="question-correction-actions">
-                <button type="button" className="secondary" onClick={() => setOpen(false)}>
+              <div className={styles.actions}>
+                <Button variant="secondary" onClick={() => setOpen(false)}>
                   Renunta
-                </button>
-                <button type="submit" disabled={status === "saving"}>
+                </Button>
+                <Button type="submit" disabled={status === "saving"}>
                   {status === "saving" ? "Se salveaza..." : "Salveaza corectia"}
-                </button>
+                </Button>
               </div>
             </form>
           </section>

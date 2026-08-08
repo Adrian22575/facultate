@@ -2,6 +2,10 @@
 
 import { CheckCircle2, XCircle } from "lucide-react";
 
+import { SurfaceCard } from "@/components/ui/surface-card";
+
+import styles from "./test-result-panel.module.css";
+
 function getResultMessage(percentage) {
   if (percentage > 80) {
     return "Esti bine. Continua sa repeti ca sa fixezi.";
@@ -35,7 +39,10 @@ export function TestResultPanel({
   stats = [],
   insights = null,
   emptyMessage = "Nu ai gresit nicio intrebare in aceasta runda.",
-  actions = null
+  actions = null,
+  description,
+  wrongTitle = "Intrebari gresite",
+  renderWrongDetails
 }) {
   const resolvedPercentage = Number.isFinite(percentage)
     ? percentage
@@ -50,18 +57,18 @@ export function TestResultPanel({
   ];
 
   return (
-    <section className="result-box licenta-prep-result test-result-panel">
-      <div className="licenta-prep-result-head">
-        <span className="licenta-prep-result-icon" aria-hidden="true">
+    <SurfaceCard className={styles.panel}>
+      <div className={styles.head}>
+        <span className={styles.icon} aria-hidden="true">
           {resolvedPercentage > 80 ? <CheckCircle2 /> : <XCircle />}
         </span>
         <div>
           <h2>{title}</h2>
-          <p>{getResultMessage(resolvedPercentage)}</p>
+          <p>{description || getResultMessage(resolvedPercentage)}</p>
         </div>
       </div>
 
-      <div className="licenta-prep-score-grid test-result-score-grid">
+      <div className={styles.scoreGrid}>
         {resolvedStats.map((stat) => (
           <div key={stat.label}>
             <span>{stat.label}</span>
@@ -70,26 +77,30 @@ export function TestResultPanel({
         ))}
       </div>
 
-      <hr className="result-divider" />
-      <h3>Intrebari gresite</h3>
+      <hr className={styles.divider} />
+      <h3>{wrongTitle}</h3>
 
       {wrongRows.length ? (
-        <div className="licenta-prep-wrong-list">
+        <div className={styles.wrongList}>
           {wrongRows.map((row, index) => (
-            <article key={row.id || `${row.questionText}-${index}`} className="result-detail">
+            <article key={row.id || `${row.questionText}-${index}`} className={styles.detail}>
               <strong>{`${index + 1}. ${row.questionText}`}</strong>
               {row.meta ? <div className="result-meta">{row.meta}</div> : null}
-              <div className="licenta-result-review-grid">
-                <div className="licenta-result-review-item is-negative">
-                  <span>Raspunsul tau</span>
-                  <strong>{formatAnswer(row.selectedIndex, row.selectedText)}</strong>
-                </div>
-                <div className="licenta-result-review-item is-correct-answer">
-                  <span>Raspuns corect</span>
-                  <strong>{formatAnswer(row.correctIndex, row.correctText)}</strong>
-                </div>
-              </div>
-              {row.explanation ? <p className="choice-row-meta">{row.explanation}</p> : null}
+              {renderWrongDetails ? renderWrongDetails(row, index) : (
+                <>
+                  <div className={styles.reviewGrid}>
+                    <div className={`${styles.reviewItem} ${styles.negative}`}>
+                      <span>Raspunsul tau</span>
+                      <strong>{formatAnswer(row.selectedIndex, row.selectedText)}</strong>
+                    </div>
+                    <div className={`${styles.reviewItem} ${styles.correctAnswer}`}>
+                      <span>Raspuns corect</span>
+                      <strong>{formatAnswer(row.correctIndex, row.correctText)}</strong>
+                    </div>
+                  </div>
+                  {row.explanation ? <p className={styles.explanation}>{row.explanation}</p> : null}
+                </>
+              )}
             </article>
           ))}
         </div>
@@ -97,8 +108,8 @@ export function TestResultPanel({
         <p className="page-copy">{emptyMessage}</p>
       )}
 
-      {actions ? <div className="licenta-prep-actions licenta-prep-result-actions">{actions}</div> : null}
-      {insights ? <div className="test-result-followup">{insights}</div> : null}
-    </section>
+      {actions ? <div className={styles.actions}>{actions}</div> : null}
+      {insights ? <div className={styles.followup}>{insights}</div> : null}
+    </SurfaceCard>
   );
 }

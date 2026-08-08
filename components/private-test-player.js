@@ -1,12 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
 import { EmptyState } from "@/components/ui/state";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import { ActionLink, Button } from "@/components/ui/action";
+import { InlineFeedback } from "@/components/ui/status";
+
+import quizStyles from "./test-quiz.module.css";
 
 export function PrivateTestPlayer({ test, questions }) {
   const [safeQuestions, setSafeQuestions] = useState(questions);
@@ -109,11 +112,10 @@ export function PrivateTestPlayer({ test, questions }) {
         emptyMessage="Nu ai gresit nicio intrebare in aceasta runda."
         actions={
           <>
-            <Link className="btn-link secondary" href="/statistici">
+            <ActionLink variant="secondary" href="/statistici">
               Vezi statistici
-            </Link>
-            <button
-              type="button"
+            </ActionLink>
+            <Button
               onClick={() => {
                 setAnswers(new Array(safeQuestions.length).fill(null));
                 setCurrentIndex(0);
@@ -122,7 +124,7 @@ export function PrivateTestPlayer({ test, questions }) {
               }}
             >
               Reia testul
-            </button>
+            </Button>
           </>
         }
       />
@@ -138,22 +140,22 @@ export function PrivateTestPlayer({ test, questions }) {
         />
       </div>
 
-      <div className="quiz-meta">
+      <div className={quizStyles.meta}>
         <div>{`${currentIndex + 1} / ${safeQuestions.length}`}</div>
         <div>{`Raspunse: ${answeredCount}/${safeQuestions.length}`}</div>
       </div>
 
-      <div className="question">
-        <div className="question-inline-head">
-          <strong>
+      <div className={quizStyles.question}>
+        <div className={quizStyles.inlineHead}>
+          <strong className={quizStyles.questionTitle}>
             <span>{`${currentIndex + 1}. `}</span>
             <span className="question-rich-text">{currentQuestion.question_text}</span>
           </strong>
           <QuestionCorrectionButton question={currentQuestion} onSaved={applySavedCorrection} />
         </div>
-        <div className="answers">
+        <div className={quizStyles.answers}>
           {currentQuestion.answers.map((answer, answerIndex) => (
-            <label key={`${currentQuestion.id}-${answerIndex}`}>
+            <label className={quizStyles.answerLabel} key={`${currentQuestion.id}-${answerIndex}`}>
               <input
                 checked={answers[currentIndex] === answerIndex}
                 name={`private-q-${currentIndex}`}
@@ -165,24 +167,27 @@ export function PrivateTestPlayer({ test, questions }) {
             </label>
           ))}
         </div>
-        {answerNotice ? <p className="quiz-answer-required" role="alert">{answerNotice}</p> : null}
+        {answerNotice ? (
+          <InlineFeedback className={quizStyles.answerRequired} tone="error" role="alert">
+            {answerNotice}
+          </InlineFeedback>
+        ) : null}
       </div>
 
-      <div className="quiz-actions">
-        <button
-          type="button"
+      <div className={quizStyles.actions}>
+        <Button
+          variant="secondary"
           disabled={currentIndex === 0}
           onClick={() => setCurrentIndex((value) => value - 1)}
         >
           Anterioara
-        </button>
-        <button
-          type="button"
-          className={answers[currentIndex] === null ? "is-disabled-soft" : ""}
+        </Button>
+        <Button
+          className={answers[currentIndex] === null ? quizStyles.softDisabled : undefined}
           onClick={advanceCurrentQuestion}
         >
           {currentIndex === safeQuestions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
-        </button>
+        </Button>
       </div>
     </SurfaceCard>
   );

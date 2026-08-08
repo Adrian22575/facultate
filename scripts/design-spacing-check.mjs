@@ -55,7 +55,12 @@ const colocatedCssEntries = [
   { relativePath: "components/billing-plan-card.module.css", importantCeiling: 0 },
   { relativePath: "components/billing-success-redirect.module.css", importantCeiling: 0 },
   { relativePath: "components/referral-share-card.module.css", importantCeiling: 0 },
-  { relativePath: "components/testimonial-reward-form.module.css", importantCeiling: 0 }
+  { relativePath: "components/testimonial-reward-form.module.css", importantCeiling: 0 },
+  { relativePath: "components/test-quiz.module.css", importantCeiling: 0 },
+  { relativePath: "components/test-page-client.module.css", importantCeiling: 0 },
+  { relativePath: "components/interactive-quiz.module.css", importantCeiling: 0 },
+  { relativePath: "components/test-result-panel.module.css", importantCeiling: 0 },
+  { relativePath: "components/question-correction-button.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -226,6 +231,13 @@ if (/\.free-tools?-[A-Za-z_][\w-]*/.test(legacyCss)) {
 
 if (/\.about-[A-Za-z_][\w-]*/.test(legacyCss)) {
   failures.push("Selectorii globali about-* au fost retrași; folosește CSS Module-ul colocat al rutei /despre.");
+}
+
+const forbiddenSharedTestSelectors = [
+  ...legacyCss.matchAll(/\.(?:question-correction|question-source|test-recommended|test-customize|test-mistakes|test-setup-actions)(?:-[A-Za-z_][\w-]*)?/g)
+].map(([selector]) => selector);
+if (forbiddenSharedTestSelectors.length) {
+  failures.push(`Selectorii comuni de test au fost retrasi din globals.css: ${[...new Set(forbiddenSharedTestSelectors)].join(", ")}.`);
 }
 
 if (/\.public-pricing-[A-Za-z_][\w-]*/.test(legacyCss)) {

@@ -3,11 +3,15 @@
 import { useEffect, useState } from "react";
 
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
+import { Button } from "@/components/ui/action";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { InlineFeedback } from "@/components/ui/status";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { shuffleArray } from "@/lib/quiz";
+
+import styles from "./interactive-quiz.module.css";
+import quizStyles from "./test-quiz.module.css";
 
 export function InteractiveQuiz({ subject, initialQuestions }) {
   const [questionSource, setQuestionSource] = useState([]);
@@ -147,31 +151,31 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
           <div className="progress-bar-interactive" style={{ width: `${progressPercent}%` }} />
         </div>
 
-        <div className="status-bar">
+        <div className={styles.statusBar}>
           <div className="stats">
             {`Raspunse: ${stats.answered}/${totalQuestions} - Corecte: ${stats.correct} - Gresite: ${stats.wrong}`}
           </div>
-          <span className="question-counter">{`${currentIndex + 1} / ${totalQuestions}`}</span>
+          <span className={styles.questionCounter}>{`${currentIndex + 1} / ${totalQuestions}`}</span>
         </div>
 
-        <div className="question-container">
-          <div className="question-inline-head">
-            <strong>
+        <div className={quizStyles.question}>
+          <div className={quizStyles.inlineHead}>
+            <strong className={quizStyles.questionTitle}>
               <span>{`${currentIndex + 1}. `}</span>
               <span className="question-rich-text">{currentQuestion.text}</span>
             </strong>
             <QuestionCorrectionButton question={currentQuestion} onSaved={applySavedCorrection} />
           </div>
-          <div className={`answers${selectedAnswer !== null ? " answered" : ""}`}>
+          <div className={`${quizStyles.answers}${selectedAnswer !== null ? ` ${quizStyles.answered}` : ""}`}>
             {currentQuestion.answers.map((answer, answerIndex) => {
               const letter = String.fromCharCode(97 + answerIndex);
               const isSelected = selectedAnswer === answerIndex;
               const isCorrect = currentQuestion.correctIndex === answerIndex;
               const optionClassName = [
-                "option",
-                isSelected ? "selected" : "",
-                selectedAnswer !== null && isCorrect ? "correct" : "",
-                selectedAnswer !== null && isSelected && !isCorrect ? "wrong" : ""
+                quizStyles.answerOption,
+                isSelected ? quizStyles.selected : "",
+                selectedAnswer !== null && isCorrect ? quizStyles.correct : "",
+                selectedAnswer !== null && isSelected && !isCorrect ? quizStyles.wrong : ""
               ]
                 .filter(Boolean)
                 .join(" ");
@@ -197,64 +201,56 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
           ) : null}
 
           {selectedAnswer !== null ? (
-            <button className="reset-btn" type="button" onClick={resetAnswer}>
+            <Button className={styles.resetAction} variant="secondary" onClick={resetAnswer}>
               Reseteaza raspunsul
-            </button>
+            </Button>
           ) : null}
         </div>
 
-        <div className="navigation">
+        <div className={styles.navigation}>
           {selectedAnswer === null ? (
-            <p className="quiz-answer-required" id="interactive-answer-required" role="status">
+            <InlineFeedback className={quizStyles.answerRequired} tone="error" id="interactive-answer-required" role="status">
               Alege un raspuns pentru a continua.
-            </p>
+            </InlineFeedback>
           ) : null}
-          <div className="nav-buttons-row">
-            <button
-              className="nav-btn"
-              type="button"
+          <div className={styles.navigationActions}>
+            <Button
+              variant="secondary"
               disabled={currentIndex <= 0}
               onClick={() => setCurrentIndex((value) => value - 1)}
             >
               Anterioara
-            </button>
-            <button
-              className="nav-btn nav-btn-primary"
-              type="button"
+            </Button>
+            <Button
               aria-describedby={selectedAnswer === null ? "interactive-answer-required" : undefined}
               disabled={selectedAnswer === null || currentIndex >= totalQuestions - 1}
               onClick={() => setCurrentIndex((value) => value + 1)}
             >
               Urmatoarea
-            </button>
+            </Button>
           </div>
         </div>
 
         {showFinishActions ? (
-          <div className="center-actions">
+          <div className={styles.finishActions}>
             {wrongQuestions.length ? (
-              <button
-                className="restart-btn"
-                type="button"
+              <Button
                 onClick={() => restartWithQuestions(wrongQuestions)}
               >
                 {`Revizuieste greselile (${wrongQuestions.length})`}
-              </button>
+              </Button>
             ) : null}
-            <button
-              className="restart-btn"
-              type="button"
+            <Button
               onClick={() => restartWithQuestions(questions)}
             >
               Repeta testul
-            </button>
-            <button
-              className="restart-btn secondary"
-              type="button"
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => restartWithQuestions(shuffleArray(questionSource))}
             >
               Mai fa un test
-            </button>
+            </Button>
           </div>
         ) : null}
       </SurfaceCard>

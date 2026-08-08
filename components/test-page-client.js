@@ -9,8 +9,13 @@ import { shuffleArray } from "@/lib/quiz";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
+import { Button } from "@/components/ui/action";
+import { SelectField } from "@/components/ui/form-field";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { InlineFeedback } from "@/components/ui/status";
+
+import styles from "./test-page-client.module.css";
+import quizStyles from "./test-quiz.module.css";
 
 function sanitizeQuestions(questions) {
   if (!Array.isArray(questions)) {
@@ -473,7 +478,7 @@ export function TestPageClient({
   if (phase === "setup") {
     return (
       <SurfaceCard>
-        <div className="test-recommended-start">
+        <div className={styles.recommendedStart}>
           <span className="ui-section-label">Test recomandat</span>
           <strong>
             {isRecommendedTest
@@ -484,51 +489,45 @@ export function TestPageClient({
         </div>
 
         {mistakeQuestionIds.length ? (
-          <div className="test-mistakes-setup">
+          <div className={styles.mistakesSetup}>
             <div>
               <span>Greșelile mele</span>
               <strong>{`${mistakeQuestionIds.length} intrebari de reluat`}</strong>
               <p>Le poti reface separat; cele rezolvate corect ies automat din lista.</p>
             </div>
-            <button className="secondary" type="button" onClick={startMistakesTest}>
+            <Button variant="secondary" onClick={startMistakesTest}>
               Repeta greselile
-            </button>
+            </Button>
           </div>
         ) : null}
 
-        {setupNotice ? <p className="quiz-answer-required" role="status">{setupNotice}</p> : null}
+        {setupNotice ? (
+          <InlineFeedback className={quizStyles.answerRequired} tone="error" role="status">
+            {setupNotice}
+          </InlineFeedback>
+        ) : null}
 
-        <div className="center test-setup-actions">
-          <button type="button" onClick={startTest}>
+        <div className={styles.setupActions}>
+          <Button onClick={startTest}>
             {isRecommendedTest ? "Incepe testul recomandat" : "Incepe testul"}
-          </button>
+          </Button>
         </div>
 
-        <details className="test-customize">
+        <details className={styles.customize}>
           <summary>Personalizeaza testul</summary>
-          <div className="selector-grid">
-            <div className="selector-container">
-              <label>
-                Numar de intrebari
-                <select value={count} onChange={(event) => setCount(event.target.value)}>
-                  <option value="5">5 intrebari</option>
-                  <option value="10">10 intrebari</option>
-                  <option value="20">20 intrebari</option>
-                  <option value="all">Toate</option>
-                </select>
-              </label>
-            </div>
+          <div className={styles.selectorGrid}>
+            <SelectField id="test-question-count" label="Numar de intrebari" value={count} onChange={(event) => setCount(event.target.value)}>
+              <option value="5">5 intrebari</option>
+              <option value="10">10 intrebari</option>
+              <option value="20">20 intrebari</option>
+              <option value="all">Toate</option>
+            </SelectField>
 
-            <div className="selector-container">
-              <label>
-                Mod de lucru
-                <select value={mode} onChange={(event) => setMode(event.target.value)}>
-                  <option value="1">In ordine</option>
-                  <option value="2">Intrebari amestecate</option>
-                  <option value="3">Intrebari si raspunsuri mixate</option>
-                </select>
-              </label>
-            </div>
+            <SelectField id="test-work-mode" label="Mod de lucru" value={mode} onChange={(event) => setMode(event.target.value)}>
+              <option value="1">In ordine</option>
+              <option value="2">Intrebari amestecate</option>
+              <option value="3">Intrebari si raspunsuri mixate</option>
+            </SelectField>
           </div>
         </details>
       </SurfaceCard>
@@ -589,33 +588,21 @@ export function TestPageClient({
         actions={
           <>
           {wrongQuestions.length ? (
-            <button
-              type="button"
-              className="secondary"
-              onClick={() => startQuestionSet(wrongQuestions, true)}
-            >
+            <Button variant="secondary" onClick={() => startQuestionSet(wrongQuestions, true)}>
               {`Revizuieste greselile (${wrongQuestions.length})`}
-            </button>
+            </Button>
           ) : null}
           {mistakeQuestionIds.length ? (
-            <button type="button" className="secondary" onClick={startMistakesTest}>
+            <Button variant="secondary" onClick={startMistakesTest}>
               {`Repeta greselile salvate (${mistakeQuestionIds.length})`}
-            </button>
+            </Button>
           ) : null}
-          <button
-            className="restart-btn"
-            type="button"
-            onClick={repeatCurrentTest}
-          >
+          <Button onClick={repeatCurrentTest}>
             Repeta testul
-          </button>
-          <button
-            className="secondary"
-            type="button"
-            onClick={startAnotherTest}
-          >
+          </Button>
+          <Button variant="secondary" onClick={startAnotherTest}>
             Mai fa un test
-          </button>
+          </Button>
           </>
         }
       />
@@ -654,22 +641,22 @@ export function TestPageClient({
         <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      <div className="quiz-meta">
+      <div className={quizStyles.meta}>
         <div>{`${currentIndex + 1} / ${testQuestions.length}`}</div>
         <div>{`Raspunse: ${answeredCount}/${testQuestions.length}`}</div>
       </div>
 
-      <div className="question">
-        <div className="question-inline-head">
-          <strong>
+      <div className={quizStyles.question}>
+        <div className={quizStyles.inlineHead}>
+          <strong className={quizStyles.questionTitle}>
             <span>{`${currentIndex + 1}. `}</span>
             <span className="question-rich-text">{currentQuestion.text}</span>
           </strong>
           <QuestionCorrectionButton question={currentQuestion} onSaved={applySavedCorrection} />
         </div>
-        <div className="answers">
+        <div className={quizStyles.answers}>
           {currentQuestion.answers.map((answer, answerIndex) => (
-            <label key={`${currentQuestion.id}-${answerIndex}`}>
+            <label className={quizStyles.answerLabel} key={`${currentQuestion.id}-${answerIndex}`}>
               <input
                 checked={answers[currentIndex] === answerIndex}
                 name={`q-${currentIndex}`}
@@ -681,24 +668,27 @@ export function TestPageClient({
             </label>
           ))}
         </div>
-        {answerNotice ? <p className="quiz-answer-required" role="alert">{answerNotice}</p> : null}
+        {answerNotice ? (
+          <InlineFeedback className={quizStyles.answerRequired} tone="error" role="alert">
+            {answerNotice}
+          </InlineFeedback>
+        ) : null}
       </div>
 
-      <div className="quiz-actions">
-        <button
-          type="button"
+      <div className={quizStyles.actions}>
+        <Button
+          variant="secondary"
           disabled={currentIndex === 0}
           onClick={() => setCurrentIndex((value) => value - 1)}
         >
           Anterioara
-        </button>
-        <button
-          type="button"
-          className={!hasAnsweredCurrentQuestion ? "is-disabled-soft" : ""}
+        </Button>
+        <Button
+          className={!hasAnsweredCurrentQuestion ? quizStyles.softDisabled : undefined}
           onClick={advanceCurrentQuestion}
         >
           {currentIndex === testQuestions.length - 1 ? "Finalizeaza" : "Urmatoarea"}
-        </button>
+        </Button>
       </div>
     </SurfaceCard>
   );
