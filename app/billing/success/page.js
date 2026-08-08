@@ -1,8 +1,9 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { BillingSuccessRedirect } from "@/components/billing-success-redirect";
+import { ActionLink } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { getBillingSnapshot, reconcileCheckoutSession } from "@/lib/billing";
 import { hasStripeEnv, resolveStripeMode } from "@/lib/stripe/server";
@@ -103,17 +104,17 @@ export default async function BillingSuccessPage({ searchParams }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href={targetHref}>
+          <ActionLink variant="secondary" href={targetHref}>
             {backLabel}
-          </Link>
+          </ActionLink>
         }
         title={title}
         subtitle={subtitle}
       />
 
-      <section className="surface">
+      <SurfaceCard as="section">
         <BillingSuccessRedirect href={targetHref} status={status} detail={detail} />
-      </section>
+      </SurfaceCard>
     </main>
   );
 }

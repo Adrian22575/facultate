@@ -8,6 +8,9 @@ import { AccountDangerZone } from "@/components/account-danger-zone";
 import { AppHeader } from "@/components/app-header";
 import { BillingPlanCard } from "@/components/billing-plan-card";
 import { ReferralShareCard } from "@/components/referral-share-card";
+import { Button } from "@/components/ui/action";
+import { InlineFeedback } from "@/components/ui/status";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import {
   getAcademicCommunityLabel,
   getAcademicContext,
@@ -24,12 +27,17 @@ import { BILLING_PLAN_LIST } from "@/lib/stripe/plans";
 import { hasStripeEnv, STRIPE_MODE } from "@/lib/stripe/server";
 import { getOptionalUser } from "@/lib/supabase/guards";
 import { getUserTestimonialRewardStatus } from "@/lib/testimonial-rewards";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Contul meu | Nota 5+"
 };
+
+function moduleClassNames(...names) {
+  return names.filter(Boolean).map((name) => styles[name] || name).filter(Boolean).join(" ");
+}
 
 const PREMIUM_PLAN_CONTENT = {
   premium_24h: {
@@ -191,26 +199,26 @@ function SummaryCard({
   compact = false
 }) {
   return (
-    <article className={`account-summary-card${compact ? " is-compact" : ""}`}>
-      <div className="account-summary-top">
-        <span className="account-icon-box" aria-hidden="true">
+    <article className={moduleClassNames("account-summary-card", compact && "is-compact")}>
+      <div className={styles["account-summary-top"]}>
+        <span className={styles["account-icon-box"]} aria-hidden="true">
           {icon}
         </span>
-        <span className={`account-summary-pill ${statusTone === "good" ? "is-good" : ""}`}>
+        <span className={moduleClassNames("account-summary-pill", statusTone === "good" && "is-good")}>
           {statusLabel}
         </span>
       </div>
-      <div className="account-summary-copy">
-        <span className="account-summary-label">{label}</span>
-        <strong className="account-summary-value" title={typeof value === "string" ? value : undefined}>
+      <div className={styles["account-summary-copy"]}>
+        <span className={styles["account-summary-label"]}>{label}</span>
+        <strong className={styles["account-summary-value"]} title={typeof value === "string" ? value : undefined}>
           {value}
         </strong>
         {actionHref && actionLabel ? (
-          <Link className="account-summary-link" href={actionHref}>
+          <Link className={styles["account-summary-link"]} href={actionHref}>
             {actionLabel}
           </Link>
         ) : footerCopy ? (
-          <span className="account-summary-footnote">{footerCopy}</span>
+          <span className={styles["account-summary-footnote"]}>{footerCopy}</span>
         ) : null}
       </div>
     </article>
@@ -219,22 +227,22 @@ function SummaryCard({
 
 function WelcomePremiumCard({ returnTo = "" }) {
   return (
-    <article className="plan-card onboarding-choice-card welcome-premium-card account-welcome-card">
-      <div className="account-welcome-copy">
-        <span className="account-icon-box account-icon-box-warm" aria-hidden="true">
+    <article className={moduleClassNames("welcome-premium-card", "account-welcome-card")}>
+      <div className={styles["account-welcome-copy"]}>
+        <span className={moduleClassNames("account-icon-box", "account-icon-box-warm")} aria-hidden="true">
           <AccountIcon type="gift" />
         </span>
-        <div className="account-welcome-text">
-          <span className="account-section-label account-section-label-warm">Cadou de bun venit</span>
+        <div className={styles["account-welcome-text"]}>
+          <span className={moduleClassNames("account-section-label", "account-section-label-warm")}>Cadou de bun venit</span>
           <strong>Ai 24h premium gratuite</strong>
           <p className="page-copy">
             Perioada incepe doar cand apesi pe activare. Dupa pornire, beneficiul nu mai poate fi reluat.
           </p>
         </div>
       </div>
-      <form action={activateWelcomePremiumAction} className="welcome-premium-form account-welcome-form">
+      <form action={activateWelcomePremiumAction} className={moduleClassNames("welcome-premium-form", "account-welcome-form")}>
         <input type="hidden" name="returnTo" value={returnTo || "/cont?section=plans"} />
-        <button type="submit">Activeaza cele 24h gratuite</button>
+        <Button type="submit">Activeaza cele 24h gratuite</Button>
       </form>
     </article>
   );
@@ -250,23 +258,23 @@ function TestimonialRewardClaimCard({ submission, returnTo = "" }) {
   }
 
   return (
-    <article className="plan-card onboarding-choice-card welcome-premium-card account-welcome-card">
-      <div className="account-welcome-copy">
-        <span className="account-icon-box account-icon-box-warm" aria-hidden="true">
+    <article className={moduleClassNames("welcome-premium-card", "account-welcome-card")}>
+      <div className={styles["account-welcome-copy"]}>
+        <span className={moduleClassNames("account-icon-box", "account-icon-box-warm")} aria-hidden="true">
           <AccountIcon type="gift" />
         </span>
-        <div className="account-welcome-text">
-          <span className="account-section-label account-section-label-warm">Recompensa review</span>
+        <div className={styles["account-welcome-text"]}>
+          <span className={moduleClassNames("account-section-label", "account-section-label-warm")}>Recompensa review</span>
           <strong>{testimonialRewardLabel(submission.reward_type)} pregatita</strong>
           <p className="page-copy">
             Review-ul tau a fost aprobat. Activeaza recompensa doar cand vrei sa o folosesti.
           </p>
         </div>
       </div>
-      <form action={activateTestimonialRewardAction} className="welcome-premium-form account-welcome-form">
+      <form action={activateTestimonialRewardAction} className={moduleClassNames("welcome-premium-form", "account-welcome-form")}>
         <input type="hidden" name="submissionId" value={submission.id} />
         <input type="hidden" name="returnTo" value={returnTo || "/cont?section=plans"} />
-        <button type="submit">Activeaza recompensa</button>
+        <Button type="submit">Activeaza recompensa</Button>
       </form>
     </article>
   );
@@ -319,19 +327,19 @@ function InvitedByReferralCard({ invitation }) {
     invitation.referrer?.email && invitation.referrer.email !== referrerName ? invitation.referrer.email : null;
 
   return (
-    <section className="account-invited-referral-card" aria-label="Invitatie referral primita">
-      <div className="account-invited-referral-icon" aria-hidden="true">
+    <section className={styles["account-invited-referral-card"]} aria-label="Invitatie referral primita">
+      <div className={styles["account-invited-referral-icon"]} aria-hidden="true">
         <AccountIcon type="gift" />
       </div>
-      <div className="account-invited-referral-copy">
-        <span className="account-section-label account-section-label-warm">Invitatie primita</span>
+      <div className={styles["account-invited-referral-copy"]}>
+        <span className={moduleClassNames("account-section-label", "account-section-label-warm")}>Invitatie primita</span>
         <h2>{statusCopy.title}</h2>
         <p>
           Ai intrat in Nota 5+ prin invitatia lui <strong>{referrerName}</strong>
           {referrerEmail ? <span>{` (${referrerEmail})`}</span> : null}. {statusCopy.copy}
         </p>
       </div>
-      <span className={`account-invited-referral-status ${statusCopy.tone === "good" ? "is-good" : ""}`}>
+      <span className={moduleClassNames("account-invited-referral-status", statusCopy.tone === "good" && "is-good")}>
         {statusCopy.label}
       </span>
     </section>
@@ -468,19 +476,19 @@ export default async function AccountPage({ searchParams }) {
   const uploadActionLabel = uploadCount > 0 ? "Adaugă material" : "Adaugă încărcări";
 
   return (
-    <main className="app-shell account-page-shell">
+    <main className={moduleClassNames("app-shell", "account-page-shell")}>
       <AppHeader
         title="Contul meu"
         subtitle="Setari simple pentru comunitate, plan si incarcari."
         hidePageTitle
       />
 
-      <section className="account-page-header">
-        <div className="account-page-copy">
-          <h1 className="account-page-title">Contul meu</h1>
-          <p className="account-page-subtitle">Accesul, comunitatea și încărcările tale.</p>
-          <div className="account-page-identity">
-            <span className="account-page-identity-icon" aria-hidden="true">
+      <section className={styles["account-page-header"]}>
+        <div className={styles["account-page-copy"]}>
+          <h1 className={styles["account-page-title"]}>Contul meu</h1>
+          <p className={styles["account-page-subtitle"]}>Accesul, comunitatea și încărcările tale.</p>
+          <div className={styles["account-page-identity"]}>
+            <span className={styles["account-page-identity-icon"]} aria-hidden="true">
               <AccountIcon type="user" />
             </span>
             <span>{user?.email ?? "Cont local"}</span>
@@ -489,7 +497,7 @@ export default async function AccountPage({ searchParams }) {
         </div>
       </section>
 
-      <section className="account-summary-grid" aria-label="Rezumat cont">
+      <section className={styles["account-summary-grid"]} aria-label="Rezumat cont">
         <SummaryCard
           icon={<AccountIcon type="cap" />}
           label="Comunitatea mea"
@@ -522,27 +530,27 @@ export default async function AccountPage({ searchParams }) {
       {referralInvitation ? <InvitedByReferralCard invitation={referralInvitation} /> : null}
 
       {setupWarning ? (
-        <section className="surface">
-          <div className="error-state" role="alert">{setupWarning}</div>
-        </section>
+        <SurfaceCard as="section">
+          <InlineFeedback tone="error" role="alert">{setupWarning}</InlineFeedback>
+        </SurfaceCard>
       ) : null}
 
-      <section className="surface account-billing-surface" id="planuri">
-        {syncMessage ? <div className="success-state" role="status">{syncMessage}</div> : null}
+      <SurfaceCard as="section" className={styles["account-billing-surface"]} id="planuri">
+        {syncMessage ? <InlineFeedback tone="success" role="status">{syncMessage}</InlineFeedback> : null}
         {welcomeMessage ? (
-          <div className={welcomeState === "error" ? "error-state" : "success-state"} role={welcomeState === "error" ? "alert" : "status"}>
+          <InlineFeedback tone={welcomeState === "error" ? "error" : "success"} role={welcomeState === "error" ? "alert" : "status"}>
             {welcomeMessage}
-          </div>
+          </InlineFeedback>
         ) : null}
         {referralMessage ? (
-          <div className={referralState === "error" ? "error-state" : "success-state"} role={referralState === "error" ? "alert" : "status"}>
+          <InlineFeedback tone={referralState === "error" ? "error" : "success"} role={referralState === "error" ? "alert" : "status"}>
             {referralMessage}
-          </div>
+          </InlineFeedback>
         ) : null}
         {testimonialMessage ? (
-          <div className={testimonialState === "error" ? "error-state" : "success-state"} role={testimonialState === "error" ? "alert" : "status"}>
+          <InlineFeedback tone={testimonialState === "error" ? "error" : "success"} role={testimonialState === "error" ? "alert" : "status"}>
             {testimonialMessage}
-          </div>
+          </InlineFeedback>
         ) : null}
 
         <AccountBillingTabsClient
@@ -550,10 +558,10 @@ export default async function AccountPage({ searchParams }) {
           checkoutConfigured={checkoutConfigured}
           checkoutError={checkoutError}
           plansContent={
-            <div className="pricing-section account-pricing-section">
-              <div className="account-section-head">
+            <div className={moduleClassNames("pricing-section", "account-pricing-section")}>
+              <div className={styles["account-section-head"]}>
                 <div>
-                  <div className="account-section-label">Acces</div>
+                  <div className={styles["account-section-label"]}>Acces</div>
                   <h2>Planul tău de studiu</h2>
                   <p className="page-copy">
                     {billingSnapshot?.activePremium
@@ -564,9 +572,9 @@ export default async function AccountPage({ searchParams }) {
               </div>
 
               {learningModesLockMessage ? (
-                <div className="pricing-lock-banner" role="status">
+                <InlineFeedback tone="error" className={styles["pricing-lock-banner"]} role="status">
                   {learningModesLockMessage}
-                </div>
+                </InlineFeedback>
               ) : null}
 
               {hasAvailableWelcomePremium ? <WelcomePremiumCard returnTo={returnTo} /> : null}
@@ -574,7 +582,7 @@ export default async function AccountPage({ searchParams }) {
                 <TestimonialRewardClaimCard submission={latestTestimonialReward} returnTo={returnTo} />
               ) : null}
 
-              <div className="plan-grid account-plan-grid">
+              <div className={moduleClassNames("plan-grid", "account-plan-grid")}>
                 {premiumPlans.map((plan) => {
                   const presentation = PREMIUM_PLAN_CONTENT[plan.code] ?? {};
 
@@ -597,10 +605,10 @@ export default async function AccountPage({ searchParams }) {
             </div>
           }
           creditsContent={
-            <div className="pricing-section account-pricing-section">
-              <div className="account-section-head">
+            <div className={moduleClassNames("pricing-section", "account-pricing-section")}>
+              <div className={styles["account-section-head"]}>
                 <div>
-                  <div className="account-section-label">Materiale</div>
+                  <div className={styles["account-section-label"]}>Materiale</div>
                   <h2>Încărcări pentru materiale</h2>
                   <p className="page-copy">
                     Alege doar numărul de materiale pe care vrei să le pregătești.
@@ -608,7 +616,7 @@ export default async function AccountPage({ searchParams }) {
                 </div>
               </div>
 
-              <div className="plan-grid account-plan-grid">
+              <div className={moduleClassNames("plan-grid", "account-plan-grid")}>
                 {materialPlans.map((plan) => {
                   const presentation = CREDIT_PLAN_CONTENT[plan.code] ?? {};
 
@@ -628,7 +636,7 @@ export default async function AccountPage({ searchParams }) {
             </div>
           }
         />
-      </section>
+      </SurfaceCard>
 
       {referralDashboard ? (
         <ReferralShareCard

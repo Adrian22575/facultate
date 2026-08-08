@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { ShieldAlert, Trash2 } from "lucide-react";
 
+import { Button } from "./ui/action";
+import { TextField } from "./ui/form-field";
+import { InlineFeedback } from "./ui/status";
+import styles from "./account-danger-zone.module.css";
+
 const CONFIRMATION = "STERGE CONTUL";
 
 export function AccountDangerZone({ isAdmin = false }) {
@@ -36,7 +41,7 @@ export function AccountDangerZone({ isAdmin = false }) {
   }
 
   return (
-    <section className="account-danger-zone" aria-labelledby="account-danger-title">
+    <section className={styles["account-danger-zone"]} aria-labelledby="account-danger-title">
       <details>
         <summary>
           <span aria-hidden="true"><ShieldAlert size={20} strokeWidth={2.1} /></span>
@@ -46,7 +51,7 @@ export function AccountDangerZone({ isAdmin = false }) {
           </span>
         </summary>
 
-        <div className="account-danger-content">
+        <div className={styles["account-danger-content"]}>
           {isAdmin ? (
             <p>Conturile administrator sunt protejate si nu pot fi sterse din propriul cont.</p>
           ) : (
@@ -55,29 +60,29 @@ export function AccountDangerZone({ isAdmin = false }) {
                 Stergerea elimina contul, progresul, materialele private si fisierele incarcate. Continutul
                 publicat pentru comunitate poate ramane anonim atunci cand este necesar pentru ceilalti utilizatori.
               </p>
-              <label>
-                Pentru confirmare, scrie <strong>{CONFIRMATION}</strong>
-                <input
-                  type="text"
-                  value={confirmation}
-                  autoComplete="off"
-                  disabled={isDeleting}
-                  onChange={(event) => {
-                    setConfirmation(event.target.value);
-                    setError("");
-                  }}
-                />
-              </label>
-              {error ? <div className="error-state" role="alert">{error}</div> : null}
-              <button
+              <TextField
+                id="account-delete-confirmation"
+                label={<>Pentru confirmare, scrie <strong>{CONFIRMATION}</strong></>}
+                type="text"
+                value={confirmation}
+                autoComplete="off"
+                disabled={isDeleting}
+                onChange={(event) => {
+                  setConfirmation(event.target.value);
+                  setError("");
+                }}
+              />
+              {error ? <InlineFeedback tone="error" role="alert">{error}</InlineFeedback> : null}
+              <Button
                 type="button"
-                className="account-delete-button"
+                variant="destructive"
+                className={styles["account-delete-button"]}
                 disabled={confirmation !== CONFIRMATION || isDeleting}
                 onClick={deleteAccount}
               >
                 <Trash2 aria-hidden="true" size={18} strokeWidth={2.1} />
                 {isDeleting ? "Stergem contul..." : "Sterge definitiv contul"}
-              </button>
+              </Button>
             </>
           )}
         </div>

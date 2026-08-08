@@ -1,5 +1,12 @@
 import { ShoppingCart } from "lucide-react";
 
+import { Button } from "./ui/action";
+import styles from "./billing-plan-card.module.css";
+
+function joinClassNames(...values) {
+  return values.filter(Boolean).join(" ");
+}
+
 function IconText({ icon: Icon, children }) {
   return (
     <span className="ui-icon-text">
@@ -24,22 +31,27 @@ export function BillingPlanCard({
   const checkoutSection = plan.family === "ai_credits" ? "credits" : "plans";
 
   return (
-    <article className={`plan-card account-price-card ${featured || selected ? "is-featured" : ""}`}>
+    <article
+      className={joinClassNames(
+        styles["account-price-card"],
+        (featured || selected) && styles["is-featured"]
+      )}
+    >
       {selected || badge ? (
-        <span className="account-price-badge">{selected ? "Plan ales" : badge}</span>
+        <span className={styles["account-price-badge"]}>{selected ? "Plan ales" : badge}</span>
       ) : null}
 
-      <div className="account-price-head">
-        {icon ? <span className="account-price-icon">{icon}</span> : null}
-        <div className="account-price-copy">
+      <div className={styles["account-price-head"]}>
+        {icon ? <span className={styles["account-price-icon"]}>{icon}</span> : null}
+        <div className={styles["account-price-copy"]}>
           <h3>{plan.name}</h3>
           <p>{description ?? plan.description}</p>
         </div>
       </div>
 
-      {comparisonText ? <p className="account-price-compare">{comparisonText}</p> : null}
+      {comparisonText ? <p className={styles["account-price-compare"]}>{comparisonText}</p> : null}
 
-      <div className="plan-price account-price-value">
+      <div className={styles["account-price-value"]}>
         <strong>{(plan.amount / 100).toFixed(0)}</strong>
         <span>lei</span>
       </div>
@@ -47,13 +59,13 @@ export function BillingPlanCard({
       <form
         action={`/api/stripe/checkout?section=${checkoutSection}`}
         method="post"
-        className="plan-card-form account-price-form"
+        className={styles["account-price-form"]}
       >
         <input type="hidden" name="planCode" value={plan.code} />
         {returnTo ? <input type="hidden" name="returnTo" value={returnTo} /> : null}
-        <button type="submit" disabled={disabled}>
+        <Button type="submit" fullWidth disabled={disabled}>
           <IconText icon={ShoppingCart}>{ctaLabel}</IconText>
-        </button>
+        </Button>
       </form>
     </article>
   );

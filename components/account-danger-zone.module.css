@@ -1,0 +1,105 @@
+.account-danger-zone {
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.account-danger-zone details {
+  padding: 12px 0;
+}
+
+.account-danger-zone summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  list-style: none;
+}
+
+.account-danger-zone summary::-webkit-details-marker {
+  display: none;
+}
+
+.account-danger-zone summary > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #b4232d;
+}
+
+.account-danger-zone summary > span:last-child,
+.account-danger-content,
+.account-danger-content label {
+  display: grid;
+  gap: 5px;
+}
+
+.account-danger-zone summary strong {
+  color: var(--ink);
+}
+
+.account-danger-zone summary small,
+.account-danger-content p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.account-danger-content {
+  max-width: 680px;
+  gap: 14px;
+  padding: 18px 0 4px 50px;
+}
+
+.account-danger-content p {
+  margin: 0;
+}
+
+.account-danger-content label {
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.account-danger-content input {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #d6a7aa;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+
+.account-delete-button {
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 16px;
+  border-color: #b4232d;
+  border-radius: 8px;
+  background: #b4232d;
+  font-weight: 850;
+}
+
+.account-delete-button:hover:not(:disabled) {
+  border-color: #b4232d;
+  background: #b4232d;
+  transform: none;
+}
+
+.account-delete-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+@media (max-width: 580px) {
+  .account-danger-content {
+    padding-left: 0;
+  }
+
+  .account-delete-button {
+    width: 100%;
+  }
+}

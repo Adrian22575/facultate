@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { AppHeader } from "@/components/app-header";
+import { ActionLink } from "@/components/ui/action";
 import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 
 export const metadata = {
@@ -21,9 +20,9 @@ export default async function BillingCancelPage({ searchParams }) {
     <main className="app-shell">
       <AppHeader
         action={
-          <Link className="btn-back" href={targetHref}>
+          <ActionLink variant="secondary" href={targetHref}>
             {returnTo ? "Inapoi unde ai ramas" : "Inapoi la cont"}
-          </Link>
+          </ActionLink>
         }
         kicker="Plata anulata"
         title="Plata a fost anulata"

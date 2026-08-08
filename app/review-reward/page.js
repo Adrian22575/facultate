@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
 import { TestimonialRewardForm } from "@/components/testimonial-reward-form";
+import { ActionLink } from "@/components/ui/action";
 import {
   getAcademicContext,
   getOnboardingHref,
@@ -11,6 +11,7 @@ import {
 import { isDemoUser } from "@/lib/demo-user";
 import { requireUser } from "@/lib/supabase/guards";
 import { getUserTestimonialRewardStatus } from "@/lib/testimonial-rewards";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -35,12 +36,12 @@ export default async function ReviewRewardPage({ searchParams }) {
   const status = typeof resolvedSearchParams?.status === "string" ? resolvedSearchParams.status : "";
 
   return (
-    <main className="app-shell testimonial-reward-page">
+    <main className={`app-shell ${styles["testimonial-reward-page"]}`}>
       <AppHeader
         action={
-          <Link className="btn-back" href="/cont">
+          <ActionLink variant="secondary" href="/cont">
             Inapoi la cont
-          </Link>
+          </ActionLink>
         }
         title="ReviewReward"
         subtitle="Un review scurt, verificat, cu recompensa dupa aprobare."

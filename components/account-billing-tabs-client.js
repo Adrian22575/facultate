@@ -3,6 +3,12 @@
 import { useState } from "react";
 
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
+import { InlineFeedback } from "./ui/status";
+import styles from "./account-billing-tabs-client.module.css";
+
+function joinClassNames(...values) {
+  return values.filter(Boolean).join(" ");
+}
 
 export function AccountBillingTabsClient({
   initialSection = "plans",
@@ -16,7 +22,7 @@ export function AccountBillingTabsClient({
   return (
     <>
       <div
-        className="ui-segmented-tabs account-billing-tabs"
+        className={styles["account-billing-tabs"]}
         role="tablist"
         aria-label="Acces și încărcări"
         onKeyDown={handleTablistKeyDown}
@@ -28,9 +34,10 @@ export function AccountBillingTabsClient({
           aria-selected={section === "plans"}
           aria-controls="account-billing-panel"
           tabIndex={section === "plans" ? 0 : -1}
-          className={`ui-segmented-tab secondary account-billing-tab ${
-            section === "plans" ? "is-active" : ""
-          }`}
+          className={joinClassNames(
+            styles["account-billing-tab"],
+            section === "plans" && styles["is-active"]
+          )}
           onClick={() => setSection("plans")}
         >
           Plan de studiu
@@ -42,9 +49,10 @@ export function AccountBillingTabsClient({
           aria-selected={section === "credits"}
           aria-controls="account-billing-panel"
           tabIndex={section === "credits" ? 0 : -1}
-          className={`ui-segmented-tab secondary account-billing-tab ${
-            section === "credits" ? "is-active" : ""
-          }`}
+          className={joinClassNames(
+            styles["account-billing-tab"],
+            section === "credits" && styles["is-active"]
+          )}
           onClick={() => setSection("credits")}
         >
           Încărcări
@@ -52,14 +60,14 @@ export function AccountBillingTabsClient({
       </div>
 
       {!checkoutConfigured ? (
-        <div className="error-state" role="alert">Plata nu este disponibila momentan. Incearca mai tarziu.</div>
+        <InlineFeedback tone="error" role="alert">Plata nu este disponibila momentan. Incearca mai tarziu.</InlineFeedback>
       ) : null}
 
-      {checkoutError ? <div className="error-state" role="alert">{checkoutError}</div> : null}
+      {checkoutError ? <InlineFeedback tone="error" role="alert">{checkoutError}</InlineFeedback> : null}
 
       <div
         id="account-billing-panel"
-        className="account-billing-panel"
+        className={styles["account-billing-panel"]}
         role="tabpanel"
         aria-labelledby={`account-tab-${section}`}
       >

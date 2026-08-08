@@ -47,7 +47,15 @@ const colocatedCssEntries = [
   { relativePath: "components/dictionary-page.module.css", importantCeiling: 2 },
   { relativePath: "components/gamification-progress-page.module.css", importantCeiling: 0 },
   { relativePath: "components/gamification-result-panel.module.css", importantCeiling: 0 },
-  { relativePath: "components/overall-stats-dashboard.module.css", importantCeiling: 0 }
+  { relativePath: "components/overall-stats-dashboard.module.css", importantCeiling: 0 },
+  { relativePath: "app/cont/page.module.css", importantCeiling: 0 },
+  { relativePath: "app/review-reward/page.module.css", importantCeiling: 0 },
+  { relativePath: "components/account-billing-tabs-client.module.css", importantCeiling: 0 },
+  { relativePath: "components/account-danger-zone.module.css", importantCeiling: 0 },
+  { relativePath: "components/billing-plan-card.module.css", importantCeiling: 0 },
+  { relativePath: "components/billing-success-redirect.module.css", importantCeiling: 0 },
+  { relativePath: "components/referral-share-card.module.css", importantCeiling: 0 },
+  { relativePath: "components/testimonial-reward-form.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -190,6 +198,17 @@ for (const { relativePath, css, importantCeiling } of colocatedCssSources) {
     failures.push(`${relativePath} depășește ceiling-ul !important (${importantCeiling} → ${importantCount}).`);
   }
 
+  const physicalLineCount = css.split(/\r?\n/).length;
+  if (physicalLineCount > 800) {
+    failures.push(`${relativePath} depășește pragul arhitectural de 800 de linii (${physicalLineCount}).`);
+  }
+  if (relativePath === "components/referral-share-card.module.css") {
+    const nonBlankLineCount = css.split(/\r?\n/).filter((line) => line.trim()).length;
+    if (nonBlankLineCount > 600) {
+      failures.push(`${relativePath} depășește plafonul de 600 de linii CSS efective (${nonBlankLineCount}).`);
+    }
+  }
+
   for (const match of uncommentedCss.matchAll(/([^{}]+)\{/g)) {
     const selectorGroup = match[1].trim();
     if (selectorGroup.startsWith("@")) continue;
@@ -237,6 +256,24 @@ const forbiddenProgressSelectors = [
 if (forbiddenProgressSelectors.length) {
   failures.push(
     `Selectorii progres/statistici au fost retrași din globals.css: ${[...new Set(forbiddenProgressSelectors)].join(", ")}.`
+  );
+}
+
+const forbiddenAccountSelectors = [...legacyCss.matchAll(/\.account-[A-Za-z_][\w-]*/g)]
+  .map(([selector]) => selector)
+  .filter((selector) => selector !== ".account-billing-tabs");
+if (forbiddenAccountSelectors.length) {
+  failures.push(
+    `Selectorii account-* au fost retrași din globals.css, cu excepția punții admin .account-billing-tabs: ${[...new Set(forbiddenAccountSelectors)].join(", ")}.`
+  );
+}
+
+const forbiddenAccountFamilySelectors = [
+  ...legacyCss.matchAll(/\.(?:billing-success|testimonial|referral-stat)-[A-Za-z_][\w-]*/g)
+].map(([selector]) => selector);
+if (forbiddenAccountFamilySelectors.length) {
+  failures.push(
+    `Selectorii Cont/Billing au fost retrași din globals.css: ${[...new Set(forbiddenAccountFamilySelectors)].join(", ")}.`
   );
 }
 
@@ -304,7 +341,14 @@ for (const removedSelector of [
   ".subject-context-list",
   ".subject-context-pill",
   ".subject-actions-row",
-  ".subject-table-action"
+  ".subject-table-action",
+  ".pricing-section",
+  ".plan-grid",
+  ".pricing-lock-banner",
+  ".plan-price",
+  ".plan-card-form",
+  ".welcome-premium-card",
+  ".welcome-premium-form"
 ]) {
   const escapedSelector = removedSelector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const selectorPattern = new RegExp(`${escapedSelector}(?=[\\s.#:[>+~,\\{])`);

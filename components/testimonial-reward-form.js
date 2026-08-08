@@ -5,6 +5,8 @@ import { CheckCircle2, Clock, Gift, MessageSquareQuote, Upload } from "lucide-re
 
 import { activateTestimonialRewardAction, submitTestimonialRewardAction } from "@/app/review-reward/actions";
 import { Button } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import styles from "./testimonial-reward-form.module.css";
 import {
   TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH,
   TESTIMONIAL_REWARD_OPTIONS,
@@ -12,6 +14,10 @@ import {
 } from "@/lib/testimonial-reward-copy";
 
 const DRAFT_STORAGE_KEY = "nota5plus:testimonial-reward-draft";
+
+function moduleClassNames(...names) {
+  return names.filter(Boolean).map((name) => styles[name] || name).filter(Boolean).join(" ");
+}
 
 function readSavedDraft() {
   if (typeof window === "undefined") {
@@ -75,8 +81,8 @@ function ExistingReviewStatusCard({ latestSubmission }) {
           };
 
   return (
-    <section className="surface testimonial-status-card testimonial-existing-card" role="status">
-      <span className={`testimonial-status-icon ${statusCopy.iconClass}`}>
+    <SurfaceCard as="section" className={moduleClassNames("testimonial-status-card", "testimonial-existing-card")} role="status">
+      <span className={moduleClassNames("testimonial-status-icon", statusCopy.iconClass)}>
         {latestSubmission.status === "pending" ? (
           <Clock aria-hidden="true" size={22} />
         ) : latestSubmission.status === "approved" ? (
@@ -88,11 +94,11 @@ function ExistingReviewStatusCard({ latestSubmission }) {
       <div>
         <strong>{statusCopy.title}</strong>
         <p className="page-copy">{statusCopy.text}</p>
-        <div className="testimonial-existing-review">
+        <div className={moduleClassNames("testimonial-existing-review")}>
           <span>Review-ul tau</span>
           <p>{testimonial}</p>
         </div>
-        <div className="testimonial-existing-meta">
+        <div className={moduleClassNames("testimonial-existing-meta")}>
           <span>{rewardLabel(latestSubmission.reward_type)}</span>
           <span>
             {latestSubmission.status === "approved"
@@ -105,17 +111,17 @@ function ExistingReviewStatusCard({ latestSubmission }) {
           </span>
         </div>
         {isRewardReady ? (
-          <form action={activateTestimonialRewardAction} className="testimonial-claim-form">
+          <form action={activateTestimonialRewardAction} className={moduleClassNames("testimonial-claim-form")}>
             <input type="hidden" name="submissionId" value={latestSubmission.id} />
             <input type="hidden" name="returnTo" value="/review-reward" />
-            <Button type="submit" className="testimonial-primary-action">
+            <Button type="submit" className={moduleClassNames("testimonial-primary-action")}>
               Activeaza recompensa
             </Button>
             <span className="micro-copy">Porneste-o doar cand ai nevoie de ea.</span>
           </form>
         ) : null}
       </div>
-    </section>
+    </SurfaceCard>
   );
 }
 
@@ -126,8 +132,8 @@ function FormStatusCard({ status, latestSubmission }) {
 
   if (status === "saved") {
     return (
-      <section className="surface testimonial-status-card" role="status">
-        <span className="testimonial-status-icon is-warning">
+      <SurfaceCard as="section" className={moduleClassNames("testimonial-status-card")} role="status">
+        <span className={moduleClassNames("testimonial-status-icon", "is-warning")}>
           <Clock aria-hidden="true" size={22} />
         </span>
         <div>
@@ -136,42 +142,42 @@ function FormStatusCard({ status, latestSubmission }) {
             Recompensa va fi pregatita dupa verificare. Adminul a primit notificare pe Telegram.
           </p>
         </div>
-      </section>
+      </SurfaceCard>
     );
   }
 
   if (status === "reward_activated") {
     return (
-      <section className="surface testimonial-status-card" role="status">
-        <span className="testimonial-status-icon is-good">
+      <SurfaceCard as="section" className={moduleClassNames("testimonial-status-card")} role="status">
+        <span className={moduleClassNames("testimonial-status-icon", "is-good")}>
           <CheckCircle2 aria-hidden="true" size={22} />
         </span>
         <div>
           <strong>Recompensa a fost activata.</strong>
           <p className="page-copy">Acum o poti folosi in contul tau.</p>
         </div>
-      </section>
+      </SurfaceCard>
     );
   }
 
   if (status === "already_rewarded" || status === "already_submitted" || status === "already_pending") {
     return (
-      <section className="surface testimonial-status-card" role="status">
-        <span className="testimonial-status-icon is-good">
+      <SurfaceCard as="section" className={moduleClassNames("testimonial-status-card")} role="status">
+        <span className={moduleClassNames("testimonial-status-icon", "is-good")}>
           <CheckCircle2 aria-hidden="true" size={22} />
         </span>
         <div>
           <strong>Ai trimis deja un review.</strong>
           <p className="page-copy">Multumim ca ne-ai ajutat cu feedback real. Formularul poate fi retrimis doar dupa resetarea review-ului de catre admin.</p>
         </div>
-      </section>
+      </SurfaceCard>
     );
   }
 
   if (status && status !== "saved") {
     return (
-      <section className="surface testimonial-status-card" role="alert">
-        <span className="testimonial-status-icon">
+      <SurfaceCard as="section" className={moduleClassNames("testimonial-status-card")} role="alert">
+        <span className={moduleClassNames("testimonial-status-icon")}>
           <MessageSquareQuote aria-hidden="true" size={22} />
         </span>
         <div>
@@ -180,7 +186,7 @@ function FormStatusCard({ status, latestSubmission }) {
             Fiecare raspuns trebuie sa aiba minim {TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH} caractere.
           </p>
         </div>
-      </section>
+      </SurfaceCard>
     );
   }
 
@@ -266,13 +272,13 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
   }
 
   return (
-    <div className="testimonial-reward-stack">
+    <div className={moduleClassNames("testimonial-reward-stack")}>
       <FormStatusCard status={status} latestSubmission={latestSubmission} />
 
       {!isLocked ? (
-        <form action={submitTestimonialRewardAction} className="testimonial-reward-form">
-          <section className="surface testimonial-intro-card">
-            <div className="testimonial-intro-icon" aria-hidden="true">
+        <form action={submitTestimonialRewardAction} className={moduleClassNames("testimonial-reward-form")}>
+          <SurfaceCard as="section" className={moduleClassNames("testimonial-intro-card")}>
+            <div className={moduleClassNames("testimonial-intro-icon")} aria-hidden="true">
               <MessageSquareQuote size={26} />
             </div>
             <div>
@@ -282,15 +288,15 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
                 iar dupa aprobare activezi tu recompensa cand ai nevoie.
               </p>
             </div>
-          </section>
+          </SurfaceCard>
 
-          <section className="surface testimonial-reward-choice" aria-label="Alege recompensa">
-            <div className="testimonial-section-head">
-              <span className="account-section-label">Recompensa</span>
+          <SurfaceCard as="section" className={moduleClassNames("testimonial-reward-choice")} aria-label="Alege recompensa">
+            <div className={moduleClassNames("testimonial-section-head")}>
+              <span className={moduleClassNames("account-section-label")}>Recompensa</span>
               <strong>Alege ce iti foloseste acum</strong>
             </div>
-            <div className="testimonial-choice-grid">
-              <label className={`testimonial-choice ${rewardType === "ai_upload_1" ? "is-selected" : ""}`}>
+            <div className={moduleClassNames("testimonial-choice-grid")}>
+              <label className={moduleClassNames("testimonial-choice", rewardType === "ai_upload_1" && "is-selected")}>
                 <input
                   type="radio"
                   name="rewardType"
@@ -298,7 +304,7 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
                   checked={rewardType === "ai_upload_1"}
                   onChange={() => setRewardType("ai_upload_1")}
                 />
-                <span className="testimonial-choice-icon">
+                <span className={moduleClassNames("testimonial-choice-icon")}>
                   <Upload aria-hidden="true" size={20} />
                 </span>
                 <span>
@@ -306,7 +312,7 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
                   <small>Pentru urmatorul PDF, curs sau set de poze.</small>
                 </span>
               </label>
-              <label className={`testimonial-choice ${rewardType === "premium_24h" ? "is-selected" : ""}`}>
+              <label className={moduleClassNames("testimonial-choice", rewardType === "premium_24h" && "is-selected")}>
                 <input
                   type="radio"
                   name="rewardType"
@@ -314,7 +320,7 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
                   checked={rewardType === "premium_24h"}
                   onChange={() => setRewardType("premium_24h")}
                 />
-                <span className="testimonial-choice-icon">
+                <span className={moduleClassNames("testimonial-choice-icon")}>
                   <Gift aria-hidden="true" size={20} />
                 </span>
                 <span>
@@ -323,27 +329,27 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
                 </span>
               </label>
             </div>
-          </section>
+          </SurfaceCard>
 
-          <section className="surface testimonial-questions-card">
-            <div className="testimonial-section-head">
-              <span className="account-section-label">ReviewReward</span>
+          <SurfaceCard as="section" className={moduleClassNames("testimonial-questions-card")}>
+            <div className={moduleClassNames("testimonial-section-head")}>
+              <span className={moduleClassNames("account-section-label")}>ReviewReward</span>
               <strong>5 raspunsuri scurte</strong>
-              <div className="testimonial-progress" aria-label={`${completedCount} din 5 raspunsuri completate`}>
+              <div className={moduleClassNames("testimonial-progress")} aria-label={`${completedCount} din 5 raspunsuri completate`}>
                 <span style={{ width: `${progressPercent}%` }} />
               </div>
-              <small className="testimonial-progress-label">
+              <small className={moduleClassNames("testimonial-progress-label")}>
                 {`${completedCount}/5 completate - minim ${TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH} caractere fiecare`}
               </small>
             </div>
-            <div className="testimonial-question-list">
+            <div className={moduleClassNames("testimonial-question-list")}>
               {TESTIMONIAL_REWARD_QUESTIONS.map((question, index) => {
                 const currentLength = answerLength(answers[question.key]);
                 const isComplete = currentLength >= TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH;
 
                 return (
-                  <label className="testimonial-question-field" key={question.key}>
-                    <span className="testimonial-question-label">
+                  <label className={moduleClassNames("testimonial-question-field")} key={question.key}>
+                    <span className={moduleClassNames("testimonial-question-label")}>
                       <span>{`${index + 1}. ${question.label}`}</span>
                       {isComplete ? <CheckCircle2 aria-hidden="true" size={17} /> : null}
                     </span>
@@ -353,24 +359,24 @@ export function TestimonialRewardForm({ latestSubmission = null, status = "" }) 
                       name={question.key}
                       value={answers[question.key]}
                       onChange={(event) => updateAnswer(question.key, event.target.value)}
-                      className="textarea-input testimonial-question-textarea"
+                      className={moduleClassNames("textarea-input", "testimonial-question-textarea")}
                       minLength={TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH}
                       maxLength={700}
                     />
-                    <span className={`testimonial-answer-count ${isComplete ? "is-complete" : ""}`}>
+                    <span className={moduleClassNames("testimonial-answer-count", isComplete && "is-complete")}>
                       {`${Math.min(currentLength, TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH)}/${TESTIMONIAL_REWARD_MIN_ANSWER_LENGTH} caractere minime`}
                     </span>
                   </label>
                 );
               })}
             </div>
-            <div className="testimonial-form-actions">
-              <Button type="submit" className="testimonial-primary-action" disabled={!allFilled}>
+            <div className={moduleClassNames("testimonial-form-actions")}>
+              <Button type="submit" className={moduleClassNames("testimonial-primary-action")} disabled={!allFilled}>
                 Trimite review
               </Button>
               <span className="micro-copy">Dupa aprobare, recompensa ramane pregatita pana o activezi.</span>
             </div>
-          </section>
+          </SurfaceCard>
         </form>
       ) : null}
     </div>

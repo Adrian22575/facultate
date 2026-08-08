@@ -1,10 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { ActionLink } from "./ui/action";
+import styles from "./billing-success-redirect.module.css";
+
 const REDIRECT_SECONDS = 5;
+
+function joinClassNames(...values) {
+  return values.filter(Boolean).join(" ");
+}
 
 function getStatusContent(status) {
   if (status === "applied") {
@@ -69,17 +75,17 @@ export function BillingSuccessRedirect({ href, status = "pending", detail }) {
   }, [href, router]);
 
   return (
-    <div className="billing-success-hero">
-      <div className="billing-success-visual-shell">
-        <div className={`billing-success-visual ${statusContent.badgeClass}`}>
-          <div className="billing-success-orbit is-one" />
-          <div className="billing-success-orbit is-two" />
-          <div className="billing-success-glow" />
+    <div className={styles["billing-success-hero"]}>
+      <div className={styles["billing-success-visual-shell"]}>
+        <div className={joinClassNames(styles["billing-success-visual"], styles[statusContent.badgeClass])}>
+          <div className={joinClassNames(styles["billing-success-orbit"], styles["is-one"])} />
+          <div className={joinClassNames(styles["billing-success-orbit"], styles["is-two"])} />
+          <div className={styles["billing-success-glow"]} />
 
-          <div className={`billing-success-core ${statusContent.badgeClass}`}>
-            <div className="billing-success-core-ring" />
-            <div className="billing-success-core-mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" className="billing-success-check">
+          <div className={joinClassNames(styles["billing-success-core"], styles[statusContent.badgeClass])}>
+            <div className={styles["billing-success-core-ring"]} />
+            <div className={styles["billing-success-core-mark"]} aria-hidden="true">
+              <svg viewBox="0 0 24 24" className={styles["billing-success-check"]}>
                 <path
                   d="M5.5 12.5 9.5 16.5 18.5 7.5"
                   fill="none"
@@ -92,38 +98,38 @@ export function BillingSuccessRedirect({ href, status = "pending", detail }) {
             </div>
           </div>
 
-          <div className="billing-success-chip is-top-left">{paymentChip}</div>
-          <div className="billing-success-chip is-top-right">{accountChip}</div>
-          <div className={`billing-success-chip is-bottom ${statusContent.badgeClass}`}>
+          <div className={joinClassNames(styles["billing-success-chip"], styles["is-top-left"])}>{paymentChip}</div>
+          <div className={joinClassNames(styles["billing-success-chip"], styles["is-top-right"])}>{accountChip}</div>
+          <div className={joinClassNames(styles["billing-success-chip"], styles["is-bottom"], styles[statusContent.badgeClass])}>
             {statusContent.visualLabel}
           </div>
         </div>
       </div>
 
-      <div className="billing-success-content">
-        <span className="app-kicker billing-success-kicker">Confirmare plata</span>
-        <h2 className="billing-success-title">{statusContent.title}</h2>
-        <p className="billing-success-copy">{statusContent.summary}</p>
+      <div className={styles["billing-success-content"]}>
+        <span className={joinClassNames("app-kicker", styles["billing-success-kicker"])}>Confirmare plata</span>
+        <h2 className={styles["billing-success-title"]}>{statusContent.title}</h2>
+        <p className={styles["billing-success-copy"]}>{statusContent.summary}</p>
 
-        <div className={`billing-success-banner ${statusContent.badgeClass}`}>{detail}</div>
+        <div className={joinClassNames(styles["billing-success-banner"], styles[statusContent.badgeClass])}>{detail}</div>
 
-        <div className="billing-success-progress-card">
-          <div className="billing-success-meta">
+        <div className={styles["billing-success-progress-card"]}>
+          <div className={styles["billing-success-meta"]}>
             <span>Te trimitem automat in cont</span>
             <strong>{`${secondsLeft}s`}</strong>
           </div>
-          <div className="billing-success-progress-track" aria-hidden="true">
+          <div className={styles["billing-success-progress-track"]} aria-hidden="true">
             <div
-              className={`billing-success-progress-fill ${statusContent.badgeClass}`}
+              className={joinClassNames(styles["billing-success-progress-fill"], styles[statusContent.badgeClass])}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
         </div>
 
-        <div className="billing-success-actions">
-          <Link className="btn-back billing-success-primary" href={href}>
+        <div className={styles["billing-success-actions"]}>
+          <ActionLink variant="secondary" className={styles["billing-success-primary"]} href={href}>
             Mergi acum
-          </Link>
+          </ActionLink>
         </div>
       </div>
     </div>

@@ -13,6 +13,9 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { Button } from "./ui/action";
+import styles from "./referral-share-card.module.css";
+
 const referralSteps = [
   {
     icon: Link2,
@@ -31,16 +34,20 @@ const referralSteps = [
   }
 ];
 
+function moduleClassNames(...names) {
+  return names.filter(Boolean).map((name) => styles[name]).filter(Boolean).join(" ");
+}
+
 function ReferralStep({ icon: Icon, title, desc, isLast = false }) {
   return (
-    <div className="account-referral-step">
-      <div className="account-referral-step-marker">
-        <span className="account-referral-step-icon">
+    <div className={moduleClassNames("account-referral-step")}>
+      <div className={moduleClassNames("account-referral-step-marker")}>
+        <span className={moduleClassNames("account-referral-step-icon")}>
           <Icon aria-hidden="true" size={18} strokeWidth={2.3} />
         </span>
-        {!isLast ? <span className="account-referral-step-line" /> : null}
+        {!isLast ? <span className={moduleClassNames("account-referral-step-line")} /> : null}
       </div>
-      <div className="account-referral-step-copy">
+      <div className={moduleClassNames("account-referral-step-copy")}>
         <strong>{title}</strong>
         <span>{desc}</span>
       </div>
@@ -50,11 +57,11 @@ function ReferralStep({ icon: Icon, title, desc, isLast = false }) {
 
 function ReferralStat({ icon: Icon, label, value, tone = "" }) {
   return (
-    <div className={`referral-stat ${tone}`}>
-      <span className="referral-stat-icon">
+    <div className={moduleClassNames("referral-stat", tone)}>
+      <span className={moduleClassNames("referral-stat-icon")}>
         <Icon aria-hidden="true" size={16} strokeWidth={2.3} />
       </span>
-      <span className="referral-stat-label">{label}</span>
+      <span className={moduleClassNames("referral-stat-label")}>{label}</span>
       <strong>{value}</strong>
     </div>
   );
@@ -121,18 +128,18 @@ function ReferralInviteRow({ referral }) {
         : `Intrat ${formatReferralDate(referral.accountCreatedAt || referral.createdAt)}`;
 
   return (
-    <article className="account-referral-invite-row">
-      <div className="account-referral-person">
-        <span className="account-referral-person-icon">
+    <article className={moduleClassNames("account-referral-invite-row")}>
+      <div className={moduleClassNames("account-referral-person")}>
+        <span className={moduleClassNames("account-referral-person-icon")}>
           <UserRoundCheck aria-hidden="true" size={18} strokeWidth={2.3} />
         </span>
-        <div className="account-referral-person-copy">
+        <div className={moduleClassNames("account-referral-person-copy")}>
           <strong>{displayName}</strong>
           <span>{secondary}</span>
         </div>
       </div>
-      <div className="account-referral-invite-status">
-        <span className={`account-referral-status-pill ${statusCopy.tone}`}>{statusCopy.label}</span>
+      <div className={moduleClassNames("account-referral-invite-status")}>
+        <span className={moduleClassNames("account-referral-status-pill", statusCopy.tone)}>{statusCopy.label}</span>
         <small>{dateLabel}</small>
       </div>
       <p>{statusCopy.detail}</p>
@@ -169,37 +176,37 @@ export function ReferralShareCard({
   }
 
   return (
-    <section className={`account-referral-panel ${expanded ? "is-expanded" : "is-collapsed"}`} aria-label="Referral">
-      <div className="account-referral-teaser">
-        <div className="account-referral-teaser-copy">
-          <span className="account-referral-teaser-kicker">
+    <section className={moduleClassNames("account-referral-panel", expanded ? "is-expanded" : "is-collapsed")} aria-label="Referral">
+      <div className={moduleClassNames("account-referral-teaser")}>
+        <div className={moduleClassNames("account-referral-teaser-copy")}>
+          <span className={moduleClassNames("account-referral-teaser-kicker")}>
             <Gift aria-hidden="true" size={17} strokeWidth={2.4} />
             Invita colegi
           </span>
           <h2>Vrei 24h gratuite pentru invatat?</h2>
           <p>Trimite linkul tau unui coleg. Cand isi confirma contul, iti pregatim bonusul.</p>
         </div>
-        <div className="account-referral-teaser-meta" aria-label="Status invitatii">
+        <div className={moduleClassNames("account-referral-teaser-meta")} aria-label="Status invitatii">
           <span>{`${readyCount} confirmate`}</span>
           <span>{`${pendingCount} in asteptare`}</span>
           <span>{`${rewardedCount} primite`}</span>
         </div>
-        <button
+        <Button variant="secondary"
           type="button"
-          className="account-referral-expand-btn"
+          className={moduleClassNames("account-referral-expand-btn")}
           aria-expanded={expanded}
           onClick={() => setExpanded((value) => !value)}
         >
           {expanded ? "Ascunde" : readyCount > 0 ? "Vezi bonusul" : "Vezi linkul"}
           <ChevronDown aria-hidden="true" size={18} strokeWidth={2.4} />
-        </button>
+        </Button>
       </div>
 
       {expanded ? (
-        <div className="account-referral-body">
-          <aside className="account-referral-timeline">
+        <div className={moduleClassNames("account-referral-body")}>
+          <aside className={moduleClassNames("account-referral-timeline")}>
             <p>Cum functioneaza</p>
-            <div className="account-referral-steps">
+            <div className={moduleClassNames("account-referral-steps")}>
               {referralSteps.map((step, index) => (
                 <ReferralStep
                   key={step.title}
@@ -212,29 +219,29 @@ export function ReferralShareCard({
             </div>
           </aside>
 
-          <div className="account-referral-main">
-            <div className="account-referral-copy">
-              <span className="account-section-label account-referral-label">Invita colegi</span>
+          <div className={moduleClassNames("account-referral-main")}>
+            <div className={moduleClassNames("account-referral-copy")}>
+              <span className={moduleClassNames("account-section-label", "account-referral-label")}>Invita colegi</span>
               <h2>Un link simplu care iti aduce timp extra pentru invatat.</h2>
               <p>Trimite linkul colegilor. Cand colegul isi confirma contul, primesti acces extra timp de 24h.</p>
             </div>
 
-            <div className="account-referral-linkbox">
-              <div className="account-referral-url">
+            <div className={moduleClassNames("account-referral-linkbox")}>
+              <div className={moduleClassNames("account-referral-url")}>
                 <Link2 aria-hidden="true" size={18} strokeWidth={2.3} />
                 <span>{referralUrl}</span>
               </div>
-              <button type="button" className="account-referral-copy-btn" onClick={copyReferralLink}>
+              <Button variant="secondary" type="button" className={moduleClassNames("account-referral-copy-btn")} onClick={copyReferralLink}>
                 {copied ? <CheckCircle2 aria-hidden="true" size={18} /> : <Copy aria-hidden="true" size={18} />}
                 {copied ? "Copiat" : "Copiaza"}
-              </button>
+              </Button>
             </div>
           </div>
 
-          <div className="account-referral-status-zone">
-            <div className="account-referral-reward">
-              <div className="account-referral-reward-copy">
-                <span className="account-referral-reward-icon">
+          <div className={moduleClassNames("account-referral-status-zone")}>
+            <div className={moduleClassNames("account-referral-reward")}>
+              <div className={moduleClassNames("account-referral-reward-copy")}>
+                <span className={moduleClassNames("account-referral-reward-icon")}>
                   <Gift aria-hidden="true" size={22} strokeWidth={2.3} />
                 </span>
                 <div>
@@ -242,48 +249,48 @@ export function ReferralShareCard({
                   <strong>24h acces</strong>
                 </div>
               </div>
-              <Sparkles aria-hidden="true" className="account-referral-sparkle" size={22} strokeWidth={2.3} />
+              <Sparkles aria-hidden="true" className={moduleClassNames("account-referral-sparkle")} size={22} strokeWidth={2.3} />
             </div>
 
-            <div className="account-referral-rule-note">
+            <div className={moduleClassNames("account-referral-rule-note")}>
               <strong>Regula bonusului</strong>
               <span>Cand colegul isi confirma emailul si intra in cont, invitatia devine confirmata. Tu activezi cele 24h cand ai nevoie.</span>
             </div>
 
-            <div className="account-referral-stats" aria-label="Status referral">
+            <div className={moduleClassNames("account-referral-stats")} aria-label="Status referral">
               <ReferralStat icon={Clock3} label="In asteptare" value={pendingCount} />
               <ReferralStat icon={CheckCircle2} label="Confirmate" value={readyCount} tone={readyCount ? "is-good" : ""} />
               <ReferralStat icon={Gift} label="24h primite" value={rewardedCount} tone="is-good" />
             </div>
 
             {readyCount > 0 && activateAction ? (
-              <form action={activateAction} className="account-referral-activate-form">
+              <form action={activateAction} className={moduleClassNames("account-referral-activate-form")}>
                 <input type="hidden" name="returnTo" value="/cont?section=plans" />
-                <button type="submit" className="account-referral-activate-btn">
+                <Button variant="secondary" type="submit" className={moduleClassNames("account-referral-activate-btn")}>
                   <Gift aria-hidden="true" size={18} strokeWidth={2.3} />
                   Activeaza 24h
-                </button>
+                </Button>
               </form>
             ) : null}
           </div>
 
-          <div className="account-referral-invites">
-            <div className="account-referral-invites-head">
+          <div className={moduleClassNames("account-referral-invites")}>
+            <div className={moduleClassNames("account-referral-invites-head")}>
               <div>
-                <span className="account-section-label account-referral-label">Invitatiile tale</span>
+                <span className={moduleClassNames("account-section-label", "account-referral-label")}>Invitatiile tale</span>
                 <h3>Colegii care au intrat prin linkul tau</h3>
               </div>
               <span>{`${referrals.length} ${referrals.length === 1 ? "invitatie" : "invitatii"}`}</span>
             </div>
 
             {referrals.length ? (
-              <div className="account-referral-invite-list">
+              <div className={moduleClassNames("account-referral-invite-list")}>
                 {referrals.map((referral) => (
                   <ReferralInviteRow key={referral.id} referral={referral} />
                 ))}
               </div>
             ) : (
-              <div className="account-referral-empty">
+              <div className={moduleClassNames("account-referral-empty")}>
                 <strong>Lista este goala momentan.</strong>
                 <p>Cand cineva isi face cont folosind linkul tau, apare aici cu statusul invitatiei.</p>
               </div>

@@ -62,21 +62,15 @@ const LEGACY_UI_BASELINE = {
   "app/ai/licenta/[sessionId]/page.js": { "btn-back": 1 },
   "app/ai/page.js": { "btn-link": 1, secondary: 1 },
   "app/ai/review/[bankId]/page.js": { "btn-back": 1, "success-state": 1, "status-pill": 3 },
-  "app/billing/cancel/page.js": { "btn-back": 1 },
-  "app/billing/success/page.js": { "btn-back": 1 },
-  "app/cont/page.js": { button: 2, "error-state": 4, "success-state": 4 },
   "app/global-error.js": { button: 1 },
   "app/materii/[subjectId]/interactiv/page.js": { "btn-back": 1 },
   "app/materii/[subjectId]/page.js": { "btn-back": 1 },
   "app/materii/[subjectId]/studiu/page.js": { "btn-back": 1 },
   "app/materii/[subjectId]/test/page.js": { "btn-back": 1 },
   "app/onboarding/page.js": { "btn-link": 1, secondary: 1, "btn-back": 1, "error-state": 2 },
-  "app/review-reward/page.js": { "btn-back": 1 },
   "app/setup/page.js": { "btn-back": 2, "btn-link": 2, secondary: 2, "error-state": 2 },
   "app/testele-mele/page.js": { "btn-back": 2, "success-state": 1, "error-state": 2, "btn-link": 4, secondary: 4 },
   "app/testele-mele/[testId]/page.js": { "btn-back": 1 },
-  "components/account-billing-tabs-client.js": { secondary: 2, "error-state": 2 },
-  "components/account-danger-zone.js": { "error-state": 1 },
   "components/admin-center-client.js": { "btn-link": 11, secondary: 11, "status-pill": 16, "btn-back": 1 },
   "components/admin-dictionary-index.js": { "btn-link": 1, button: 1 },
   "components/admin-dictionary-panel.js": { "btn-back": 5, "btn-link": 3 },
@@ -93,8 +87,6 @@ const LEGACY_UI_BASELINE = {
   "components/ai-question-bank-review-client.js": { "status-pill": 1, "btn-link": 11, secondary: 15, "textarea-input": 4, "input-search": 2, button: 2, "success-state": 1, "error-state": 1 },
   "components/ai-workspace-highlight-card.js": { "status-pill": 2, "btn-link": 1, secondary: 1 },
   "components/app-header.js": { "status-pill": 1 },
-  "components/billing-plan-card.js": { button: 1 },
-  "components/billing-success-redirect.js": { "btn-back": 1 },
   "components/dictionary-index-client.js": { button: 1 },
   "components/editorial-index-client.js": { button: 1 },
   "components/exam-page-client.js": { "btn-link": 6, secondary: 14, button: 4 },
@@ -127,8 +119,6 @@ const LEGACY_SURFACE_BASELINE = {
   "app/ai/activitate/page.js": { surface: 1, "ui-panel-card": 1 },
   "app/ai/drafts/[testId]/page.js": { surface: 5, "draft-card": 1 },
   "app/ai/review/[bankId]/page.js": { surface: 2 },
-  "app/billing/success/page.js": { surface: 1 },
-  "app/cont/page.js": { surface: 2 },
   "app/demo/page.js": { surface: 2 },
   "app/onboarding/page.js": { surface: 8, "draft-card": 9 },
   "app/setup/page.js": { surface: 6, "draft-card": 1, "empty-state": 2 },
@@ -149,7 +139,6 @@ const LEGACY_SURFACE_BASELINE = {
   "components/onboarding-selection-step.js": { "empty-state": 1 },
   "components/private-test-player.js": { surface: 1 },
   "components/test-page-client.js": { surface: 2 },
-  "components/testimonial-reward-form.js": { surface: 8 },
   "components/workspace-generate-form.js": { "ui-panel-card": 7 },
   "components/workspace-job-history-client.js": { "ui-panel-card": 2, "draft-card": 1 },
   "components/workspace-subject-picker.js": { "ui-panel-card": 2, "empty-state": 1 }
@@ -356,6 +345,27 @@ function inspectElement(filePath, node, context, ancestors) {
     }
     if (/^(?:gamification|licenta-stats|overall|dashboard-gamification)-/.test(token)) {
       report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat pentru progres și statistici.`);
+    }
+    if (/^account-/.test(token)) {
+      const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+      const allowedAdminBridge = token === "account-billing-tabs" && relativePath === "components/admin-tabs-container.js";
+      if (!allowedAdminBridge) {
+        report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat pentru Cont.`);
+      }
+    }
+    if (/^(?:billing-success|testimonial|referral-stat)-/.test(token)) {
+      report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat pentru Cont și Billing.`);
+    }
+    if ([
+      "pricing-section",
+      "plan-grid",
+      "pricing-lock-banner",
+      "plan-price",
+      "plan-card-form",
+      "welcome-premium-card",
+      "welcome-premium-form"
+    ].includes(token)) {
+      report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul proprietarului.`);
     }
   }
 
