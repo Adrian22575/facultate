@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BarChart3,
@@ -11,14 +10,22 @@ import {
   SlidersHorizontal,
   Trophy,
   Users,
-  XCircle,
   Zap
 } from "lucide-react";
 
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
+import { TestResultPanel } from "@/components/test-result-panel";
+import { ActionLink, Button } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { InlineFeedback } from "@/components/ui/status";
 import { buildLicentaQuestionKey } from "@/lib/licenta-exam-question-key";
 import { shuffleArray } from "@/lib/quiz";
+
+import styles from "./exam-page-client.module.css";
+import insightStyles from "./test-insight.module.css";
+import quizStyles from "./test-quiz.module.css";
+import resultStyles from "./test-result-panel.module.css";
 
 const MISTAKES_STORAGE_KEY = "licenta_mistakes";
 const QUICK_QUESTION_COUNT = 5;
@@ -77,18 +84,6 @@ function readStoredMistakeIds() {
   } catch {
     return [];
   }
-}
-
-function getResultMessage(percentage) {
-  if (percentage > 80) {
-    return "Esti bine. Continua sa repeti ca sa fixezi.";
-  }
-
-  if (percentage >= 50) {
-    return "E decent, dar mai ai zone de consolidat.";
-  }
-
-  return "Mai ai de repetat. Incepe cu greselile.";
 }
 
 function answerLabel(index) {
@@ -188,9 +183,9 @@ function getCommunityNextStep(stats, comparison) {
 function CommunityComparisonPanel({ stats, status, error }) {
   if (status === "saving") {
     return (
-      <section className="licenta-community-panel is-loading" aria-live="polite">
-        <div className="licenta-community-panel-head">
-          <span className="licenta-community-panel-icon" aria-hidden="true">
+      <section className={`${insightStyles.panel} ${insightStyles.loading}`} aria-live="polite">
+        <div className={insightStyles.head}>
+          <span className={insightStyles.icon} aria-hidden="true">
             <BarChart3 />
           </span>
           <div>
@@ -204,9 +199,9 @@ function CommunityComparisonPanel({ stats, status, error }) {
 
   if (status === "error") {
     return (
-      <section className="licenta-community-panel is-muted" aria-live="polite">
-        <div className="licenta-community-panel-head">
-          <span className="licenta-community-panel-icon" aria-hidden="true">
+      <section className={`${insightStyles.panel} ${insightStyles.muted}`} aria-live="polite">
+        <div className={insightStyles.head}>
+          <span className={insightStyles.icon} aria-hidden="true">
             <BarChart3 />
           </span>
           <div>
@@ -214,9 +209,9 @@ function CommunityComparisonPanel({ stats, status, error }) {
             <p>{error || "Rezultatul tau ramane calculat local. Incearca din nou la urmatoarea runda."}</p>
           </div>
         </div>
-        <Link className="btn-link secondary licenta-community-stats-link" href="/statistici">
+        <ActionLink className={insightStyles.statsAction} variant="secondary" href="/statistici">
           Vezi statistici
-        </Link>
+        </ActionLink>
       </section>
     );
   }
@@ -226,48 +221,48 @@ function CommunityComparisonPanel({ stats, status, error }) {
   }
 
   const comparison = getCommunityComparison(stats);
-  const toneClass = comparison ? ` is-${comparison.tone}` : " is-neutral";
+  const toneClass = insightStyles[comparison?.tone || "neutral"];
 
   return (
-    <section className={`licenta-community-panel${toneClass}`} aria-label="Comparatie cu comunitatea">
-      <div className="licenta-community-panel-head">
-        <span className="licenta-community-panel-icon" aria-hidden="true">
+    <section className={`${insightStyles.panel} ${toneClass}`} aria-label="Comparatie cu comunitatea">
+      <div className={insightStyles.head}>
+        <span className={insightStyles.icon} aria-hidden="true">
           <Users />
         </span>
         <div>
-          <span className="licenta-community-kicker">Cursa comunitatii</span>
+          <span className={insightStyles.kicker}>Cursa comunitatii</span>
           <h3>{comparison?.title || "Rezultatul tau este salvat"}</h3>
           <p>{comparison?.detail || "Mai avem nevoie de rezultate in comunitatea ta ca sa calculam comparatia."}</p>
         </div>
       </div>
 
-      <div className="licenta-community-compare-row">
-        <div className="licenta-community-score-card is-user">
+      <div className={insightStyles.compareRow}>
+        <div className={insightStyles.scoreCard}>
           <span>Tu</span>
           <strong>{`${stats.userLatestScore}%`}</strong>
         </div>
-        <div className="licenta-community-score-card is-community">
+        <div className={insightStyles.scoreCard}>
           <span>Comunitatea</span>
           <strong>{`${stats.averageScore}%`}</strong>
         </div>
-        <div className="licenta-community-score-card is-rank">
+        <div className={insightStyles.scoreCard}>
           <span>Locul tau</span>
           <strong>{formatRank(stats)}</strong>
           <small>dupa cel mai bun scor</small>
         </div>
       </div>
 
-      <p className="licenta-community-next-step">
+      <p className={insightStyles.nextStep}>
         <strong>Urmatorul pas:</strong> {getCommunityNextStep(stats, comparison)}
       </p>
-      <div className="licenta-community-footer">
+      <div className={insightStyles.footer}>
         <p>
           Comparatia foloseste {stats.attemptCount} incercari de la {stats.participantCount} utilizatori din{" "}
           {stats.scopeLabel || "comunitatea ta"}.
         </p>
-        <Link className="btn-link secondary licenta-community-stats-link" href="/statistici">
+        <ActionLink className={insightStyles.statsAction} variant="secondary" href="/statistici">
           Vezi statistici
-        </Link>
+        </ActionLink>
       </div>
     </section>
   );
@@ -818,8 +813,8 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
 
   if (!preparedQuestions.length) {
     return (
-      <section className="surface exam-empty-state">
-        <div className="exam-empty-state-copy">
+      <SurfaceCard className={styles["exam-empty-state"]}>
+        <div className={styles["exam-empty-state-copy"]}>
           <span className="step-eyebrow">Pregatire licenta</span>
           <h2>Nu exista inca grile de licenta</h2>
           <p>
@@ -828,15 +823,15 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
           </p>
         </div>
 
-        <div className="exam-empty-state-actions">
-          <Link className="btn-link job-primary-cta" href="/materiale/licenta">
+        <div className={styles["exam-empty-state-actions"]}>
+          <ActionLink href="/materiale/licenta">
             Incarca grilele de licenta
-          </Link>
-          <Link className="btn-link secondary" href="/">
+          </ActionLink>
+          <ActionLink variant="secondary" href="/">
             Inapoi la dashboard
-          </Link>
+          </ActionLink>
         </div>
-      </section>
+      </SurfaceCard>
     );
   }
 
@@ -848,10 +843,10 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
   const browseQuestion = currentQuestions[browseIndex];
 
   return (
-    <section className="licenta-prep">
+    <section className={styles["licenta-prep"]}>
       {phase === "modes" ? (
         <>
-          <section className="licenta-prep-summary surface">
+          <SurfaceCard className={styles["licenta-prep-summary"]}>
             <div>
               <span className="ui-section-label">Pregatire licenta</span>
               <h2>Alege modul potrivit pentru sesiunea de azi.</h2>
@@ -860,14 +855,14 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                 <strong>{mistakeIds.length}</strong>.
               </p>
             </div>
-            <div className="licenta-prep-summary-badge" aria-hidden="true">
+            <div className={styles["licenta-prep-summary-badge"]} aria-hidden="true">
               <Trophy />
             </div>
-          </section>
+          </SurfaceCard>
 
-          {notice ? <div className="licenta-prep-notice">{notice}</div> : null}
+          {notice ? <InlineFeedback className={styles["licenta-prep-notice"]} tone="error" role="status">{notice}</InlineFeedback> : null}
 
-          <div className="licenta-prep-mode-grid" aria-label="Moduri pregatire licenta">
+          <div className={styles["licenta-prep-mode-grid"]} aria-label="Moduri pregatire licenta">
             {["quick", "custom", "mistakes", "verify", "browse"].map((mode) => {
               const copy = MODE_COPY[mode];
               const Icon = copy.icon;
@@ -876,18 +871,17 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
               return (
                 <article
                   key={mode}
-                  className={`licenta-prep-mode-card${isBrowse ? " is-wide" : ""}`}
+                  className={`${styles["licenta-prep-mode-card"]}${isBrowse ? ` ${styles["is-wide"]}` : ""}`}
                 >
-                  <div className="licenta-prep-mode-icon" aria-hidden="true">
+                  <div className={styles["licenta-prep-mode-icon"]} aria-hidden="true">
                     <Icon />
                   </div>
-                  <div className="licenta-prep-mode-copy">
+                  <div className={styles["licenta-prep-mode-copy"]}>
                     <h2>{copy.title}</h2>
                     <p>{copy.description}</p>
                   </div>
-                  <button
-                    type="button"
-                    className={mode === "mistakes" ? "secondary" : ""}
+                  <Button
+                    variant={mode === "mistakes" ? "secondary" : "primary"}
                     onClick={() => {
                       if (mode === "quick") startQuiz(QUICK_QUESTION_COUNT, "quick");
                       if (mode === "custom") {
@@ -901,7 +895,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                     }}
                   >
                     {copy.button}
-                  </button>
+                  </Button>
                 </article>
               );
             })}
@@ -910,8 +904,8 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
       ) : null}
 
       {phase === "custom-select" ? (
-        <section className="surface licenta-prep-panel">
-          <div className="licenta-prep-panel-head">
+        <SurfaceCard className={styles["licenta-prep-panel"]}>
+          <div className={styles["licenta-prep-panel-head"]}>
             <div>
               <span className="ui-section-label">Antrenament personalizat</span>
               <h2>Alege cate intrebari vrei sa faci acum.</h2>
@@ -919,46 +913,46 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                 Daca alegi mai multe intrebari decat exista disponibile, folosim toate intrebarile.
               </p>
             </div>
-            <button type="button" className="btn-link secondary" onClick={() => goToModes()}>
+            <Button variant="secondary" onClick={() => goToModes()}>
               Inapoi la moduri
-            </button>
+            </Button>
           </div>
 
-          <div className="licenta-prep-count-grid">
+          <div className={styles["licenta-prep-count-grid"]}>
             {CUSTOM_OPTIONS.map((count) => (
-              <button key={count} type="button" onClick={() => startQuiz(count, "custom")}>
+              <Button key={count} onClick={() => startQuiz(count, "custom")}>
                 {count} intrebari
-              </button>
+              </Button>
             ))}
           </div>
-        </section>
+        </SurfaceCard>
       ) : null}
 
       {phase === "quiz" ? (
         <>
-          <section className="result-box exam-info licenta-prep-running-bar">
-            <div className="exam-info-row">
+          <SurfaceCard className={styles["licenta-prep-running-bar"]}>
+            <div className={styles["exam-info-row"]}>
               <div>
-                <div className="exam-info-title">{activeModeCopy?.title || "Test licenta"}</div>
-                <div className="exam-info-meta">
+                <div className={styles["exam-info-title"]}>{activeModeCopy?.title || "Test licenta"}</div>
+                <div className={styles["exam-info-meta"]}>
                   {isVerificationMode
                     ? `Intrebari: ${currentQuestions.length} | Verificate: ${answeredCount} | Neverificate: ${currentQuestions.length - answeredCount}`
                     : `Intrebari: ${currentQuestions.length} | Raspunse: ${answeredCount} | Neraspunse: ${currentQuestions.length - answeredCount}`}
                 </div>
               </div>
-              <div className="licenta-prep-actions">
-                <button type="button" className="secondary" onClick={() => goToModes()}>
+              <div className={styles["licenta-prep-actions"]}>
+                <Button variant="secondary" onClick={() => goToModes()}>
                   Inapoi la moduri
-                </button>
+                </Button>
               </div>
             </div>
-          </section>
+          </SurfaceCard>
 
-          <div className="licenta-prep-question-list">
+          <div className={styles["licenta-prep-question-list"]}>
             {currentQuestions.map((question, index) => (
-              <article key={`${question.stableId}-${index}`} className="question licenta-prep-question">
-                <div className="question-inline-head">
-                  <div className="question-title">
+              <article key={`${question.stableId}-${index}`} className={`${quizStyles.question} ${styles["licenta-prep-question"]}`}>
+                <div className={quizStyles.inlineHead}>
+                  <div className={quizStyles.questionTitle}>
                     <span>{`${index + 1}. `}</span>
                     <span className="question-rich-text">{question.text}</span>
                   </div>
@@ -969,15 +963,13 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                 ) : null}
                 {isVerificationMode ? (
                   <>
-                    <div className="answers licenta-prep-answers licenta-prep-answers-check">
+                    <div className={`${quizStyles.answers} ${styles["licenta-prep-answers"]} ${styles["licenta-prep-answers-check"]}`}>
                       {question.answers.map((answer, answerIndex) => (
                         <div
                           key={`${question.stableId}-verify-${answerIndex}`}
-                          className={
-                            answerIndex === question.proposedIndex
-                              ? "licenta-prep-answer-row is-proposed"
-                              : "licenta-prep-answer-row"
-                          }
+                          className={`${styles["licenta-prep-answer-row"]}${
+                            answerIndex === question.proposedIndex ? ` ${styles["is-proposed"]}` : ""
+                          }`}
                         >
                           <span>
                             <span>{`${answerLabel(answerIndex)}. `}</span>
@@ -989,31 +981,31 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                         </div>
                       ))}
                     </div>
-                    <div className="licenta-prep-truth-actions" aria-label="Alege daca raspunsul propus este corect">
-                      <button
-                        type="button"
+                    <div className={styles["licenta-prep-truth-actions"]} aria-label="Alege daca raspunsul propus este corect">
+                      <Button
+                        variant="secondary"
                         aria-pressed={answers[index] === true}
-                        className={`secondary licenta-prep-truth-button is-correct-choice${answers[index] === true ? " is-selected" : ""}`}
+                        className={`${styles["licenta-prep-truth-button"]} ${styles["is-correct-choice"]}${answers[index] === true ? ` ${styles["is-selected"]}` : ""}`}
                         onClick={() => answerVerificationQuestion(index, true)}
                       >
                         Corect
-                      </button>
-                      <button
-                        type="button"
+                      </Button>
+                      <Button
+                        variant="secondary"
                         aria-pressed={answers[index] === false}
-                        className={`secondary licenta-prep-truth-button is-wrong-choice${answers[index] === false ? " is-selected" : ""}`}
+                        className={`${styles["licenta-prep-truth-button"]} ${styles["is-wrong-choice"]}${answers[index] === false ? ` ${styles["is-selected"]}` : ""}`}
                         onClick={() => answerVerificationQuestion(index, false)}
                       >
                         Gresit
-                      </button>
+                      </Button>
                     </div>
                   </>
                 ) : (
-                  <div className="answers licenta-prep-answers">
+                  <div className={`${quizStyles.answers} ${styles["licenta-prep-answers"]}`}>
                     {question.answers.map((answer, answerIndex) => (
                       <label
                         key={`${question.stableId}-${answerIndex}`}
-                        className={answers[index] === answerIndex ? "is-selected" : ""}
+                        className={`${quizStyles.answerLabel}${answers[index] === answerIndex ? ` ${styles["is-selected"]}` : ""}`}
                       >
                         <input
                           checked={answers[index] === answerIndex}
@@ -1034,7 +1026,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             ))}
           </div>
 
-          <section className="surface licenta-prep-finish-panel" aria-label="Finalizeaza runda">
+          <SurfaceCard className={styles["licenta-prep-finish-panel"]} aria-label="Finalizeaza runda">
             <div>
               <span className="ui-section-label">Runda aproape gata</span>
               <h2>Ai ajuns la finalul intrebarilor.</h2>
@@ -1044,28 +1036,27 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                   : `Ai raspuns la ${answeredCount} din ${currentQuestions.length} intrebari. Poti vedea rezultatul acum sau te poti intoarce la moduri.`}
               </p>
               {quizValidationMessage ? (
-                <p className="quiz-answer-required" role="alert">{quizValidationMessage}</p>
+                <InlineFeedback className={styles.validation} tone="error" role="alert">{quizValidationMessage}</InlineFeedback>
               ) : null}
             </div>
-            <div className="licenta-prep-actions">
-              <button type="button" className="secondary" onClick={() => goToModes()}>
+            <div className={styles["licenta-prep-actions"]}>
+              <Button variant="secondary" onClick={() => goToModes()}>
                 Inapoi la moduri
-              </button>
-              <button
-                type="button"
-                className={!hasAnsweredAllQuestions ? "is-disabled-soft" : ""}
+              </Button>
+              <Button
+                className={!hasAnsweredAllQuestions ? styles["is-disabled-soft"] : undefined}
                 onClick={finishQuiz}
               >
                 Vezi rezultatul
-              </button>
+              </Button>
             </div>
-          </section>
+          </SurfaceCard>
         </>
       ) : null}
 
       {phase === "browse" && browseQuestion ? (
-        <section className="surface licenta-prep-browse">
-          <div className="licenta-prep-panel-head">
+        <SurfaceCard className={styles["licenta-prep-browse"]}>
+          <div className={styles["licenta-prep-panel-head"]}>
             <div>
               <span className="ui-section-label">Parcurge intrebarile</span>
               <h2>{`Intrebarea ${browseIndex + 1} din ${currentQuestions.length}`}</h2>
@@ -1073,15 +1064,15 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
                 Raspunsul corect este ascuns pana cand alegi sa il vezi.
               </p>
             </div>
-            <button type="button" className="btn-link secondary" onClick={() => goToModes()}>
+            <Button variant="secondary" onClick={() => goToModes()}>
               Inapoi la moduri
-            </button>
+            </Button>
           </div>
 
-          <form className="licenta-browse-search" onSubmit={handleBrowseSearchSubmit}>
+          <form className={styles["licenta-browse-search"]} onSubmit={handleBrowseSearchSubmit}>
             <label htmlFor="licenta-browse-search-input">
               <span>Cauta rapid o intrebare</span>
-              <div className="licenta-browse-search-control">
+              <div className={styles["licenta-browse-search-control"]}>
                 <Search aria-hidden="true" size={18} strokeWidth={2.3} />
                 <input
                   ref={browseSearchInputRef}
@@ -1096,27 +1087,27 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             </label>
 
             {normalizedBrowseSearchQuery ? (
-              <div className="licenta-browse-search-results" aria-live="polite">
-                <div className="licenta-browse-search-meta">
+              <div className={styles["licenta-browse-search-results"]} aria-live="polite">
+                <div className={styles["licenta-browse-search-meta"]}>
                   <strong>
                     {browseSearchTotalCount
                       ? `${browseSearchTotalCount} ${browseSearchTotalCount === 1 ? "rezultat" : "rezultate"}`
                       : "Niciun rezultat"}
                   </strong>
                   {browseSearchQuery ? (
-                    <button type="button" className="inline-text-action" onClick={() => setBrowseSearchQuery("")}>
+                    <button type="button" className={styles["clear-action"]} onClick={() => setBrowseSearchQuery("")}>
                       Sterge cautarea
                     </button>
                   ) : null}
                 </div>
 
                 {browseSearchResults.length ? (
-                  <div className="licenta-browse-search-list">
+                  <div className={styles["licenta-browse-search-list"]}>
                     {browseSearchResults.map(({ question, index }) => (
                       <button
                         key={`${question.stableId}-search-${index}`}
                         type="button"
-                        className={`licenta-browse-search-result${index === browseIndex ? " is-active" : ""}`}
+                        className={`${styles["licenta-browse-search-result"]}${index === browseIndex ? ` ${styles["is-active"]}` : ""}`}
                         onClick={() => jumpToBrowseQuestion(index)}
                       >
                         <span>{`Intrebarea ${index + 1}`}</span>
@@ -1131,9 +1122,9 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             ) : null}
           </form>
 
-          <article className="question licenta-prep-question">
-            <div className="question-inline-head">
-              <div className="question-title">
+          <article className={`${quizStyles.question} ${styles["licenta-prep-question"]}`}>
+            <div className={quizStyles.inlineHead}>
+              <div className={quizStyles.questionTitle}>
                 <span className="question-rich-text">{browseQuestion.text}</span>
               </div>
               <QuestionCorrectionButton question={browseQuestion} onSaved={applySavedCorrection} />
@@ -1141,15 +1132,13 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             {getResultSubjectMeta(browseQuestion) ? (
               <div className="meta">{getResultSubjectMeta(browseQuestion)}</div>
             ) : null}
-            <div className="answers licenta-prep-answers is-review">
+            <div className={`${quizStyles.answers} ${styles["licenta-prep-answers"]} ${styles["is-review"]}`}>
               {browseQuestion.answers.map((answer, answerIndex) => (
                 <div
                   key={`${browseQuestion.stableId}-browse-${answerIndex}`}
-                  className={
-                    showBrowseAnswer && answerIndex === browseQuestion.correctIndex
-                      ? "licenta-prep-answer-row is-correct"
-                      : "licenta-prep-answer-row"
-                  }
+                  className={`${styles["licenta-prep-answer-row"]}${
+                    showBrowseAnswer && answerIndex === browseQuestion.correctIndex ? ` ${styles["is-correct"]}` : ""
+                  }`}
                 >
                   <span>
                     <span>{`${answerLabel(answerIndex)}. `}</span>
@@ -1166,161 +1155,134 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
             ) : null}
           </article>
 
-          <div className="licenta-prep-actions">
-            <button
-              type="button"
-              className="secondary"
+          <div className={styles["licenta-prep-actions"]}>
+            <Button
+              variant="secondary"
               disabled={browseIndex === 0}
               onClick={goToPreviousBrowseQuestion}
             >
               Intrebarea anterioara
-            </button>
+            </Button>
             {!showBrowseAnswer ? (
-              <button type="button" onClick={() => setShowBrowseAnswer(true)}>
+              <Button onClick={() => setShowBrowseAnswer(true)}>
                 Arata raspunsul
-              </button>
+              </Button>
             ) : (
-              <button type="button" onClick={goToNextBrowseQuestion}>
+              <Button onClick={goToNextBrowseQuestion}>
                 {browseIndex === currentQuestions.length - 1 ? "Incheie parcurgerea" : "Urmatoarea"}
-              </button>
+              </Button>
             )}
           </div>
-        </section>
+        </SurfaceCard>
       ) : null}
 
       {phase === "result" && resultSummary ? (
-        <section className="result-box licenta-prep-result">
-          <div className="licenta-prep-result-head">
-            <span className="licenta-prep-result-icon" aria-hidden="true">
-              {resultSummary.percentage > 80 ? <CheckCircle2 /> : <XCircle />}
-            </span>
-            <div>
-              <h2>Rezultat final</h2>
-              <p>{getResultMessage(resultSummary.percentage)}</p>
-            </div>
-          </div>
-
-          <div className="licenta-prep-score-grid">
-            <div>
-              <span>Scor</span>
-              <strong>{`${resultSummary.score} din ${resultSummary.total}`}</strong>
-            </div>
-            <div>
-              <span>Procent</span>
-              <strong>{`${resultSummary.percentage}%`}</strong>
-            </div>
-            <div>
-              <span>Greseli salvate</span>
-              <strong>{mistakeIds.length}</strong>
-            </div>
-          </div>
-
-          <hr className="result-divider" />
-          <h3>{isResultVerificationMode ? "Verificari gresite" : "Intrebari gresite"}</h3>
-
-          {resultSummary.wrongQuestions.length ? (
-            <div className="licenta-prep-wrong-list">
-              {resultSummary.wrongQuestions.map(({ question, selectedIndex, selectedTruth, proposedIndex }, index) => (
-                <article key={`${question.stableId}-wrong-${index}`} className="result-detail">
-                  <strong>{`${index + 1}. ${question.text}`}</strong>
-                  {getResultSubjectMeta(question) ? (
-                    <div className="result-meta">{getResultSubjectMeta(question)}</div>
-                  ) : null}
-                  {isResultVerificationMode ? (
-                    <div className="licenta-result-review-grid">
-                      <div className="licenta-result-review-item is-proposed">
-                        <span>Raspuns ales</span>
-                        <strong>
-                          {proposedIndex !== null && proposedIndex !== undefined
-                            ? `${answerLabel(proposedIndex)}. ${question.answers[proposedIndex]}`
-                            : "Fara raspuns propus"}
-                        </strong>
-                      </div>
-                      <div
-                        className={`licenta-result-review-item ${
-                          selectedTruth === true ? "is-positive" : selectedTruth === false ? "is-negative" : "is-muted"
-                        }`}
-                      >
-                        <span>Tu ai spus</span>
-                        <strong>
-                          {selectedTruth === true ? "Corect" : selectedTruth === false ? "Gresit" : "Fara raspuns"}
-                        </strong>
-                      </div>
-                      <div
-                        className={`licenta-result-review-item ${
-                          proposedIndex === question.correctIndex ? "is-positive" : "is-negative"
-                        }`}
-                      >
-                        <span>De fapt era</span>
-                        <strong>{proposedIndex === question.correctIndex ? "Corect" : "Gresit"}</strong>
-                      </div>
-                      <div className="licenta-result-review-item is-correct-answer">
-                        <span>Raspuns corect</span>
-                        <strong>{`${answerLabel(question.correctIndex)}. ${question.answers[question.correctIndex]}`}</strong>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="licenta-result-review-grid">
-                      <div className="licenta-result-review-item is-negative">
-                        <span>Raspunsul tau</span>
-                        <strong>
-                          {selectedIndex !== null && selectedIndex !== undefined
-                            ? `${answerLabel(selectedIndex)}. ${question.answers[selectedIndex]}`
-                            : "Fara raspuns"}
-                        </strong>
-                      </div>
-                      <div className="licenta-result-review-item is-correct-answer">
-                        <span>Raspuns corect</span>
-                        <strong>{`${answerLabel(question.correctIndex)}. ${question.answers[question.correctIndex]}`}</strong>
-                      </div>
-                    </div>
-                  )}
-                  {question.explanation ? (
-                    <div className="study-explanation">
-                      <strong>Explicatie</strong>
-                      <p>{question.explanation}</p>
-                    </div>
-                  ) : null}
-                </article>
-              ))}
-            </div>
-          ) : (
-            <p className="page-copy">
-              {isResultVerificationMode
-                ? "Nu ai ratat nicio verificare in aceasta runda."
-                : "Nu ai gresit nicio intrebare in aceasta runda."}
-            </p>
+        <TestResultPanel
+          title="Rezultat final"
+          score={resultSummary.score}
+          total={resultSummary.total}
+          percentage={resultSummary.percentage}
+          stats={[{ label: "Greseli salvate", value: mistakeIds.length }]}
+          wrongTitle={isResultVerificationMode ? "Verificari gresite" : "Intrebari gresite"}
+          wrongRows={resultSummary.wrongQuestions.map((row, index) => ({
+            ...row,
+            id: `${row.question.stableId}-wrong-${index}`,
+            questionText: row.question.text,
+            meta: getResultSubjectMeta(row.question)
+          }))}
+          renderWrongDetails={(row) => (
+            <>
+              {isResultVerificationMode ? (
+                <div className={resultStyles.reviewGrid}>
+                  <div className={`${resultStyles.reviewItem} ${resultStyles.proposed}`}>
+                    <span>Raspuns ales</span>
+                    <strong>
+                      {row.proposedIndex !== null && row.proposedIndex !== undefined
+                        ? `${answerLabel(row.proposedIndex)}. ${row.question.answers[row.proposedIndex]}`
+                        : "Fara raspuns propus"}
+                    </strong>
+                  </div>
+                  <div
+                    className={`${resultStyles.reviewItem} ${
+                      row.selectedTruth === true
+                        ? resultStyles.positive
+                        : row.selectedTruth === false
+                          ? resultStyles.negative
+                          : resultStyles.muted
+                    }`}
+                  >
+                    <span>Tu ai spus</span>
+                    <strong>
+                      {row.selectedTruth === true ? "Corect" : row.selectedTruth === false ? "Gresit" : "Fara raspuns"}
+                    </strong>
+                  </div>
+                  <div
+                    className={`${resultStyles.reviewItem} ${
+                      row.proposedIndex === row.question.correctIndex ? resultStyles.positive : resultStyles.negative
+                    }`}
+                  >
+                    <span>De fapt era</span>
+                    <strong>{row.proposedIndex === row.question.correctIndex ? "Corect" : "Gresit"}</strong>
+                  </div>
+                  <div className={`${resultStyles.reviewItem} ${resultStyles.correctAnswer}`}>
+                    <span>Raspuns corect</span>
+                    <strong>{`${answerLabel(row.question.correctIndex)}. ${row.question.answers[row.question.correctIndex]}`}</strong>
+                  </div>
+                </div>
+              ) : (
+                <div className={resultStyles.reviewGrid}>
+                  <div className={`${resultStyles.reviewItem} ${resultStyles.negative}`}>
+                    <span>Raspunsul tau</span>
+                    <strong>
+                      {row.selectedIndex !== null && row.selectedIndex !== undefined
+                        ? `${answerLabel(row.selectedIndex)}. ${row.question.answers[row.selectedIndex]}`
+                        : "Fara raspuns"}
+                    </strong>
+                  </div>
+                  <div className={`${resultStyles.reviewItem} ${resultStyles.correctAnswer}`}>
+                    <span>Raspuns corect</span>
+                    <strong>{`${answerLabel(row.question.correctIndex)}. ${row.question.answers[row.question.correctIndex]}`}</strong>
+                  </div>
+                </div>
+              )}
+              {row.question.explanation ? (
+                <div className="study-explanation">
+                  <strong>Explicatie</strong>
+                  <p>{row.question.explanation}</p>
+                </div>
+              ) : null}
+            </>
           )}
-
-          <div className="licenta-prep-actions licenta-prep-result-actions">
-            <button
-              type="button"
-              className="secondary"
-              disabled={!mistakeIds.length}
-              onClick={() => startQuiz(mistakeIds.length, "mistakes")}
-            >
-              Repeta greselile
-            </button>
-            <button type="button" onClick={repeatCurrentTest}>
-              Repeta testul
-            </button>
-            <button type="button" className="secondary" onClick={startAnotherTest}>
-              Mai fa un test
-            </button>
-            <button type="button" className="secondary" onClick={() => goToModes()}>
-              Inapoi la moduri
-            </button>
-          </div>
-
-          <div className="test-result-followup">
-            <CommunityComparisonPanel
-              stats={communityStats}
-              status={communityStatsStatus}
-              error={communityStatsError}
-            />
-            <GamificationResultPanel result={gamificationResult} />
-          </div>
-        </section>
+          emptyMessage={
+            isResultVerificationMode
+              ? "Nu ai ratat nicio verificare in aceasta runda."
+              : "Nu ai gresit nicio intrebare in aceasta runda."
+          }
+          actions={
+            <>
+              <Button
+                variant="secondary"
+                disabled={!mistakeIds.length}
+                onClick={() => startQuiz(mistakeIds.length, "mistakes")}
+              >
+                Repeta greselile
+              </Button>
+              <Button onClick={repeatCurrentTest}>Repeta testul</Button>
+              <Button variant="secondary" onClick={startAnotherTest}>Mai fa un test</Button>
+              <Button variant="secondary" onClick={() => goToModes()}>Inapoi la moduri</Button>
+            </>
+          }
+          insights={
+            <>
+              <CommunityComparisonPanel
+                stats={communityStats}
+                status={communityStatsStatus}
+                error={communityStatsError}
+              />
+              <GamificationResultPanel result={gamificationResult} />
+            </>
+          }
+        />
       ) : null}
     </section>
   );

@@ -60,7 +60,9 @@ const colocatedCssEntries = [
   { relativePath: "components/test-page-client.module.css", importantCeiling: 0 },
   { relativePath: "components/interactive-quiz.module.css", importantCeiling: 0 },
   { relativePath: "components/test-result-panel.module.css", importantCeiling: 0 },
-  { relativePath: "components/question-correction-button.module.css", importantCeiling: 0 }
+  { relativePath: "components/question-correction-button.module.css", importantCeiling: 0 },
+  { relativePath: "components/test-insight.module.css", importantCeiling: 0 },
+  { relativePath: "components/exam-page-client.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -238,6 +240,13 @@ const forbiddenSharedTestSelectors = [
 ].map(([selector]) => selector);
 if (forbiddenSharedTestSelectors.length) {
   failures.push(`Selectorii comuni de test au fost retrasi din globals.css: ${[...new Set(forbiddenSharedTestSelectors)].join(", ")}.`);
+}
+
+const forbiddenLicentaExamSelectors = [
+  ...legacyCss.matchAll(/\.(?:exam-empty-state|licenta-prep|licenta-browse|licenta-result|licenta-community|simple-test|subject-test-insight-link|test-result-followup)(?:-[A-Za-z_][\w-]*)?/g)
+].map(([selector]) => selector);
+if (forbiddenLicentaExamSelectors.length) {
+  failures.push(`Selectorii Teste/Licenta au fost retrasi din globals.css: ${[...new Set(forbiddenLicentaExamSelectors)].join(", ")}.`);
 }
 
 if (/\.public-pricing-[A-Za-z_][\w-]*/.test(legacyCss)) {

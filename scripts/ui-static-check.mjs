@@ -359,6 +359,9 @@ function inspectElement(filePath, node, context, ancestors) {
     if (/^(?:question-correction|question-source|test-recommended|test-mistakes)-/.test(token) || ["test-customize", "test-setup-actions"].includes(token)) {
       report(filePath, opening, `Clasa globala retrasa ${token} trebuie inlocuita cu CSS Module-ul colocat pentru teste.`);
     }
+    if (/^(?:exam-empty-state|licenta-prep|licenta-browse|licenta-result|licenta-community|simple-test|subject-test-insight-link|test-result-followup)(?:-|$)/.test(token)) {
+      report(filePath, opening, `Clasa globala retrasa ${token} trebuie inlocuita cu CSS Module-ul colocat pentru Teste si Licenta.`);
+    }
     if ([
       "pricing-section",
       "plan-grid",

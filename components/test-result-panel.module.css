@@ -108,6 +108,26 @@
   background: var(--bad-soft);
 }
 
+.proposed {
+  border-color: rgba(37, 99, 235, 0.28);
+  background: rgba(239, 246, 255, 0.9);
+}
+
+.positive {
+  border-color: rgba(31, 157, 99, 0.38);
+  background: #eef8f2;
+}
+
+.positive span,
+.positive strong {
+  color: #0e7a45;
+}
+
+.muted {
+  border-style: dashed;
+  opacity: 0.78;
+}
+
 .correctAnswer {
   border-color: #b8e1cc;
   background: var(--good-soft);

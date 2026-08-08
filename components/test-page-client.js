@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { syncSubjectProgress } from "@/lib/progress-client";
@@ -9,12 +8,13 @@ import { shuffleArray } from "@/lib/quiz";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
-import { Button } from "@/components/ui/action";
+import { ActionLink, Button } from "@/components/ui/action";
 import { SelectField } from "@/components/ui/form-field";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { InlineFeedback } from "@/components/ui/status";
 
 import styles from "./test-page-client.module.css";
+import insightStyles from "./test-insight.module.css";
 import quizStyles from "./test-quiz.module.css";
 
 function sanitizeQuestions(questions) {
@@ -179,11 +179,11 @@ function getPersonalBestText(stats) {
 function SubjectTestInsight({ stats, status, onRetry }) {
   const community = stats?.community || null;
   const comparison = getSubjectTestComparison(stats);
-  const toneClass = comparison ? ` is-${comparison.tone}` : " is-neutral";
+  const toneClass = insightStyles[comparison?.tone || "neutral"];
 
   if (status === "saving") {
     return (
-      <section className="simple-test-insight is-loading" aria-live="polite">
+      <section className={`${insightStyles.simplePanel} ${insightStyles.loading}`} aria-live="polite">
         <strong>Salvam rezultatul...</strong>
         <p>Statistica apare imediat dupa salvare.</p>
       </section>
@@ -192,46 +192,46 @@ function SubjectTestInsight({ stats, status, onRetry }) {
 
   if (status === "error") {
     return (
-      <section className="simple-test-insight is-muted" aria-live="polite">
+      <section className={`${insightStyles.simplePanel} ${insightStyles.muted}`} aria-live="polite">
         <strong>Scorul nu s-a salvat inca.</strong>
         <p>Rezultatul ramane pe ecran.</p>
-        <button className="btn-link secondary subject-test-insight-link" type="button" onClick={onRetry}>
+        <Button className={insightStyles.statsAction} variant="secondary" onClick={onRetry}>
           Reincearca salvarea
-        </button>
+        </Button>
       </section>
     );
   }
 
   if (!stats) {
     return (
-      <section className="simple-test-insight is-muted">
+      <section className={`${insightStyles.simplePanel} ${insightStyles.muted}`}>
         <strong>Statistica apare dupa salvare.</strong>
         <p>Poti continua testele intre timp.</p>
-        <Link className="btn-link secondary subject-test-insight-link" href="/statistici">
+        <ActionLink className={insightStyles.statsAction} variant="secondary" href="/statistici">
           Vezi statistici
-        </Link>
+        </ActionLink>
       </section>
     );
   }
 
   return (
-    <section className={`simple-test-insight${toneClass}`} aria-label="Statistici test">
-      <div className="simple-test-insight-head">
-        <span className="simple-test-insight-kicker">Comparatie comunitate</span>
+    <section className={`${insightStyles.simplePanel} ${toneClass}`} aria-label="Statistici test">
+      <div className={insightStyles.simpleHead}>
+        <span className={insightStyles.kicker}>Comparatie comunitate</span>
         <h3>{comparison?.title || "Rezultatul tau este salvat"}</h3>
         <p>{comparison?.detail || "Mai avem nevoie de cateva rezultate in comunitatea ta ca sa aratam comparatia."}</p>
       </div>
 
-      <div className="simple-test-comparison-row">
-        <div className="simple-test-score-card is-user">
+      <div className={insightStyles.compareRow}>
+        <div className={insightStyles.scoreCard}>
           <span>Tu</span>
           <strong>{`${stats.currentScore}%`}</strong>
         </div>
-        <div className="simple-test-score-card is-community">
+        <div className={insightStyles.scoreCard}>
           <span>Comunitatea</span>
           <strong>{community ? `${community.averageScore}%` : "In curs"}</strong>
         </div>
-        <div className="simple-test-delta-card">
+        <div className={insightStyles.scoreCard}>
           <span>Diferenta</span>
           <strong>
             {comparison
@@ -244,19 +244,19 @@ function SubjectTestInsight({ stats, status, onRetry }) {
         </div>
       </div>
 
-      <p className="simple-test-next-step">
+      <p className={insightStyles.nextStep}>
         <strong>Urmatorul pas:</strong> {getSimpleTestAdvice(stats)}
       </p>
-      <p className="simple-test-context">
+      <p className={insightStyles.context}>
         {`${getPersonalBestText(stats)}${
           comparison?.peerLabel ? ` Comparatia foloseste ${comparison.peerLabel}.` : ""
         }`}
       </p>
 
-      <div className="simple-test-insight-actions">
-        <Link className="btn-link secondary subject-test-insight-link" href="/statistici">
+      <div className={insightStyles.actions}>
+        <ActionLink className={insightStyles.statsAction} variant="secondary" href="/statistici">
           Mai multe statistici
-        </Link>
+        </ActionLink>
       </div>
     </section>
   );
