@@ -100,7 +100,6 @@ const LEGACY_UI_BASELINE = {
   "components/exam-page-client.js": { "btn-link": 6, secondary: 14, button: 4 },
   "components/feedback-launcher.js": { "textarea-input": 1, "btn-link": 2, secondary: 2, "input-search": 1, "error-state": 1, "success-state": 1, button: 1 },
   "components/free-tools-calculator.js": { button: 2 },
-  "components/gamification-result-panel.js": { "btn-link": 1, secondary: 1 },
   "components/home-page-client.js": { "test-link": 3 },
   "components/import-job-status-client.js": { "textarea-input": 2, "btn-link": 24, secondary: 27, "input-search": 3, button: 3, "status-pill": 3, "error-state": 6, "success-state": 1, "btn-back": 2 },
   "components/interactive-quiz.js": { "error-state": 1, "nav-btn": 2, secondary: 1 },
@@ -112,7 +111,6 @@ const LEGACY_UI_BASELINE = {
   "components/mode-grid.js": { button: 1, "btn-link": 1 },
   "components/onboarding-action-form.js": { "input-search": 1 },
   "components/onboarding-selection-step.js": { "test-link": 1, secondary: 2 },
-  "components/overall-stats-dashboard.js": { "btn-link": 4, secondary: 2 },
   "components/private-test-player.js": { "btn-link": 1, secondary: 1, button: 2 },
   "components/question-correction-button.js": { secondary: 3, button: 1 },
   "components/review-publish-bar.js": { button: 1, "btn-back": 1 },
@@ -142,7 +140,6 @@ const LEGACY_SURFACE_BASELINE = {
   "components/ai-question-bank-review-client.js": { surface: 4, "draft-card": 4 },
   "components/ai-workspace-highlight-card.js": { "ui-panel-card": 1 },
   "components/exam-page-client.js": { surface: 5 },
-  "components/gamification-progress-page.js": { surface: 4 },
   "components/home-page-client.js": { surface: 3 },
   "components/import-job-status-client.js": { surface: 4, "draft-card": 8 },
   "components/interactive-quiz.js": { surface: 1 },
@@ -150,7 +147,6 @@ const LEGACY_SURFACE_BASELINE = {
   "components/licenta-import-workspace-client.js": { "ui-panel-card": 6, "draft-card": 1 },
   "components/licenta-session-workspace-client.js": { surface: 5, "draft-card": 1 },
   "components/onboarding-selection-step.js": { "empty-state": 1 },
-  "components/overall-stats-dashboard.js": { surface: 7 },
   "components/private-test-player.js": { surface: 1 },
   "components/test-page-client.js": { surface: 2 },
   "components/testimonial-reward-form.js": { surface: 8 },
@@ -357,6 +353,9 @@ function inspectElement(filePath, node, context, ancestors) {
       if (!allowedPreview) {
         report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul dicționarului colocat.`);
       }
+    }
+    if (/^(?:gamification|licenta-stats|overall|dashboard-gamification)-/.test(token)) {
+      report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat pentru progres și statistici.`);
     }
   }
 

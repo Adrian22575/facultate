@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import {
   BarChart3,
@@ -11,7 +10,11 @@ import {
   Target
 } from "lucide-react";
 
+import { ActionLink } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
+
+import styles from "./overall-stats-dashboard.module.css";
 
 const TAB_ITEMS = [
   { key: "overview", label: "Rezumat" },
@@ -26,8 +29,8 @@ function valueOrPending(value, suffix = "") {
 
 function StatCard({ label, value, detail, icon: Icon }) {
   return (
-    <article className="licenta-stats-card">
-      <span className="licenta-stats-card-icon" aria-hidden="true">
+    <article className={styles["licenta-stats-card"]}>
+      <span className={styles["licenta-stats-card-icon"]} aria-hidden="true">
         <Icon />
       </span>
       <div>
@@ -41,15 +44,15 @@ function StatCard({ label, value, detail, icon: Icon }) {
 
 function BarRows({ rows, emptyLabel = "Nu există încă date." }) {
   if (!rows.length) {
-    return <p className="licenta-stats-empty-line">{emptyLabel}</p>;
+    return <p className={styles["licenta-stats-empty-line"]}>{emptyLabel}</p>;
   }
 
   return (
-    <div className="licenta-stats-bars">
+    <div className={styles["licenta-stats-bars"]}>
       {rows.map((row) => (
-        <div key={row.key} className="licenta-stats-bar-row">
+        <div key={row.key} className={styles["licenta-stats-bar-row"]}>
           <span>{row.label}</span>
-          <div className="licenta-stats-bar-track">
+          <div className={styles["licenta-stats-bar-track"]}>
             <div style={{ width: `${Math.max(row.percent, row.count ? 8 : 0)}%` }} />
           </div>
           <strong>{row.count}</strong>
@@ -62,7 +65,7 @@ function BarRows({ rows, emptyLabel = "Nu există încă date." }) {
 function TrendChart({ rows, emptyLabel }) {
   if (!rows.length) {
     return (
-      <div className="licenta-stats-chart-empty">
+      <div className={styles["licenta-stats-chart-empty"]}>
         <BarChart3 aria-hidden="true" />
         <p>{emptyLabel}</p>
       </div>
@@ -70,12 +73,12 @@ function TrendChart({ rows, emptyLabel }) {
   }
 
   return (
-    <div className="licenta-stats-trend">
-      <div className="licenta-stats-trend-bars" role="img" aria-label="Evoluția rezultatelor">
+    <div className={styles["licenta-stats-trend"]}>
+      <div className={styles["licenta-stats-trend-bars"]} role="img" aria-label="Evoluția rezultatelor">
         {rows.map((row) => (
-          <div key={row.key} className="licenta-stats-trend-bar-card">
+          <div key={row.key} className={styles["licenta-stats-trend-bar-card"]}>
             <strong>{`${row.score}%`}</strong>
-            <div className="licenta-stats-trend-bar-track">
+            <div className={styles["licenta-stats-trend-bar-track"]}>
               <div style={{ height: `${Math.max(8, Math.min(row.score, 100))}%` }} />
             </div>
             <span title={`${row.mode || "Activitate"} · ${row.score}%`}>{row.label}</span>
@@ -89,7 +92,7 @@ function TrendChart({ rows, emptyLabel }) {
 function SubjectRows({ rows }) {
   if (!rows.length) {
     return (
-      <div className="licenta-stats-empty-insight">
+      <div className={styles["licenta-stats-empty-insight"]}>
         <BookOpenCheck aria-hidden="true" />
         <p>Lucrează o materie pentru a vedea progresul aici.</p>
       </div>
@@ -97,7 +100,7 @@ function SubjectRows({ rows }) {
   }
 
   return (
-    <div className="overall-stat-list">
+    <div className={styles["overall-stat-list"]}>
       {rows.map((row) => (
         <article key={row.key}>
           <div>
@@ -117,7 +120,7 @@ function SubjectRows({ rows }) {
 function LearningRows({ rows }) {
   if (!rows.length) {
     return (
-      <div className="licenta-stats-empty-insight">
+      <div className={styles["licenta-stats-empty-insight"]}>
         <Brain aria-hidden="true" />
         <p>Folosește un material ca să îți urmărești activitatea aici.</p>
       </div>
@@ -125,7 +128,7 @@ function LearningRows({ rows }) {
   }
 
   return (
-    <div className="overall-stat-list">
+    <div className={styles["overall-stat-list"]}>
       {rows.map((row) => (
         <article key={row.key}>
           <div>
@@ -196,16 +199,20 @@ function LearningStatsPanel({ learning }) {
 
   return (
     <>
-      <section className="overall-section-head">
+      <section className={styles["overall-section-head"]}>
         <div>
           <h2>Materialele tale</h2>
         </div>
-        <Link className="btn-link secondary" href="/materiale/invata">
+        <ActionLink
+          variant="secondary"
+          className={styles["btn-link"]}
+          href="/materiale/invata"
+        >
           Deschide materialele
-        </Link>
+        </ActionLink>
       </section>
 
-      <div className="licenta-stats-grid overall-stats-compact-grid">
+      <div className={`${styles["licenta-stats-grid"]} ${styles["overall-stats-compact-grid"]}`}>
         <StatCard
           icon={Gauge}
           label="Scor mediu"
@@ -226,20 +233,23 @@ function LearningStatsPanel({ learning }) {
         />
       </div>
 
-      <section className="licenta-stats-main-grid overall-stats-simple-grid">
-        <article className="surface licenta-stats-panel licenta-stats-panel-wide">
-          <div className="licenta-stats-panel-head">
+      <section className={`${styles["licenta-stats-main-grid"]} ${styles["overall-stats-simple-grid"]}`}>
+        <SurfaceCard
+          as="article"
+          className={`${styles["licenta-stats-panel"]} ${styles["licenta-stats-panel-wide"]}`}
+        >
+          <div className={styles["licenta-stats-panel-head"]}>
             <h3>Materiale recente</h3>
           </div>
           <LearningRows rows={learning.rows} />
-        </article>
+        </SurfaceCard>
 
-        <article className="surface licenta-stats-panel">
-          <div className="licenta-stats-panel-head">
+        <SurfaceCard as="article" className={styles["licenta-stats-panel"]}>
+          <div className={styles["licenta-stats-panel-head"]}>
             <h3>Repetiții</h3>
           </div>
           <BarRows rows={flashcardRows} />
-        </article>
+        </SurfaceCard>
       </section>
     </>
   );
@@ -275,9 +285,9 @@ export function OverallStatsDashboard({ stats }) {
   ];
 
   return (
-    <div className="licenta-stats-dashboard overall-stats-dashboard">
+    <div className={`${styles["licenta-stats-dashboard"]} ${styles["overall-stats-dashboard"]}`}>
       <div
-        className="overall-stats-tabs"
+        className={styles["overall-stats-tabs"]}
         role="tablist"
         aria-label="Secțiuni statistici"
         onKeyDown={handleTablistKeyDown}
@@ -291,7 +301,7 @@ export function OverallStatsDashboard({ stats }) {
             aria-selected={activeTab === tab.key}
             aria-controls={`overall-panel-${tab.key}`}
             tabIndex={activeTab === tab.key ? 0 : -1}
-            className={activeTab === tab.key ? "is-active" : ""}
+            className={activeTab === tab.key ? styles["is-active"] : ""}
             onClick={() => setActiveTab(tab.key)}
           >
             {tab.label}
@@ -300,17 +310,17 @@ export function OverallStatsDashboard({ stats }) {
       </div>
 
       {activeTab === "overview" ? (
-        <section id="overall-panel-overview" className="overall-tab-panel" role="tabpanel" aria-labelledby="overall-tab-overview">
-          <article className="surface overall-stats-focus">
-            <span className="licenta-stats-card-icon" aria-hidden="true"><Target /></span>
+        <section id="overall-panel-overview" className={styles["overall-tab-panel"]} role="tabpanel" aria-labelledby="overall-tab-overview">
+          <SurfaceCard as="article" className={styles["overall-stats-focus"]}>
+            <span className={styles["licenta-stats-card-icon"]} aria-hidden="true"><Target /></span>
             <div>
               <h2>{nextStep.title}</h2>
               <p>{nextStep.detail}</p>
             </div>
-            <Link className="btn-link primary" href={nextStep.href}>{nextStep.cta}</Link>
-          </article>
+            <ActionLink className={styles["btn-link"]} href={nextStep.href}>{nextStep.cta}</ActionLink>
+          </SurfaceCard>
 
-          <div className="licenta-stats-grid overall-stats-compact-grid">
+          <div className={`${styles["licenta-stats-grid"]} ${styles["overall-stats-compact-grid"]}`}>
             <StatCard icon={Gauge} label="Scor mediu" value={valueOrPending(stats.overall.averageScore, "%")} />
             <StatCard icon={Target} label="Întrebări lucrate" value={stats.overall.totalActions} />
             <StatCard
@@ -324,56 +334,59 @@ export function OverallStatsDashboard({ stats }) {
       ) : null}
 
       {activeTab === "materii" ? (
-        <section id="overall-panel-materii" className="overall-tab-panel" role="tabpanel" aria-labelledby="overall-tab-materii">
-          <section className="overall-section-head">
+        <section id="overall-panel-materii" className={styles["overall-tab-panel"]} role="tabpanel" aria-labelledby="overall-tab-materii">
+          <section className={styles["overall-section-head"]}>
             <div><h2>Materiile tale</h2></div>
-            <Link className="btn-link secondary" href="/materii">Deschide materiile</Link>
+            <ActionLink variant="secondary" className={styles["btn-link"]} href="/materii">Deschide materiile</ActionLink>
           </section>
 
-          <article className="surface licenta-stats-panel">
-            <div className="licenta-stats-panel-head"><h3>Progres salvat</h3></div>
+          <SurfaceCard as="article" className={styles["licenta-stats-panel"]}>
+            <div className={styles["licenta-stats-panel-head"]}><h3>Progres salvat</h3></div>
             <SubjectRows rows={subjects.rows} />
-          </article>
+          </SurfaceCard>
 
-          <section className="licenta-stats-main-grid overall-stats-simple-grid">
-            <article className="surface licenta-stats-panel">
-              <div className="licenta-stats-panel-head">
+          <section className={`${styles["licenta-stats-main-grid"]} ${styles["overall-stats-simple-grid"]}`}>
+            <SurfaceCard as="article" className={styles["licenta-stats-panel"]}>
+              <div className={styles["licenta-stats-panel-head"]}>
                 <h3>Răspunsuri</h3>
-                <strong className="licenta-stats-big-percent">{`${subjects.overview.interactiveAccuracy}%`}</strong>
+                <strong className={styles["licenta-stats-big-percent"]}>{`${subjects.overview.interactiveAccuracy}%`}</strong>
               </div>
               <BarRows rows={answerRows} />
-            </article>
+            </SurfaceCard>
 
-            <article className="surface licenta-stats-panel licenta-stats-panel-wide">
-              <div className="licenta-stats-panel-head"><h3>Activitate recentă</h3></div>
+            <SurfaceCard
+              as="article"
+              className={`${styles["licenta-stats-panel"]} ${styles["licenta-stats-panel-wide"]}`}
+            >
+              <div className={styles["licenta-stats-panel-head"]}><h3>Activitate recentă</h3></div>
               <TrendChart rows={subjects.trend} emptyLabel="Activitatea apare după ce începi să lucrezi o materie." />
-            </article>
+            </SurfaceCard>
           </section>
         </section>
       ) : null}
 
       {activeTab === "licenta" ? (
-        <section id="overall-panel-licenta" className="overall-tab-panel" role="tabpanel" aria-labelledby="overall-tab-licenta">
-          <section className="overall-section-head">
+        <section id="overall-panel-licenta" className={styles["overall-tab-panel"]} role="tabpanel" aria-labelledby="overall-tab-licenta">
+          <section className={styles["overall-section-head"]}>
             <div><h2>Simulări</h2></div>
-            <Link className="btn-link primary" href="/licenta-exam">Începe o simulare</Link>
+            <ActionLink className={styles["btn-link"]} href="/licenta-exam">Începe o simulare</ActionLink>
           </section>
 
-          <div className="licenta-stats-grid overall-stats-compact-grid">
+          <div className={`${styles["licenta-stats-grid"]} ${styles["overall-stats-compact-grid"]}`}>
             <StatCard icon={Gauge} label="Cel mai bun scor" value={valueOrPending(licenta.overview.bestScore, "%")} />
             <StatCard icon={Target} label="Scor mediu" value={valueOrPending(licenta.overview.personalAverage, "%")} />
             <StatCard icon={GraduationCap} label="Runde finalizate" value={licenta.overview.personalAttemptCount} />
           </div>
 
-          <article className="surface licenta-stats-panel">
-            <div className="licenta-stats-panel-head"><h3>Evoluția scorurilor</h3></div>
+          <SurfaceCard as="article" className={styles["licenta-stats-panel"]}>
+            <div className={styles["licenta-stats-panel-head"]}><h3>Evoluția scorurilor</h3></div>
             <TrendChart rows={licenta.trend} emptyLabel="Rezultatele apar după primele simulări finalizate." />
-          </article>
+          </SurfaceCard>
         </section>
       ) : null}
 
       {activeTab === "invatare" ? (
-        <section id="overall-panel-invatare" className="overall-tab-panel" role="tabpanel" aria-labelledby="overall-tab-invatare">
+        <section id="overall-panel-invatare" className={styles["overall-tab-panel"]} role="tabpanel" aria-labelledby="overall-tab-invatare">
           <LearningStatsPanel learning={learning} />
         </section>
       ) : null}

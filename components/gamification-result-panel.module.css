@@ -1,0 +1,110 @@
+.gamification-result-panel {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid #d6e3f5;
+  border-radius: 18px;
+  background: #f7fbff;
+  animation: gamification-result-enter 180ms ease-out;
+}
+
+.gamification-result-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: #fff4da;
+  color: #b97700;
+}
+
+.gamification-result-panel strong,
+.gamification-result-panel p {
+  margin: 0;
+}
+
+.gamification-result-panel strong {
+  color: var(--ink);
+}
+
+.gamification-result-panel p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.gamification-result-level {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 8px;
+  color: #25416f;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.gamification-result-track {
+  overflow: hidden;
+  height: 7px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: #deebff;
+}
+
+.gamification-result-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1d5fc1, #1fae72);
+  transition: width 220ms ease;
+}
+
+.gamification-unlocked-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.gamification-unlocked-list span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid #bfe4ce;
+  border-radius: 999px;
+  background: #edf9f1;
+  color: #0f6b4b;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.gamification-result-link {
+  white-space: nowrap;
+}
+
+@keyframes gamification-result-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .gamification-result-panel {
+      grid-template-columns: 1fr;
+    }
+
+  .gamification-result-link {
+      width: 100%;
+    }
+}

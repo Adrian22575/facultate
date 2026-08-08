@@ -1,7 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { Trophy } from "lucide-react";
+
+import { ActionLink } from "@/components/ui/action";
+
+import styles from "./gamification-result-panel.module.css";
 
 export function GamificationResultPanel({ result }) {
   if (!result || !result.created) return null;
@@ -14,8 +17,8 @@ export function GamificationResultPanel({ result }) {
   const progressPercent = result.level?.progressPercent || 0;
 
   return (
-    <section className="gamification-result-panel" aria-label="Progres primit">
-      <span className="gamification-result-icon" aria-hidden="true">
+    <section className={styles["gamification-result-panel"]} aria-label="Progres primit">
+      <span className={styles["gamification-result-icon"]} aria-hidden="true">
         <Trophy size={20} strokeWidth={2.4} />
       </span>
       <div>
@@ -23,7 +26,7 @@ export function GamificationResultPanel({ result }) {
         <p>
           {`Total: ${result.totalPoints} puncte. Streak actual: ${result.currentStreak} zile.`}
         </p>
-        <div className="gamification-result-level">
+        <div className={styles["gamification-result-level"]}>
           <span>
             {currentLevel
               ? `Nivel: ${currentLevel.title}`
@@ -35,11 +38,11 @@ export function GamificationResultPanel({ result }) {
               : "Nivel maxim atins"}
           </span>
         </div>
-        <div className="gamification-result-track" aria-label="Progres catre urmatorul nivel">
+        <div className={styles["gamification-result-track"]} aria-label="Progres catre urmatorul nivel">
           <span style={{ width: `${progressPercent}%` }} />
         </div>
         {unlocked.length ? (
-          <div className="gamification-unlocked-list">
+          <div className={styles["gamification-unlocked-list"]}>
             {unlocked.map((achievement) => (
               <span key={achievement.key}>
                 {`${achievement.title}${achievement.bonusPoints ? ` +${achievement.bonusPoints}` : ""}`}
@@ -48,9 +51,13 @@ export function GamificationResultPanel({ result }) {
           </div>
         ) : null}
       </div>
-      <Link className="btn-link secondary gamification-result-link" href="/progresul-meu">
+      <ActionLink
+        variant="secondary"
+        className={styles["gamification-result-link"]}
+        href="/progresul-meu"
+      >
         Vezi progresul
-      </Link>
+      </ActionLink>
     </section>
   );
 }

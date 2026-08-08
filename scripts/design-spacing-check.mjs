@@ -44,7 +44,10 @@ const colocatedCssEntries = [
   { relativePath: "app/preturi/page.module.css", importantCeiling: 0 },
   { relativePath: "components/public-legal-page.module.css", importantCeiling: 0 },
   { relativePath: "components/editorial-page.module.css", importantCeiling: 10 },
-  { relativePath: "components/dictionary-page.module.css", importantCeiling: 2 }
+  { relativePath: "components/dictionary-page.module.css", importantCeiling: 2 },
+  { relativePath: "components/gamification-progress-page.module.css", importantCeiling: 0 },
+  { relativePath: "components/gamification-result-panel.module.css", importantCeiling: 0 },
+  { relativePath: "components/overall-stats-dashboard.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -226,6 +229,15 @@ const forbiddenDictionarySelectors = [...legacyCss.matchAll(/\.dictionary-[A-Za-
   .filter((selector) => selector !== ".dictionary-admin-preview");
 if (forbiddenDictionarySelectors.length) {
   failures.push(`Selectorii dictionary-* publici au fost retrași din globals.css: ${[...new Set(forbiddenDictionarySelectors)].join(", ")}.`);
+}
+
+const forbiddenProgressSelectors = [
+  ...legacyCss.matchAll(/\.(?:gamification|licenta-stats|overall|dashboard-gamification)-[A-Za-z_][\w-]*/g)
+].map(([selector]) => selector);
+if (forbiddenProgressSelectors.length) {
+  failures.push(
+    `Selectorii progres/statistici au fost retrași din globals.css: ${[...new Set(forbiddenProgressSelectors)].join(", ")}.`
+  );
 }
 
 if (legacyCss.includes('button[class=""]')) {
