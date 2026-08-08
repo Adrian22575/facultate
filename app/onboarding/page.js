@@ -17,12 +17,18 @@ import { isDemoUser } from "@/lib/demo-user";
 import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { ActionLink } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { InlineFeedback } from "@/components/ui/status";
 import {
   createAcademicUnitAction,
   createInstitutionAction,
   savePrimaryMembershipAction,
   updateUserTypeAction
 } from "@/app/onboarding/actions";
+
+import confirmationStyles from "./confirmation.module.css";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -162,11 +168,11 @@ function normalizeRequestedStep(step) {
 
 function StepIntro({ step, title, subtitle }) {
   return (
-    <div className="dashboard-header onboarding-step-header">
-      <div className="status-copy">
-        <span className="step-eyebrow">{step}</span>
+    <div className={["dashboard-header", styles["onboarding-step-header"]].filter(Boolean).join(" ")}>
+      <div className={["status-copy"].filter(Boolean).join(" ")}>
+        <span className={["step-eyebrow"].filter(Boolean).join(" ")}>{step}</span>
         <h2>{title}</h2>
-        {subtitle ? <p className="page-copy">{subtitle}</p> : null}
+        {subtitle ? <p className={["page-copy"].filter(Boolean).join(" ")}>{subtitle}</p> : null}
       </div>
     </div>
   );
@@ -272,20 +278,25 @@ function OnboardingProgress({ currentStep, steps }) {
   );
 
   return (
-    <div className="onboarding-progress" aria-label="Progres onboarding">
-      <div className="onboarding-progress-head">
-        <span className="step-eyebrow">
+    <div className={[styles["onboarding-progress"], confirmationStyles["onboarding-progress"]].filter(Boolean).join(" ")} aria-label="Progres onboarding">
+      <div className={[styles["onboarding-progress-head"], confirmationStyles["onboarding-progress-head"]].filter(Boolean).join(" ")}>
+        <span className={["step-eyebrow"].filter(Boolean).join(" ")}>
           Pasul {currentIndex + 1} din {steps.length}
         </span>
         <strong>{steps[currentIndex]?.label || "Onboarding"}</strong>
       </div>
-      <ol className="onboarding-progress-list" style={{ "--onboarding-step-count": steps.length }}>
+      <ol className={[styles["onboarding-progress-list"], confirmationStyles["onboarding-progress-list"]].filter(Boolean).join(" ")} style={{ "--onboarding-step-count": steps.length }}>
         {steps.map((step, index) => {
           const status = index < currentIndex ? "is-done" : index === currentIndex ? "is-active" : "is-next";
           return (
             <li
               key={step.key}
-              className={`onboarding-progress-item ${status}`}
+              className={[
+                styles["onboarding-progress-item"],
+                confirmationStyles["onboarding-progress-item"],
+                styles[status],
+                confirmationStyles[status]
+              ].filter(Boolean).join(" ")}
               aria-current={index === currentIndex ? "step" : undefined}
             >
               <span aria-hidden="true">{index < currentIndex ? "✓" : index + 1}</span>
@@ -301,10 +312,10 @@ function OnboardingProgress({ currentStep, steps }) {
 function OnboardingReviewPanel({ summaryItems }) {
   if (!summaryItems.length) {
     return (
-      <div className="onboarding-confirm-review-panel onboarding-confirm-review-empty">
-        <div className="onboarding-confirm-row">
-          <div className="onboarding-confirm-label">Rezumat</div>
-          <div className="onboarding-confirm-value">
+      <div className={[confirmationStyles["onboarding-confirm-review-panel"], confirmationStyles["onboarding-confirm-review-empty"]].filter(Boolean).join(" ")}>
+        <div className={[confirmationStyles["onboarding-confirm-row"]].filter(Boolean).join(" ")}>
+          <div className={[confirmationStyles["onboarding-confirm-label"]].filter(Boolean).join(" ")}>Rezumat</div>
+          <div className={[confirmationStyles["onboarding-confirm-value"]].filter(Boolean).join(" ")}>
             <strong>Incepe cu primul pas</strong>
             <span>Alegerile tale vor aparea aici pe masura ce continui.</span>
           </div>
@@ -314,16 +325,16 @@ function OnboardingReviewPanel({ summaryItems }) {
   }
 
   return (
-    <div className="onboarding-confirm-review-panel">
+    <div className={[confirmationStyles["onboarding-confirm-review-panel"]].filter(Boolean).join(" ")}>
       {summaryItems.map((item) => (
-        <div className="onboarding-confirm-row" key={item.key}>
-          <div className="onboarding-confirm-label">{item.label}</div>
-          <div className="onboarding-confirm-value">
+        <div className={[confirmationStyles["onboarding-confirm-row"]].filter(Boolean).join(" ")} key={item.key}>
+          <div className={[confirmationStyles["onboarding-confirm-label"]].filter(Boolean).join(" ")}>{item.label}</div>
+          <div className={[confirmationStyles["onboarding-confirm-value"]].filter(Boolean).join(" ")}>
             <strong>{item.value}</strong>
             {item.meta ? <span>{item.meta}</span> : null}
           </div>
           {item.clearHref ? (
-            <Link className="onboarding-confirm-change" href={item.clearHref}>
+            <Link className={[confirmationStyles["onboarding-confirm-change"]].filter(Boolean).join(" ")} href={item.clearHref}>
               Schimba
             </Link>
           ) : null}
@@ -339,13 +350,13 @@ function OnboardingSelectionContext({ summaryItems }) {
   }
 
   return (
-    <div className="onboarding-selection-context" aria-label="Alegerile tale de până acum">
+    <div className={[confirmationStyles["onboarding-selection-context"]].filter(Boolean).join(" ")} aria-label="Alegerile tale de până acum">
       {summaryItems.map((item) => (
-        <div key={item.key} className="onboarding-selection-context-item">
+        <div key={item.key} className={[confirmationStyles["onboarding-selection-context-item"]].filter(Boolean).join(" ")}>
           <span>{item.label}</span>
           <strong>{item.value}</strong>
           {item.clearHref ? (
-            <Link href={item.clearHref} className="onboarding-selection-context-change">
+            <Link href={item.clearHref} className={[confirmationStyles["onboarding-selection-context-change"]].filter(Boolean).join(" ")}>
               Schimbă
             </Link>
           ) : null}
@@ -367,15 +378,15 @@ function OnboardingStepCard({
   children
 }) {
   return (
-    <section className="onboarding-confirm-card onboarding-step-card" aria-label="Onboarding comunitate">
-      <div className="onboarding-confirm-top">
-        <div className="onboarding-confirm-head">
+    <SurfaceCard as="section" className={confirmationStyles["onboarding-confirm-card"]} aria-label="Onboarding comunitate">
+      <div className={[confirmationStyles["onboarding-confirm-top"]].filter(Boolean).join(" ")}>
+        <div className={[confirmationStyles["onboarding-confirm-head"]].filter(Boolean).join(" ")}>
           <div>
-            <div className="onboarding-confirm-badge">{badge}</div>
+            <div className={[confirmationStyles["onboarding-confirm-badge"]].filter(Boolean).join(" ")}>{badge}</div>
             <h1>{title}</h1>
             {subtitle ? <p>{subtitle}</p> : null}
           </div>
-          <div className="onboarding-confirm-status onboarding-confirm-status-blue">
+          <div className={[confirmationStyles["onboarding-confirm-status"], confirmationStyles["onboarding-confirm-status-blue"]].filter(Boolean).join(" ")}>
             <span aria-hidden="true" />
             {status}
           </div>
@@ -384,17 +395,21 @@ function OnboardingStepCard({
         <OnboardingProgress currentStep={currentStep} steps={steps} />
       </div>
 
-      <div className="onboarding-confirm-body">
+      <div className={[confirmationStyles["onboarding-confirm-body"]].filter(Boolean).join(" ")}>
         {summaryItems.length ? (
           <OnboardingSelectionContext summaryItems={summaryItems} />
         ) : null}
 
-        <div className={`onboarding-step-content${summaryItems.length ? "" : " onboarding-step-content-first"}`}>
-          <p className="onboarding-confirm-section-title">{sectionTitle}</p>
+        <div className={[
+          styles["onboarding-step-content"],
+          confirmationStyles["onboarding-step-content"],
+          !summaryItems.length && styles["onboarding-step-content-first"]
+        ].filter(Boolean).join(" ")}>
+          <p className={[confirmationStyles["onboarding-confirm-section-title"]].filter(Boolean).join(" ")}>{sectionTitle}</p>
           {children}
         </div>
       </div>
-    </section>
+    </SurfaceCard>
   );
 }
 
@@ -425,11 +440,11 @@ function OnboardingConfirmCard({
     "Comunitatea aleasa";
 
   return (
-    <section className="onboarding-confirm-card" aria-label="Confirmare comunitate">
-      <div className="onboarding-confirm-top">
-        <div className="onboarding-confirm-head">
+    <SurfaceCard as="section" className={confirmationStyles["onboarding-confirm-card"]} aria-label="Confirmare comunitate">
+      <div className={[confirmationStyles["onboarding-confirm-top"]].filter(Boolean).join(" ")}>
+        <div className={[confirmationStyles["onboarding-confirm-head"]].filter(Boolean).join(" ")}>
           <div>
-            <div className="onboarding-confirm-badge">
+            <div className={[confirmationStyles["onboarding-confirm-badge"]].filter(Boolean).join(" ")}>
               Pasul {currentIndex + 1} din {steps.length}
             </div>
             <h1>Confirma comunitatea</h1>
@@ -438,7 +453,7 @@ function OnboardingConfirmCard({
               modifica acum, fara sa pierzi selectiile deja facute.
             </p>
           </div>
-          <div className="onboarding-confirm-status">
+          <div className={[confirmationStyles["onboarding-confirm-status"]].filter(Boolean).join(" ")}>
             <span aria-hidden="true" />
             Gata de salvat
           </div>
@@ -447,38 +462,38 @@ function OnboardingConfirmCard({
         <OnboardingProgress currentStep={currentStep} steps={steps} />
       </div>
 
-      <div className="onboarding-confirm-body">
-        <p className="onboarding-confirm-section-title">Rezumat selectie</p>
+      <div className={[confirmationStyles["onboarding-confirm-body"]].filter(Boolean).join(" ")}>
+        <p className={[confirmationStyles["onboarding-confirm-section-title"]].filter(Boolean).join(" ")}>Rezumat selectie</p>
 
         <OnboardingReviewPanel summaryItems={summaryItems} />
 
-        <div className="onboarding-community-preview">
-          <div className="onboarding-community-left">
-            <div className="onboarding-community-mark">5+</div>
-            <div className="onboarding-community-copy">
+        <div className={[styles["onboarding-community-preview"]].filter(Boolean).join(" ")}>
+          <div className={[styles["onboarding-community-left"]].filter(Boolean).join(" ")}>
+            <div className={[styles["onboarding-community-mark"]].filter(Boolean).join(" ")}>5+</div>
+            <div className={[styles["onboarding-community-copy"]].filter(Boolean).join(" ")}>
               <p>Vei intra in comunitatea</p>
               <strong>{communityPreview}</strong>
             </div>
           </div>
         </div>
 
-        <form action={savePrimaryMembershipAction} className="onboarding-confirm-actions">
+        <form action={savePrimaryMembershipAction} className={[confirmationStyles["onboarding-confirm-actions"]].filter(Boolean).join(" ")}>
           <input type="hidden" name="userType" value={userType} />
           <input type="hidden" name="institutionId" value={institutionId} />
           <input type="hidden" name="programUnitId" value={selectedProgramUnitId} />
           <input type="hidden" name="edit" value={isEditingCommunity ? "1" : ""} />
           <input type="hidden" name="returnTo" value={isEditingCommunity ? "/cont" : requestedNextPath || "/"} />
 
-          <div className="onboarding-confirm-help">
+          <div className={[confirmationStyles["onboarding-confirm-help"]].filter(Boolean).join(" ")}>
             <strong>Ultimul pas.</strong> Dupa salvare, vei fi trimis la {returnDestinationLabel}.
           </div>
 
-          <div className="onboarding-confirm-button-group">
-            <Link className="onboarding-confirm-secondary" href={backHref}>
+          <div className={[confirmationStyles["onboarding-confirm-button-group"]].filter(Boolean).join(" ")}>
+            <ActionLink variant="secondary" className={confirmationStyles["onboarding-confirm-secondary"]} href={backHref}>
               Inapoi
-            </Link>
+            </ActionLink>
             <OnboardingSubmitButton
-              className="onboarding-confirm-primary"
+              className={[confirmationStyles["onboarding-confirm-primary"]].filter(Boolean).join(" ")}
               pendingLabel="Se salveaza comunitatea..."
             >
               Salveaza comunitatea
@@ -486,19 +501,19 @@ function OnboardingConfirmCard({
           </div>
         </form>
       </div>
-    </section>
+    </SurfaceCard>
   );
 }
 
 function OnboardingOutcome({ returnDestinationLabel }) {
   return (
-    <div className="onboarding-outcome">
-      <span className="step-eyebrow">Dupa confirmare</span>
-      <div className="onboarding-outcome-list">
+    <div className={[confirmationStyles["onboarding-outcome"]].filter(Boolean).join(" ")}>
+      <span className={["step-eyebrow"].filter(Boolean).join(" ")}>Dupa confirmare</span>
+      <div className={[confirmationStyles["onboarding-outcome-list"]].filter(Boolean).join(" ")}>
         <span>Testele generate folosesc automat comunitatea aleasa.</span>
         <span>Materialele pot fi grupate corect pe institutie.</span>
         <span>Testele partajate ajung la colegii potriviti.</span>
-        <span className="onboarding-outcome-return">
+        <span className={[confirmationStyles["onboarding-outcome-return"]].filter(Boolean).join(" ")}>
           Te trimitem la {returnDestinationLabel}.
         </span>
       </div>
@@ -508,20 +523,20 @@ function OnboardingOutcome({ returnDestinationLabel }) {
 
 function SummaryItem({ label, value, meta, clearHref, clearLabel = "Schimba" }) {
   return (
-    <article className="draft-card selected-summary selected-summary-compact">
-      <div className="draft-card-head">
-        <div className="status-copy">
-          <span className="step-eyebrow">{label}</span>
+    <SurfaceCard as="article" className={[confirmationStyles["selected-summary"], confirmationStyles["selected-summary-compact"]].filter(Boolean).join(" ")}>
+      <div className={confirmationStyles["summary-card-head"]}>
+        <div className={["status-copy"].filter(Boolean).join(" ")}>
+          <span className={["step-eyebrow"].filter(Boolean).join(" ")}>{label}</span>
           <strong>{value}</strong>
-          {meta ? <p className="page-copy">{meta}</p> : null}
+          {meta ? <p className={["page-copy"].filter(Boolean).join(" ")}>{meta}</p> : null}
         </div>
         {clearHref ? (
-          <Link className="btn-link secondary" href={clearHref}>
+          <ActionLink variant="secondary" size="compact" href={clearHref}>
             {clearLabel}
-          </Link>
+          </ActionLink>
         ) : null}
       </div>
-    </article>
+    </SurfaceCard>
   );
 }
 
@@ -531,11 +546,11 @@ function SummarySection({ items }) {
   }
 
   return (
-    <section className="surface">
-      <div className="status-copy">
-        <span className="step-eyebrow">Rezumat</span>
+    <SurfaceCard>
+      <div className={["status-copy"].filter(Boolean).join(" ")}>
+        <span className={["step-eyebrow"].filter(Boolean).join(" ")}>Rezumat</span>
       </div>
-      <div className="draft-list onboarding-summary-list">
+      <div className={confirmationStyles["onboarding-summary-list"]}>
         {items.map((item) => (
           <SummaryItem
             key={item.key}
@@ -547,7 +562,7 @@ function SummarySection({ items }) {
           />
         ))}
       </div>
-    </section>
+    </SurfaceCard>
   );
 }
 
@@ -858,59 +873,59 @@ export default async function OnboardingPage({ searchParams }) {
     if (currentStep === "user-type") {
       return (
         <OnboardingRoleChoiceLock>
-          <form action={updateUserTypeAction} className="plan-card onboarding-choice-card">
+          <SurfaceCard as="form" action={updateUserTypeAction} className={styles["onboarding-choice-card"]}>
             <input type="hidden" name="userType" value="student" />
             <input type="hidden" name="redirectBase" value="/onboarding" />
             <HiddenQueryFields
               entries={allSearchParams}
               exclude={["userType", "institutionId", "facultyId", "programId", "profileId"]}
             />
-            <div className="onboarding-choice-icon" aria-hidden="true">
+            <div className={[styles["onboarding-choice-icon"]].filter(Boolean).join(" ")} aria-hidden="true">
               <GraduationCap size={28} strokeWidth={2.1} />
             </div>
-            <div className="pricing-copy onboarding-choice-copy">
-              <span className="onboarding-choice-kicker">Universitate</span>
+            <div className={[styles["pricing-copy"], styles["onboarding-choice-copy"]].filter(Boolean).join(" ")}>
+              <span className={[styles["onboarding-choice-kicker"]].filter(Boolean).join(" ")}>Universitate</span>
               <strong>Student</strong>
-              <p className="page-copy">Alegi universitatea, facultatea si specializarea.</p>
+              <p className={["page-copy"].filter(Boolean).join(" ")}>Alegi universitatea, facultatea si specializarea.</p>
             </div>
-            <div className="onboarding-choice-route" aria-hidden="true">
+            <div className={[styles["onboarding-choice-route"]].filter(Boolean).join(" ")} aria-hidden="true">
               <span>Universitate</span>
               <ArrowRight size={14} strokeWidth={2.3} />
               <span>Facultate</span>
               <ArrowRight size={14} strokeWidth={2.3} />
               <span>Specializare</span>
             </div>
-            <OnboardingSubmitButton className="onboarding-choice-action" pendingLabel="Pregatim pasul urmator...">
+            <OnboardingSubmitButton className={[styles["onboarding-choice-action"]].filter(Boolean).join(" ")} pendingLabel="Pregatim pasul urmator...">
               <span>Continua ca student</span>
               <ArrowRight aria-hidden="true" size={17} strokeWidth={2.4} />
             </OnboardingSubmitButton>
-          </form>
+          </SurfaceCard>
 
-          <form action={updateUserTypeAction} className="plan-card onboarding-choice-card">
+          <SurfaceCard as="form" action={updateUserTypeAction} className={styles["onboarding-choice-card"]}>
             <input type="hidden" name="userType" value="elev" />
             <input type="hidden" name="redirectBase" value="/onboarding" />
             <HiddenQueryFields
               entries={allSearchParams}
               exclude={["userType", "institutionId", "facultyId", "programId", "profileId"]}
             />
-            <div className="onboarding-choice-icon is-school" aria-hidden="true">
+            <div className={[styles["onboarding-choice-icon"], styles["is-school"]].filter(Boolean).join(" ")} aria-hidden="true">
               <School size={28} strokeWidth={2.1} />
             </div>
-            <div className="pricing-copy onboarding-choice-copy">
-              <span className="onboarding-choice-kicker">Liceu sau scoala</span>
+            <div className={[styles["pricing-copy"], styles["onboarding-choice-copy"]].filter(Boolean).join(" ")}>
+              <span className={[styles["onboarding-choice-kicker"]].filter(Boolean).join(" ")}>Liceu sau scoala</span>
               <strong>Elev</strong>
-              <p className="page-copy">Alegi liceul sau scoala. Profilul ramane optional.</p>
+              <p className={["page-copy"].filter(Boolean).join(" ")}>Alegi liceul sau scoala. Profilul ramane optional.</p>
             </div>
-            <div className="onboarding-choice-route" aria-hidden="true">
+            <div className={[styles["onboarding-choice-route"]].filter(Boolean).join(" ")} aria-hidden="true">
               <span>Institutie</span>
               <ArrowRight size={14} strokeWidth={2.3} />
               <span>Profil optional</span>
             </div>
-            <OnboardingSubmitButton className="onboarding-choice-action" pendingLabel="Pregatim pasul urmator...">
+            <OnboardingSubmitButton className={[styles["onboarding-choice-action"]].filter(Boolean).join(" ")} pendingLabel="Pregatim pasul urmator...">
               <span>Continua ca elev</span>
               <ArrowRight aria-hidden="true" size={17} strokeWidth={2.4} />
             </OnboardingSubmitButton>
-          </form>
+          </SurfaceCard>
         </OnboardingRoleChoiceLock>
       );
     }
@@ -944,7 +959,7 @@ export default async function OnboardingPage({ searchParams }) {
           addPanel={
             <OnboardingActionForm
               action={createInstitutionAction}
-              className="ai-form draft-card onboarding-inline-panel"
+              className={styles["onboarding-inline-panel"]}
               hiddenFields={[
                 { name: "userType", value: userType },
                 { name: "edit", value: isEditingCommunity ? "1" : "" },
@@ -1012,7 +1027,7 @@ export default async function OnboardingPage({ searchParams }) {
           addPanel={
             <OnboardingActionForm
               action={createAcademicUnitAction}
-              className="ai-form draft-card onboarding-inline-panel"
+              className={styles["onboarding-inline-panel"]}
               hiddenFields={[
                 { name: "userType", value: userType },
                 { name: "institutionId", value: institutionId },
@@ -1061,7 +1076,7 @@ export default async function OnboardingPage({ searchParams }) {
           addPanel={
             <OnboardingActionForm
               action={createAcademicUnitAction}
-              className="ai-form draft-card onboarding-inline-panel"
+              className={styles["onboarding-inline-panel"]}
               hiddenFields={[
                 { name: "userType", value: userType },
                 { name: "institutionId", value: institutionId },
@@ -1124,7 +1139,7 @@ export default async function OnboardingPage({ searchParams }) {
           addPanel={
             <OnboardingActionForm
               action={createAcademicUnitAction}
-              className="ai-form draft-card onboarding-inline-panel"
+              className={styles["onboarding-inline-panel"]}
               hiddenFields={[
                 { name: "userType", value: userType },
                 { name: "institutionId", value: institutionId },
@@ -1157,13 +1172,13 @@ export default async function OnboardingPage({ searchParams }) {
   }
 
   return (
-    <main className="app-shell onboarding-shell">
+    <main className={["app-shell", styles["onboarding-shell"]].filter(Boolean).join(" ")}>
       <AppHeader
         action={
           isOnboardingComplete ? (
-            <Link className="btn-back" href="/cont">
+            <ActionLink variant="secondary" href="/cont">
               Inapoi la cont
-            </Link>
+            </ActionLink>
           ) : null
         }
         hidePrivateNav={!isOnboardingComplete}
@@ -1173,21 +1188,21 @@ export default async function OnboardingPage({ searchParams }) {
       />
 
       {setupWarning ? (
-        <section className="surface">
-          <div className="error-state" role="alert">{setupWarning}</div>
-        </section>
+        <SurfaceCard>
+          <InlineFeedback tone="error" role="alert">{setupWarning}</InlineFeedback>
+        </SurfaceCard>
       ) : null}
 
       {onboardingError ? (
-        <section className="surface">
-          <div className="error-state" role="alert">{onboardingError}</div>
-        </section>
+        <SurfaceCard>
+          <InlineFeedback tone="error" role="alert">{onboardingError}</InlineFeedback>
+        </SurfaceCard>
       ) : null}
 
       {currentCommunityLabel && isEditingCommunity ? (
-        <section className="surface onboarding-current-community">
+        <SurfaceCard className={styles["onboarding-current-community"]}>
           <SummaryItem label="Comunitatea actuala" value={currentCommunityLabel} />
-        </section>
+        </SurfaceCard>
       ) : null}
 
       {currentStep !== "confirm" ? (
@@ -1203,258 +1218,6 @@ export default async function OnboardingPage({ searchParams }) {
         >
           {renderStepContent()}
         </OnboardingStepCard>
-      ) : null}
-
-      {false && currentStep === "institution" ? (
-        <section className="surface onboarding-active-step">
-          <StepIntro
-            step="Pasul 2"
-            title={userType === "student" ? "Alege universitatea" : "Alege liceul sau scoala"}
-            subtitle="Scrii si lista se filtreaza instant."
-          />
-
-          <OnboardingSelectionStep
-            searchPlaceholder={
-              userType === "student"
-                ? "Scrie numele universitatii..."
-                : "Scrie numele liceului sau scolii..."
-            }
-            items={institutions.map((institution) => ({
-              id: institution.id,
-              title: institution.name,
-              subtitle: [institution.city, institution.county].filter(Boolean).join(" · "),
-              selected: institution.id === institutionId,
-              href: buildHref(allSearchParams, {
-                step: "",
-                institutionId: institution.id,
-                facultyId: "",
-                programId: "",
-                profileId: ""
-              })
-            }))}
-            emptyMessage="Nu exista inca institutii aici. Adauga una si continui imediat."
-            addButtonLabel="Nu gasesti institutia? Adauga"
-            addPanel={
-              <OnboardingActionForm
-                action={createInstitutionAction}
-                className="ai-form draft-card onboarding-inline-panel"
-                hiddenFields={[
-                  { name: "userType", value: userType },
-                  { name: "edit", value: isEditingCommunity ? "1" : "" },
-                  { name: "source", value: isEditingCommunity ? "query" : "" },
-                  { name: "next", value: requestedNextPath },
-                  { name: "redirectBase", value: "/onboarding" }
-                ]}
-                rows={[
-                  [
-                    {
-                      name: "name",
-                      label: "Nume",
-                      placeholder:
-                        userType === "student"
-                          ? "Ex: Universitatea Babes-Bolyai"
-                          : "Ex: Colegiul National Gheorghe Lazar",
-                      required: true,
-                      minLength: 2,
-                      errorMessage: "Scrie numele institutiei."
-                    },
-                    {
-                      name: "city",
-                      label: "Oras",
-                      placeholder: "Ex: Cluj-Napoca",
-                      required: true,
-                      minLength: 2,
-                      errorMessage: "Scrie orasul."
-                    }
-                  ],
-                  [
-                    {
-                      name: "county",
-                      label: "Judet",
-                      placeholder: "Optional",
-                      required: false,
-                      maxLength: 120
-                    }
-                  ]
-                ]}
-                submitLabel="Adauga institutia"
-              />
-            }
-          />
-        </section>
-      ) : null}
-
-      {false && currentStep === "faculty" ? (
-        <section className="surface onboarding-active-step">
-          <StepIntro
-            step="Pasul 3"
-            title="Alege facultatea"
-            subtitle="Alegi facultatea si mergi direct mai departe."
-          />
-
-          <OnboardingSelectionStep
-            searchPlaceholder="Scrie numele facultatii..."
-            items={faculties.map((faculty) => ({
-              id: faculty.id,
-              title: faculty.name,
-              selected: faculty.id === facultyId,
-              href: buildHref(allSearchParams, {
-                step: "",
-                facultyId: faculty.id,
-                programId: ""
-              })
-            }))}
-            emptyMessage="Nu exista inca facultati pentru universitatea asta. Adauga prima facultate."
-            addButtonLabel="Nu gasesti facultatea? Adauga"
-            addPanel={
-              <OnboardingActionForm
-                action={createAcademicUnitAction}
-                className="ai-form draft-card onboarding-inline-panel"
-                hiddenFields={[
-                  { name: "userType", value: userType },
-                  { name: "institutionId", value: institutionId },
-                  { name: "unitType", value: "faculty" },
-                  { name: "edit", value: isEditingCommunity ? "1" : "" },
-                  { name: "source", value: isEditingCommunity ? "query" : "" },
-                  { name: "next", value: requestedNextPath },
-                  { name: "redirectBase", value: "/onboarding" }
-                ]}
-                rows={[
-                  [
-                    {
-                      name: "name",
-                      label: "Numele facultatii",
-                      placeholder: "Ex: Facultatea de Informatica",
-                      required: true,
-                      minLength: 2,
-                      errorMessage: "Scrie numele facultatii."
-                    }
-                  ]
-                ]}
-                submitLabel="Adauga facultatea"
-              />
-            }
-          />
-        </section>
-      ) : null}
-
-      {false && currentStep === "program" ? (
-        <section className="surface onboarding-active-step">
-          <StepIntro
-            step="Pasul 4"
-            title="Alege specializarea"
-            subtitle="Dupa selectie mergi direct la confirmare."
-          />
-
-          <OnboardingSelectionStep
-            searchPlaceholder="Scrie numele specializarii..."
-            items={programs.map((program) => ({
-              id: program.id,
-              title: program.name,
-              selected: program.id === programId,
-              href: buildHref(allSearchParams, {
-                step: "",
-                programId: program.id
-              })
-            }))}
-            emptyMessage="Nu exista inca specializari pentru facultatea asta. Adauga prima specializare."
-            addButtonLabel="Nu gasesti specializarea? Adauga"
-            addPanel={
-              <OnboardingActionForm
-                action={createAcademicUnitAction}
-                className="ai-form draft-card onboarding-inline-panel"
-                hiddenFields={[
-                  { name: "userType", value: userType },
-                  { name: "institutionId", value: institutionId },
-                  { name: "unitType", value: "program" },
-                  { name: "parentUnitId", value: facultyId },
-                  { name: "edit", value: isEditingCommunity ? "1" : "" },
-                  { name: "source", value: isEditingCommunity ? "query" : "" },
-                  { name: "next", value: requestedNextPath },
-                  { name: "redirectBase", value: "/onboarding" }
-                ]}
-                rows={[
-                  [
-                    {
-                      name: "name",
-                      label: "Numele specializarii",
-                      placeholder: "Ex: Informatica Economica",
-                      required: true,
-                      minLength: 2,
-                      errorMessage: "Scrie numele specializarii."
-                    }
-                  ]
-                ]}
-                submitLabel="Adauga specializarea"
-              />
-            }
-          />
-        </section>
-      ) : null}
-
-      {false && currentStep === "profile" ? (
-        <section className="surface onboarding-active-step">
-          <StepIntro
-            step="Pasul 3"
-            title="Alege profilul"
-            subtitle="Daca nu conteaza, poti continua si fara profil."
-          />
-
-          <OnboardingSelectionStep
-            searchPlaceholder="Scrie numele profilului..."
-            items={[
-              ...profiles.map((profile) => ({
-                id: profile.id,
-                title: profile.name,
-                selected: profile.id === profileId,
-                href: buildHref(allSearchParams, {
-                  step: "",
-                  profileId: profile.id
-                })
-              })),
-              {
-                id: "none",
-                title: "Continua fara profil",
-                subtitle: "Folosim doar institutia aleasa.",
-                selected: profileId === "none",
-                href: buildHref(allSearchParams, {
-                  step: "",
-                  profileId: "none"
-                })
-              }
-            ]}
-            emptyMessage="Nu exista inca profiluri aici. Poti continua fara profil sau poti adauga unul."
-            addButtonLabel="Nu gasesti profilul? Adauga"
-            addPanel={
-              <OnboardingActionForm
-                action={createAcademicUnitAction}
-                className="ai-form draft-card onboarding-inline-panel"
-                hiddenFields={[
-                  { name: "userType", value: userType },
-                  { name: "institutionId", value: institutionId },
-                  { name: "unitType", value: "profile" },
-                  { name: "edit", value: isEditingCommunity ? "1" : "" },
-                  { name: "source", value: isEditingCommunity ? "query" : "" },
-                  { name: "next", value: requestedNextPath },
-                  { name: "redirectBase", value: "/onboarding" }
-                ]}
-                rows={[
-                  [
-                    {
-                      name: "name",
-                      label: "Numele profilului",
-                      placeholder: "Ex: Matematica-Informatica",
-                      required: true,
-                      minLength: 2,
-                      errorMessage: "Scrie numele profilului."
-                    }
-                  ]
-                ]}
-                submitLabel="Adauga profilul"
-              />
-            }
-          />
-        </section>
       ) : null}
 
       {currentStep === "confirm" ? (

@@ -1,0 +1,17 @@
+.onboarding-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.onboarding-type-grid.is-submitting > form {
+  pointer-events: none;
+  opacity: 0.62;
+}
+
+@media (max-width: 760px) {
+  .onboarding-type-grid {
+    grid-template-columns: 1fr;
+  }
+}

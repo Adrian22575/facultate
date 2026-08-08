@@ -67,7 +67,12 @@ const colocatedCssEntries = [
   { relativePath: "app/auth/auth-route.module.css", importantCeiling: 0 },
   { relativePath: "components/email-auth-panel.module.css", importantCeiling: 0 },
   { relativePath: "components/password-reset-form.module.css", importantCeiling: 0 },
-  { relativePath: "components/google-sign-in-button.module.css", importantCeiling: 0 }
+  { relativePath: "components/google-sign-in-button.module.css", importantCeiling: 0 },
+  { relativePath: "app/onboarding/page.module.css", importantCeiling: 0 },
+  { relativePath: "app/onboarding/confirmation.module.css", importantCeiling: 0 },
+  { relativePath: "components/onboarding-selection-step.module.css", importantCeiling: 0 },
+  { relativePath: "components/onboarding-action-form.module.css", importantCeiling: 0 },
+  { relativePath: "components/onboarding-role-choice-lock.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -262,6 +267,15 @@ const forbiddenAuthSelectors = [
 if (forbiddenAuthSelectors.length) {
   failures.push(
     `Selectorii Auth au fost retrași din globals.css: ${[...new Set(forbiddenAuthSelectors)].join(", ")}.`
+  );
+}
+
+const forbiddenOnboardingSelectors = [...legacyCss.matchAll(/\.onboarding-[A-Za-z_][\w-]*/g)]
+  .map(([selector]) => selector)
+  .filter((selector) => selector !== ".onboarding-form-field");
+if (forbiddenOnboardingSelectors.length) {
+  failures.push(
+    `Selectorii Onboarding au fost retrasi din globals.css, cu exceptia puntii shared .onboarding-form-field: ${[...new Set(forbiddenOnboardingSelectors)].join(", ")}.`
   );
 }
 

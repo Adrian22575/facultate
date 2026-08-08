@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import styles from "./onboarding-role-choice-lock.module.css";
 
 export function OnboardingRoleChoiceLock({ children }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,7 +21,7 @@ export function OnboardingRoleChoiceLock({ children }) {
 
   return (
     <div
-      className={`mode-grid onboarding-type-grid${isSubmitting ? " is-submitting" : ""}`}
+      className={[styles["onboarding-type-grid"], isSubmitting && styles["is-submitting"]].filter(Boolean).join(" ")}
       aria-busy={isSubmitting ? "true" : undefined}
       onSubmitCapture={handleSubmitCapture}
     >

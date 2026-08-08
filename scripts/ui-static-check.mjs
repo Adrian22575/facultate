@@ -67,7 +67,6 @@ const LEGACY_UI_BASELINE = {
   "app/materii/[subjectId]/page.js": { "btn-back": 1 },
   "app/materii/[subjectId]/studiu/page.js": { "btn-back": 1 },
   "app/materii/[subjectId]/test/page.js": { "btn-back": 1 },
-  "app/onboarding/page.js": { "btn-link": 1, secondary: 1, "btn-back": 1, "error-state": 2 },
   "app/setup/page.js": { "btn-back": 2, "btn-link": 2, secondary: 2, "error-state": 2 },
   "app/testele-mele/page.js": { "btn-back": 2, "success-state": 1, "error-state": 2, "btn-link": 4, secondary: 4 },
   "app/testele-mele/[testId]/page.js": { "btn-back": 1 },
@@ -101,8 +100,6 @@ const LEGACY_UI_BASELINE = {
   "components/licenta-session-workspace-client.js": { "success-state": 1, "status-pill": 3, "error-state": 1, "btn-link": 17, secondary: 20, "btn-back": 2, "textarea-input": 1, "input-search": 1, button: 2 },
   "components/linkedin-distribution-settings.js": { "btn-back": 1 },
   "components/mode-grid.js": { button: 1, "btn-link": 1 },
-  "components/onboarding-action-form.js": { "input-search": 1 },
-  "components/onboarding-selection-step.js": { "test-link": 1, secondary: 2 },
   "components/private-test-player.js": { "btn-link": 1, secondary: 1, button: 2 },
   "components/question-correction-button.js": { secondary: 3, button: 1 },
   "components/review-publish-bar.js": { button: 1, "btn-back": 1 },
@@ -120,7 +117,6 @@ const LEGACY_SURFACE_BASELINE = {
   "app/ai/drafts/[testId]/page.js": { surface: 5, "draft-card": 1 },
   "app/ai/review/[bankId]/page.js": { surface: 2 },
   "app/demo/page.js": { surface: 2 },
-  "app/onboarding/page.js": { surface: 8, "draft-card": 9 },
   "app/setup/page.js": { surface: 6, "draft-card": 1, "empty-state": 2 },
   "app/testele-mele/page.js": { surface: 4, "draft-card": 3, "empty-state": 3 },
   "components/admin-dictionary-panel.js": { surface: 1 },
@@ -136,7 +132,6 @@ const LEGACY_SURFACE_BASELINE = {
   "components/learning-upload-form.js": { surface: 1 },
   "components/licenta-import-workspace-client.js": { "ui-panel-card": 6, "draft-card": 1 },
   "components/licenta-session-workspace-client.js": { surface: 5, "draft-card": 1 },
-  "components/onboarding-selection-step.js": { "empty-state": 1 },
   "components/private-test-player.js": { surface: 1 },
   "components/test-page-client.js": { surface: 2 },
   "components/workspace-generate-form.js": { "ui-panel-card": 7 },
@@ -333,6 +328,18 @@ function inspectElement(filePath, node, context, ancestors) {
     ]);
     if (/^(?:nota5plus|email-auth|auth-password|auth|google-signin)-/.test(token) && !sharedNota5PlusTokens.has(token)) {
       report(filePath, opening, `Clasa globală Auth retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat.`);
+    }
+    if (/^onboarding-/.test(token)) {
+      const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+      const sharedFieldOwners = new Set([
+        "components/ai-activity-center-client.js",
+        "components/feedback-launcher.js",
+        "components/workspace-subject-picker.js"
+      ]);
+      const allowedSharedField = token === "onboarding-form-field" && sharedFieldOwners.has(relativePath);
+      if (!allowedSharedField) {
+        report(filePath, opening, `Clasa globala Onboarding retrasa ${token} trebuie inlocuita cu CSS Module-ul colocat.`);
+      }
     }
     if (/^free-tools?-/.test(token)) {
       report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat.`);

@@ -1,0 +1,27 @@
+.onboarding-form-grid,
+.onboarding-form-stack {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+
+.onboarding-form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.onboarding-form-field {
+  align-content: start;
+}
+
+.onboarding-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .onboarding-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

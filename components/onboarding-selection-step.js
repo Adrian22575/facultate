@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { cloneElement, isValidElement, useMemo, useState } from "react";
 import { ArrowRight, Building2, GraduationCap, School, Sparkles } from "lucide-react";
 
 import { FilterSearch } from "@/components/ui/collection-controls";
+import { ActionLink, Button } from "@/components/ui/action";
+import { EmptyState } from "@/components/ui/state";
+import styles from "./onboarding-selection-step.module.css";
 
 const SELECTION_VISUALS = {
   institution: { icon: Building2, label: "instituția" },
@@ -108,11 +110,11 @@ export function OnboardingSelectionStep({
   );
 
   return (
-    <div className="onboarding-step-body">
+    <div className={[styles["onboarding-step-body"]].filter(Boolean).join(" ")}>
       {!isAdding ? (
         <>
           {showSearch ? (
-            <div className="onboarding-picker-search">
+            <div className={[styles["onboarding-picker-search"]].filter(Boolean).join(" ")}>
               <FilterSearch
                 value={query}
                 onChange={setQuery}
@@ -122,7 +124,7 @@ export function OnboardingSelectionStep({
                 inputProps={{ autoComplete: "off" }}
               />
               {visibleCountLabel ? (
-                <p className="micro-copy onboarding-search-status" aria-live="polite">
+                <p className={["micro-copy", styles["onboarding-search-status"]].filter(Boolean).join(" ")} aria-live="polite">
                   {visibleCountLabel}
                 </p>
               ) : null}
@@ -130,8 +132,8 @@ export function OnboardingSelectionStep({
           ) : null}
 
           {searchRequired && !hasEnoughSearch ? (
-            <div className="onboarding-search-start" role="status">
-              <span className="onboarding-selection-icon" aria-hidden="true">
+            <div className={[styles["onboarding-search-start"]].filter(Boolean).join(" ")} role="status">
+              <span className={[styles["onboarding-selection-icon"]].filter(Boolean).join(" ")} aria-hidden="true">
                 <PickerIcon size={20} strokeWidth={2.2} />
               </span>
               <div>
@@ -140,50 +142,54 @@ export function OnboardingSelectionStep({
               </div>
             </div>
           ) : filteredItems.length ? (
-            <div className="draft-list onboarding-selection-list">
+            <div className={styles["onboarding-selection-list"]}>
               {filteredItems.map((item) => {
                 const ItemIcon = (SELECTION_VISUALS[item.kind || selectionKind] || visual).icon;
 
                 return (
-                  <Link
+                  <ActionLink
                     key={item.id}
-                    className={`test-link onboarding-selection-card ${item.selected ? "primary" : ""}`}
+                    variant="secondary"
+                    className={[styles["onboarding-selection-card"], item.selected && styles.primary].filter(Boolean).join(" ")}
                     href={item.href}
                     aria-current={item.selected ? "true" : undefined}
                   >
-                    <span className="onboarding-selection-icon" aria-hidden="true">
+                    <span className={[styles["onboarding-selection-icon"]].filter(Boolean).join(" ")} aria-hidden="true">
                       <ItemIcon size={19} strokeWidth={2.2} />
                     </span>
-                    <span className="onboarding-selection-copy">
+                    <span className={[styles["onboarding-selection-copy"]].filter(Boolean).join(" ")}>
                       <strong>{item.title}</strong>
                       {item.subtitle ? <span>{item.subtitle}</span> : null}
                     </span>
-                    <ArrowRight className="onboarding-selection-arrow" aria-hidden="true" size={18} strokeWidth={2.4} />
-                  </Link>
+                    <ArrowRight className={[styles["onboarding-selection-arrow"]].filter(Boolean).join(" ")} aria-hidden="true" size={18} strokeWidth={2.4} />
+                  </ActionLink>
                 );
               })}
             </div>
           ) : (
-            <div className="empty-state onboarding-search-empty" role="status">
-              {resolvedEmptyMessage}
-            </div>
+            <EmptyState
+              variant="compact"
+              description={resolvedEmptyMessage}
+              className={styles["onboarding-search-empty"]}
+              role="status"
+            />
           )}
 
           {showAddAction ? (
-            <div className="inline-actions onboarding-actions-row">
-              <button className="secondary" type="button" onClick={() => setIsAdding(true)}>
+            <div className={styles["onboarding-actions-row"]}>
+              <Button variant="secondary" type="button" onClick={() => setIsAdding(true)}>
                 {resolvedAddButtonLabel}
-              </button>
+              </Button>
             </div>
           ) : null}
         </>
       ) : (
-        <div className="onboarding-add-panel">
+        <div className={[styles["onboarding-add-panel"]].filter(Boolean).join(" ")}>
           {addPanelWithDefaults}
-          <div className="inline-actions onboarding-actions-row">
-            <button className="secondary" type="button" onClick={() => setIsAdding(false)}>
+          <div className={styles["onboarding-actions-row"]}>
+            <Button variant="secondary" type="button" onClick={() => setIsAdding(false)}>
               Înapoi la căutare
-            </button>
+            </Button>
           </div>
         </div>
       )}

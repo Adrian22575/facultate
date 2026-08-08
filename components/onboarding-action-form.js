@@ -3,6 +3,9 @@
 import { useMemo, useState } from "react";
 
 import { OnboardingSubmitButton } from "@/components/onboarding-submit-button";
+import { SelectField, TextField } from "@/components/ui/form-field";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import styles from "./onboarding-action-form.module.css";
 
 function getInitialValues(rows) {
   const values = {};
@@ -106,7 +109,8 @@ export function OnboardingActionForm({
   }
 
   return (
-    <form
+    <SurfaceCard
+      as="form"
       action={action}
       className={className}
       onSubmit={(event) => {
@@ -127,16 +131,19 @@ export function OnboardingActionForm({
       {preparedRows.map((row, rowIndex) => (
         <div
           key={`row-${rowIndex}`}
-          className={row.length > 1 ? "selector-grid onboarding-form-grid" : "onboarding-form-stack"}
+          className={row.length > 1 ? styles["onboarding-form-grid"] : styles["onboarding-form-stack"]}
         >
           {row.map((field) => {
             const showError = Boolean((attempted || touched[field.name]) && errors[field.name]);
 
             return (
-              <label key={field.name} className="onboarding-form-field">
-                <span>{field.label}</span>
-                {field.type === "select" ? (
-                  <select
+              field.type === "select" ? (
+                  <SelectField
+                    key={field.name}
+                    id={`onboarding-${field.name}`}
+                    label={field.label}
+                    error={showError ? errors[field.name] : ""}
+                    fieldClassName={styles["onboarding-form-field"]}
                     name={field.name}
                     value={values[field.name]}
                     disabled={isSubmitting}
@@ -155,10 +162,14 @@ export function OnboardingActionForm({
                         {option.label}
                       </option>
                     ))}
-                  </select>
+                  </SelectField>
                 ) : (
-                  <input
-                    className="input-search"
+                  <TextField
+                    key={field.name}
+                    id={`onboarding-${field.name}`}
+                    label={field.label}
+                    error={showError ? errors[field.name] : ""}
+                    fieldClassName={styles["onboarding-form-field"]}
                     type={field.type || "text"}
                     name={field.name}
                     value={values[field.name]}
@@ -175,21 +186,17 @@ export function OnboardingActionForm({
                       }))
                     }
                   />
-                )}
-                {showError ? (
-                  <span className="onboarding-field-error">{errors[field.name]}</span>
-                ) : null}
-              </label>
+                )
             );
           })}
         </div>
       ))}
 
-      <div className="inline-actions">
+      <div className={styles["onboarding-form-actions"]}>
         <OnboardingSubmitButton disabled={!isValid || isSubmitting}>
           {submitLabel}
         </OnboardingSubmitButton>
       </div>
-    </form>
+    </SurfaceCard>
   );
 }

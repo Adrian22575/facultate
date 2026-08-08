@@ -3,6 +3,7 @@
 import { useFormStatus } from "react-dom";
 
 import { LoadingIconText } from "@/components/loading-spinner";
+import { Button } from "@/components/ui/action";
 
 export function OnboardingSubmitButton({
   children,
@@ -13,10 +14,10 @@ export function OnboardingSubmitButton({
   const { pending } = useFormStatus();
 
   return (
-    <button type="submit" className={className} disabled={disabled || pending}>
+    <Button type="submit" className={className} disabled={disabled || pending}>
       <LoadingIconText loading={pending} loadingLabel={pendingLabel}>
         {children}
       </LoadingIconText>
-    </button>
+    </Button>
   );
 }
