@@ -2,11 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BarChart3, FileText, Files, ListFilter, ReceiptText } from "lucide-react";
-import { AdminTabsContainer } from "@/components/admin-tabs-container";
+import { AdminFilterButton, AdminTabsContainer } from "@/components/admin-tabs-container";
+import { AdminReviewDot, AdminStatusPill } from "@/components/admin-table-meta";
 import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 import { DataTable } from "@/components/ui/data-table";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
+
+import "./admin-openai-logs-panel.module.css";
 
 const PAGE_SIZE = 8;
 const SUMMARY_LIMIT = 180;
@@ -76,35 +79,9 @@ function paginateRows(rows, page) {
   };
 }
 
-function CellPill({ children, tone = "default" }) {
-  return (
-    <span className={`admin-table-pill ${tone !== "default" ? `is-${tone}` : ""}`}>{children}</span>
-  );
-}
-
-function ReviewDot({ show, label = "De verificat" }) {
-  if (!show) {
-    return null;
-  }
-
-  return <span className="admin-review-dot" title={label} aria-label={label} />;
-}
-
-function FilterButton({ active, onClick, children, icon: Icon = null, count = null }) {
-  return (
-    <button
-      type="button"
-      className={`btn-link secondary admin-filter-chip ${active ? "is-active-filter" : ""}`}
-      onClick={onClick}
-    >
-      <span className="admin-tab-content">
-        {Icon ? <Icon className="admin-tab-icon" aria-hidden="true" size={15} strokeWidth={2.2} /> : null}
-        <span className="admin-tab-label">{children}</span>
-        {Number.isFinite(count) ? <span className="admin-tab-count">{count}</span> : null}
-      </span>
-    </button>
-  );
-}
+const CellPill = AdminStatusPill;
+const ReviewDot = AdminReviewDot;
+const FilterButton = AdminFilterButton;
 
 function SearchInput({ value, onChange, placeholder }) {
   return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { AdminRouteSwitcher } from "@/components/admin-route-switcher";
 import { AppHeader } from "@/components/app-header";
 
+import "./admin-page-shell.module.css";
+
 export function AdminPageShell({
   activeRoute = null,
   breadcrumbLabel = "",
@@ -14,7 +16,7 @@ export function AdminPageShell({
   const description = activeRoute?.description || "Alege zona în care vrei să lucrezi. Fiecare pagină păstrează un singur scop administrativ.";
 
   return (
-    <main className="app-shell admin-app-shell">
+    <main className="app-shell admin-app-shell" data-admin-root>
       <AppHeader suppressAdminActionCount hidePageTitle />
       <div className="admin-route-shell">
         <div className="admin-route-workspace">

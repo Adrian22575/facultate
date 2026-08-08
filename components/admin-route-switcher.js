@@ -4,6 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { ADMIN_ROUTE_GROUPS } from "@/lib/admin-routes";
 
+import "./admin-route-switcher.module.css";
+
 export function AdminRouteSwitcher() {
   const pathname = usePathname();
   const router = useRouter();

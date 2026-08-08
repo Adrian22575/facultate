@@ -1,6 +1,35 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/action";
+
+import "./admin-tabs-container.module.css";
+
+export function AdminFilterButton({
+  active,
+  onClick,
+  children,
+  icon: Icon = null,
+  count = null,
+  actionCount = 0
+}) {
+  return (
+    <Button
+      variant="secondary"
+      size="compact"
+      aria-pressed={active}
+      className={`admin-filter-chip ${active ? "is-active-filter" : ""} ${actionCount > 0 ? "has-admin-action" : ""}`}
+      onClick={onClick}
+    >
+      <span className="admin-tab-content">
+        {Icon ? <Icon className="admin-tab-icon" aria-hidden="true" size={15} strokeWidth={2.2} /> : null}
+        <span className="admin-tab-label">{children}</span>
+        {Number.isFinite(count) ? <span className="admin-tab-count">{count}</span> : null}
+        {actionCount > 0 ? <span className="admin-tab-action-count">{actionCount}</span> : null}
+      </span>
+    </Button>
+  );
+}
 
 export function AdminTabsContainer({ children, className = "", ...props }) {
   const ref = useRef(null);

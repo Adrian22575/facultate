@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { ADMIN_ROUTE_GROUPS } from "@/lib/admin-routes";
 
+import "./admin-overview.module.css";
+
 export function AdminOverview() {
   return (
     <section className="admin-overview-grid" aria-label="Zone administrative">

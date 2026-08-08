@@ -26,12 +26,18 @@ import {
   Users,
   XCircle
 } from "lucide-react";
-import { AdminTabsContainer } from "@/components/admin-tabs-container";
+import { AdminFilterButton, AdminTabsContainer } from "@/components/admin-tabs-container";
+import { AdminReviewDot, AdminStatusPill } from "@/components/admin-table-meta";
 import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 import { DataTable } from "@/components/ui/data-table";
+import { EmptyState as CanonicalEmptyState } from "@/components/ui/state";
+import { StatusPill } from "@/components/ui/status";
+import { SurfaceCard } from "@/components/ui/surface-card";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
+
+import "./admin-center-client.module.css";
 
 const PAGE_SIZE = 10;
 
@@ -153,66 +159,34 @@ function userTypeLabel(value) {
   return value === "elev" ? "Elev" : "Student";
 }
 
-function FilterButton({ active, onClick, children, icon: Icon = null, count = null, actionCount = 0 }) {
-  return (
-    <button
-      type="button"
-      aria-pressed={active}
-      className={`btn-link secondary admin-filter-chip ${active ? "is-active-filter" : ""} ${actionCount > 0 ? "has-admin-action" : ""}`}
-      onClick={onClick}
-    >
-      <span className="admin-tab-content">
-        {Icon ? <Icon className="admin-tab-icon" aria-hidden="true" size={15} strokeWidth={2.2} /> : null}
-        <span className="admin-tab-label">{children}</span>
-        {Number.isFinite(count) ? <span className="admin-tab-count">{count}</span> : null}
-        {actionCount > 0 ? <span className="admin-tab-action-count">{actionCount}</span> : null}
-      </span>
-    </button>
-  );
-}
+const FilterButton = AdminFilterButton;
 
 function SearchInput({ value, onChange, placeholder }) {
   return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
 }
 
 function EmptyState({ title, subtitle }) {
-  return (
-    <div className="workspace-context-summary">
-      <strong>{title}</strong>
-      {subtitle ? <span>{subtitle}</span> : null}
-    </div>
-  );
+  return <CanonicalEmptyState title={title} description={subtitle} />;
 }
 
-function CellPill({ children, tone = "default" }) {
-  return (
-    <span className={`admin-table-pill ${tone !== "default" ? `is-${tone}` : ""}`}>{children}</span>
-  );
-}
-
-function ReviewDot({ show, label = "De verificat" }) {
-  if (!show) {
-    return null;
-  }
-
-  return <span className="admin-review-dot" title={label} aria-label={label} />;
-}
+const CellPill = AdminStatusPill;
+const ReviewDot = AdminReviewDot;
 
 function TableSection({ title, subtitle, count, actions = null, children, variant = "boxed" }) {
   return (
-    <section className={`admin-table-section ${variant === "flat" ? "admin-table-section--flat" : ""}`}>
+    <SurfaceCard as="section" className={`admin-table-section ${variant === "flat" ? "admin-table-section--flat" : ""}`}>
       <div className="admin-table-section-head">
         <div>
           <h3>{title}</h3>
           <p className="page-copy">{subtitle}</p>
         </div>
         <div className="admin-table-head-actions">
-          <span className="status-pill is-muted">{count}</span>
+          <StatusPill tone="neutral">{count}</StatusPill>
           {actions}
         </div>
       </div>
       {children}
-    </section>
+    </SurfaceCard>
   );
 }
 

@@ -73,6 +73,14 @@ const colocatedCssEntries = [
   { relativePath: "components/onboarding-selection-step.module.css", importantCeiling: 0 },
   { relativePath: "components/onboarding-action-form.module.css", importantCeiling: 0 },
   { relativePath: "components/onboarding-role-choice-lock.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-page-shell.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-route-switcher.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-overview.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-tabs-container.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-table-meta.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-center-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-openai-logs-panel.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-upload-errors-panel.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -92,6 +100,7 @@ const colocatedCssSources = colocatedCssEntries.map((entry) => ({
 const tokensCss = cssSources[0].css;
 const shellCss = cssSources.find(({ relativePath }) => relativePath === "app/styles/shell/app-shell.css").css;
 const legacyCss = cssSources.at(-1).css;
+const adminShellCss = fs.readFileSync(path.join(root, "components/admin-page-shell.module.css"), "utf8");
 const layout = fs.readFileSync(layoutPath, "utf8").replaceAll("\r\n", "\n");
 const rules = fs.readFileSync(rulesPath, "utf8");
 const failures = [];
@@ -127,9 +136,9 @@ if (!layout.startsWith(`${expectedImportBlock}\n`)) {
 
 const layoutContracts = [
   { selector: ".app-shell", css: shellCss },
-  { selector: ".admin-route-shell", css: legacyCss },
-  { selector: ".admin-route-topbar", css: legacyCss },
-  { selector: ".admin-route-header", css: legacyCss }
+  { selector: ".admin-route-shell", css: adminShellCss },
+  { selector: ".admin-route-topbar", css: adminShellCss },
+  { selector: ".admin-route-header", css: adminShellCss }
 ];
 
 for (const { selector, css } of layoutContracts) {

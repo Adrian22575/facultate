@@ -4,6 +4,10 @@ import { useMemo, useState } from "react";
 
 import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 import { DataTable } from "@/components/ui/data-table";
+import { AdminReviewDot, AdminStatusPill } from "@/components/admin-table-meta";
+
+import "./admin-tabs-container.module.css";
+import "./admin-upload-errors-panel.module.css";
 
 const PAGE_SIZE = 10;
 
@@ -63,19 +67,8 @@ function SearchInput({ value, onChange, placeholder }) {
   return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
 }
 
-function CellPill({ children, tone = "default" }) {
-  return (
-    <span className={`admin-table-pill ${tone !== "default" ? `is-${tone}` : ""}`}>{children}</span>
-  );
-}
-
-function ReviewDot({ show, label = "De verificat" }) {
-  if (!show) {
-    return null;
-  }
-
-  return <span className="admin-review-dot" title={label} aria-label={label} />;
-}
+const CellPill = AdminStatusPill;
+const ReviewDot = AdminReviewDot;
 
 function formatSourceKind(value) {
   if (value === "pdf") return "PDF";
