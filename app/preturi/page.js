@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import styles from "./page.module.css";
+
 import { BILLING_PLAN_LIST } from "@/lib/stripe/plans";
 
 export const metadata = {
@@ -17,19 +19,19 @@ function formatPrice(plan) {
 
 function PricingGroup({ title, description, plans, view }) {
   return (
-    <section className="public-pricing-group">
-      <div className="public-pricing-heading">
+    <section className={styles.group}>
+      <div className={styles.heading}>
         <h2>{title}</h2>
         <p>{description}</p>
       </div>
-      <div className="public-pricing-grid">
+      <div className={styles.grid}>
         {plans.map((plan) => (
-          <article className="public-pricing-card" key={plan.code}>
+          <article className={styles.card} key={plan.code}>
             <div>
               <h3>{plan.name}</h3>
               <p>{plan.description}</p>
             </div>
-            <strong className="public-pricing-price">{formatPrice(plan)}</strong>
+            <strong className={styles.price}>{formatPrice(plan)}</strong>
             <Link
               className="nota5plus-btn nota5plus-btn-primary"
               href={`/auth/exit-demo?target=login&next=${encodeURIComponent(`/cont?section=${view}&plan=${plan.code}#planuri`)}`}
@@ -48,7 +50,7 @@ export default function PricingPage() {
   const uploadPlans = BILLING_PLAN_LIST.filter((plan) => plan.family === "ai_credits");
 
   return (
-    <main className="nota5plus-page public-pricing-page">
+    <main className={`nota5plus-page ${styles.page}`}>
       <div className="nota5plus-container">
         <nav className="nota5plus-nav">
           <Link className="nota5plus-brand" href="/">
@@ -60,7 +62,7 @@ export default function PricingPage() {
           </Link>
         </nav>
 
-        <header className="public-pricing-hero">
+        <header className={styles.hero}>
           <span>Plati unice, fara reinnoire automata</span>
           <h1>Alege doar ce iti trebuie pentru examen.</h1>
           <p>Accesul la modurile de invatare si incarcarile de materiale se cumpara separat.</p>
@@ -79,7 +81,7 @@ export default function PricingPage() {
           view="credits"
         />
 
-        <p className="public-pricing-note">
+        <p className={styles.note}>
           Preturile sunt afisate in lei. Plata este procesata securizat, iar accesul se activeaza in cont dupa confirmare.
         </p>
 

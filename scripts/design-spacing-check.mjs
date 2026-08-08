@@ -38,9 +38,13 @@ const primitiveCssEntries = [
   "components/ui/data-table.module.css"
 ];
 const colocatedCssEntries = [
-  "components/free-tools-page.module.css",
-  "components/free-tools-calculator.module.css",
-  "app/despre/page.module.css"
+  { relativePath: "components/free-tools-page.module.css", importantCeiling: 0 },
+  { relativePath: "components/free-tools-calculator.module.css", importantCeiling: 0 },
+  { relativePath: "app/despre/page.module.css", importantCeiling: 0 },
+  { relativePath: "app/preturi/page.module.css", importantCeiling: 0 },
+  { relativePath: "components/public-legal-page.module.css", importantCeiling: 0 },
+  { relativePath: "components/editorial-page.module.css", importantCeiling: 10 },
+  { relativePath: "components/dictionary-page.module.css", importantCeiling: 2 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -53,9 +57,9 @@ const primitiveCssSources = primitiveCssEntries.map((relativePath) => ({
   relativePath,
   css: fs.readFileSync(path.join(root, relativePath), "utf8")
 }));
-const colocatedCssSources = colocatedCssEntries.map((relativePath) => ({
-  relativePath,
-  css: fs.readFileSync(path.join(root, relativePath), "utf8")
+const colocatedCssSources = colocatedCssEntries.map((entry) => ({
+  ...entry,
+  css: fs.readFileSync(path.join(root, entry.relativePath), "utf8")
 }));
 const tokensCss = cssSources[0].css;
 const shellCss = cssSources.find(({ relativePath }) => relativePath === "app/styles/shell/app-shell.css").css;
@@ -176,10 +180,11 @@ for (const { relativePath, css } of primitiveCssSources) {
   }
 }
 
-for (const { relativePath, css } of colocatedCssSources) {
+for (const { relativePath, css, importantCeiling } of colocatedCssSources) {
   const uncommentedCss = css.replaceAll(/\/\*[\s\S]*?\*\//g, "");
-  if (uncommentedCss.includes("!important")) {
-    failures.push(`${relativePath} nu poate folosi !important.`);
+  const importantCount = uncommentedCss.match(/!important\b/g)?.length || 0;
+  if (importantCount > importantCeiling) {
+    failures.push(`${relativePath} depășește ceiling-ul !important (${importantCeiling} → ${importantCount}).`);
   }
 
   for (const match of uncommentedCss.matchAll(/([^{}]+)\{/g)) {
@@ -199,6 +204,28 @@ if (/\.free-tools?-[A-Za-z_][\w-]*/.test(legacyCss)) {
 
 if (/\.about-[A-Za-z_][\w-]*/.test(legacyCss)) {
   failures.push("Selectorii globali about-* au fost retrași; folosește CSS Module-ul colocat al rutei /despre.");
+}
+
+if (/\.public-pricing-[A-Za-z_][\w-]*/.test(legacyCss)) {
+  failures.push("Selectorii globali public-pricing-* au fost retrași; folosește CSS Module-ul colocat al rutei /preturi.");
+}
+
+if (/\.legal-[A-Za-z_][\w-]*/.test(legacyCss)) {
+  failures.push("Selectorii globali legal-* au fost retrași; folosește CSS Module-ul colocat pentru documentele publice.");
+}
+
+const forbiddenEditorialSelectors = [...legacyCss.matchAll(/\.editorial-[A-Za-z_][\w-]*/g)]
+  .map(([selector]) => selector)
+  .filter((selector) => selector !== ".editorial-admin-preview");
+if (forbiddenEditorialSelectors.length) {
+  failures.push(`Selectorii editorial-* publici au fost retrași din globals.css: ${[...new Set(forbiddenEditorialSelectors)].join(", ")}.`);
+}
+
+const forbiddenDictionarySelectors = [...legacyCss.matchAll(/\.dictionary-[A-Za-z_][\w-]*/g)]
+  .map(([selector]) => selector)
+  .filter((selector) => selector !== ".dictionary-admin-preview");
+if (forbiddenDictionarySelectors.length) {
+  failures.push(`Selectorii dictionary-* publici au fost retrași din globals.css: ${[...new Set(forbiddenDictionarySelectors)].join(", ")}.`);
 }
 
 if (legacyCss.includes('button[class=""]')) {

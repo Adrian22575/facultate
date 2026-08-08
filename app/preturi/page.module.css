@@ -1,0 +1,76 @@
+.page {
+  min-height: 100vh;
+}
+
+.hero {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.hero span {
+  color: #1558b7;
+  font-weight: 800;
+}
+
+.hero h1 {
+  margin: 12px 0;
+  color: #10213d;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  line-height: 1.05;
+}
+
+.hero p,
+.heading p,
+.card p,
+.note {
+  color: #5f6f88;
+  line-height: 1.65;
+}
+
+.group {
+  margin: 0 0 48px;
+}
+
+.heading {
+  margin-bottom: 18px;
+}
+
+.heading h2,
+.heading p,
+.card h3,
+.card p {
+  margin-top: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: grid;
+  align-content: space-between;
+  gap: 22px;
+  min-height: 250px;
+  padding: 24px;
+  border: 1px solid #d7e4f7;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(30, 73, 130, 0.08);
+}
+
+.price {
+  color: #10213d;
+  font-size: 1.8rem;
+}
+
+.card :global(.nota5plus-btn) {
+  width: 100%;
+}
+
+.note {
+  margin: 0 auto 56px;
+  text-align: center;
+}

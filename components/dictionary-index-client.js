@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import styles from "@/components/dictionary-page.module.css";
 import { BookOpenText, Brain, Search, Sparkles, Tags } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -28,14 +29,14 @@ function matches(term, query) {
 
 function TermCard({ term, featured = false }) {
   return (
-    <Link className={`dictionary-term-card${featured ? " is-featured" : ""}`} href={`/dictionar/${term.slug}`} data-usage-event="dictionary_term_opened">
-      <span className="dictionary-term-card-letter" aria-hidden="true">{term.initial}</span>
-      <span className="dictionary-term-card-copy">
+    <Link className={`${styles.termCard}${featured ? ` ${styles.featured}` : ""}`} href={`/dictionar/${term.slug}`} data-usage-event="dictionary_term_opened">
+      <span className={styles.termCardLetter} aria-hidden="true">{term.initial}</span>
+      <span className={styles.termCardCopy}>
         <strong>{term.term}</strong>
         <span>{term.short_definition}</span>
         <small>{term.category?.name}</small>
       </span>
-      <span className="dictionary-term-card-arrow" aria-hidden="true">→</span>
+      <span className={styles.termCardArrow} aria-hidden="true">→</span>
     </Link>
   );
 }
@@ -60,24 +61,24 @@ export function DictionaryIndexClient({ categories, terms, recent, total }) {
 
   return (
     <>
-      <section className="dictionary-hero" aria-labelledby="dictionary-title">
+      <section className={styles.hero} aria-labelledby="dictionary-title">
         <div>
-          <span className="dictionary-eyebrow"><Sparkles aria-hidden="true" size={14} />Bibliotecă publică Nota 5+</span>
+          <span className={styles.eyebrow}><Sparkles aria-hidden="true" size={14} />Bibliotecă publică Nota 5+</span>
           <h1 id="dictionary-title">Dicționar pentru învățare și examene</h1>
           <p>Înțelege simplu termenii pe care îi întâlnești când înveți, te pregătești pentru examene sau îți organizezi materia.</p>
         </div>
-        <div className="dictionary-hero-visual" aria-hidden="true"><Brain size={74} strokeWidth={1.45} /><span className="dictionary-visual-card is-top">întrebare</span><span className="dictionary-visual-card is-bottom">înțelegere</span></div>
+        <div className={styles.heroVisual} aria-hidden="true"><Brain size={74} strokeWidth={1.45} /><span className={`${styles.visualCard} ${styles.top}`}>întrebare</span><span className={`${styles.visualCard} ${styles.bottom}`}>înțelegere</span></div>
       </section>
 
       {recent.length ? (
-        <section className="dictionary-recent-section" aria-labelledby="dictionary-recent-title">
-          <div className="dictionary-section-head"><div><span>De explorat</span><h2 id="dictionary-recent-title">Adăugate recent</h2></div><p>Idei noi, separate de rezultatele căutării.</p></div>
-          <div className="dictionary-recent-grid">{recent.map((term) => <TermCard key={term.id} term={term} featured />)}</div>
+        <section className={styles.recentSection} aria-labelledby="dictionary-recent-title">
+          <div className={styles.sectionHead}><div><span>De explorat</span><h2 id="dictionary-recent-title">Adăugate recent</h2></div><p>Idei noi, separate de rezultatele căutării.</p></div>
+          <div className={styles.recentGrid}>{recent.map((term) => <TermCard key={term.id} term={term} featured />)}</div>
         </section>
       ) : null}
 
-      <section className="dictionary-search-panel" aria-labelledby="dictionary-search-title">
-        <div className="dictionary-search-head"><div><span>Găsește rapid</span><h2 id="dictionary-search-title">Caută în dicționar</h2></div><span><BookOpenText aria-hidden="true" size={16} />{total} termeni</span></div>
+      <section className={styles.searchPanel} aria-labelledby="dictionary-search-title">
+        <div className={styles.searchHead}><div><span>Găsește rapid</span><h2 id="dictionary-search-title">Caută în dicționar</h2></div><span><BookOpenText aria-hidden="true" size={16} />{total} termeni</span></div>
         <FiltersToolbar layout="two" ariaLabel="Cautare si filtrare dictionar">
           <FilterSearch
             value={query}
@@ -103,17 +104,17 @@ export function DictionaryIndexClient({ categories, terms, recent, total }) {
             ]}
           />
         </FiltersToolbar>
-        <div className="dictionary-letter-filter" aria-label="Filtrează după literă">
+        <div className={styles.letterFilter} aria-label="Filtrează după literă">
           {letters.map((letter) => {
             const available = letter === "Toate" || availableLetters.has(letter);
-            return <button key={letter} type="button" disabled={!available} className={activeLetter === letter ? "is-active" : ""} onClick={() => setActiveLetter(letter)} data-usage-event="dictionary_letter_filtered">{letter}</button>;
+            return <button key={letter} type="button" disabled={!available} className={activeLetter === letter ? styles.active : ""} onClick={() => setActiveLetter(letter)} data-usage-event="dictionary_letter_filtered">{letter}</button>;
           })}
         </div>
       </section>
 
-      <section className="dictionary-list-section" aria-labelledby="dictionary-list-title">
-        <div className="dictionary-section-head"><div><span>Rezultatele tale</span><h2 id="dictionary-list-title">Alege un termen</h2></div><ResultsSummary as="strong">{filteredTerms.length} {filteredTerms.length === 1 ? "rezultat" : "rezultate"}</ResultsSummary></div>
-        {filteredTerms.length ? <div className="dictionary-term-list">{filteredTerms.map((term) => <TermCard key={term.id} term={term} />)}</div> : <div className="dictionary-empty"><Search aria-hidden="true" size={23} /><h2>Nu am găsit un termen potrivit</h2><p>Încearcă un cuvânt mai scurt sau elimină unul dintre filtre.</p><button type="button" onClick={clearFilters}>Resetează filtrele</button></div>}
+      <section className={styles.listSection} aria-labelledby="dictionary-list-title">
+        <div className={styles.sectionHead}><div><span>Rezultatele tale</span><h2 id="dictionary-list-title">Alege un termen</h2></div><ResultsSummary as="strong">{filteredTerms.length} {filteredTerms.length === 1 ? "rezultat" : "rezultate"}</ResultsSummary></div>
+        {filteredTerms.length ? <div className={styles.termList}>{filteredTerms.map((term) => <TermCard key={term.id} term={term} />)}</div> : <div className={styles.empty}><Search aria-hidden="true" size={23} /><h2>Nu am găsit un termen potrivit</h2><p>Încearcă un cuvânt mai scurt sau elimină unul dintre filtre.</p><button type="button" onClick={clearFilters}>Resetează filtrele</button></div>}
       </section>
     </>
   );

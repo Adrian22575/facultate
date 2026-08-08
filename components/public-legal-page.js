@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import { getLegalContactHref, legalDetails } from "@/lib/legal";
+import styles from "@/components/public-legal-page.module.css";
 
 export function PublicLegalPage({ eyebrow, title, intro, children }) {
   const contactHref = getLegalContactHref();
 
   return (
-    <main className="legal-page-shell">
-      <header className="legal-page-nav">
+    <main className={styles.pageShell}>
+      <header className={styles.pageNav}>
         <Link className="brand" href="/">
           <span className="brand-mark">5+</span>
           <span>Nota 5+</span>
@@ -19,15 +20,15 @@ export function PublicLegalPage({ eyebrow, title, intro, children }) {
         </nav>
       </header>
 
-      <article className="legal-document">
-        <header className="legal-document-head">
+      <article className={styles.document}>
+        <header className={styles.documentHead}>
           <span className="ui-section-label">{eyebrow}</span>
           <h1>{title}</h1>
           <p>{intro}</p>
           <small>Ultima actualizare: 19 iunie 2026</small>
         </header>
 
-        <section className="legal-operator-card" aria-labelledby="legal-operator-title">
+        <section className={styles.operatorCard} aria-labelledby="legal-operator-title">
           <h2 id="legal-operator-title">Datele operatorului</h2>
           <dl>
             <div><dt>Denumire</dt><dd>{legalDetails.operatorName}</dd></div>
@@ -40,10 +41,10 @@ export function PublicLegalPage({ eyebrow, title, intro, children }) {
           </dl>
         </section>
 
-        <div className="legal-document-content">{children}</div>
+        <div className={styles.documentContent}>{children}</div>
       </article>
 
-      <footer className="legal-page-footer">
+      <footer className={styles.pageFooter}>
         <span>Nota 5+</span>
         <div>
           <Link href="/despre">Despre</Link>

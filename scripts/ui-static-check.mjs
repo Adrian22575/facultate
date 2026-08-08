@@ -338,6 +338,26 @@ function inspectElement(filePath, node, context, ancestors) {
     if (/^about-/.test(token)) {
       report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat al rutei /despre.`);
     }
+    if (/^public-pricing-/.test(token)) {
+      report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat al rutei /preturi.`);
+    }
+    if (/^legal-/.test(token)) {
+      report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat pentru documentele publice.`);
+    }
+    if (/^editorial-/.test(token)) {
+      const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+      const allowedPreview = token === "editorial-admin-preview" && relativePath === "app/admin/articole/[articleId]/preview/page.js";
+      if (!allowedPreview) {
+        report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul editorial colocat.`);
+      }
+    }
+    if (/^dictionary-/.test(token)) {
+      const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+      const allowedPreview = token === "dictionary-admin-preview" && relativePath === "app/admin/dictionar/[termId]/preview/page.js";
+      if (!allowedPreview) {
+        report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul dicționarului colocat.`);
+      }
+    }
   }
 
   for (const token of LEGACY_UI_TOKENS) {
