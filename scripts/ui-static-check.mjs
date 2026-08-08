@@ -317,6 +317,23 @@ function inspectElement(filePath, node, context, ancestors) {
   const classTokens = staticClassTokens(classAttribute);
 
   for (const token of classTokens) {
+    const sharedNota5PlusTokens = new Set([
+      "nota5plus-page",
+      "nota5plus-container",
+      "nota5plus-nav",
+      "nota5plus-brand",
+      "nota5plus-brand-mark",
+      "nota5plus-nav-link",
+      "nota5plus-btn",
+      "nota5plus-btn-primary",
+      "nota5plus-btn-secondary",
+      "nota5plus-google-btn",
+      "nota5plus-inline-error",
+      "nota5plus-legal-footer"
+    ]);
+    if (/^(?:nota5plus|email-auth|auth-password|auth|google-signin)-/.test(token) && !sharedNota5PlusTokens.has(token)) {
+      report(filePath, opening, `Clasa globală Auth retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat.`);
+    }
     if (/^free-tools?-/.test(token)) {
       report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat.`);
     }

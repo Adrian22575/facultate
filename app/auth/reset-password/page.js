@@ -1,5 +1,6 @@
 import { PasswordResetForm } from "@/components/password-reset-form";
 import { getPostLoginNextPath } from "@/lib/auth/password-auth";
+import routeStyles from "../auth-route.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,7 @@ export default async function ResetPasswordPage({ searchParams }) {
   const nextPath = getPostLoginNextPath(resolvedSearchParams?.next);
 
   return (
-    <main className="nota5plus-page auth-password-page">
+    <main className={["nota5plus-page", routeStyles["auth-password-page"]].filter(Boolean).join(" ")}>
       <PasswordResetForm errorMessage={errorLabels[error] || ""} nextPath={nextPath} />
     </main>
   );

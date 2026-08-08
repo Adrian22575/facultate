@@ -62,7 +62,12 @@ const colocatedCssEntries = [
   { relativePath: "components/test-result-panel.module.css", importantCeiling: 0 },
   { relativePath: "components/question-correction-button.module.css", importantCeiling: 0 },
   { relativePath: "components/test-insight.module.css", importantCeiling: 0 },
-  { relativePath: "components/exam-page-client.module.css", importantCeiling: 0 }
+  { relativePath: "components/exam-page-client.module.css", importantCeiling: 0 },
+  { relativePath: "app/auth/login/page.module.css", importantCeiling: 0 },
+  { relativePath: "app/auth/auth-route.module.css", importantCeiling: 0 },
+  { relativePath: "components/email-auth-panel.module.css", importantCeiling: 0 },
+  { relativePath: "components/password-reset-form.module.css", importantCeiling: 0 },
+  { relativePath: "components/google-sign-in-button.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -233,6 +238,31 @@ if (/\.free-tools?-[A-Za-z_][\w-]*/.test(legacyCss)) {
 
 if (/\.about-[A-Za-z_][\w-]*/.test(legacyCss)) {
   failures.push("Selectorii globali about-* au fost retrași; folosește CSS Module-ul colocat al rutei /despre.");
+}
+
+const sharedNota5PlusSelectors = new Set([
+  ".nota5plus-page",
+  ".nota5plus-container",
+  ".nota5plus-nav",
+  ".nota5plus-brand",
+  ".nota5plus-brand-mark",
+  ".nota5plus-nav-link",
+  ".nota5plus-btn",
+  ".nota5plus-btn-primary",
+  ".nota5plus-btn-secondary",
+  ".nota5plus-google-btn",
+  ".nota5plus-inline-error",
+  ".nota5plus-legal-footer"
+]);
+const forbiddenAuthSelectors = [
+  ...legacyCss.matchAll(/\.(?:nota5plus|email-auth|auth-password|auth|google-signin)-[A-Za-z_][\w-]*/g)
+]
+  .map(([selector]) => selector)
+  .filter((selector) => !sharedNota5PlusSelectors.has(selector));
+if (forbiddenAuthSelectors.length) {
+  failures.push(
+    `Selectorii Auth au fost retrași din globals.css: ${[...new Set(forbiddenAuthSelectors)].join(", ")}.`
+  );
 }
 
 const forbiddenSharedTestSelectors = [

@@ -6,10 +6,11 @@ import { Target, Upload } from "lucide-react";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { InlineFeedback } from "@/components/ui/status";
 import { createClient } from "@/lib/supabase/client";
+import styles from "./google-sign-in-button.module.css";
 
 function GoogleLogo() {
   return (
-    <svg className="google-signin-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <svg className={[styles["google-signin-logo"]].filter(Boolean).join(" ")} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -82,14 +83,14 @@ export function GoogleSignInButton({
   }
 
   return (
-    <div className={className || "auth-cta-stack"}>
+    <div className={className || styles["auth-cta-stack"]}>
       <button
         className={buttonClassName || undefined}
         type="button"
         onClick={handleLogin}
         disabled={disabled || loading}
       >
-        <span className="google-signin-content">
+        <span className={[styles["google-signin-content"]].filter(Boolean).join(" ")}>
           {loading ? null : Icon ? <Icon aria-hidden="true" size={24} strokeWidth={2.1} /> : <GoogleLogo />}
           <LoadingIconText loading={loading} loadingLabel="Se deschide Google...">
             {children || "Continua cu Google"}

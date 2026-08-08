@@ -1,0 +1,26 @@
+.auth-cta-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.google-signin-content {
+  width: 100%;
+  display: var(--google-signin-content-display, inline-flex);
+  align-items: center;
+  justify-content: var(--google-signin-content-justify, center);
+  gap: 10px;
+  min-width: 0;
+  height: var(--google-signin-content-height, auto);
+}
+
+.google-signin-content > svg {
+  display: var(--google-signin-icon-display, block);
+}
+
+.google-signin-logo {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: block;
+}
+

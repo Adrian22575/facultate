@@ -19,7 +19,11 @@ import {
   signUpWithEmailAction
 } from "@/app/auth/password-actions";
 import { LoadingIconText } from "@/components/loading-spinner";
+import { Button } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { InlineFeedback } from "@/components/ui/status";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
+import styles from "./email-auth-panel.module.css";
 
 function normalizeInitialMode(mode) {
   return ["login", "signup", "forgot"].includes(mode) ? mode : "login";
@@ -27,12 +31,12 @@ function normalizeInitialMode(mode) {
 
 function AuthInput({ id, label, hint = "", action = null, icon: Icon, children }) {
   return (
-    <div className="email-auth-field">
-      <span className="email-auth-label-row">
+    <div className={[styles["email-auth-field"]].filter(Boolean).join(" ")}>
+      <span className={[styles["email-auth-label-row"]].filter(Boolean).join(" ")}>
         <label htmlFor={id}>{label}</label>
         {action || (hint ? <small>{hint}</small> : null)}
       </span>
-      <span className="email-auth-input-wrap">
+      <span className={[styles["email-auth-input-wrap"]].filter(Boolean).join(" ")}>
         <Icon aria-hidden="true" size={18} strokeWidth={2.2} />
         {children}
       </span>
@@ -44,11 +48,11 @@ function EmailAuthSubmitButton({ children, pendingLabel }) {
   const { pending } = useFormStatus();
 
   return (
-    <button className="email-auth-primary" type="submit" disabled={pending}>
+    <Button className={styles["email-auth-primary"]} type="submit" fullWidth disabled={pending}>
       <LoadingIconText loading={pending} loadingLabel={pendingLabel}>
         {children}
       </LoadingIconText>
-    </button>
+    </Button>
   );
 }
 
@@ -85,13 +89,13 @@ export function EmailAuthPanel({
   const loginBackHref = `/auth/login?next=${encodeURIComponent(nextPath)}${hasReferralInvite ? "&ref=1" : ""}`;
 
   return (
-    <section className="email-auth-panel" aria-label="Autentificare cu email">
-      <div className="email-auth-head">
-        <a className="email-auth-back" href={loginBackHref}>
+    <SurfaceCard as="section" className={styles["email-auth-panel"]} aria-label="Autentificare cu email">
+      <div className={[styles["email-auth-head"]].filter(Boolean).join(" ")}>
+        <a className={[styles["email-auth-back"]].filter(Boolean).join(" ")} href={loginBackHref}>
           <ArrowLeft aria-hidden="true" size={16} />
           Inapoi la Google
         </a>
-        <div className="email-auth-kicker">
+        <div className={[styles["email-auth-kicker"]].filter(Boolean).join(" ")}>
           <ShieldCheck aria-hidden="true" size={16} />
           Autentificare securizata
         </div>
@@ -106,7 +110,7 @@ export function EmailAuthPanel({
       </div>
 
       {hasReferralInvite ? (
-        <div className="email-auth-referral-badge" role="status">
+        <div className={[styles["email-auth-referral-badge"]].filter(Boolean).join(" ")} role="status">
           <Gift aria-hidden="true" size={18} strokeWidth={2.3} />
           <div>
             <strong>Link de coleg</strong>
@@ -116,7 +120,7 @@ export function EmailAuthPanel({
       ) : null}
 
       <div
-        className="email-auth-segment"
+        className={[styles["email-auth-segment"]].filter(Boolean).join(" ")}
         role="tablist"
         aria-label="Alege actiunea"
         onKeyDown={handleTablistKeyDown}
@@ -128,7 +132,7 @@ export function EmailAuthPanel({
           aria-selected={mode !== "signup"}
           aria-controls="email-auth-active-panel"
           tabIndex={mode !== "signup" ? 0 : -1}
-          className={`email-auth-tab${mode !== "signup" ? " is-active" : ""}`}
+          className={[styles["email-auth-tab"], mode !== "signup" && styles["is-active"]].filter(Boolean).join(" ")}
           onClick={() => showMode("login")}
         >
           <Mail aria-hidden="true" size={16} />
@@ -141,7 +145,7 @@ export function EmailAuthPanel({
           aria-selected={mode === "signup"}
           aria-controls="email-auth-active-panel"
           tabIndex={mode === "signup" ? 0 : -1}
-          className={`email-auth-tab${mode === "signup" ? " is-active" : ""}`}
+          className={[styles["email-auth-tab"], mode === "signup" && styles["is-active"]].filter(Boolean).join(" ")}
           onClick={() => showMode("signup")}
         >
           <UserRound aria-hidden="true" size={16} />
@@ -155,36 +159,36 @@ export function EmailAuthPanel({
         aria-labelledby={`email-auth-tab-${mode === "signup" ? "signup" : "login"}`}
       >
       {showServerMessage && errorMessage ? (
-        <div className="nota5plus-inline-error" role="alert">
+        <InlineFeedback className={styles["inline-error"]} tone="error" role="alert">
           {errorMessage}
-        </div>
+        </InlineFeedback>
       ) : null}
 
       {showServerMessage && successMessage ? (
-        <div className="auth-inline-success" role="status">
+        <InlineFeedback className={styles["auth-inline-success"]} tone="success" role="status">
           {successMessage}
-        </div>
+        </InlineFeedback>
       ) : null}
 
       {mode === "login" ? (
-        <form action={signInWithPasswordAction} className="email-auth-form">
+        <form action={signInWithPasswordAction} className={[styles["email-auth-form"]].filter(Boolean).join(" ")}>
           <input type="hidden" name="next" value={nextPath} />
           <AuthInput id="login-email" label="Email" icon={Mail}>
-            <input id="login-email" className="email-auth-input" type="email" name="email" autoComplete="email" required />
+            <input id="login-email" className={[styles["email-auth-input"]].filter(Boolean).join(" ")} type="email" name="email" autoComplete="email" required />
           </AuthInput>
           <AuthInput
             id="login-password"
             label="Parola"
             icon={LockKeyhole}
             action={
-              <button type="button" className="email-auth-text-button" onClick={() => showMode("forgot")}>
+              <button type="button" className={[styles["email-auth-text-button"]].filter(Boolean).join(" ")} onClick={() => showMode("forgot")}>
                 Ai uitat parola?
               </button>
             }
           >
             <input
               id="login-password"
-              className="email-auth-input"
+              className={[styles["email-auth-input"]].filter(Boolean).join(" ")}
               type="password"
               name="password"
               autoComplete="current-password"
@@ -192,9 +196,9 @@ export function EmailAuthPanel({
             />
           </AuthInput>
           <EmailAuthSubmitButton pendingLabel="Se autentifica...">Intra</EmailAuthSubmitButton>
-          <p className="email-auth-switch">
+          <p className={[styles["email-auth-switch"]].filter(Boolean).join(" ")}>
             Nu ai cont?{" "}
-            <button className="email-auth-switch-button" type="button" onClick={() => showMode("signup")}>
+            <button className={[styles["email-auth-switch-button"]].filter(Boolean).join(" ")} type="button" onClick={() => showMode("signup")}>
               Creeaza unul
             </button>
           </p>
@@ -202,15 +206,15 @@ export function EmailAuthPanel({
       ) : null}
 
       {mode === "signup" && signupStep === 1 ? (
-        <div className="email-auth-form">
-          <div className="email-auth-step-row" aria-label="Pasul 1 din 2">
-            <span className="is-active" />
+        <div className={[styles["email-auth-form"]].filter(Boolean).join(" ")}>
+          <div className={[styles["email-auth-step-row"]].filter(Boolean).join(" ")} aria-label="Pasul 1 din 2">
+            <span className={[styles["is-active"]].filter(Boolean).join(" ")} />
             <span />
           </div>
           <AuthInput id="signup-name" label="Nume" icon={UserRound}>
             <input
               id="signup-name"
-              className="email-auth-input"
+              className={[styles["email-auth-input"]].filter(Boolean).join(" ")}
               type="text"
               autoComplete="name"
               value={signupIdentity.fullName}
@@ -221,7 +225,7 @@ export function EmailAuthPanel({
           <AuthInput id="signup-email" label="Email" icon={Mail}>
             <input
               id="signup-email"
-              className="email-auth-input"
+              className={[styles["email-auth-input"]].filter(Boolean).join(" ")}
               type="email"
               autoComplete="email"
               value={signupIdentity.email}
@@ -232,7 +236,7 @@ export function EmailAuthPanel({
           <AuthInput id="signup-phone" label="Numar de telefon" icon={Phone}>
             <input
               id="signup-phone"
-              className="email-auth-input"
+              className={[styles["email-auth-input"]].filter(Boolean).join(" ")}
               type="tel"
               autoComplete="tel"
               value={signupIdentity.phone}
@@ -240,17 +244,18 @@ export function EmailAuthPanel({
               required
             />
           </AuthInput>
-          <button
-            className="email-auth-primary"
+          <Button
+            className={[styles["email-auth-primary"]].filter(Boolean).join(" ")}
             type="button"
+            fullWidth
             disabled={!canContinueSignup}
             onClick={() => setSignupStep(2)}
           >
             Continua
-          </button>
-          <p className="email-auth-switch">
+          </Button>
+          <p className={[styles["email-auth-switch"]].filter(Boolean).join(" ")}>
             Ai deja cont?{" "}
-            <button className="email-auth-switch-button" type="button" onClick={() => showMode("login")}>
+            <button className={[styles["email-auth-switch-button"]].filter(Boolean).join(" ")} type="button" onClick={() => showMode("login")}>
               Intra
             </button>
           </p>
@@ -258,19 +263,19 @@ export function EmailAuthPanel({
       ) : null}
 
       {mode === "signup" && signupStep === 2 ? (
-        <form action={signUpWithEmailAction} className="email-auth-form">
+        <form action={signUpWithEmailAction} className={[styles["email-auth-form"]].filter(Boolean).join(" ")}>
           <input type="hidden" name="next" value={nextPath} />
           <input type="hidden" name="fullName" value={signupIdentity.fullName} />
           <input type="hidden" name="email" value={signupIdentity.email} />
           <input type="hidden" name="phone" value={signupIdentity.phone} />
-          <div className="email-auth-step-row" aria-label="Pasul 2 din 2">
+          <div className={[styles["email-auth-step-row"]].filter(Boolean).join(" ")} aria-label="Pasul 2 din 2">
             <span />
-            <span className="is-active" />
+            <span className={[styles["is-active"]].filter(Boolean).join(" ")} />
           </div>
           <AuthInput id="signup-password" label="Parola" hint="Minim 8 caractere" icon={LockKeyhole}>
             <input
               id="signup-password"
-              className="email-auth-input"
+              className={[styles["email-auth-input"]].filter(Boolean).join(" ")}
               type="password"
               name="password"
               minLength={8}
@@ -281,7 +286,7 @@ export function EmailAuthPanel({
           <AuthInput id="signup-confirm-password" label="Confirma parola" icon={CheckCircle2}>
             <input
               id="signup-confirm-password"
-              className="email-auth-input"
+              className={[styles["email-auth-input"]].filter(Boolean).join(" ")}
               type="password"
               name="confirmPassword"
               minLength={8}
@@ -289,31 +294,31 @@ export function EmailAuthPanel({
               required
             />
           </AuthInput>
-          <p className="email-auth-legal-copy">
+          <p className={[styles["email-auth-legal-copy"]].filter(Boolean).join(" ")}>
             Prin crearea contului confirmi ca ai citit si accepti{" "}
             <a href="/termeni" target="_blank" rel="noreferrer">Termenii</a> si{" "}
             <a href="/confidentialitate" target="_blank" rel="noreferrer">Politica de confidentialitate</a>.
           </p>
           <EmailAuthSubmitButton pendingLabel="Se creeaza contul...">Creeaza cont</EmailAuthSubmitButton>
-          <button className="email-auth-secondary-button" type="button" onClick={() => setSignupStep(1)}>
+          <Button variant="secondary" fullWidth className={styles["email-auth-secondary-button"]} type="button" onClick={() => setSignupStep(1)}>
             Inapoi la datele de contact
-          </button>
+          </Button>
         </form>
       ) : null}
 
       {mode === "forgot" ? (
-        <form action={forgotPasswordAction} className="email-auth-form">
+        <form action={forgotPasswordAction} className={[styles["email-auth-form"]].filter(Boolean).join(" ")}>
           <input type="hidden" name="next" value={nextPath} />
           <AuthInput id="forgot-email" label="Email" icon={Mail}>
-            <input id="forgot-email" className="email-auth-input" type="email" name="email" autoComplete="email" required />
+            <input id="forgot-email" className={[styles["email-auth-input"]].filter(Boolean).join(" ")} type="email" name="email" autoComplete="email" required />
           </AuthInput>
           <EmailAuthSubmitButton pendingLabel="Se trimite linkul...">Trimite link</EmailAuthSubmitButton>
-          <button className="email-auth-secondary-button" type="button" onClick={() => showMode("login")}>
+          <Button variant="secondary" fullWidth className={styles["email-auth-secondary-button"]} type="button" onClick={() => showMode("login")}>
             Inapoi la autentificare
-          </button>
+          </Button>
         </form>
       ) : null}
       </div>
-    </section>
+    </SurfaceCard>
   );
 }

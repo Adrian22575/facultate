@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, CheckCircle2, LockKeyhole, ShieldCheck } from "lucide-react";
 
 import { resetPasswordAction } from "@/app/auth/password-actions";
+import { Button } from "@/components/ui/action";
+import { SurfaceCard } from "@/components/ui/surface-card";
+import { InlineFeedback } from "@/components/ui/status";
 import { createClient } from "@/lib/supabase/client";
+import emailStyles from "./email-auth-panel.module.css";
+import styles from "./password-reset-form.module.css";
 
 export function PasswordResetForm({ errorMessage = "", nextPath = "/" }) {
   const [ready, setReady] = useState(false);
@@ -52,12 +57,12 @@ export function PasswordResetForm({ errorMessage = "", nextPath = "/" }) {
   }, []);
 
   return (
-    <section className="auth-password-panel email-auth-panel">
-      <a className="email-auth-back" href={`/auth/email-login?next=${encodeURIComponent(nextPath)}`}>
+    <SurfaceCard as="section" className={[styles["auth-password-panel"], emailStyles["email-auth-panel"]].filter(Boolean).join(" ")}>
+      <a className={[emailStyles["email-auth-back"]].filter(Boolean).join(" ")} href={`/auth/email-login?next=${encodeURIComponent(nextPath)}`}>
         <ArrowLeft aria-hidden="true" size={16} />
         Inapoi la autentificare
       </a>
-      <div className="email-auth-kicker">
+      <div className={[emailStyles["email-auth-kicker"]].filter(Boolean).join(" ")}>
         <ShieldCheck aria-hidden="true" size={16} />
         Resetare securizata
       </div>
@@ -65,23 +70,23 @@ export function PasswordResetForm({ errorMessage = "", nextPath = "/" }) {
       <p>Alege o parola noua pentru contul tau. Parola trebuie sa aiba minim 8 caractere.</p>
 
       {errorMessage || setupError ? (
-        <div className="nota5plus-inline-error" role="alert">
+        <InlineFeedback className={emailStyles["inline-error"]} tone="error" role="alert">
           {setupError || errorMessage}
-        </div>
+        </InlineFeedback>
       ) : null}
 
-      <form action={resetPasswordAction} className="auth-password-form">
+      <form action={resetPasswordAction} className={[styles["auth-password-form"]].filter(Boolean).join(" ")}>
         <input type="hidden" name="next" value={nextPath} />
-        <div className="email-auth-field">
-          <span className="email-auth-label-row">
+        <div className={[emailStyles["email-auth-field"]].filter(Boolean).join(" ")}>
+          <span className={[emailStyles["email-auth-label-row"]].filter(Boolean).join(" ")}>
             <label htmlFor="reset-password">Parola noua</label>
             <small>Minim 8 caractere</small>
           </span>
-          <span className="email-auth-input-wrap">
+          <span className={[emailStyles["email-auth-input-wrap"]].filter(Boolean).join(" ")}>
             <LockKeyhole aria-hidden="true" size={18} strokeWidth={2.2} />
             <input
               id="reset-password"
-              className="email-auth-input"
+              className={[emailStyles["email-auth-input"]].filter(Boolean).join(" ")}
               type="password"
               name="password"
               minLength={8}
@@ -91,15 +96,15 @@ export function PasswordResetForm({ errorMessage = "", nextPath = "/" }) {
             />
           </span>
         </div>
-        <div className="email-auth-field">
-          <span className="email-auth-label-row">
+        <div className={[emailStyles["email-auth-field"]].filter(Boolean).join(" ")}>
+          <span className={[emailStyles["email-auth-label-row"]].filter(Boolean).join(" ")}>
             <label htmlFor="reset-confirm-password">Confirma parola</label>
           </span>
-          <span className="email-auth-input-wrap">
+          <span className={[emailStyles["email-auth-input-wrap"]].filter(Boolean).join(" ")}>
             <CheckCircle2 aria-hidden="true" size={18} strokeWidth={2.2} />
             <input
               id="reset-confirm-password"
-              className="email-auth-input"
+              className={[emailStyles["email-auth-input"]].filter(Boolean).join(" ")}
               type="password"
               name="confirmPassword"
               minLength={8}
@@ -109,10 +114,10 @@ export function PasswordResetForm({ errorMessage = "", nextPath = "/" }) {
             />
           </span>
         </div>
-        <button className="email-auth-primary" type="submit" disabled={!ready}>
+        <Button className={[emailStyles["email-auth-primary"], styles["auth-password-submit"]].filter(Boolean).join(" ")} fullWidth type="submit" disabled={!ready}>
           Schimba parola
-        </button>
+        </Button>
       </form>
-    </section>
+    </SurfaceCard>
   );
 }

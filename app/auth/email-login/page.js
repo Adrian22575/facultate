@@ -5,6 +5,7 @@ import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from
 import { getPostLoginNextPath } from "@/lib/auth/password-auth";
 import { isDemoUser } from "@/lib/demo-user";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import routeStyles from "../auth-route.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -63,7 +64,7 @@ export default async function EmailLoginPage({ searchParams }) {
   };
 
   return (
-    <main className="nota5plus-page email-auth-page">
+    <main className={["nota5plus-page", routeStyles["email-auth-page"]].filter(Boolean).join(" ")}>
       <EmailAuthPanel
         initialMode={mode}
         nextPath={nextPath}
