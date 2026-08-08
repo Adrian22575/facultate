@@ -18,6 +18,8 @@ import {
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { hasSupabasePublicEnv } from "@/lib/env/public";
 
+import styles from "./page.module.css";
+
 const siteUrl = getPublicSiteUrl();
 const pageUrl = `${siteUrl}/despre`;
 const homeHref = "/auth/exit-demo?next=/";
@@ -244,8 +246,8 @@ function IconCard({ item, className = "" }) {
   const Icon = item.icon;
 
   return (
-    <article className={`about-icon-card ${className}`}>
-      <span className="about-icon-card-mark" aria-hidden="true">
+    <article className={`${styles.iconCard}${className ? ` ${className}` : ""}`}>
+      <span className={styles.iconCardMark} aria-hidden="true">
         <Icon size={22} strokeWidth={2.2} />
       </span>
       <div>
@@ -260,59 +262,59 @@ export default function DesprePage() {
   const isConfigured = hasSupabasePublicEnv();
 
   return (
-    <main className="about-page">
+    <main className={styles.page}>
       <AboutStructuredData />
-      <div className="about-container">
-        <nav className="about-nav" aria-label="Navigare pagina despre">
+      <div className={styles.container}>
+        <nav className={styles.nav} aria-label="Navigare pagina despre">
           <Link className="nota5plus-brand" href={homeHref}>
             <span className="nota5plus-brand-mark">5+</span>
             <span>Nota 5+</span>
           </Link>
-          <div className="about-nav-actions">
+          <div className={styles.navActions}>
             <Link href="#cum-functioneaza" className="nota5plus-nav-link">
               Cum functioneaza
             </Link>
             <Link href="#intrebari" className="nota5plus-nav-link">
               Intrebari
             </Link>
-            <Link href={loginHref} className="about-login-link">
+            <Link href={loginHref} className={styles.loginLink}>
               Intra in cont
             </Link>
           </div>
         </nav>
 
-        <section className="about-hero" aria-labelledby="about-title">
-          <div className="about-hero-copy">
-            <p className="about-kicker">Despre Nota 5+</p>
+        <section className={styles.hero} aria-labelledby="about-title">
+          <div className={styles.heroCopy}>
+            <p className={styles.kicker}>Despre Nota 5+</p>
             <h1 id="about-title">
               Platforma pentru teste grila, recapitulare si licenta, facuta pentru sesiuni scurte de invatat.
             </h1>
-            <p className="about-lead">
+            <p className={styles.lead}>
               Nota 5+ ii ajuta pe elevi, studenti si masteranzi sa lucreze direct cu intrebari si raspunsuri:
               incarci materia, verifici continutul si inveti prin Studiu, Interactiv sau Test.
             </p>
-            <div className="about-actions">
+            <div className={styles.actions}>
               <GoogleSignInButton
                 next="/"
                 disabled={!isConfigured}
-                className="about-google-wrap"
+                className={styles.googleWrap}
                 buttonClassName="nota5plus-btn nota5plus-btn-secondary nota5plus-google-btn"
                 errorClassName="nota5plus-inline-error"
               >
                 <span>Incepe gratuit cu Google</span>
               </GoogleSignInButton>
-              <Link className="nota5plus-btn about-secondary-action" href="/auth/demo-login?next=/demo">
+              <Link className={`nota5plus-btn ${styles.secondaryAction}`} href="/auth/demo-login?next=/demo">
                 Vezi demo
               </Link>
             </div>
           </div>
 
-          <aside className="about-hero-panel" aria-label="Rezumat Nota 5+">
-            <div className="about-panel-top">
+          <aside className={styles.heroPanel} aria-label="Rezumat Nota 5+">
+            <div className={styles.panelTop}>
               <span>Invatare aplicata</span>
               <strong>Din material la test, fara pasi inutili.</strong>
             </div>
-            <div className="about-signal-grid">
+            <div className={styles.signalGrid}>
               <div>
                 <strong>3</strong>
                 <span>moduri de lucru</span>
@@ -333,55 +335,55 @@ export default function DesprePage() {
           </aside>
         </section>
 
-        <section className="about-audience" aria-label="Pentru cine este Nota 5+">
+        <section className={styles.audience} aria-label="Pentru cine este Nota 5+">
           {audienceCards.map((item) => (
             <IconCard key={item.title} item={item} />
           ))}
         </section>
 
-        <section className="about-split-section" id="cum-functioneaza">
+        <section className={styles.splitSection} id="cum-functioneaza">
           <div>
-            <p className="about-section-label">Cum functioneaza</p>
+            <p className={styles.sectionLabel}>Cum functioneaza</p>
             <h2>O rutina simpla pentru invatare cu intrebari si raspunsuri.</h2>
             <p>
               Pagina este gandita pentru cautari reale: studenti care au grile, elevi care au materiale,
               masteranzi care repeta pentru examene si absolventi care se pregatesc pentru licenta.
             </p>
           </div>
-          <div className="about-step-list">
+          <div className={styles.stepList}>
             {workflowSteps.map((item) => (
-              <IconCard key={item.title} item={item} className="about-step-card" />
+              <IconCard key={item.title} item={item} className={styles.stepCard} />
             ))}
           </div>
         </section>
 
-        <section className="about-mode-section" aria-labelledby="about-modes-title">
-          <div className="about-section-head">
-            <p className="about-section-label">Moduri de invatare</p>
+        <section className={styles.modeSection} aria-labelledby="about-modes-title">
+          <div className={styles.sectionHead}>
+            <p className={styles.sectionLabel}>Moduri de invatare</p>
             <h2 id="about-modes-title">Alegi ritmul potrivit pentru materia ta.</h2>
           </div>
-          <div className="about-mode-grid">
+          <div className={styles.modeGrid}>
             {learningModes.map((item) => (
-              <IconCard key={item.title} item={item} className="about-mode-card" />
+              <IconCard key={item.title} item={item} className={styles.modeCard} />
             ))}
           </div>
         </section>
 
-        <section className="about-search-section" aria-label="Subiecte acoperite de Nota 5+">
+        <section className={styles.searchSection} aria-label="Subiecte acoperite de Nota 5+">
           <div>
-            <p className="about-section-label">Subiecte importante</p>
+            <p className={styles.sectionLabel}>Subiecte importante</p>
             <h2>Nota 5+ acopera felul in care oamenii cauta ajutor pentru invatat.</h2>
           </div>
-          <div className="about-topic-list">
+          <div className={styles.topicList}>
             {searchTopics.map((topic) => (
               <span key={topic}>{topic}</span>
             ))}
           </div>
         </section>
 
-        <section className="about-depth-section">
-          <div className="about-depth-copy">
-            <p className="about-section-label">De ce exista</p>
+        <section className={styles.depthSection}>
+          <div className={styles.depthCopy}>
+            <p className={styles.sectionLabel}>De ce exista</p>
             <h2>Invatatul devine mai clar cand lucrezi direct cu intrebarea.</h2>
             <p>
               In multe examene, diferenta nu este cat de mult ai citit, ci cat de repede recunosti intrebarea,
@@ -389,7 +391,7 @@ export default function DesprePage() {
               repetabil: parcurgi, raspunzi, verifici si revii unde ai gresit.
             </p>
           </div>
-          <div className="about-depth-points">
+          <div className={styles.depthPoints}>
             <div>
               <Layers3 size={21} aria-hidden="true" />
               <span>Materii separate, usor de reluat</span>
@@ -405,12 +407,12 @@ export default function DesprePage() {
           </div>
         </section>
 
-        <section className="about-faq" id="intrebari" aria-labelledby="about-faq-title">
-          <div className="about-section-head">
-            <p className="about-section-label">Intrebari frecvente</p>
+        <section className={styles.faq} id="intrebari" aria-labelledby="about-faq-title">
+          <div className={styles.sectionHead}>
+            <p className={styles.sectionLabel}>Intrebari frecvente</p>
             <h2 id="about-faq-title">Raspunsuri rapide despre Nota 5+.</h2>
           </div>
-          <div className="about-faq-grid">
+          <div className={styles.faqGrid}>
             {faqItems.map((item) => (
               <article key={item.question}>
                 <h3>{item.question}</h3>
@@ -420,12 +422,12 @@ export default function DesprePage() {
           </div>
         </section>
 
-        <section className="about-final">
+        <section className={styles.final}>
           <div>
-            <p className="about-section-label">Start rapid</p>
+            <p className={styles.sectionLabel}>Start rapid</p>
             <h2>Intra in Nota 5+ si lucreaza materia ca pe un set clar de pasi.</h2>
           </div>
-          <Link className="nota5plus-btn about-final-action" href="/auth/demo-login?next=/demo">
+          <Link className={`nota5plus-btn ${styles.finalAction}`} href="/auth/demo-login?next=/demo">
             Incearca demo
           </Link>
         </section>

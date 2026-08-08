@@ -39,7 +39,8 @@ const primitiveCssEntries = [
 ];
 const colocatedCssEntries = [
   "components/free-tools-page.module.css",
-  "components/free-tools-calculator.module.css"
+  "components/free-tools-calculator.module.css",
+  "app/despre/page.module.css"
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -194,6 +195,10 @@ for (const { relativePath, css } of colocatedCssSources) {
 
 if (/\.free-tools?-[A-Za-z_][\w-]*/.test(legacyCss)) {
   failures.push("Selectorii globali free-tool-* și free-tools-* au fost retrași; folosește CSS Modules colocate.");
+}
+
+if (/\.about-[A-Za-z_][\w-]*/.test(legacyCss)) {
+  failures.push("Selectorii globali about-* au fost retrași; folosește CSS Module-ul colocat al rutei /despre.");
 }
 
 if (legacyCss.includes('button[class=""]')) {

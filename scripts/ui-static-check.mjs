@@ -335,6 +335,9 @@ function inspectElement(filePath, node, context, ancestors) {
     if (/^free-tools?-/.test(token)) {
       report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat.`);
     }
+    if (/^about-/.test(token)) {
+      report(filePath, opening, `Clasa globală retrasă ${token} trebuie înlocuită cu CSS Module-ul colocat al rutei /despre.`);
+    }
   }
 
   for (const token of LEGACY_UI_TOKENS) {
