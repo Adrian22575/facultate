@@ -151,6 +151,44 @@ const layout = fs.readFileSync(layoutPath, "utf8").replaceAll("\r\n", "\n");
 const rules = fs.readFileSync(rulesPath, "utf8");
 const failures = [];
 
+const removedLegacyFamilies = [
+  "ai-workspace-",
+  "competition-compare",
+  "dashboard-action-",
+  "dashboard-continue-",
+  "dashboard-cta-",
+  "dashboard-demo-",
+  "dashboard-hero",
+  "dashboard-home-",
+  "dashboard-layout-",
+  "dashboard-main-",
+  "dashboard-mode-",
+  "dashboard-progress-",
+  "dashboard-start-",
+  "learning-overview-",
+  "learning-processing-",
+  "learning-upload-",
+  "licenta-session-",
+  "pricing-compare",
+  "public-home-",
+  "subjects-desktop-",
+  "subjects-filter-",
+  "subjects-mobile-",
+  "subjects-recent",
+  "subjects-search-",
+  "subjects-sort-",
+  "ui-actions-",
+  "ui-dark-cta-",
+  "ui-price-",
+  "workspace-import-"
+];
+
+for (const family of removedLegacyFamilies) {
+  if (legacyCss.includes(`.${family}`)) {
+    failures.push(`Familia CSS legacy eliminata a reaparut in globals.css: .${family}*.`);
+  }
+}
+
 const expectedTokens = {
   "--space-0": "0px",
   "--space-1": "4px",
