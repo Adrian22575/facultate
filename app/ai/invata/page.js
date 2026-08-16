@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./learning-route.module.css";
 import { redirect } from "next/navigation";
 
 import { LearningUploadForm } from "@/components/learning-upload-form";
@@ -66,9 +68,9 @@ export default async function LearningUploadPage({ searchParams }) {
   const subtitle = "Încarcă un curs, notițe sau prezentări și primești capitole, flashcards și teste.";
   const alerts = (
     <>
-      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
-      {error ? <div className="error-state" role="alert">{error}</div> : null}
-      {message ? <div className="learning-upload-success" role="status">{message}</div> : null}
+      {setupWarning ? <div className={moduleClassNames([styles], "error-state")} role="alert">{setupWarning}</div> : null}
+      {error ? <div className={moduleClassNames([styles], "error-state")} role="alert">{error}</div> : null}
+      {message ? <div className={moduleClassNames([styles], "learning-upload-success")} role="status">{message}</div> : null}
     </>
   );
 

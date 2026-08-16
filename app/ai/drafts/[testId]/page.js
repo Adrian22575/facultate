@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import reviewStyles from "../../../../components/workspace-question-review.module.css";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
@@ -61,11 +63,11 @@ export default async function AIDraftPage({ params, searchParams }) {
   const published = resolvedSearchParams?.published === "1";
 
   return (
-    <main className="app-shell">
+    <main className={moduleClassNames([reviewStyles], "app-shell")}>
       <AppHeader
         action={
           <PendingNavigationLink
-            className="btn-back"
+            className={moduleClassNames([reviewStyles], "btn-back")}
             href="/materiale"
             pendingLabel="Se revine..."
             pendingMode="replace"
@@ -79,13 +81,13 @@ export default async function AIDraftPage({ params, searchParams }) {
       />
 
       {published ? (
-        <section className="surface">
-          <div className="success-state" role="status">Testul este activ si poate fi rezolvat.</div>
+        <section className={moduleClassNames([reviewStyles], "surface")}>
+          <div className={moduleClassNames([reviewStyles], "success-state")} role="status">Testul este activ si poate fi rezolvat.</div>
         </section>
       ) : null}
 
-      <section className="surface">
-        <div className="status-copy">
+      <section className={moduleClassNames([reviewStyles], "surface")}>
+        <div className={moduleClassNames([reviewStyles], "status-copy")}>
           <strong>Vizibilitate</strong>
           <p>
             {test.visibility_scope === "cohort"
@@ -95,20 +97,20 @@ export default async function AIDraftPage({ params, searchParams }) {
         </div>
       </section>
 
-      <section className="surface">
-        <form action={updateDraftMetaAction} className="ai-form">
+      <section className={moduleClassNames([reviewStyles], "surface")}>
+        <form action={updateDraftMetaAction} className={moduleClassNames([reviewStyles], "ai-form")}>
           <input type="hidden" name="testId" value={test.id} />
-          <div className="selector-container">
+          <div className={moduleClassNames([reviewStyles], "selector-container")}>
             <label>
               Titlu test
-              <input className="input-search" type="text" name="title" defaultValue={test.title} />
+              <input className={moduleClassNames([reviewStyles], "input-search")} type="text" name="title" defaultValue={test.title} />
             </label>
           </div>
-          <div className="inline-actions">
+          <div className={moduleClassNames([reviewStyles], "inline-actions")}>
             <button type="submit">Salveaza titlul</button>
             {test.status === "active" ? (
               <PendingNavigationLink
-                className="btn-link secondary"
+                className={moduleClassNames([reviewStyles], "btn-link secondary")}
                 href={`/testele-mele/${test.id}`}
                 pendingLabel="Se deschide testul..."
                 pendingMode="replace"
@@ -121,30 +123,30 @@ export default async function AIDraftPage({ params, searchParams }) {
       </section>
 
       {test.status !== "active" ? (
-        <section className="surface">
+        <section className={moduleClassNames([reviewStyles], "surface")}>
           <form action={publishDraftAction}>
             <input type="hidden" name="testId" value={test.id} />
-            <div className="inline-actions">
+            <div className={moduleClassNames([reviewStyles], "inline-actions")}>
               <button type="submit">Confirma si activeaza testul</button>
             </div>
           </form>
         </section>
       ) : null}
 
-      <section className="surface">
+      <section className={moduleClassNames([reviewStyles], "surface")}>
         <h2>Intrebari generate</h2>
-        <div className="draft-list">
+        <div className={moduleClassNames([reviewStyles], "draft-list")}>
           {(questions || []).map((question) => (
-            <article key={question.id} className="draft-card draft-card-form">
-              <form action={updateDraftQuestionAction} className="ai-form">
+            <article key={question.id} className={moduleClassNames([reviewStyles], "draft-card draft-card-form")}>
+              <form action={updateDraftQuestionAction} className={moduleClassNames([reviewStyles], "ai-form")}>
                 <input type="hidden" name="testId" value={test.id} />
                 <input type="hidden" name="questionId" value={question.id} />
 
-                <div className="selector-container">
+                <div className={moduleClassNames([reviewStyles], "selector-container")}>
                   <label>
                     {`Intrebarea ${question.position}`}
                     <textarea
-                      className="textarea-input"
+                      className={moduleClassNames([reviewStyles], "textarea-input")}
                       name="questionText"
                       rows="4"
                       defaultValue={question.question_text}
@@ -153,11 +155,11 @@ export default async function AIDraftPage({ params, searchParams }) {
                 </div>
 
                 {["A", "B", "C", "D"].map((label, index) => (
-                  <div className="selector-container" key={`${question.id}-${label}`}>
+                  <div className={moduleClassNames([reviewStyles], "selector-container")} key={`${question.id}-${label}`}>
                     <label>
                       {`Varianta ${label}`}
                       <input
-                        className="input-search"
+                        className={moduleClassNames([reviewStyles], "input-search")}
                         type="text"
                         name={`answer${label}`}
                         defaultValue={question.answers[index] || ""}
@@ -166,7 +168,7 @@ export default async function AIDraftPage({ params, searchParams }) {
                   </div>
                 ))}
 
-                <div className="selector-container">
+                <div className={moduleClassNames([reviewStyles], "selector-container")}>
                   <label>
                     Raspuns corect
                     <select name="correctIndex" defaultValue={String(question.correct_index)}>
@@ -178,11 +180,11 @@ export default async function AIDraftPage({ params, searchParams }) {
                   </label>
                 </div>
 
-                <div className="selector-container">
+                <div className={moduleClassNames([reviewStyles], "selector-container")}>
                   <label>
                     Explicatie
                     <textarea
-                      className="textarea-input"
+                      className={moduleClassNames([reviewStyles], "textarea-input")}
                       name="explanation"
                       rows="3"
                       defaultValue={question.explanation || ""}
@@ -190,7 +192,7 @@ export default async function AIDraftPage({ params, searchParams }) {
                   </label>
                 </div>
 
-                <div className="inline-actions">
+                <div className={moduleClassNames([reviewStyles], "inline-actions")}>
                   <button type="submit">Salveaza intrebarea</button>
                 </div>
               </form>

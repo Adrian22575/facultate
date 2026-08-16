@@ -1,5 +1,12 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./learning-study-set-client.module.css";
+import modeStyles from "./learning-study-modes.module.css";
+import statusStyles from "./learning-study-status.module.css";
+import insightStyles from "./learning-study-insights.module.css";
+import contentStyles from "./learning-study-content.module.css";
+import reviewStyles from "./workspace-question-review.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -55,7 +62,7 @@ function LearningDeleteControl({ isOpen, isDeleting, message, onOpen, onCancel, 
     return (
       <button
         type="button"
-        className="secondary learning-delete-open"
+        className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary learning-delete-open")}
         data-usage-event="learning_set_delete_opened"
         onClick={onOpen}
       >
@@ -66,13 +73,13 @@ function LearningDeleteControl({ isOpen, isDeleting, message, onOpen, onCancel, 
   }
 
   return (
-    <div className="learning-delete-confirmation" role="alert">
+    <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-delete-confirmation")} role="alert">
       <span>Se vor sterge materialul, progresul si publicarea lui.</span>
       <div>
-        <button type="button" className="secondary" disabled={isDeleting} onClick={onCancel}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} disabled={isDeleting} onClick={onCancel}>
           Renunta
         </button>
-        <button type="button" className="learning-delete-confirm" disabled={isDeleting} onClick={onConfirm}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-delete-confirm")} disabled={isDeleting} onClick={onConfirm}>
           {isDeleting ? "Se sterge..." : "Sterge definitiv"}
         </button>
       </div>
@@ -146,7 +153,7 @@ function buildSimulation(chapters, questions, variant = 0) {
 
 function KpiCard({ label, value, detail }) {
   return (
-    <article className="learning-kpi-card">
+    <article className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-kpi-card")}>
       <span>{label}</span>
       <strong>{value}</strong>
       {detail ? <p>{detail}</p> : null}
@@ -231,15 +238,15 @@ function LearningProcessingPanel({ studySet }) {
     const succeeded = terminalStatus === "succeeded";
 
     return (
-      <section className={`learning-processing-result ${succeeded ? "is-success" : "is-error"}`} role="status">
-        <span className="ui-section-label">{succeeded ? "Material gata" : "Procesare oprita"}</span>
+      <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], `learning-processing-result ${succeeded ? "is-success" : "is-error"}`)} role="status">
+        <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>{succeeded ? "Material gata" : "Procesare oprita"}</span>
         <h1>{succeeded ? "Poti incepe sa inveti." : "Materialul este pastrat."}</h1>
         <p>
           {succeeded
             ? "Au fost pregatite capitole, flashcarduri si teste pentru materia ta."
             : "Deschide materialul pentru a vedea optiunile disponibile de reluare."}
         </p>
-        <button type="button" className="btn-link" onClick={() => router.refresh()}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "btn-link")} onClick={() => router.refresh()}>
           {succeeded ? "Deschide materialul" : "Vezi optiunile"}
         </button>
       </section>
@@ -247,11 +254,11 @@ function LearningProcessingPanel({ studySet }) {
   }
 
   return (
-    <section className="learning-processing-view" aria-busy="true">
-      <div className="learning-processing-hero">
+    <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-processing-view")} aria-busy="true">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-processing-hero")}>
         <LoadingSpinner size={54} />
         <div>
-          <span className="ui-section-label">Procesare</span>
+          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Procesare</span>
           <h1>{studySet.title}</h1>
           <p role="status" aria-live="polite" aria-atomic="true">{message || statusDetail}</p>
         </div>
@@ -259,12 +266,12 @@ function LearningProcessingPanel({ studySet }) {
 
       <ProcessingStageTracker kind="learning" stage={processingStage} status={jobSnapshot?.status} />
 
-      <p className="learning-processing-note">
+      <p className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-processing-note")}>
         Poți reveni oricând din Activitate. Materialul este păstrat și nu trebuie încărcat din nou.
       </p>
 
-      <div className="learning-study-footer">
-        <Link className="btn-link secondary" href="/materiale/activitate">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-footer")}>
+        <Link className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "btn-link secondary")} href="/materiale/activitate">
           Vezi activitatea
         </Link>
       </div>
@@ -274,26 +281,26 @@ function LearningProcessingPanel({ studySet }) {
 
 function ChapterCard({ chapter, onStartChapterTest }) {
   return (
-    <article className="learning-chapter-card">
-      <div className="learning-chapter-head">
+    <article className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-chapter-card")}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-chapter-head")}>
         <span>{`Capitolul ${chapter.position}`}</span>
         <h3>{chapter.title}</h3>
       </div>
       <p>{chapter.summary}</p>
       {chapter.keyIdeas.length ? (
-        <ul className="learning-idea-list">
+        <ul className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-idea-list")}>
           {chapter.keyIdeas.slice(0, 3).map((idea) => (
             <li key={idea}>{idea}</li>
           ))}
         </ul>
       ) : null}
-      <div className="learning-term-row">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-term-row")}>
         {chapter.keyTerms.slice(0, 5).map((term) => (
           <span key={term}>{term}</span>
         ))}
       </div>
       {chapter.concepts.length ? (
-        <div className="learning-concept-list">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-concept-list")}>
           {chapter.concepts.slice(0, 4).map((concept) => (
             <details key={concept.id}>
               <summary>{concept.title}</summary>
@@ -305,8 +312,8 @@ function ChapterCard({ chapter, onStartChapterTest }) {
           ))}
         </div>
       ) : null}
-      <div className="learning-chapter-actions">
-        <button type="button" className="secondary" onClick={() => onStartChapterTest(chapter.id)}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-chapter-actions")}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} onClick={() => onStartChapterTest(chapter.id)}>
           Test capitol
         </button>
       </div>
@@ -353,12 +360,12 @@ function FlashcardsTab({ studySetId, flashcards }) {
   }
 
   if (!flashcards.length) {
-    return <div className="learning-empty-panel">Nu avem flashcards pentru aceasta materie.</div>;
+    return <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-empty-panel")}>Nu avem flashcards pentru aceasta materie.</div>;
   }
 
   if (!current) {
     return (
-      <section className="learning-finish-panel">
+      <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-finish-panel")}>
         <CheckCircle2 aria-hidden="true" />
         <div>
           <h3>Sesiune terminata</h3>
@@ -378,24 +385,24 @@ function FlashcardsTab({ studySetId, flashcards }) {
   }
 
   return (
-    <section className="learning-flashcards-shell">
-      <div className="learning-session-head">
+    <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-flashcards-shell")}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-session-head")}>
         <span>{`${index + 1} / ${flashcards.length}`}</span>
         <strong>{isSaving ? "Salvam progresul..." : current.hint || "Flashcards"}</strong>
       </div>
       <button
         type="button"
-        className={`learning-flashcard ${revealed ? "is-revealed" : ""}`}
+        className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], `learning-flashcard ${revealed ? "is-revealed" : ""}`)}
         onClick={() => setRevealed((value) => !value)}
       >
         <span>{revealed ? "Raspuns" : "Intrebare"}</span>
         <strong>{revealed ? current.back : current.front}</strong>
         <small>{revealed ? "Apasa un rating mai jos." : "Apasa pe card ca sa vezi raspunsul."}</small>
       </button>
-      <div className="learning-flashcard-actions">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-flashcard-actions")}>
         <button
           type="button"
-          className="secondary"
+          className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")}
           data-usage-event="learning_flashcard_rated"
           data-usage-label="Nu stiu"
           disabled={isSaving}
@@ -405,7 +412,7 @@ function FlashcardsTab({ studySetId, flashcards }) {
         </button>
         <button
           type="button"
-          className="secondary"
+          className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")}
           data-usage-event="learning_flashcard_rated"
           data-usage-label="Aproape"
           disabled={isSaving}
@@ -424,7 +431,7 @@ function FlashcardsTab({ studySetId, flashcards }) {
         </button>
         <button
           type="button"
-          className="secondary"
+          className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")}
           data-usage-event="learning_flashcard_rated"
           data-usage-label="Mai tarziu"
           disabled={isSaving}
@@ -433,7 +440,7 @@ function FlashcardsTab({ studySetId, flashcards }) {
           Mai tarziu
         </button>
       </div>
-      {saveMessage ? <p className="learning-save-message" role="status">{saveMessage}</p> : null}
+      {saveMessage ? <p className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-save-message")} role="status">{saveMessage}</p> : null}
     </section>
   );
 }
@@ -552,12 +559,12 @@ function TestTab({
   }
 
   if (!activeQuestions.length) {
-    return <div className="learning-empty-panel">Nu avem intrebari pentru selectia curenta.</div>;
+    return <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-empty-panel")}>Nu avem intrebari pentru selectia curenta.</div>;
   }
 
   return (
-    <section className="learning-test-shell">
-      <div className="learning-test-toolbar">
+    <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-test-shell")}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-test-toolbar")}>
         <label>
           Mod
           <select
@@ -625,15 +632,15 @@ function TestTab({
         <span>{`${answeredCount}/${activeQuestions.length} răspunsuri`}</span>
       </div>
 
-      <div className="learning-question-list">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-list")}>
         {activeQuestions.map((question, questionIndex) => (
-          <article key={question.id} className="learning-question-card">
+          <article key={question.id} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-card")}>
             <strong>{`${questionIndex + 1}. ${question.questionText}`}</strong>
-            <div className="learning-answer-list">
+            <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-answer-list")}>
               {question.answers.map((answer, answerIndex) => (
                 <label
                   key={`${question.id}-${answerIndex}`}
-                  className={answers[question.id] === answerIndex ? "is-selected" : ""}
+                  className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], answers[question.id] === answerIndex ? "is-selected" : "")}
                 >
                   <input
                     checked={answers[question.id] === answerIndex}
@@ -651,7 +658,7 @@ function TestTab({
 
       {result ? (
         <>
-          <div className={`learning-test-result is-${result.type}`} role="status" aria-live="polite">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], `learning-test-result is-${result.type}`)} role="status" aria-live="polite">
             {result.type === "warning" ? <XCircle aria-hidden="true" /> : null}
             {result.type === "saving" ? <LoadingSpinner size={24} /> : null}
             {result.type === "done" ? <CheckCircle2 aria-hidden="true" /> : null}
@@ -676,7 +683,7 @@ function TestTab({
         </>
       ) : null}
 
-      <div className="learning-test-actions">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-test-actions")}>
         {result?.type === "done" ? (
           <>
             {result.wrong.length ? (
@@ -686,7 +693,7 @@ function TestTab({
             )}
             <button
               type="button"
-              className="secondary"
+              className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")}
               onClick={result.wrong.length ? startAnotherTest : resetTest}
             >
               {result.wrong.length ? "Alte întrebări" : "Repetă același test"}
@@ -704,7 +711,7 @@ function TestTab({
               {isSaving ? "Se salvează..." : "Vezi rezultatul"}
             </button>
             {answeredCount ? (
-              <button type="button" className="secondary" disabled={isSaving} onClick={resetTest}>
+              <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} disabled={isSaving} onClick={resetTest}>
                 Resetează răspunsurile
               </button>
             ) : null}
@@ -774,39 +781,39 @@ function ExamSimulationTab({ chapters, questions }) {
   }
 
   if (!hasSimulationContent) {
-    return <div className="learning-empty-panel">Nu avem suficient continut pentru o simulare mixta.</div>;
+    return <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-empty-panel")}>Nu avem suficient continut pentru o simulare mixta.</div>;
   }
 
   return (
-    <section className="learning-simulation-shell">
-      <div className="learning-simulation-head">
+    <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-shell")}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-head")}>
         <div>
-          <span className="ui-section-label">Simulare examen</span>
+          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Simulare examen</span>
           <h2>Runda mixta</h2>
           <p>
             Grilele si adevarat/fals se evalueaza automat. Intrebarile scurte primesc raspuns model
             pentru verificare rapida.
           </p>
         </div>
-        <div className="learning-simulation-score">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-score")}>
           <strong>{objectiveTotal}</strong>
           <span>itemi evaluati automat</span>
         </div>
       </div>
 
       {simulation.multipleChoice.length ? (
-        <section className="learning-simulation-section">
+        <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-section")}>
           <h3>Subiectul 1. Grila</h3>
-          <div className="learning-question-list">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-list")}>
             {simulation.multipleChoice.map((question, questionIndex) => (
-              <article key={question.id} className="learning-question-card">
-                <span className="learning-question-meta">{question.chapterTitle}</span>
+              <article key={question.id} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-card")}>
+                <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-meta")}>{question.chapterTitle}</span>
                 <strong>{`${questionIndex + 1}. ${question.questionText}`}</strong>
-                <div className="learning-answer-list">
+                <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-answer-list")}>
                   {question.answers.map((answer, answerIndex) => (
                     <label
                       key={`${question.id}-${answerIndex}`}
-                      className={multipleChoiceAnswers[question.id] === answerIndex ? "is-selected" : ""}
+                      className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], multipleChoiceAnswers[question.id] === answerIndex ? "is-selected" : "")}
                     >
                       <input
                         checked={multipleChoiceAnswers[question.id] === answerIndex}
@@ -827,24 +834,24 @@ function ExamSimulationTab({ chapters, questions }) {
       ) : null}
 
       {simulation.trueFalse.length ? (
-        <section className="learning-simulation-section">
+        <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-section")}>
           <h3>Subiectul 2. Adevarat sau fals</h3>
-          <div className="learning-simulation-grid">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-grid")}>
             {simulation.trueFalse.map((question, index) => (
-              <article key={question.id} className="learning-true-false-card">
-                <span className="learning-question-meta">{`${index + 1}. ${question.chapterTitle}`}</span>
+              <article key={question.id} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-true-false-card")}>
+                <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-meta")}>{`${index + 1}. ${question.chapterTitle}`}</span>
                 <strong>{question.statement}</strong>
-                <div className="learning-binary-actions">
+                <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-binary-actions")}>
                   <button
                     type="button"
-                    className={trueFalseAnswers[question.id] === true ? "is-selected" : ""}
+                    className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], trueFalseAnswers[question.id] === true ? "is-selected" : "")}
                     onClick={() => setTrueFalseAnswers((value) => ({ ...value, [question.id]: true }))}
                   >
                     Adevarat
                   </button>
                   <button
                     type="button"
-                    className={trueFalseAnswers[question.id] === false ? "is-selected" : ""}
+                    className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], trueFalseAnswers[question.id] === false ? "is-selected" : "")}
                     onClick={() => setTrueFalseAnswers((value) => ({ ...value, [question.id]: false }))}
                   >
                     Fals
@@ -858,12 +865,12 @@ function ExamSimulationTab({ chapters, questions }) {
       ) : null}
 
       {simulation.shortAnswer.length ? (
-        <section className="learning-simulation-section">
+        <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-section")}>
           <h3>Subiectul 3. Intrebari scurte</h3>
-          <div className="learning-simulation-grid">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-grid")}>
             {simulation.shortAnswer.map((question, index) => (
-              <article key={question.id} className="learning-short-answer-card">
-                <span className="learning-question-meta">{`${index + 1}. ${question.chapterTitle}`}</span>
+              <article key={question.id} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-short-answer-card")}>
+                <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-meta")}>{`${index + 1}. ${question.chapterTitle}`}</span>
                 <label>
                   <strong>{question.question}</strong>
                   <textarea
@@ -876,7 +883,7 @@ function ExamSimulationTab({ chapters, questions }) {
                   />
                 </label>
                 {result?.type === "done" ? (
-                  <div className="learning-model-answer">
+                  <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-model-answer")}>
                     <span>Raspuns model</span>
                     <p>{question.modelAnswer}</p>
                     {question.example ? <small>{`Exemplu: ${question.example}`}</small> : null}
@@ -889,7 +896,7 @@ function ExamSimulationTab({ chapters, questions }) {
       ) : null}
 
       {result ? (
-        <div className={`learning-test-result ${result.type === "warning" ? "is-warning" : "is-done"}`}>
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], `learning-test-result ${result.type === "warning" ? "is-warning" : "is-done"}`)}>
           {result.type === "warning" ? <XCircle aria-hidden="true" /> : <CheckCircle2 aria-hidden="true" />}
           <div>
             <strong>
@@ -906,7 +913,7 @@ function ExamSimulationTab({ chapters, questions }) {
         </div>
       ) : null}
 
-      <div className="learning-test-actions">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-test-actions")}>
         <button
           type="button"
           data-usage-event="learning_simulation_completed"
@@ -915,10 +922,10 @@ function ExamSimulationTab({ chapters, questions }) {
         >
           Finalizeaza simularea
         </button>
-        <button type="button" className="secondary" onClick={resetSimulation}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} onClick={resetSimulation}>
           Repeta simularea
         </button>
-        <button type="button" className="secondary" onClick={startAnotherSimulation}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} onClick={startAnotherSimulation}>
           Mai fa o simulare
         </button>
       </div>
@@ -932,24 +939,24 @@ function CompetitionTab({ leaderboard }) {
 
   if (!hasParticipants) {
     return (
-      <div className="learning-empty-panel">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-empty-panel")}>
         Competitia apare dupa primele teste salvate pentru acest material.
       </div>
     );
   }
 
   return (
-    <section className="learning-competition-shell">
-      <div className="learning-competition-head">
+    <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-competition-shell")}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-competition-head")}>
         <div>
-          <span className="ui-section-label">Comparatie comunitate</span>
+          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Comparatie comunitate</span>
           <h2>Leaderboard anonim</h2>
           <p>
             Comparatia foloseste doar rundele acestui material si ramane in comunitatea materialului.
             Colegii sunt anonimizati.
           </p>
         </div>
-        <div className="learning-competition-kpis">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-competition-kpis")}>
           <KpiCard
             label="Pozitia ta"
             value={leaderboard.currentUserRank ? `#${leaderboard.currentUserRank}` : "-"}
@@ -960,9 +967,9 @@ function CompetitionTab({ leaderboard }) {
         </div>
       </div>
 
-      <div className="learning-leaderboard-list">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-leaderboard-list")}>
         {rows.map((row) => (
-          <article key={`${row.rank}-${row.label}`} className={row.isCurrentUser ? "is-current-user" : ""}>
+          <article key={`${row.rank}-${row.label}`} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], row.isCurrentUser ? "is-current-user" : "")}>
             <span>{`#${row.rank}`}</span>
             <div>
               <strong>{row.label}</strong>
@@ -1107,7 +1114,7 @@ export function LearningStudySetClient({ studySet }) {
       <>
         <LearningProcessingPanel studySet={studySet} />
         {studySet.isOwner ? (
-          <div className="learning-owner-delete-row">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-owner-delete-row")}>
             <LearningDeleteControl
               isOpen={deleteConfirmationOpen}
               isDeleting={isDeleting}
@@ -1126,16 +1133,16 @@ export function LearningStudySetClient({ studySet }) {
   }
 
   return (
-    <section className="learning-study-set">
-      <div className="learning-study-hero">
+    <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-set")}>
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-hero")}>
         <div>
-          <span className="ui-section-label">Material gata de învățat</span>
+          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Material gata de învățat</span>
           <h1>{studySet.title}</h1>
           <p>
             {`${studySet.chapterCount} capitole, ${studySet.flashcardCount} flashcards și ${studySet.questionCount} întrebări pregătite.`}
           </p>
         </div>
-        <div className="learning-study-next">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-next")}>
           <Target aria-hidden="true" />
           <span>Recomandat pentru început</span>
           <strong>{nextChapter ? `Incepe cu ${nextChapter.title}` : "Incepe cu flashcards"}</strong>
@@ -1149,18 +1156,18 @@ export function LearningStudySetClient({ studySet }) {
           </button>
           {studySet.isOwner ? (
             publishedAt ? (
-              <span className="learning-community-badge">Publicat pentru comunitatea ta</span>
+              <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-community-badge")}>Publicat pentru comunitatea ta</span>
             ) : publishConfirmationOpen ? (
-              <div className="learning-publish-confirmation" role="status">
+              <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-publish-confirmation")} role="status">
                 <strong>Distribui acest material colegilor?</strong>
                 <span>Vor putea invata din el, iar progresul fiecaruia ramane separat. Fisierul sursa ramane privat.</span>
                 <div>
-                  <button type="button" className="secondary" disabled={isPublishing} onClick={() => setPublishConfirmationOpen(false)}>
+                  <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} disabled={isPublishing} onClick={() => setPublishConfirmationOpen(false)}>
                     Pastreaza privat
                   </button>
                   <button
                     type="button"
-                    className="learning-publish-confirm"
+                    className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-publish-confirm")}
                     data-usage-event="learning_set_published"
                     data-usage-label="Distribuie clasei"
                     disabled={isPublishing}
@@ -1173,7 +1180,7 @@ export function LearningStudySetClient({ studySet }) {
             ) : (
               <button
                 type="button"
-                className="secondary learning-publish-button"
+                className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary learning-publish-button")}
                 data-usage-event="learning_set_publish_opened"
                 data-usage-label="Distribuie clasei"
                 onClick={() => setPublishConfirmationOpen(true)}
@@ -1183,10 +1190,10 @@ export function LearningStudySetClient({ studySet }) {
             )
           ) : (
             <>
-              <span className="learning-community-badge">Material din comunitate</span>
+              <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-community-badge")}>Material din comunitate</span>
               <button
                 type="button"
-                className="secondary learning-report-button"
+                className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary learning-report-button")}
                 data-usage-event="learning_set_reported"
                 data-usage-label="Raporteaza material"
                 disabled={isReporting}
@@ -1196,8 +1203,8 @@ export function LearningStudySetClient({ studySet }) {
               </button>
             </>
           )}
-          {publishMessage ? <p className="learning-save-message" role="status">{publishMessage}</p> : null}
-          {reportMessage ? <p className="learning-save-message" role="status">{reportMessage}</p> : null}
+          {publishMessage ? <p className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-save-message")} role="status">{publishMessage}</p> : null}
+          {reportMessage ? <p className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-save-message")} role="status">{reportMessage}</p> : null}
           {studySet.isOwner ? (
             <LearningDeleteControl
               isOpen={deleteConfirmationOpen}
@@ -1215,14 +1222,14 @@ export function LearningStudySetClient({ studySet }) {
       </div>
 
       {studySet.isOwner && studySet.status === "failed" ? (
-        <div className="learning-retry-panel">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-retry-panel")}>
           <div>
             <strong>Procesarea s-a oprit.</strong>
             <span>Reluam salvarea materialelor din sursa pastrata, fara o incarcare noua.</span>
           </div>
           <button
             type="button"
-            className="secondary"
+            className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")}
             data-usage-event="learning_retry_started"
             data-usage-label="Retry material invatare"
             disabled={isRetrying}
@@ -1230,12 +1237,12 @@ export function LearningStudySetClient({ studySet }) {
           >
             {isRetrying ? "Se reia..." : "Reia procesarea"}
           </button>
-          {retryMessage ? <p className="learning-save-message" role="status">{retryMessage}</p> : null}
+          {retryMessage ? <p className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-save-message")} role="status">{retryMessage}</p> : null}
         </div>
       ) : null}
 
       {studySet.warnings.length ? (
-        <div className="learning-warning-panel">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-warning-panel")}>
           <strong>Atentionari</strong>
           {studySet.warnings.map((warning) => (
             <span key={warning}>{warning}</span>
@@ -1243,7 +1250,7 @@ export function LearningStudySetClient({ studySet }) {
         </div>
       ) : null}
 
-      <div className="learning-kpi-grid">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-kpi-grid")}>
         <KpiCard label="Capitole" value={studySet.chapterCount} detail={`${studySet.estimatedPages} pagini estimate`} />
         <KpiCard label="Concepte" value={studySet.conceptCount} detail={studySet.recommendedLevel} />
         <KpiCard label="Flashcards" value={studySet.flashcardCount} detail="pentru repetare" />
@@ -1251,7 +1258,7 @@ export function LearningStudySetClient({ studySet }) {
       </div>
 
       <div
-        className="learning-tabs"
+        className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-tabs")}
         role="tablist"
         aria-label="Moduri invatare"
         onKeyDown={handleTablistKeyDown}
@@ -1265,7 +1272,7 @@ export function LearningStudySetClient({ studySet }) {
             aria-selected={activeTab === tab.id}
             aria-controls="learning-active-panel"
             tabIndex={activeTab === tab.id ? 0 : -1}
-            className={activeTab === tab.id ? "is-active" : ""}
+            className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], activeTab === tab.id ? "is-active" : "")}
             data-usage-event="learning_tab_opened"
             data-usage-label={tab.label}
             onClick={() => setActiveTab(tab.id)}
@@ -1275,7 +1282,7 @@ export function LearningStudySetClient({ studySet }) {
         ))}
       </div>
 
-      <details className="learning-more-modes" open={isMoreTabActive}>
+      <details className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-more-modes")} open={isMoreTabActive}>
         <summary>{isMoreTabActive ? `Mai multe moduri: ${activeTabLabel}` : "Mai multe moduri"}</summary>
         <div aria-label="Moduri suplimentare de invatare">
           {MORE_TABS.map((tab) => (
@@ -1283,7 +1290,7 @@ export function LearningStudySetClient({ studySet }) {
               key={tab.id}
               type="button"
               aria-pressed={activeTab === tab.id}
-              className={activeTab === tab.id ? "is-active" : ""}
+              className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], activeTab === tab.id ? "is-active" : "")}
               data-usage-event="learning_tab_opened"
               data-usage-label={tab.label}
               onClick={() => setActiveTab(tab.id)}
@@ -1300,19 +1307,19 @@ export function LearningStudySetClient({ studySet }) {
         aria-label={`Modul ${activeTabLabel}`}
       >
       {activeTab === "overview" ? (
-        <section className="learning-start-panel" aria-labelledby="learning-start-title">
-          <div className="learning-start-head">
-            <span className="ui-section-label">Alege un mod</span>
+        <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-panel")} aria-labelledby="learning-start-title">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-head")}>
+            <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Alege un mod</span>
             <h2 id="learning-start-title">Cum vrei să începi?</h2>
             <p>Poți schimba modul oricând. Progresul se salvează automat.</p>
           </div>
-          <div className="learning-start-options">
+          <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-options")}>
             <button
               type="button"
               disabled={!studySet.flashcardCount}
               onClick={() => setActiveTab("flashcards")}
             >
-              <span className="learning-start-icon" aria-hidden="true"><Brain /></span>
+              <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-icon")} aria-hidden="true"><Brain /></span>
               <span>
                 <strong>Repetă cu flashcards</strong>
                 <small>{`${studySet.flashcardCount} carduri · ritm rapid`}</small>
@@ -1324,7 +1331,7 @@ export function LearningStudySetClient({ studySet }) {
               disabled={!studySet.questionCount}
               onClick={() => setActiveTab("test")}
             >
-              <span className="learning-start-icon" aria-hidden="true"><ListChecks /></span>
+              <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-icon")} aria-hidden="true"><ListChecks /></span>
               <span>
                 <strong>Verifică prin întrebări</strong>
                 <small>{`${studySet.questionCount} întrebări · răspuns imediat`}</small>
@@ -1333,14 +1340,14 @@ export function LearningStudySetClient({ studySet }) {
             </button>
           </div>
           {nextChapter ? (
-            <button type="button" className="learning-start-chapter" onClick={() => setActiveTab("chapters")}>
+            <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-chapter")} onClick={() => setActiveTab("chapters")}>
               <BookOpen aria-hidden="true" />
               <span><small>Preferi să citești?</small><strong>Deschide {nextChapter.title}</strong></span>
               <ArrowRight aria-hidden="true" />
             </button>
           ) : null}
           {studySet.attempts.length ? (
-            <p className="learning-start-progress" role="status">
+            <p className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-progress")} role="status">
               {`Ultimul rezultat salvat: ${studySet.attempts[0].score}% · ${studySet.attempts.length} ${studySet.attempts.length === 1 ? "rundă" : "runde"}`}
             </p>
           ) : null}
@@ -1348,7 +1355,7 @@ export function LearningStudySetClient({ studySet }) {
       ) : null}
 
       {activeTab === "chapters" ? (
-        <div className="learning-chapter-grid">
+        <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-chapter-grid")}>
           {studySet.chapters.map((chapter) => (
             <ChapterCard key={chapter.id} chapter={chapter} onStartChapterTest={startChapterTest} />
           ))}
@@ -1381,17 +1388,17 @@ export function LearningStudySetClient({ studySet }) {
       ) : null}
 
       {activeTab === "mistakes" ? (
-        <section className="learning-mistakes-panel">
+        <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-mistakes-panel")}>
           {mistakes.length ? (
             <>
-              <div className="learning-upload-section-head">
+              <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-upload-section-head")}>
                 <div>
-                  <span className="ui-section-label">Greseli</span>
+                  <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Greseli</span>
                   <h2>Repeta intrebarile ratate</h2>
                 </div>
                 <button
                   type="button"
-                  className="secondary"
+                  className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")}
                   data-usage-event="learning_mistakes_started"
                   data-usage-label="Test doar din greseli"
                   onClick={startMistakesTest}
@@ -1400,14 +1407,14 @@ export function LearningStudySetClient({ studySet }) {
                 </button>
               </div>
               {mistakes.map((question) => (
-                <article key={question.id} className="learning-question-card">
+                <article key={question.id} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-question-card")}>
                   <strong>{question.questionText}</strong>
                   <p>{question.explanation}</p>
                 </article>
               ))}
             </>
           ) : (
-            <div className="learning-empty-panel">
+            <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-empty-panel")}>
               Nu ai greseli in sesiunea curenta. Fa un test si revino aici.
             </div>
           )}
@@ -1415,14 +1422,14 @@ export function LearningStudySetClient({ studySet }) {
       ) : null}
 
       {activeTab === "plan" ? (
-        <section className="learning-plan-list">
+        <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-plan-list")}>
           {studySet.plan.length ? (
             studySet.plan.map((day, index) => {
               const dayLabel = `Ziua ${day.day || index + 1}`;
               const title = day.title && day.title !== dayLabel ? day.title : dayLabel;
 
               return (
-                <article key={`${day.title}-${index}`} className="learning-plan-card">
+                <article key={`${day.title}-${index}`} className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-plan-card")}>
                   <span>Plan zilnic</span>
                   <strong>{title}</strong>
                   {day.activities.map((activity) => (
@@ -1432,17 +1439,17 @@ export function LearningStudySetClient({ studySet }) {
               );
             })
           ) : (
-            <div className="learning-empty-panel">Planul apare dupa ce exista capitole salvate.</div>
+            <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-empty-panel")}>Planul apare dupa ce exista capitole salvate.</div>
           )}
         </section>
       ) : null}
       </div>
 
-      <div className="learning-study-footer">
-        <Link className="btn-link secondary" href="/materiale/invata">
+      <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-footer")}>
+        <Link className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "btn-link secondary")} href="/materiale/invata">
           Incarca alta materie
         </Link>
-        <button type="button" className="secondary" onClick={() => setActiveTab("overview")}>
+        <button type="button" className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "secondary")} onClick={() => setActiveTab("overview")}>
           <RotateCcw aria-hidden="true" size={16} />
           Inapoi la inceput
         </button>

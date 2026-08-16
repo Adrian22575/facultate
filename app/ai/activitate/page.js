@@ -1,3 +1,6 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "@/components/ai-activity-center-client.module.css";
+import reviewStyles from "../../../components/workspace-question-review.module.css";
 import { Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -33,7 +36,7 @@ function getActivityTimestamp(item) {
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className="ui-icon-text">
+    <span className={moduleClassNames([styles, reviewStyles], "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -112,22 +115,22 @@ export default async function AIActivityPage({ searchParams }) {
     testGroups.drafts.length;
 
   return (
-    <main className="app-shell ai-workspace-page ai-activity-page">
+    <main className={moduleClassNames([styles, reviewStyles], "app-shell ai-workspace-page ai-activity-page")}>
       <AppHeader
         title="Materiale de studiu"
         subtitle="Materialele, importurile si testele tale intr-un singur loc."
         hidePageTitle
       />
 
-      <section className="ai-workspace-header ai-activity-header">
-        <div className="ai-workspace-header-copy">
-          <h1 className="ai-workspace-title">Materialele mele</h1>
-          <p className="ai-workspace-subtitle">
+      <section className={moduleClassNames([styles, reviewStyles], "ai-workspace-header ai-activity-header")}>
+        <div className={moduleClassNames([styles, reviewStyles], "ai-workspace-header-copy")}>
+          <h1 className={moduleClassNames([styles, reviewStyles], "ai-workspace-title")}>Materialele mele</h1>
+          <p className={moduleClassNames([styles, reviewStyles], "ai-workspace-subtitle")}>
             Deschide un material salvat sau urmareste o procesare in curs.
           </p>
         </div>
         <PendingNavigationLink
-          className="btn-link secondary ai-activity-back-link"
+          className={moduleClassNames([styles, reviewStyles], "btn-link secondary ai-activity-back-link")}
           href="/materiale/invata"
           pendingLabel="Se deschide incarcarea..."
           pendingMode="replace"
@@ -136,7 +139,7 @@ export default async function AIActivityPage({ searchParams }) {
         </PendingNavigationLink>
       </section>
 
-      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
+      {setupWarning ? <div className={moduleClassNames([styles, reviewStyles], "error-state")} role="alert">{setupWarning}</div> : null}
 
       {hasAnyActivity ? (
         <AIActivityCenterClient
@@ -151,12 +154,12 @@ export default async function AIActivityPage({ searchParams }) {
           initialTab={initialTab}
         />
       ) : (
-        <section className="surface ai-workspace-activity-surface">
-          <article className="ui-panel-card ai-workspace-activity-empty">
+        <section className={moduleClassNames([styles, reviewStyles], "surface ai-workspace-activity-surface")}>
+          <article className={moduleClassNames([styles, reviewStyles], "ui-panel-card ai-workspace-activity-empty")}>
             <strong>Biblioteca nu are materiale inca.</strong>
-            <p className="page-copy">Adauga primul material pentru a incepe.</p>
+            <p className={moduleClassNames([styles, reviewStyles], "page-copy")}>Adauga primul material pentru a incepe.</p>
             <PendingNavigationLink
-              className="btn-back"
+              className={moduleClassNames([styles, reviewStyles], "btn-back")}
               href="/materiale/invata"
               pendingLabel="Se deschide uploadul..."
               pendingMode="replace"

@@ -1,5 +1,9 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./ai-question-bank-review-client.module.css";
+import reviewStyles from "./workspace-question-review.module.css";
+import editorStyles from "./workspace-question-editor.module.css";
 import { CircleAlert, CheckCircle2, Edit3, ListFilter, Plus, Save, Trash2, X } from "lucide-react";
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -27,7 +31,7 @@ function answerLabel(index) {
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className="ui-icon-text">
+    <span className={moduleClassNames([styles, reviewStyles, editorStyles], "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -39,9 +43,9 @@ function AnswerView({ answer, index, correctIndex }) {
   const isCorrect = index === correctIndex;
 
   return (
-    <li className={`review-answer-item ${isCorrect ? "is-correct" : ""}`}>
-      <span className="review-answer-badge">{label}</span>
-      <span className="review-answer-copy">{answer}</span>
+    <li className={moduleClassNames([styles, reviewStyles, editorStyles], `review-answer-item ${isCorrect ? "is-correct" : ""}`)}>
+      <span className={moduleClassNames([styles, reviewStyles, editorStyles], "review-answer-badge")}>{label}</span>
+      <span className={moduleClassNames([styles, reviewStyles, editorStyles], "review-answer-copy")}>{answer}</span>
     </li>
   );
 }
@@ -127,23 +131,23 @@ function ReviewQuestionView({ bankId, item, searchActive, onEdit, onDelete }) {
 
   return (
     <article
-      className={`draft-card review-question-card ${item.quality_status === "needs_review" ? "is-needs-review" : ""}`}
+      className={moduleClassNames([styles, reviewStyles, editorStyles], `draft-card review-question-card ${item.quality_status === "needs_review" ? "is-needs-review" : ""}`)}
     >
-      <div className="draft-card-head review-question-head">
+      <div className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-card-head review-question-head")}>
         <div>
-          <span className="step-eyebrow">{`Intrebarea ${item.position}`}</span>
-          <strong className="review-question-text">{item.question_text}</strong>
+          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "step-eyebrow")}>{`Intrebarea ${item.position}`}</span>
+          <strong className={moduleClassNames([styles, reviewStyles, editorStyles], "review-question-text")}>{item.question_text}</strong>
           {item.quality_status === "needs_review" ? (
-            <span className="status-pill is-warning review-quality-pill">Verifica atent</span>
+            <span className={moduleClassNames([styles, reviewStyles, editorStyles], "status-pill is-warning review-quality-pill")}>Verifica atent</span>
           ) : null}
         </div>
-        <div className="inline-actions review-item-actions">
-          <button type="button" className="btn-link secondary" onClick={() => onEdit(item.id)}>
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions review-item-actions")}>
+          <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")} onClick={() => onEdit(item.id)}>
             <IconText icon={Edit3}>Editeaza</IconText>
           </button>
           <button
             type="button"
-            className="secondary review-delete-btn"
+            className={moduleClassNames([styles, reviewStyles, editorStyles], "secondary review-delete-btn")}
             onClick={() =>
               onDelete({
                 kind: "item",
@@ -159,29 +163,29 @@ function ReviewQuestionView({ bankId, item, searchActive, onEdit, onDelete }) {
         </div>
       </div>
 
-      <ol className="review-answer-list">
+      <ol className={moduleClassNames([styles, reviewStyles, editorStyles], "review-answer-list")}>
         {(item.answers || []).map((answer, index) => (
           <AnswerView key={`${item.id}-${index}`} answer={answer} index={index} correctIndex={item.correct_index} />
         ))}
       </ol>
 
       {reviewNote ? (
-        <div className="review-note-panel">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-note-panel")}>
           <strong>Atentie</strong>
           <p>{reviewNote}</p>
         </div>
       ) : null}
 
       {item.explanation ? (
-        <div className="review-explanation">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-explanation")}>
           <strong>Explicatie</strong>
           <p>{item.explanation}</p>
         </div>
       ) : null}
 
       {searchActive && item.matchKind ? (
-        <div className="review-search-match">
-          <span className="match-score">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-search-match")}>
+          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "match-score")}>
             {item.matchScore > 100 ? "Potrivire exacta" : `${Math.round(item.matchScore)}% potrivire`}
           </span>
           <span>
@@ -200,21 +204,21 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
   const FocusIcon = needsManualResolution ? CircleAlert : CheckCircle2;
 
   return (
-    <article className="draft-card draft-card-form review-question-card review-edit-card is-editing">
-      <div className="review-editor-head">
-        <div className="review-question-index">
+    <article className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-card draft-card-form review-question-card review-edit-card is-editing")}>
+      <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-head")}>
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-question-index")}>
           <span>{item.position}</span>
         </div>
         <div>
-          <span className="step-eyebrow">Editare intrebare</span>
+          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "step-eyebrow")}>Editare intrebare</span>
           <strong>Modifica intrebarea si raspunsurile</strong>
           <p>Schimbarile se aplica direct in banca publicata.</p>
         </div>
       </div>
 
-      <div className={`review-editor-focus ${needsManualResolution ? "is-warning" : "is-ready"}`}>
+      <div className={moduleClassNames([styles, reviewStyles, editorStyles], `review-editor-focus ${needsManualResolution ? "is-warning" : "is-ready"}`)}>
         <FocusIcon aria-hidden="true" size={20} strokeWidth={2.2} />
-        <div className="review-editor-focus-copy">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-focus-copy")}>
           <strong>{needsManualResolution ? "Necesita confirmare" : "Gata de modificat"}</strong>
           <span>
             {needsManualResolution
@@ -225,7 +229,7 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
       </div>
 
       <form
-        className="ai-form review-edit-form"
+        className={moduleClassNames([styles, reviewStyles, editorStyles], "ai-form review-edit-form")}
         onSubmit={(event) => {
           event.preventDefault();
           onSave(new FormData(event.currentTarget));
@@ -235,11 +239,11 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
         <input type="hidden" name="itemId" value={item.id} />
         <input type="hidden" name="correctIndex" value={selectedCorrectIndex} />
 
-        <div className="review-editor-section is-question">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section is-question")}>
           <label>
             <span>Intrebarea</span>
             <textarea
-              className="textarea-input"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "textarea-input")}
               name="questionText"
               rows="4"
               defaultValue={item.question_text}
@@ -247,23 +251,23 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
           </label>
         </div>
 
-        <div className="review-editor-section">
-          <div className="review-editor-section-head">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section")}>
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section-head")}>
             <span>Variante raspuns</span>
           </div>
-          <div className="review-editor-options">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-options")}>
             {item.answers.map((answer, index) => (
-              <div className={`review-editor-option ${selectedCorrectIndex === String(index) ? "is-selected" : ""}`} key={`${item.id}-answer-${index}`}>
+              <div className={moduleClassNames([styles, reviewStyles, editorStyles], `review-editor-option ${selectedCorrectIndex === String(index) ? "is-selected" : ""}`)} key={`${item.id}-answer-${index}`}>
                 <button
                   type="button"
-                  className="review-editor-option-select"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-option-select")}
                   onClick={() => setSelectedCorrectIndex(String(index))}
                   aria-label={`Alege varianta ${answerLabel(index)} ca raspuns corect`}
                 >
                   {answerLabel(index)}
                 </button>
                 <input
-                  className="input-search review-editor-answer-input"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "input-search review-editor-answer-input")}
                   type="text"
                   name="answers"
                   defaultValue={answer || ""}
@@ -271,7 +275,7 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
                 />
                 <button
                   type="button"
-                  className="review-editor-correct-button"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-correct-button")}
                   onClick={() => setSelectedCorrectIndex(String(index))}
                   aria-pressed={selectedCorrectIndex === String(index)}
                 >
@@ -282,11 +286,11 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
           </div>
         </div>
 
-        <div className="review-editor-section">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section")}>
           <label>
             <span>Explicatie</span>
             <textarea
-              className="textarea-input"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "textarea-input")}
               name="explanation"
               rows="3"
               defaultValue={item.explanation || ""}
@@ -295,7 +299,7 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
         </div>
 
         {needsManualResolution ? (
-          <label className="review-resolve-check">
+          <label className={moduleClassNames([styles, reviewStyles, editorStyles], "review-resolve-check")}>
             <input type="checkbox" name="resolvedNeedsReview" value="true" required />
             <span>
               Am completat manual ce lipsea si am verificat raspunsul corect.
@@ -303,13 +307,13 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
           </label>
         ) : null}
 
-        <div className="inline-actions review-edit-actions">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions review-edit-actions")}>
           <button type="submit" disabled={isSaving}>
             <LoadingIconText icon={Save} loading={isSaving} loadingLabel="Se salveaza...">
               Salveaza modificarile
             </LoadingIconText>
           </button>
-          <button type="button" className="btn-link secondary" onClick={onCancel} disabled={isSaving}>
+          <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onCancel} disabled={isSaving}>
             <IconText icon={X}>Renunta</IconText>
           </button>
         </div>
@@ -334,20 +338,20 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
   }
 
   return (
-    <article className="draft-card draft-card-form review-question-card review-edit-card is-editing">
-      <div className="review-editor-head">
-        <div className="review-question-index">
+    <article className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-card draft-card-form review-question-card review-edit-card is-editing")}>
+      <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-head")}>
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-question-index")}>
           <span>{nextPosition}</span>
         </div>
         <div>
-          <span className="step-eyebrow">Intrebare noua</span>
+          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "step-eyebrow")}>Intrebare noua</span>
           <strong>Adauga manual o intrebare</strong>
           <p>O poti folosi daca ai sters ceva din greseala sau vrei sa completezi banca.</p>
         </div>
       </div>
 
       <form
-        className="ai-form review-edit-form"
+        className={moduleClassNames([styles, reviewStyles, editorStyles], "ai-form review-edit-form")}
         onSubmit={(event) => {
           event.preventDefault();
           onSave(new FormData(event.currentTarget));
@@ -356,11 +360,11 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
         <input type="hidden" name="bankId" value={bankId} />
         <input type="hidden" name="correctIndex" value={selectedCorrectIndex} />
 
-        <div className="review-editor-section is-question">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section is-question")}>
           <label>
             <span>Intrebarea</span>
             <textarea
-              className="textarea-input"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "textarea-input")}
               name="questionText"
               rows="4"
               placeholder="Scrie intrebarea aici"
@@ -370,14 +374,14 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
           </label>
         </div>
 
-        <div className="review-editor-section">
-          <div className="review-editor-section-head">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section")}>
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section-head")}>
             <span>Variante raspuns</span>
-            <div className="inline-actions">
+            <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions")}>
               {answerCount < 5 ? (
                 <button
                   type="button"
-                  className="btn-link secondary"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")}
                   onClick={() => setAnswerCount((current) => Math.min(5, current + 1))}
                   disabled={isSaving}
                 >
@@ -385,18 +389,18 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
                 </button>
               ) : null}
               {answerCount > 4 ? (
-                <button type="button" className="btn-link secondary" onClick={removeLastAnswer} disabled={isSaving}>
+                <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")} onClick={removeLastAnswer} disabled={isSaving}>
                   <IconText icon={X}>Scoate varianta E</IconText>
                 </button>
               ) : null}
             </div>
           </div>
-          <div className="review-editor-options">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-options")}>
             {answerIndexes.map((index) => (
-              <div className={`review-editor-option ${selectedCorrectIndex === String(index) ? "is-selected" : ""}`} key={`new-answer-${index}`}>
+              <div className={moduleClassNames([styles, reviewStyles, editorStyles], `review-editor-option ${selectedCorrectIndex === String(index) ? "is-selected" : ""}`)} key={`new-answer-${index}`}>
                 <button
                   type="button"
-                  className="review-editor-option-select"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-option-select")}
                   onClick={() => setSelectedCorrectIndex(String(index))}
                   aria-label={`Alege varianta ${answerLabel(index)} ca raspuns corect`}
                   disabled={isSaving}
@@ -404,7 +408,7 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
                   {answerLabel(index)}
                 </button>
                 <input
-                  className="input-search review-editor-answer-input"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "input-search review-editor-answer-input")}
                   type="text"
                   name="answers"
                   placeholder={`Varianta ${answerLabel(index)}`}
@@ -413,7 +417,7 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
                 />
                 <button
                   type="button"
-                  className="review-editor-correct-button"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-correct-button")}
                   onClick={() => setSelectedCorrectIndex(String(index))}
                   aria-pressed={selectedCorrectIndex === String(index)}
                   disabled={isSaving}
@@ -425,11 +429,11 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
           </div>
         </div>
 
-        <div className="review-editor-section">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-editor-section")}>
           <label>
             <span>Explicatie</span>
             <textarea
-              className="textarea-input"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "textarea-input")}
               name="explanation"
               rows="3"
               placeholder="Optional"
@@ -437,13 +441,13 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
           </label>
         </div>
 
-        <div className="inline-actions review-edit-actions">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions review-edit-actions")}>
           <button type="submit" disabled={isSaving}>
             <LoadingIconText icon={Save} loading={isSaving} loadingLabel="Se adauga...">
               Adauga intrebarea
             </LoadingIconText>
           </button>
-          <button type="button" className="btn-link secondary" onClick={onCancel} disabled={isSaving}>
+          <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onCancel} disabled={isSaving}>
             <IconText icon={X}>Renunta</IconText>
           </button>
         </div>
@@ -462,21 +466,21 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   }
 
   return (
-    <div className="workspace-modal-backdrop" role="presentation">
+    <div className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-backdrop")} role="presentation">
       <div
         ref={dialogRef}
-        className="workspace-modal-card review-confirm-modal"
+        className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-card review-confirm-modal")}
         role="dialog"
         aria-modal="true"
         aria-labelledby="review-confirm-title"
       >
-        <div className="workspace-modal-head">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-head")}>
           <div>
             <strong id="review-confirm-title">{confirmState.title}</strong>
             <p>{confirmState.copy}</p>
           </div>
           <button
-            className="workspace-modal-close feedback-modal-close"
+            className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-close feedback-modal-close")}
             type="button"
             onClick={onClose}
             aria-label="Inchide"
@@ -486,14 +490,14 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
           </button>
         </div>
 
-        <div className="workspace-modal-form">
-          <div className="inline-actions">
-            <button type="button" className="secondary review-delete-btn" onClick={onConfirm} disabled={isPending}>
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-form")}>
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions")}>
+            <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "secondary review-delete-btn")} onClick={onConfirm} disabled={isPending}>
               <LoadingIconText icon={Trash2} loading={isPending} loadingLabel="Se sterge...">
                 Da, sterge
               </LoadingIconText>
             </button>
-            <button type="button" className="btn-link secondary" onClick={onClose} disabled={isPending}>
+            <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onClose} disabled={isPending}>
               <IconText icon={X}>Renunta</IconText>
             </button>
           </div>
@@ -761,31 +765,31 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
   return (
     <>
       {feedback ? (
-        <section className="surface">
-          <div className="success-state" role="status">{feedback}</div>
+        <section className={moduleClassNames([styles, reviewStyles, editorStyles], "surface")}>
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "success-state")} role="status">{feedback}</div>
         </section>
       ) : null}
 
       {errorMessage ? (
-        <section className="surface">
-          <div className="error-state" role="alert">{errorMessage}</div>
+        <section className={moduleClassNames([styles, reviewStyles, editorStyles], "surface")}>
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "error-state")} role="alert">{errorMessage}</div>
         </section>
       ) : null}
 
-      <section className="surface">
-        <div className="dashboard-header">
+      <section className={moduleClassNames([styles, reviewStyles, editorStyles], "surface")}>
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "dashboard-header")}>
           <div>
             <h2>Intrebari extrase</h2>
-            <p className="page-copy">
+            <p className={moduleClassNames([styles, reviewStyles, editorStyles], "page-copy")}>
               {needsReviewCount > 0
                 ? `${needsReviewCount} intrebari au nevoie de completare manuala inainte de publicare.`
                 : "Deschizi doar intrebarea pe care vrei sa o modifici."}
             </p>
           </div>
-          <div className="review-list-controls">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-list-controls")}>
             <button
               type="button"
-              className="btn-link secondary"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")}
               onClick={handleOpenAddItem}
               disabled={isAddingItem || isMutating}
             >
@@ -793,7 +797,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
             </button>
             {visibleItems.length ? (
               <>
-                <div className="ui-segmented-tabs review-filter-tabs" role="group" aria-label="Filtru intrebari">
+                <div className={moduleClassNames([styles, reviewStyles, editorStyles], "ui-segmented-tabs review-filter-tabs")} role="group" aria-label="Filtru intrebari">
                   {REVIEW_FILTER_TABS.map((tab) => {
                     const count = tab.id === "needs_review" ? needsReviewCount : visibleItems.length;
 
@@ -802,7 +806,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                         key={tab.id}
                         type="button"
                         aria-pressed={reviewFilter === tab.id}
-                        className={`ui-segmented-tab secondary ${reviewFilter === tab.id ? "is-active" : ""}`}
+                        className={moduleClassNames([styles, reviewStyles, editorStyles], `ui-segmented-tab secondary ${reviewFilter === tab.id ? "is-active" : ""}`)}
                         onClick={() => changeReviewFilter(tab.id)}
                       >
                         {`${tab.label} (${count})`}
@@ -819,7 +823,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                   placeholder="Numar, intrebare sau raspuns"
                   ariaLabel="Cauta intrebarile"
                   compact
-                  className="review-search-control"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "review-search-control")}
                   inputProps={{ inputMode: "search" }}
                 />
                 <FilterSelect
@@ -832,13 +836,13 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                   icon={ListFilter}
                   ariaLabel="Numar de intrebari afisate"
                   compact
-                  className="review-page-size-control"
+                  className={moduleClassNames([styles, reviewStyles, editorStyles], "review-page-size-control")}
                   options={REVIEW_PAGE_SIZE_OPTIONS.map((option) => ({
                     value: String(option),
                     label: option === "all" ? "Toate" : `${option} intrebari`
                   }))}
                 />
-                <span className="review-list-range">
+                <span className={moduleClassNames([styles, reviewStyles, editorStyles], "review-list-range")}>
                   {`${searchedItems.length ? visibleStart + 1 : 0}-${visibleEnd} din ${searchedItems.length}`}
                 </span>
               </>
@@ -847,7 +851,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
         </div>
 
         {needsReviewCount > 0 ? (
-          <div className="review-required-panel">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-required-panel")}>
             <strong>Publicarea este blocata temporar</strong>
             <p>
               Editeaza fiecare intrebare marcata cu atentie, completeaza ce lipseste si bifeaza confirmarea din formular.
@@ -856,7 +860,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
         ) : null}
 
         {isAddingItem ? (
-          <div className="draft-list review-manual-add-list">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-list review-manual-add-list")}>
             <ReviewQuestionManualCreator
               bankId={bank.id}
               nextPosition={visibleItems.length + 1}
@@ -868,7 +872,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
         ) : null}
 
         {searchedItems.length ? (
-          <div className="draft-list">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-list")}>
             {pagedItems.map((item) =>
               editingItemId === item.id ? (
                 <ReviewQuestionEditor
@@ -891,7 +895,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
             )}
           </div>
         ) : !isAddingItem ? (
-          <div className="draft-card review-empty-card">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
             <strong>
               {searchActive
                 ? "Nu am gasit intrebari pentru cautarea aceasta."
@@ -899,7 +903,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
                   ? "Nu mai sunt intrebari de verificat."
                   : "Nu mai exista intrebari in aceasta banca."}
             </strong>
-            <p className="page-copy">
+            <p className={moduleClassNames([styles, reviewStyles, editorStyles], "page-copy")}>
               {searchActive
                 ? "Cauta dupa numarul intrebarii, un cuvant din intrebare sau un text din raspuns."
                 : reviewFilter === "needs_review"
@@ -910,10 +914,10 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
         ) : null}
 
         {searchedItems.length > normalizedPageSize && pageSize !== "all" ? (
-          <div className="review-pagination">
+          <div className={moduleClassNames([styles, reviewStyles, editorStyles], "review-pagination")}>
             <button
               type="button"
-              className="btn-link secondary"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")}
               onClick={() => setVisiblePage(1)}
               disabled={currentPage <= 1}
             >
@@ -921,7 +925,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
             </button>
             <button
               type="button"
-              className="btn-link secondary"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")}
               onClick={() => setVisiblePage((current) => Math.max(1, current - 1))}
               disabled={currentPage <= 1}
             >
@@ -930,7 +934,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
             <span>{`Pagina ${currentPage} din ${totalPages}`}</span>
             <button
               type="button"
-              className="btn-link secondary"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")}
               onClick={() => setVisiblePage((current) => Math.min(totalPages, current + 1))}
               disabled={currentPage >= totalPages}
             >
@@ -938,7 +942,7 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
             </button>
             <button
               type="button"
-              className="btn-link secondary"
+              className={moduleClassNames([styles, reviewStyles, editorStyles], "btn-link secondary")}
               onClick={() => setVisiblePage(totalPages)}
               disabled={currentPage >= totalPages}
             >
@@ -948,19 +952,19 @@ export function AIQuestionBankReviewClient({ bank, initialItems }) {
         ) : null}
       </section>
 
-      <section className="surface review-danger-panel">
-        <div className="dashboard-header">
+      <section className={moduleClassNames([styles, reviewStyles, editorStyles], "surface review-danger-panel")}>
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "dashboard-header")}>
           <div>
             <h2>Sterge fisierul</h2>
-            <p className="page-copy">
+            <p className={moduleClassNames([styles, reviewStyles, editorStyles], "page-copy")}>
               Aceasta actiune sterge doar intrebarile extrase din acest upload. Materia ramane in catalog.
             </p>
           </div>
         </div>
-        <div className="inline-actions">
+        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions")}>
           <button
             type="button"
-            className="secondary review-delete-btn"
+            className={moduleClassNames([styles, reviewStyles, editorStyles], "secondary review-delete-btn")}
             onClick={() =>
               openDeleteConfirm({
                 kind: "bank",

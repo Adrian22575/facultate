@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./learning-mode-card.module.css";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -11,14 +13,14 @@ function ModeVisual({ mode }) {
 
   if (fs.existsSync(imagePath)) {
     return (
-      <div className="learning-mode-visual learning-mode-visual-image" aria-hidden="true">
-        <div className="learning-mode-image-wrap">
+      <div className={moduleClassNames([styles], "learning-mode-visual learning-mode-visual-image")} aria-hidden="true">
+        <div className={moduleClassNames([styles], "learning-mode-image-wrap")}>
           <Image
             src={imageSrc}
             alt=""
             width={768}
             height={432}
-            className="learning-mode-image"
+            className={moduleClassNames([styles], "learning-mode-image")}
             sizes="(max-width: 980px) 100vw, (max-width: 1280px) 50vw, 33vw"
           />
         </div>
@@ -28,29 +30,29 @@ function ModeVisual({ mode }) {
 
   if (mode === "interactive") {
     return (
-      <div className="learning-mode-visual" aria-hidden="true">
-        <span className="learning-mode-orb" />
-        <span className="learning-mode-line learning-mode-line-one" />
-        <span className="learning-mode-line learning-mode-line-two" />
+      <div className={moduleClassNames([styles], "learning-mode-visual")} aria-hidden="true">
+        <span className={moduleClassNames([styles], "learning-mode-orb")} />
+        <span className={moduleClassNames([styles], "learning-mode-line learning-mode-line-one")} />
+        <span className={moduleClassNames([styles], "learning-mode-line learning-mode-line-two")} />
       </div>
     );
   }
 
   if (mode === "study") {
     return (
-      <div className="learning-mode-visual" aria-hidden="true">
-        <span className="learning-mode-book learning-mode-book-left" />
-        <span className="learning-mode-book learning-mode-book-right" />
-        <span className="learning-mode-book-line" />
+      <div className={moduleClassNames([styles], "learning-mode-visual")} aria-hidden="true">
+        <span className={moduleClassNames([styles], "learning-mode-book learning-mode-book-left")} />
+        <span className={moduleClassNames([styles], "learning-mode-book learning-mode-book-right")} />
+        <span className={moduleClassNames([styles], "learning-mode-book-line")} />
       </div>
     );
   }
 
   return (
-    <div className="learning-mode-visual" aria-hidden="true">
-      <span className="learning-mode-sheet" />
-      <span className="learning-mode-check learning-mode-check-one" />
-      <span className="learning-mode-check learning-mode-check-two" />
+    <div className={moduleClassNames([styles], "learning-mode-visual")} aria-hidden="true">
+      <span className={moduleClassNames([styles], "learning-mode-sheet")} />
+      <span className={moduleClassNames([styles], "learning-mode-check learning-mode-check-one")} />
+      <span className={moduleClassNames([styles], "learning-mode-check learning-mode-check-two")} />
     </div>
   );
 }
@@ -71,15 +73,15 @@ export function LearningModeCard({
 
   if (disabled) {
     return (
-      <article className={sharedClassName} aria-disabled="true">
+      <article className={moduleClassNames([styles], sharedClassName)} aria-disabled="true">
         <ModeVisual mode={mode} />
-        <div className="learning-mode-copy">
-          {eyebrow ? <span className="learning-mode-kicker">{eyebrow}</span> : null}
+        <div className={moduleClassNames([styles], "learning-mode-copy")}>
+          {eyebrow ? <span className={moduleClassNames([styles], "learning-mode-kicker")}>{eyebrow}</span> : null}
           <h3>{title}</h3>
-          <div className="learning-mode-footer">
+          <div className={moduleClassNames([styles], "learning-mode-footer")}>
             <p>{description}</p>
-            <span className="learning-mode-arrow" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none" className="learning-mode-arrow-icon">
+            <span className={moduleClassNames([styles], "learning-mode-arrow")} aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" className={moduleClassNames([styles], "learning-mode-arrow-icon")}>
                 <path
                   d="M4.25 10H15.75M15.75 10L10.5 4.75M15.75 10L10.5 15.25"
                   stroke="currentColor"
@@ -98,17 +100,17 @@ export function LearningModeCard({
   return (
     <PendingNavigationLink
       href={href}
-      className={sharedClassName}
+      className={moduleClassNames([styles], sharedClassName)}
       pendingLabel="Se deschide modul..."
     >
       <ModeVisual mode={mode} />
-      <div className="learning-mode-copy">
-        {eyebrow ? <span className="learning-mode-kicker">{eyebrow}</span> : null}
+      <div className={moduleClassNames([styles], "learning-mode-copy")}>
+        {eyebrow ? <span className={moduleClassNames([styles], "learning-mode-kicker")}>{eyebrow}</span> : null}
         <h3>{title}</h3>
-        <div className="learning-mode-footer">
+        <div className={moduleClassNames([styles], "learning-mode-footer")}>
           <p>{description}</p>
-          <span className="learning-mode-arrow" aria-hidden="true">
-            <svg viewBox="0 0 20 20" fill="none" className="learning-mode-arrow-icon">
+          <span className={moduleClassNames([styles], "learning-mode-arrow")} aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="none" className={moduleClassNames([styles], "learning-mode-arrow-icon")}>
               <path
                 d="M4.25 10H15.75M15.75 10L10.5 4.75M15.75 10L10.5 15.25"
                 stroke="currentColor"

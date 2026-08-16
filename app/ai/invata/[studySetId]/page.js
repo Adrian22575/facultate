@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "../learning-route.module.css";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -57,10 +59,10 @@ export default async function LearningStudySetPage({ params, searchParams }) {
 
   if (setupWarning) {
     return (
-      <main className="app-shell learning-study-page">
+      <main className={moduleClassNames([styles], "app-shell learning-study-page")}>
         <AppHeader
           action={
-            <Link className="btn-back" href="/materiale/invata">
+            <Link className={moduleClassNames([styles], "btn-back")} href="/materiale/invata">
               Inapoi la invatare
             </Link>
           }
@@ -68,7 +70,7 @@ export default async function LearningStudySetPage({ params, searchParams }) {
           title="Material indisponibil momentan"
           subtitle="Zona de invatare nu poate incarca acest material pana cand configurarea este completa."
         />
-        <div className="error-state" role="alert">{setupWarning}</div>
+        <div className={moduleClassNames([styles], "error-state")} role="alert">{setupWarning}</div>
       </main>
     );
   }
@@ -82,10 +84,10 @@ export default async function LearningStudySetPage({ params, searchParams }) {
   }
 
   return (
-    <main className="app-shell learning-study-page">
+    <main className={moduleClassNames([styles], "app-shell learning-study-page")}>
       <AppHeader
         action={
-          <Link className="btn-back" href="/materiale/invata">
+          <Link className={moduleClassNames([styles], "btn-back")} href="/materiale/invata">
             Inapoi la invatare
           </Link>
         }
@@ -94,7 +96,7 @@ export default async function LearningStudySetPage({ params, searchParams }) {
         subtitle="Capitole, flashcards, teste si plan intr-un singur loc."
       />
       {resolvedSearchParams?.reused === "1" ? (
-        <div className="learning-reuse-notice" role="status">
+        <div className={moduleClassNames([styles], "learning-reuse-notice")} role="status">
           Am gasit un material deja pregatit pentru comunitatea ta si l-am deschis fara o procesare noua.
         </div>
       ) : null}

@@ -1,5 +1,8 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./ai-activity-center-client.module.css";
+import reviewStyles from "./workspace-question-review.module.css";
 import { useRouter } from "next/navigation";
 import {
   BookOpenCheck,
@@ -129,7 +132,7 @@ function paginateRows(rows, page, pageSize) {
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className="ui-icon-text">
+    <span className={moduleClassNames([styles, reviewStyles], "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -209,7 +212,7 @@ function SubjectAssignment({ studySet, subjects }) {
   }
 
   return (
-    <form className="learning-library-subject-form" onSubmit={handleAssign}>
+    <form className={moduleClassNames([styles, reviewStyles], "learning-library-subject-form")} onSubmit={handleAssign}>
       <label>
         Leaga-l de o materie
         <select value={subjectId} onChange={(event) => setSubjectId(event.target.value)} disabled={isSaving}>
@@ -219,7 +222,7 @@ function SubjectAssignment({ studySet, subjects }) {
           ))}
         </select>
       </label>
-      <button type="submit" className="btn-link secondary" disabled={!subjectId || isSaving}>
+      <button type="submit" className={moduleClassNames([styles, reviewStyles], "btn-link secondary")} disabled={!subjectId || isSaving}>
         {isSaving ? "Se salveaza..." : "Salveaza"}
       </button>
       {error ? <small role="alert">{error}</small> : null}
@@ -232,22 +235,22 @@ function LearningStudySetCard({ studySet, origin, subjects = [] }) {
   const detail = `${studySet.chapterCount || 0} capitole · ${studySet.flashcardCount || 0} flashcards · ${studySet.questionCount || 0} intrebari`;
 
   return (
-    <article className={`learning-library-card${isCommunity ? " is-community" : ""}`}>
+    <article className={moduleClassNames([styles, reviewStyles], `learning-library-card${isCommunity ? " is-community" : ""}`)}>
       <PendingNavigationLink
-        className="learning-library-card-main"
+        className={moduleClassNames([styles, reviewStyles], "learning-library-card-main")}
         href={`/materiale/invata/${studySet.id}`}
         pendingLabel="Se deschide materialul..."
         pendingMode="replace"
       >
-      <div className="learning-library-card-head">
-        <span className={`status-pill ${learningStatusTone(studySet.status)}`}>{learningStatusLabel(studySet.status)}</span>
-        <span className="learning-library-origin">
+      <div className={moduleClassNames([styles, reviewStyles], "learning-library-card-head")}>
+        <span className={moduleClassNames([styles, reviewStyles], `status-pill ${learningStatusTone(studySet.status)}`)}>{learningStatusLabel(studySet.status)}</span>
+        <span className={moduleClassNames([styles, reviewStyles], "learning-library-origin")}>
           {isCommunity ? "Din comunitate" : studySet.publishedAt ? "Publicat de tine" : "Doar pentru tine"}
         </span>
       </div>
       <strong>{studySet.title}</strong>
       <p>{detail}</p>
-      <span className="learning-library-card-action">
+      <span className={moduleClassNames([styles, reviewStyles], "learning-library-card-action")}>
         Deschide materialul
         <ExternalLink aria-hidden="true" size={16} strokeWidth={2.3} />
       </span>
@@ -260,11 +263,11 @@ function LearningStudySetCard({ studySet, origin, subjects = [] }) {
 function LearningLibrary({ learningStudySets, communityLearningStudySets, subjects }) {
   if (!learningStudySets.length && !communityLearningStudySets.length) {
     return (
-      <div className="learning-library-empty">
+      <div className={moduleClassNames([styles, reviewStyles], "learning-library-empty")}>
         <strong>Biblioteca nu are materiale inca.</strong>
         <p>Incarca primul curs. Dupa ce alegi sa il publici, colegii din comunitatea ta il pot folosi fara o procesare noua.</p>
         <PendingNavigationLink
-          className="btn-back"
+          className={moduleClassNames([styles, reviewStyles], "btn-back")}
           href="/materiale/invata"
           pendingLabel="Se deschide incarcarea..."
           pendingMode="replace"
@@ -276,13 +279,13 @@ function LearningLibrary({ learningStudySets, communityLearningStudySets, subjec
   }
 
   return (
-    <div className="learning-library">
+    <div className={moduleClassNames([styles, reviewStyles], "learning-library")}>
       {communityLearningStudySets.length ? (
-        <section className="learning-library-group" aria-labelledby="community-materials-title">
-          <div className="learning-library-group-head">
+        <section className={moduleClassNames([styles, reviewStyles], "learning-library-group")} aria-labelledby="community-materials-title">
+          <div className={moduleClassNames([styles, reviewStyles], "learning-library-group-head")}>
             <h3 id="community-materials-title">Din comunitate</h3>
           </div>
-          <div className="learning-library-grid">
+          <div className={moduleClassNames([styles, reviewStyles], "learning-library-grid")}>
             {communityLearningStudySets.map((studySet) => (
               <LearningStudySetCard key={studySet.id} studySet={studySet} origin="community" subjects={subjects} />
             ))}
@@ -291,11 +294,11 @@ function LearningLibrary({ learningStudySets, communityLearningStudySets, subjec
       ) : null}
 
       {learningStudySets.length ? (
-        <section className="learning-library-group" aria-labelledby="owned-materials-title">
-          <div className="learning-library-group-head">
+        <section className={moduleClassNames([styles, reviewStyles], "learning-library-group")} aria-labelledby="owned-materials-title">
+          <div className={moduleClassNames([styles, reviewStyles], "learning-library-group-head")}>
             <h3 id="owned-materials-title">Materialele tale</h3>
           </div>
-          <div className="learning-library-grid">
+          <div className={moduleClassNames([styles, reviewStyles], "learning-library-grid")}>
             {learningStudySets.map((studySet) => (
               <LearningStudySetCard key={studySet.id} studySet={studySet} origin="owned" subjects={subjects} />
             ))}
@@ -336,11 +339,11 @@ function activityActionIcon(job) {
 
 function TableSection({ title, description, actions, children }) {
   return (
-    <section className="workspace-history-block ai-workspace-history-block ai-activity-tab-panel">
-      <div className="dashboard-header ai-workspace-subsection-head ai-activity-section-head">
+    <section className={moduleClassNames([styles, reviewStyles], "workspace-history-block ai-workspace-history-block ai-activity-tab-panel")}>
+      <div className={moduleClassNames([styles, reviewStyles], "dashboard-header ai-workspace-subsection-head ai-activity-section-head")}>
         <div>
           <h2>{title}</h2>
-          <p className="page-copy">{description}</p>
+          <p className={moduleClassNames([styles, reviewStyles], "page-copy")}>{description}</p>
         </div>
         {actions}
       </div>
@@ -351,9 +354,9 @@ function TableSection({ title, description, actions, children }) {
 
 function EmptyState({ title, copy }) {
   return (
-    <article className="ui-panel-card ai-workspace-activity-empty">
+    <article className={moduleClassNames([styles, reviewStyles], "ui-panel-card ai-workspace-activity-empty")}>
       <strong>{title}</strong>
-      <p className="page-copy">{copy}</p>
+      <p className={moduleClassNames([styles, reviewStyles], "page-copy")}>{copy}</p>
     </article>
   );
 }
@@ -456,7 +459,7 @@ function SourceDocumentAction({
   if (sourceDocumentHref) {
     return (
       <a
-        className="admin-table-link secondary ai-source-document-link"
+        className={moduleClassNames([styles, reviewStyles], "admin-table-link secondary ai-source-document-link")}
         href={sourceDocumentHref}
         target="_blank"
         rel="noreferrer"
@@ -468,10 +471,10 @@ function SourceDocumentAction({
   }
 
   return (
-    <span className="ai-source-document-action">
+    <span className={moduleClassNames([styles, reviewStyles], "ai-source-document-action")}>
       <input
         ref={inputRef}
-        className="sr-only"
+        className={moduleClassNames([styles, reviewStyles], "sr-only")}
         type="file"
         accept={SOURCE_FILE_ACCEPT_ATTRIBUTE}
         aria-label="Alege fisierul original"
@@ -480,7 +483,7 @@ function SourceDocumentAction({
       />
       <button
         type="button"
-        className="admin-table-link secondary ai-source-document-upload"
+        className={moduleClassNames([styles, reviewStyles], "admin-table-link secondary ai-source-document-upload")}
         onClick={() => inputRef.current?.click()}
         disabled={isUploading}
       >
@@ -489,7 +492,7 @@ function SourceDocumentAction({
         </LoadingIconText>
       </button>
       {errorMessage ? (
-        <span className="ai-source-document-error" role="alert">
+        <span className={moduleClassNames([styles, reviewStyles], "ai-source-document-error")} role="alert">
           {errorMessage}
         </span>
       ) : null}
@@ -514,21 +517,21 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
     : `Materialul "${target.title}" va fi sters, iar materia nu va mai fi disponibila pentru nimeni. Pentru siguranta, scrie STERGE mai jos.`;
 
   return (
-    <div className="workspace-modal-backdrop" role="presentation">
+    <div className={moduleClassNames([styles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
       <div
         ref={dialogRef}
-        className="workspace-modal-card review-confirm-modal"
+        className={moduleClassNames([styles, reviewStyles], "workspace-modal-card review-confirm-modal")}
         role="dialog"
         aria-modal="true"
         aria-labelledby="material-delete-confirm-title"
       >
-        <div className="workspace-modal-head">
+        <div className={moduleClassNames([styles, reviewStyles], "workspace-modal-head")}>
           <div>
             <strong id="material-delete-confirm-title">{title}</strong>
             <p>{body}</p>
           </div>
           <button
-            className="workspace-modal-close feedback-modal-close"
+            className={moduleClassNames([styles, reviewStyles], "workspace-modal-close feedback-modal-close")}
             type="button"
             onClick={onClose}
             aria-label="Inchide"
@@ -538,11 +541,11 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
           </button>
         </div>
 
-        <div className="workspace-modal-form">
-          <label className="onboarding-form-field">
+        <div className={moduleClassNames([styles, reviewStyles], "workspace-modal-form")}>
+          <label className={moduleClassNames([styles, reviewStyles], "onboarding-form-field")}>
             <span>Cuvant de confirmare</span>
             <input
-              className="input-search"
+              className={moduleClassNames([styles, reviewStyles], "input-search")}
               value={confirmText}
               onChange={(event) => onTextChange(event.target.value)}
               placeholder="Scrie STERGE"
@@ -550,11 +553,11 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
               disabled={isPending}
             />
           </label>
-          {errorMessage ? <div className="error-state" role="alert">{errorMessage}</div> : null}
-          <div className="inline-actions">
+          {errorMessage ? <div className={moduleClassNames([styles, reviewStyles], "error-state")} role="alert">{errorMessage}</div> : null}
+          <div className={moduleClassNames([styles, reviewStyles], "inline-actions")}>
             <button
               type="button"
-              className="secondary review-delete-btn"
+              className={moduleClassNames([styles, reviewStyles], "secondary review-delete-btn")}
               onClick={onConfirm}
               disabled={isPending || !canConfirm}
             >
@@ -562,7 +565,7 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
                 {isBulk ? "Sterge materialele" : "Sterge materialul"}
               </LoadingIconText>
             </button>
-            <button type="button" className="btn-link secondary" onClick={onClose} disabled={isPending}>
+            <button type="button" className={moduleClassNames([styles, reviewStyles], "btn-link secondary")} onClick={onClose} disabled={isPending}>
               Renunta
             </button>
           </div>
@@ -677,7 +680,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
   if (!materials.length) {
     return (
       <>
-        {feedback ? <div className="success-state workspace-inline-feedback" role="status">{feedback}</div> : null}
+        {feedback ? <div className={moduleClassNames([styles, reviewStyles], "success-state workspace-inline-feedback")} role="status">{feedback}</div> : null}
         <EmptyState
           title={emptyTitle}
           copy={emptyCopy}
@@ -688,13 +691,13 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
 
   return (
     <>
-      {feedback ? <div className="success-state workspace-inline-feedback" role="status">{feedback}</div> : null}
+      {feedback ? <div className={moduleClassNames([styles, reviewStyles], "success-state workspace-inline-feedback")} role="status">{feedback}</div> : null}
       {selectedIds.length ? (
-        <div className="ai-activity-bulk-actions">
+        <div className={moduleClassNames([styles, reviewStyles], "ai-activity-bulk-actions")}>
           <span>{`${selectedIds.length} selectate`}</span>
           <button
             type="button"
-            className="admin-table-link secondary review-delete-btn"
+            className={moduleClassNames([styles, reviewStyles], "admin-table-link secondary review-delete-btn")}
             onClick={openBulkDeleteDialog}
             disabled={isPending}
           >
@@ -737,23 +740,23 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
                     onChange={() => toggleSelected(material.id)}
                   />
                 </td>
-                <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Material" data-table-wide="true">
+                <td className={moduleClassNames([styles, reviewStyles], "admin-table-name-cell admin-table-name-cell--xl")} data-label="Material" data-table-wide="true">
                   {material.title}
                 </td>
-                <td className="admin-table-text-cell" data-label="Tip">{material.typeLabel}</td>
-                <td className="admin-table-text-cell" data-label="Materie">{material.subjectLabel}</td>
-                <td className="admin-table-count-cell" data-label="Intrebari" data-table-align="center">{material.questionCount}</td>
+                <td className={moduleClassNames([styles, reviewStyles], "admin-table-text-cell")} data-label="Tip">{material.typeLabel}</td>
+                <td className={moduleClassNames([styles, reviewStyles], "admin-table-text-cell")} data-label="Materie">{material.subjectLabel}</td>
+                <td className={moduleClassNames([styles, reviewStyles], "admin-table-count-cell")} data-label="Intrebari" data-table-align="center">{material.questionCount}</td>
                 <td data-label="Status">
-                  <span className={`admin-table-pill ${materialStatusTone(material.status)}`}>
+                  <span className={moduleClassNames([styles, reviewStyles], `admin-table-pill ${materialStatusTone(material.status)}`)}>
                     {materialStatusLabel(material.status)}
                   </span>
                 </td>
-                <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(material.updatedAt)}</td>
+                <td className={moduleClassNames([styles, reviewStyles], "admin-table-date-cell")} data-label="Actualizat">{formatDate(material.updatedAt)}</td>
                 <td data-label="Actiuni" data-table-wide="true">
-                  <div className="inline-actions ai-activity-table-actions">
+                  <div className={moduleClassNames([styles, reviewStyles], "inline-actions ai-activity-table-actions")}>
                       {material.reviewHref ? (
                         <PendingNavigationLink
-                          className="admin-table-link"
+                          className={moduleClassNames([styles, reviewStyles], "admin-table-link")}
                           href={withReturnTo(
                             material.reviewHref,
                             "/materiale/activitate?tab=subjects"
@@ -768,7 +771,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
                       ) : null}
                       {material.resultHref && material.resultHref !== material.reviewHref ? (
                         <PendingNavigationLink
-                          className="admin-table-link secondary"
+                          className={moduleClassNames([styles, reviewStyles], "admin-table-link secondary")}
                           href={material.resultHref}
                           pendingLabel="Se deschide..."
                           pendingMode="replace"
@@ -778,7 +781,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
                       ) : null}
                     <button
                       type="button"
-                      className="admin-table-link secondary review-delete-btn"
+                      className={moduleClassNames([styles, reviewStyles], "admin-table-link secondary review-delete-btn")}
                       onClick={() => openDeleteDialog(material)}
                     >
                       <IconText icon={Trash2}>Sterge</IconText>
@@ -801,7 +804,7 @@ function MaterialsTable({ materials, emptyTitle, emptyCopy, onDeleted, onSourceD
         onPageChange={setPage}
         previousLabel="Anterior"
         nextLabel="Urmator"
-        className="ai-activity-pagination"
+        className={moduleClassNames([styles, reviewStyles], "ai-activity-pagination")}
       />
       <DeleteMaterialDialog
         target={deleteTarget}
@@ -955,26 +958,26 @@ function LicentaTable({ rows, onSourceDocumentAttached }) {
               const actions = getLicentaActions(row);
               return (
                 <tr key={row.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Licenta" data-table-wide="true">
-                    <div className="ai-activity-name-cell">
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-name-cell admin-table-name-cell--xl")} data-label="Licenta" data-table-wide="true">
+                    <div className={moduleClassNames([styles, reviewStyles], "ai-activity-name-cell")}>
                       <strong>{row.title}</strong>
                       <span>{`${row.completedSetCount || 0}/${row.setCount || 0} seturi salvate`}</span>
                     </div>
                   </td>
-                  <td className="admin-table-count-cell" data-label="Seturi" data-table-align="center">{row.setCount || 0}</td>
-                  <td className="admin-table-count-cell" data-label="Intrebari" data-table-align="center">{row.questionsWithAnswers || row.totalQuestions || 0}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-count-cell")} data-label="Seturi" data-table-align="center">{row.setCount || 0}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-count-cell")} data-label="Intrebari" data-table-align="center">{row.questionsWithAnswers || row.totalQuestions || 0}</td>
                   <td data-label="Status">
-                    <span className={`admin-table-pill ${getLicentaStatusTone(row)}`}>
+                    <span className={moduleClassNames([styles, reviewStyles], `admin-table-pill ${getLicentaStatusTone(row)}`)}>
                       {getLicentaStatusLabel(row)}
                     </span>
                   </td>
-                  <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(row.updatedAt || row.completedAt || row.createdAt)}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-date-cell")} data-label="Actualizat">{formatDate(row.updatedAt || row.completedAt || row.createdAt)}</td>
                   <td data-label="Actiuni" data-table-wide="true">
-                    <div className="inline-actions ai-activity-table-actions">
+                    <div className={moduleClassNames([styles, reviewStyles], "inline-actions ai-activity-table-actions")}>
                       {actions.map((action, index) => (
                         <PendingNavigationLink
                           key={`${row.id}-${action.href}-${action.label}`}
-                          className={`admin-table-link${index > 0 ? " secondary" : ""}`}
+                          className={moduleClassNames([styles, reviewStyles], `admin-table-link${index > 0 ? " secondary" : ""}`)}
                           href={action.href}
                           pendingLabel={action.label === "Continua" ? "Se continua..." : "Se deschide..."}
                           pendingMode="replace"
@@ -1001,7 +1004,7 @@ function LicentaTable({ rows, onSourceDocumentAttached }) {
         onPageChange={setPage}
         previousLabel="Anterior"
         nextLabel="Urmator"
-        className="ai-activity-pagination"
+        className={moduleClassNames([styles, reviewStyles], "ai-activity-pagination")}
       />
     </>
   );
@@ -1042,26 +1045,26 @@ function ActivityTable({ jobs }) {
               const presentation = getJobPresentation(job);
               return (
                 <tr key={`${job.kind || "job"}-${job.id}`}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Procesare" data-table-wide="true">
-                    <div className="ai-activity-name-cell">
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-name-cell admin-table-name-cell--xl")} data-label="Procesare" data-table-wide="true">
+                    <div className={moduleClassNames([styles, reviewStyles], "ai-activity-name-cell")}>
                       <strong>{activityTitle(job)}</strong>
                       <span>{presentation.primaryMessage}</span>
                     </div>
                   </td>
-                  <td className="admin-table-text-cell" data-label="Tip">{activityType(job)}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-text-cell")} data-label="Tip">{activityType(job)}</td>
                   <td data-label="Status">
-                    <span className={`status-pill ${presentation.tone}`}>{presentation.statusLabel}</span>
+                    <span className={moduleClassNames([styles, reviewStyles], `status-pill ${presentation.tone}`)}>{presentation.statusLabel}</span>
                   </td>
-                  <td className="admin-table-text-cell" data-label="Progres" data-table-wide="true">
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-text-cell")} data-label="Progres" data-table-wide="true">
                     {presentation.isTerminal
                       ? `${presentation.progressLabel} - ${presentation.elapsedCaption}: ${presentation.elapsedLabel}`
                       : `${presentation.progressLabel} - astepti de ${presentation.elapsedLabel}`}
                   </td>
-                  <td className="admin-table-date-cell" data-label="Actualizat">{formatDate(job.updatedAt || job.completedAt || job.createdAt)}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-date-cell")} data-label="Actualizat">{formatDate(job.updatedAt || job.completedAt || job.createdAt)}</td>
                   <td data-label="Actiuni">
-                    <div className="inline-actions ai-activity-table-actions">
+                    <div className={moduleClassNames([styles, reviewStyles], "inline-actions ai-activity-table-actions")}>
                       <PendingNavigationLink
-                        className="admin-table-link"
+                        className={moduleClassNames([styles, reviewStyles], "admin-table-link")}
                         href={activityHref(job)}
                         pendingLabel="Se deschide..."
                         pendingMode="replace"
@@ -1082,7 +1085,7 @@ function ActivityTable({ jobs }) {
         onPageChange={setPage}
         previousLabel="Anterior"
         nextLabel="Urmator"
-        className="ai-activity-pagination"
+        className={moduleClassNames([styles, reviewStyles], "ai-activity-pagination")}
       />
     </>
   );
@@ -1130,19 +1133,19 @@ function TestsTable({ testGroups }) {
               const isActive = test.status === "active";
               return (
                 <tr key={test.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl" data-label="Test" data-table-wide="true">{test.title}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-name-cell admin-table-name-cell--xl")} data-label="Test" data-table-wide="true">{test.title}</td>
                   <td data-label="Status">
-                    <span className={`admin-table-pill ${isActive ? "is-good" : "is-warning"}`}>
+                    <span className={moduleClassNames([styles, reviewStyles], `admin-table-pill ${isActive ? "is-good" : "is-warning"}`)}>
                       {test.displayStatus}
                     </span>
                   </td>
-                  <td className="admin-table-count-cell" data-label="Intrebari" data-table-align="center">{test.total_questions}</td>
-                  <td className="admin-table-date-cell" data-label="Creat">{formatDate(test.published_at || test.created_at)}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-count-cell")} data-label="Intrebari" data-table-align="center">{test.total_questions}</td>
+                  <td className={moduleClassNames([styles, reviewStyles], "admin-table-date-cell")} data-label="Creat">{formatDate(test.published_at || test.created_at)}</td>
                   <td data-label="Actiuni" data-table-wide="true">
-                    <div className="inline-actions ai-activity-table-actions">
+                    <div className={moduleClassNames([styles, reviewStyles], "inline-actions ai-activity-table-actions")}>
                       {isActive ? (
                         <PendingNavigationLink
-                          className="admin-table-link"
+                          className={moduleClassNames([styles, reviewStyles], "admin-table-link")}
                           href={`/testele-mele/${test.id}`}
                           pendingLabel="Se deschide testul..."
                           pendingMode="replace"
@@ -1151,7 +1154,7 @@ function TestsTable({ testGroups }) {
                         </PendingNavigationLink>
                       ) : null}
                       <PendingNavigationLink
-                        className="admin-table-link secondary"
+                        className={moduleClassNames([styles, reviewStyles], "admin-table-link secondary")}
                         href={`/materiale/drafts/${test.id}`}
                         pendingLabel="Se deschide..."
                         pendingMode="replace"
@@ -1170,7 +1173,7 @@ function TestsTable({ testGroups }) {
         onPageChange={setPage}
         previousLabel="Anterior"
         nextLabel="Urmator"
-        className="ai-activity-pagination"
+        className={moduleClassNames([styles, reviewStyles], "ai-activity-pagination")}
       />
     </>
   );
@@ -1249,9 +1252,9 @@ export function AIActivityCenterClient({
   }
 
   return (
-    <section className="surface ai-workspace-activity-surface ai-activity-management-surface">
+    <section className={moduleClassNames([styles, reviewStyles], "surface ai-workspace-activity-surface ai-activity-management-surface")}>
       <div
-        className="ui-segmented-tabs ai-activity-tabs"
+        className={moduleClassNames([styles, reviewStyles], "ui-segmented-tabs ai-activity-tabs")}
         role="tablist"
         aria-label="Sectiuni activitate"
         onKeyDown={handleTablistKeyDown}
@@ -1267,12 +1270,12 @@ export function AIActivityCenterClient({
               aria-selected={activeTab === tab.id}
               aria-controls="activity-main-panel"
               tabIndex={activeTab === tab.id ? 0 : -1}
-              className={`ui-segmented-tab secondary ai-activity-tab ${activeTab === tab.id ? "is-active" : ""}`}
+              className={moduleClassNames([styles, reviewStyles], `ui-segmented-tab secondary ai-activity-tab ${activeTab === tab.id ? "is-active" : ""}`)}
               onClick={() => selectTab(tab.id)}
             >
               <Icon aria-hidden="true" size={17} strokeWidth={2.2} />
               <span>{tab.label}</span>
-              <span className="ai-activity-tab-count">{tabCounts[tab.id] || 0}</span>
+              <span className={moduleClassNames([styles, reviewStyles], "ai-activity-tab-count")}>{tabCounts[tab.id] || 0}</span>
             </button>
           );
         })}
@@ -1288,9 +1291,9 @@ export function AIActivityCenterClient({
           description={selectedTab.description}
           actions={
             activeTab === "tests" ? (
-              <div className="ai-activity-section-actions">
+              <div className={moduleClassNames([styles, reviewStyles], "ai-activity-section-actions")}>
                 <PendingNavigationLink
-                  className="btn-link secondary"
+                  className={moduleClassNames([styles, reviewStyles], "btn-link secondary")}
                   href="/testele-mele"
                   pendingLabel="Se deschid testele..."
                   pendingMode="replace"

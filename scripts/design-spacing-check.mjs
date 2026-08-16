@@ -111,6 +111,22 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/ai-job-status-client.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/ai-job-global-notifier.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/processing-stage-tracker.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/ai-activity-center-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "app/ai/invata/learning-route.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-upload-form.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-upload-status.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-study-set-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-study-content.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-study-modes.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-study-insights.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-study-status.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/learning-mode-card.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/mode-grid.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/study-page-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/ai-question-bank-review-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-question-review.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-question-editor.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/review-publish-bar.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");

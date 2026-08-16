@@ -1,5 +1,8 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./study-page-client.module.css";
+import reviewStyles from "./workspace-question-review.module.css";
 import { X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -257,10 +260,10 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
 
   return (
     <>
-      <section className="study-intro">
+      <section className={moduleClassNames([styles, reviewStyles], "study-intro")}>
         <span>{`Progres: ${viewedCount} din ${safeQuestions.length}`}</span>
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
+        <div className={moduleClassNames([styles, reviewStyles], "progress-bar")}>
+          <div className={moduleClassNames([styles, reviewStyles], "progress-fill")} style={{ width: `${progressPercent}%` }} />
         </div>
       </section>
 
@@ -268,32 +271,32 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
         {safeQuestions.map((question, index) => (
           <div
             key={question.id}
-            className="question-study"
+            className={moduleClassNames([styles, reviewStyles], "question-study")}
             id={`question-${index}`}
             data-index={index}
             ref={(element) => {
               questionRefs.current[index] = element;
             }}
           >
-            <div className="question-study-head">
+            <div className={moduleClassNames([styles, reviewStyles], "question-study-head")}>
               <h3>
                 <span>{`${index + 1}. `}</span>
-                <span className="question-rich-text">{question.text}</span>
+                <span className={moduleClassNames([styles, reviewStyles], "question-rich-text")}>{question.text}</span>
               </h3>
               <QuestionCorrectionButton question={question} onSaved={applySavedCorrection} />
             </div>
-            <ul className="options-study">
+            <ul className={moduleClassNames([styles, reviewStyles], "options-study")}>
               {question.answers.map((answer, answerIndex) => (
                 <li
                   key={`${question.id}-${answerIndex}`}
-                  className={answerIndex === question.correctIndex ? "correct" : ""}
+                  className={moduleClassNames([styles, reviewStyles], answerIndex === question.correctIndex ? "correct" : "")}
                 >
-                  <span className="question-rich-text">{answer}</span>
+                  <span className={moduleClassNames([styles, reviewStyles], "question-rich-text")}>{answer}</span>
                 </li>
               ))}
             </ul>
             {question.explanation ? (
-              <div className="study-explanation">
+              <div className={moduleClassNames([styles, reviewStyles], "study-explanation")}>
                 <strong>Explicatie</strong>
                 <p>{question.explanation}</p>
               </div>
@@ -304,7 +307,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
 
       <button
         ref={navToggleRef}
-        className="nav-toggle"
+        className={moduleClassNames([styles, reviewStyles], "nav-toggle")}
         type="button"
         onClick={() => setIsNavOpen(true)}
         aria-expanded={isNavOpen}
@@ -314,7 +317,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
       </button>
 
       <div
-        className={`nav-overlay${isNavOpen ? " active" : ""}`}
+        className={moduleClassNames([styles, reviewStyles], `nav-overlay${isNavOpen ? " active" : ""}`)}
         role="presentation"
         aria-hidden={!isNavOpen}
         onClick={(event) => {
@@ -326,16 +329,16 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
         <div
           ref={navDialogRef}
           id="study-navigation-panel"
-          className="nav-panel"
+          className={moduleClassNames([styles, reviewStyles], "nav-panel")}
           role="dialog"
           aria-modal="true"
           aria-labelledby="study-navigation-title"
         >
-          <div className="nav-panel-header">
+          <div className={moduleClassNames([styles, reviewStyles], "nav-panel-header")}>
             <h3 id="study-navigation-title">Navigare studiu</h3>
             <button
               ref={navCloseRef}
-              className="nav-close"
+              className={moduleClassNames([styles, reviewStyles], "nav-close")}
               type="button"
               onClick={() => setIsNavOpen(false)}
               aria-label="Inchide navigarea"
@@ -344,16 +347,16 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
             </button>
           </div>
 
-          <div className="quick-jump-actions" aria-label="Scurtaturi in pagina">
+          <div className={moduleClassNames([styles, reviewStyles], "quick-jump-actions")} aria-label="Scurtaturi in pagina">
             <button
-              className="quick-jump-btn"
+              className={moduleClassNames([styles, reviewStyles], "quick-jump-btn")}
               type="button"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               Sus
             </button>
             <button
-              className="quick-jump-btn"
+              className={moduleClassNames([styles, reviewStyles], "quick-jump-btn")}
               type="button"
               onClick={() => {
                 scrollToQuestion(Math.max(0, Math.floor(safeQuestions.length / 2) - 1));
@@ -363,7 +366,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
               Mijloc
             </button>
             <button
-              className="quick-jump-btn"
+              className={moduleClassNames([styles, reviewStyles], "quick-jump-btn")}
               type="button"
               onClick={() => {
                 if (typeof document !== "undefined") {
@@ -379,7 +382,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
           </div>
 
           <input
-            className="nav-search"
+            className={moduleClassNames([styles, reviewStyles], "nav-search")}
             type="text"
             inputMode="search"
             placeholder="Cauta dupa numar, intrebare sau raspuns"
@@ -388,7 +391,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
             onChange={(event) => setQuery(event.target.value)}
           />
 
-          <ul className="nav-list">
+          <ul className={moduleClassNames([styles, reviewStyles], "nav-list")}>
             {filteredQuestions.length ? (
               filteredQuestions.map((question) => {
                 const isViewed = seen.has(String(question.idx));
@@ -398,27 +401,27 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
                 return (
                   <li
                     key={`${question.id}-nav`}
-                    className={`nav-list-item${isViewed ? " viewed" : ""}`}
+                    className={moduleClassNames([styles, reviewStyles], `nav-list-item${isViewed ? " viewed" : ""}`)}
                     onClick={() => {
                       scrollToQuestion(question.idx);
                       setIsNavOpen(false);
                     }}
                   >
-                    <span className="nav-item-num">{question.idx + 1}</span>
-                    <span className="nav-item-body">
-                      <span className="nav-item-text">{getPreviewText(question.text)}</span>
-                      <span className="nav-answer">
+                    <span className={moduleClassNames([styles, reviewStyles], "nav-item-num")}>{question.idx + 1}</span>
+                    <span className={moduleClassNames([styles, reviewStyles], "nav-item-body")}>
+                      <span className={moduleClassNames([styles, reviewStyles], "nav-item-text")}>{getPreviewText(question.text)}</span>
+                      <span className={moduleClassNames([styles, reviewStyles], "nav-answer")}>
                         Raspuns corect: <strong>{correctAnswer}</strong>
                       </span>
                       {normalizedQuery.length >= 1 ? (
-                        <span className="nav-match-line">
-                          <span className="match-score">
+                        <span className={moduleClassNames([styles, reviewStyles], "nav-match-line")}>
+                          <span className={moduleClassNames([styles, reviewStyles], "match-score")}>
                             {question.matchScore > 100
                               ? "Potrivire exacta"
                               : `${Math.round(question.matchScore)}% potrivire`}
                           </span>
                           {question.matchKind ? (
-                            <span className="nav-match-kind">
+                            <span className={moduleClassNames([styles, reviewStyles], "nav-match-kind")}>
                               {question.matchKind}
                               {question.matchText ? `: ${truncateText(question.matchText, 72)}` : ""}
                             </span>
@@ -430,7 +433,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
                 );
               })
             ) : (
-              <li className="nav-no-results">
+              <li className={moduleClassNames([styles, reviewStyles], "nav-no-results")}>
                 Nu am gasit o potrivire clara. Incearca un alt cuvant.
               </li>
             )}

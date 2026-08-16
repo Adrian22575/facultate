@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import reviewStyles from "../../../../components/workspace-question-review.module.css";
 import { notFound, redirect } from "next/navigation";
 
 import { AppHeader } from "@/components/app-header";
@@ -141,11 +143,11 @@ export default async function AIQuestionBankReviewPage({ params, searchParams })
   const unresolvedReviewCount = items.filter((item) => item.quality_status === "needs_review").length;
 
   return (
-    <main className="app-shell review-page-shell has-review-publish-bar">
+    <main className={moduleClassNames([reviewStyles], "app-shell review-page-shell has-review-publish-bar")}>
       <AppHeader
         action={
           <PendingNavigationLink
-            className="btn-back"
+            className={moduleClassNames([reviewStyles], "btn-back")}
             href={backHref}
             pendingLabel="Se revine..."
             pendingMode="replace"
@@ -163,37 +165,37 @@ export default async function AIQuestionBankReviewPage({ params, searchParams })
       />
 
       {published ? (
-        <section className="surface">
-          <div className="success-state review-success-block" role="status">
+        <section className={moduleClassNames([reviewStyles], "surface")}>
+          <div className={moduleClassNames([reviewStyles], "success-state review-success-block")} role="status">
             <strong>{getPublishedCopy(bank)}</strong>
             <p>{getPublishedHint()}</p>
           </div>
         </section>
       ) : null}
 
-      <section className="surface">
-        <div className="status-stack">
-          <div className="status-row">
+      <section className={moduleClassNames([reviewStyles], "surface")}>
+        <div className={moduleClassNames([reviewStyles], "status-stack")}>
+          <div className={moduleClassNames([reviewStyles], "status-row")}>
             <strong>Tip</strong>
-            <span className={`status-pill ${published ? "is-good" : "is-muted"}`}>
+            <span className={moduleClassNames([reviewStyles], `status-pill ${published ? "is-good" : "is-muted"}`)}>
               {isLicenta ? "Licenta" : "Materie"}
             </span>
           </div>
-          <div className="status-row">
+          <div className={moduleClassNames([reviewStyles], "status-row")}>
             <strong>Stare</strong>
-            <span className={`status-pill ${published ? "is-good" : "is-warning"}`}>
+            <span className={moduleClassNames([reviewStyles], `status-pill ${published ? "is-good" : "is-warning"}`)}>
               {published ? "Publicat" : "Gata de verificat"}
             </span>
           </div>
-          <div className="status-row">
+          <div className={moduleClassNames([reviewStyles], "status-row")}>
             <strong>Intrebari</strong>
-            <span className="status-pill is-muted">{items.length}</span>
+            <span className={moduleClassNames([reviewStyles], "status-pill is-muted")}>{items.length}</span>
           </div>
         </div>
-        <div className="review-extraction-summary">
+        <div className={moduleClassNames([reviewStyles], "review-extraction-summary")}>
           <strong>{extractionSummary.title}</strong>
           {extractionSummary.notes.length ? (
-            <div className="review-summary-notes">
+            <div className={moduleClassNames([reviewStyles], "review-summary-notes")}>
               {extractionSummary.notes.map((note) => (
                 <p key={note}>{note}</p>
               ))}

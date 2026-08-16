@@ -1,5 +1,7 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./review-publish-bar.module.css";
 import { useFormStatus } from "react-dom";
 
 import { LoadingIconText } from "@/components/loading-spinner";
@@ -35,12 +37,12 @@ export function ReviewPublishBar({
 
   return (
     <section
-      className={`review-publish-bar${published ? " is-published" : ""}${
+      className={moduleClassNames([styles], `review-publish-bar${published ? " is-published" : ""}${
         publishBlocked ? " is-blocked" : ""
-      }`}
+      }`)}
     >
-      <div className="review-publish-copy">
-        <span className="step-eyebrow">{published ? "Publicat" : "Ultimul pas"}</span>
+      <div className={moduleClassNames([styles], "review-publish-copy")}>
+        <span className={moduleClassNames([styles], "step-eyebrow")}>{published ? "Publicat" : "Ultimul pas"}</span>
         <strong>
           {published
             ? isLicenta
@@ -57,10 +59,10 @@ export function ReviewPublishBar({
         </p>
       </div>
 
-      <div className="review-publish-actions">
+      <div className={moduleClassNames([styles], "review-publish-actions")}>
         {published ? (
           <PendingNavigationLink
-            className="btn-back"
+            className={moduleClassNames([styles], "btn-back")}
             href={publishedHref}
             pendingLabel={isLicenta ? "Se deschide simularea..." : "Se deschide materia..."}
             pendingMode="replace"

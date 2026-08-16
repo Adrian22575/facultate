@@ -3,6 +3,8 @@
 import { moduleClassNames } from "@/lib/ui/module-class-names";
 import styles from "./import-job-status-client.module.css";
 import sourceStyles from "./workspace-source-input.module.css";
+import reviewStyles from "./workspace-question-review.module.css";
+import editorStyles from "./workspace-question-editor.module.css";
 import flowStyles from "./workspace-flow-patterns.module.css";
 import {
   ArrowLeft,
@@ -44,7 +46,7 @@ const REVIEW_PAGE_SIZE = 10;
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className={moduleClassNames([styles, sourceStyles, flowStyles], "ui-icon-text")}>
+    <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -251,24 +253,24 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
   }
 
   return (
-    <article className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card draft-card-form review-question-card review-edit-card is-editing")}>
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-head")}>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-question-index")}>
+    <article className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card draft-card-form review-question-card review-edit-card is-editing")}>
+      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-head")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-question-index")}>
           <span>{question.globalIndex || question.localNumber || "-"}</span>
         </div>
         <div>
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles], "step-eyebrow")}>{isNewQuestion ? "Intrebare noua" : "Reparare intrebare"}</span>
+          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>{isNewQuestion ? "Intrebare noua" : "Reparare intrebare"}</span>
           <strong>{isNewQuestion ? "Adauga intrebarea lipsa" : `Intrebarea ${question.globalIndex || question.localNumber || ""}`}</strong>
         </div>
       </div>
 
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles], `review-editor-focus ${editorIssues.length ? "is-warning" : "is-ready"}`)}>
+      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `review-editor-focus ${editorIssues.length ? "is-warning" : "is-ready"}`)}>
         {editorIssues.length ? (
           <>
             <AlertTriangle aria-hidden="true" size={18} strokeWidth={2.2} />
             <div>
               <strong>De rezolvat</strong>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-issue-list")}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-issue-list")}>
                 {editorIssues.map((issue) => (
                   <span key={issue}>{issue}</span>
                 ))}
@@ -287,7 +289,7 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
       </div>
 
       <form
-        className={moduleClassNames([styles, sourceStyles, flowStyles], "ai-form review-edit-form")}
+        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "ai-form review-edit-form")}
         onSubmit={(event) => {
           event.preventDefault();
           onSave({
@@ -299,11 +301,11 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
           });
         }}
       >
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-section is-question")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-section is-question")}>
           <label>
             <span>Intrebarea</span>
             <textarea
-              className={moduleClassNames([styles, sourceStyles, flowStyles], "textarea-input")}
+              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "textarea-input")}
               rows="4"
               value={questionText}
               onChange={(event) => setQuestionText(event.target.value)}
@@ -311,28 +313,28 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
           </label>
         </div>
 
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-section")}>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-section-head")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-section")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-section-head")}>
             <span>Variante</span>
             {options.length < 5 ? (
-              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={addOption}>
+              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={addOption}>
                 <IconText icon={Plus}>Adauga varianta</IconText>
               </button>
             ) : null}
           </div>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-options")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-options")}>
             {options.map((option, index) => (
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], `review-editor-option ${correctIndex === String(index) ? "is-selected" : ""}`)} key={`${question.id}-option-${index}`}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `review-editor-option ${correctIndex === String(index) ? "is-selected" : ""}`)} key={`${question.id}-option-${index}`}>
                 <button
                   type="button"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-option-select")}
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-option-select")}
                   onClick={() => setCorrectIndex(String(index))}
                   aria-label={`Alege varianta ${optionDisplayLabel(option, index)} ca raspuns corect`}
                 >
                   {optionDisplayLabel(option, index)}
                 </button>
                 <input
-                  className={moduleClassNames([styles, sourceStyles, flowStyles], duplicatedLabels.has(String(option.label || "").trim().toLowerCase()) ? "input-search review-editor-label-input is-invalid" : "input-search review-editor-label-input")}
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], duplicatedLabels.has(String(option.label || "").trim().toLowerCase()) ? "input-search review-editor-label-input is-invalid" : "input-search review-editor-label-input")}
                   type="text"
                   value={option.label}
                   maxLength={8}
@@ -340,7 +342,7 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
                   onChange={(event) => updateOption(index, { label: event.target.value })}
                 />
                 <input
-                  className={moduleClassNames([styles, sourceStyles, flowStyles], "input-search")}
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "input-search")}
                   type="text"
                   value={option.text}
                   placeholder={`Text varianta ${optionDisplayLabel(option, index)}`}
@@ -349,14 +351,14 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
                 />
                 <button
                   type="button"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles], "review-editor-correct-button")}
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-editor-correct-button")}
                   onClick={() => setCorrectIndex(String(index))}
                   aria-pressed={correctIndex === String(index)}
                 >
                   <IconText icon={CheckCircle2}>{correctIndex === String(index) ? "Corect" : "Alege"}</IconText>
                 </button>
                 {options.length > 4 ? (
-                  <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={() => removeOption(index)}>
+                  <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={() => removeOption(index)}>
                     <IconText icon={Trash2}>Elimina</IconText>
                   </button>
                 ) : null}
@@ -365,13 +367,13 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
           </div>
         </div>
 
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions review-edit-actions")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions review-edit-actions")}>
           <button type="submit" disabled={!canSubmitEditor}>
             <LoadingIconText icon={Save} loading={isSaving} loadingLabel="Se salveaza...">
               {isNewQuestion ? "Adauga intrebarea" : "Salveaza modificarile"}
             </LoadingIconText>
           </button>
-          <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={onCancel} disabled={isSaving}>
+          <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onCancel} disabled={isSaving}>
             <IconText icon={X}>Renunta</IconText>
           </button>
         </div>
@@ -408,29 +410,29 @@ function ImportQuestionCard({ question, isEditing, isSaving, readOnly, onEdit, o
   const needsFocusedRepair = question.status === "needs_review" || question.status === "missing_answer" || hasDuplicateLabels;
 
   return (
-    <article className={moduleClassNames([styles, sourceStyles, flowStyles], `draft-card import-preview-question review-work-card ${question.status === "needs_review" || hasDuplicateLabels ? "is-needs-review" : ""} ${question.status === "missing_answer" ? "is-missing-answer" : ""}`)}>
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-work-topline")}>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-question-index")}>
+    <article className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `draft-card import-preview-question review-work-card ${question.status === "needs_review" || hasDuplicateLabels ? "is-needs-review" : ""} ${question.status === "missing_answer" ? "is-missing-answer" : ""}`)}>
+      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-work-topline")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-question-index")}>
           <span>{question.globalIndex || question.localNumber || "-"}</span>
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-work-main")}>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-work-meta")}>
-            <span className={moduleClassNames([styles, sourceStyles, flowStyles], `status-pill ${question.status === "answer_matched" ? "is-good" : "is-warning"}`)}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-work-main")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-work-meta")}>
+            <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `status-pill ${question.status === "answer_matched" ? "is-good" : "is-warning"}`)}>
               {questionStatusLabel(question.status)}
             </span>
-            {hasDuplicateLabels ? <span className={moduleClassNames([styles, sourceStyles, flowStyles], "review-issue-chip")}>Litere duplicate</span> : null}
-            {initialCorrectIndex === "" ? <span className={moduleClassNames([styles, sourceStyles, flowStyles], "review-issue-chip")}>Raspuns neales</span> : null}
+            {hasDuplicateLabels ? <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-issue-chip")}>Litere duplicate</span> : null}
+            {initialCorrectIndex === "" ? <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-issue-chip")}>Raspuns neales</span> : null}
             <span>{questionStatusHint(question.status)}</span>
           </div>
-          <strong className={moduleClassNames([styles, sourceStyles, flowStyles], "review-question-text")}>{question.questionText}</strong>
+          <strong className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-question-text")}>{question.questionText}</strong>
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions review-item-actions")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions review-item-actions")}>
           {!readOnly ? (
             <>
-              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], needsFocusedRepair ? "btn-link" : "btn-link secondary")} onClick={() => onEdit(question.id)}>
+              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], needsFocusedRepair ? "btn-link" : "btn-link secondary")} onClick={() => onEdit(question.id)}>
                 <IconText icon={Edit3}>{needsFocusedRepair ? "Repara" : "Ajusteaza"}</IconText>
               </button>
-              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "secondary review-delete-btn")} onClick={() => onDelete(question)}>
+              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "secondary review-delete-btn")} onClick={() => onDelete(question)}>
                 <IconText icon={Trash2}>Elimina</IconText>
               </button>
             </>
@@ -438,16 +440,16 @@ function ImportQuestionCard({ question, isEditing, isSaving, readOnly, onEdit, o
         </div>
       </div>
 
-      <ol className={moduleClassNames([styles, sourceStyles, flowStyles], "review-answer-list")}>
+      <ol className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-answer-list")}>
         {(question.options || []).map((option, index) => (
           <li
             key={`${question.id}-${index}`}
-            className={moduleClassNames([styles, sourceStyles, flowStyles], `review-answer-item ${selectedIndex === String(index) ? "is-selected" : ""} ${option.isCorrect ? "is-correct" : ""} ${canChooseAnswer ? "has-action" : ""}`)}
+            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `review-answer-item ${selectedIndex === String(index) ? "is-selected" : ""} ${option.isCorrect ? "is-correct" : ""} ${canChooseAnswer ? "has-action" : ""}`)}
           >
             {canChooseAnswer ? (
               <button
                 type="button"
-                className={moduleClassNames([styles, sourceStyles, flowStyles], "review-answer-select")}
+                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-answer-select")}
                 onClick={() => setSelectedIndex(String(index))}
                 disabled={isSaving}
                 aria-pressed={selectedIndex === String(index)}
@@ -455,17 +457,17 @@ function ImportQuestionCard({ question, isEditing, isSaving, readOnly, onEdit, o
                 {String(option.label || answerLabel(index)).toUpperCase()}
               </button>
             ) : (
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles], "review-answer-badge")}>
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-answer-badge")}>
                 {String(option.label || answerLabel(index)).toUpperCase()}
               </span>
             )}
-            <span className={moduleClassNames([styles, sourceStyles, flowStyles], "review-answer-copy")}>{option.text}</span>
-            {selectedIndex === String(index) ? <span className={moduleClassNames([styles, sourceStyles, flowStyles], "review-answer-state")}>Selectat</span> : null}
+            <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-answer-copy")}>{option.text}</span>
+            {selectedIndex === String(index) ? <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-answer-state")}>Selectat</span> : null}
           </li>
         ))}
       </ol>
       {canChooseAnswer ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "review-answer-actions")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "review-answer-actions")}>
           <span>
             {hasAnswerChange
               ? "Ai schimbat raspunsul. Apasa Salveaza ca sa confirmi."
@@ -475,7 +477,7 @@ function ImportQuestionCard({ question, isEditing, isSaving, readOnly, onEdit, o
           </span>
           <button
             type="button"
-            className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link")}
+            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link")}
             onClick={() => onSave(buildAnswerSelectionPayload(question, Number(selectedIndex)))}
             disabled={saveAnswerDisabled}
           >
@@ -491,11 +493,11 @@ function ImportQuestionCard({ question, isEditing, isSaving, readOnly, onEdit, o
 
 function ImportQuestionSearchBar({ value, activeValue, total, onChange, onSubmit, onClear }) {
   return (
-    <form className={moduleClassNames([styles, sourceStyles, flowStyles], "import-question-search")} onSubmit={onSubmit}>
-      <label className={moduleClassNames([styles, sourceStyles, flowStyles], "import-question-search-label")}>
+    <form className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-question-search")} onSubmit={onSubmit}>
+      <label className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-question-search-label")}>
         <span>Cauta intrebare</span>
         <input
-          className={moduleClassNames([styles, sourceStyles, flowStyles], "input-search")}
+          className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "input-search")}
           type="search"
           inputMode="search"
           value={value}
@@ -503,18 +505,18 @@ function ImportQuestionSearchBar({ value, activeValue, total, onChange, onSubmit
           placeholder="Numar, ex. 37, sau text din intrebare"
         />
       </label>
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-question-search-actions")}>
-        <button type="submit" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}>
+      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-question-search-actions")}>
+        <button type="submit" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}>
           <IconText icon={Search}>Cauta</IconText>
         </button>
         {activeValue ? (
-          <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={onClear}>
+          <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onClear}>
             <IconText icon={X}>Reset</IconText>
           </button>
         ) : null}
       </div>
       {activeValue ? (
-        <span className={moduleClassNames([styles, sourceStyles, flowStyles], "micro-copy")}>{`${total} rezultate pentru "${activeValue}"`}</span>
+        <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "micro-copy")}>{`${total} rezultate pentru "${activeValue}"`}</span>
       ) : null}
     </form>
   );
@@ -522,9 +524,9 @@ function ImportQuestionSearchBar({ value, activeValue, total, onChange, onSubmit
 
 function ReadyToSaveSetPanel({ sessionMode, isBusy, onSave, onSaveAndContinue }) {
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-next-step-panel")} aria-live="polite">
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-next-step-copy")}>
-        <span className={moduleClassNames([styles, sourceStyles, flowStyles], "step-eyebrow")}>Pasul final</span>
+    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-panel")} aria-live="polite">
+      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-copy")}>
+        <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>Pasul final</span>
         <h2>{sessionMode ? "Setul este corectat" : "Importul este corectat"}</h2>
         <p>
           {sessionMode
@@ -532,7 +534,7 @@ function ReadyToSaveSetPanel({ sessionMode, isBusy, onSave, onSaveAndContinue })
             : "Modificarile la intrebari sunt salvate. Salveaza importul ca sa pregatim banca finala."}
         </p>
       </div>
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-next-step-actions")}>
+      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-actions")}>
         <button type="button" onClick={onSave} disabled={isBusy}>
           <LoadingIconText icon={CheckCircle2} loading={isBusy} loadingLabel="Se salveaza...">
             {sessionMode ? "Salveaza setul in licenta" : "Salveaza importul"}
@@ -541,7 +543,7 @@ function ReadyToSaveSetPanel({ sessionMode, isBusy, onSave, onSaveAndContinue })
         {sessionMode && onSaveAndContinue ? (
           <button
             type="button"
-            className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
             onClick={onSaveAndContinue}
             disabled={isBusy}
           >
@@ -563,31 +565,31 @@ function ConfirmDialog({ confirmState, isBusy, onClose, onConfirm }) {
   if (!confirmState) return null;
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-backdrop")} role="presentation">
+    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-backdrop")} role="presentation">
       <div
         ref={dialogRef}
-        className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-card review-confirm-modal")}
+        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-card review-confirm-modal")}
         role="dialog"
         aria-modal="true"
         aria-labelledby="import-confirm-dialog-title"
       >
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-head")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-head")}>
           <div>
             <strong id="import-confirm-dialog-title">{confirmState.title}</strong>
             <p>{confirmState.copy}</p>
           </div>
-          <button className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-close feedback-modal-close")} type="button" onClick={onClose} disabled={isBusy}>
+          <button className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-close feedback-modal-close")} type="button" onClick={onClose} disabled={isBusy}>
             <IconText icon={X}>Inchide</IconText>
           </button>
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-form")}>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions")}>
-            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "secondary review-delete-btn")} onClick={onConfirm} disabled={isBusy}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-form")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions")}>
+            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "secondary review-delete-btn")} onClick={onConfirm} disabled={isBusy}>
               <LoadingIconText icon={Trash2} loading={isBusy} loadingLabel="Se elimina...">
                 Da, elimina
               </LoadingIconText>
             </button>
-            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={onClose} disabled={isBusy}>
+            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onClose} disabled={isBusy}>
               <IconText icon={X}>Renunta</IconText>
             </button>
           </div>
@@ -1156,41 +1158,41 @@ export function ImportJobStatusClient({
   }
 
   if (!status) {
-    return <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">Importul nu a putut fi incarcat.</div>;
+    return <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "error-state")} role="alert">Importul nu a putut fi incarcat.</div>;
   }
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles], `job-status-stack${guidedMode ? " licenta-guided-job" : ""}`)}>
-      {feedback ? <div className={moduleClassNames([styles, sourceStyles, flowStyles], "success-state")} role="status">{feedback}</div> : null}
+    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `job-status-stack${guidedMode ? " licenta-guided-job" : ""}`)}>
+      {feedback ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "success-state")} role="status">{feedback}</div> : null}
       {processingNotice ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-credit-alert import-warning-panel")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-credit-alert import-warning-panel")}>
           <div>
             <strong>Procesarea continua</strong>
             <p>{processingNotice}</p>
           </div>
         </div>
       ) : null}
-      {errorMessage ? <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">{errorMessage}</div> : null}
+      {errorMessage ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "error-state")} role="alert">{errorMessage}</div> : null}
 
-      <section className={moduleClassNames([styles, sourceStyles, flowStyles], guidedMode ? "licenta-guided-status" : "surface workspace-job-hero")}>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-job-badge")}>
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles], `status-pill ${statusTone(status.status)}`)}>{statusLabel(status.status)}</span>
+      <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], guidedMode ? "licenta-guided-status" : "surface workspace-job-hero")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-job-badge")}>
+          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `status-pill ${statusTone(status.status)}`)}>{statusLabel(status.status)}</span>
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "progress-bar-container job-progress-bar")} aria-label="Progres import">
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "progress-fill")} style={{ width: `${Math.min(progress, 100)}%` }} />
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "progress-bar-container job-progress-bar")} aria-label="Progres import">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "progress-fill")} style={{ width: `${Math.min(progress, 100)}%` }} />
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-status-copy workspace-job-copy")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "job-status-copy workspace-job-copy")}>
           <strong>{TERMINAL_STATUSES.has(status.status) ? statusLabel(status.status) : `${progress}%`}</strong>
           <p>{status.message}</p>
         </div>
       </section>
 
-      <section className={moduleClassNames([styles, sourceStyles, flowStyles], guidedMode ? "licenta-guided-summary" : "surface")}>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header")}>
+      <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], guidedMode ? "licenta-guided-summary" : "surface")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "dashboard-header")}>
           <h2>Pe scurt</h2>
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles], "status-pill is-muted")}>Licenta</span>
+          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "status-pill is-muted")}>Licenta</span>
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-count-grid")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-count-grid")}>
           <article>
             <span>Etape finalizate</span>
             <strong>{`${status.processedChunks}/${status.totalChunks || 0}`}</strong>
@@ -1212,16 +1214,16 @@ export function ImportJobStatusClient({
             <strong>{status.needsReviewCount}</strong>
           </article>
         </div>
-        {status.errorMessage ? <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">{status.errorMessage}</div> : null}
+        {status.errorMessage ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "error-state")} role="alert">{status.errorMessage}</div> : null}
         {failedWithoutExtractedQuestions ? (
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-credit-alert import-warning-panel")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-credit-alert import-warning-panel")}>
             <div>
               <strong>Setul nu poate fi verificat in forma actuala</strong>
               <p>Poti relua procesarea din sursa pastrata. Daca rezultatul ramane la fel, incarca un fisier sau un text mai clar.</p>
               {!readOnly ? (
                 <button
                   type="button"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
                   disabled={isRetryingImport}
                   onClick={retryFailedImport}
                 >
@@ -1236,8 +1238,8 @@ export function ImportJobStatusClient({
       </section>
 
       {TERMINAL_STATUSES.has(status.status) ? (
-        <section className={moduleClassNames([styles, sourceStyles, flowStyles], guidedMode ? "licenta-guided-review-section" : "surface")} ref={reviewSectionRef}>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header")}>
+        <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], guidedMode ? "licenta-guided-review-section" : "surface")} ref={reviewSectionRef}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "dashboard-header")}>
             <div>
               <h2>
                 {guidedMode
@@ -1248,7 +1250,7 @@ export function ImportJobStatusClient({
                     ? "Set pentru audit"
                     : "Verifica intrebarile"}
               </h2>
-              <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>
+              <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>
                 {guidedMode
                   ? readOnly
                     ? "Setul ramane disponibil pentru audit in zona de gestionare."
@@ -1261,7 +1263,7 @@ export function ImportJobStatusClient({
           </div>
 
           {warnings.length ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-credit-alert import-warning-panel")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-credit-alert import-warning-panel")}>
               <div>
                 <strong>Atentionari</strong>
                 {warnings.map((warning) => (
@@ -1272,18 +1274,18 @@ export function ImportJobStatusClient({
           ) : null}
 
           {canSupplementAnswers ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-answer-key-panel")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-answer-key-copy")}>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles], "step-eyebrow")}>Raspunsuri separate</span>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-answer-key-panel")}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-answer-key-copy")}>
+                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>Raspunsuri separate</span>
                 <strong>Ai uitat sa pui baremul?</strong>
                 <p>
                   Lipeste aici lista de raspunsuri. O potrivim cu intrebarile deja extrase, apoi verifici doar ce ramane neclar.
                 </p>
               </div>
               {showAnswerKeyForm ? (
-                <form className={moduleClassNames([styles, sourceStyles, flowStyles], "import-answer-key-form")} onSubmit={submitAnswerKey}>
+                <form className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-answer-key-form")} onSubmit={submitAnswerKey}>
                   <textarea
-                    className={moduleClassNames([styles, sourceStyles, flowStyles], "textarea-input")}
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "textarea-input")}
                     rows="5"
                     value={answerKeyText}
                     onChange={(event) => setAnswerKeyText(event.target.value)}
@@ -1291,7 +1293,7 @@ export function ImportJobStatusClient({
                     aria-label="Barem sau lista raspunsurilor corecte"
                     disabled={isSubmittingAnswerKey}
                   />
-                  <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions import-actions-row")}>
+                  <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions import-actions-row")}>
                     <button type="submit" disabled={isSubmittingAnswerKey || !answerKeyText.trim()}>
                       <LoadingIconText icon={CheckCircle2} loading={isSubmittingAnswerKey} loadingLabel="Potrivim...">
                         Potriveste raspunsurile
@@ -1299,7 +1301,7 @@ export function ImportJobStatusClient({
                     </button>
                     <button
                       type="button"
-                      className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
                       onClick={() => {
                         setShowAnswerKeyForm(false);
                         setAnswerKeyText("");
@@ -1311,7 +1313,7 @@ export function ImportJobStatusClient({
                   </div>
                 </form>
               ) : (
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={() => setShowAnswerKeyForm(true)}>
+                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={() => setShowAnswerKeyForm(true)}>
                   <IconText icon={ListPlus}>Adauga raspunsuri</IconText>
                 </button>
               )}
@@ -1328,25 +1330,25 @@ export function ImportJobStatusClient({
           ) : null}
 
           {guidedMode ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "licenta-guided-preview")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header ai-workspace-subsection-head")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "licenta-guided-preview")}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "dashboard-header ai-workspace-subsection-head")}>
                 <div>
                   <h2>Preview intrebari</h2>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Afisam doar cateva intrebari aici, ca pagina sa ramana usor de urmarit.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Afisam doar cateva intrebari aici, ca pagina sa ramana usor de urmarit.</p>
                 </div>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={openAllQuestionsModal}>
+                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={openAllQuestionsModal}>
                   Vezi toate intrebarile
                 </button>
               </div>
               {isLoadingQuestions && !visibleQuestions.length ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card review-empty-card")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
                   <strong>Se incarca intrebarile...</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Aducem lista pentru setul curent.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Aducem lista pentru setul curent.</p>
                 </div>
               ) : questionsLoadError ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">{questionsLoadError}</div>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "error-state")} role="alert">{questionsLoadError}</div>
               ) : visibleQuestions.length ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-list import-preview-list")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-list import-preview-list")}>
                   {visibleQuestions.map((question) => (
                     <ImportQuestionCard
                       key={question.id}
@@ -1371,11 +1373,11 @@ export function ImportJobStatusClient({
                   ))}
                 </div>
               ) : (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card review-empty-card")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
                   <strong>Nu exista inca preview.</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Deschide lista completa daca vrei sa verifici toate intrebarile.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Deschide lista completa daca vrei sa verifici toate intrebarile.</p>
                   {questionTotal > 0 ? (
-                    <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={openAllQuestionsModal}>
+                    <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={openAllQuestionsModal}>
                       Reincarca intrebarile
                     </button>
                   ) : null}
@@ -1384,13 +1386,13 @@ export function ImportJobStatusClient({
             </div>
           ) : (
             <>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "ui-segmented-tabs import-main-tabs")} role="group" aria-label="Filtru intrebari">
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "ui-segmented-tabs import-main-tabs")} role="group" aria-label="Filtru intrebari">
                 {QUESTION_TABS.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
                     aria-pressed={activeFilter === tab.id}
-                    className={moduleClassNames([styles, sourceStyles, flowStyles], `ui-segmented-tab secondary ${activeFilter === tab.id ? "is-active" : ""}`)}
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `ui-segmented-tab secondary ${activeFilter === tab.id ? "is-active" : ""}`)}
                     onClick={() => changeFilter(tab.id)}
                   >
                     {`${tab.label} (${status?.[tab.countKey] || 0})`}
@@ -1407,10 +1409,10 @@ export function ImportJobStatusClient({
                 onClear={clearQuestionSearch}
               />
 
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header ai-workspace-subsection-head")}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "dashboard-header ai-workspace-subsection-head")}>
                 <h2>{`${questionTotal} intrebari`}</h2>
                 {canReview ? (
-                  <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={startAddingQuestion}>
+                  <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={startAddingQuestion}>
                     <IconText icon={Plus}>Adauga intrebare</IconText>
                   </button>
                 ) : null}
@@ -1426,14 +1428,14 @@ export function ImportJobStatusClient({
               ) : null}
 
               {isLoadingQuestions && !questions.length ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card review-empty-card")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
                   <strong>Se incarca intrebarile...</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Aducem lista pentru filtrul selectat.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Aducem lista pentru filtrul selectat.</p>
                 </div>
               ) : questionsLoadError ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">{questionsLoadError}</div>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "error-state")} role="alert">{questionsLoadError}</div>
               ) : questions.length ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-list import-preview-list")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-list import-preview-list")}>
                   {questions.map((question) => (
                     <ImportQuestionCard
                       key={question.id}
@@ -1458,13 +1460,13 @@ export function ImportJobStatusClient({
                   ))}
                 </div>
               ) : (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card review-empty-card")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
                   <strong>Nu exista intrebari in acest filtru.</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Schimba filtrul sau revino dupa ce procesarea este gata.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Schimba filtrul sau revino dupa ce procesarea este gata.</p>
                   {questionTotal > 0 ? (
                     <button
                       type="button"
-                      className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
                       onClick={reloadCurrentQuestions}
                     >
                       Reincarca intrebarile
@@ -1474,10 +1476,10 @@ export function ImportJobStatusClient({
               )}
 
               {hasMoreQuestions ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions import-actions-row")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions import-actions-row")}>
                   <button
                     type="button"
-                    className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
                     onClick={() => loadQuestions(activeFilter, questionPage + 1, true, activeQuestionSearch)}
                   >
                     <IconText icon={ListPlus}>Incarca mai multe</IconText>
@@ -1489,21 +1491,21 @@ export function ImportJobStatusClient({
         </section>
       ) : null}
 
-      <section className={moduleClassNames([styles, sourceStyles, flowStyles], guidedMode ? "licenta-guided-bottom" : "surface")}>
+      <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], guidedMode ? "licenta-guided-bottom" : "surface")}>
         {!canSave && canReview ? (
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-credit-alert import-warning-panel")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-credit-alert import-warning-panel")}>
             <div>
               <strong>Salvarea este blocata temporar</strong>
               <p>Corecteaza sau elimina toate intrebarile fara raspuns si cele de verificat.</p>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-warning-actions")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-warning-actions")}>
               {status.questionsMissingAnswers > 0 ? (
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={() => jumpToProblemFilter("missing_answer")}>
+                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={() => jumpToProblemFilter("missing_answer")}>
                   Fara raspuns ({status.questionsMissingAnswers})
                 </button>
               ) : null}
               {status.needsReviewCount > 0 ? (
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={() => jumpToProblemFilter("needs_review")}>
+                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={() => jumpToProblemFilter("needs_review")}>
                   De verificat ({status.needsReviewCount})
                 </button>
               ) : null}
@@ -1512,9 +1514,9 @@ export function ImportJobStatusClient({
         ) : null}
 
         {sessionMode && status.status === "completed" ? (
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-next-step-panel is-saved")} aria-live="polite">
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-next-step-copy")}>
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles], "step-eyebrow")}>Set salvat</span>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-panel is-saved")} aria-live="polite">
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-copy")}>
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>Set salvat</span>
               <h2>Setul este salvat in licenta</h2>
               <p>
                 {hasPostSaveActions
@@ -1522,14 +1524,14 @@ export function ImportJobStatusClient({
                   : "Setul ramane disponibil aici pentru audit si revizitare."}
               </p>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-next-step-actions")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-actions")}>
               {onRequestNextSet ? (
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-back")} onClick={onRequestNextSet}>
+                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-back")} onClick={onRequestNextSet}>
                   <IconText icon={ListPlus}>Incarca urmatorul set</IconText>
                 </button>
               ) : null}
               {onRequestFinalize ? (
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={onRequestFinalize}>
+                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={onRequestFinalize}>
                   <IconText icon={CheckCircle2}>Finalizeaza licenta</IconText>
                 </button>
               ) : null}
@@ -1537,10 +1539,10 @@ export function ImportJobStatusClient({
           </div>
         ) : null}
 
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions import-actions-row")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions import-actions-row")}>
           {status.resultHref ? (
             <PendingNavigationLink
-              className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-back")}
+              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-back")}
               href={status.resultHref}
               pendingLabel="Se deschide verificarea..."
               pendingMode="replace"
@@ -1550,7 +1552,7 @@ export function ImportJobStatusClient({
           ) : null}
           {!sessionMode ? (
             <PendingNavigationLink
-              className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
               href="/materiale"
               pendingLabel="Se revine..."
               pendingMode="replace"
@@ -1562,21 +1564,21 @@ export function ImportJobStatusClient({
       </section>
 
       {guidedMode && showAllQuestions ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-backdrop")} role="presentation">
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-backdrop")} role="presentation">
           <div
             ref={questionsDialogRef}
-            className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-card licenta-questions-modal")}
+            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-card licenta-questions-modal")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="import-all-questions-title"
           >
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-head")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-head")}>
               <div>
                 <strong id="import-all-questions-title">{`Intrebarile din ${setIndexLabel.toLowerCase()}`}</strong>
                 <p>Editeaza sau elimina intrebarile problematice, apoi revino la pasul principal.</p>
               </div>
               <button
-                className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-close feedback-modal-close")}
+                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-close feedback-modal-close")}
                 type="button"
                 onClick={() => setShowAllQuestions(false)}
                 disabled={isBusy}
@@ -1584,7 +1586,7 @@ export function ImportJobStatusClient({
                 <IconText icon={X}>Inchide</IconText>
               </button>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-form licenta-questions-modal-body")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-modal-form licenta-questions-modal-body")}>
               {canSave ? (
                 <ReadyToSaveSetPanel
                   sessionMode={sessionMode}
@@ -1594,13 +1596,13 @@ export function ImportJobStatusClient({
                 />
               ) : null}
 
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "ui-segmented-tabs import-main-tabs")} role="group" aria-label="Filtru intrebari">
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "ui-segmented-tabs import-main-tabs")} role="group" aria-label="Filtru intrebari">
                 {QUESTION_TABS.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
                     aria-pressed={activeFilter === tab.id}
-                    className={moduleClassNames([styles, sourceStyles, flowStyles], `ui-segmented-tab secondary ${activeFilter === tab.id ? "is-active" : ""}`)}
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `ui-segmented-tab secondary ${activeFilter === tab.id ? "is-active" : ""}`)}
                     onClick={() => changeFilter(tab.id)}
                   >
                     {`${tab.label} (${status?.[tab.countKey] || 0})`}
@@ -1617,10 +1619,10 @@ export function ImportJobStatusClient({
                 onClear={clearQuestionSearch}
               />
 
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header ai-workspace-subsection-head")}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "dashboard-header ai-workspace-subsection-head")}>
                 <h2>{`${questionTotal} intrebari`}</h2>
                 {canReview ? (
-                  <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={startAddingQuestion}>
+                  <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")} onClick={startAddingQuestion}>
                     <IconText icon={Plus}>Adauga intrebare</IconText>
                   </button>
                 ) : null}
@@ -1636,14 +1638,14 @@ export function ImportJobStatusClient({
               ) : null}
 
               {isLoadingQuestions && !questions.length ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card review-empty-card")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
                   <strong>Se incarca intrebarile...</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Aducem lista pentru filtrul selectat.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Aducem lista pentru filtrul selectat.</p>
                 </div>
               ) : questionsLoadError ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">{questionsLoadError}</div>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "error-state")} role="alert">{questionsLoadError}</div>
               ) : questions.length ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-list import-preview-list")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-list import-preview-list")}>
                   {questions.map((question) => (
                     <ImportQuestionCard
                       key={question.id}
@@ -1668,13 +1670,13 @@ export function ImportJobStatusClient({
                   ))}
                 </div>
               ) : (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "draft-card review-empty-card")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "draft-card review-empty-card")}>
                   <strong>Nu exista intrebari in acest filtru.</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles], "page-copy")}>Schimba filtrul sau revino dupa ce procesarea este gata.</p>
+                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "page-copy")}>Schimba filtrul sau revino dupa ce procesarea este gata.</p>
                   {questionTotal > 0 ? (
                     <button
                       type="button"
-                      className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
                       onClick={reloadCurrentQuestions}
                     >
                       Reincarca intrebarile
@@ -1684,10 +1686,10 @@ export function ImportJobStatusClient({
               )}
 
               {hasMoreQuestions ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions import-actions-row")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "inline-actions import-actions-row")}>
                   <button
                     type="button"
-                    className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "btn-link secondary")}
                     onClick={() => loadQuestions(activeFilter, questionPage + 1, true, activeQuestionSearch)}
                   >
                     <IconText icon={ListPlus}>Incarca mai multe</IconText>
