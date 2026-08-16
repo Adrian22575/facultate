@@ -1,0 +1,42 @@
+.ui-icon-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+  min-width: 0;
+}
+
+.ui-icon-text svg {
+  flex: 0 0 auto;
+}
+
+.ui-loading-spinner {
+  width: var(--ui-loading-spinner-size);
+  height: var(--ui-loading-spinner-size);
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: max(3px, calc(var(--ui-loading-spinner-size) * 0.14));
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.ui-loading-spinner svg {
+  width: 48%;
+  height: 48%;
+  animation: uiLoadingSpin 0.8s linear infinite;
+}
+
+.ui-loading-spinner-track {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  opacity: 0.24;
+}
+
+.ui-loading-spinner-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}

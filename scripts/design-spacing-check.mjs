@@ -127,6 +127,11 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/workspace-question-review.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/workspace-question-editor.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/review-publish-bar.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/dashboard-page-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/subjects-list-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/subject-library-card.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/feedback-launcher.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/loading-spinner.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -186,6 +191,35 @@ const removedLegacyFamilies = [
 for (const family of removedLegacyFamilies) {
   if (legacyCss.includes(`.${family}`)) {
     failures.push(`Familia CSS legacy eliminata a reaparut in globals.css: .${family}*.`);
+  }
+}
+
+const colocatedActiveFamilies = [
+  "dashboard-page",
+  "dashboard-container",
+  "dashboard-top-nav",
+  "dashboard-nav-actions",
+  "dashboard-nav-btn",
+  "dashboard-google-wrap",
+  "dashboard-subject-library-layout",
+  "subjects-library",
+  "subjects-grid",
+  "subjects-resume-link",
+  "subject-library-",
+  "feedback-fab",
+  "feedback-backdrop",
+  "feedback-panel",
+  "feedback-screenshot-",
+  "feedback-message-",
+  "ui-loading-spinner",
+  "learning-mode-card",
+  "linkedin-option-field",
+  "linkedin-post-preview"
+];
+
+for (const family of colocatedActiveFamilies) {
+  if (legacyCss.includes(`.${family}`)) {
+    failures.push(`Selectorul activ colocat a reaparut in globals.css: .${family}*.`);
   }
 }
 

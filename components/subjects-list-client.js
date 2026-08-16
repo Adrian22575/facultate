@@ -1,5 +1,7 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./subjects-list-client.module.css";
 import { CalendarDays, GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -161,18 +163,18 @@ export function SubjectsListClient({
   return (
     <section
       id={sectionId}
-      className={`section-card subjects-section-card subjects-library${embedded ? " is-embedded" : ""}`}
+      className={moduleClassNames(styles, `section-card subjects-section-card subjects-library${embedded ? " is-embedded" : ""}`)}
     >
       {title || headerAction ? (
-        <div className="subjects-library-topbar">
+        <div className={moduleClassNames(styles, "subjects-library-topbar")}>
           {title ? (
-            <div className="subjects-library-heading">
+            <div className={moduleClassNames(styles, "subjects-library-heading")}>
               <h1>{title}</h1>
               {description ? <p>{description}</p> : null}
             </div>
           ) : null}
 
-          {headerAction ? <div className="subjects-library-header-action">{headerAction}</div> : null}
+          {headerAction ? <div className={moduleClassNames(styles, "subjects-library-header-action")}>{headerAction}</div> : null}
         </div>
       ) : null}
 
@@ -221,7 +223,7 @@ export function SubjectsListClient({
             ]}
           />
         ) : (
-          <span className="subjects-toolbar-placeholder" aria-hidden="true" />
+          <span className={moduleClassNames(styles, "subjects-toolbar-placeholder")} aria-hidden="true" />
         )}
 
         {filterOptions.semesters.length ? (
@@ -242,7 +244,7 @@ export function SubjectsListClient({
             ]}
           />
         ) : (
-          <span className="subjects-toolbar-placeholder" aria-hidden="true" />
+          <span className={moduleClassNames(styles, "subjects-toolbar-placeholder")} aria-hidden="true" />
         )}
 
         <FilterSortSelect
@@ -258,7 +260,7 @@ export function SubjectsListClient({
       </FiltersToolbar>
 
       {totalVisible ? (
-        <div className="subjects-grid">
+        <div className={moduleClassNames(styles, "subjects-grid")}>
           {filteredRows.map((subject) => (
             <SubjectLibraryCard key={subject.id} subject={subject} />
           ))}
@@ -298,11 +300,11 @@ export function SubjectsListClient({
           variant="section"
           title="Nu ai inca nicio materie"
           description="Adauga prima materie sau un set de grile pentru a incepe sa inveti."
-          actions={<Link className="subject-empty-action" href="/materiale">Adauga o materie</Link>}
+          actions={<Link className={moduleClassNames(styles, "subject-empty-action")} href="/materiale">Adauga o materie</Link>}
         />
       )}
 
-      <div className="subject-helper-note">
+      <div className={moduleClassNames(styles, "subject-helper-note")}>
         <span>Nu gasesti materia?</span>
         <Link href="/materiale">Adauga o materie sau un set de grile din Materiale.</Link>
       </div>

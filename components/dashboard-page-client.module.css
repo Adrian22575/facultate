@@ -1,0 +1,244 @@
+@media (min-width: 901px) {
+  :global(.app-shell):has(:global(.app-sidebar)) > .dashboard-page {
+    max-width: none;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 901px) {
+
+  .dashboard-page:has(:global(.app-sidebar)) {
+    padding-right: 0;
+    padding-left: 0;
+    transition: padding-left 180ms ease;
+  }
+}
+
+@media (min-width: 901px) {
+
+  .dashboard-page:has(:global(.app-sidebar.is-collapsed)) {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 901px) {
+
+  .dashboard-page:has(:global(.app-sidebar)) .dashboard-container {
+    max-width: none;
+  }
+}
+
+@media (min-width: 901px) {
+
+  .dashboard-page:has(:global(.app-sidebar)) .dashboard-top-nav {
+    height: 0;
+    min-height: 0;
+    margin-bottom: 0;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 901px) {
+
+  .dashboard-page:has(:global(.app-sidebar)) .dashboard-top-nav > .brand {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-top-nav.app-mobile-navigation-bar {
+    margin-bottom: 12px;
+    flex-wrap: nowrap;
+  }
+}
+
+.dashboard-nav-btn.has-admin-action {
+  border-color: rgba(180, 35, 44, 0.42);
+  background: #fff7f7;
+}
+
+.dashboard-nav-btn .nav-action-badge {
+  margin-left: 2px;
+}
+
+.dashboard-page {
+  width: 100%;
+}
+
+.dashboard-container {
+  width: min(100%, 1240px);
+  margin: 0;
+}
+
+.dashboard-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.dashboard-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dashboard-google-wrap {
+  display: contents;
+}
+
+.dashboard-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dashboard-nav-btn:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(20, 50, 100, 0.08);
+}
+
+.dashboard-nav-btn-primary {
+  background: linear-gradient(135deg, var(--primary), #2f72d7);
+  border-color: transparent;
+  color: #fff;
+}
+
+.dashboard-nav-btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark), #1250b1);
+  border-color: transparent;
+  color: #fff;
+}
+
+.dashboard-subject-library-layout {
+  width: 100%;
+}
+
+.subjects-resume-link {
+  min-height: 44px;
+  display: inline-flex;
+  max-width: min(100%, 360px);
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  border: 1px solid #cbdcf2;
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.subjects-resume-link > span {
+  color: var(--primary-dark);
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+
+.subjects-resume-link strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subjects-resume-link > svg {
+  flex: 0 0 auto;
+  color: var(--primary-dark);
+}
+
+.subjects-resume-link:hover {
+  border-color: var(--primary);
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.subjects-resume-link:focus-visible {
+  outline: 3px solid rgba(18, 80, 177, 0.28);
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+
+  .subjects-resume-link {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-top-nav.app-mobile-navigation-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .dashboard-nav-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+
+  .dashboard-nav-actions form,
+.dashboard-nav-actions form button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .dashboard-top-nav:not(.app-mobile-navigation-bar) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .dashboard-nav-actions {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+
+  .dashboard-nav-btn {
+    flex: 1;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .dashboard-nav-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-google-wrap .dashboard-nav-btn-primary {
+  font-weight: 760;
+}

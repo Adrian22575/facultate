@@ -229,3 +229,98 @@
 :global(.learning-mode-card-compact) .learning-mode-check-two{
 	top:60px;
 }
+
+.learning-mode-card[data-navigation-pending="true"] {
+  pointer-events: none;
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  transform: translateY(-1px);
+}
+
+.learning-mode-card[data-navigation-blocked="true"] {
+  pointer-events: none;
+  opacity: 0.58;
+  transform: none;
+  filter: grayscale(0.18);
+}
+
+.learning-mode-card {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(180deg, #ffffff, #f7fbff);
+  border: 1px solid #dbe5f2;
+  border-radius: 26px;
+  box-shadow: 0 16px 34px rgba(20, 50, 100, 0.08);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.learning-mode-card:hover {
+  transform: translateY(-3px);
+  border-color: #b8d0f0;
+  box-shadow: 0 22px 44px rgba(20, 50, 100, 0.12);
+}
+
+.learning-mode-card[data-navigation-pending="true"] {
+  box-shadow: 0 22px 44px rgba(20, 50, 100, 0.12);
+}
+
+.learning-mode-card[data-navigation-blocked="true"] {
+  cursor: wait;
+  border-color: #dbe5f2;
+  box-shadow: 0 12px 26px rgba(20, 50, 100, 0.06);
+}
+
+.learning-mode-card[data-navigation-blocked="true"]:hover {
+  transform: none;
+}
+
+.learning-mode-card:focus-visible {
+  outline: 3px solid rgba(18, 80, 177, 0.22);
+  outline-offset: 3px;
+}
+
+.learning-mode-card-showcase {
+  min-height: 286px;
+}
+
+.learning-mode-card-compact {
+  min-height: 242px;
+  gap: 14px;
+  padding: 22px;
+}
+
+.learning-mode-card.is-primary {
+  background: linear-gradient(180deg, #ffffff, #eef5ff);
+  border-color: #bfd5f3;
+  box-shadow: 0 18px 38px rgba(18, 80, 177, 0.12);
+}
+
+.learning-mode-card.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.94;
+}
+
+.learning-mode-card.is-disabled:hover {
+  transform: none;
+}
+
+.learning-mode-card :global(.navigation-pending-badge) {
+  align-self: start;
+}
+
+@media (max-width: 580px) {
+
+  .learning-mode-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 580px) {
+
+  .learning-mode-card {
+    min-height: auto;
+  }
+}

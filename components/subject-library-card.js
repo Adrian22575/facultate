@@ -1,5 +1,7 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./subject-library-card.module.css";
 import { ArrowRight, FileText } from "lucide-react";
 
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
@@ -36,7 +38,7 @@ export function SubjectLibraryCard({
 
   return (
     <PendingNavigationLink
-      className="subject-library-card"
+      className={moduleClassNames(styles, "subject-library-card")}
       href={href}
       pendingLabel={pendingLabel}
       aria-label={
@@ -46,14 +48,14 @@ export function SubjectLibraryCard({
       }
       onKeyDown={activateFromSpace}
     >
-      <span className={`subject-library-cover is-palette-${paletteIndex}`} aria-hidden="true">
+      <span className={moduleClassNames(styles, `subject-library-cover is-palette-${paletteIndex}`)} aria-hidden="true">
         <strong>{initials}</strong>
         <FileText size={24} strokeWidth={1.7} />
       </span>
 
-      <span className="subject-library-card-body">
-        <strong className="subject-library-card-title">{subject.title}</strong>
-        <span className="subject-library-card-meta">
+      <span className={moduleClassNames(styles, "subject-library-card-body")}>
+        <strong className={moduleClassNames(styles, "subject-library-card-title")}>{subject.title}</strong>
+        <span className={moduleClassNames(styles, "subject-library-card-meta")}>
           {formatQuestionCount(subject.questionCount)}
           {isLicenta ? (
             <>
@@ -64,20 +66,20 @@ export function SubjectLibraryCard({
         </span>
 
         {isLicenta ? (
-          <span className="subject-library-license-note">Simulare, test si recapitulare</span>
+          <span className={moduleClassNames(styles, "subject-library-license-note")}>Simulare, test si recapitulare</span>
         ) : (
-          <span className="subject-library-progress">
-            <span className="subject-library-progress-label">
+          <span className={moduleClassNames(styles, "subject-library-progress")}>
+            <span className={moduleClassNames(styles, "subject-library-progress-label")}>
               <span>{progressLabel.title}</span>
               <strong>{`${percent}%`}</strong>
             </span>
-            <span className="subject-library-progress-track" aria-hidden="true">
+            <span className={moduleClassNames(styles, "subject-library-progress-track")} aria-hidden="true">
               <span style={{ width: `${percent}%` }} />
             </span>
           </span>
         )}
 
-        <span className="subject-library-card-action">
+        <span className={moduleClassNames(styles, "subject-library-card-action")}>
           {isLicenta ? "Deschide Licenta" : progressLabel.action}
           <ArrowRight size={17} strokeWidth={2.4} aria-hidden="true" />
         </span>

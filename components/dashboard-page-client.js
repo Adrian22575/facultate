@@ -1,5 +1,7 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./dashboard-page-client.module.css";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -42,7 +44,7 @@ export function DashboardPageClient({
   const resumeAction = resumeSession ? (
     <PendingNavigationLink
       href={resumeSession.href}
-      className="subjects-resume-link"
+      className={moduleClassNames(styles, "subjects-resume-link")}
       pendingLabel="Se reia sesiunea..."
       pendingMode="replace"
     >
@@ -53,11 +55,11 @@ export function DashboardPageClient({
   ) : null;
 
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-container">
-        <nav className="dashboard-top-nav app-mobile-navigation-bar">
-          <Link className="brand" href="/">
-            <div className="brand-mark">5+</div>
+    <div className={moduleClassNames(styles, "dashboard-page")}>
+      <div className={moduleClassNames(styles, "dashboard-container")}>
+        <nav className={moduleClassNames(styles, "dashboard-top-nav app-mobile-navigation-bar")}>
+          <Link className={moduleClassNames(styles, "brand")} href="/">
+            <div className={moduleClassNames(styles, "brand-mark")}>5+</div>
             <span>Nota 5+</span>
           </Link>
 
@@ -72,12 +74,12 @@ export function DashboardPageClient({
               gamificationSummary={gamificationSummary}
             />
           ) : (
-            <div className="dashboard-nav-actions">
-              <Link href="/auth/exit-demo?target=login" className="dashboard-nav-btn">Intra in cont</Link>
+            <div className={moduleClassNames(styles, "dashboard-nav-actions")}>
+              <Link href="/auth/exit-demo?target=login" className={moduleClassNames(styles, "dashboard-nav-btn")}>Intra in cont</Link>
               <GoogleSignInButton
                 next="/"
-                className="dashboard-google-wrap"
-                buttonClassName="dashboard-nav-btn dashboard-nav-btn-primary"
+                className={moduleClassNames(styles, "dashboard-google-wrap")}
+                buttonClassName={moduleClassNames(styles, "dashboard-nav-btn dashboard-nav-btn-primary")}
                 errorClassName="nota5plus-inline-error"
               >
                 Continua cu Google
@@ -86,7 +88,7 @@ export function DashboardPageClient({
           )}
         </nav>
 
-        <section className="dashboard-subject-library-layout" aria-label="Biblioteca de materii">
+        <section className={moduleClassNames(styles, "dashboard-subject-library-layout")} aria-label="Biblioteca de materii">
           <SubjectsListClient
             subjects={subjects}
             subjectLibrary={subjectLibrary}

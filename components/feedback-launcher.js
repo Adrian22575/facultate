@@ -1,5 +1,7 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./feedback-launcher.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ImagePlus, MessageSquareText, MonitorUp, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -247,7 +249,7 @@ export function FeedbackLauncher() {
     <>
       <button
         type="button"
-        className="feedback-fab"
+        className={moduleClassNames(styles, "feedback-fab")}
         aria-label="Trimite feedback"
         onClick={() => {
           setError("");
@@ -255,13 +257,13 @@ export function FeedbackLauncher() {
           setIsOpen(true);
         }}
       >
-        <MessageSquareText className="feedback-fab-icon" aria-hidden="true" size={20} strokeWidth={2.2} />
-        <span className="feedback-fab-label">Feedback</span>
+        <MessageSquareText className={moduleClassNames(styles, "feedback-fab-icon")} aria-hidden="true" size={20} strokeWidth={2.2} />
+        <span className={moduleClassNames(styles, "feedback-fab-label")}>Feedback</span>
       </button>
 
       {isOpen ? (
         <div
-          className={`feedback-backdrop${isCapturing ? " is-capturing" : ""}`}
+          className={moduleClassNames(styles, `feedback-backdrop${isCapturing ? " is-capturing" : ""}`)}
           role="presentation"
           onClick={(event) => {
             if (event.target === event.currentTarget) {
@@ -271,27 +273,27 @@ export function FeedbackLauncher() {
         >
           <section
             ref={dialogRef}
-            className="feedback-panel"
+            className={moduleClassNames(styles, "feedback-panel")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="feedback-title"
           >
-            <div className="feedback-head">
+            <div className={moduleClassNames(styles, "feedback-head")}>
               <div>
                 <strong id="feedback-title">Trimite feedback</strong>
                 <p>Spune-ne ce nu merge, ce lipsește sau ce ai vrea să vezi.</p>
               </div>
               <button
                 type="button"
-                className="workspace-modal-close feedback-modal-close"
+                className={moduleClassNames(styles, "workspace-modal-close feedback-modal-close")}
                 onClick={() => setIsOpen(false)}
               >
                 Închide
               </button>
             </div>
 
-            <form className="feedback-form" onSubmit={handleSubmit}>
-              <label className="onboarding-form-field">
+            <form className={moduleClassNames(styles, "feedback-form")} onSubmit={handleSubmit}>
+              <label className={moduleClassNames(styles, "onboarding-form-field")}>
                 <span>Tip feedback</span>
                 <select
                   value={feedbackType}
@@ -305,44 +307,44 @@ export function FeedbackLauncher() {
                 </select>
               </label>
 
-              <label className="onboarding-form-field">
+              <label className={moduleClassNames(styles, "onboarding-form-field")}>
                 <span>Mesaj</span>
                 <textarea
                   ref={messageRef}
-                  className="textarea-input feedback-textarea"
+                  className={moduleClassNames(styles, "textarea-input feedback-textarea")}
                   value={message}
                   onChange={(event) => setMessage(event.target.value)}
                   placeholder="Descrie pe scurt problema, cerința sau ideea ta."
                   maxLength={MAX_FEEDBACK_MESSAGE_LENGTH}
                 />
-                <div className="feedback-message-meta">
-                  <span className={`feedback-message-hint ${isValid ? "is-valid" : "is-pending"}`}>
+                <div className={moduleClassNames(styles, "feedback-message-meta")}>
+                  <span className={moduleClassNames(styles, `feedback-message-hint ${isValid ? "is-valid" : "is-pending"}`)}>
                     {isValid
                       ? "Poți trimite feedback-ul."
                       : `Scrie cel puțin ${MIN_FEEDBACK_MESSAGE_LENGTH} caractere.`}
                   </span>
-                  <span className="feedback-message-count">
+                  <span className={moduleClassNames(styles, "feedback-message-count")}>
                     {trimmedMessageLength}/{MIN_FEEDBACK_MESSAGE_LENGTH} minim
                   </span>
                 </div>
               </label>
 
-              <div className="onboarding-form-field feedback-screenshot-field">
+              <div className={moduleClassNames(styles, "onboarding-form-field feedback-screenshot-field")}>
                 <span>Captură de ecran <em>opțional</em></span>
                 {screenshot ? (
-                  <div className="feedback-screenshot-preview">
+                  <div className={moduleClassNames(styles, "feedback-screenshot-preview")}>
                     <img src={screenshotPreviewUrl} alt="Previzualizarea capturii atașate" />
                     <div>
                       <strong>{screenshot.name || "Captură lipită"}</strong>
                       <span>{`${Math.ceil(screenshot.size / 1024)} KB`}</span>
                     </div>
-                    <button type="button" className="feedback-screenshot-remove" onClick={() => updateScreenshot(null)}>
+                    <button type="button" className={moduleClassNames(styles, "feedback-screenshot-remove")} onClick={() => updateScreenshot(null)}>
                       <X aria-hidden="true" size={16} />
                       Elimină
                     </button>
                   </div>
                 ) : (
-                  <div className="feedback-screenshot-empty">
+                  <div className={moduleClassNames(styles, "feedback-screenshot-empty")}>
                     <input
                       ref={screenshotInputRef}
                       type="file"
@@ -351,11 +353,11 @@ export function FeedbackLauncher() {
                       onChange={(event) => updateScreenshot(event.target.files?.[0] || null)}
                       hidden
                     />
-                    <div className="feedback-screenshot-actions">
+                    <div className={moduleClassNames(styles, "feedback-screenshot-actions")}>
                       {canCapturePage ? (
                         <button
                           type="button"
-                          className="btn-link secondary feedback-screenshot-add"
+                          className={moduleClassNames(styles, "btn-link secondary feedback-screenshot-add")}
                           onClick={captureCurrentPage}
                           disabled={isCapturing || isSubmitting}
                         >
@@ -366,7 +368,7 @@ export function FeedbackLauncher() {
                       ) : null}
                       <button
                         type="button"
-                        className="btn-link secondary feedback-screenshot-add"
+                        className={moduleClassNames(styles, "btn-link secondary feedback-screenshot-add")}
                         onClick={() => screenshotInputRef.current?.click()}
                         onPaste={handleScreenshotPaste}
                         disabled={isCapturing || isSubmitting}
@@ -375,7 +377,7 @@ export function FeedbackLauncher() {
                         Adaugă o captură
                       </button>
                     </div>
-                    <p className="feedback-screenshot-help">
+                    <p className={moduleClassNames(styles, "feedback-screenshot-help")}>
                       <strong>Pentru captură, selectează tabul aplicației în fereastra browserului.</strong>
                       <span>Poți și încărca sau lipi o imagine PNG, JPG ori WEBP, de maximum {FEEDBACK_SCREENSHOT_MAX_LABEL}.</span>
                     </p>
@@ -383,10 +385,10 @@ export function FeedbackLauncher() {
                 )}
               </div>
 
-              <label className="onboarding-form-field">
+              <label className={moduleClassNames(styles, "onboarding-form-field")}>
                 <span>Link sau detaliu opțional</span>
                 <input
-                  className="input-search"
+                  className={moduleClassNames(styles, "input-search")}
                   type="text"
                   value={optionalDetail}
                   onChange={(event) => setOptionalDetail(event.target.value)}
@@ -395,10 +397,10 @@ export function FeedbackLauncher() {
                 />
               </label>
 
-              {error ? <div className="error-state" role="alert">{error}</div> : null}
-              {success ? <div className="success-state" role="status">{success}</div> : null}
+              {error ? <div className={moduleClassNames(styles, "error-state")} role="alert">{error}</div> : null}
+              {success ? <div className={moduleClassNames(styles, "success-state")} role="status">{success}</div> : null}
 
-              <div className="inline-actions feedback-actions">
+              <div className={moduleClassNames(styles, "inline-actions feedback-actions")}>
                 <button type="submit" disabled={!isValid || isSubmitting}>
                   <LoadingIconText loading={isSubmitting} loadingLabel="Trimitem...">
                     Trimite feedback

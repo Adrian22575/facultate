@@ -1,0 +1,144 @@
+.subject-library-card:focus-visible {
+  outline: 3px solid rgba(18, 80, 177, 0.28);
+  outline-offset: 3px;
+}
+
+.subject-library-card {
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-soft);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  color: inherit;
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.subject-library-card:hover {
+  border-color: rgba(18, 80, 177, 0.38);
+  box-shadow: var(--shadow);
+  transform: translateY(-4px);
+}
+
+.subject-library-cover {
+  min-height: 92px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px;
+  color: #fff;
+}
+
+.subject-library-cover strong {
+  font-size: 1.32rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.subject-library-cover svg {
+  opacity: 0.8;
+}
+
+.subject-library-cover.is-palette-0 { background: linear-gradient(135deg, #174d9e, #2678dd); }
+
+.subject-library-cover.is-palette-1 { background: linear-gradient(135deg, #126447, #2a9d6f); }
+
+.subject-library-cover.is-palette-2 { background: linear-gradient(135deg, #51409e, #8567d3); }
+
+.subject-library-cover.is-palette-3 { background: linear-gradient(135deg, #a15d24, #d88b40); }
+
+.subject-library-cover.is-palette-4 { background: linear-gradient(135deg, #176877, #2b9aab); }
+
+.subject-library-cover.is-palette-5 { background: linear-gradient(135deg, #183f72, #386aaf); }
+
+.subject-library-card-body {
+  min-height: 178px;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 17px 18px 18px;
+}
+
+.subject-library-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.subject-library-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.subject-library-progress,
+.subject-library-license-note {
+  display: grid;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.subject-library-license-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.subject-library-progress-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.subject-library-progress-label strong {
+  color: var(--ink);
+}
+
+.subject-library-progress-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e5edf8;
+}
+
+.subject-library-progress-track > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+}
+
+.subject-library-card-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  color: var(--primary-dark);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+@media (max-width: 560px) {
+
+  .subject-library-card {
+    min-height: 270px;
+  }
+}
