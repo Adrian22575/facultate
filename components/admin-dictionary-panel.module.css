@@ -1,7 +1,4 @@
-@media (max-width: 760px) {
-}
-
- .admin-dictionary-action-message {
+.admin-dictionary-action-message {
   margin: 0;
   padding: 12px 14px;
   border: 1px solid #bad2ef;
@@ -123,16 +120,10 @@
   background: #a92b2b;
 }
 
-@media (max-width: 920px) {
-}
-
 @media (max-width: 620px) {
   .admin-dictionary-panel {
     padding: 16px;
   }
-}
-
-@media (max-width: 620px) {
 }
 
 @media (max-width: 620px) {
@@ -143,12 +134,6 @@
 }
 
 .admin-dictionary-panel { display: grid; gap: 22px; padding: 24px; }
-
- .admin-dictionary-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
-
- .admin-dictionary-head h2 { margin: 5px 0; }
-
- .admin-dictionary-head p { max-width: 680px; margin: 0; color: #5d718e; }
 
  .admin-dictionary-message { margin: 0; padding: 11px 13px; border: 1px solid #bdd4f5; border-radius: 12px; color: #21558f; background: #edf5ff; }
 
@@ -173,16 +158,6 @@
  .admin-dictionary-editor textarea.admin-dictionary-json { min-height: 170px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .79rem; }
 
  .admin-dictionary-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, .8fr); gap: 10px; }
-
- .admin-dictionary-actions { display: flex; align-items: center; gap: 13px; }
-
- .admin-dictionary-actions a { color: #1459c5; font-size: .88rem; font-weight: 800; }
-
-@media (max-width: 760px) {  .admin-dictionary-head { align-items: stretch; flex-direction: column; }
-}
-
-@media (max-width: 760px) {  .admin-dictionary-actions { align-items: stretch; flex-direction: column; }
-}
 
 @media (max-width: 760px) { .admin-dictionary-grid { grid-template-columns: 1fr; }
 }

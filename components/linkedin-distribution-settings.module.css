@@ -1,15 +1,4 @@
-.admin-linkedin-connection-state {
-  padding: 7px 11px;
-  border: 1px solid #d1ddea;
-  border-radius: 999px;
-  background: #f7f9fc;
-}
-
- .admin-linkedin-connection-state:global(.is-connected) { border-color: #a9ddc2; color: #0c754b; background: #edf9f3; }
-
- .admin-linkedin-connection-state:global(.is-offline) { color: #7a5a26; background: #fff8e9; }
-
- .admin-linkedin-controls {
+.admin-linkedin-controls {
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
@@ -174,10 +163,6 @@
  .admin-linkedin-settings > .admin-linkedin-config-note { margin: 0 12px 12px; }
 
  .admin-linkedin-settings > :global(.admin-linkedin-default-template) { margin: 0 12px 12px; }
-
-@media (max-width: 680px) {
-   .admin-linkedin-connection-state { grid-column: 2; justify-self: start; }
-}
 
 @media (max-width: 680px) {
    .admin-linkedin-controls { display: grid; grid-template-columns: 1fr; }

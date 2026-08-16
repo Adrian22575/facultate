@@ -100,8 +100,6 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/admin-linkedin-distribution.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-linkedin-editor.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-linkedin-preview.module.css", importantCeiling: 0 }
-  ,{ relativePath: "components/admin-linkedin-editor.module.css", importantCeiling: 0 }
-  ,{ relativePath: "components/admin-linkedin-preview.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/linkedin-distribution-settings.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/linkedin-generation-options.module.css", importantCeiling: 0 }
   ,{ relativePath: "app/admin/articole/[articleId]/preview/page.module.css", importantCeiling: 0 }
@@ -163,6 +161,29 @@ const adminShellCss = fs.readFileSync(path.join(root, "components/admin-page-she
 const layout = fs.readFileSync(layoutPath, "utf8").replaceAll("\r\n", "\n");
 const rules = fs.readFileSync(rulesPath, "utf8");
 const failures = [];
+
+const registeredModulePaths = [...primitiveCssEntries, ...colocatedCssEntries.map(({ relativePath }) => relativePath)];
+const duplicateModulePaths = registeredModulePaths.filter((relativePath, index) => registeredModulePaths.indexOf(relativePath) !== index);
+if (duplicateModulePaths.length) {
+  failures.push(`Registrul CSS Modules conține căi duplicate: ${[...new Set(duplicateModulePaths)].join(", ")}.`);
+}
+
+const discoverCssModules = (directory) => fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+  const absolutePath = path.join(directory, entry.name);
+  if (entry.isDirectory()) return discoverCssModules(absolutePath);
+  if (!entry.name.endsWith(".module.css")) return [];
+  return [path.relative(root, absolutePath).replaceAll("\\", "/")];
+});
+const actualModulePaths = ["app", "components"].flatMap((directory) => discoverCssModules(path.join(root, directory))).sort();
+const registeredModuleSet = new Set(registeredModulePaths);
+const unregisteredModulePaths = actualModulePaths.filter((relativePath) => !registeredModuleSet.has(relativePath));
+const missingModulePaths = registeredModulePaths.filter((relativePath) => !fs.existsSync(path.join(root, relativePath)));
+if (unregisteredModulePaths.length) {
+  failures.push(`CSS Modules neînregistrate: ${unregisteredModulePaths.join(", ")}.`);
+}
+if (missingModulePaths.length) {
+  failures.push(`CSS Modules înregistrate, dar absente: ${missingModulePaths.join(", ")}.`);
+}
 
 const removedLegacyFamilies = [
   "ai-workspace-",

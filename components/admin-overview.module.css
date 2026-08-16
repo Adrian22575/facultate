@@ -19,10 +19,6 @@
   line-height: 1.1;
 }
 
- .admin-overview-grid-compact {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 @media (max-width: 640px) {
 
   .admin-overview-grid {
