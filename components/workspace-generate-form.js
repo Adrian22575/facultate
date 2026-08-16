@@ -1,5 +1,10 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./workspace-generate-form.module.css";
+import guideStyles from "./workspace-guide.module.css";
+import sourceStyles from "./workspace-source-input.module.css";
+import flowStyles from "./workspace-flow-patterns.module.css";
 import Link from "next/link";
 import { Check, ClipboardPaste, FileUp } from "lucide-react";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
@@ -467,21 +472,21 @@ export function WorkspaceGenerateForm({
   return (
     <>
       {demoMode ? (
-        <div className="error-state" role="status">
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "error-state")} role="status">
           In modul demo poti vedea doar interfata. Pentru procesare reala intra cu Google.
         </div>
       ) : null}
 
-      {setupWarning ? <div className="error-state" role="alert">{setupWarning}</div> : null}
-      {message ? <div className="success-state" role="status">{message}</div> : null}
-      {error ? <div className="error-state" role="alert">{error}</div> : null}
-      {visibleError ? <div className="error-state" role="alert">{visibleError}</div> : null}
+      {setupWarning ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "error-state")} role="alert">{setupWarning}</div> : null}
+      {message ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "success-state")} role="status">{message}</div> : null}
+      {error ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "error-state")} role="alert">{error}</div> : null}
+      {visibleError ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "error-state")} role="alert">{visibleError}</div> : null}
       {isSubmitting ? (
-        <section className="learning-processing-panel" role="status" aria-live="polite" aria-atomic="true">
-          <span className="learning-processing-icon" aria-hidden="true">
+        <section className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
+          <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-processing-icon")} aria-hidden="true">
             <LoadingSpinner size={20} />
           </span>
-          <div className="learning-processing-copy">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-processing-copy")}>
             <strong>{uploadStatus || "Pregătim grilele..."}</strong>
             <p>Păstrează pagina deschisă. Te ducem automat la verificare când încărcarea este gata.</p>
           </div>
@@ -492,7 +497,7 @@ export function WorkspaceGenerateForm({
         action="/api/materiale/generate"
         method="post"
         encType="multipart/form-data"
-        className="ai-form ai-workspace-form upload-refresh-flow"
+        className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-form ai-workspace-form upload-refresh-flow")}
         aria-busy={isSubmitting}
         onSubmit={async (event) => {
           if (submitDisabled || selectedFileTooLarge || submittingRef.current) {
@@ -526,10 +531,10 @@ export function WorkspaceGenerateForm({
           }
         }}
       >
-        <section className="workspace-help-toggle ai-workspace-guide-toggle">
+        <section className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-help-toggle ai-workspace-guide-toggle")}>
           <button
             type="button"
-            className="btn-link secondary workspace-help-toggle-btn ai-workspace-guide-trigger"
+            className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "btn-link secondary workspace-help-toggle-btn ai-workspace-guide-trigger")}
             onClick={() => setShowGuide((current) => !current)}
             aria-expanded={showGuide}
             aria-controls="workspace-guide-panel"
@@ -538,26 +543,26 @@ export function WorkspaceGenerateForm({
           </button>
 
           {showGuide ? (
-            <div id="workspace-guide-panel" className="workspace-help-panel ai-workspace-guide-panel">
-              <div className="workspace-guide-grid">
-                <article className="workspace-guide-card ui-panel-card ai-workspace-guide-card">
-                  <div className="workspace-guide-icon">
+            <div id="workspace-guide-panel" className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-help-panel ai-workspace-guide-panel")}>
+              <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-grid")}>
+                <article className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-card ui-panel-card ai-workspace-guide-card")}>
+                  <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-icon")}>
                     <UploadFileIcon />
                   </div>
                   <strong>Ce urci</strong>
                   <p>PDF, DOCX, TXT sau text lipit direct aici.</p>
                 </article>
 
-                <article className="workspace-guide-card ui-panel-card ai-workspace-guide-card">
-                  <div className="workspace-guide-icon">
+                <article className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-card ui-panel-card ai-workspace-guide-card")}>
+                  <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-icon")}>
                     <ChecklistIcon />
                   </div>
                   <strong>Cum trebuie sa fie</strong>
                   <p>Fisierul trebuie sa aiba deja intrebari si raspunsuri.</p>
                 </article>
 
-                <article className="workspace-guide-card ui-panel-card ai-workspace-guide-card">
-                  <div className="workspace-guide-icon">
+                <article className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-card ui-panel-card ai-workspace-guide-card")}>
+                  <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-guide-icon")}>
                     <SparkIcon />
                   </div>
                   <strong>Ce primesti</strong>
@@ -565,19 +570,19 @@ export function WorkspaceGenerateForm({
                 </article>
               </div>
 
-              <section className="workspace-rule-banner">
+              <section className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-rule-banner")}>
                 <strong>Important</strong>
                 <p>Daca fisierul nu are deja intrebari si raspunsuri, nu il putem folosi.</p>
               </section>
 
-              <section className="workspace-example-panel ui-panel-card ai-workspace-example-panel">
-                <div className="workspace-example-copy">
+              <section className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-example-panel ui-panel-card ai-workspace-example-panel")}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-example-copy")}>
                   <strong>Exemplu simplu de fisier bun</strong>
                   <p>
                     Nu trebuie sa arate perfect. Important este sa aiba intrebarea, variantele si raspunsul corect.
                   </p>
                 </div>
-                <pre className="workspace-example-box">{`1. Care este raspunsul corect?
+                <pre className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-example-box")}>{`1. Care este raspunsul corect?
 A) Varianta 1
 B) Varianta 2
 C) Varianta 3
@@ -588,25 +593,25 @@ Raspuns corect: B`}</pre>
           ) : null}
         </section>
 
-        <ol className="learning-upload-flow upload-refresh-steps" aria-label="Pașii importului de grile">
-          <li className={sourceReady ? "is-done" : "is-active"}>
+        <ol className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-upload-flow upload-refresh-steps")} aria-label="Pașii importului de grile">
+          <li className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], sourceReady ? "is-done" : "is-active")}>
             <span>{sourceReady ? <Check aria-hidden="true" size={14} /> : "1"}</span>
             Grile
           </li>
-          <li className={destinationReady ? "is-done" : sourceReady ? "is-active" : ""}>
+          <li className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], destinationReady ? "is-done" : sourceReady ? "is-active" : "")}>
             <span>{destinationReady ? <Check aria-hidden="true" size={14} /> : "2"}</span>
             Materie
           </li>
-          <li className={uploadReady ? "is-active" : ""}>
+          <li className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], uploadReady ? "is-active" : "")}>
             <span>3</span>
             Confirmare
           </li>
         </ol>
 
-        <section className="workspace-form-panel ui-panel-card ai-workspace-step-panel">
-          <div className="workspace-form-head">
-            <div className="upload-refresh-step-head">
-              <span className="learning-upload-step-number" aria-hidden="true">1</span>
+        <section className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-form-panel ui-panel-card ai-workspace-step-panel")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-form-head")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "upload-refresh-step-head")}>
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-upload-step-number")} aria-hidden="true">1</span>
               <div>
                 <h2>Adaugă grilele</h2>
                 <p>Încarcă un fișier sau lipește direct întrebările și răspunsurile.</p>
@@ -615,7 +620,7 @@ Raspuns corect: B`}</pre>
           </div>
 
           <div
-            className="ui-segmented-tabs ai-workspace-source-tabs"
+            className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ui-segmented-tabs ai-workspace-source-tabs")}
             role="tablist"
             aria-label="Sursa continutului"
             onKeyDown={handleTablistKeyDown}
@@ -629,15 +634,15 @@ Raspuns corect: B`}</pre>
               tabIndex={sourceMode === "file" ? 0 : -1}
               aria-disabled={formLocked}
               disabled={formLocked}
-              className={`ui-segmented-tab secondary ai-workspace-source-tab ${
+              className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ui-segmented-tab secondary ai-workspace-source-tab ${
                 sourceMode === "file" ? "is-active" : ""
-              }`}
+              }`)}
               onClick={() => switchSourceMode("file")}
             >
-              <span className="ai-workspace-source-tab-icon" aria-hidden="true">
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-source-tab-icon")} aria-hidden="true">
                 <FileUp size={19} strokeWidth={2.3} />
               </span>
-              <span className="upload-refresh-option-copy">
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "upload-refresh-option-copy")}>
                 <strong>Încarcă fișier</strong>
                 <small>PDF, DOCX sau TXT</small>
               </span>
@@ -651,15 +656,15 @@ Raspuns corect: B`}</pre>
               tabIndex={sourceMode === "text" ? 0 : -1}
               aria-disabled={formLocked}
               disabled={formLocked}
-              className={`ui-segmented-tab secondary ai-workspace-source-tab ${
+              className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ui-segmented-tab secondary ai-workspace-source-tab ${
                 sourceMode === "text" ? "is-active" : ""
-              }`}
+              }`)}
               onClick={() => switchSourceMode("text")}
             >
-              <span className="ai-workspace-source-tab-icon" aria-hidden="true">
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-source-tab-icon")} aria-hidden="true">
                 <ClipboardPaste size={19} strokeWidth={2.3} />
               </span>
-              <span className="upload-refresh-option-copy">
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "upload-refresh-option-copy")}>
                 <strong>Lipește text</strong>
                 <small>Întrebări și răspunsuri copiate</small>
               </span>
@@ -669,14 +674,14 @@ Raspuns corect: B`}</pre>
           {sourceMode === "file" ? (
             <div
               id="workspace-source-panel"
-              className="selector-container ai-workspace-source-panel"
+              className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container ai-workspace-source-panel")}
               role="tabpanel"
               aria-labelledby="workspace-source-tab-file"
             >
               <label
-                className={`ai-workspace-file-dropzone${
+                className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ai-workspace-file-dropzone${
                   isDraggingSourceFile ? " is-dragging" : ""
-                }${selectedFileHasIssue ? " is-warning" : ""}${sourceReady ? " is-ready" : ""}`}
+                }${selectedFileHasIssue ? " is-warning" : ""}${sourceReady ? " is-ready" : ""}`)}
                 htmlFor={fileInputId}
                 role="button"
                 tabIndex={formLocked ? -1 : 0}
@@ -718,19 +723,19 @@ Raspuns corect: B`}</pre>
                   applyDroppedSourceFiles(event.dataTransfer.files);
                 }}
               >
-                <span className="ai-workspace-file-drop-icon" aria-hidden="true">
+                <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-file-drop-icon")} aria-hidden="true">
                   <UploadFileIcon />
                 </span>
-                <span className="ai-workspace-file-drop-title">
+                <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-file-drop-title")}>
                   {isDraggingSourceFile ? "Elibereaza fisierul aici" : "Alege sau trage fisierul aici"}
                 </span>
-                <span id={fileDropNoteId} className="ai-workspace-file-drop-note">
+                <span id={fileDropNoteId} className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-file-drop-note")}>
                   Un singur PDF, DOCX sau TXT cu intrebari si raspunsuri. Maxim {AI_SOURCE_UPLOAD_MAX_LABEL}.
                 </span>
                 <input
                   id={fileInputId}
                   ref={fileInputRef}
-                  className="ai-workspace-file-input"
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-file-input")}
                   type="file"
                   name="sourceFile"
                   disabled={fieldControlsLocked}
@@ -741,15 +746,15 @@ Raspuns corect: B`}</pre>
                   }}
                 />
               </label>
-              <p className="micro-copy ai-workspace-source-hint">
+              <p className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "micro-copy ai-workspace-source-hint")}>
                 Verificam structura intrebare + raspuns, apoi pregatim continutul pentru verificare. Limita: {AI_SOURCE_UPLOAD_MAX_LABEL}.
               </p>
-              <p id={fileDropStatusId} className="sr-only" aria-live="polite">
+              <p id={fileDropStatusId} className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "sr-only")} aria-live="polite">
                 {fileDropStatusText}
               </p>
               {selectedFileName ? (
-                <div className={`ai-workspace-source-meta${selectedFileHasIssue ? " is-warning" : ""}`}>
-                  <span className={`ui-chip ${selectedFileHasIssue ? "is-warning" : "is-good"}`}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ai-workspace-source-meta${selectedFileHasIssue ? " is-warning" : ""}`)}>
+                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ui-chip ${selectedFileHasIssue ? "is-warning" : "is-good"}`)}>
                     {selectedFileUnsupported
                       ? "Tip neacceptat"
                       : selectedFileTooLarge
@@ -764,7 +769,7 @@ Raspuns corect: B`}</pre>
                   ) : null}
                   <button
                     type="button"
-                    className="btn-link secondary ai-workspace-source-action"
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "btn-link secondary ai-workspace-source-action")}
                     aria-disabled={formLocked}
                     onClick={clearSelectedFile}
                   >
@@ -776,14 +781,14 @@ Raspuns corect: B`}</pre>
           ) : (
             <div
               id="workspace-source-panel"
-              className="selector-container ai-workspace-source-panel"
+              className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container ai-workspace-source-panel")}
               role="tabpanel"
               aria-labelledby="workspace-source-tab-text"
             >
               <label>
                 Lipeste direct banca de intrebari si raspunsuri daca nu ai fisier
                 <textarea
-                  className="textarea-input ai-workspace-textarea math-friendly-input"
+                  className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "textarea-input ai-workspace-textarea math-friendly-input")}
                   name="manualText"
                   rows="12"
                   value={manualText}
@@ -802,12 +807,12 @@ Raspuns corect: B`}</pre>
                   placeholder="Lipeste aici intrebarile si raspunsurile. Le verificam si le pregatim pentru verificare."
                 />
               </label>
-              <p className="micro-copy ai-workspace-source-hint">
+              <p className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "micro-copy ai-workspace-source-hint")}>
                 Daca textul este clar si are deja intrebari + raspunsuri, il trimitem prin acelasi flow ca la fisier.
               </p>
               {manualTextLength > 0 ? (
-                <div className={`ai-workspace-source-meta${manualTextTooShort || manualTextNeedsReview ? " is-warning" : ""}`}>
-                  <span className={`ui-chip ${manualTextTooShort || manualTextNeedsReview ? "is-warning" : "is-good"}`}>
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ai-workspace-source-meta${manualTextTooShort || manualTextNeedsReview ? " is-warning" : ""}`)}>
+                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ui-chip ${manualTextTooShort || manualTextNeedsReview ? "is-warning" : "is-good"}`)}>
                     {manualTextTooShort
                       ? "Text scurt"
                       : manualTextNeedsReview
@@ -819,7 +824,7 @@ Raspuns corect: B`}</pre>
                   </span>
                   <button
                     type="button"
-                    className="btn-link secondary ai-workspace-source-action"
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "btn-link secondary ai-workspace-source-action")}
                     aria-disabled={formLocked}
                     onClick={clearManualText}
                   >
@@ -828,11 +833,11 @@ Raspuns corect: B`}</pre>
                 </div>
               ) : null}
               {manualTextLength >= MANUAL_TEXT_MIN_CHARS ? (
-                <div id={manualTextSignalId} className="ai-workspace-text-signals" aria-label="Semnale text lipit">
+                <div id={manualTextSignalId} className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-text-signals")} aria-label="Semnale text lipit">
                   {manualTextQualityChecks.map((check) => (
                     <span
                       key={check.key}
-                      className={`ai-workspace-text-signal${check.passed ? " is-done" : " is-open"}`}
+                      className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ai-workspace-text-signal${check.passed ? " is-done" : " is-open"}`)}
                     >
                       <span aria-hidden="true">{check.passed ? "OK" : "?"}</span>
                       {check.label}
@@ -843,7 +848,7 @@ Raspuns corect: B`}</pre>
             </div>
           )}
 
-          <div className="selector-container ai-workspace-answer-key-control">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container ai-workspace-answer-key-control")}>
             <label>
               Unde sunt raspunsurile corecte?
               <select
@@ -862,7 +867,7 @@ Raspuns corect: B`}</pre>
                 <option value="mixed">Amestecat in document</option>
               </select>
             </label>
-            <p className="micro-copy">
+            <p className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "micro-copy")}>
               Daca raspunsurile sunt la final, folosim baremul ca reper pentru toate bucatile de procesare.
             </p>
           </div>
@@ -870,13 +875,13 @@ Raspuns corect: B`}</pre>
         </section>
 
         <section
-          className={`workspace-form-panel ui-panel-card ai-workspace-step-panel${
+          className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `workspace-form-panel ui-panel-card ai-workspace-step-panel${
             sourceReady ? "" : " is-locked"
-          }`}
+          }`)}
         >
-          <div className="workspace-form-head">
-            <div className="upload-refresh-step-head">
-              <span className="learning-upload-step-number" aria-hidden="true">2</span>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-form-head")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "upload-refresh-step-head")}>
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-upload-step-number")} aria-hidden="true">2</span>
               <div>
                 <h2>{isLicentaFlow ? "Alege tipul de test" : "Alege materia"}</h2>
                 <p>{isLicentaFlow ? "Întrebările intră în simularea generală." : "Așa găsești ușor grilele și testele mai târziu."}</p>
@@ -885,7 +890,7 @@ Raspuns corect: B`}</pre>
           </div>
 
           {!sourceReady ? (
-            <div className="workspace-step-locked">
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-step-locked")}>
               <strong>
                 {hasActiveSourceInput ? "Sursa nu este inca pregatita." : "Mai intai alege sursa pe care vrei sa o verificam."}
               </strong>
@@ -900,7 +905,7 @@ Raspuns corect: B`}</pre>
               {resolvedFixedExamType ? (
                 <input type="hidden" name="examType" value={resolvedFixedExamType} />
               ) : (
-                <div className="ai-workspace-exam-choice" role="radiogroup" aria-label="Tip test">
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-choice")} role="radiogroup" aria-label="Tip test">
                   <input type="hidden" name="examType" value={examType} />
                   <button
                     type="button"
@@ -908,21 +913,21 @@ Raspuns corect: B`}</pre>
                     aria-checked={examType === "normal"}
                     aria-disabled={fieldControlsLocked}
                     disabled={fieldControlsLocked}
-                    className={`secondary ai-workspace-exam-card ${
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `secondary ai-workspace-exam-card ${
                       examType === "normal" ? "is-selected" : ""
-                    }`}
+                    }`)}
                     onClick={() => {
                       if (!fieldControlsLocked) {
                         setExamType("normal");
                       }
                     }}
                   >
-                    <span className="ai-workspace-exam-icon is-normal" aria-hidden="true">T</span>
-                    <span className="ai-workspace-exam-copy">
+                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-icon is-normal")} aria-hidden="true">T</span>
+                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-copy")}>
                       <strong>Test grila pe materie</strong>
                       <span>Alegi anul, semestrul si materia unde intra intrebarile.</span>
                     </span>
-                    <span className="ai-workspace-exam-mark" aria-hidden="true">
+                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-mark")} aria-hidden="true">
                       {examType === "normal" ? "Selectat" : "Alege"}
                     </span>
                   </button>
@@ -932,21 +937,21 @@ Raspuns corect: B`}</pre>
                     aria-checked={examType === "licenta"}
                     aria-disabled={fieldControlsLocked}
                     disabled={fieldControlsLocked}
-                    className={`secondary ai-workspace-exam-card ${
+                    className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `secondary ai-workspace-exam-card ${
                       examType === "licenta" ? "is-selected" : ""
-                    }`}
+                    }`)}
                     onClick={() => {
                       if (!fieldControlsLocked) {
                         setExamType("licenta");
                       }
                     }}
                   >
-                    <span className="ai-workspace-exam-icon is-licenta" aria-hidden="true">L</span>
-                    <span className="ai-workspace-exam-copy">
+                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-icon is-licenta")} aria-hidden="true">L</span>
+                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-copy")}>
                       <strong>Licenta</strong>
                       <span>Pregatesti intrebari pentru simularea generala de licenta.</span>
                     </span>
-                    <span className="ai-workspace-exam-mark" aria-hidden="true">
+                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-exam-mark")} aria-hidden="true">
                       {examType === "licenta" ? "Selectat" : "Alege"}
                     </span>
                   </button>
@@ -954,7 +959,7 @@ Raspuns corect: B`}</pre>
               )}
 
               {isLicentaFlow ? (
-                <div className="workspace-licenta-callout">
+                <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-licenta-callout")}>
                   <strong>Incarci grile pentru simularea generala de licenta.</strong>
                   <p>
                     Pentru licenta nu mai alegi materie, an, clasa sau semestru. Dupa verificare,
@@ -964,8 +969,8 @@ Raspuns corect: B`}</pre>
               ) : (
                 <>
                   {isStudent ? (
-                    <div className="selector-grid">
-                      <div className="selector-container">
+                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-grid")}>
+                      <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container")}>
                         <label>
                           An
                           <select
@@ -986,7 +991,7 @@ Raspuns corect: B`}</pre>
                           </select>
                         </label>
                       </div>
-                      <div className="selector-container">
+                      <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container")}>
                         <label>
                           Semestru
                           <select
@@ -1006,12 +1011,12 @@ Raspuns corect: B`}</pre>
                       </div>
                     </div>
                   ) : (
-                    <div className="selector-grid">
-                      <div className="selector-container">
+                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-grid")}>
+                      <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container")}>
                         <label>
                           Clasa
                           <input
-                            className="input-search math-friendly-input"
+                            className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "input-search math-friendly-input")}
                             type="text"
                             name="schoolClass"
                             placeholder="Ex: Clasa a 11-a"
@@ -1023,7 +1028,7 @@ Raspuns corect: B`}</pre>
                           />
                         </label>
                       </div>
-                      <div className="selector-container">
+                      <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "selector-container")}>
                         <label>
                           Semestru
                           <select
@@ -1061,35 +1066,35 @@ Raspuns corect: B`}</pre>
         </section>
 
         {noCredits ? (
-          <div className="workspace-credit-alert">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-credit-alert")}>
             <div>
               <strong>Nu mai ai incarcari disponibile</strong>
               <p>Alege un pachet, apoi revii automat aici ca sa continui uploadul.</p>
             </div>
-            <Link className="btn-link secondary ai-workspace-alert-link" href={creditPurchaseHref}>
+            <Link className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "btn-link secondary ai-workspace-alert-link")} href={creditPurchaseHref}>
               Adauga incarcari
             </Link>
           </div>
         ) : null}
 
-        <div className="workspace-submit-card ui-panel-card ai-workspace-submit-card">
-          <div className="ai-workspace-submit-copy">
-            <div className="upload-refresh-step-head">
-              <span className="learning-upload-step-number" aria-hidden="true">3</span>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "workspace-submit-card ui-panel-card ai-workspace-submit-card")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-submit-copy")}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "upload-refresh-step-head")}>
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "learning-upload-step-number")} aria-hidden="true">3</span>
               <div>
                 <strong>{submitTitle}</strong>
                 <p>{submitDescription}</p>
               </div>
             </div>
-            <div className={`ai-workspace-credit-summary${noCredits ? " is-warning" : ""}`}>
-              <span className={`ui-chip ${noCredits ? "is-warning" : "is-good"}`}>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ai-workspace-credit-summary${noCredits ? " is-warning" : ""}`)}>
+              <span className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ui-chip ${noCredits ? "is-warning" : "is-good"}`)}>
                 {creditCountLabel}
               </span>
               <span>{creditPolicyText}</span>
             </div>
-            <div className="ai-workspace-submit-readiness" aria-label="Checklist trimitere continut">
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-submit-readiness")} aria-label="Checklist trimitere continut">
               {uploadReadinessChecks.map((check) => (
-                <div key={check.label} className={`ai-workspace-submit-check ${check.passed ? "is-done" : "is-open"}`}>
+                <div key={check.label} className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], `ai-workspace-submit-check ${check.passed ? "is-done" : "is-open"}`)}>
                   <span>{check.passed ? "Gata" : "Lipseste"}</span>
                   <div>
                     <strong>{check.label}</strong>
@@ -1100,20 +1105,20 @@ Raspuns corect: B`}</pre>
             </div>
           </div>
 
-          <div className="inline-actions workspace-submit-row ai-workspace-submit-row">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "inline-actions workspace-submit-row ai-workspace-submit-row")}>
             <button type="submit" disabled={submitDisabled} aria-describedby={submitHintId}>
               <LoadingIconText loading={isSubmitting} loadingLabel="Se trimite...">
                 {activeSubmitLabel}
               </LoadingIconText>
             </button>
-            <p id={submitHintId} className="ai-workspace-submit-action-hint" aria-live="polite">
+            <p id={submitHintId} className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "ai-workspace-submit-action-hint")} aria-live="polite">
               {submitHint}
             </p>
           </div>
         </div>
 
         {isSubmitting ? (
-          <div className="micro-copy workspace-submit-hint" aria-live="polite">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles, guideStyles], "micro-copy workspace-submit-hint")} aria-live="polite">
             {uploadStatus || "Nu inchide pagina. Pregatim continutul si il trimitem spre verificare."}
           </div>
         ) : null}

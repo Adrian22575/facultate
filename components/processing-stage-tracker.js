@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./processing-stage-tracker.module.css";
 import { Check } from "lucide-react";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
@@ -46,8 +48,8 @@ export function ProcessingStageTracker({ kind = "questions", stage, status }) {
 
   return (
     <>
-      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">{statusLabel}</p>
-      <ol className="processing-stage-tracker" aria-label="Etapele procesării">
+      <p className={moduleClassNames([styles], "sr-only")} role="status" aria-live="polite" aria-atomic="true">{statusLabel}</p>
+      <ol className={moduleClassNames([styles], "processing-stage-tracker")} aria-label="Etapele procesării">
         {flow.map((item, index) => {
           const isDone = activeIndex > index;
           const isActive = activeIndex === index;
@@ -55,10 +57,10 @@ export function ProcessingStageTracker({ kind = "questions", stage, status }) {
           return (
             <li
               key={item.label}
-              className={`${isDone ? "is-done" : ""}${isActive ? " is-active" : ""}`}
+              className={moduleClassNames([styles], `${isDone ? "is-done" : ""}${isActive ? " is-active" : ""}`)}
               aria-current={isActive ? "step" : undefined}
             >
-              <span className="processing-stage-tracker-icon" aria-hidden="true">
+              <span className={moduleClassNames([styles], "processing-stage-tracker-icon")} aria-hidden="true">
                 {isDone ? <Check size={15} strokeWidth={2.8} /> : null}
                 {isActive ? <LoadingSpinner size={15} /> : null}
                 {!isDone && !isActive ? <span /> : null}

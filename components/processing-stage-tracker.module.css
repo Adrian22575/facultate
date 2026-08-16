@@ -1,0 +1,66 @@
+@media (max-width: 720px) {
+  .processing-stage-tracker {
+      grid-template-columns: 1fr;
+    }
+}
+
+.processing-stage-tracker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  width: min(100%, 760px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.processing-stage-tracker li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 10px;
+  border: 1px solid #d5e2f4;
+  border-radius: 15px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.processing-stage-tracker-icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #cbdcf1;
+  border-radius: 999px;
+  color: #7891b1;
+}
+
+.processing-stage-tracker li:global(.is-active) {
+  border-color: rgba(37, 99, 235, 0.42);
+  background: #eff6ff;
+  color: var(--primary-dark);
+}
+
+.processing-stage-tracker li:global(.is-active) .processing-stage-tracker-icon {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.processing-stage-tracker li:global(.is-done) {
+  border-color: #bfe4ce;
+  background: #edf9f1;
+  color: #0f6b4b;
+}
+
+.processing-stage-tracker li:global(.is-done) .processing-stage-tracker-icon {
+  border-color: #8bceaa;
+  background: #dff4e7;
+  color: #0f6b4b;
+}

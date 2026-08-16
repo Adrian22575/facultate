@@ -1,0 +1,186 @@
+.ai-job-notifier {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  z-index: 80;
+  display: grid;
+  gap: 12px;
+  width: min(390px, calc(100vw - 36px));
+  padding: 14px;
+  border: 1px solid rgba(18, 80, 177, 0.16);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 48px rgba(20, 50, 100, 0.16);
+  backdrop-filter: blur(16px);
+}
+
+.ai-job-notifier:global(.is-failed) {
+  border-color: rgba(180, 35, 44, 0.24);
+}
+
+.ai-job-notifier-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.ai-job-notifier-dot {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 6px rgba(18, 80, 177, 0.1);
+}
+
+.ai-job-notifier:global(.is-active) .ai-job-notifier-dot {
+  animation: aiJobNotifierPulse 1.4s ease-in-out infinite;
+}
+
+.ai-job-notifier:global(.is-ready):not(:global(.is-active)) .ai-job-notifier-dot {
+  background: var(--good);
+  box-shadow: 0 0 0 6px rgba(31, 157, 99, 0.12);
+}
+
+.ai-job-notifier:global(.is-failed) .ai-job-notifier-dot {
+  background: var(--bad);
+  box-shadow: 0 0 0 6px rgba(180, 35, 44, 0.1);
+}
+
+.ai-job-notifier-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ai-job-notifier-copy strong {
+  margin: 0;
+}
+
+.ai-job-notifier-copy span {
+  margin: 0;
+}
+
+.ai-job-notifier-message {
+  margin: 0;
+}
+
+.ai-job-notifier-extra {
+  margin: 0;
+}
+
+.ai-job-notifier-copy strong {
+  color: var(--ink);
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.ai-job-notifier-copy span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.ai-job-notifier-message {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.ai-job-notifier-extra {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  font-weight: 650;
+}
+
+.ai-job-notifier-close {
+  flex: 0 0 auto;
+  min-height: 34px;
+  margin-left: auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+}
+
+.ai-job-notifier-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eaf1fb;
+}
+
+.ai-job-notifier-progress span {
+  display: block;
+  min-width: 4px;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), #2f72d7);
+  transition: width 0.24s ease;
+}
+
+.ai-job-notifier-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ai-job-notifier-meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--primary-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.ai-job-notifier-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.ai-job-notifier-link:hover {
+  background: var(--primary-dark);
+}
+
+@media (max-width: 720px) {
+  .ai-job-notifier {
+      top: auto;
+      right: 10px;
+      bottom: calc(78px + env(safe-area-inset-bottom));
+      width: calc(100vw - 20px);
+      border-radius: 20px;
+    }
+}
+
+@media (max-width: 720px) {
+  .ai-job-notifier-link {
+      width: 100%;
+    }
+}
+
+@keyframes aiJobNotifierPulse {
+  0%,
+100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.74);
+  }
+}

@@ -83,7 +83,6 @@ const LEGACY_UI_BASELINE = {
   "components/ai-activity-center-client.js": { "btn-link": 5, secondary: 14, "status-pill": 2, "btn-back": 1, "input-search": 1, "error-state": 1, "success-state": 2 },
   "components/ai-job-status-client.js": { secondary: 6, "btn-link": 4, "error-state": 3, "status-pill": 2, "btn-back": 3 },
   "components/ai-question-bank-review-client.js": { "status-pill": 1, "btn-link": 11, secondary: 15, "textarea-input": 4, "input-search": 2, button: 2, "success-state": 1, "error-state": 1 },
-  "components/ai-workspace-highlight-card.js": { "status-pill": 2, "btn-link": 1, secondary: 1 },
   "components/app-header.js": { "status-pill": 1 },
   "components/dictionary-index-client.js": { button: 1 },
   "components/editorial-index-client.js": { button: 1 },
@@ -106,8 +105,6 @@ const LEGACY_UI_BASELINE = {
   "components/test-page-client.js": { "btn-link": 3, secondary: 7, button: 2, "error-state": 1 },
   "components/testimonial-reward-form.js": { "textarea-input": 1 },
   "components/workspace-generate-form.js": { "error-state": 4, "success-state": 1, "btn-link": 4, secondary: 8, "textarea-input": 1, "input-search": 1, button: 1 },
-  "components/workspace-job-history-client.js": { secondary: 5, "btn-link": 3, "success-state": 1, "error-state": 1, "status-pill": 1, "btn-back": 1 },
-  "components/workspace-main-tabs-client.js": { secondary: 2 },
   "components/workspace-subject-picker.js": { "input-search": 2, "btn-link": 2, secondary: 2, "success-state": 1, "error-state": 1, button: 1 },
   "components/workspace-upload-shell.js": { "btn-back": 1 }
 };
@@ -122,7 +119,6 @@ const LEGACY_SURFACE_BASELINE = {
   "components/ai-activity-center-client.js": { surface: 1, "ui-panel-card": 1 },
   "components/ai-job-status-client.js": { surface: 4 },
   "components/ai-question-bank-review-client.js": { surface: 4, "draft-card": 4 },
-  "components/ai-workspace-highlight-card.js": { "ui-panel-card": 1 },
   "components/exam-page-client.js": { surface: 5 },
   "components/home-page-client.js": { surface: 3 },
   "components/import-job-status-client.js": { surface: 4, "draft-card": 8 },
@@ -133,7 +129,6 @@ const LEGACY_SURFACE_BASELINE = {
   "components/private-test-player.js": { surface: 1 },
   "components/test-page-client.js": { surface: 2 },
   "components/workspace-generate-form.js": { "ui-panel-card": 7 },
-  "components/workspace-job-history-client.js": { "ui-panel-card": 2, "draft-card": 1 },
   "components/workspace-subject-picker.js": { "ui-panel-card": 2, "empty-state": 1 }
 };
 const LEGACY_COLLECTION_BASELINE = {

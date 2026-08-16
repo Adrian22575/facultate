@@ -1,5 +1,7 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./ai-job-global-notifier.module.css";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -371,19 +373,19 @@ export function AIJobGlobalNotifier() {
     <>
       {feedbackLauncher}
       <aside
-        className={`ai-job-notifier ${isActive ? "is-active" : ""} ${isFailed ? "is-failed" : "is-ready"}`}
+        className={moduleClassNames([styles], `ai-job-notifier ${isActive ? "is-active" : ""} ${isFailed ? "is-failed" : "is-ready"}`)}
         role="status"
         aria-live="polite"
       >
-        <div className="ai-job-notifier-top">
-          <span className="ai-job-notifier-dot" aria-hidden="true" />
-          <div className="ai-job-notifier-copy">
+        <div className={moduleClassNames([styles], "ai-job-notifier-top")}>
+          <span className={moduleClassNames([styles], "ai-job-notifier-dot")} aria-hidden="true" />
+          <div className={moduleClassNames([styles], "ai-job-notifier-copy")}>
             <strong>{presentation.title}</strong>
             <span>{jobTitle(job)}</span>
           </div>
           <button
             type="button"
-            className="ai-job-notifier-close feedback-modal-close"
+            className={moduleClassNames([styles], "ai-job-notifier-close feedback-modal-close")}
             onClick={dismiss}
             aria-label="Inchide notificarea"
           >
@@ -394,43 +396,43 @@ export function AIJobGlobalNotifier() {
         {isActive ? (
           <>
             {presentation.shouldShowProgressPercent ? (
-              <div className="ai-job-notifier-progress" aria-label={`Progres ${presentation.progressPercent}%`}>
+              <div className={moduleClassNames([styles], "ai-job-notifier-progress")} aria-label={`Progres ${presentation.progressPercent}%`}>
                 <span style={{ width: `${presentation.progressPercent}%` }} />
               </div>
             ) : null}
-            <div className="ai-job-notifier-meta">
+            <div className={moduleClassNames([styles], "ai-job-notifier-meta")}>
               <span>{presentation.progressLabel}</span>
               <span>{presentation.stageLabel}</span>
               <span>{formatTimeEstimate(job.estimatedRemainingSeconds)}</span>
             </div>
-            <div className="ai-job-notifier-meta">
+            <div className={moduleClassNames([styles], "ai-job-notifier-meta")}>
               <span>{`astepti ${presentation.elapsedLabel}`}</span>
               <span>{`activ ${presentation.lastActivityLabel}`}</span>
             </div>
             {presentation.detailMessage || presentation.primaryMessage ? (
-              <p className="ai-job-notifier-message">
+              <p className={moduleClassNames([styles], "ai-job-notifier-message")}>
                 {presentation.detailMessage || presentation.primaryMessage}
               </p>
             ) : null}
-            {extraCount ? <div className="ai-job-notifier-extra">{`+ inca ${extraCount} in procesare`}</div> : null}
+            {extraCount ? <div className={moduleClassNames([styles], "ai-job-notifier-extra")}>{`+ inca ${extraCount} in procesare`}</div> : null}
           </>
         ) : (
           <>
             {presentation.shouldShowProgressPercent ? (
-              <div className="ai-job-notifier-progress" aria-label={`Progres ${presentation.progressPercent}%`}>
+              <div className={moduleClassNames([styles], "ai-job-notifier-progress")} aria-label={`Progres ${presentation.progressPercent}%`}>
                 <span style={{ width: `${presentation.progressPercent}%` }} />
               </div>
             ) : null}
-            <div className="ai-job-notifier-meta">
+            <div className={moduleClassNames([styles], "ai-job-notifier-meta")}>
               <span>{presentation.progressLabel}</span>
               <span>{presentation.statusLabel}</span>
               <span>{`${presentation.elapsedCaption.toLowerCase()} ${presentation.elapsedLabel}`}</span>
             </div>
-            <p className="ai-job-notifier-message">{presentation.primaryMessage}</p>
+            <p className={moduleClassNames([styles], "ai-job-notifier-message")}>{presentation.primaryMessage}</p>
           </>
         )}
 
-        <Link className="ai-job-notifier-link" href={href}>
+        <Link className={moduleClassNames([styles], "ai-job-notifier-link")} href={href}>
           {isActive ? "Vezi progresul" : isFailed ? "Vezi detaliile" : "Deschide"}
         </Link>
       </aside>

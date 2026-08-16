@@ -98,6 +98,19 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/linkedin-generation-options.module.css", importantCeiling: 0 }
   ,{ relativePath: "app/admin/articole/[articleId]/preview/page.module.css", importantCeiling: 0 }
   ,{ relativePath: "app/admin/dictionar/[termId]/preview/page.module.css", importantCeiling: 0 }
+  ,{ relativePath: "app/ai/page.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-upload-shell.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-source-input.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-flow-patterns.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-guide.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-generate-form.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/workspace-subject-picker.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/licenta-import-workspace-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/licenta-session-workspace-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/import-job-status-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/ai-job-status-client.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/ai-job-global-notifier.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/processing-stage-tracker.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");

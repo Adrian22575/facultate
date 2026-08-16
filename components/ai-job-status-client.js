@@ -1,5 +1,9 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./ai-job-status-client.module.css";
+import sourceStyles from "./workspace-source-input.module.css";
+import flowStyles from "./workspace-flow-patterns.module.css";
 import { ArrowLeft, CheckCircle2, ExternalLink, RefreshCw, Trash2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
@@ -18,7 +22,7 @@ const MAX_POLLING_SERVER_ERRORS = 3;
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className="ui-icon-text">
+    <span className={moduleClassNames([styles, sourceStyles, flowStyles], "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -193,7 +197,7 @@ function buildTerminalFailedJob(job, { errorMessage, statusDetail }) {
 
 function LoadingGlyph() {
   return (
-    <div className="job-loading-glyph" aria-hidden="true">
+    <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-loading-glyph")} aria-hidden="true">
       <LoadingSpinner size={54} />
     </div>
   );
@@ -209,21 +213,21 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   }
 
   return (
-    <div className="workspace-modal-backdrop" role="presentation">
+    <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-backdrop")} role="presentation">
       <div
         ref={dialogRef}
-        className="workspace-modal-card review-confirm-modal"
+        className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-card review-confirm-modal")}
         role="dialog"
         aria-modal="true"
         aria-labelledby="job-delete-confirm-title"
       >
-        <div className="workspace-modal-head">
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-head")}>
           <div>
             <strong id="job-delete-confirm-title">{confirmState.title}</strong>
             <p>{confirmState.copy}</p>
           </div>
           <button
-            className="workspace-modal-close feedback-modal-close"
+            className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-close feedback-modal-close")}
             type="button"
             onClick={onClose}
             aria-label="Inchide"
@@ -233,14 +237,14 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
           </button>
         </div>
 
-        <div className="workspace-modal-form">
-          <div className="inline-actions">
-            <button type="button" className="secondary review-delete-btn" onClick={onConfirm} disabled={isPending}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-modal-form")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "inline-actions")}>
+            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "secondary review-delete-btn")} onClick={onConfirm} disabled={isPending}>
               <LoadingIconText icon={Trash2} loading={isPending} loadingLabel="Se sterge...">
                 Da, sterge
               </LoadingIconText>
             </button>
-            <button type="button" className="btn-link secondary" onClick={onClose} disabled={isPending}>
+            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")} onClick={onClose} disabled={isPending}>
               <IconText icon={X}>Renunta</IconText>
             </button>
           </div>
@@ -485,7 +489,7 @@ export function AIJobStatusClient({ initialJob }) {
   }
 
   if (!job) {
-    return <div className="error-state" role="alert">Jobul nu a putut fi incarcat.</div>;
+    return <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">Jobul nu a putut fi incarcat.</div>;
   }
 
   const initialTimestamp = Date.parse(job?.startedAt || job?.createdAt || "");
@@ -500,55 +504,55 @@ export function AIJobStatusClient({ initialJob }) {
   const processingKind = job.kind === "learning" || job.kind === "import" ? job.kind : "questions";
 
   return (
-    <div className="job-status-stack">
+    <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-status-stack")}>
       {deleteError ? (
-        <section className="surface">
-          <div className="error-state" role="alert">{deleteError}</div>
+        <section className={moduleClassNames([styles, sourceStyles, flowStyles], "surface")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">{deleteError}</div>
         </section>
       ) : null}
 
-      <section className="surface workspace-job-hero">
-        <div className="workspace-job-badge">
-          <span className={`status-pill ${presentation.tone}`}>{statusLabel}</span>
+      <section className={moduleClassNames([styles, sourceStyles, flowStyles], "surface workspace-job-hero")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "workspace-job-badge")}>
+          <span className={moduleClassNames([styles, sourceStyles, flowStyles], `status-pill ${presentation.tone}`)}>{statusLabel}</span>
         </div>
-        <div className="job-status-copy workspace-job-copy">
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-status-copy workspace-job-copy")}>
           {job.status === "processing" || job.status === "pending" ? <LoadingGlyph /> : null}
           <strong>{isActiveProcessing ? presentation.stageLabel : presentation.progressLabel}</strong>
           <p>{presentation.primaryMessage}</p>
           {isActiveProcessing ? (
             <ProcessingStageTracker kind={processingKind} stage={job.stage} status={job.status} />
           ) : null}
-          <div className="job-failure-detail">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-failure-detail")}>
             {presentation.isTerminal
               ? `${presentation.elapsedCaption}: ${presentation.elapsedLabel}. ${presentation.activityCaption}: ${presentation.lastActivityLabel}.`
               : `Procesarea continua. Ultima actualizare: ${presentation.lastActivityLabel}.`}
           </div>
           {presentation.detailMessage ? (
-            <div className="job-failure-detail">{presentation.detailMessage}</div>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-failure-detail")}>{presentation.detailMessage}</div>
           ) : null}
           {failurePresentation?.detail ? (
-            <div className="job-failure-detail">{failurePresentation.detail}</div>
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-failure-detail")}>{failurePresentation.detail}</div>
           ) : null}
         </div>
       </section>
 
       {failurePresentation?.summary?.length ? (
-        <section className="surface job-failure-surface">
-          <div className="dashboard-header">
+        <section className={moduleClassNames([styles, sourceStyles, flowStyles], "surface job-failure-surface")}>
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header")}>
             <h2>Pe scurt</h2>
           </div>
-          <div className="job-failure-summary-grid">
+          <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-failure-summary-grid")}>
             {failurePresentation.summary.map((item) => (
-              <article key={item.label} className="job-failure-summary-card">
+              <article key={item.label} className={moduleClassNames([styles, sourceStyles, flowStyles], "job-failure-summary-card")}>
                 <span>{item.label}</span>
                 <strong>{item.value}</strong>
               </article>
             ))}
           </div>
           {failurePresentation.tips?.length ? (
-            <div className="job-failure-tips">
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-failure-tips")}>
               <strong>Ce te ajuta data viitoare</strong>
-              <ul className="check-list">
+              <ul className={moduleClassNames([styles, sourceStyles, flowStyles], "check-list")}>
                 {failurePresentation.tips.map((tip) => (
                   <li key={tip}>{tip}</li>
                 ))}
@@ -558,12 +562,12 @@ export function AIJobStatusClient({ initialJob }) {
         </section>
       ) : null}
 
-      <section className="surface">
-        <div className="dashboard-header">
+      <section className={moduleClassNames([styles, sourceStyles, flowStyles], "surface")}>
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "dashboard-header")}>
           <h2>Pe scurt</h2>
-          <span className="status-pill is-muted">{job.metadata?.examType === "licenta" ? "Licenta" : "Materie"}</span>
+          <span className={moduleClassNames([styles, sourceStyles, flowStyles], "status-pill is-muted")}>{job.metadata?.examType === "licenta" ? "Licenta" : "Materie"}</span>
         </div>
-        <div className="import-count-grid">
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "import-count-grid")}>
           <article>
             <span>Materia</span>
             <strong>{job.metadata?.subjectLabel || "Materie selectata"}</strong>
@@ -588,13 +592,13 @@ export function AIJobStatusClient({ initialJob }) {
           </article>
         </div>
 
-        <div className="job-actions">
+        <div className={moduleClassNames([styles, sourceStyles, flowStyles], "job-actions")}>
           {retryError ? (
-            <div className="error-state" role="alert">
+            <div className={moduleClassNames([styles, sourceStyles, flowStyles], "error-state")} role="alert">
               <span>{retryError.message}</span>
               {retryError.actionHref ? (
                 <PendingNavigationLink
-                  className="btn-link secondary"
+                  className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
                   href={retryError.actionHref}
                   pendingLabel="Se deschide contul..."
                 >
@@ -605,7 +609,7 @@ export function AIJobStatusClient({ initialJob }) {
           ) : null}
           {job.status === "succeeded" ? (
             <PendingNavigationLink
-              className="btn-back job-primary-cta"
+              className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-back job-primary-cta")}
               href={job.reviewHref || job.resultHref}
               pendingLabel="Se deschid intrebarile..."
               pendingMode="replace"
@@ -615,7 +619,7 @@ export function AIJobStatusClient({ initialJob }) {
           ) : null}
           {job.status === "succeeded" && job.bankStatus === "published" ? (
             <PendingNavigationLink
-              className="btn-link secondary"
+              className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
               href={job.resultHref}
               pendingLabel={
                 job.metadata?.examType === "licenta"
@@ -630,14 +634,14 @@ export function AIJobStatusClient({ initialJob }) {
             </PendingNavigationLink>
           ) : null}
           {job.canRetryFailedChunks ? (
-            <button type="button" className="btn-back" onClick={handleRetryFailedChunks} disabled={isRetrying}>
+            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-back")} onClick={handleRetryFailedChunks} disabled={isRetrying}>
               <LoadingIconText icon={RefreshCw} loading={isRetrying} loadingLabel="Incercam din nou...">
                 Incearca din nou
               </LoadingIconText>
             </button>
           ) : null}
           {job.canResumeProcessing ? (
-            <button type="button" className="btn-back" onClick={handleResumeProcessing} disabled={isRetrying}>
+            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-back")} onClick={handleResumeProcessing} disabled={isRetrying}>
               <LoadingIconText icon={RefreshCw} loading={isRetrying} loadingLabel="Reluam...">
                 {job.metadata?.examType === "licenta" &&
                 (job.metadata?.sourceKind === "pdf" ||
@@ -650,7 +654,7 @@ export function AIJobStatusClient({ initialJob }) {
           {canDeleteJob(job) ? (
             <button
               type="button"
-              className="secondary review-delete-btn"
+              className={moduleClassNames([styles, sourceStyles, flowStyles], "secondary review-delete-btn")}
               onClick={handleDeleteClick}
               disabled={isDeleting}
             >
@@ -660,7 +664,7 @@ export function AIJobStatusClient({ initialJob }) {
             </button>
           ) : null}
           <PendingNavigationLink
-            className="btn-link secondary"
+            className={moduleClassNames([styles, sourceStyles, flowStyles], "btn-link secondary")}
             href="/materiale"
             pendingLabel="Se deschide activitatea..."
             pendingMode="replace"

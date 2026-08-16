@@ -1,3 +1,5 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import styles from "./page.module.css";
 import { Activity, ArrowRight, BookOpen, ClipboardList } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -21,18 +23,18 @@ export const metadata = {
 function WorkspaceChoiceCard({ icon: Icon, title, copy, actionLabel, href, primary = false }) {
   return (
     <PendingNavigationLink
-      className={`ai-workspace-choice-card${primary ? " is-primary" : ""}`}
+      className={moduleClassNames([styles], `ai-workspace-choice-card${primary ? " is-primary" : ""}`)}
       href={href}
       pendingLabel={`Se deschide ${title.toLowerCase()}...`}
       pendingMode="silent"
     >
-      <span className="ai-workspace-choice-icon" aria-hidden="true">
+      <span className={moduleClassNames([styles], "ai-workspace-choice-icon")} aria-hidden="true">
         <Icon size={22} strokeWidth={2.2} />
       </span>
-      <div className="ai-workspace-choice-copy">
+      <div className={moduleClassNames([styles], "ai-workspace-choice-copy")}>
         <strong>{title}</strong>
         <p>{copy}</p>
-        <span className="ai-workspace-choice-action">
+        <span className={moduleClassNames([styles], "ai-workspace-choice-action")}>
           <span>{actionLabel}</span>
           <ArrowRight aria-hidden="true" size={17} strokeWidth={2.3} />
         </span>
@@ -43,7 +45,7 @@ function WorkspaceChoiceCard({ icon: Icon, title, copy, actionLabel, href, prima
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className="ui-icon-text">
+    <span className={moduleClassNames([styles], "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -63,16 +65,16 @@ export default async function AIWorkspacePage() {
   }
 
   return (
-    <main className="app-shell ai-workspace-page ai-workspace-page--simple">
+    <main className={moduleClassNames([styles], "app-shell ai-workspace-page ai-workspace-page--simple")}>
       <AppHeader title="Materiale de studiu" hidePageTitle />
 
-      <section className="ai-workspace-header">
-        <div className="ai-workspace-header-copy">
-          <h1 className="ai-workspace-title">Alege cum inveti</h1>
-          <p className="ai-workspace-subtitle">Porneste cu materia ta sau cu un set de grile pe care il ai deja.</p>
+      <section className={moduleClassNames([styles], "ai-workspace-header")}>
+        <div className={moduleClassNames([styles], "ai-workspace-header-copy")}>
+          <h1 className={moduleClassNames([styles], "ai-workspace-title")}>Alege cum inveti</h1>
+          <p className={moduleClassNames([styles], "ai-workspace-subtitle")}>Porneste cu materia ta sau cu un set de grile pe care il ai deja.</p>
         </div>
         <PendingNavigationLink
-          className="btn-link secondary ai-workspace-header-action"
+          className={moduleClassNames([styles], "btn-link secondary ai-workspace-header-action")}
           href="/materiale/activitate"
           pendingLabel="Se deschide activitatea..."
           pendingMode="replace"
@@ -81,7 +83,7 @@ export default async function AIWorkspacePage() {
         </PendingNavigationLink>
       </section>
 
-      <section className="ai-workspace-choice-grid" aria-label="Alege ce vrei sa faci">
+      <section className={moduleClassNames([styles], "ai-workspace-choice-grid")} aria-label="Alege ce vrei sa faci">
         <WorkspaceChoiceCard
           icon={BookOpen}
           title="Invata dintr-un material"
@@ -99,7 +101,7 @@ export default async function AIWorkspacePage() {
         />
       </section>
 
-      <p className="ai-workspace-secondary-path">
+      <p className={moduleClassNames([styles], "ai-workspace-secondary-path")}>
         Ai seturi mari pentru examenul de licenta?{" "}
         <PendingNavigationLink href="/materiale/licenta" pendingLabel="Se deschide licenta...">
           Pregateste licenta

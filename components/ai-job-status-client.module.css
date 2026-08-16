@@ -1,0 +1,129 @@
+.job-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.job-failure-detail {
+  max-width: 620px;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border: 1px solid #f1d7aa;
+  border-radius: 18px;
+  background: #fff8ec;
+  color: #8a5a00;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.job-loading-glyph {
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+}
+
+.job-failure-surface {
+  display: grid;
+  gap: 18px;
+}
+
+.job-failure-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.job-failure-summary-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #dbe7f6;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #fbfdff 0%, #f4f8ff 100%);
+}
+
+.job-failure-summary-card span {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.job-failure-summary-card strong {
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.job-failure-tips {
+  display: grid;
+  gap: 10px;
+}
+
+.job-failure-tips strong {
+  color: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .job-failure-summary-grid {
+      grid-template-columns: 1fr;
+    }
+}
+
+.job-primary-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  padding: 12px 18px;
+  font-weight: 800;
+}
+
+.job-primary-cta:global(.btn-back) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  padding: 12px 18px;
+  font-weight: 800;
+}
+
+.job-primary-cta:global(.btn-link) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  padding: 12px 18px;
+  font-weight: 800;
+}
+
+.job-primary-cta:hover {
+  background: var(--primary-dark);
+  color: #fff;
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.job-primary-cta:global(.btn-back):hover {
+  background: var(--primary-dark);
+  color: #fff;
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.job-primary-cta:global(.btn-link):hover {
+  background: var(--primary-dark);
+  color: #fff;
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
