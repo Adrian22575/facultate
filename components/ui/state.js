@@ -1,3 +1,4 @@
+import { SectionLabel } from "./section-label";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { SurfaceCard } from "@/components/ui/surface-card";
 
@@ -91,7 +92,7 @@ export function FeedbackState({
         aria-live={ariaLive}
       >
         {icon ? <span className={styles.feedbackIcon} aria-hidden="true">{icon}</span> : null}
-        {eyebrow ? <span className="ui-section-label">{eyebrow}</span> : null}
+        {eyebrow ? <SectionLabel>{eyebrow}</SectionLabel> : null}
         <h1>{title}</h1>
         <p>{description}</p>
         {actions ? <div className={styles.feedbackActions}>{actions}</div> : null}

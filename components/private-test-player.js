@@ -6,6 +6,7 @@ import { QuestionCorrectionButton } from "@/components/question-correction-butto
 import { TestResultPanel } from "@/components/test-result-panel";
 import { EmptyState } from "@/components/ui/state";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { ActionLink, Button } from "@/components/ui/action";
 import { InlineFeedback } from "@/components/ui/status";
 
@@ -133,12 +134,10 @@ export function PrivateTestPlayer({ test, questions }) {
 
   return (
     <SurfaceCard>
-      <div className="progress-bar-container" aria-label="Progres test privat">
-        <div
-          className="progress-fill"
-          style={{ width: `${((currentIndex + 1) / safeQuestions.length) * 100}%` }}
-        />
-      </div>
+      <ProgressBar
+        value={((currentIndex + 1) / safeQuestions.length) * 100}
+        aria-label="Progres test privat"
+      />
 
       <div className={quizStyles.meta}>
         <div>{`${currentIndex + 1} / ${safeQuestions.length}`}</div>

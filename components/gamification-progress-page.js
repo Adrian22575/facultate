@@ -1,3 +1,4 @@
+import { SectionLabel } from "@/components/ui/section-label";
 import { ArrowRight, CheckCircle2, Flame, Lock, Target, Trophy } from "lucide-react";
 
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
@@ -59,7 +60,7 @@ export function GamificationProgressPage({ summary }) {
     <div className={styles["gamification-page"]}>
       <SurfaceCard className={styles["gamification-hero"]}>
         <div className={styles["gamification-hero-copy"]}>
-          <span className="ui-section-label">Astăzi</span>
+          <SectionLabel>Astăzi</SectionLabel>
           <h1>{todayTitle}</h1>
           <p>{todayCopy}</p>
           <ContinueLearningAction completedToday={summary.todayCompleted} />
@@ -115,7 +116,7 @@ export function GamificationProgressPage({ summary }) {
             <Target size={20} strokeWidth={2.3} />
           </span>
           <div className={styles["gamification-next-copy"]}>
-            <span className="ui-section-label">Următorul obiectiv</span>
+            <SectionLabel>Următorul obiectiv</SectionLabel>
             <h2>{nextAchievement.title}</h2>
             <p>{nextAchievement.description}</p>
           </div>

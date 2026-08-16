@@ -307,3 +307,131 @@
 			padding-bottom:calc(220px + env(safe-area-inset-bottom));
 		}
 }
+
+.review-work-card {
+  gap: 18px;
+  border-radius: 18px;
+  border-color: #d8e4ef;
+  background: #fbfdff;
+}
+
+.review-work-card.is-missing-answer {
+  border-color: #e8c980;
+  background: #fffaf0;
+}
+
+.review-work-topline {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+}
+
+.review-work-main {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.review-work-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.review-issue-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid #f0c98a;
+  border-radius: 999px;
+  background: #fff7e7;
+  color: #8a5700;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.review-answer-select {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid #c9d7e8;
+  border-radius: 14px;
+  background: #f7fbff;
+  color: var(--primary-dark);
+  font-weight: 900;
+}
+
+.review-answer-select:hover:not(:disabled),
+.review-answer-select:focus-visible:not(:disabled) {
+  border-color: var(--primary);
+  background: #eef6ff;
+}
+
+.review-answer-state {
+  color: var(--good);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.review-answer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid #dce7f3;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.review-answer-actions span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.review-answer-actions .btn-link {
+  min-height: 40px;
+}
+
+.review-editor-issue-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.review-editor-issue-list span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.review-editor-label-input {
+  text-align: center;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+@media (max-width: 580px) {
+
+  .review-work-topline {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+
+  .review-answer-select {
+    width: 100%;
+  }
+}

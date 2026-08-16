@@ -35,10 +35,14 @@ const primitiveCssEntries = [
   "components/ui/surface-card.module.css",
   "components/ui/state.module.css",
   "components/ui/collection-controls.module.css",
-  "components/ui/data-table.module.css"
+  "components/ui/data-table.module.css",
+  "components/ui/section-label.module.css",
+  "components/ui/progress-bar.module.css"
 ];
 const colocatedCssEntries = [
   { relativePath: "components/free-tools-page.module.css", importantCeiling: 0 },
+  { relativePath: "app/demo/page.module.css", importantCeiling: 0 },
+  { relativePath: "app/testele-mele/page.module.css", importantCeiling: 0 },
   { relativePath: "components/free-tools-calculator.module.css", importantCeiling: 0 },
   { relativePath: "app/despre/page.module.css", importantCeiling: 0 },
   { relativePath: "app/preturi/page.module.css", importantCeiling: 0 },
@@ -94,6 +98,10 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/admin-generation-prompt-preview.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-linkedin-distribution-center.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-linkedin-distribution.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-linkedin-editor.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-linkedin-preview.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-linkedin-editor.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-linkedin-preview.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/linkedin-distribution-settings.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/linkedin-generation-options.module.css", importantCeiling: 0 }
   ,{ relativePath: "app/admin/articole/[articleId]/preview/page.module.css", importantCeiling: 0 }
@@ -214,7 +222,15 @@ const colocatedActiveFamilies = [
   "ui-loading-spinner",
   "learning-mode-card",
   "linkedin-option-field",
-  "linkedin-post-preview"
+  "linkedin-post-preview",
+  "progress-bar-",
+  "progress-fill",
+  "review-work-",
+  "review-answer-select",
+  "review-answer-state",
+  "review-answer-actions",
+  "review-editor-issue-list",
+  "review-editor-label-input"
 ];
 
 for (const family of colocatedActiveFamilies) {
@@ -346,6 +362,11 @@ for (const { relativePath, css, importantCeiling } of colocatedCssSources) {
   const physicalLineCount = css.split(/\r?\n/).length;
   if (physicalLineCount > 800) {
     failures.push(`${relativePath} depășește pragul arhitectural de 800 de linii (${physicalLineCount}).`);
+  }
+  const byteCount = Buffer.byteLength(css, "utf8");
+  const ruleCount = (uncommentedCss.match(/[^@{}][^{}]*\{/g) || []).length;
+  if (byteCount > 22000 || ruleCount > 220) {
+    failures.push(`${relativePath} depășește ceiling-ul de complexitate (${byteCount} bytes, ${ruleCount} reguli).`);
   }
   if (relativePath === "components/referral-share-card.module.css") {
     const nonBlankLineCount = css.split(/\r?\n/).filter((line) => line.trim()).length;

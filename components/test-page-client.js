@@ -1,5 +1,6 @@
 "use client";
 
+import { SectionLabel } from "@/components/ui/section-label";
 import { useEffect, useRef, useState } from "react";
 
 import { syncSubjectProgress } from "@/lib/progress-client";
@@ -11,6 +12,7 @@ import { TestResultPanel } from "@/components/test-result-panel";
 import { ActionLink, Button } from "@/components/ui/action";
 import { SelectField } from "@/components/ui/form-field";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { InlineFeedback } from "@/components/ui/status";
 
 import styles from "./test-page-client.module.css";
@@ -479,7 +481,7 @@ export function TestPageClient({
     return (
       <SurfaceCard>
         <div className={styles.recommendedStart}>
-          <span className="ui-section-label">Test recomandat</span>
+          <SectionLabel>Test recomandat</SectionLabel>
           <strong>
             {isRecommendedTest
               ? `${Math.min(10, safeInitialQuestions.length)} intrebari, in ordine`
@@ -637,9 +639,7 @@ export function TestPageClient({
 
   return (
     <SurfaceCard>
-      <div className="progress-bar-container" aria-label="Progres test">
-        <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
-      </div>
+      <ProgressBar value={progressPercent} aria-label="Progres test" />
 
       <div className={quizStyles.meta}>
         <div>{`${currentIndex + 1} / ${testQuestions.length}`}</div>

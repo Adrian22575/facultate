@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { Button } from "@/components/ui/action";
 import { SurfaceCard } from "@/components/ui/surface-card";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { InlineFeedback } from "@/components/ui/status";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
@@ -147,9 +148,7 @@ export function InteractiveQuiz({ subject, initialQuestions }) {
   return (
     <>
       <SurfaceCard>
-        <div className="progress-bar-container">
-          <div className="progress-bar-interactive" style={{ width: `${progressPercent}%` }} />
-        </div>
+        <ProgressBar value={progressPercent} aria-label="Progres test interactiv" />
 
         <div className={styles.statusBar}>
           <div className="stats">

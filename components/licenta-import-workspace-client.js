@@ -18,6 +18,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { WorkspaceGenerateForm } from "@/components/workspace-generate-form";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -314,9 +315,12 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
         </div>
       </div>
 
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "progress-bar-container job-progress-bar")} aria-label="Progres import">
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "progress-fill")} style={{ width: `${Math.min(progress, 100)}%` }} />
-      </div>
+      <ProgressBar
+        value={progress}
+        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "job-progress-bar")}
+        fillClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "progress-fill")}
+        aria-label="Progres import"
+      />
 
       <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-count-grid")}>
         <article>

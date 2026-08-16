@@ -13,6 +13,7 @@ import {
   Zap
 } from "lucide-react";
 
+import { SectionLabel } from "@/components/ui/section-label";
 import { GamificationResultPanel } from "@/components/gamification-result-panel";
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
 import { TestResultPanel } from "@/components/test-result-panel";
@@ -848,7 +849,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
         <>
           <SurfaceCard className={styles["licenta-prep-summary"]}>
             <div>
-              <span className="ui-section-label">Pregatire licenta</span>
+              <SectionLabel>Pregatire licenta</SectionLabel>
               <h2>Alege modul potrivit pentru sesiunea de azi.</h2>
               <p className="page-copy">
                 Sunt disponibile {preparedQuestions.length} intrebari din {subjectCount} surse. Greseli salvate:{" "}
@@ -907,7 +908,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
         <SurfaceCard className={styles["licenta-prep-panel"]}>
           <div className={styles["licenta-prep-panel-head"]}>
             <div>
-              <span className="ui-section-label">Antrenament personalizat</span>
+              <SectionLabel>Antrenament personalizat</SectionLabel>
               <h2>Alege cate intrebari vrei sa faci acum.</h2>
               <p className="page-copy">
                 Daca alegi mai multe intrebari decat exista disponibile, folosim toate intrebarile.
@@ -1028,7 +1029,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
 
           <SurfaceCard className={styles["licenta-prep-finish-panel"]} aria-label="Finalizeaza runda">
             <div>
-              <span className="ui-section-label">Runda aproape gata</span>
+              <SectionLabel>Runda aproape gata</SectionLabel>
               <h2>Ai ajuns la finalul intrebarilor.</h2>
               <p className="page-copy">
                 {isVerificationMode
@@ -1058,7 +1059,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
         <SurfaceCard className={styles["licenta-prep-browse"]}>
           <div className={styles["licenta-prep-panel-head"]}>
             <div>
-              <span className="ui-section-label">Parcurge intrebarile</span>
+              <SectionLabel>Parcurge intrebarile</SectionLabel>
               <h2>{`Intrebarea ${browseIndex + 1} din ${currentQuestions.length}`}</h2>
               <p className="page-copy">
                 Raspunsul corect este ascuns pana cand alegi sa il vezi.

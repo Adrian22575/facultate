@@ -1,3 +1,4 @@
+import { SectionLabel } from "@/components/ui/section-label";
 import Link from "next/link";
 
 import { getLegalContactHref, legalDetails } from "@/lib/legal";
@@ -22,7 +23,7 @@ export function PublicLegalPage({ eyebrow, title, intro, children }) {
 
       <article className={styles.document}>
         <header className={styles.documentHead}>
-          <span className="ui-section-label">{eyebrow}</span>
+          <SectionLabel>{eyebrow}</SectionLabel>
           <h1>{title}</h1>
           <p>{intro}</p>
           <small>Ultima actualizare: 19 iunie 2026</small>

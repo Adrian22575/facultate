@@ -24,6 +24,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { useDialogFocus } from "@/lib/ui/dialog";
 
 const TERMINAL_STATUSES = new Set([
@@ -1178,9 +1179,12 @@ export function ImportJobStatusClient({
         <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "workspace-job-badge")}>
           <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], `status-pill ${statusTone(status.status)}`)}>{statusLabel(status.status)}</span>
         </div>
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "progress-bar-container job-progress-bar")} aria-label="Progres import">
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "progress-fill")} style={{ width: `${Math.min(progress, 100)}%` }} />
-        </div>
+        <ProgressBar
+          value={progress}
+          className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "job-progress-bar")}
+          fillClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "progress-fill")}
+          aria-label="Progres import"
+        />
         <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "job-status-copy workspace-job-copy")}>
           <strong>{TERMINAL_STATUSES.has(status.status) ? statusLabel(status.status) : `${progress}%`}</strong>
           <p>{status.message}</p>

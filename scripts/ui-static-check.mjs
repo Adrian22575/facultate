@@ -33,7 +33,9 @@ const CANONICAL_EXPORT_PATHS = {
   FilterSortSelect: "components/ui/collection-controls.js",
   ResultsSummary: "components/ui/collection-controls.js",
   Pagination: "components/ui/collection-controls.js",
-  DataTable: "components/ui/data-table.js"
+  DataTable: "components/ui/data-table.js",
+  SectionLabel: "components/ui/section-label.js",
+  ProgressBar: "components/ui/progress-bar.js"
 };
 const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
   SurfaceCard: new Set(["components/ui/surface-card.js"]),
@@ -50,7 +52,9 @@ const CANONICAL_PATTERN_DEFINITION_ALLOWLIST = {
   FilterSortSelect: new Set(["components/ui/collection-controls.js"]),
   ResultsSummary: new Set(["components/ui/collection-controls.js"]),
   Pagination: new Set(["components/ui/collection-controls.js"]),
-  DataTable: new Set(["components/ui/data-table.js"])
+  DataTable: new Set(["components/ui/data-table.js"]),
+  SectionLabel: new Set(["components/ui/section-label.js"]),
+  ProgressBar: new Set(["components/ui/progress-bar.js"])
 };
 const LEGACY_UI_BASELINE = {
   "app/ai/activitate/page.js": { "btn-link": 1, secondary: 1, "error-state": 1, "btn-back": 1 },
