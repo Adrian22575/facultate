@@ -816,7 +816,7 @@ export function ExamPageClient({ questions, subjectCount, initialMistakeIds = []
     return (
       <SurfaceCard className={styles["exam-empty-state"]}>
         <div className={styles["exam-empty-state-copy"]}>
-          <span className="step-eyebrow">Pregatire licenta</span>
+          <SectionLabel variant="eyebrow">Pregatire licenta</SectionLabel>
           <h2>Nu exista inca grile de licenta</h2>
           <p>
             Incarca un PDF sau un fisier cu grilele din care platforma sa invete, iar dupa

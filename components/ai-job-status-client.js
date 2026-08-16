@@ -11,6 +11,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 
 import { deleteQuestionBankUploadAction } from "@/app/ai/actions";
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
+import { DialogShell } from "@/components/ui/dialog-shell";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ProcessingStageTracker } from "@/components/processing-stage-tracker";
 import {
@@ -214,31 +215,17 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   }
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
-      <div
-        ref={dialogRef}
-        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-card review-confirm-modal")}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="job-delete-confirm-title"
-      >
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-head")}>
-          <div>
-            <strong id="job-delete-confirm-title">{confirmState.title}</strong>
-            <p>{confirmState.copy}</p>
-          </div>
-          <button
-            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-close feedback-modal-close")}
-            type="button"
-            onClick={onClose}
-            aria-label="Inchide"
-            disabled={isPending}
-          >
-            <IconText icon={X}>Inchide</IconText>
-          </button>
-        </div>
-
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-form")}>
+    <DialogShell
+      dialogRef={dialogRef}
+      titleId="job-delete-confirm-title"
+      title={confirmState.title}
+      description={confirmState.copy}
+      onClose={onClose}
+      closeDisabled={isPending}
+      closeContent={<IconText icon={X}>Inchide</IconText>}
+      panelClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "review-confirm-modal")}
+      bodyClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-form")}
+    >
           <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions")}>
             <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "secondary review-delete-btn")} onClick={onConfirm} disabled={isPending}>
               <LoadingIconText icon={Trash2} loading={isPending} loadingLabel="Se sterge...">
@@ -249,9 +236,7 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
               <IconText icon={X}>Renunta</IconText>
             </button>
           </div>
-        </div>
-      </div>
-    </div>
+    </DialogShell>
   );
 }
 

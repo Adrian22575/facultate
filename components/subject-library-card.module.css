@@ -119,9 +119,7 @@
   background: #e5edf8;
 }
 
-.subject-library-progress-track > span {
-  display: block;
-  height: 100%;
+.subject-library-progress-fill {
   border-radius: inherit;
   background: var(--primary);
 }

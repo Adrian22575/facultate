@@ -1,6 +1,7 @@
 "use client";
 
 import { moduleClassNames } from "@/lib/ui/module-class-names";
+import { SectionLabel } from "@/components/ui/section-label";
 import styles from "./licenta-session-workspace-client.module.css";
 import sourceStyles from "./workspace-source-input.module.css";
 import reviewStyles from "./workspace-question-review.module.css";
@@ -634,7 +635,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       {isAbandoned ? (
         <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-flow-card licenta-session-abandoned-panel")}>
           <div>
-            <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label")}>Sesiune inchisa</span>
+            <SectionLabel>Sesiune inchisa</SectionLabel>
             <h2>Licenta aceasta nu mai poate fi modificata</h2>
             <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>
               Nu s-a consumat nicio incarcare. Seturile ramase aici sunt doar pentru orientare.
@@ -654,7 +655,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : isCompleted ? (
         <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-flow-card licenta-session-complete-panel")}>
           <div>
-            <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label")}>Licenta finalizata</span>
+            <SectionLabel>Licenta finalizata</SectionLabel>
             <h2>Testul final este creat</h2>
             <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>
               Banca finala a fost creata din {session.completedSetCount} seturi si {session.questionsWithAnswers} intrebari cu raspuns.{" "}
@@ -695,7 +696,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
         >
           <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-flow-head")}>
             <div>
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label")}>
+              <SectionLabel>
                 {flowJob
                   ? `Set ${flowJob.setIndex || ""}`
                   : shouldShowSavedStep
@@ -703,7 +704,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     : snapshot.jobs.length
                       ? `Set ${nextSetNumber}`
                       : "Construim licenta"}
-              </span>
+              </SectionLabel>
               <h2>
                 {flowJob
                   ? ["uploaded", "extracting", "chunking", "processing", "matching_answers"].includes(flowJob.status)
@@ -777,9 +778,9 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-step-head")}>
                   <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">{nextSetNumber}</span>
                   <div>
-                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label ai-workspace-step-label")}>
+                    <SectionLabel className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-step-label")}>
                       {snapshot.jobs.length ? "Set nou" : "Primul set"}
-                    </span>
+                    </SectionLabel>
                     <h2>{snapshot.jobs.length ? "Adaugă setul următor" : "Adaugă primul set"}</h2>
                     <p>Alege text sau fișier. Verifici întrebările înainte ca setul să intre în licență.</p>
                   </div>
@@ -965,7 +966,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       {isCompleted || isAbandoned ? (
         <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-manage-strip")}>
           <div>
-            <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label")}>Seturi si audit</span>
+            <SectionLabel>Seturi si audit</SectionLabel>
             <strong>Seturile raman disponibile pentru verificare.</strong>
           </div>
           <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setShowSetManager((value) => !value)}>
@@ -978,7 +979,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
         <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-set-manager")}>
           <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "dashboard-header")}>
             <div>
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label")}>Gestionare seturi</span>
+              <SectionLabel>Gestionare seturi</SectionLabel>
               <h2>Seturile acestei licente</h2>
               <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>Aici vezi auditul, intrebarile si actiunile secundare. Flow-ul principal ramane curat.</p>
             </div>

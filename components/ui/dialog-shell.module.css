@@ -1,0 +1,81 @@
+.backdrop {
+  --dialog-backdrop-padding: 18px;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: var(--dialog-backdrop-padding);
+  background: rgba(20, 33, 61, 0.42);
+  backdrop-filter: blur(8px);
+}
+
+.panel {
+  --dialog-panel-gap: 18px;
+  --dialog-panel-padding: 24px;
+  width: min(560px, 100%);
+  display: grid;
+  gap: var(--dialog-panel-gap);
+  padding: var(--dialog-panel-padding);
+  border: 1px solid rgba(219, 229, 242, 0.96);
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 24px 70px rgba(20, 50, 100, 0.18);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.header strong {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.header p {
+  max-width: none;
+}
+
+.close {
+  --dialog-close-padding-block: 10px;
+  --dialog-close-padding-inline: 14px;
+  min-height: 40px;
+  padding: var(--dialog-close-padding-block) var(--dialog-close-padding-inline);
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--primary-dark);
+  transform: none;
+}
+
+.close:hover,
+.close:focus-visible {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  box-shadow: 0 10px 22px rgba(20, 50, 100, 0.08);
+  transform: none;
+}
+
+.body {
+  min-width: 0;
+}
+
+.actions {
+  --dialog-actions-gap: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--dialog-actions-gap);
+}
+
+@media (max-width: 760px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -19,6 +19,8 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { LoadingIconText, LoadingSpinner } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ProgressBar } from "@/components/ui/progress-bar";
+import { SectionLabel } from "@/components/ui/section-label";
+import { DialogShell } from "@/components/ui/dialog-shell";
 import { WorkspaceGenerateForm } from "@/components/workspace-generate-form";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -171,23 +173,14 @@ function ExamplesModal({ onClose }) {
   const dialogRef = useDialogFocus(true, onClose);
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
-      <div
-        ref={dialogRef}
-        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-card import-examples-modal")}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="import-examples-title"
-      >
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-head")}>
-          <div>
-            <strong id="import-examples-title">Exemple de continut acceptat</strong>
-            <p>Poti pune intrebarile si raspunsurile in mai multe forme. Pastreaza textul cat mai clar.</p>
-          </div>
-          <button className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-close feedback-modal-close")} type="button" onClick={onClose}>
-            Inchide
-          </button>
-        </div>
+    <DialogShell
+      dialogRef={dialogRef}
+      titleId="import-examples-title"
+      title="Exemple de continut acceptat"
+      description="Poti pune intrebarile si raspunsurile in mai multe forme. Pastreaza textul cat mai clar."
+      onClose={onClose}
+      panelClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-examples-modal")}
+    >
         <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-examples-grid")}>
           {EXAMPLES.map((example) => (
             <article
@@ -199,8 +192,7 @@ function ExamplesModal({ onClose }) {
             </article>
           ))}
         </div>
-      </div>
-    </div>
+    </DialogShell>
   );
 }
 
@@ -226,7 +218,7 @@ function QuestionPreviewList({ title, items }) {
           <article key={item.id} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "draft-card import-preview-question")}>
             <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "draft-card-head")}>
               <div>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "step-eyebrow")}>{`Intrebarea ${item.globalIndex || item.localNumber || ""}`}</span>
+                <SectionLabel variant="eyebrow">{`Intrebarea ${item.globalIndex || item.localNumber || ""}`}</SectionLabel>
                 <strong className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "review-question-text")}>{item.questionText}</strong>
               </div>
               <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `status-pill ${item.status === "answer_matched" ? "is-good" : "is-warning"}`)}>
@@ -845,7 +837,7 @@ export function LicentaImportWorkspaceClient({
             <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-panel ui-panel-card licenta-active-session-focus")}>
               <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-head")}>
                 <div>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-section-label ai-workspace-step-label")}>{activeLicentaStep.eyebrow}</span>
+                  <SectionLabel className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-step-label")}>{activeLicentaStep.eyebrow}</SectionLabel>
                   <h2>{activeLicentaStep.title}</h2>
                   <p>
                     {activeLicentaStep.copy}

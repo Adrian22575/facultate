@@ -1,6 +1,7 @@
 "use client";
 
 import { moduleClassNames } from "@/lib/ui/module-class-names";
+import { SectionLabel } from "@/components/ui/section-label";
 import styles from "./learning-study-set-client.module.css";
 import modeStyles from "./learning-study-modes.module.css";
 import statusStyles from "./learning-study-status.module.css";
@@ -239,7 +240,7 @@ function LearningProcessingPanel({ studySet }) {
 
     return (
       <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], `learning-processing-result ${succeeded ? "is-success" : "is-error"}`)} role="status">
-        <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>{succeeded ? "Material gata" : "Procesare oprita"}</span>
+        <SectionLabel>{succeeded ? "Material gata" : "Procesare oprita"}</SectionLabel>
         <h1>{succeeded ? "Poti incepe sa inveti." : "Materialul este pastrat."}</h1>
         <p>
           {succeeded
@@ -258,7 +259,7 @@ function LearningProcessingPanel({ studySet }) {
       <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-processing-hero")}>
         <LoadingSpinner size={54} />
         <div>
-          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Procesare</span>
+          <SectionLabel>Procesare</SectionLabel>
           <h1>{studySet.title}</h1>
           <p role="status" aria-live="polite" aria-atomic="true">{message || statusDetail}</p>
         </div>
@@ -788,7 +789,7 @@ function ExamSimulationTab({ chapters, questions }) {
     <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-shell")}>
       <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-simulation-head")}>
         <div>
-          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Simulare examen</span>
+          <SectionLabel>Simulare examen</SectionLabel>
           <h2>Runda mixta</h2>
           <p>
             Grilele si adevarat/fals se evalueaza automat. Intrebarile scurte primesc raspuns model
@@ -949,7 +950,7 @@ function CompetitionTab({ leaderboard }) {
     <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-competition-shell")}>
       <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-competition-head")}>
         <div>
-          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Comparatie comunitate</span>
+          <SectionLabel>Comparatie comunitate</SectionLabel>
           <h2>Leaderboard anonim</h2>
           <p>
             Comparatia foloseste doar rundele acestui material si ramane in comunitatea materialului.
@@ -1136,7 +1137,7 @@ export function LearningStudySetClient({ studySet }) {
     <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-set")}>
       <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-study-hero")}>
         <div>
-          <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Material gata de învățat</span>
+          <SectionLabel>Material gata de învățat</SectionLabel>
           <h1>{studySet.title}</h1>
           <p>
             {`${studySet.chapterCount} capitole, ${studySet.flashcardCount} flashcards și ${studySet.questionCount} întrebări pregătite.`}
@@ -1309,7 +1310,7 @@ export function LearningStudySetClient({ studySet }) {
       {activeTab === "overview" ? (
         <section className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-panel")} aria-labelledby="learning-start-title">
           <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-start-head")}>
-            <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Alege un mod</span>
+            <SectionLabel>Alege un mod</SectionLabel>
             <h2 id="learning-start-title">Cum vrei să începi?</h2>
             <p>Poți schimba modul oricând. Progresul se salvează automat.</p>
           </div>
@@ -1393,7 +1394,7 @@ export function LearningStudySetClient({ studySet }) {
             <>
               <div className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "learning-upload-section-head")}>
                 <div>
-                  <span className={moduleClassNames([styles, modeStyles, insightStyles, contentStyles, statusStyles, reviewStyles], "ui-section-label")}>Greseli</span>
+                  <SectionLabel>Greseli</SectionLabel>
                   <h2>Repeta intrebarile ratate</h2>
                 </div>
                 <button

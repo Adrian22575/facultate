@@ -1,6 +1,7 @@
 "use client";
 
 import { moduleClassNames } from "@/lib/ui/module-class-names";
+import { DialogShell } from "@/components/ui/dialog-shell";
 import styles from "./workspace-subject-picker.module.css";
 import sourceStyles from "./workspace-source-input.module.css";
 import { useEffect, useMemo, useState } from "react";
@@ -406,34 +407,19 @@ export function WorkspaceSubjectPicker({
       {successMessage ? <div className={moduleClassNames([styles, sourceStyles], "success-state")} role="status">{successMessage}</div> : null}
 
       {isModalOpen ? (
-        <div className={moduleClassNames([styles, sourceStyles], "workspace-modal-backdrop")} role="presentation">
-          <div
-            ref={dialogRef}
-            className={moduleClassNames([styles, sourceStyles], "workspace-modal-card ai-workspace-subject-modal")}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="workspace-subject-modal-title"
-          >
-            <div className={moduleClassNames([styles, sourceStyles], "workspace-modal-head")}>
-              <div>
-                <strong id="workspace-subject-modal-title">Adauga o materie noua</strong>
-                <p>Daca nu exista deja, o adaugam si o pregatim pentru contextul ales acum.</p>
-              </div>
-              <button
-                className={moduleClassNames([styles, sourceStyles], "workspace-modal-close feedback-modal-close")}
-                type="button"
-                onClick={() => {
-                  setIsModalOpen(false);
-                  setErrorMessage("");
-                }}
-                aria-label="Inchide"
-                disabled={isSubmitting}
-              >
-                Inchide
-              </button>
-            </div>
-
-            <div className={moduleClassNames([styles, sourceStyles], "workspace-modal-form")}>
+        <DialogShell
+          dialogRef={dialogRef}
+          titleId="workspace-subject-modal-title"
+          title="Adauga o materie noua"
+          description="Daca nu exista deja, o adaugam si o pregatim pentru contextul ales acum."
+          onClose={() => {
+            setIsModalOpen(false);
+            setErrorMessage("");
+          }}
+          closeDisabled={isSubmitting}
+          panelClassName={moduleClassNames([styles, sourceStyles], "ai-workspace-subject-modal")}
+          bodyClassName={moduleClassNames([styles, sourceStyles], "workspace-modal-form")}
+        >
               <label className={moduleClassNames([styles, sourceStyles], "onboarding-form-field")}>
                 <span>Numele materiei</span>
                 <input
@@ -469,9 +455,7 @@ export function WorkspaceSubjectPicker({
                   Renunta
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
+        </DialogShell>
       ) : null}
     </div>
   );

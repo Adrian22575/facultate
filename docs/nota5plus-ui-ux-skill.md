@@ -91,6 +91,7 @@ Wireframe-ul nu trebuie să conțină conținut inventat sau elemente introduse 
 - Pentru suprafețe și stări structurale verifică `SurfaceCard`, `EmptyState`, `LoadingState` și `FeedbackState` înainte să creezi un container nou.
 - Pentru colecții verifică `components/ui/collection-controls.js` înainte să creezi toolbar, search, filtru, sortare, contor sau paginare nouă.
 - Pentru date comparabile pe coloane folosește `DataTable` din `components/ui/data-table.js`; caption-ul este obligatoriu, iar responsive-ul este limitat la `scroll` sau `cards`.
+- Pentru structura vizuală repetată a dialogurilor folosește `DialogShell`; portalul, focus trap-ul, Escape și restaurarea focusului rămân în fluxul proprietar.
 - Pentru etichete scurte de secțiune și progres determinist folosește `SectionLabel` și `ProgressBar` din `components/ui/`.
 - Păstrează structurile specializate cu un singur consumator colocate și nu adăuga geometrie nouă de colecție sau tabel în `app/globals.css`.
 - Stilurile specifice unei singure pagini rămân într-un CSS Module colocat; nu adăuga o clasă globală nouă de tip card, panel, surface sau state.

@@ -38,6 +38,7 @@ const primitiveCssEntries = [
   "components/ui/data-table.module.css",
   "components/ui/section-label.module.css",
   "components/ui/progress-bar.module.css"
+  ,"components/ui/dialog-shell.module.css"
 ];
 const colocatedCssEntries = [
   { relativePath: "components/free-tools-page.module.css", importantCeiling: 0 },

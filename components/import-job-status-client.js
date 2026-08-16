@@ -25,6 +25,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { ProgressBar } from "@/components/ui/progress-bar";
+import { SectionLabel } from "@/components/ui/section-label";
 import { useDialogFocus } from "@/lib/ui/dialog";
 
 const TERMINAL_STATUSES = new Set([
@@ -260,7 +261,7 @@ function ImportQuestionEditor({ question, isSaving, onCancel, onSave }) {
           <span>{question.globalIndex || question.localNumber || "-"}</span>
         </div>
         <div>
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>{isNewQuestion ? "Intrebare noua" : "Reparare intrebare"}</span>
+          <SectionLabel variant="eyebrow">{isNewQuestion ? "Intrebare noua" : "Reparare intrebare"}</SectionLabel>
           <strong>{isNewQuestion ? "Adauga intrebarea lipsa" : `Intrebarea ${question.globalIndex || question.localNumber || ""}`}</strong>
         </div>
       </div>
@@ -527,7 +528,7 @@ function ReadyToSaveSetPanel({ sessionMode, isBusy, onSave, onSaveAndContinue })
   return (
     <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-panel")} aria-live="polite">
       <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-copy")}>
-        <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>Pasul final</span>
+        <SectionLabel variant="eyebrow">Pasul final</SectionLabel>
         <h2>{sessionMode ? "Setul este corectat" : "Importul este corectat"}</h2>
         <p>
           {sessionMode
@@ -1280,7 +1281,7 @@ export function ImportJobStatusClient({
           {canSupplementAnswers ? (
             <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-answer-key-panel")}>
               <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-answer-key-copy")}>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>Raspunsuri separate</span>
+                <SectionLabel variant="eyebrow">Raspunsuri separate</SectionLabel>
                 <strong>Ai uitat sa pui baremul?</strong>
                 <p>
                   Lipeste aici lista de raspunsuri. O potrivim cu intrebarile deja extrase, apoi verifici doar ce ramane neclar.
@@ -1520,7 +1521,7 @@ export function ImportJobStatusClient({
         {sessionMode && status.status === "completed" ? (
           <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-panel is-saved")} aria-live="polite">
             <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "import-next-step-copy")}>
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles, editorStyles], "step-eyebrow")}>Set salvat</span>
+              <SectionLabel variant="eyebrow">Set salvat</SectionLabel>
               <h2>Setul este salvat in licenta</h2>
               <p>
                 {hasPostSaveActions

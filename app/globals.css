@@ -10,20 +10,6 @@ button,
   outline-offset: 3px;
 }
 
-.app-kicker {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary-dark);
-  background: var(--primary-soft);
-  border: 1px solid #cfddf0;
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
 .page-title,
 h1 {
   margin: 0;
@@ -104,18 +90,6 @@ p {
 .status-copy {
   display: grid;
   gap: 10px;
-}
-
-.step-eyebrow {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary-dark);
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .micro-copy {
@@ -206,60 +180,6 @@ p {
   transform: none;
 }
 
-.admin-table-text-cell {
-  min-width: 200px;
-  max-width: 360px;
-  overflow-wrap: break-word;
-  word-break: normal;
-}
-
-.admin-table-wide-cell {
-  min-width: 280px;
-  max-width: 440px;
-}
-
-.admin-table-wide-cell--xl {
-  min-width: 340px;
-  max-width: 520px;
-}
-
-.admin-table-name-cell {
-  min-width: 280px;
-  max-width: 420px;
-  overflow-wrap: break-word;
-  word-break: normal;
-}
-
-.admin-table-name-cell--xl {
-  min-width: 320px;
-  max-width: 480px;
-}
-
-.admin-table-name-cell--xxl {
-  min-width: 360px;
-  max-width: 560px;
-}
-
-.admin-table-code-cell {
-  min-width: 220px;
-  max-width: 360px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.84rem;
-  overflow-wrap: anywhere;
-}
-
-.admin-table-date-cell {
-  display: table-cell;
-  min-width: 102px;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.admin-table-count-cell {
-  min-width: 88px;
-  white-space: nowrap;
-}
-
 .admin-table-pill {
   display: inline-flex;
   align-items: center;
@@ -292,46 +212,11 @@ p {
   color: #9f2130;
 }
 
-.admin-table-link {
-  padding: 0;
-  background: none;
-  border: none;
-  color: var(--primary-dark);
-  font: inherit;
-  font-weight: 800;
-  cursor: pointer;
-  text-align: left;
-  display: inline;
-  min-height: 0;
-  line-height: inherit;
-}
-
-.admin-table-link:hover {
-  background: transparent;
-  color: var(--primary);
-  text-decoration: underline;
-}
-
-.admin-table-link:focus-visible,
 .inline-text-action:focus-visible {
   outline: 3px solid rgba(18, 80, 177, 0.2);
   outline-offset: 3px;
   border-radius: 8px;
   background: transparent;
-}
-
-@media (max-width: 640px) {
-
-  .admin-table-text-cell,
-.admin-table-wide-cell,
-.admin-table-wide-cell--xl,
-.admin-table-name-cell,
-.admin-table-name-cell--xl,
-.admin-table-name-cell--xxl,
-.admin-table-code-cell {
-    min-width: 180px;
-    max-width: none;
-  }
 }
 
 .workspace-context-summary {
@@ -715,8 +600,6 @@ h1 {
 
 /* Editorial: hierarchy for scanning first, then reading. */
 
-@keyframes dictionary-spin { to { transform: rotate(360deg); } }
-
 /* Admin Dicționar: bibliotecă de termeni și editor separat, în același model cu Articole. */
 
 /* Admin: programare editorială — setările sunt separate de acțiunile manuale. */
@@ -910,22 +793,6 @@ h1 {
   to {
     transform: rotate(360deg);
   }
-}
-
-.ui-section-label {
-  display: inline-flex;
-  width: fit-content;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid #cfe0fa;
-  background: var(--primary-soft);
-  color: var(--primary-dark);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 /* Keep learning responsive rules last so later workspace styles cannot override them. */

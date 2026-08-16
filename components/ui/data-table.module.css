@@ -94,6 +94,94 @@
   text-align: center;
 }
 
+.cellText,
+.table :global(.admin-table-text-cell) {
+  min-width: 200px;
+  max-width: 360px;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.cellWide,
+.table :global(.admin-table-wide-cell) {
+  min-width: 280px;
+  max-width: 440px;
+}
+
+.cellXl,
+.table :global(.admin-table-wide-cell--xl),
+.table :global(.admin-table-name-cell--xl) {
+  min-width: 340px;
+  max-width: 520px;
+}
+
+.cellName,
+.table :global(.admin-table-name-cell) {
+  min-width: 280px;
+  max-width: 420px;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.cellXxl,
+.table :global(.admin-table-name-cell--xxl) {
+  min-width: 360px;
+  max-width: 560px;
+}
+
+.cellCode,
+.table :global(.admin-table-code-cell) {
+  min-width: 220px;
+  max-width: 360px;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+}
+
+.cellDate,
+.table :global(.admin-table-date-cell) {
+  display: table-cell;
+  min-width: 102px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.cellCount,
+.table :global(.admin-table-count-cell) {
+  min-width: 88px;
+  white-space: nowrap;
+}
+
+.cellLink,
+.table :global(.admin-table-link) {
+  display: inline;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary-dark);
+  font: inherit;
+  font-weight: 800;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cellLink:hover,
+.table :global(.admin-table-link:hover) {
+  background: transparent;
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.cellLink:focus-visible,
+.table :global(.admin-table-link:focus-visible) {
+  border-radius: var(--space-2);
+  outline: 3px solid rgba(18, 80, 177, 0.2);
+  outline-offset: 3px;
+  background: transparent;
+}
+
 .table [data-table-cell="selection"],
 .table thead th:has(input[type="checkbox"]) {
   width: 44px;
@@ -181,6 +269,25 @@
 
   .cards .table tbody td[data-table-cell="selection"]::before {
     order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .cellText,
+  .table :global(.admin-table-text-cell),
+  .cellWide,
+  .table :global(.admin-table-wide-cell),
+  .cellXl,
+  .table :global(.admin-table-wide-cell--xl),
+  .table :global(.admin-table-name-cell--xl),
+  .cellName,
+  .table :global(.admin-table-name-cell),
+  .cellXxl,
+  .table :global(.admin-table-name-cell--xxl),
+  .cellCode,
+  .table :global(.admin-table-code-cell) {
+    min-width: 180px;
+    max-width: none;
   }
 }
 

@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { QuestionCorrectionButton } from "@/components/question-correction-button";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import { syncSubjectProgress } from "@/lib/progress-client";
 import { saveLastSession } from "@/lib/session-storage";
 import { useDialogFocus } from "@/lib/ui/dialog";
@@ -262,9 +263,7 @@ export function StudyPageClient({ subject, questions, initialViewedIndexes = [] 
     <>
       <section className={moduleClassNames([styles, reviewStyles], "study-intro")}>
         <span>{`Progres: ${viewedCount} din ${safeQuestions.length}`}</span>
-        <div className={moduleClassNames([styles, reviewStyles], "progress-bar")}>
-          <div className={moduleClassNames([styles, reviewStyles], "progress-fill")} style={{ width: `${progressPercent}%` }} />
-        </div>
+        <ProgressBar value={progressPercent} />
       </section>
 
       <section id="questionsRoot">

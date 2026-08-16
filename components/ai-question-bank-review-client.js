@@ -1,6 +1,7 @@
 "use client";
 
 import { moduleClassNames } from "@/lib/ui/module-class-names";
+import { SectionLabel } from "@/components/ui/section-label";
 import styles from "./ai-question-bank-review-client.module.css";
 import reviewStyles from "./workspace-question-review.module.css";
 import editorStyles from "./workspace-question-editor.module.css";
@@ -15,6 +16,7 @@ import {
   updateQuestionBankItemAction
 } from "@/app/ai/actions";
 import { FilterSearch, FilterSelect } from "@/components/ui/collection-controls";
+import { DialogShell } from "@/components/ui/dialog-shell";
 import { LoadingIconText } from "@/components/loading-spinner";
 import { normalizeSearchText, truncateText } from "@/lib/quiz";
 import { useDialogFocus } from "@/lib/ui/dialog";
@@ -135,7 +137,7 @@ function ReviewQuestionView({ bankId, item, searchActive, onEdit, onDelete }) {
     >
       <div className={moduleClassNames([styles, reviewStyles, editorStyles], "draft-card-head review-question-head")}>
         <div>
-          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "step-eyebrow")}>{`Intrebarea ${item.position}`}</span>
+          <SectionLabel variant="eyebrow">{`Intrebarea ${item.position}`}</SectionLabel>
           <strong className={moduleClassNames([styles, reviewStyles, editorStyles], "review-question-text")}>{item.question_text}</strong>
           {item.quality_status === "needs_review" ? (
             <span className={moduleClassNames([styles, reviewStyles, editorStyles], "status-pill is-warning review-quality-pill")}>Verifica atent</span>
@@ -210,7 +212,7 @@ function ReviewQuestionEditor({ item, isSaving, onCancel, onSave }) {
           <span>{item.position}</span>
         </div>
         <div>
-          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "step-eyebrow")}>Editare intrebare</span>
+          <SectionLabel variant="eyebrow">Editare intrebare</SectionLabel>
           <strong>Modifica intrebarea si raspunsurile</strong>
           <p>Schimbarile se aplica direct in banca publicata.</p>
         </div>
@@ -344,7 +346,7 @@ function ReviewQuestionManualCreator({ bankId, nextPosition, isSaving, onCancel,
           <span>{nextPosition}</span>
         </div>
         <div>
-          <span className={moduleClassNames([styles, reviewStyles, editorStyles], "step-eyebrow")}>Intrebare noua</span>
+          <SectionLabel variant="eyebrow">Intrebare noua</SectionLabel>
           <strong>Adauga manual o intrebare</strong>
           <p>O poti folosi daca ai sters ceva din greseala sau vrei sa completezi banca.</p>
         </div>
@@ -466,31 +468,17 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
   }
 
   return (
-    <div className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-backdrop")} role="presentation">
-      <div
-        ref={dialogRef}
-        className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-card review-confirm-modal")}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="review-confirm-title"
-      >
-        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-head")}>
-          <div>
-            <strong id="review-confirm-title">{confirmState.title}</strong>
-            <p>{confirmState.copy}</p>
-          </div>
-          <button
-            className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-close feedback-modal-close")}
-            type="button"
-            onClick={onClose}
-            aria-label="Inchide"
-            disabled={isPending}
-          >
-            <IconText icon={X}>Inchide</IconText>
-          </button>
-        </div>
-
-        <div className={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-form")}>
+    <DialogShell
+      dialogRef={dialogRef}
+      titleId="review-confirm-title"
+      title={confirmState.title}
+      description={confirmState.copy}
+      onClose={onClose}
+      closeDisabled={isPending}
+      closeContent={<IconText icon={X}>Inchide</IconText>}
+      panelClassName={moduleClassNames([styles, reviewStyles, editorStyles], "review-confirm-modal")}
+      bodyClassName={moduleClassNames([styles, reviewStyles, editorStyles], "workspace-modal-form")}
+    >
           <div className={moduleClassNames([styles, reviewStyles, editorStyles], "inline-actions")}>
             <button type="button" className={moduleClassNames([styles, reviewStyles, editorStyles], "secondary review-delete-btn")} onClick={onConfirm} disabled={isPending}>
               <LoadingIconText icon={Trash2} loading={isPending} loadingLabel="Se sterge...">
@@ -501,9 +489,7 @@ function ConfirmDialog({ confirmState, isPending, onClose, onConfirm }) {
               <IconText icon={X}>Renunta</IconText>
             </button>
           </div>
-        </div>
-      </div>
-    </div>
+    </DialogShell>
   );
 }
 

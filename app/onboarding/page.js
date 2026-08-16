@@ -20,6 +20,7 @@ import { getOptionalUser } from "@/lib/supabase/guards";
 import { ActionLink } from "@/components/ui/action";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { InlineFeedback } from "@/components/ui/status";
+import { SectionLabel } from "@/components/ui/section-label";
 import {
   createAcademicUnitAction,
   createInstitutionAction,
@@ -170,7 +171,7 @@ function StepIntro({ step, title, subtitle }) {
   return (
     <div className={["dashboard-header", styles["onboarding-step-header"]].filter(Boolean).join(" ")}>
       <div className={["status-copy"].filter(Boolean).join(" ")}>
-        <span className={["step-eyebrow"].filter(Boolean).join(" ")}>{step}</span>
+        <SectionLabel variant="eyebrow">{step}</SectionLabel>
         <h2>{title}</h2>
         {subtitle ? <p className={["page-copy"].filter(Boolean).join(" ")}>{subtitle}</p> : null}
       </div>
@@ -280,9 +281,9 @@ function OnboardingProgress({ currentStep, steps }) {
   return (
     <div className={[styles["onboarding-progress"], confirmationStyles["onboarding-progress"]].filter(Boolean).join(" ")} aria-label="Progres onboarding">
       <div className={[styles["onboarding-progress-head"], confirmationStyles["onboarding-progress-head"]].filter(Boolean).join(" ")}>
-        <span className={["step-eyebrow"].filter(Boolean).join(" ")}>
+        <SectionLabel variant="eyebrow">
           Pasul {currentIndex + 1} din {steps.length}
-        </span>
+        </SectionLabel>
         <strong>{steps[currentIndex]?.label || "Onboarding"}</strong>
       </div>
       <ol className={[styles["onboarding-progress-list"], confirmationStyles["onboarding-progress-list"]].filter(Boolean).join(" ")} style={{ "--onboarding-step-count": steps.length }}>
@@ -508,7 +509,7 @@ function OnboardingConfirmCard({
 function OnboardingOutcome({ returnDestinationLabel }) {
   return (
     <div className={[confirmationStyles["onboarding-outcome"]].filter(Boolean).join(" ")}>
-      <span className={["step-eyebrow"].filter(Boolean).join(" ")}>Dupa confirmare</span>
+      <SectionLabel variant="eyebrow">Dupa confirmare</SectionLabel>
       <div className={[confirmationStyles["onboarding-outcome-list"]].filter(Boolean).join(" ")}>
         <span>Testele generate folosesc automat comunitatea aleasa.</span>
         <span>Materialele pot fi grupate corect pe institutie.</span>
@@ -526,7 +527,7 @@ function SummaryItem({ label, value, meta, clearHref, clearLabel = "Schimba" }) 
     <SurfaceCard as="article" className={[confirmationStyles["selected-summary"], confirmationStyles["selected-summary-compact"]].filter(Boolean).join(" ")}>
       <div className={confirmationStyles["summary-card-head"]}>
         <div className={["status-copy"].filter(Boolean).join(" ")}>
-          <span className={["step-eyebrow"].filter(Boolean).join(" ")}>{label}</span>
+          <SectionLabel variant="eyebrow">{label}</SectionLabel>
           <strong>{value}</strong>
           {meta ? <p className={["page-copy"].filter(Boolean).join(" ")}>{meta}</p> : null}
         </div>
@@ -548,7 +549,7 @@ function SummarySection({ items }) {
   return (
     <SurfaceCard>
       <div className={["status-copy"].filter(Boolean).join(" ")}>
-        <span className={["step-eyebrow"].filter(Boolean).join(" ")}>Rezumat</span>
+        <SectionLabel variant="eyebrow">Rezumat</SectionLabel>
       </div>
       <div className={confirmationStyles["onboarding-summary-list"]}>
         {items.map((item) => (

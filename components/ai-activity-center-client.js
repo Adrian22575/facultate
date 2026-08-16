@@ -28,6 +28,7 @@ import { LoadingIconText } from "@/components/loading-spinner";
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
 import { Pagination } from "@/components/ui/collection-controls";
 import { DataTable } from "@/components/ui/data-table";
+import { DialogShell } from "@/components/ui/dialog-shell";
 import { getJobPresentation } from "@/lib/ai/job-presentation";
 import {
   AI_SOURCE_ACCEPTED_MIME_TYPES,
@@ -517,31 +518,16 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
     : `Materialul "${target.title}" va fi sters, iar materia nu va mai fi disponibila pentru nimeni. Pentru siguranta, scrie STERGE mai jos.`;
 
   return (
-    <div className={moduleClassNames([styles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
-      <div
-        ref={dialogRef}
-        className={moduleClassNames([styles, reviewStyles], "workspace-modal-card review-confirm-modal")}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="material-delete-confirm-title"
-      >
-        <div className={moduleClassNames([styles, reviewStyles], "workspace-modal-head")}>
-          <div>
-            <strong id="material-delete-confirm-title">{title}</strong>
-            <p>{body}</p>
-          </div>
-          <button
-            className={moduleClassNames([styles, reviewStyles], "workspace-modal-close feedback-modal-close")}
-            type="button"
-            onClick={onClose}
-            aria-label="Inchide"
-            disabled={isPending}
-          >
-            Inchide
-          </button>
-        </div>
-
-        <div className={moduleClassNames([styles, reviewStyles], "workspace-modal-form")}>
+    <DialogShell
+      dialogRef={dialogRef}
+      titleId="material-delete-confirm-title"
+      title={title}
+      description={body}
+      onClose={onClose}
+      closeDisabled={isPending}
+      panelClassName={moduleClassNames([styles, reviewStyles], "review-confirm-modal")}
+      bodyClassName={moduleClassNames([styles, reviewStyles], "workspace-modal-form")}
+    >
           <label className={moduleClassNames([styles, reviewStyles], "onboarding-form-field")}>
             <span>Cuvant de confirmare</span>
             <input
@@ -569,9 +555,7 @@ function DeleteMaterialDialog({ target, confirmText, isPending, errorMessage, on
               Renunta
             </button>
           </div>
-        </div>
-      </div>
-    </div>
+    </DialogShell>
   );
 }
 

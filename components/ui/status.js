@@ -10,7 +10,9 @@ const PILL_TONES = {
 
 const FEEDBACK_TONES = {
   error: styles.feedbackError,
-  success: styles.feedbackSuccess
+  success: styles.feedbackSuccess,
+  info: styles.feedbackInfo,
+  warning: styles.feedbackWarning
 };
 
 function joinClassNames(...values) {
@@ -33,7 +35,7 @@ export function InlineFeedback({
   className = "",
   ...props
 }) {
-  const resolvedRole = role || (tone === "success" ? "status" : "alert");
+  const resolvedRole = role || (tone === "error" ? "alert" : "status");
 
   return (
     <div

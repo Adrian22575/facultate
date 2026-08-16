@@ -4,6 +4,38 @@ function joinClassNames(...classNames) {
   return classNames.filter(Boolean).join(" ");
 }
 
+const CELL_KINDS = {
+  text: styles.cellText,
+  name: styles.cellName,
+  code: styles.cellCode,
+  date: styles.cellDate,
+  count: styles.cellCount,
+  link: styles.cellLink
+};
+
+const CELL_WIDTHS = {
+  wide: styles.cellWide,
+  xl: styles.cellXl,
+  xxl: styles.cellXxl
+};
+
+export function DataTableCell({
+  as: Component = "td",
+  kind = "text",
+  width,
+  align,
+  className = "",
+  ...props
+}) {
+  return (
+    <Component
+      {...props}
+      data-table-align={align === "center" ? "center" : props["data-table-align"]}
+      className={joinClassNames(CELL_KINDS[kind], CELL_WIDTHS[width], className)}
+    />
+  );
+}
+
 export function DataTable({
   caption,
   columns,

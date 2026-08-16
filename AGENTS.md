@@ -172,6 +172,7 @@ Reguli:
 - nu introduce utilizări noi pentru `.surface`, `.ui-panel-card`, `.draft-card` sau `.empty-state` și nu adăuga o geometrie nouă de card, panel sau state în `app/globals.css`;
 - pentru colecții folosește `FiltersToolbar`, `FilterSearch`, `FilterSelect`, `FilterSortSelect`, `ResultsSummary` și `Pagination` din `components/ui/collection-controls.js` înainte să creezi controale paralele;
 - pentru date comparabile pe coloane folosește `DataTable` din `components/ui/data-table.js`; declară un caption, alege numai strategia `scroll` sau `cards` și păstrează acțiunile și stările în fluxul lor;
+- pentru geometria repetată a unui dialog folosește `DialogShell`, dar păstrează portalul și managementul focusului în proprietarul fluxului;
 - pentru etichete de secțiune și progres determinist folosește `SectionLabel` și `ProgressBar` din `components/ui/` înainte să recreezi geometria în CSS local;
 - nu adăuga în `app/globals.css` geometrie nouă pentru toolbar, filtre, search, sortare, paginare sau tabele; stilurile unui singur flux rămân în CSS Module-ul colocat;
 - păstrează CSS-ul unui singur flux în CSS Module-ul colocat și documentează în component map numai patternurile demonstrate de cel puțin două utilizări reale.

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { AppHeader } from "@/components/app-header";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable, DataTableCell } from "@/components/ui/data-table";
 import { StatusPill } from "@/components/ui/status";
 import { requireAdmin } from "@/lib/admin";
 import {
@@ -299,7 +299,7 @@ export default async function SetupPage() {
           >
                 {notificationEvents.rows.map((event) => (
                   <tr key={`${event.event_type}:${event.created_at}`}>
-                    <td className="admin-table-code-cell">{formatNotificationEventType(event.event_type)}</td>
+                    <DataTableCell kind="code">{formatNotificationEventType(event.event_type)}</DataTableCell>
                     <td>
                       <span
                         className={`admin-table-pill ${
@@ -313,9 +313,9 @@ export default async function SetupPage() {
                         {event.status}
                       </span>
                     </td>
-                    <td className="admin-table-wide-cell">{formatTechnicalMessage(event.last_error)}</td>
-                    <td className="admin-table-date-cell">{formatSetupTimestamp(event.created_at)}</td>
-                    <td className="admin-table-date-cell">{formatSetupTimestamp(event.sent_at)}</td>
+                    <DataTableCell width="wide">{formatTechnicalMessage(event.last_error)}</DataTableCell>
+                    <DataTableCell kind="date">{formatSetupTimestamp(event.created_at)}</DataTableCell>
+                    <DataTableCell kind="date">{formatSetupTimestamp(event.sent_at)}</DataTableCell>
                   </tr>
                 ))}
           </DataTable>
@@ -352,16 +352,16 @@ export default async function SetupPage() {
           >
                 {openAIDiagnostics.rows.map((event) => (
                   <tr key={`${event.operation}:${event.request_scope}:${event.created_at}`}>
-                    <td className="admin-table-code-cell">{event.operation || "-"}</td>
-                    <td className="admin-table-code-cell">{event.request_scope || "-"}</td>
+                    <DataTableCell kind="code">{event.operation || "-"}</DataTableCell>
+                    <DataTableCell kind="code">{event.request_scope || "-"}</DataTableCell>
                     <td>{event.model || "-"}</td>
                     <td>
                       <span className="admin-table-pill is-warning">
                         {event.failure_code || "unknown"}
                       </span>
                     </td>
-                    <td className="admin-table-wide-cell">{formatTechnicalMessage(event.error_message)}</td>
-                    <td className="admin-table-date-cell">{formatSetupTimestamp(event.created_at)}</td>
+                    <DataTableCell width="wide">{formatTechnicalMessage(event.error_message)}</DataTableCell>
+                    <DataTableCell kind="date">{formatSetupTimestamp(event.created_at)}</DataTableCell>
                   </tr>
                 ))}
           </DataTable>

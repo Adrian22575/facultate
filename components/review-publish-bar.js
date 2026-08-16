@@ -1,6 +1,7 @@
 "use client";
 
 import { moduleClassNames } from "@/lib/ui/module-class-names";
+import { SectionLabel } from "@/components/ui/section-label";
 import styles from "./review-publish-bar.module.css";
 import { useFormStatus } from "react-dom";
 
@@ -42,7 +43,7 @@ export function ReviewPublishBar({
       }`)}
     >
       <div className={moduleClassNames([styles], "review-publish-copy")}>
-        <span className={moduleClassNames([styles], "step-eyebrow")}>{published ? "Publicat" : "Ultimul pas"}</span>
+        <SectionLabel variant="eyebrow">{published ? "Publicat" : "Ultimul pas"}</SectionLabel>
         <strong>
           {published
             ? isLicenta

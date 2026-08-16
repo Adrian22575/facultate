@@ -55,3 +55,15 @@
   background: var(--good-soft);
   color: var(--good);
 }
+
+:where(.feedbackInfo) {
+  border: 1px solid #bfd3f2;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+}
+
+:where(.feedbackWarning) {
+  border: 1px solid #f0cf79;
+  background: #fff7dd;
+  color: #8a5a00;
+}

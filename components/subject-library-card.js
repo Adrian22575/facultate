@@ -5,6 +5,7 @@ import styles from "./subject-library-card.module.css";
 import { ArrowRight, FileText } from "lucide-react";
 
 import { PendingNavigationLink } from "@/components/pending-navigation-link";
+import { ProgressBar } from "@/components/ui/progress-bar";
 import {
   getSubjectInitials,
   getSubjectPaletteIndex,
@@ -73,9 +74,12 @@ export function SubjectLibraryCard({
               <span>{progressLabel.title}</span>
               <strong>{`${percent}%`}</strong>
             </span>
-            <span className={moduleClassNames(styles, "subject-library-progress-track")} aria-hidden="true">
-              <span style={{ width: `${percent}%` }} />
-            </span>
+            <ProgressBar
+              value={percent}
+              className={moduleClassNames(styles, "subject-library-progress-track")}
+              fillClassName={moduleClassNames(styles, "subject-library-progress-fill")}
+              aria-hidden="true"
+            />
           </span>
         )}
 

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ActionLink } from "./ui/action";
+import { ProgressBar } from "./ui/progress-bar";
+import { SectionLabel } from "./ui/section-label";
 import styles from "./billing-success-redirect.module.css";
 
 const REDIRECT_SECONDS = 5;
@@ -107,7 +109,7 @@ export function BillingSuccessRedirect({ href, status = "pending", detail }) {
       </div>
 
       <div className={styles["billing-success-content"]}>
-        <span className={joinClassNames("app-kicker", styles["billing-success-kicker"])}>Confirmare plata</span>
+        <SectionLabel variant="kicker" className={styles["billing-success-kicker"]}>Confirmare plata</SectionLabel>
         <h2 className={styles["billing-success-title"]}>{statusContent.title}</h2>
         <p className={styles["billing-success-copy"]}>{statusContent.summary}</p>
 
@@ -118,12 +120,12 @@ export function BillingSuccessRedirect({ href, status = "pending", detail }) {
             <span>Te trimitem automat in cont</span>
             <strong>{`${secondsLeft}s`}</strong>
           </div>
-          <div className={styles["billing-success-progress-track"]} aria-hidden="true">
-            <div
-              className={joinClassNames(styles["billing-success-progress-fill"], styles[statusContent.badgeClass])}
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
+          <ProgressBar
+            value={progressPercent}
+            className={styles["billing-success-progress-track"]}
+            fillClassName={joinClassNames(styles["billing-success-progress-fill"], styles[statusContent.badgeClass])}
+            aria-hidden="true"
+          />
         </div>
 
         <div className={styles["billing-success-actions"]}>
