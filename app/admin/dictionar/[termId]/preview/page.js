@@ -1,3 +1,4 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,8 @@ import { DictionaryShell, DictionaryTermPage } from "@/components/dictionary-pag
 import { requireAdmin } from "@/lib/admin";
 import { getDictionaryAdminTermById } from "@/lib/dictionary/server";
 import { getPublicSiteUrl } from "@/lib/site";
+
+import previewStyles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +24,7 @@ export default async function AdminDictionaryPreviewPage({ params }) {
 
   return (
     <DictionaryShell>
-      <aside className="dictionary-admin-preview" role="status">
+      <aside className={moduleClassNames(previewStyles, "dictionary-admin-preview")} role="status">
         <div>
           <span>Previzualizare privată</span>
           <strong>Vezi termenul exact cum va arăta, fără să îl publici.</strong>

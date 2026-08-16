@@ -287,13 +287,13 @@ test("crearea manuală rămâne disponibilă când automatizarea este oprită, i
     readFile(new URL("../app/api/admin/linkedin/articles/[articleId]/generate/route.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/admin/linkedin/posts/[postId]/actions/route.js", import.meta.url), "utf8"),
     readFile(new URL("../app/api/admin/editorial/articles/[articleId]/actions/route.js", import.meta.url), "utf8"),
-    readFile(new URL("../components/admin-editorial-panel.js", import.meta.url), "utf8")
+    readFile(new URL("../components/admin-editorial-article-page.js", import.meta.url), "utf8")
   ]);
   assert.match(server, /settings\.mode === "disabled" && !manual/);
   assert.match(generateRoute, /manual: true/);
   assert.match(postActionsRoute, /manual: true/);
   assert.match(publishHook, /parsed\.data\.linkedin \|\| \{\}/);
-  assert.match(editorialUi, /Postarea LinkedIn preg/);
+  assert.match(editorialUi, /LinkedIn dup.* publicare/);
   assert.match(editorialUi, /linkedin: publicationLinkedIn/);
 });
 

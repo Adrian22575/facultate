@@ -1,17 +1,18 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import { ADMIN_ROUTE_GROUPS } from "@/lib/admin-routes";
 
-import "./admin-overview.module.css";
+import overviewStyles from "./admin-overview.module.css";
 
 export function AdminOverview() {
   return (
-    <section className="admin-overview-grid" aria-label="Zone administrative">
+    <section className={moduleClassNames(overviewStyles, "admin-overview-grid")} aria-label="Zone administrative">
       {ADMIN_ROUTE_GROUPS.map((group, index) => (
-        <article className="admin-overview-card" key={group.id}>
-          <span className="admin-overview-index">{String(index + 1).padStart(2, "0")}</span>
-          <div className="admin-overview-card-head">
+        <article className={moduleClassNames(overviewStyles, "admin-overview-card")} key={group.id}>
+          <span className={moduleClassNames(overviewStyles, "admin-overview-index")}>{String(index + 1).padStart(2, "0")}</span>
+          <div className={moduleClassNames(overviewStyles, "admin-overview-card-head")}>
             <h2>{group.label}</h2>
             <p>{group.description}</p>
           </div>

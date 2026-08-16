@@ -1,5 +1,10 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import libraryStyles from "./admin-content-library.module.css";
+import pageStyles from "./admin-editorial-article-page.module.css";
+import workflowStyles from "./admin-editorial-article-workflow.module.css";
+
 import {
   AlertTriangle,
   Check,
@@ -163,7 +168,7 @@ function ActionMessage({ message }) {
   if (!message) return null;
   return (
     <p
-      className={`admin-editorial-action-message is-${message.tone || "info"}`}
+      className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], `admin-editorial-action-message is-${message.tone || "info"}`)}
       role="status"
       aria-live="polite"
     >
@@ -174,7 +179,7 @@ function ActionMessage({ message }) {
 
 function EditorField({ label, hint, children, full = false }) {
   return (
-    <label className={`admin-article-editor-field${full ? " is-full" : ""}`}>
+    <label className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], `admin-article-editor-field${full ? " is-full" : ""}`)}>
       <span>{label}</span>
       {children}
       {hint ? <small>{hint}</small> : null}
@@ -392,8 +397,8 @@ export function AdminEditorialArticlePage({
   );
 
   return (
-    <section className="admin-article-page">
-      <header className="admin-article-hero">
+    <section className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-page")}>
+      <header className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-hero")}>
         <div>
           <span>
             {statusInfo.label} · {formatDateTime(article.published_at || article.updated_at)}
@@ -403,22 +408,22 @@ export function AdminEditorialArticlePage({
             {statusInfo.help} Ultima actualizare: {formatDateTime(article.updated_at)}.
           </p>
         </div>
-        <span className={`admin-article-hero-status is-${factInfo.tone}`}>
+        <span className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], `admin-article-hero-status is-${factInfo.tone}`)}>
           {factInfo.label}
         </span>
       </header>
 
       {isPublished && dirty ? (
-        <p className="admin-editorial-edit-warning">
+        <p className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-editorial-edit-warning")}>
           <AlertTriangle size={16} aria-hidden="true" />
           Salvarea modificărilor va retrage temporar articolul până la o nouă verificare.
         </p>
       ) : null}
       <ActionMessage message={message} />
 
-      <div className="admin-article-editor-shell">
+      <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-editor-shell")}>
         <div
-          className="admin-article-tabs"
+          className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-tabs")}
           role="tablist"
           aria-label="Secțiunile articolului"
           onKeyDown={handleTablistKeyDown}
@@ -431,7 +436,7 @@ export function AdminEditorialArticlePage({
               aria-selected={activeTab === id}
               aria-controls="admin-article-tab-panel"
               tabIndex={activeTab === id ? 0 : -1}
-              className={activeTab === id ? "is-active" : ""}
+              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], activeTab === id ? "is-active" : "")}
               onClick={() => setActiveTab(id)}
             >
               <Icon size={15} aria-hidden="true" />
@@ -445,13 +450,13 @@ export function AdminEditorialArticlePage({
 
         <div
           id="admin-article-tab-panel"
-          className="admin-article-tab-panel"
+          className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-tab-panel")}
           role="tabpanel"
           aria-label={EDITOR_TABS.find((tab) => tab.id === activeTab)?.label}
         >
           {activeTab === "overview" ? (
-            <div className="admin-article-overview">
-              <section className="admin-article-next-action">
+            <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-overview")}>
+              <section className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-next-action")}>
                 <span>Următoarea acțiune recomandată</span>
                 <h2>
                   {dirty
@@ -468,14 +473,14 @@ export function AdminEditorialArticlePage({
                     : factInfo.help}
                 </p>
                 {dirty ? (
-                  <button type="button" className="btn-link" onClick={save} disabled={Boolean(busy)}>
+                  <button type="button" className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-link")} onClick={save} disabled={Boolean(busy)}>
                     <Save size={16} aria-hidden="true" />
                     Salvează acum
                   </button>
                 ) : article.fact_check_status !== "passed" ? (
                   <button
                     type="button"
-                    className="btn-link"
+                    className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-link")}
                     onClick={() => setActiveTab("quality")}
                   >
                     Vezi verificarea
@@ -483,7 +488,7 @@ export function AdminEditorialArticlePage({
                 ) : null}
               </section>
 
-              <div className="admin-article-overview-side">
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-overview-side")}>
                 <article>
                   <span>Scor editorial</span>
                   <strong>{score || "—"}</strong>
@@ -500,13 +505,13 @@ export function AdminEditorialArticlePage({
                 </article>
               </div>
 
-              <div className="admin-article-flow">
-                <article className="is-complete">
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-flow")}>
+                <article className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-complete")}>
                   <Check size={16} aria-hidden="true" />
                   <strong>Generat</strong>
                   <span>{formatDateTime(article.created_at)}</span>
                 </article>
-                <article className={`is-${factInfo.tone}`}>
+                <article className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], `is-${factInfo.tone}`)}>
                   {article.fact_check_status === "passed" ? (
                     <Check size={16} aria-hidden="true" />
                   ) : (
@@ -515,12 +520,12 @@ export function AdminEditorialArticlePage({
                   <strong>Verificat</strong>
                   <span>{factInfo.label}</span>
                 </article>
-                <article className={!dirty ? "is-complete" : ""}>
+                <article className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], !dirty ? "is-complete" : "")}>
                   <Eye size={16} aria-hidden="true" />
                   <strong>Previzualizare</strong>
                   <span>{dirty ? "Salvează mai întâi" : "Disponibilă"}</span>
                 </article>
-                <article className={isPublished ? "is-complete" : ""}>
+                <article className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], isPublished ? "is-complete" : "")}>
                   <CheckCircle2 size={16} aria-hidden="true" />
                   <strong>Publicare</strong>
                   <span>{isPublished ? formatDateTime(article.published_at) : "În așteptare"}</span>
@@ -530,8 +535,8 @@ export function AdminEditorialArticlePage({
           ) : null}
 
           {activeTab === "content" ? (
-            <div className="admin-article-form-grid">
-              <div className="admin-article-section-heading is-full">
+            <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-form-grid")}>
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-section-heading is-full")}>
                 <div>
                   <span>Conținut public</span>
                   <h2>Textul și structura articolului</h2>
@@ -572,7 +577,7 @@ export function AdminEditorialArticlePage({
               <EditorField label="Idei principale" hint="Listă JSON validă" full>
                 <textarea
                   aria-label="Idei principale"
-                  className="is-code"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-code")}
                   value={form.keyTakeaways}
                   onChange={(event) => setField("keyTakeaways", event.target.value)}
                 />
@@ -580,7 +585,7 @@ export function AdminEditorialArticlePage({
               <EditorField label="Secțiunile articolului" hint="Structură JSON validă" full>
                 <textarea
                   aria-label="Secțiunile articolului"
-                  className="is-code is-long"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-code is-long")}
                   value={form.sections}
                   onChange={(event) => setField("sections", event.target.value)}
                 />
@@ -588,7 +593,7 @@ export function AdminEditorialArticlePage({
               <EditorField label="Implicații pentru elevi și studenți" full>
                 <textarea
                   aria-label="Implicații pentru elevi și studenți"
-                  className="is-code"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-code")}
                   value={form.studentImplications}
                   onChange={(event) => setField("studentImplications", event.target.value)}
                 />
@@ -596,7 +601,7 @@ export function AdminEditorialArticlePage({
               <EditorField label="Termenul săptămânii">
                 <textarea
                   aria-label="Termenul săptămânii"
-                  className="is-code"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-code")}
                   value={form.weeklyTerm}
                   onChange={(event) => setField("weeklyTerm", event.target.value)}
                 />
@@ -612,8 +617,8 @@ export function AdminEditorialArticlePage({
           ) : null}
 
           {activeTab === "sources" ? (
-            <div className="admin-article-form-grid">
-              <div className="admin-article-section-heading is-full">
+            <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-form-grid")}>
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-section-heading is-full")}>
                 <div>
                   <span>Proveniență și indexare</span>
                   <h2>Surse, metadate și SEO</h2>
@@ -627,7 +632,7 @@ export function AdminEditorialArticlePage({
               >
                 <textarea
                   aria-label="Surse"
-                  className="is-code is-long"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-code is-long")}
                   value={form.sources}
                   onChange={(event) => setField("sources", event.target.value)}
                 />
@@ -635,7 +640,7 @@ export function AdminEditorialArticlePage({
               <EditorField label="Linkuri interne" hint="Listă JSON validă" full>
                 <textarea
                   aria-label="Linkuri interne"
-                  className="is-code"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "is-code")}
                   value={form.internalLinks}
                   onChange={(event) => setField("internalLinks", event.target.value)}
                 />
@@ -672,8 +677,8 @@ export function AdminEditorialArticlePage({
           ) : null}
 
           {activeTab === "quality" ? (
-            <div className="admin-article-quality">
-              <div className="admin-article-section-heading">
+            <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-quality")}>
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-section-heading")}>
                 <div>
                   <span>Control editorial și factual</span>
                   <h2>Calitatea articolului</h2>
@@ -681,7 +686,7 @@ export function AdminEditorialArticlePage({
                 </div>
                 <button
                   type="button"
-                  className="btn-link"
+                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-link")}
                   onClick={() => runAction("fact_check")}
                   disabled={dirty || Boolean(busy)}
                 >
@@ -694,18 +699,18 @@ export function AdminEditorialArticlePage({
                 </button>
               </div>
               {dirty ? (
-                <p className="admin-article-quality-note">
+                <p className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-quality-note")}>
                   Salvează modificările înainte de o nouă verificare.
                 </p>
               ) : null}
-              <div className="admin-article-quality-grid">
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-quality-grid")}>
                 <article>
                   <span>Scor editorial</span>
                   <strong>{score || "—"}</strong>
                   <i><span style={{ width: `${Math.min(score, 100)}%` }} /></i>
                   <p>Pragul pentru publicare este 85/100.</p>
                 </article>
-                <article className={`is-${factInfo.tone}`}>
+                <article className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], `is-${factInfo.tone}`)}>
                   <span>Verificare factuală</span>
                   <strong>{factInfo.label}</strong>
                   <p>{factInfo.help}</p>
@@ -715,7 +720,7 @@ export function AdminEditorialArticlePage({
                   <strong>{factReport.verifiedClaimCount ?? "—"}</strong>
                   <p>Afirmații susținute de sursele articolului.</p>
                 </article>
-                <article className={Number(factReport.unsupportedClaimCount) ? "is-failed" : ""}>
+                <article className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], Number(factReport.unsupportedClaimCount) ? "is-failed" : "")}>
                   <span>Afirmații fără suport</span>
                   <strong>{factReport.unsupportedClaimCount ?? "—"}</strong>
                   <p>{factReport.summary || "Rulează verificarea pentru un rezumat actualizat."}</p>
@@ -733,8 +738,8 @@ export function AdminEditorialArticlePage({
           ) : null}
 
           {activeTab === "history" ? (
-            <div className="admin-article-history">
-              <div className="admin-article-section-heading">
+            <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-history")}>
+              <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-section-heading")}>
                 <div>
                   <span>Activitate</span>
                   <h2>Istoricul articolului</h2>
@@ -761,7 +766,7 @@ export function AdminEditorialArticlePage({
                   ))}
                 </div>
               ) : (
-                <p className="admin-articles-empty">Nu există activitate salvată pentru acest articol.</p>
+                <p className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-articles-empty")}>Nu există activitate salvată pentru acest articol.</p>
               )}
             </div>
           ) : null}
@@ -769,7 +774,7 @@ export function AdminEditorialArticlePage({
       </div>
 
       {confirmation ? (
-        <div className={`admin-editorial-confirmation is-${confirmation}`}>
+        <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], `admin-editorial-confirmation is-${confirmation}`)}>
           <div>
             <strong>
               {confirmation === "publish" ? "Publici articolul acum?" : "Retragi articolul de pe site?"}
@@ -783,7 +788,7 @@ export function AdminEditorialArticlePage({
           <div>
             <button
               type="button"
-              className={confirmation === "publish" ? "btn-link" : "admin-editorial-withdraw is-confirm"}
+              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], confirmation === "publish" ? "btn-link" : "admin-editorial-withdraw is-confirm")}
               onClick={() => runAction(confirmation)}
               disabled={Boolean(busy)}
             >
@@ -795,7 +800,7 @@ export function AdminEditorialArticlePage({
             </button>
             <button
               type="button"
-              className="btn-back"
+              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-back")}
               onClick={() => setConfirmation("")}
               disabled={Boolean(busy)}
             >
@@ -806,7 +811,7 @@ export function AdminEditorialArticlePage({
       ) : null}
 
       {!isPublished ? (
-        <details className="admin-article-publication-options">
+        <details className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-publication-options")}>
           <summary>Opțiuni LinkedIn după publicare</summary>
           <LinkedInGenerationOptions
             value={publicationLinkedIn}
@@ -817,7 +822,7 @@ export function AdminEditorialArticlePage({
         </details>
       ) : null}
 
-      <div className="admin-article-sticky-actions">
+      <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-sticky-actions")}>
         <Link href="/admin/continut/articole" onClick={handleBack}>
           Înapoi la articole
         </Link>
@@ -836,10 +841,10 @@ export function AdminEditorialArticlePage({
         </span>
         <div>
           {dirty ? (
-            <span className="admin-article-disabled-preview">Salvează pentru previzualizare</span>
+            <span className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-article-disabled-preview")}>Salvează pentru previzualizare</span>
           ) : (
             <a
-              className="btn-back"
+              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-back")}
               href={`/admin/articole/${article.id}/preview`}
               target="_blank"
               rel="noreferrer"
@@ -851,7 +856,7 @@ export function AdminEditorialArticlePage({
           {isPublished ? (
             <>
               <a
-                className="btn-back"
+                className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-back")}
                 href={`/articole/${article.slug}`}
                 target="_blank"
                 rel="noreferrer"
@@ -860,7 +865,7 @@ export function AdminEditorialArticlePage({
               </a>
               <button
                 type="button"
-                className="admin-editorial-withdraw"
+                className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "admin-editorial-withdraw")}
                 onClick={() => setConfirmation("withdraw")}
                 disabled={Boolean(busy)}
               >
@@ -871,7 +876,7 @@ export function AdminEditorialArticlePage({
           ) : (
             <button
               type="button"
-              className="btn-back"
+              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-back")}
               onClick={() => setConfirmation("publish")}
               disabled={!canPublish || Boolean(busy)}
             >
@@ -881,7 +886,7 @@ export function AdminEditorialArticlePage({
           )}
           <button
             type="button"
-            className="btn-link"
+            className={moduleClassNames([libraryStyles, pageStyles, workflowStyles], "btn-link")}
             onClick={save}
             disabled={!dirty || Boolean(busy)}
           >

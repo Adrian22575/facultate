@@ -1,5 +1,10 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import listStyles from "./admin-dictionary-list.module.css";
+import panelStyles from "./admin-dictionary-panel.module.css";
+import workflowStyles from "./admin-dictionary-workflow.module.css";
+
 import {
   AlertTriangle,
   ArrowLeft,
@@ -94,7 +99,7 @@ function runStatusLabel(status) {
 
 function ActionMessage({ message }) {
   if (!message) return null;
-  return <p className={`admin-dictionary-action-message is-${message.tone || "info"}`} role="status" aria-live="polite" aria-atomic="true">{message.text}</p>;
+  return <p className={moduleClassNames([panelStyles, listStyles, workflowStyles], `admin-dictionary-action-message is-${message.tone || "info"}`)} role="status" aria-live="polite" aria-atomic="true">{message.text}</p>;
 }
 
 export function AdminDictionaryPanel({
@@ -332,16 +337,16 @@ export function AdminDictionaryPanel({
   const selectedCategory = categories.find((category) => category.id === form?.categoryId)?.name || effectiveSelected?.category?.name || "—";
 
   return (
-    <section className={`surface admin-dictionary-panel${detail ? " is-detail" : ""}`}>
+    <section className={moduleClassNames([panelStyles, listStyles, workflowStyles], `surface admin-dictionary-panel${detail ? " is-detail" : ""}`)}>
       {detail ? (
-        <header className="admin-dictionary-detail-head">
-          <Link href="/admin/continut/dictionar" className="btn-back"><ArrowLeft size={16} aria-hidden="true" />Înapoi la termeni</Link>
+        <header className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-detail-head")}>
+          <Link href="/admin/continut/dictionar" className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-back")}><ArrowLeft size={16} aria-hidden="true" />Înapoi la termeni</Link>
           <div><span>Editor Dicționar</span><h1>{effectiveSelected?.term || "Editează termenul"}</h1><p>Revizuiește conținutul, previzualizarea și publicarea într-un singur loc.</p></div>
         </header>
       ) : (
-        <div className="admin-content-toolbar">
+        <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-content-toolbar")}>
           <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} generationPreview={generationPreview} />
-          <button type="button" className="btn-link" onClick={generate} disabled={Boolean(busy) || Boolean(activeRun) || dirty} title={dirty ? "Salvează modificările înainte de a genera alt termen." : undefined}>
+          <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-link")} onClick={generate} disabled={Boolean(busy) || Boolean(activeRun) || dirty} title={dirty ? "Salvează modificările înainte de a genera alt termen." : undefined}>
             {liveRun ? <LoadingSpinner size={16} /> : <RefreshCw size={16} />}
             {liveRun ? "Generare în curs" : "Generează un termen"}
           </button>
@@ -349,29 +354,29 @@ export function AdminDictionaryPanel({
       )}
 
       {!detail && liveRun ? (
-        <section className="admin-dictionary-live-run" aria-live="polite">
+        <section className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-live-run")} aria-live="polite">
           <LoadingSpinner size={23} />
           <div>
             <span>Generare în curs</span>
             <strong>{runStatusLabel(liveRun.status)}</strong>
             <p>Poți părăsi pagina. Starea rămâne salvată și se actualizează automat când revii.</p>
           </div>
-          <div className="admin-dictionary-live-progress" aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 12}%`}>
+          <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-live-progress")} aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 12}%`}>
             <span>{RUN_PROGRESS[liveRun.status] || 12}%</span>
             <i style={{ width: `${RUN_PROGRESS[liveRun.status] || 12}%` }} />
           </div>
         </section>
       ) : null}
       {!detail && persistedGenerationMessage ? <ActionMessage message={persistedGenerationMessage} /> : null}
-      {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
-      {!detail ? <section className={`admin-dictionary-schedule-status is-${scheduleState.tone}`} aria-live="polite">
+      {warning ? <p className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-message is-error")}>{warning}</p> : null}
+      {!detail ? <section className={moduleClassNames([panelStyles, listStyles, workflowStyles], `admin-dictionary-schedule-status is-${scheduleState.tone}`)} aria-live="polite">
         <Clock3 size={19} aria-hidden="true" />
         <div><span>Automatizare dicționar</span><strong>{scheduleState.title}</strong><small>{scheduleState.detail}</small></div>
       </section> : null}
 
-      <div className={`admin-dictionary-grid${detail ? " is-detail" : ""}`}>
-        {!detail ? <div className="admin-dictionary-list">
-          <div className="admin-dictionary-list-tools">
+      <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], `admin-dictionary-grid${detail ? " is-detail" : ""}`)}>
+        {!detail ? <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list")}>
+          <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-tools")}>
             <FilterSearch
               value={termQuery}
               onChange={setTermQuery}
@@ -379,47 +384,47 @@ export function AdminDictionaryPanel({
               ariaLabel="Caută termeni"
               compact
               loading={searchBusy}
-              className="admin-dictionary-search"
+              className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-search")}
               inputProps={{ autoComplete: "off" }}
             />
-            <p className="admin-dictionary-list-count" aria-live="polite">{termQuery.trim().length >= 2 ? searchBusy ? "Căutăm în dicționar…" : searchError ? "Căutarea nu este disponibilă" : `${visibleTerms.length} rezultate` : `${terms.length} termeni recenți`}</p>
+            <p className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-count")} aria-live="polite">{termQuery.trim().length >= 2 ? searchBusy ? "Căutăm în dicționar…" : searchError ? "Căutarea nu este disponibilă" : `${visibleTerms.length} rezultate` : `${terms.length} termeni recenți`}</p>
           </div>
           {visibleTerms.map((term) => {
             const displayed = { ...term, ...(termPatches[term.id] || {}) };
             const displayedStatus = termStatus(displayed.status);
             return (
-              <button type="button" key={term.id} className={`admin-dictionary-list-item${term.id === selectedId ? " is-selected" : ""}`} onClick={() => select(displayed)} disabled={Boolean(busy)}>
+              <button type="button" key={term.id} className={moduleClassNames([panelStyles, listStyles, workflowStyles], `admin-dictionary-list-item${term.id === selectedId ? " is-selected" : ""}`)} onClick={() => select(displayed)} disabled={Boolean(busy)}>
                 <BookOpenCheck size={16} />
-                <span className="admin-dictionary-list-copy">
+                <span className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-copy")}>
                   <strong>{displayed.term}</strong>
-                  <small className="admin-dictionary-list-meta"><b>{displayedStatus.label}</b><i aria-hidden="true">·</i> Calitate {displayed.quality_score ?? "—"}/100</small>
-                  <time className="admin-dictionary-list-created" dateTime={displayed.created_at || undefined} title={`Creat la ${formatDateTime(displayed.created_at)}`}>
+                  <small className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-meta")}><b>{displayedStatus.label}</b><i aria-hidden="true">·</i> Calitate {displayed.quality_score ?? "—"}/100</small>
+                  <time className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-created")} dateTime={displayed.created_at || undefined} title={`Creat la ${formatDateTime(displayed.created_at)}`}>
                     <Clock3 size={13} aria-hidden="true" /> Creat: {formatDateTime(displayed.created_at)}
                   </time>
                 </span>
               </button>
             );
           })}
-          {!searchBusy && !searchError && visibleTerms.length === 0 ? <div className="admin-dictionary-list-empty"><strong>Niciun termen găsit</strong><span>Încearcă o formulare mai scurtă sau fără semne speciale.</span></div> : null}
-          {searchError ? <div className="admin-dictionary-list-empty is-error"><strong>Căutarea nu a răspuns</strong><span>Termenii recenți rămân disponibili. Încearcă din nou.</span></div> : null}
+          {!searchBusy && !searchError && visibleTerms.length === 0 ? <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-empty")}><strong>Niciun termen găsit</strong><span>Încearcă o formulare mai scurtă sau fără semne speciale.</span></div> : null}
+          {searchError ? <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-list-empty is-error")}><strong>Căutarea nu a răspuns</strong><span>Termenii recenți rămân disponibili. Încearcă din nou.</span></div> : null}
         </div> : null}
 
         {effectiveSelected && form ? (
-          <div className="admin-dictionary-editor" aria-busy={Boolean(busy)} inert={busy ? true : undefined}>
-            <div className="admin-dictionary-statebar">
-              <div className={`is-${statusInfo.tone}`}><span>Stare</span><strong>{statusInfo.label}</strong><small>{statusInfo.help}</small></div>
-              <div className={score >= 82 ? "is-passed" : "is-failed"}><span>Calitate</span><strong>{dirty ? "Modificări nesalvate" : `${score}/100`}</strong><small>{dirty ? "Salvează pentru recalcularea scorului." : score >= 82 ? "Pragul editorial este îndeplinit." : "Pragul de publicare este 82."}</small></div>
+          <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-editor")} aria-busy={Boolean(busy)} inert={busy ? true : undefined}>
+            <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-statebar")}>
+              <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], `is-${statusInfo.tone}`)}><span>Stare</span><strong>{statusInfo.label}</strong><small>{statusInfo.help}</small></div>
+              <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], score >= 82 ? "is-passed" : "is-failed")}><span>Calitate</span><strong>{dirty ? "Modificări nesalvate" : `${score}/100`}</strong><small>{dirty ? "Salvează pentru recalcularea scorului." : score >= 82 ? "Pragul editorial este îndeplinit." : "Pragul de publicare este 82."}</small></div>
               <div><span>Categorie</span><strong>{selectedCategory}</strong><small>Poate fi schimbată înainte de publicare.</small></div>
             </div>
 
-            <div className="admin-dictionary-row is-primary">
+            <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-row is-primary")}>
               <label>Termen<input value={form.term} onChange={(event) => setField("term", event.target.value)} /></label>
               <label>Categorie<select value={form.categoryId} onChange={(event) => setField("categoryId", event.target.value)}>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select></label>
             </div>
             <label>Definiție scurtă<textarea value={form.shortDefinition} onChange={(event) => setField("shortDefinition", event.target.value)} /></label>
             <label>Explicație simplă<textarea value={form.simpleExplanation} onChange={(event) => setField("simpleExplanation", event.target.value)} /></label>
 
-            <details className="admin-dictionary-content-details">
+            <details className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-content-details")}>
               <summary>Conținut extins, întrebări și acțiune</summary>
               <div>
                 <label>Analogie <small>opțională, dar crește scorul editorial</small><textarea value={form.analogy} onChange={(event) => setField("analogy", event.target.value)} /></label>
@@ -427,58 +432,58 @@ export function AdminDictionaryPanel({
                 <label>De ce contează<textarea value={form.whyItMatters} onChange={(event) => setField("whyItMatters", event.target.value)} /></label>
                 <label>Pași <small>un pas pe fiecare rând</small><textarea value={form.howToApply} onChange={(event) => setField("howToApply", event.target.value)} /></label>
                 <label>Sinonime <small>separate prin virgulă</small><input value={form.synonyms} onChange={(event) => setField("synonyms", event.target.value)} /></label>
-                <label>Întrebări frecvente <small>exact trei întrebări, în format JSON</small><textarea className="admin-dictionary-json" value={form.faqs} onChange={(event) => setField("faqs", event.target.value)} /></label>
+                <label>Întrebări frecvente <small>exact trei întrebări, în format JSON</small><textarea className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-json")} value={form.faqs} onChange={(event) => setField("faqs", event.target.value)} /></label>
                 <label>Acțiune recomandată<select value={form.ctaType} onChange={(event) => setField("ctaType", event.target.value)}><option value="practice">Exersează prin grile</option><option value="materials">Încarcă materia</option><option value="review">Repetă ce ai greșit</option><option value="simulation">Începe o simulare</option></select></label>
               </div>
             </details>
 
-            <section className="admin-dictionary-workflow" aria-labelledby="dictionary-workflow-title">
-              <div className="admin-dictionary-workflow-head">
+            <section className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-workflow")} aria-labelledby="dictionary-workflow-title">
+              <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-workflow-head")}>
                 <div><span>Flux editorial</span><h3 id="dictionary-workflow-title">Salvează, previzualizează și publică</h3></div>
-                <button type="button" className="btn-back" onClick={save} disabled={!dirty || Boolean(busy)}><Save size={16} />{busy === "save" ? "Se salvează…" : dirty ? "Salvează modificările" : "Modificări salvate"}</button>
+                <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-back")} onClick={save} disabled={!dirty || Boolean(busy)}><Save size={16} />{busy === "save" ? "Se salvează…" : dirty ? "Salvează modificările" : "Modificări salvate"}</button>
               </div>
 
-              {isPublished && dirty ? <p className="admin-dictionary-edit-warning"><AlertTriangle size={16} />Salvarea va retrage temporar termenul până când confirmi republicarea.</p> : null}
+              {isPublished && dirty ? <p className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-edit-warning")}><AlertTriangle size={16} />Salvarea va retrage temporar termenul până când confirmi republicarea.</p> : null}
 
-              <div className="admin-dictionary-workflow-steps">
-                <article className={score >= 82 && !dirty ? "is-passed" : ""}>
+              <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-workflow-steps")}>
+                <article className={moduleClassNames([panelStyles, listStyles, workflowStyles], score >= 82 && !dirty ? "is-passed" : "")}>
                   <BadgeCheck aria-hidden="true" size={20} />
                   <div><span>1. Calitate</span><strong>{dirty ? "Recalculare necesară" : score >= 82 ? "Verificare trecută" : "Necesită corecturi"}</strong><p>La salvare verificăm structura, cele trei întrebări, textele de lucru și claritatea conținutului. Nu publicăm automat modificările.</p></div>
-                  <span className="admin-dictionary-score">{dirty ? "—" : score}/100</span>
+                  <span className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-score")}>{dirty ? "—" : score}/100</span>
                 </article>
 
                 <article>
                   <Eye aria-hidden="true" size={20} />
                   <div><span>2. Previzualizare</span><strong>Pagină privată</strong><p>Vezi termenul exact cum va arăta, inclusiv când este ciornă sau retras.</p></div>
-                  {dirty ? <span className="admin-dictionary-disabled-action">Salvează mai întâi</span> : <a className="btn-back" href={`/admin/dictionar/${effectiveSelected.id}/preview`} target="_blank" rel="noreferrer">Deschide previzualizarea</a>}
+                  {dirty ? <span className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-disabled-action")}>Salvează mai întâi</span> : <a className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-back")} href={`/admin/dictionar/${effectiveSelected.id}/preview`} target="_blank" rel="noreferrer">Deschide previzualizarea</a>}
                 </article>
 
-                <article className={isPublished ? "is-published" : ""}>
+                <article className={moduleClassNames([panelStyles, listStyles, workflowStyles], isPublished ? "is-published" : "")}>
                   {isPublished ? <CheckCircle2 aria-hidden="true" size={20} /> : <Send aria-hidden="true" size={20} />}
                   <div><span>3. Publicare</span><strong>{isPublished ? "Termen publicat" : canPublish ? "Pregătit pentru publicare" : "Publicare indisponibilă"}</strong><p>{isPublished ? "Termenul este vizibil în Dicționar." : canPublish ? "Confirmarea îl face vizibil public imediat." : "Salvează și obține un scor de cel puțin 82."}</p></div>
-                  <div className="admin-dictionary-step-actions">
-                    {isPublished ? <a className="btn-back" href={`/dictionar/${effectiveSelected.slug}`} target="_blank" rel="noreferrer">Vezi termenul public</a> : <button type="button" className="btn-link" onClick={() => setConfirmation("publish")} disabled={!canPublish || Boolean(busy)}>Publică termenul</button>}
-                    {isPublished ? <button type="button" className="admin-dictionary-withdraw" onClick={() => setConfirmation("withdraw")} disabled={Boolean(busy)}><Undo2 size={15} />Retrage din site</button> : null}
+                  <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-step-actions")}>
+                    {isPublished ? <a className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-back")} href={`/dictionar/${effectiveSelected.slug}`} target="_blank" rel="noreferrer">Vezi termenul public</a> : <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-link")} onClick={() => setConfirmation("publish")} disabled={!canPublish || Boolean(busy)}>Publică termenul</button>}
+                    {isPublished ? <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-withdraw")} onClick={() => setConfirmation("withdraw")} disabled={Boolean(busy)}><Undo2 size={15} />Retrage din site</button> : null}
                   </div>
                 </article>
               </div>
 
               {confirmation ? (
-                <div className={`admin-dictionary-confirmation is-${confirmation}`}>
+                <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], `admin-dictionary-confirmation is-${confirmation}`)}>
                   <div><strong>{confirmation === "publish" ? "Publici termenul acum?" : "Retragi termenul din Dicționar?"}</strong><p>{confirmation === "publish" ? "Termenul va deveni vizibil public imediat." : "Termenul va fi ascuns public, dar rămâne în Admin și poate fi republicat."}</p></div>
-                  <div><button type="button" className={confirmation === "publish" ? "btn-link" : "admin-dictionary-withdraw is-confirm"} onClick={() => runAction(confirmation)} disabled={Boolean(busy)}>{busy === confirmation ? "Se salvează…" : confirmation === "publish" ? "Da, publică" : "Da, retrage"}</button><button type="button" className="btn-back" onClick={() => setConfirmation("")} disabled={Boolean(busy)}>Anulează</button></div>
+                  <div><button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles], confirmation === "publish" ? "btn-link" : "admin-dictionary-withdraw is-confirm")} onClick={() => runAction(confirmation)} disabled={Boolean(busy)}>{busy === confirmation ? "Se salvează…" : confirmation === "publish" ? "Da, publică" : "Da, retrage"}</button><button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles], "btn-back")} onClick={() => setConfirmation("")} disabled={Boolean(busy)}>Anulează</button></div>
                 </div>
               ) : null}
 
               <ActionMessage message={termMessage} />
             </section>
           </div>
-        ) : <div className="admin-dictionary-editor is-empty">Alege un termen pentru editare.</div>}
+        ) : <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-editor is-empty")}>Alege un termen pentru editare.</div>}
       </div>
 
-      {!detail ? <details className="admin-run-history" open={runs.some((run) => run.status === "failed")}>
+      {!detail ? <details className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-run-history")} open={runs.some((run) => run.status === "failed")}>
         <summary>Istoric generări ({runs.length})</summary>
-        {runs.length ? <div className="admin-dictionary-runs">{runs.map((run) => <article key={run.id}><strong>{run.candidate_term || "Fără termen"}</strong><span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.model || "model necunoscut"}</span><small>{run.quality_score == null ? "Scor indisponibil" : `${run.quality_score}/100`}</small>{run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}</article>)}</div> : <p>Nu există rulări încă.</p>}
+        {runs.length ? <div className={moduleClassNames([panelStyles, listStyles, workflowStyles], "admin-dictionary-runs")}>{runs.map((run) => <article key={run.id}><strong>{run.candidate_term || "Fără termen"}</strong><span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.model || "model necunoscut"}</span><small>{run.quality_score == null ? "Scor indisponibil" : `${run.quality_score}/100`}</small>{run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}</article>)}</div> : <p>Nu există rulări încă.</p>}
       </details> : null}
     </section>
   );

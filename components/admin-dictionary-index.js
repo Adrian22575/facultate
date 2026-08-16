@@ -1,5 +1,6 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
 import {
   AlertTriangle,
   BookOpenCheck,
@@ -18,6 +19,9 @@ import { useRouter } from "next/navigation";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
 import { FilterSearch } from "@/components/ui/collection-controls";
+
+import libraryStyles from "./admin-content-library.module.css";
+import indexStyles from "./admin-dictionary-index.module.css";
 
 const ACTIVE_RUN_STATUSES = new Set(["started", "generated", "validated"]);
 const RUN_PROGRESS = { started: 12, generated: 62, validated: 88 };
@@ -197,8 +201,8 @@ export function AdminDictionaryIndex({
   }
 
   return (
-    <section className="admin-articles-index admin-dictionary-index">
-      <div className="admin-articles-primary-row">
+    <section className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-index admin-dictionary-index")}>
+      <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-primary-row")}>
         <div>
           <span>Flux editorial</span>
           <strong>Gestionează termenii din Dicționar</strong>
@@ -206,7 +210,7 @@ export function AdminDictionaryIndex({
         </div>
         <button
           type="button"
-          className="btn-link admin-articles-generate"
+          className={moduleClassNames([libraryStyles, indexStyles], "btn-link admin-articles-generate")}
           onClick={generateTerm}
           disabled={Boolean(busy) || Boolean(activeRun)}
         >
@@ -215,69 +219,69 @@ export function AdminDictionaryIndex({
         </button>
       </div>
 
-      <section className="admin-articles-automation" aria-label="Generare automată">
-        <div className="admin-articles-automation-summary">
-          <span className="admin-articles-automation-icon" aria-hidden="true"><Clock3 size={20} /></span>
+      <section className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-automation")} aria-label="Generare automată">
+        <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-automation-summary")}>
+          <span className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-automation-icon")} aria-hidden="true"><Clock3 size={20} /></span>
           <div>
             <strong>Generare automată</strong>
             <p>Programarea pregătește termeni noi, iar controlul editorial rămâne în această bibliotecă.</p>
             <div>
-              <span className={automationSettings?.enabled ? "is-active" : ""}>{automationSettings?.enabled ? "Activă" : "Oprită"}</span>
+              <span className={moduleClassNames([libraryStyles, indexStyles], automationSettings?.enabled ? "is-active" : "")}>{automationSettings?.enabled ? "Activă" : "Oprită"}</span>
               <span>{frequencyLabel(automationSettings)}</span>
               {automationSettings?.model ? <span>{automationSettings.model}</span> : null}
               {automationSettings?.notify_telegram ? <span>Telegram activ</span> : null}
             </div>
           </div>
         </div>
-        <details className="admin-articles-automation-settings">
+        <details className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-automation-settings")}>
           <summary><Settings2 size={16} aria-hidden="true" />Configurează</summary>
           <AdminEditorialAutomationSettings workflow="dictionary" settings={automationSettings} generationPreview={generationPreview} />
         </details>
       </section>
 
       {liveRun ? (
-        <section className="admin-editorial-live-run" aria-live="polite">
+        <section className={moduleClassNames([libraryStyles, indexStyles], "admin-editorial-live-run")} aria-live="polite">
           <LoadingSpinner size={23} />
           <div><span>Generare în curs</span><strong>{runStatusLabel(liveRun.status)}</strong><p>Poți părăsi pagina. Starea se actualizează automat când revii.</p></div>
-          <div className="admin-editorial-live-progress" aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 12}%`}>
+          <div className={moduleClassNames([libraryStyles, indexStyles], "admin-editorial-live-progress")} aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 12}%`}>
             <span>{RUN_PROGRESS[liveRun.status] || 12}%</span><i style={{ width: `${RUN_PROGRESS[liveRun.status] || 12}%` }} />
           </div>
         </section>
       ) : null}
-      {persistedGenerationMessage ? <p className={`admin-editorial-action-message is-${persistedGenerationMessage.tone}`} role="status">{persistedGenerationMessage.text}</p> : null}
-      {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
+      {persistedGenerationMessage ? <p className={moduleClassNames([libraryStyles, indexStyles], `admin-editorial-action-message is-${persistedGenerationMessage.tone}`)} role="status">{persistedGenerationMessage.text}</p> : null}
+      {warning ? <p className={moduleClassNames([libraryStyles, indexStyles], "admin-dictionary-message is-error")}>{warning}</p> : null}
 
-      <div className="admin-articles-stats" aria-label="Rezumat dicționar">
+      <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-stats")} aria-label="Rezumat dicționar">
         <article><span>Publicate</span><strong>{counts.published}</strong><small>vizibile în Dicționar</small></article>
-        <article className={counts.attention ? "is-attention" : ""}><span>Necesită atenție</span><strong>{counts.attention}</strong><small>{counts.attention ? "termeni care cer intervenție" : "nimic urgent acum"}</small></article>
+        <article className={moduleClassNames([libraryStyles, indexStyles], counts.attention ? "is-attention" : "")}><span>Necesită atenție</span><strong>{counts.attention}</strong><small>{counts.attention ? "termeni care cer intervenție" : "nimic urgent acum"}</small></article>
         <article><span>Scor editorial mediu</span><strong>{averageScore || "—"}</strong><small>pragul de publicare este 82</small></article>
       </div>
 
-      <section className="admin-articles-library" aria-labelledby="admin-dictionary-library-title">
-        <div className="admin-articles-library-head">
+      <section className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-library")} aria-labelledby="admin-dictionary-library-title">
+        <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-library-head")}>
           <div><span>Bibliotecă editorială</span><h2 id="admin-dictionary-library-title">Toți termenii</h2></div>
-          <FilterSearch value={query} onChange={setQuery} placeholder="Caută după termen sau categorie" ariaLabel="Caută termeni" compact loading={searchBusy} clearable className="admin-articles-search" />
+          <FilterSearch value={query} onChange={setQuery} placeholder="Caută după termen sau categorie" ariaLabel="Caută termeni" compact loading={searchBusy} clearable className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-search")} />
         </div>
-        <div className="admin-articles-filter-tabs" role="group" aria-label="Filtrează termenii">
-          {DICTIONARY_FILTERS.map((item) => <button key={item.id} type="button" aria-pressed={filter === item.id} className={filter === item.id ? "is-active" : ""} onClick={() => setFilter(item.id)}>{item.label}<span>{counts[item.id]}</span></button>)}
+        <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-filter-tabs")} role="group" aria-label="Filtrează termenii">
+          {DICTIONARY_FILTERS.map((item) => <button key={item.id} type="button" aria-pressed={filter === item.id} className={moduleClassNames([libraryStyles, indexStyles], filter === item.id ? "is-active" : "")} onClick={() => setFilter(item.id)}>{item.label}<span>{counts[item.id]}</span></button>)}
         </div>
 
         {visibleTerms.length ? (
-          <div className="admin-articles-list admin-dictionary-term-list">
+          <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-list admin-dictionary-term-list")}>
             {visibleTerms.map((term) => {
               const status = termStatus(term);
               const attention = needsAttention(term);
               return (
-                <article className="admin-article-row" key={term.id}>
-                  <span className="admin-article-row-icon" aria-hidden="true"><BookOpenCheck size={20} /></span>
-                  <div className="admin-article-row-copy">
-                    <div><span className={`admin-article-status is-${status.tone}`}>{status.label}</span>{attention ? <span className="admin-article-status is-review">Necesită atenție</span> : null}</div>
+                <article className={moduleClassNames([libraryStyles, indexStyles], "admin-article-row")} key={term.id}>
+                  <span className={moduleClassNames([libraryStyles, indexStyles], "admin-article-row-icon")} aria-hidden="true"><BookOpenCheck size={20} /></span>
+                  <div className={moduleClassNames([libraryStyles, indexStyles], "admin-article-row-copy")}>
+                    <div><span className={moduleClassNames([libraryStyles, indexStyles], `admin-article-status is-${status.tone}`)}>{status.label}</span>{attention ? <span className={moduleClassNames([libraryStyles, indexStyles], "admin-article-status is-review")}>Necesită atenție</span> : null}</div>
                     <h3>{term.term}</h3>
                     <p>{term.short_definition || "Termen fără definiție scurtă."}</p>
                     <small>{formatDate(term.updated_at || term.created_at)}<i aria-hidden="true">·</i>{term.category?.name || "Fără categorie"}{(term.synonyms || []).length ? <><i aria-hidden="true">·</i>{term.synonyms.length} sinonime</> : null}</small>
-                    {attention ? <span className="admin-article-row-warning"><AlertTriangle size={14} aria-hidden="true" />Scorul trebuie să fie cel puțin 82 înainte de publicare.</span> : null}
+                    {attention ? <span className={moduleClassNames([libraryStyles, indexStyles], "admin-article-row-warning")}><AlertTriangle size={14} aria-hidden="true" />Scorul trebuie să fie cel puțin 82 înainte de publicare.</span> : null}
                   </div>
-                  <div className="admin-article-row-actions">
+                  <div className={moduleClassNames([libraryStyles, indexStyles], "admin-article-row-actions")}>
                     <span><strong>{term.quality_score ?? "—"}</strong><small>scor</small></span>
                     <Link href={`/admin/continut/dictionar/${term.id}`}><FilePenLine size={16} aria-hidden="true" />Deschide termenul</Link>
                   </div>
@@ -286,7 +290,7 @@ export function AdminDictionaryIndex({
             })}
           </div>
         ) : (
-          <div className="admin-articles-empty">
+          <div className={moduleClassNames([libraryStyles, indexStyles], "admin-articles-empty")}>
             <ShieldCheck size={22} aria-hidden="true" />
             <strong>{searchError ? "Căutarea nu a răspuns" : "Nu am găsit termeni potriviți"}</strong>
             <p>{searchError ? "Încearcă din nou. Termenii recenți rămân disponibili." : "Schimbă filtrul sau șterge termenul de căutare."}</p>
@@ -295,9 +299,9 @@ export function AdminDictionaryIndex({
         )}
       </section>
 
-      <details className="admin-run-history admin-articles-run-history" open={runs.some((run) => ["failed", "notification_failed"].includes(run.status))}>
+      <details className={moduleClassNames([libraryStyles, indexStyles], "admin-run-history admin-articles-run-history")} open={runs.some((run) => ["failed", "notification_failed"].includes(run.status))}>
         <summary>Istoric generări ({runs.length})</summary>
-        {runs.length ? <div className="admin-editorial-runs">{runs.map((run) => <article key={run.id}><strong>{run.candidate_term || "Fără termen"}</strong><span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.quality_score ?? "—"}/100</span><small>{run.model || "Model indisponibil"}</small>{run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}</article>)}</div> : <p>Nu există rulări încă.</p>}
+        {runs.length ? <div className={moduleClassNames([libraryStyles, indexStyles], "admin-editorial-runs")}>{runs.map((run) => <article key={run.id}><strong>{run.candidate_term || "Fără termen"}</strong><span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.quality_score ?? "—"}/100</span><small>{run.model || "Model indisponibil"}</small>{run.rejection_reason || run.error_message ? <small>{run.rejection_reason || run.error_message}</small> : null}</article>)}</div> : <p>Nu există rulări încă.</p>}
       </details>
     </section>
   );

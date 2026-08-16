@@ -1,5 +1,6 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
 import { useEffect, useMemo, useState } from "react";
 import {
   BarChart3,
@@ -37,7 +38,7 @@ import { LoadingIconText } from "@/components/loading-spinner";
 import { markAdminNotificationViewed } from "@/lib/admin-notification-client";
 import { ADMIN_NOTIFICATION_SCOPES } from "@/lib/admin-notification-scopes";
 
-import "./admin-center-client.module.css";
+import centerStyles from "./admin-center-client.module.css";
 
 const PAGE_SIZE = 10;
 
@@ -162,7 +163,7 @@ function userTypeLabel(value) {
 const FilterButton = AdminFilterButton;
 
 function SearchInput({ value, onChange, placeholder }) {
-  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className="admin-search-input" />;
+  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-search-input")} />;
 }
 
 function EmptyState({ title, subtitle }) {
@@ -174,13 +175,13 @@ const ReviewDot = AdminReviewDot;
 
 function TableSection({ title, subtitle, count, actions = null, children, variant = "boxed" }) {
   return (
-    <SurfaceCard as="section" className={`admin-table-section ${variant === "flat" ? "admin-table-section--flat" : ""}`}>
-      <div className="admin-table-section-head">
+    <SurfaceCard as="section" className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-table-section ${variant === "flat" ? "admin-table-section--flat" : ""}`)}>
+      <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-section-head")}>
         <div>
           <h3>{title}</h3>
-          <p className="page-copy">{subtitle}</p>
+          <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>{subtitle}</p>
         </div>
-        <div className="admin-table-head-actions">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-head-actions")}>
           <StatusPill tone="neutral">{count}</StatusPill>
           {actions}
         </div>
@@ -207,7 +208,7 @@ function matchesSearch(target, query) {
 }
 
 function TableDate({ value }) {
-  return <span className="admin-table-date-cell">{formatDate(value)}</span>;
+  return <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-date-cell")}>{formatDate(value)}</span>;
 }
 
 function formatNumber(value) {
@@ -244,13 +245,13 @@ function learningStatusTone(status) {
 
 function AnalyticsKpi({ icon: Icon, label, value, hint }) {
   return (
-    <article className="admin-analytics-kpi">
-      <span className="admin-analytics-kpi-icon">
+    <article className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-kpi")}>
+      <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-kpi-icon")}>
         <Icon size={18} strokeWidth={2.2} aria-hidden="true" />
       </span>
-      <span className="admin-analytics-kpi-label">{label}</span>
+      <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-kpi-label")}>{label}</span>
       <strong>{formatNumber(value)}</strong>
-      {hint ? <span className="admin-analytics-kpi-hint">{hint}</span> : null}
+      {hint ? <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-kpi-hint")}>{hint}</span> : null}
     </article>
   );
 }
@@ -263,17 +264,17 @@ function AnalyticsList({ rows = [], emptyLabel = "Nu exista date inca." }) {
   }
 
   return (
-    <div className="admin-analytics-list">
+    <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-list")}>
       {rows.map((row) => {
         const width = `${Math.max(8, Math.round(((row.count || 0) / maxCount) * 100))}%`;
 
         return (
-          <div className="admin-analytics-row" key={row.key}>
-            <div className="admin-analytics-row-main">
+          <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-row")} key={row.key}>
+            <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-row-main")}>
               <span>{formatUsageLabel(row.label || row.key)}</span>
               <strong>{formatNumber(row.count)}</strong>
             </div>
-            <span className="admin-analytics-meter" aria-hidden="true">
+            <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-meter")} aria-hidden="true">
               <span style={{ width }} />
             </span>
           </div>
@@ -1109,8 +1110,8 @@ export function AdminCenterClient({
 
   return (
     <>
-      {showSectionNavigation ? <section className="admin-section-navigation" aria-label="Sectiuni platforma">
-        <div className="admin-section-nav-group">
+      {showSectionNavigation ? <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-section-navigation")} aria-label="Sectiuni platforma">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-section-nav-group")}>
           <span>Gestionare</span>
           <AdminTabsContainer role="group" aria-label="Gestionare platforma">
             <FilterButton active={section === "feedback"} onClick={() => setSection("feedback")} selected={section === "feedback"} icon={MessageSquareText} count={sectionCounts.feedback}>Feedback</FilterButton>
@@ -1119,14 +1120,14 @@ export function AdminCenterClient({
             <FilterButton active={section === "testimonials"} onClick={() => setSection("testimonials")} selected={section === "testimonials"} icon={Star} count={sectionCounts.testimonials} actionCount={visibleAdminActionSummary.testimonials || 0}>Testimoniale</FilterButton>
           </AdminTabsContainer>
         </div>
-        <div className="admin-section-nav-group">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-section-nav-group")}>
           <span>Catalog</span>
           <AdminTabsContainer role="group" aria-label="Catalog academic">
             <FilterButton active={section === "subjects"} onClick={() => setSection("subjects")} selected={section === "subjects"} icon={GraduationCap} count={sectionCounts.subjects}>Materii</FilterButton>
             <FilterButton active={section === "academic"} onClick={() => setSection("academic")} selected={section === "academic"} icon={Building2} count={sectionCounts.academic}>Structura academică</FilterButton>
           </AdminTabsContainer>
         </div>
-        <div className="admin-section-nav-group">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-section-nav-group")}>
           <span>Monitorizare</span>
           <AdminTabsContainer role="group" aria-label="Monitorizare platforma">
             <FilterButton active={section === "analytics"} onClick={() => setSection("analytics")} selected={section === "analytics"} icon={BarChart3} count={sectionCounts.analytics}>Statistici</FilterButton>
@@ -1135,17 +1136,17 @@ export function AdminCenterClient({
         </div>
       </section> : null}
 
-      <section className={`admin-panel ${section === "feedback" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "feedback"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "feedback" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "feedback"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Inbox feedback</h2>
-            <p className="page-copy">Vezi rapid ce nu merge, ce lipseste si ce cerinte noi apar de la utilizatori.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Vezi rapid ce nu merge, ce lipseste si ce cerinte noi apar de la utilizatori.</p>
           </div>
-          <span className="status-pill is-muted">{filteredFeedbackEntries.length} rezultate</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{filteredFeedbackEntries.length} rezultate</span>
         </div>
 
-        <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre feedback">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          <AdminTabsContainer className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-filter-row")} role="group" aria-label="Filtre feedback">
             <FilterButton active={feedbackFilter === "all"} onClick={() => setFeedbackFilter("all")} selected={feedbackFilter === "all"} icon={ClipboardList} count={feedbackCounts.all}>Toate</FilterButton>
             <FilterButton active={feedbackFilter === "problem"} onClick={() => setFeedbackFilter("problem")} selected={feedbackFilter === "problem"} icon={ShieldCheck} count={feedbackCounts.problem}>Probleme</FilterButton>
             <FilterButton active={feedbackFilter === "feature"} onClick={() => setFeedbackFilter("feature")} selected={feedbackFilter === "feature"} icon={Sparkles} count={feedbackCounts.feature}>Cerinte noi</FilterButton>
@@ -1169,19 +1170,19 @@ export function AdminCenterClient({
             ]}>
               {feedbackPageData.rows.map((entry) => (
                 <tr key={entry.id} data-table-tone={entry.feedback_type === "problem" ? "review" : undefined}>
-                  <td className="admin-review-cell">
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-review-cell")}>
                     <ReviewDot show={entry.feedback_type === "problem"} label="Problema de verificat" />
                   </td>
                   <td><CellPill>{feedbackTypeLabel(entry.feedback_type)}</CellPill></td>
-                  <td className="admin-table-text-cell admin-table-wide-cell">{entry.message}</td>
-                  <td className="admin-table-text-cell">{entry.optional_detail || "-"}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell admin-table-wide-cell")}>{entry.message}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{entry.optional_detail || "-"}</td>
                   <td>{entry.user_email || "Fara email"}</td>
                   <td>{entry.user_type || "necunoscut"}</td>
-                  <td className="admin-table-text-cell">{entry.page_path || "/"}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{entry.page_path || "/"}</td>
                   <td>
                     {entry.screenshot_path ? (
                       <a
-                        className="btn-link secondary admin-feedback-screenshot-link"
+                        className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-feedback-screenshot-link")}
                         href={`/api/admin/feedback/${entry.id}/screenshot`}
                         target="_blank"
                         rel="noreferrer"
@@ -1203,17 +1204,17 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`admin-panel ${section === "billing" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "billing"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "billing" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "billing"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Monitorizare plati</h2>
-            <p className="page-copy">Vezi intr-un singur loc granturile premium, incarcarile si webhook-urile recente.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Vezi intr-un singur loc granturile premium, incarcarile si webhook-urile recente.</p>
           </div>
-          <span className="status-pill is-muted">Monitorizare read-only</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>Monitorizare read-only</span>
         </div>
 
-        <div className="admin-toolbar">
-          {!fixedBillingView ? <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre plati">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          {!fixedBillingView ? <AdminTabsContainer className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-filter-row")} role="group" aria-label="Filtre plati">
             <FilterButton active={billingFilter === "all"} onClick={() => setBillingFilter("all")} selected={billingFilter === "all"} icon={ReceiptText} count={billingCounts.all}>Toate</FilterButton>
             <FilterButton active={billingFilter === "premium"} onClick={() => setBillingFilter("premium")} selected={billingFilter === "premium"} icon={ShieldCheck} count={billingCounts.premium}>Premium</FilterButton>
             <FilterButton active={billingFilter === "credits"} onClick={() => setBillingFilter("credits")} selected={billingFilter === "credits"} icon={Upload} count={billingCounts.credits}>Incarcari</FilterButton>
@@ -1222,7 +1223,7 @@ export function AdminCenterClient({
           <SearchInput value={billingSearch} onChange={setBillingSearch} placeholder="Cauta utilizator, plan, sesiune Stripe sau eveniment" />
         </div>
 
-        <div className="admin-billing-stack">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-billing-stack")}>
           {visibleBillingSections.includes("premium") ? (
             <TableSection title="Granturi premium" subtitle="Vezi ce planuri au fost activate si pana cand sunt valabile." count={filteredPremiumRows.length}>
               {filteredPremiumRows.length ? (
@@ -1237,10 +1238,10 @@ export function AdminCenterClient({
                   ]}>
                     {premiumPageData.rows.map((row) => (
                       <tr key={row.id}>
-                        <td className="admin-table-text-cell">{row.user_email || row.user_id}</td>
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id}</td>
                         <td>{row.plan_name}</td>
                         <td>{row.source}</td>
-                        <td className="admin-table-code-cell">{row.stripe_checkout_session_id || "-"}</td>
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-code-cell")}>{row.stripe_checkout_session_id || "-"}</td>
                         <td><TableDate value={row.created_at} /></td>
                         <td><TableDate value={row.ends_at} /></td>
                       </tr>
@@ -1268,11 +1269,11 @@ export function AdminCenterClient({
                   ]}>
                     {creditsPageData.rows.map((row) => (
                       <tr key={row.id}>
-                        <td className="admin-table-text-cell">{row.user_email || row.user_id}</td>
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id}</td>
                         <td>{row.plan_name}</td>
                         <td><CellPill tone="good">{`+${row.delta}`}</CellPill></td>
                         <td>{row.source}</td>
-                        <td className="admin-table-code-cell">{row.stripe_checkout_session_id || "-"}</td>
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-code-cell")}>{row.stripe_checkout_session_id || "-"}</td>
                         <td><TableDate value={row.created_at} /></td>
                       </tr>
                     ))}
@@ -1302,13 +1303,13 @@ export function AdminCenterClient({
 
                       return (
                       <tr key={row.id} data-table-tone={needsReview ? "review" : undefined}>
-                        <td className="admin-review-cell">
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-review-cell")}>
                           <ReviewDot show={needsReview} label="Webhook de verificat" />
                         </td>
                         <td>{row.event_type}</td>
                         <td><CellPill tone={row.status === "completed" ? "good" : row.status === "failed" ? "bad" : "warning"}>{row.status || "necunoscut"}</CellPill></td>
-                        <td className="admin-table-code-cell">{row.stripe_event_id}</td>
-                        <td className="admin-table-text-cell">{row.last_error || "Fara erori"}</td>
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-code-cell")}>{row.stripe_event_id}</td>
+                        <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.last_error || "Fara erori"}</td>
                         <td><TableDate value={row.processed_at} /></td>
                       </tr>
                     );
@@ -1324,17 +1325,17 @@ export function AdminCenterClient({
         </div>
       </section>
 
-      <section className={`admin-panel ${section === "users" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "users"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "users" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "users"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Utilizatori</h2>
-            <p className="page-copy">Vezi cine a intrat in aplicatie, daca a terminat onboarding-ul si in ce comunitate este activ.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Vezi cine a intrat in aplicatie, daca a terminat onboarding-ul si in ce comunitate este activ.</p>
           </div>
-          <span className="status-pill is-muted">{filteredUsers.length} rezultate</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{filteredUsers.length} rezultate</span>
         </div>
 
-        <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre utilizatori">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          <AdminTabsContainer className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-filter-row")} role="group" aria-label="Filtre utilizatori">
             <FilterButton active={usersFilter === "all"} onClick={() => setUsersFilter("all")} selected={usersFilter === "all"} icon={Users} count={userCounts.all}>Toti</FilterButton>
             <FilterButton active={usersFilter === "students"} onClick={() => setUsersFilter("students")} selected={usersFilter === "students"} icon={GraduationCap} count={userCounts.students}>Studenti</FilterButton>
             <FilterButton active={usersFilter === "elevi"} onClick={() => setUsersFilter("elevi")} selected={usersFilter === "elevi"} icon={School} count={userCounts.elevi}>Elevi</FilterButton>
@@ -1344,8 +1345,8 @@ export function AdminCenterClient({
           <SearchInput value={usersSearch} onChange={setUsersSearch} placeholder="Cauta nume, email sau comunitate activa" />
         </div>
 
-        {userActionError ? <p className="admin-inline-error" role="alert">{userActionError}</p> : null}
-        {userActionSuccess ? <p className="admin-inline-success" role="status">{userActionSuccess}</p> : null}
+        {userActionError ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-error")} role="alert">{userActionError}</p> : null}
+        {userActionSuccess ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-success")} role="status">{userActionSuccess}</p> : null}
 
         {filteredUsers.length ? (
           <>
@@ -1364,18 +1365,18 @@ export function AdminCenterClient({
                 const displayName = user.full_name || user.email || "Utilizator fara nume";
                 return (
                   <tr key={user.id}>
-                    <td className="admin-table-name-cell">{displayName}</td>
-                    <td className="admin-table-text-cell">{user.email || "Fara email"}</td>
+                    <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{displayName}</td>
+                    <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{user.email || "Fara email"}</td>
                     <td><CellPill>{userTypeLabel(user.user_type)}</CellPill></td>
                     <td><CellPill tone={user.onboarding_completed ? "good" : "warning"}>{user.onboarding_completed ? "Complet" : "Incomplet"}</CellPill></td>
-                    <td className="admin-table-text-cell admin-table-wide-cell admin-table-wide-cell--xl">{user.community_label || "Fara comunitate activa"}</td>
+                    <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell admin-table-wide-cell admin-table-wide-cell--xl")}>{user.community_label || "Fara comunitate activa"}</td>
                     <td><TableDate value={user.created_at} /></td>
                     <td>{user.onboarding_completed_at ? <TableDate value={user.onboarding_completed_at} /> : "-"}</td>
                     <td>{user.membership_status || "fara membership activ"}</td>
                     <td>
                       <button
                         type="button"
-                        className="btn-link secondary admin-toggle-btn admin-danger-action"
+                        className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn admin-danger-action")}
                         onClick={() => handleUserDelete(user)}
                         disabled={deletingUserId === user.id || user.id === currentAdminUserId}
                         title={
@@ -1399,17 +1400,17 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`admin-panel ${section === "analytics" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "analytics"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "analytics" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "analytics"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Analytics utilizare</h2>
-            <p className="page-copy">Vezi ce zone sunt folosite cel mai mult, cine este activ si unde merita imbunatatit produsul.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Vezi ce zone sunt folosite cel mai mult, cine este activ si unde merita imbunatatit produsul.</p>
           </div>
-          <span className="status-pill is-muted">{`${usageAnalytics?.windowDays || 30} zile`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${usageAnalytics?.windowDays || 30} zile`}</span>
         </div>
 
         {usageAnalytics?.warning ? (
-          <div className="workspace-context-summary admin-analytics-warning">
+          <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "workspace-context-summary admin-analytics-warning")}>
             <strong>Nota analytics</strong>
             <span>{usageAnalytics.warning}</span>
           </div>
@@ -1422,7 +1423,7 @@ export function AdminCenterClient({
           />
         ) : (
           <>
-            <div className="admin-analytics-kpi-grid">
+            <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-kpi-grid")}>
               <AnalyticsKpi icon={BarChart3} label="Evenimente" value={usageAnalytics?.totalEvents} hint="total in fereastra" />
               <AnalyticsKpi icon={Route} label="Vizualizari pagini" value={usageAnalytics?.pageViews} hint="navigari" />
               <AnalyticsKpi icon={MousePointerClick} label="Click-uri" value={usageAnalytics?.clicks} hint="actiuni UI" />
@@ -1433,7 +1434,7 @@ export function AdminCenterClient({
             </div>
 
             {learningAnalytics?.warning ? (
-              <div className="workspace-context-summary admin-analytics-warning">
+              <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "workspace-context-summary admin-analytics-warning")}>
                 <strong>Nota invatare</strong>
                 <span>{learningAnalytics.warning}</span>
               </div>
@@ -1446,7 +1447,7 @@ export function AdminCenterClient({
               />
             ) : (
               <>
-                <div className="admin-analytics-kpi-grid">
+                <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-kpi-grid")}>
                   <AnalyticsKpi icon={BookOpen} label="Materiale invatare" value={learningAnalytics?.totalStudySets} hint="recente" />
                   <AnalyticsKpi icon={CheckCircle2} label="Gata" value={learningAnalytics?.readyStudySets} hint="ready" />
                   <AnalyticsKpi icon={Lightbulb} label="Cu atentionari" value={learningAnalytics?.warningStudySets} hint="needs review" />
@@ -1459,7 +1460,7 @@ export function AdminCenterClient({
                   <AnalyticsKpi icon={Users} label="Reutilizari" value={learningAnalytics?.communityReuses || 0} hint="colegi fara incarcare noua" />
                 </div>
 
-                <div className="admin-analytics-grid">
+                <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-grid")}>
                   <TableSection title="Status invatare" subtitle="Cum arata materialele procesate recent." count={learningAnalytics?.statusBreakdown?.length || 0}>
                     <AnalyticsList rows={learningAnalytics?.statusBreakdown || []} />
                   </TableSection>
@@ -1473,7 +1474,7 @@ export function AdminCenterClient({
                   </TableSection>
                 </div>
 
-                <div className="admin-analytics-grid">
+                <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-grid")}>
                   <TableSection title="Top materiale invatare" subtitle="Materiale cu folosire reala in teste si flashcards." count={learningAnalytics?.topStudySets?.length || 0}>
                     {learningAnalytics?.topStudySets?.length ? (
                       <DataTable caption="Top materiale de invatare" minWidth={760} columns={[
@@ -1486,7 +1487,7 @@ export function AdminCenterClient({
                       ]}>
                         {learningAnalytics.topStudySets.map((row) => (
                           <tr key={row.id}>
-                            <td className="admin-table-name-cell">{row.title}</td>
+                            <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{row.title}</td>
                             <td><CellPill tone={learningStatusTone(row.status)}>{formatUsageLabel(row.status)}</CellPill></td>
                             <td>{formatNumber(row.active_user_count)}</td>
                             <td>{formatNumber(row.attempt_count)}</td>
@@ -1511,7 +1512,7 @@ export function AdminCenterClient({
                       ]}>
                         {learningAnalytics.topContributors.map((row) => (
                           <tr key={row.user_id || "unknown"}>
-                            <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                            <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id || "-"}</td>
                             <td>{formatNumber(row.published_count)}</td>
                             <td>{formatNumber(row.reuse_count)}</td>
                             <td>{formatNumber(row.active_user_count)}</td>
@@ -1538,11 +1539,11 @@ export function AdminCenterClient({
                       {learningAnalytics.processingErrors.map((row) => (
                         <tr key={row.id}>
                           <td><TableDate value={row.created_at} /></td>
-                          <td className="admin-table-name-cell">{row.title || "Material fara titlu"}</td>
-                          <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{row.title || "Material fara titlu"}</td>
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id || "-"}</td>
                           <td>{formatUsageLabel(row.source_kind)}</td>
                           <td>{formatDurationMs(row.processing_duration_ms)}</td>
-                          <td className="admin-table-text-cell">{row.error || "Eroare necunoscuta"}</td>
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.error || "Eroare necunoscuta"}</td>
                         </tr>
                       ))}
                     </DataTable>
@@ -1551,7 +1552,7 @@ export function AdminCenterClient({
                   )}
                 </TableSection>
 
-                {learningActionMessage ? <p className="admin-inline-success" role="status">{learningActionMessage}</p> : null}
+                {learningActionMessage ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-success")} role="status">{learningActionMessage}</p> : null}
 
                 <TableSection title="Materiale de invatare recente" subtitle="Ultimele study sets generate sau publicate." count={learningAnalytics?.recentStudySets?.length || 0}>
                   {learningRows?.length ? (
@@ -1571,17 +1572,17 @@ export function AdminCenterClient({
                       {learningRows.map((row) => (
                         <tr key={row.id}>
                           <td><TableDate value={row.created_at} /></td>
-                          <td className="admin-table-name-cell">{row.title || "Fara titlu"}</td>
-                          <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{row.title || "Fara titlu"}</td>
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id || "-"}</td>
                           <td><CellPill tone={learningStatusTone(row.status)}>{formatUsageLabel(row.status)}</CellPill></td>
                           <td>{formatUsageLabel(row.source_kind)}</td>
-                          <td className="admin-table-text-cell">
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>
                             {`${formatNumber(row.chapter_count)} capitole, ${formatNumber(row.flashcard_count)} flashcards, ${formatNumber(row.question_count)} intrebari`}
                           </td>
-                          <td className="admin-table-text-cell">
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>
                             {`${formatDurationMs(row.processing_duration_ms)} · ${row.credit_consumed ? "1 incarcare" : "fara consum marcat"}`}
                           </td>
-                          <td className="admin-table-text-cell">
+                          <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>
                             {`${formatNumber(row.active_user_count)} useri, ${formatNumber(row.attempt_count)} teste, ${formatNumber(row.flashcard_review_count)} flashcards`}
                           </td>
                           <td>{formatUsageLabel(row.visibility_scope || "private")}</td>
@@ -1590,7 +1591,7 @@ export function AdminCenterClient({
                             {row.published_at ? (
                               <button
                                 type="button"
-                                className="btn-link secondary admin-toggle-btn"
+                                className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
                                 disabled={depublishingStudySetId === row.id}
                                 onClick={() => handleDepublishStudySet(row)}
                               >
@@ -1610,7 +1611,7 @@ export function AdminCenterClient({
               </>
             )}
 
-            <div className="admin-analytics-grid">
+            <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-analytics-grid")}>
               <TableSection title="Moduri invatare folosite" subtitle="Actiunile principale din modulul Invata." count={usageAnalytics?.learningTopActions?.length || 0}>
                 <AnalyticsList rows={usageAnalytics?.learningTopActions || []} emptyLabel="Nu exista actiuni de invatare inca." />
               </TableSection>
@@ -1656,12 +1657,12 @@ export function AdminCenterClient({
                 ]}>
                   {usageAnalytics.topUsers.map((row) => (
                     <tr key={row.user_id}>
-                      <td className="admin-table-text-cell">{row.user_email || row.user_id}</td>
-                      <td className="admin-table-count-cell">{formatNumber(row.count)}</td>
-                      <td className="admin-table-count-cell">{formatNumber(row.page_views)}</td>
-                      <td className="admin-table-count-cell">{formatNumber(row.clicks)}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")}>{formatNumber(row.count)}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")}>{formatNumber(row.page_views)}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")}>{formatNumber(row.clicks)}</td>
                       <td>{row.top_feature || "-"}</td>
-                      <td className="admin-table-text-cell">{row.top_route || "-"}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.top_route || "-"}</td>
                       <td><TableDate value={row.last_seen_at} /></td>
                     </tr>
                   ))}
@@ -1684,10 +1685,10 @@ export function AdminCenterClient({
                   {usageAnalytics.recentEvents.map((row) => (
                     <tr key={row.id}>
                       <td><TableDate value={row.created_at} /></td>
-                      <td className="admin-table-text-cell">{row.user_email || row.session_id || "Anonim"}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.session_id || "Anonim"}</td>
                       <td><CellPill>{formatUsageLabel(row.event_name)}</CellPill></td>
                       <td>{row.feature || "-"}</td>
-                      <td className="admin-table-text-cell">{row.route_path || "-"}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.route_path || "-"}</td>
                       <td>{formatUsageLabel(row.device_type || "unknown")}</td>
                     </tr>
                   ))}
@@ -1700,17 +1701,17 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`admin-panel ${section === "subjects" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "subjects"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "subjects" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "subjects"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Materii</h2>
-            <p className="page-copy">Vezi catalogul de materii, numarul de alocari si contextul in care este folosita fiecare.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Vezi catalogul de materii, numarul de alocari si contextul in care este folosita fiecare.</p>
           </div>
-          <span className="status-pill is-muted">{filteredSubjects.length} rezultate</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{filteredSubjects.length} rezultate</span>
         </div>
 
-        <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre materii">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          <AdminTabsContainer className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-filter-row")} role="group" aria-label="Filtre materii">
             <FilterButton active={subjectsFilter === "all"} onClick={() => setSubjectsFilter("all")} selected={subjectsFilter === "all"} icon={ClipboardList} count={subjectCounts.all}>Toate</FilterButton>
             <FilterButton active={subjectsFilter === "student"} onClick={() => setSubjectsFilter("student")} selected={subjectsFilter === "student"} icon={GraduationCap} count={subjectCounts.student}>Student</FilterButton>
             <FilterButton active={subjectsFilter === "elev"} onClick={() => setSubjectsFilter("elev")} selected={subjectsFilter === "elev"} icon={School} count={subjectCounts.elev}>Elev</FilterButton>
@@ -1719,9 +1720,9 @@ export function AdminCenterClient({
           <SearchInput value={subjectsSearch} onChange={setSubjectsSearch} placeholder="Cauta materie, id, fisier sau creator" />
         </div>
 
-        <div className="admin-inline-stats">
-          <span className="status-pill is-muted">{`${subjectsData.totalSubjects} materii`}</span>
-          <span className="status-pill is-muted">{`${subjectsData.totalAllocations} alocari`}</span>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-stats")}>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${subjectsData.totalSubjects} materii`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${subjectsData.totalAllocations} alocari`}</span>
         </div>
 
         {filteredSubjects.length ? (
@@ -1737,18 +1738,18 @@ export function AdminCenterClient({
             ]}>
               {subjectsPageData.rows.map((subject) => (
                 <tr key={subject.id}>
-                  <td className="admin-table-name-cell admin-table-name-cell--xl">{subject.title}</td>
-                  <td className="admin-table-code-cell">{subject.id}</td>
-                  <td className="admin-table-text-cell admin-table-wide-cell admin-table-wide-cell--xl">{subject.questions_file || "Fara fisier"}</td>
-                  <td className="admin-table-count-cell" data-table-align="center">{subject.allocation_count}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell admin-table-name-cell--xl")}>{subject.title}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-code-cell")}>{subject.id}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell admin-table-wide-cell admin-table-wide-cell--xl")}>{subject.questions_file || "Fara fisier"}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{subject.allocation_count}</td>
                   <td>
-                    <div className="admin-cell-pill-list">
+                    <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-cell-pill-list")}>
                       {subject.contexts.length ? subject.contexts.map((context) => (
                         <CellPill key={`${subject.id}-${context}`}>{context === "elev" ? "Elev" : "Student"}</CellPill>
                       )) : <CellPill tone="warning">Fara alocari</CellPill>}
                     </div>
                   </td>
-                  <td className="admin-table-text-cell">{subject.created_by_email || subject.source}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{subject.created_by_email || subject.source}</td>
                   <td><TableDate value={subject.created_at} /></td>
                 </tr>
               ))}
@@ -1760,16 +1761,16 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`admin-panel ${section === "academic" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "academic"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "academic" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "academic"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Structura academica</h2>
-            <p className="page-copy">Vezi institutiile si facultatile existente, plus dependintele lor principale in comunitate.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Vezi institutiile si facultatile existente, plus dependintele lor principale in comunitate.</p>
           </div>
-          <span className="status-pill is-muted">{`${academicData.counts.programs} programe · ${academicData.counts.cohorts} grupe`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${academicData.counts.programs} programe · ${academicData.counts.cohorts} grupe`}</span>
         </div>
 
-        <div className="admin-toolbar admin-toolbar--academic">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar admin-toolbar--academic")}>
           {!fixedAcademicView ? <AdminTabsContainer role="group" aria-label="Subsectiuni structura academica">
             <FilterButton active={academicSubtab === "institutions"} onClick={() => setAcademicSubtab("institutions")} selected={academicSubtab === "institutions"} icon={Building2} count={academicCounts.institutions}>Institutii</FilterButton>
             <FilterButton active={academicSubtab === "faculties"} onClick={() => setAcademicSubtab("faculties")} selected={academicSubtab === "faculties"} icon={GraduationCap} count={academicCounts.faculties}>Facultati</FilterButton>
@@ -1803,17 +1804,17 @@ export function AdminCenterClient({
                 ]}>
                   {institutionsPageData.rows.map((institution) => (
                     <tr key={institution.id}>
-                      <td className="admin-table-name-cell admin-table-name-cell--xxl">
-                        <button type="button" className="admin-table-link inline-text-action" onClick={() => jumpToFaculties(institution.id)}>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell admin-table-name-cell--xxl")}>
+                        <button type="button" className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-link inline-text-action")} onClick={() => jumpToFaculties(institution.id)}>
                           {institution.name}
                         </button>
                       </td>
                       <td><CellPill>{institution.type === "school" ? "School" : "University"}</CellPill></td>
                       <td>{institution.city}</td>
                       <td>{institution.source}</td>
-                      <td className="admin-table-count-cell" data-table-align="center">{institution.faculty_count}</td>
-                      <td className="admin-table-count-cell" data-table-align="center">{institution.cohort_count}</td>
-                      <td className="admin-table-count-cell" data-table-align="center">{institution.membership_count}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{institution.faculty_count}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{institution.cohort_count}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{institution.membership_count}</td>
                       <td><TableDate value={institution.created_at} /></td>
                     </tr>
                   ))}
@@ -1832,7 +1833,7 @@ export function AdminCenterClient({
             variant="flat"
             actions={
               facultyInstitution ? (
-                <button type="button" className="btn-link secondary admin-clear-filter" onClick={() => setFacultyInstitution("")}>
+                <button type="button" className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-clear-filter")} onClick={() => setFacultyInstitution("")}>
                   {`Reset institutie: ${selectedInstitution?.name || "filtru activ"}`}
                 </button>
               ) : null
@@ -1852,13 +1853,13 @@ export function AdminCenterClient({
                 ]}>
                   {facultiesPageData.rows.map((faculty) => (
                     <tr key={faculty.id}>
-                      <td className="admin-table-name-cell admin-table-name-cell--xl">{faculty.name}</td>
-                      <td className="admin-table-name-cell admin-table-name-cell--xl">{faculty.institution_name}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell admin-table-name-cell--xl")}>{faculty.name}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-name-cell admin-table-name-cell--xl")}>{faculty.institution_name}</td>
                       <td><CellPill>{faculty.unit_type}</CellPill></td>
                       <td>{faculty.source}</td>
-                      <td className="admin-table-count-cell" data-table-align="center">{faculty.program_count}</td>
-                      <td className="admin-table-count-cell" data-table-align="center">{faculty.cohort_count}</td>
-                      <td className="admin-table-count-cell" data-table-align="center">{faculty.membership_count}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{faculty.program_count}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{faculty.cohort_count}</td>
+                      <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-count-cell")} data-table-align="center">{faculty.membership_count}</td>
                       <td><TableDate value={faculty.created_at} /></td>
                     </tr>
                   ))}
@@ -1872,28 +1873,28 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`admin-panel ${section === "free-access" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "free-access"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "free-access" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "free-access"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Acces gratuit</h2>
-            <p className="page-copy">Adauga colegi pe email pentru acces premium gratuit, fara plata.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Adauga colegi pe email pentru acces premium gratuit, fara plata.</p>
           </div>
-          <span className="status-pill is-muted">{`${filteredFreeAccessRows.length} rezultate`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${filteredFreeAccessRows.length} rezultate`}</span>
         </div>
 
-        <form className="admin-free-access-form" onSubmit={handleSubmitFreeAccess}>
-          <label className="admin-free-access-label" htmlFor="free-access-emails">
+        <form className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-free-access-form")} onSubmit={handleSubmitFreeAccess}>
+          <label className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-free-access-label")} htmlFor="free-access-emails">
             Emailuri (cate unul pe linie)
           </label>
           <textarea
             id="free-access-emails"
-            className="admin-free-access-textarea"
+            className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-free-access-textarea")}
             value={freeAccessInput}
             onChange={(event) => setFreeAccessInput(event.target.value)}
             placeholder={"coleg1@email.com\ncoleg2@email.com"}
             rows={6}
           />
-          <label className="admin-free-access-label" htmlFor="free-access-notes">
+          <label className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-free-access-label")} htmlFor="free-access-notes">
             Nota optionala
           </label>
           <input
@@ -1901,25 +1902,25 @@ export function AdminCenterClient({
             type="text"
             value={freeAccessNotes}
             onChange={(event) => setFreeAccessNotes(event.target.value)}
-            className="admin-search-input"
+            className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-search-input")}
             placeholder="Ex: Colegi grupa 401"
           />
-          <div className="admin-free-access-actions">
-            <button type="submit" className="btn-back" disabled={isSubmittingFreeAccess}>
+          <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-free-access-actions")}>
+            <button type="submit" className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-back")} disabled={isSubmittingFreeAccess}>
               <LoadingIconText loading={isSubmittingFreeAccess} loadingLabel="Se salveaza...">
                 Adauga lista
               </LoadingIconText>
             </button>
-            <span className="micro-copy">Accesul se activeaza automat la primul login.</span>
+            <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "micro-copy")}>Accesul se activeaza automat la primul login.</span>
           </div>
-          {freeAccessError ? <p className="admin-inline-error" role="alert">{freeAccessError}</p> : null}
-          {freeAccessSuccess ? <p className="admin-inline-success" role="status">{freeAccessSuccess}</p> : null}
+          {freeAccessError ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-error")} role="alert">{freeAccessError}</p> : null}
+          {freeAccessSuccess ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-success")} role="status">{freeAccessSuccess}</p> : null}
         </form>
 
-        <div className="admin-toolbar">
-          <div className="admin-inline-stats">
-            <span className="status-pill is-muted">{`${freeAccessRows.filter((row) => row.is_active).length} active`}</span>
-            <span className="status-pill is-muted">{`${freeAccessRows.length} totale`}</span>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-stats")}>
+            <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${freeAccessRows.filter((row) => row.is_active).length} active`}</span>
+            <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${freeAccessRows.length} totale`}</span>
           </div>
           <SearchInput value={freeAccessSearch} onChange={setFreeAccessSearch} placeholder="Cauta email, nota sau admin" />
         </div>
@@ -1938,7 +1939,7 @@ export function AdminCenterClient({
             ]}>
               {freeAccessPageData.rows.map((row) => (
                 <tr key={row.id}>
-                  <td className="admin-table-text-cell">{row.email}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.email}</td>
                   <td>
                     <CellPill tone={row.is_active ? "good" : "warning"}>
                       {row.is_active ? "Activ" : "Inactiv"}
@@ -1950,13 +1951,13 @@ export function AdminCenterClient({
                       {row.grant_applied ? "Da" : "In asteptare"}
                     </CellPill>
                   </td>
-                  <td className="admin-table-text-cell">{row.notes || "-"}</td>
-                  <td className="admin-table-text-cell">{row.added_by_email || row.added_by || "-"}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.notes || "-"}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.added_by_email || row.added_by || "-"}</td>
                   <td><TableDate value={row.created_at} /></td>
                   <td>
                     <button
                       type="button"
-                      className="btn-link secondary admin-toggle-btn"
+                      className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
                       onClick={() => handleToggleFreeAccess(row)}
                     >
                       {row.is_active ? "Dezactiveaza" : "Reactiveaza"}
@@ -1972,17 +1973,17 @@ export function AdminCenterClient({
         )}
       </section>
 
-      <section className={`admin-panel ${section === "testimonials" ? "is-visible" : "is-hidden"}`} aria-hidden={section !== "testimonials"}>
-        <div className="dashboard-header admin-section-intro">
+      <section className={moduleClassNames([centerStyles, tabsStyles, metaStyles], `admin-panel ${section === "testimonials" ? "is-visible" : "is-hidden"}`)} aria-hidden={section !== "testimonials"}>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
           <div>
             <h2>Testimoniale</h2>
-            <p className="page-copy">Aproba review-urile trimise si pregateste recompensa aleasa. Utilizatorul o activeaza cand are nevoie.</p>
+            <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "page-copy")}>Aproba review-urile trimise si pregateste recompensa aleasa. Utilizatorul o activeaza cand are nevoie.</p>
           </div>
-          <span className="status-pill is-muted">{`${filteredTestimonials.length} rezultate`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${filteredTestimonials.length} rezultate`}</span>
         </div>
 
-        <div className="admin-toolbar">
-          <AdminTabsContainer className="admin-filter-row" role="group" aria-label="Filtre testimoniale">
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          <AdminTabsContainer className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-filter-row")} role="group" aria-label="Filtre testimoniale">
             <FilterButton active={testimonialsFilter === "all"} onClick={() => setTestimonialsFilter("all")} selected={testimonialsFilter === "all"} icon={Star} count={testimonialCounts.all}>Toate</FilterButton>
             <FilterButton active={testimonialsFilter === "pending"} onClick={() => setTestimonialsFilter("pending")} selected={testimonialsFilter === "pending"} icon={Clock} count={testimonialCounts.pending} actionCount={visibleAdminActionSummary.testimonials || 0}>In asteptare</FilterButton>
             <FilterButton active={testimonialsFilter === "approved"} onClick={() => setTestimonialsFilter("approved")} selected={testimonialsFilter === "approved"} icon={CheckCircle2} count={testimonialCounts.approved}>Aprobate</FilterButton>
@@ -1991,14 +1992,14 @@ export function AdminCenterClient({
           <SearchInput value={testimonialsSearch} onChange={setTestimonialsSearch} placeholder="Cauta email, testimonial sau recompensa" />
         </div>
 
-        <div className="admin-inline-stats">
-          <span className="status-pill is-muted">{`${testimonialRows.filter((row) => row.status === "pending").length} in asteptare`}</span>
-          <span className="status-pill is-muted">{`${testimonialRows.filter((row) => row.status === "approved").length} aprobate`}</span>
-          <span className="status-pill is-muted">{`${testimonialRows.length} totale`}</span>
+        <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-stats")}>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${testimonialRows.filter((row) => row.status === "pending").length} in asteptare`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${testimonialRows.filter((row) => row.status === "approved").length} aprobate`}</span>
+          <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${testimonialRows.length} totale`}</span>
         </div>
 
-        {testimonialActionError ? <p className="admin-inline-error" role="alert">{testimonialActionError}</p> : null}
-        {testimonialActionSuccess ? <p className="admin-inline-success" role="status">{testimonialActionSuccess}</p> : null}
+        {testimonialActionError ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-error")} role="alert">{testimonialActionError}</p> : null}
+        {testimonialActionSuccess ? <p className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-inline-success")} role="status">{testimonialActionSuccess}</p> : null}
 
         {filteredTestimonials.length ? (
           <>
@@ -2014,7 +2015,7 @@ export function AdminCenterClient({
             ]}>
               {testimonialsPageData.rows.map((row) => (
                 <tr key={row.id} data-table-tone={row.status === "pending" ? "review" : undefined}>
-                  <td className="admin-review-cell">
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-review-cell")}>
                     <ReviewDot show={row.status === "pending"} label="Testimonial de aprobat" />
                   </td>
                   <td>
@@ -2022,9 +2023,9 @@ export function AdminCenterClient({
                       {row.status === "approved" ? "Aprobat" : row.status === "rejected" ? "Respins" : "In asteptare"}
                     </CellPill>
                   </td>
-                  <td className="admin-table-text-cell">{row.user_email || row.user_id || "-"}</td>
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{row.user_email || row.user_id || "-"}</td>
                   <td>{testimonialRewardLabel(row.reward_type)}</td>
-                  <td className="admin-table-text-cell admin-table-wide-cell admin-testimonial-cell">
+                  <td className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-table-text-cell admin-table-wide-cell admin-testimonial-cell")}>
                     {row.public_testimonial || row.edited_testimonial}
                   </td>
                   <td><TableDate value={row.created_at} /></td>
@@ -2038,12 +2039,12 @@ export function AdminCenterClient({
                     )}
                   </td>
                   <td>
-                    <div className="admin-testimonial-actions">
+                    <div className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "admin-testimonial-actions")}>
                       {row.status === "pending" ? (
                         <>
                           <button
                             type="button"
-                            className="btn-link secondary admin-toggle-btn"
+                            className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
                             onClick={() => handleTestimonialAction(row, "approve")}
                             disabled={updatingTestimonialId === row.id}
                           >
@@ -2051,7 +2052,7 @@ export function AdminCenterClient({
                           </button>
                           <button
                             type="button"
-                            className="btn-link secondary admin-toggle-btn"
+                            className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
                             onClick={() => handleTestimonialAction(row, "reject")}
                             disabled={updatingTestimonialId === row.id}
                           >
@@ -2059,11 +2060,11 @@ export function AdminCenterClient({
                           </button>
                         </>
                       ) : (
-                        <span className="micro-copy">{row.admin_note || "-"}</span>
+                        <span className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "micro-copy")}>{row.admin_note || "-"}</span>
                       )}
                       <button
                         type="button"
-                        className="btn-link secondary admin-toggle-btn"
+                        className={moduleClassNames([centerStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
                         onClick={() => handleTestimonialDelete(row)}
                         disabled={updatingTestimonialId === row.id}
                         title="Sterge reviewul si permite utilizatorului sa trimita din nou"

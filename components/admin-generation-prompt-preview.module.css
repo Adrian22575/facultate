@@ -1,0 +1,39 @@
+.admin-generation-preview { flex: 1 0 100%; min-width: 0; border-top: 1px solid #dce6f3; padding-top: 11px; }
+
+ .admin-generation-preview > summary { width: fit-content; color: #245c9f; font-size: .84rem; font-weight: 850; cursor: pointer; }
+
+ .admin-generation-preview-body { display: grid; gap: 12px; margin-top: 12px; }
+
+ .admin-generation-preview-body > p { max-width: 760px; margin: 0; color: #58708f; font-size: .84rem; line-height: 1.5; }
+
+ .admin-generation-preview-meta { display: flex; flex-wrap: wrap; gap: 7px; }
+
+ .admin-generation-preview-meta span { padding: 5px 8px; border: 1px solid #d3e1f3; border-radius: 999px; color: #506b8d; font-size: .76rem; background: #f8fbff; }
+
+ .admin-generation-preview-meta strong { color: #1d4e83; }
+
+ .admin-generation-preview-list { display: grid; gap: 10px; }
+
+ .admin-generation-preview-list article { display: grid; gap: 9px; min-width: 0; padding: 13px; border: 1px solid #d7e4f4; border-radius: 13px; background: #fbfdff; }
+
+ .admin-generation-preview-list header { display: flex; align-items: center; gap: 9px; }
+
+ .admin-generation-preview-list header > span { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; color: #0e58bb; font-size: .75rem; font-weight: 850; background: #e7f1ff; }
+
+ .admin-generation-preview-list header div { display: grid; gap: 2px; min-width: 0; }
+
+ .admin-generation-preview-list header strong { color: #244875; font-size: .9rem; }
+
+ .admin-generation-preview-list header small { color: #69809e; font-size: .76rem; }
+
+ .admin-generation-preview-list section { display: grid; gap: 5px; min-width: 0; }
+
+ .admin-generation-preview-list section > span,
+ .admin-generation-preview-tools,
+ .admin-generation-preview-context { display: inline-flex; align-items: center; gap: 6px; margin: 0; color: #557294; font-size: .78rem; font-weight: 750; }
+
+ .admin-generation-preview-list pre { max-height: 260px; margin: 0; overflow: auto; padding: 11px; border: 1px solid #dce7f4; border-radius: 9px; color: #24466f; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; line-height: 1.52; white-space: pre-wrap; overflow-wrap: anywhere; background: #f6faff; }
+
+ .admin-generation-preview-context { color: #397158; }
+
+ .admin-generation-preview-note { padding: 10px 11px; border-radius: 10px; color: #49698e; background: #eef6ff; }

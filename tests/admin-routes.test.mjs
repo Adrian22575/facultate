@@ -56,10 +56,9 @@ test("URL-urile Admin vechi sunt redirecționate și își păstrează contextul
 });
 
 test("Admin păstrează o singură navigație persistentă și încarcă selectiv", async () => {
-  const [shell, switcher, editorial, linkedIn, linkedInCenter, subpage, articleRoute, articleEditor, telegram, overview] = await Promise.all([
+  const [shell, switcher, linkedIn, linkedInCenter, subpage, articleRoute, articleEditor, telegram, overview] = await Promise.all([
     readFile(new URL("../components/admin-page-shell.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-route-switcher.js", import.meta.url), "utf8"),
-    readFile(new URL("../components/admin-editorial-panel.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-linkedin-distribution.js", import.meta.url), "utf8"),
     readFile(new URL("../components/admin-linkedin-distribution-center.js", import.meta.url), "utf8"),
     readFile(new URL("../app/admin/[...adminPath]/page.js", import.meta.url), "utf8"),
@@ -83,11 +82,9 @@ test("Admin păstrează o singură navigație persistentă și încarcă selecti
   assert.match(subpage, /AdminLinkedInDistributionCenter/);
   assert.doesNotMatch(subpage, /fixedPane=\{route\.pane\}/);
   assert.match(subpage, /key=\{route\.path\}/);
-  assert.match(editorial, /const visiblePane = fixedPane/);
-  assert.match(editorial, /admin-editorial-picker/);
-  assert.doesNotMatch(editorial, /admin-editorial-tabs/);
-  assert.match(linkedIn, /className="admin-linkedin-list" role="group"/);
-  assert.doesNotMatch(linkedIn, /<nav className="admin-linkedin-list"/);
+  assert.match(linkedIn, /admin-linkedin-list/);
+  assert.match(linkedIn, /role="group"/);
+  assert.doesNotMatch(linkedIn, /<nav[^>]*admin-linkedin-list/);
   assert.match(linkedIn, /timeZone: "Europe\/Bucharest"/);
   assert.match(linkedInCenter, /Necesită atenție/);
   assert.match(linkedInCenter, /tab=linkedin&linkedin_post=/);

@@ -1,32 +1,28 @@
-.anchor { }
-
-
-
-:where(.anchor, [data-admin-root]) :global(.admin-upload-errors-cell) {
+.admin-upload-errors-cell {
   display: grid;
   gap: 4px;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-upload-errors-cell) strong {
+ .admin-upload-errors-cell strong {
   font-size: 0.96rem;
   font-weight: 700;
   color: var(--ink);
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-upload-errors-cell) span {
+ .admin-upload-errors-cell span {
   color: var(--muted);
   font-size: 0.86rem;
   font-weight: 500;
   line-height: 1.45;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-upload-errors-actions) {
+ .admin-upload-errors-actions {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-upload-errors-link) {
+ .admin-upload-errors-link {
   white-space: nowrap;
 }

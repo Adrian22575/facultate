@@ -1,3 +1,4 @@
+import { moduleClassNames } from "@/lib/ui/module-class-names";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,8 @@ import { EditorialArticlePage, EditorialShell } from "@/components/editorial-pag
 import { requireAdmin } from "@/lib/admin";
 import { getEditorialAdminArticleById } from "@/lib/editorial/server";
 import { getPublicSiteUrl } from "@/lib/site";
+
+import previewStyles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +25,7 @@ export default async function AdminEditorialPreviewPage({ params }) {
 
   return (
     <EditorialShell>
-      <aside className="editorial-admin-preview" role="status">
+      <aside className={moduleClassNames(previewStyles, "editorial-admin-preview")} role="status">
         <div>
           <span>Previzualizare privată</span>
           <strong>Vezi articolul exact cum va arăta, fără să îl publici.</strong>

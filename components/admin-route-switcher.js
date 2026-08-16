@@ -1,10 +1,11 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
 import { usePathname, useRouter } from "next/navigation";
 
 import { ADMIN_ROUTE_GROUPS } from "@/lib/admin-routes";
 
-import "./admin-route-switcher.module.css";
+import switcherStyles from "./admin-route-switcher.module.css";
 
 export function AdminRouteSwitcher() {
   const pathname = usePathname();
@@ -12,7 +13,7 @@ export function AdminRouteSwitcher() {
   const currentPath = pathname === "/admin" ? "/admin" : pathname;
 
   return (
-    <label className="admin-route-switcher">
+    <label className={moduleClassNames(switcherStyles, "admin-route-switcher")}>
       <span>Schimbă pagina</span>
       <select value={currentPath} onChange={(event) => router.push(event.target.value)}>
         <option value="/admin">Prezentare generală</option>

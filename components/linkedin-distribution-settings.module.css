@@ -1,0 +1,206 @@
+.admin-linkedin-connection-state {
+  padding: 7px 11px;
+  border: 1px solid #d1ddea;
+  border-radius: 999px;
+  background: #f7f9fc;
+}
+
+ .admin-linkedin-connection-state:global(.is-connected) { border-color: #a9ddc2; color: #0c754b; background: #edf9f3; }
+
+ .admin-linkedin-connection-state:global(.is-offline) { color: #7a5a26; background: #fff8e9; }
+
+ .admin-linkedin-controls {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 13px;
+  border: 1px solid #cfdef0;
+  border-radius: 14px;
+  background: #f7faff;
+}
+
+ .admin-linkedin-controls > label:first-child { display: grid; gap: 5px; min-width: 190px; }
+
+ .admin-linkedin-model { display: grid; gap: 5px; min-width: 190px; }
+
+ .admin-linkedin-model > span { display: inline-flex; align-items: center; gap: 5px; }
+
+ .admin-linkedin-controls label > span { color: #385979; font-size: .78rem; font-weight: 800; }
+
+ .admin-linkedin-controls select {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid #bfd3eb;
+  border-radius: 10px;
+  color: #173c68;
+  font: inherit;
+  background: #fff;
+}
+
+ .admin-linkedin-telegram {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid #bfd3eb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+ .admin-linkedin-telegram input { width: 16px; height: 16px; accent-color: #0a66c2; }
+
+ .admin-linkedin-connect {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 10px;
+  font-size: .82rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+ .admin-linkedin-disconnect {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 10px;
+  font-size: .82rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+ .admin-linkedin-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 10px;
+  font-size: .82rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+ .admin-linkedin-connect { border: 1px solid #0a66c2; color: #fff; background: #0a66c2; }
+
+ .admin-linkedin-connect:hover { border-color: #004182; color: #fff; background: #004182; }
+
+ .admin-linkedin-connect:focus-visible { border-color: #004182; color: #fff; background: #004182; }
+
+ .admin-linkedin-connect:hover svg { color: #fff; stroke: currentColor; }
+
+ .admin-linkedin-connect:focus-visible svg { color: #fff; stroke: currentColor; }
+
+ .admin-linkedin-connect:global(.is-disabled) { pointer-events: none; border-color: #d2dbe7; color: #8191a4; background: #eef2f6; }
+
+ .admin-linkedin-disconnect { border: 1px solid #e1b5b8; color: #9b3039; background: #fff; }
+
+ .admin-linkedin-disconnect:hover { border-color: #bb4f59; color: #fff; background: #ad3d47; }
+
+ .admin-linkedin-disconnect:focus-visible { border-color: #bb4f59; color: #fff; background: #ad3d47; }
+
+ .admin-linkedin-disconnect:hover svg { color: #fff; stroke: currentColor; }
+
+ .admin-linkedin-disconnect:focus-visible svg { color: #fff; stroke: currentColor; }
+
+ .admin-linkedin-secondary { border: 1px solid #bfd3eb; color: #24527e; background: #fff; }
+
+ .admin-linkedin-secondary:hover { border-color: #7ea6d3; color: #153f6d; background: #edf5ff; }
+
+ .admin-linkedin-secondary:focus-visible { border-color: #7ea6d3; color: #153f6d; background: #edf5ff; }
+
+ .admin-linkedin-secondary:hover svg { color: currentColor; stroke: currentColor; }
+
+ .admin-linkedin-secondary:focus-visible svg { color: currentColor; stroke: currentColor; }
+
+ .admin-linkedin-controls button:disabled { cursor: not-allowed; opacity: .55; }
+
+ .admin-linkedin-config-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #5c4b24;
+  font-size: .84rem;
+  line-height: 1.45;
+  background: #fff8e8;
+}
+
+ .admin-linkedin-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #5c4b24;
+  font-size: .84rem;
+  line-height: 1.45;
+  background: #fff8e8;
+}
+
+ .admin-linkedin-message { color: #185d43; background: #edf8f3; }
+
+ .admin-linkedin-message:global(.is-info) { color: #245b91; background: #edf5ff; }
+
+ .admin-linkedin-message:global(.is-warning) { color: #79520a; background: #fff8e8; }
+
+ .admin-linkedin-message:global(.is-error) { color: #9a3038; background: #fff0f1; }
+
+ .admin-linkedin-settings { border: 1px solid #d4e2f1; border-radius: 12px; background: #fbfdff; }
+
+ .admin-linkedin-settings > summary { display: flex; align-items: center; gap: 7px; padding: 11px 12px; color: #294e78; font-size: .84rem; font-weight: 850; cursor: pointer; }
+
+ .admin-linkedin-settings[open] > summary { border-bottom: 1px solid #dce7f4; }
+
+ .admin-linkedin-settings > .admin-linkedin-controls { border: 0; border-radius: 0; }
+
+ .admin-linkedin-settings > .admin-linkedin-config-note { margin: 0 12px 12px; }
+
+ .admin-linkedin-settings > :global(.admin-linkedin-default-template) { margin: 0 12px 12px; }
+
+@media (max-width: 680px) {
+   .admin-linkedin-connection-state { grid-column: 2; justify-self: start; }
+}
+
+@media (max-width: 680px) {
+   .admin-linkedin-controls { display: grid; grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+   .admin-linkedin-controls > label:first-child { min-width: 0; }
+}
+
+@media (max-width: 680px) {
+   .admin-linkedin-model { min-width: 0; }
+}
+
+@media (max-width: 680px) {
+   .admin-linkedin-controls > * { width: 100%; }
+}
+
+@media (max-width: 680px) {
+   .admin-linkedin-connect { width: 100%; }
+}
+
+@media (max-width: 680px) {
+   .admin-linkedin-disconnect { width: 100%; }
+}
+
+ :global(.admin-linkedin-refinements) .admin-linkedin-secondary { min-height: 34px; padding: 0 10px; font-size: .74rem; }

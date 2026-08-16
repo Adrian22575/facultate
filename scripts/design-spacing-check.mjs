@@ -81,6 +81,23 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/admin-center-client.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-openai-logs-panel.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-upload-errors-panel.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-content-library.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-dictionary-index.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-dictionary-list.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-dictionary-panel.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-dictionary-workflow.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-editorial-article-page.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-editorial-article-workflow.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-editorial-articles-page.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-editorial-library-list.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-editorial-automation-settings.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-generation-prompt-preview.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-linkedin-distribution-center.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-linkedin-distribution.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/linkedin-distribution-settings.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/linkedin-generation-options.module.css", importantCeiling: 0 }
+  ,{ relativePath: "app/admin/articole/[articleId]/preview/page.module.css", importantCeiling: 0 }
+  ,{ relativePath: "app/admin/dictionar/[termId]/preview/page.module.css", importantCeiling: 0 }
 ];
 const layoutPath = path.join(root, "app", "layout.js");
 const rulesPath = path.join(root, "docs", "design", "LAYOUT_SPACING_RULES.md");
@@ -154,11 +171,12 @@ for (const { selector, css } of layoutContracts) {
   }
 }
 
-const linkedInCardSelector = ".admin-route-content > .admin-linkedin-center";
-const linkedInCardStart = legacyCss.indexOf(linkedInCardSelector);
-const linkedInCardEnd = legacyCss.indexOf("}", linkedInCardStart);
+const linkedInCardCss = fs.readFileSync(path.join(root, "components/admin-linkedin-distribution-center.module.css"), "utf8");
+const linkedInCardSelector = ".admin-route-content) > .admin-linkedin-center";
+const linkedInCardStart = linkedInCardCss.indexOf(linkedInCardSelector);
+const linkedInCardEnd = linkedInCardCss.indexOf("}", linkedInCardStart);
 const linkedInCardDeclaration = linkedInCardStart >= 0 && linkedInCardEnd >= linkedInCardStart
-  ? legacyCss.slice(linkedInCardStart, linkedInCardEnd + 1)
+  ? linkedInCardCss.slice(linkedInCardStart, linkedInCardEnd + 1)
   : "";
 if (!/padding:\s*var\(--layout-card-padding\)/.test(linkedInCardDeclaration)) {
   failures.push("Cardul principal LinkedIn trebuie să declare paddingul standard de layout.");
@@ -248,6 +266,28 @@ for (const { relativePath, css, importantCeiling } of colocatedCssSources) {
 
 if (/\.free-tools?-[A-Za-z_][\w-]*/.test(legacyCss)) {
   failures.push("Selectorii globali free-tool-* și free-tools-* au fost retrași; folosește CSS Modules colocate.");
+}
+
+const sharedAdminSelectorAllowlist = new Set([
+  "admin-tab-action-count",
+  "admin-table-code-cell",
+  "admin-table-count-cell",
+  "admin-table-date-cell",
+  "admin-table-link",
+  "admin-table-name-cell",
+  "admin-table-name-cell--xl",
+  "admin-table-name-cell--xxl",
+  "admin-table-pill",
+  "admin-table-text-cell",
+  "admin-table-wide-cell",
+  "admin-table-wide-cell--xl"
+]);
+const forbiddenAdminSelectors = Array.from(
+  legacyCss.matchAll(/\.([A-Za-z_][\w-]*admin[A-Za-z_\w-]*|admin-[A-Za-z_][\w-]*)/g),
+  (match) => match[1]
+).filter((selector) => selector.startsWith("admin-") && !sharedAdminSelectorAllowlist.has(selector));
+if (forbiddenAdminSelectors.length) {
+  failures.push(`Selectorii Admin retrași au reapărut în globals.css: ${[...new Set(forbiddenAdminSelectors)].join(", ")}.`);
 }
 
 if (/\.about-[A-Za-z_][\w-]*/.test(legacyCss)) {

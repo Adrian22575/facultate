@@ -1,14 +1,10 @@
-.anchor { }
-
-
-
-:where(.anchor, [data-admin-root]):global(.admin-overview-grid) {
+.admin-overview-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) {
+ .admin-overview-card {
   display: grid;
   gap: 6px;
   padding: 14px;
@@ -17,66 +13,66 @@
   background: #fff;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) strong {
+ .admin-overview-card strong {
   color: var(--primary-dark);
   font-size: 1.5rem;
   line-height: 1.1;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-grid-compact) {
+ .admin-overview-grid-compact {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 @media (max-width: 640px) {
 
-  :where(.anchor, [data-admin-root]):global(.admin-overview-grid) {
+  .admin-overview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-:where(.anchor, [data-admin-root]):global(.admin-overview-grid) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.admin-overview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 14px; overflow: hidden; padding: 20px; border: 1px solid #d6e3f1; border-radius: 20px; background: rgba(255,255,255,.94); box-shadow: 0 12px 28px rgba(30, 70, 115, .055); }
+ .admin-overview-card { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 14px; overflow: hidden; padding: 20px; border: 1px solid #d6e3f1; border-radius: 20px; background: rgba(255,255,255,.94); box-shadow: 0 12px 28px rgba(30, 70, 115, .055); }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-index) { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #c7dbf1; border-radius: 12px; color: #1760ba; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; font-weight: 850; background: #edf5ff; }
+ .admin-overview-index { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #c7dbf1; border-radius: 12px; color: #1760ba; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; font-weight: 850; background: #edf5ff; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card-head) { display: grid; gap: 3px; }
+ .admin-overview-card-head { display: grid; gap: 3px; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) h2 { margin: 0; color: #183d67; font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; }
+ .admin-overview-card h2 { margin: 0; color: #183d67; font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) p { margin: 0; color: #71839a; font-size: .78rem; }
+ .admin-overview-card p { margin: 0; color: #71839a; font-size: .78rem; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) ul { grid-column: 1 / -1; display: grid; gap: 4px; margin: 3px 0 0; padding: 0; list-style: none; }
+ .admin-overview-card ul { grid-column: 1 / -1; display: grid; gap: 4px; margin: 3px 0 0; padding: 0; list-style: none; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li a { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 11px; border-radius: 12px; color: #315779; text-decoration: none; }
+ .admin-overview-card li a { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 11px; border-radius: 12px; color: #315779; text-decoration: none; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li a:hover { color: #0e56a7; background: #f0f6fd; outline: none; }
+ .admin-overview-card li a:hover { color: #0e56a7; background: #f0f6fd; outline: none; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li a:focus-visible { color: #0e56a7; background: #f0f6fd; outline: none; }
+ .admin-overview-card li a:focus-visible { color: #0e56a7; background: #f0f6fd; outline: none; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li span { display: grid; gap: 2px; }
+ .admin-overview-card li span { display: grid; gap: 2px; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li strong { font-size: .85rem; }
+ .admin-overview-card li strong { font-size: .85rem; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li small { overflow: hidden; color: #71839a; font-size: .72rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+ .admin-overview-card li small { overflow: hidden; color: #71839a; font-size: .72rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li svg { color: #5680ad; }
+ .admin-overview-card li svg { color: #5680ad; }
 
-@media (max-width: 1100px) { :where(.anchor, [data-admin-root]):global(.admin-overview-grid) { grid-template-columns: 1fr; }
+@media (max-width: 1100px) { .admin-overview-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 540px) { :where(.anchor, [data-admin-root]) :global(.admin-overview-card) { grid-template-columns: 34px minmax(0, 1fr); padding: 15px; }
+@media (max-width: 540px) {  .admin-overview-card { grid-template-columns: 34px minmax(0, 1fr); padding: 15px; }
 }
 
-@media (max-width: 540px) {:where(.anchor, [data-admin-root]) :global(.admin-overview-index) { width: 32px; height: 32px; }
+@media (max-width: 540px) { .admin-overview-index { width: 32px; height: 32px; }
 }
 
-@media (max-width: 540px) {:where(.anchor, [data-admin-root]) :global(.admin-overview-card) li small { white-space: normal; }
+@media (max-width: 540px) { .admin-overview-card li small { white-space: normal; }
 }
 
 @media (max-width: 580px) {
 
-  :where(.anchor, [data-admin-root]):global(.admin-overview-grid) {
+  .admin-overview-grid {
     grid-template-columns: 1fr;
   }
 }

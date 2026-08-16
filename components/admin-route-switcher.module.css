@@ -1,19 +1,15 @@
-.anchor { }
+.admin-route-switcher { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: #647b95; font-size: .73rem; font-weight: 800; }
 
+ .admin-route-switcher select { width: 190px; min-height: 36px; border: 1px solid #bfd2e7; border-radius: 10px; padding: 0 30px 0 10px; color: #174571; font: inherit; font-weight: 800; background: #f8fbff; cursor: pointer; }
 
+ .admin-route-switcher select:hover { border-color: #8eb3dc; background: #fff; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: #647b95; font-size: .73rem; font-weight: 800; }
+ .admin-route-switcher select:focus-visible { border-color: #1764d5; outline: 3px solid rgba(23, 100, 213, .14); outline-offset: 1px; }
 
-:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) select { width: 190px; min-height: 36px; border: 1px solid #bfd2e7; border-radius: 10px; padding: 0 30px 0 10px; color: #174571; font: inherit; font-weight: 800; background: #f8fbff; cursor: pointer; }
+@media (max-width: 820px) { .admin-route-switcher { justify-content: space-between; } }
 
-:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) select:hover { border-color: #8eb3dc; background: #fff; }
+@media (max-width: 820px) { .admin-route-switcher select { width: min(68vw, 280px); } }
 
-:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) select:focus-visible { border-color: #1764d5; outline: 3px solid rgba(23, 100, 213, .14); outline-offset: 1px; }
+@media (max-width: 540px) { .admin-route-switcher { align-items: stretch; flex-direction: column; gap: 5px; } }
 
-@media (max-width: 820px) {:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) { justify-content: space-between; } }
-
-@media (max-width: 820px) {:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) select { width: min(68vw, 280px); } }
-
-@media (max-width: 540px) {:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) { align-items: stretch; flex-direction: column; gap: 5px; } }
-
-@media (max-width: 540px) {:where(.anchor, [data-admin-root]) :global(.admin-route-switcher) select { width: 100%; min-height: 42px; } }
+@media (max-width: 540px) { .admin-route-switcher select { width: 100%; min-height: 42px; } }

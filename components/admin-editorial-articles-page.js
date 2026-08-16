@@ -1,5 +1,10 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import libraryStyles from "./admin-content-library.module.css";
+import pageStyles from "./admin-editorial-articles-page.module.css";
+import listStyles from "./admin-editorial-library-list.module.css";
+
 import {
   AlertTriangle,
   CheckCircle2,
@@ -236,8 +241,8 @@ export function AdminEditorialArticlesPage({
   }
 
   return (
-    <section className="admin-articles-index">
-      <div className="admin-articles-primary-row">
+    <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-index")}>
+      <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-primary-row")}>
         <div>
           <span>Flux editorial</span>
           <strong>Gestionează articolele de la ciornă la publicare</strong>
@@ -245,7 +250,7 @@ export function AdminEditorialArticlesPage({
         </div>
         <button
           type="button"
-          className="btn-link admin-articles-generate"
+          className={moduleClassNames([libraryStyles, pageStyles, listStyles], "btn-link admin-articles-generate")}
           onClick={generateDraft}
           disabled={Boolean(busy) || Boolean(activeRun)}
         >
@@ -258,16 +263,16 @@ export function AdminEditorialArticlesPage({
         </button>
       </div>
 
-      <section className="admin-articles-automation" aria-label="Generare automată">
-        <div className="admin-articles-automation-summary">
-          <span className="admin-articles-automation-icon" aria-hidden="true">
+      <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation")} aria-label="Generare automată">
+        <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation-summary")}>
+          <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation-icon")} aria-hidden="true">
             <Clock3 size={20} />
           </span>
           <div>
             <strong>Generare automată</strong>
             <p>Programarea pregătește articole noi și păstrează controlul editorial în această listă.</p>
             <div>
-              <span className={automationSettings?.enabled ? "is-active" : ""}>
+              <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], automationSettings?.enabled ? "is-active" : "")}>
                 {automationSettings?.enabled ? "Activă" : "Oprită"}
               </span>
               <span>{frequencyLabel(automationSettings)}</span>
@@ -276,7 +281,7 @@ export function AdminEditorialArticlesPage({
             </div>
           </div>
         </div>
-        <details className="admin-articles-automation-settings">
+        <details className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation-settings")}>
           <summary>
             <Settings2 size={16} aria-hidden="true" />
             Configurează
@@ -290,7 +295,7 @@ export function AdminEditorialArticlesPage({
       </section>
 
       {liveRun ? (
-        <section className="admin-editorial-live-run" aria-live="polite">
+        <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-editorial-live-run")} aria-live="polite">
           <LoadingSpinner size={23} />
           <div>
             <span>Generare în curs</span>
@@ -298,7 +303,7 @@ export function AdminEditorialArticlesPage({
             <p>Poți părăsi pagina. Starea se actualizează automat când revii.</p>
           </div>
           <div
-            className="admin-editorial-live-progress"
+            className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-editorial-live-progress")}
             aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 8}%`}
           >
             <span>{RUN_PROGRESS[liveRun.status] || 8}%</span>
@@ -309,21 +314,21 @@ export function AdminEditorialArticlesPage({
 
       {persistedGenerationMessage ? (
         <p
-          className={`admin-editorial-action-message is-${persistedGenerationMessage.tone}`}
+          className={moduleClassNames([libraryStyles, pageStyles, listStyles], `admin-editorial-action-message is-${persistedGenerationMessage.tone}`)}
           role="status"
         >
           {persistedGenerationMessage.text}
         </p>
       ) : null}
-      {warning ? <p className="admin-dictionary-message is-error">{warning}</p> : null}
+      {warning ? <p className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-dictionary-message is-error")}>{warning}</p> : null}
 
-      <div className="admin-articles-stats" aria-label="Rezumat articole">
+      <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-stats")} aria-label="Rezumat articole">
         <article>
           <span>Publicate</span>
           <strong>{counts.published}</strong>
           <small>vizibile în secțiunea publică</small>
         </article>
-        <article className={counts.review ? "is-attention" : ""}>
+        <article className={moduleClassNames([libraryStyles, pageStyles, listStyles], counts.review ? "is-attention" : "")}>
           <span>Necesită revizuire</span>
           <strong>{counts.review}</strong>
           <small>{counts.review ? "articole care cer intervenție" : "nimic urgent acum"}</small>
@@ -335,8 +340,8 @@ export function AdminEditorialArticlesPage({
         </article>
       </div>
 
-      <section className="admin-articles-library" aria-labelledby="admin-articles-library-title">
-        <div className="admin-articles-library-head">
+      <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-library")} aria-labelledby="admin-articles-library-title">
+        <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-library-head")}>
           <div>
             <span>Bibliotecă editorială</span>
             <h2 id="admin-articles-library-title">Toate articolele</h2>
@@ -349,17 +354,17 @@ export function AdminEditorialArticlesPage({
             compact
             loading={searchBusy}
             clearable
-            className="admin-articles-search"
+            className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-search")}
           />
         </div>
 
-        <div className="admin-articles-filter-tabs" role="group" aria-label="Filtrează articolele">
+        <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-filter-tabs")} role="group" aria-label="Filtrează articolele">
           {ARTICLE_FILTERS.map((item) => (
             <button
               key={item.id}
               type="button"
               aria-pressed={filter === item.id}
-              className={filter === item.id ? "is-active" : ""}
+              className={moduleClassNames([libraryStyles, pageStyles, listStyles], filter === item.id ? "is-active" : "")}
               onClick={() => setFilter(item.id)}
             >
               {item.label}
@@ -369,20 +374,20 @@ export function AdminEditorialArticlesPage({
         </div>
 
         {visibleArticles.length ? (
-          <div className="admin-articles-list">
+          <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-list")}>
             {visibleArticles.map((article) => {
               const status = articleStatus(article);
               const reviewRequired = needsReview(article);
               return (
-                <article className="admin-article-row" key={article.id}>
-                  <span className="admin-article-row-icon" aria-hidden="true">
+                <article className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row")} key={article.id}>
+                  <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-icon")} aria-hidden="true">
                     <Newspaper size={20} />
                   </span>
-                  <div className="admin-article-row-copy">
+                  <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-copy")}>
                     <div>
-                      <span className={`admin-article-status is-${status.tone}`}>{status.label}</span>
+                      <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], `admin-article-status is-${status.tone}`)}>{status.label}</span>
                       {reviewRequired ? (
-                        <span className="admin-article-status is-review">Necesită revizuire</span>
+                        <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-status is-review")}>Necesită revizuire</span>
                       ) : null}
                     </div>
                     <h3>{article.title}</h3>
@@ -395,13 +400,13 @@ export function AdminEditorialArticlesPage({
                       {article.primary_topic || "Fără subiect principal"}
                     </small>
                     {reviewRequired ? (
-                      <span className="admin-article-row-warning">
+                      <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-warning")}>
                         <AlertTriangle size={14} aria-hidden="true" />
                         Verificarea factuală trebuie revizuită înainte de publicare.
                       </span>
                     ) : null}
                   </div>
-                  <div className="admin-article-row-actions">
+                  <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-actions")}>
                     <span>
                       <strong>{article.quality_score ?? "—"}</strong>
                       <small>scor</small>
@@ -416,7 +421,7 @@ export function AdminEditorialArticlesPage({
             })}
           </div>
         ) : (
-          <div className="admin-articles-empty">
+          <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-empty")}>
             <ShieldCheck size={22} aria-hidden="true" />
             <strong>Nu am găsit articole potrivite</strong>
             <p>Schimbă filtrul sau șterge termenul de căutare.</p>
@@ -434,12 +439,12 @@ export function AdminEditorialArticlesPage({
       </section>
 
       <details
-        className="admin-run-history admin-articles-run-history"
+        className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-run-history admin-articles-run-history")}
         open={runs.some((run) => ["rejected", "failed"].includes(run.status))}
       >
         <summary>Istoric generări ({runs.length})</summary>
         {runs.length ? (
-          <div className="admin-editorial-runs">
+          <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-editorial-runs")}>
             {runs.map((run) => (
               <article key={run.id}>
                 <strong>{run.run_date || `${run.week_start} – ${run.week_end}`}</strong>

@@ -76,7 +76,6 @@ const LEGACY_UI_BASELINE = {
   "components/admin-editorial-article-page.js": { "btn-link": 5, "btn-back": 4 },
   "components/admin-editorial-articles-page.js": { "btn-link": 1, button: 1 },
   "components/admin-editorial-automation-settings.js": { "btn-link": 1 },
-  "components/admin-editorial-panel.js": { "btn-link": 3, "btn-back": 5 },
   "components/admin-linkedin-distribution-center.js": { "btn-back": 2 },
   "components/admin-linkedin-distribution.js": { "btn-link": 3, "btn-back": 1 },
   "components/admin-openai-logs-panel.js": { "btn-link": 6, secondary: 6, "error-state": 2, "status-pill": 3 },
@@ -120,7 +119,6 @@ const LEGACY_SURFACE_BASELINE = {
   "app/setup/page.js": { surface: 6, "draft-card": 1, "empty-state": 2 },
   "app/testele-mele/page.js": { surface: 4, "draft-card": 3, "empty-state": 3 },
   "components/admin-dictionary-panel.js": { surface: 1 },
-  "components/admin-editorial-panel.js": { surface: 1 },
   "components/ai-activity-center-client.js": { surface: 1, "ui-panel-card": 1 },
   "components/ai-job-status-client.js": { surface: 4 },
   "components/ai-question-bank-review-client.js": { surface: 4, "draft-card": 4 },
@@ -312,6 +310,45 @@ function inspectElement(filePath, node, context, ancestors) {
   const classTokens = staticClassTokens(classAttribute);
 
   for (const token of classTokens) {
+    const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+    const scopedAdminOwners = new Set([
+      "components/admin-page-shell.js",
+      "components/admin-route-switcher.js",
+      "components/admin-overview.js",
+      "components/admin-tabs-container.js",
+      "components/admin-table-meta.js",
+      "components/admin-center-client.js",
+      "components/admin-openai-logs-panel.js",
+      "components/admin-upload-errors-panel.js",
+      "components/admin-dictionary-index.js",
+      "components/admin-dictionary-panel.js",
+      "components/admin-editorial-articles-page.js",
+      "components/admin-editorial-article-page.js",
+      "components/admin-editorial-automation-settings.js",
+      "components/admin-generation-prompt-preview.js",
+      "components/admin-linkedin-distribution-center.js",
+      "components/admin-linkedin-distribution.js",
+      "components/linkedin-distribution-settings.js",
+      "app/admin/articole/[articleId]/preview/page.js",
+      "app/admin/dictionar/[termId]/preview/page.js"
+    ]);
+    const sharedAdminTokens = new Set([
+      "admin-tab-action-count",
+      "admin-table-code-cell",
+      "admin-table-count-cell",
+      "admin-table-date-cell",
+      "admin-table-link",
+      "admin-table-name-cell",
+      "admin-table-name-cell--xl",
+      "admin-table-name-cell--xxl",
+      "admin-table-pill",
+      "admin-table-text-cell",
+      "admin-table-wide-cell",
+      "admin-table-wide-cell--xl"
+    ]);
+    if (/^admin-/.test(token) && !sharedAdminTokens.has(token) && !scopedAdminOwners.has(relativePath)) {
+      report(filePath, opening, `Clasa Admin colocată ${token} poate fi folosită numai de proprietarii Admin aprobați.`);
+    }
     const sharedNota5PlusTokens = new Set([
       "nota5plus-page",
       "nota5plus-container",

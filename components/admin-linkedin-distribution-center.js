@@ -1,5 +1,8 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import centerStyles from "./admin-linkedin-distribution-center.module.css";
+
 import { ArrowRight, CircleAlert, Clock3, Search, Send } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -97,37 +100,37 @@ export function AdminLinkedInDistributionCenter({ data, initialPostId = "" }) {
   const hasActiveFilters = filter !== "attention" || Boolean(query.trim());
 
   return (
-    <section className="admin-linkedin-center" aria-labelledby="linkedin-center-title">
-      <header className="admin-linkedin-center-head">
-        <div className="admin-linkedin-title-mark" aria-hidden="true"><span className="admin-linkedin-brand-glyph">in</span></div>
+    <section className={moduleClassNames(centerStyles, "admin-linkedin-center")} aria-labelledby="linkedin-center-title">
+      <header className={moduleClassNames(centerStyles, "admin-linkedin-center-head")}>
+        <div className={moduleClassNames(centerStyles, "admin-linkedin-title-mark")} aria-hidden="true"><span className={moduleClassNames(centerStyles, "admin-linkedin-brand-glyph")}>in</span></div>
         <div>
           <span>Flux editorial</span>
           <h2 id="linkedin-center-title">Distribuire LinkedIn</h2>
           <p>Urmărește ce postări necesită atenție și deschide articolul când ai nevoie de context sau editare.</p>
         </div>
-        <span className={`admin-linkedin-connection-state is-${connected ? "connected" : "offline"}`}>
+        <span className={moduleClassNames(centerStyles, `admin-linkedin-connection-state is-${connected ? "connected" : "offline"}`)}>
           {connected ? "Conectat" : data?.connection?.status === "connection_expired" ? "Expirat" : "Neconectat"}
         </span>
       </header>
 
       <LinkedInDistributionSettings data={data} />
 
-      {data?.warning ? <p className="admin-linkedin-message is-error" role="status">{data.warning}</p> : null}
+      {data?.warning ? <p className={moduleClassNames(centerStyles, "admin-linkedin-message is-error")} role="status">{data.warning}</p> : null}
 
       {!connected ? (
-        <div className="admin-linkedin-center-notice">
+        <div className={moduleClassNames(centerStyles, "admin-linkedin-center-notice")}>
           <CircleAlert size={18} aria-hidden="true" />
           <div><strong>Conexiunea LinkedIn nu este disponibilă</strong><p>Poți consulta istoricul, însă pregătirea și publicarea rămân oprite până la conectare.</p></div>
         </div>
       ) : null}
 
-      <div className="admin-linkedin-queue-toolbar" aria-label="Filtre pentru distribuirea LinkedIn">
-        <div className="admin-linkedin-queue-filters" role="group" aria-label="Starea postărilor">
+      <div className={moduleClassNames(centerStyles, "admin-linkedin-queue-toolbar")} aria-label="Filtre pentru distribuirea LinkedIn">
+        <div className={moduleClassNames(centerStyles, "admin-linkedin-queue-filters")} role="group" aria-label="Starea postărilor">
           {FILTERS.map((item) => (
             <button
               key={item.id}
               type="button"
-              className={filter === item.id ? "is-active" : ""}
+              className={moduleClassNames(centerStyles, filter === item.id ? "is-active" : "")}
               aria-pressed={filter === item.id}
               onClick={() => setFilter(item.id)}
             >
@@ -142,24 +145,24 @@ export function AdminLinkedInDistributionCenter({ data, initialPostId = "" }) {
           ariaLabel="Caută în distribuirea LinkedIn"
           clearable
           compact
-          className="admin-linkedin-queue-search"
+          className={moduleClassNames(centerStyles, "admin-linkedin-queue-search")}
         />
       </div>
 
       {posts.length === 0 ? (
-        <div className="admin-linkedin-empty admin-linkedin-center-empty">
+        <div className={moduleClassNames(centerStyles, "admin-linkedin-empty admin-linkedin-center-empty")}>
           <Send size={19} aria-hidden="true" />
           <div><strong>Nu există postări LinkedIn încă</strong><p>Postările apar după publicarea unui articol și pregătirea unei variante din pagina acelui articol.</p></div>
-          <Link href="/admin/continut/articole" className="btn-back">Deschide articolele <ArrowRight size={16} /></Link>
+          <Link href="/admin/continut/articole" className={moduleClassNames(centerStyles, "btn-back")}>Deschide articolele <ArrowRight size={16} /></Link>
         </div>
       ) : visiblePosts.length === 0 ? (
-        <div className="admin-linkedin-empty admin-linkedin-center-empty">
+        <div className={moduleClassNames(centerStyles, "admin-linkedin-empty admin-linkedin-center-empty")}>
           <Search size={19} aria-hidden="true" />
           <div><strong>Nu există rezultate pentru filtrul ales</strong><p>Alege altă stare sau șterge căutarea pentru a vedea toate postările.</p></div>
-          {hasActiveFilters ? <button type="button" className="btn-back" onClick={() => { setFilter("attention"); setQuery(""); }}>Resetează</button> : null}
+          {hasActiveFilters ? <button type="button" className={moduleClassNames(centerStyles, "btn-back")} onClick={() => { setFilter("attention"); setQuery(""); }}>Resetează</button> : null}
         </div>
       ) : (
-        <div className="admin-linkedin-queue-list" aria-live="polite">
+        <div className={moduleClassNames(centerStyles, "admin-linkedin-queue-list")} aria-live="polite">
           {visiblePosts.map((post) => {
             const status = postStatus(post);
             const articleTitle = post.article?.title || "Articol indisponibil";
@@ -168,15 +171,15 @@ export function AdminLinkedInDistributionCenter({ data, initialPostId = "" }) {
               <Link
                 key={post.id}
                 href={articleHref(post)}
-                className={`admin-linkedin-queue-item is-${status.tone}${highlighted ? " is-highlighted" : ""}`}
+                className={moduleClassNames(centerStyles, `admin-linkedin-queue-item is-${status.tone}${highlighted ? " is-highlighted" : ""}`)}
                 aria-label={`Deschide postarea LinkedIn pentru articolul ${articleTitle}`}
               >
-                <span className={`admin-linkedin-status is-${status.tone}`}>{status.label}</span>
-                <div className="admin-linkedin-queue-copy">
+                <span className={moduleClassNames(centerStyles, `admin-linkedin-status is-${status.tone}`)}>{status.label}</span>
+                <div className={moduleClassNames(centerStyles, "admin-linkedin-queue-copy")}>
                   <strong>{articleTitle}</strong>
                   <span>{post.generated_payload?.final?.angle || `Varianta ${post.edition_number || 1}`}</span>
                 </div>
-                <div className="admin-linkedin-queue-meta">
+                <div className={moduleClassNames(centerStyles, "admin-linkedin-queue-meta")}>
                   {post.quality_score == null ? null : <span>Scor {Number(post.quality_score).toFixed(1)}/10</span>}
                   <time dateTime={post.updated_at}><Clock3 size={14} aria-hidden="true" />{formatDate(post.updated_at)}</time>
                 </div>

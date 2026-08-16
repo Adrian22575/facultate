@@ -1,15 +1,11 @@
-.anchor { }
-
-
-
-:where(.anchor, [data-admin-root]) :global(.admin-review-cell) {
+.admin-review-cell {
   width: 42px;
   min-width: 42px;
   max-width: 42px;
   text-align: center;
 }
 
-:where(.anchor, [data-admin-root]) :global(.admin-review-dot) {
+ .admin-review-dot {
   width: 11px;
   height: 11px;
   display: inline-flex;

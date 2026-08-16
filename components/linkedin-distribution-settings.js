@@ -1,5 +1,8 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import settingsStyles from "./linkedin-distribution-settings.module.css";
+
 import { Cpu, Save, Settings2, ShieldCheck, Unplug } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -135,12 +138,12 @@ export function LinkedInDistributionSettings({
   }
 
   return (
-    <details className="admin-linkedin-settings" open={defaultOpen || undefined}>
+    <details className={moduleClassNames(settingsStyles, "admin-linkedin-settings")} open={defaultOpen || undefined}>
       <summary>
         <Settings2 size={16} aria-hidden="true" />
         Setări LinkedIn și automatizare
       </summary>
-      <div className="admin-linkedin-controls">
+      <div className={moduleClassNames(settingsStyles, "admin-linkedin-controls")}>
         <label>
           <span>Mod de lucru</span>
           <select
@@ -151,7 +154,7 @@ export function LinkedInDistributionSettings({
             {MODE_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
           </select>
         </label>
-        <label className="admin-linkedin-model">
+        <label className={moduleClassNames(settingsStyles, "admin-linkedin-model")}>
           <span><Cpu size={14} aria-hidden="true" />Model postare</span>
           <select
             value={normalizeLinkedInModel(settings.model)}
@@ -163,24 +166,24 @@ export function LinkedInDistributionSettings({
             ))}
           </select>
         </label>
-        <button type="button" className="btn-back admin-linkedin-secondary" onClick={saveSettings} disabled={isBusy}>
+        <button type="button" className={moduleClassNames(settingsStyles, "btn-back admin-linkedin-secondary")} onClick={saveSettings} disabled={isBusy}>
           {busy === "settings" ? <LoadingSpinner size={16} /> : <Save size={16} />}
           Salvează setările
         </button>
         {connected ? (
-          <button type="button" className="admin-linkedin-disconnect" onClick={disconnect} disabled={isBusy}>
+          <button type="button" className={moduleClassNames(settingsStyles, "admin-linkedin-disconnect")} onClick={disconnect} disabled={isBusy}>
             <Unplug size={16} />Deconectează
           </button>
         ) : (
           <a
-            className={`admin-linkedin-connect${data?.config?.ready ? "" : " is-disabled"}`}
+            className={moduleClassNames(settingsStyles, `admin-linkedin-connect${data?.config?.ready ? "" : " is-disabled"}`)}
             href={data?.config?.ready ? "/api/admin/linkedin/oauth/start" : undefined}
           >
             Conectează LinkedIn
           </a>
         )}
       </div>
-      <label className="admin-linkedin-telegram">
+      <label className={moduleClassNames(settingsStyles, "admin-linkedin-telegram")}>
         <input
           type="checkbox"
           checked={Boolean(settings.notify_telegram)}
@@ -196,12 +199,12 @@ export function LinkedInDistributionSettings({
         compact
       />
       {!data?.config?.ready ? (
-        <p className="admin-linkedin-config-note">
+        <p className={moduleClassNames(settingsStyles, "admin-linkedin-config-note")}>
           <ShieldCheck size={16} aria-hidden="true" />
           Completează variabilele LinkedIn și cheia de criptare înainte de conectare.
         </p>
       ) : null}
-      {message ? <p className={`admin-linkedin-message is-${messageTone}`} role="status" aria-live="polite">{message}</p> : null}
+      {message ? <p className={moduleClassNames(settingsStyles, `admin-linkedin-message is-${messageTone}`)} role="status" aria-live="polite">{message}</p> : null}
     </details>
   );
 }

@@ -1,0 +1,418 @@
+.admin-dictionary-live-run {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(150px, 220px);
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid #b9d5fb;
+  border-radius: 16px;
+  color: #153f77;
+  background: linear-gradient(135deg, #f1f7ff 0%, #e6f1ff 100%);
+}
+
+ .admin-dictionary-live-run > div:first-of-type {
+  display: grid;
+  gap: 3px;
+}
+
+ .admin-dictionary-live-run span {
+  color: #1761c8;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+ .admin-dictionary-live-run strong {
+  font-size: .98rem;
+}
+
+ .admin-dictionary-live-run p {
+  margin: 0;
+  color: #587291;
+  font-size: .84rem;
+  line-height: 1.45;
+}
+
+ .admin-dictionary-live-progress {
+  position: relative;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #cbdcf2;
+}
+
+ .admin-dictionary-live-progress i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: #1764d5;
+  transition: width .35s ease;
+}
+
+ .admin-dictionary-live-progress span {
+  position: absolute;
+  right: 0;
+  bottom: 14px;
+  color: #315b8a;
+  font-size: .72rem;
+}
+
+ .admin-dictionary-statebar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #d7e3f2;
+  border-radius: 15px;
+  background: #f6f9fd;
+}
+
+ .admin-dictionary-statebar > div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 11px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+ .admin-dictionary-statebar span {
+  color: #6d809a;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+ .admin-dictionary-statebar strong {
+  overflow-wrap: anywhere;
+  color: #173d6b;
+  font-size: .9rem;
+}
+
+ .admin-dictionary-statebar small {
+  overflow-wrap: anywhere;
+  color: #667b96;
+  font-size: .73rem;
+  line-height: 1.35;
+}
+
+ .admin-dictionary-statebar :global(.is-published) strong {
+  color: #117345;
+}
+
+ .admin-dictionary-statebar :global(.is-passed) strong {
+  color: #117345;
+}
+
+ .admin-dictionary-statebar :global(.is-failed) strong {
+  color: #a12d2d;
+}
+
+ .admin-dictionary-statebar :global(.is-rejected) strong {
+  color: #a12d2d;
+}
+
+ .admin-dictionary-workflow {
+  display: grid;
+  gap: 13px;
+  margin-top: 6px;
+  padding: 16px;
+  border: 1px solid #c9daef;
+  border-radius: 16px;
+  background: #f8fbff;
+}
+
+ .admin-dictionary-workflow-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+ .admin-dictionary-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+ .admin-dictionary-step-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+ .admin-dictionary-workflow-head span {
+  color: #1764d5;
+  font-size: .7rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+ .admin-dictionary-workflow-head h3 {
+  margin: 3px 0 0;
+  color: #173a65;
+  font-size: 1.02rem;
+}
+
+ .admin-dictionary-workflow-steps {
+  display: grid;
+  gap: 8px;
+}
+
+ .admin-dictionary-workflow-steps > article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid #d5e2f1;
+  border-radius: 13px;
+  color: #496683;
+  background: #fff;
+}
+
+ .admin-dictionary-workflow-steps > article > div:first-of-type {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+ .admin-dictionary-workflow-steps article span {
+  color: #74859a;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+ .admin-dictionary-workflow-steps article strong {
+  color: #173b66;
+  font-size: .9rem;
+}
+
+ .admin-dictionary-workflow-steps article p {
+  margin: 0;
+  color: #687e98;
+  font-size: .76rem;
+  line-height: 1.4;
+}
+
+ .admin-dictionary-workflow-steps article:global(.is-passed) {
+  border-color: #addbc2;
+  background: #f5fcf8;
+}
+
+ .admin-dictionary-workflow-steps article:global(.is-published) {
+  border-color: #addbc2;
+  background: #f5fcf8;
+}
+
+ .admin-dictionary-step-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+ .admin-dictionary-confirmation {
+  align-items: flex-start;
+  padding: 13px;
+  border: 1px solid #d1def0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+ .admin-dictionary-confirmation > div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+ .admin-dictionary-confirmation p {
+  margin: 0;
+  color: #687d96;
+  font-size: .8rem;
+}
+
+ .admin-dictionary-confirmation > div:last-child {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 920px) {
+   .admin-dictionary-live-run {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 920px) {
+
+   .admin-dictionary-live-progress {
+    grid-column: 2;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 920px) {
+
+   .admin-dictionary-statebar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 920px) {
+
+   .admin-dictionary-workflow-steps > article {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 920px) {
+
+   .admin-dictionary-workflow-steps > article > :last-child {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-live-run {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-live-run > svg {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-live-progress {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-workflow-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-confirmation {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-workflow-head > button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-confirmation > div:last-child {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-confirmation button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-confirmation > div:last-child {
+    display: grid;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-workflow-steps > article {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-workflow-steps > article > svg {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-workflow-steps > article > :last-child {
+    grid-column: 1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-step-actions {
+    display: grid;
+  }
+}
+
+@media (max-width: 620px) {
+
+   .admin-dictionary-step-actions > * {
+    width: 100%;
+  }
+}
+
+ .admin-dictionary-runs { display: grid; gap: 8px; }
+
+ .admin-dictionary-runs h3 { margin: 0; }
+
+ .admin-dictionary-runs article { display: grid; gap: 3px; border: 1px solid #d9e5f5; border-radius: 11px; padding: 10px; background: #fbfdff; }
+
+ .admin-dictionary-runs span { color: #607895; font-size: .82rem; }
+
+ .admin-dictionary-runs small { color: #607895; font-size: .82rem; }
+
+ :global(.admin-run-history) .admin-dictionary-runs { margin-top: 10px; }
+
+ .admin-dictionary-schedule-status { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: center; padding: 12px 14px; border: 1px solid #cbdcf0; border-radius: 14px; color: #416484; background: #f7fbff; }
+
+ .admin-dictionary-schedule-status > div { display: grid; gap: 2px; min-width: 0; }
+
+ .admin-dictionary-schedule-status span { color: #6d809a; font-size: .68rem; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; }
+
+ .admin-dictionary-schedule-status strong { color: #244d78; font-size: .9rem; }
+
+ .admin-dictionary-schedule-status small { color: #607995; font-size: .77rem; line-height: 1.4; }
+
+ .admin-dictionary-schedule-status:global(.is-success) { border-color: #b7ddca; color: #167456; background: #f1fbf6; }
+
+ .admin-dictionary-schedule-status:global(.is-success) strong { color: #176447; }
+
+ .admin-dictionary-schedule-status:global(.is-warning) { border-color: #eed19a; color: #9a641c; background: #fff9ec; }
+
+ .admin-dictionary-schedule-status:global(.is-warning) strong { color: #855211; }
+
+ .admin-dictionary-schedule-status:global(.is-error) { border-color: #efb6b6; color: #a13030; background: #fff3f3; }
+
+ .admin-dictionary-schedule-status:global(.is-error) strong { color: #902929; }
+
+ .admin-dictionary-schedule-status:global(.is-running) { border-color: #bad4f3; color: #1764b7; background: #edf6ff; }
+
+ .admin-dictionary-schedule-status:global(.is-muted) { color: #78899d; background: #f5f7fa; }

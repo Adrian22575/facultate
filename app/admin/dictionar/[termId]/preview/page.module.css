@@ -1,0 +1,61 @@
+.dictionary-admin-preview {
+  position: sticky;
+  z-index: 12;
+  top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  margin: 12px auto 0;
+  padding: 12px 15px;
+  border: 1px solid #8fb9ef;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgb(31 75 129 / 14%);
+  color: #173f70;
+  background: rgb(239 246 255 / 96%);
+  backdrop-filter: blur(10px);
+}
+
+.dictionary-admin-preview > div {
+  display: grid;
+  gap: 2px;
+}
+
+.dictionary-admin-preview span {
+  color: #1764d5;
+  font-size: .7rem;
+  font-weight: 850;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.dictionary-admin-preview strong {
+  font-size: .88rem;
+}
+
+.dictionary-admin-preview a {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  border: 1px solid #bad2ef;
+  border-radius: 9px;
+  color: #174f96;
+  background: #fff;
+  font-size: .8rem;
+  font-weight: 800;
+}
+
+@media (max-width: 620px) {
+
+  .dictionary-admin-preview {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+
+  .dictionary-admin-preview a {
+    width: 100%;
+  }
+}

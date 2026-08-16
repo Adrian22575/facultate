@@ -1,5 +1,8 @@
 "use client";
 
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import automationStyles from "./admin-editorial-automation-settings.module.css";
+
 import { BellRing, Check, Cpu, Save } from "lucide-react";
 import { useState } from "react";
 
@@ -98,8 +101,8 @@ export function AdminEditorialAutomationSettings({ workflow, settings, generatio
   }
 
   return (
-    <div className="admin-automation-compact" aria-label="Programare automată">
-      <label className="admin-automation-switch">
+    <div className={moduleClassNames(automationStyles, "admin-automation-compact")} aria-label="Programare automată">
+      <label className={moduleClassNames(automationStyles, "admin-automation-switch")}>
         <input type="checkbox" checked={form.enabled} onChange={(event) => setForm((current) => ({ ...current, enabled: event.target.checked }))} />
         <span>Automat</span>
       </label>
@@ -132,16 +135,16 @@ export function AdminEditorialAutomationSettings({ workflow, settings, generatio
           {MODEL_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
         </select>
       </label>
-      <label className="admin-automation-switch">
+      <label className={moduleClassNames(automationStyles, "admin-automation-switch")}>
         <input type="checkbox" checked={form.notifyTelegram} onChange={(event) => setForm((current) => ({ ...current, notifyTelegram: event.target.checked }))} />
         <span><BellRing size={14} />Telegram</span>
       </label>
-      <button type="button" className="btn-link" onClick={save} disabled={saving}>
+      <button type="button" className={moduleClassNames(automationStyles, "btn-link")} onClick={save} disabled={saving}>
         {saving ? <LoadingSpinner size={16} /> : status ? <Check size={16} /> : <Save size={16} />}
         {saving ? "Se salvează…" : "Salvează"}
       </button>
-      {status ? <span className="admin-automation-compact-message" role="status">{status}</span> : null}
-      {nextPublication ? <span className="admin-automation-next-publication" role="status">{nextPublication}</span> : null}
+      {status ? <span className={moduleClassNames(automationStyles, "admin-automation-compact-message")} role="status">{status}</span> : null}
+      {nextPublication ? <span className={moduleClassNames(automationStyles, "admin-automation-next-publication")} role="status">{nextPublication}</span> : null}
       <AdminGenerationPromptPreview preview={generationPreview ? { ...generationPreview, model: form.model } : null} />
     </div>
   );

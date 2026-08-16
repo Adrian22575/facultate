@@ -1,0 +1,42 @@
+:global(.admin-route-content) > .admin-linkedin-center { padding: var(--layout-card-padding); }
+
+.admin-linkedin-center { display: grid; gap: var(--space-4); min-width: 0; }
+
+ .admin-linkedin-center-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding-bottom: var(--space-4); border-bottom: 1px solid #dce7f4; }
+
+ .admin-linkedin-center-head > div:nth-child(2) { min-width: 0; }
+
+ .admin-linkedin-center-head > div:nth-child(2) > span { color: #54708f; font-size: .74rem; font-weight: 850; letter-spacing: .03em; }
+
+ .admin-linkedin-center-head h2 { margin: 2px 0 3px; color: #153b68; font-family: Georgia, "Times New Roman", serif; font-size: 1.38rem; }
+
+ .admin-linkedin-center-head p { max-width: 680px; margin: 0; color: #637b98; font-size: .87rem; line-height: 1.45; }
+
+ .admin-linkedin-center-notice { display: flex; align-items: flex-start; gap: 9px; padding: 12px 13px; border: 1px solid #ead5a0; border-radius: 12px; color: #715017; background: #fff9ed; }
+
+ .admin-linkedin-center-notice > div { display: grid; gap: 3px; }
+
+ .admin-linkedin-center-notice strong { font-size: .85rem; }
+
+ .admin-linkedin-center-notice p { margin: 0; font-size: .8rem; line-height: 1.4; }
+
+ .admin-linkedin-center-empty { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; }
+
+ .admin-linkedin-center-empty > svg { flex: 0 0 auto; }
+
+ .admin-linkedin-center-empty > div { min-width: 0; }
+
+@media (max-width: 760px) {
+   :global(.admin-route-content) > .admin-linkedin-center { padding: var(--layout-card-padding-compact); } }
+
+@media (max-width: 760px) {
+   .admin-linkedin-center-head { grid-template-columns: auto minmax(0, 1fr); } }
+
+@media (max-width: 760px) {
+   .admin-linkedin-center-head > :global(.admin-linkedin-connection-state) { grid-column: 2; justify-self: start; } }
+
+@media (max-width: 760px) {
+   .admin-linkedin-center-empty { grid-template-columns: auto minmax(0, 1fr); } }
+
+@media (max-width: 760px) {
+   .admin-linkedin-center-empty :global(.btn-back) { grid-column: 1 / -1; width: 100%; margin-top: 4px; } }
