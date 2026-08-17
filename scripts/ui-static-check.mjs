@@ -146,6 +146,18 @@ const LEGACY_COLLECTION_BASELINE = {
 const NATIVE_TABLE_BASELINE = {
   "components/ui/data-table.js": 1
 };
+const REQUIRED_WORKSPACE_STYLE_IMPORTS = {
+  "app/ai/page.js": ["./workspace-layout.module.css"],
+  "app/ai/activitate/page.js": ["../workspace-layout.module.css"],
+  "components/learning-upload-form.js": ["./workspace-flow-patterns.module.css"],
+  "components/workspace-generate-form.js": [
+    "./workspace-question-review.module.css",
+    "./learning-upload-status.module.css"
+  ],
+  "components/workspace-subject-picker.js": ["./workspace-question-review.module.css"],
+  "components/licenta-import-workspace-client.js": ["./learning-upload-status.module.css"],
+  "components/licenta-session-workspace-client.js": ["./learning-upload-status.module.css"]
+};
 const MOJIBAKE_TOKENS = ["Ã", "Äƒ", "Ä‚", "È™", "Èš", "È›", "Â·", "â€™", "â€œ", "â€", "â€“", "â€”", "�"];
 
 function walkFiles(directory, predicate) {
@@ -718,6 +730,17 @@ function verifyLegacyBaseline(filePath, counts, nativeTableCount) {
 for (const filePath of sourceFiles) {
   const source = fs.readFileSync(filePath, "utf8");
   const relativePath = path.relative(ROOT, filePath).replaceAll("\\", "/");
+  for (const requiredImport of REQUIRED_WORKSPACE_STYLE_IMPORTS[relativePath] || []) {
+    const doubleQuotedImport = `from "${requiredImport}"`;
+    const singleQuotedImport = `from '${requiredImport}'`;
+    if (!source.includes(doubleQuotedImport) && !source.includes(singleQuotedImport)) {
+      failures.push({
+        file: relativePath,
+        line: 1,
+        message: `Contractul CSS Workspace necesita importul ${requiredImport}; lipsa lui lasa clasele mutate in CSS Modules fara stil.`
+      });
+    }
+  }
   if (source.includes("@/components/filter-controls")) {
     failures.push({
       file: relativePath,

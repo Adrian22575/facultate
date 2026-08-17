@@ -4,9 +4,12 @@ import { moduleClassNames } from "@/lib/ui/module-class-names";
 import { DialogShell } from "@/components/ui/dialog-shell";
 import styles from "./workspace-subject-picker.module.css";
 import sourceStyles from "./workspace-source-input.module.css";
+import reviewStyles from "./workspace-question-review.module.css";
 import { useEffect, useMemo, useState } from "react";
 
 import { useDialogFocus } from "@/lib/ui/dialog";
+
+const subjectPickerStyleMaps = [styles, sourceStyles, reviewStyles];
 
 function sortSubjects(subjects) {
   return [...subjects].sort((left, right) => left.title.localeCompare(right.title, "ro"));
@@ -279,14 +282,14 @@ export function WorkspaceSubjectPicker({
   }
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-picker ai-workspace-subject-picker")}>
+    <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-picker ai-workspace-subject-picker")}>
       <input type="hidden" name="subjectId" value={selectedSubjectId} />
 
-      <div className={moduleClassNames([styles, sourceStyles], "selector-container")}>
+      <div className={moduleClassNames(subjectPickerStyleMaps, "selector-container")}>
         <label>
           Materie
           <input
-            className={moduleClassNames([styles, sourceStyles], "input-search math-friendly-input")}
+            className={moduleClassNames(subjectPickerStyleMaps, "input-search math-friendly-input")}
             type="text"
             value={searchValue}
             placeholder={
@@ -319,15 +322,15 @@ export function WorkspaceSubjectPicker({
       </div>
 
       {isContextReady ? (
-        <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-caption ai-workspace-subject-caption")}>
+        <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-caption ai-workspace-subject-caption")}>
           <span>Context: {contextLabel}</span>
           <span>Scrie cateva litere si alege materia potrivita.</span>
         </div>
       ) : null}
 
       {isContextReady && selectedSubject ? (
-        <div className={moduleClassNames([styles, sourceStyles], "workspace-selected-subject ui-panel-card ai-workspace-selected-subject")}>
-          <div className={moduleClassNames([styles, sourceStyles], "workspace-selected-subject-badge ui-chip")} aria-hidden="true">
+        <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-selected-subject ui-panel-card ai-workspace-selected-subject")}>
+          <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-selected-subject-badge ui-chip")} aria-hidden="true">
             Aleasa
           </div>
           <strong>{selectedSubject.title}</strong>
@@ -336,18 +339,18 @@ export function WorkspaceSubjectPicker({
       ) : null}
 
       {isContextReady && isListOpen ? (
-        <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-results ui-panel-card ai-workspace-subject-results")}>
-          <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-results-head")}>
+        <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-results ui-panel-card ai-workspace-subject-results")}>
+          <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-results-head")}>
             <strong>Materii potrivite</strong>
             <span>{filteredSubjects.length ? "Alege una din lista." : "Nu am gasit nimic inca."}</span>
           </div>
 
           {filteredSubjects.length ? (
-            <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-result-list")}>
+            <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-result-list")}>
               {filteredSubjects.map((subject) => (
                 <button
                   key={subject.id}
-                  className={moduleClassNames([styles, sourceStyles], `workspace-subject-result${
+                  className={moduleClassNames(subjectPickerStyleMaps, `workspace-subject-result${
                     selectedSubjectId === subject.id ? " is-selected" : ""
                   }`)}
                   type="button"
@@ -355,21 +358,21 @@ export function WorkspaceSubjectPicker({
                   onClick={() => selectSubject(subject)}
                   aria-pressed={selectedSubjectId === subject.id}
                 >
-                  <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-result-row")}>
-                    <span className={moduleClassNames([styles, sourceStyles], "workspace-subject-result-mark")} aria-hidden="true">
+                  <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-result-row")}>
+                    <span className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-result-mark")} aria-hidden="true">
                       {getSubjectMonogram(subject.title)}
                     </span>
-                    <strong className={moduleClassNames([styles, sourceStyles], "workspace-subject-result-title")}>{subject.title}</strong>
+                    <strong className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-result-title")}>{subject.title}</strong>
                   </div>
                 </button>
               ))}
             </div>
           ) : (
-            <div className={moduleClassNames([styles, sourceStyles], "empty-state workspace-subject-empty")}>
+            <div className={moduleClassNames(subjectPickerStyleMaps, "empty-state workspace-subject-empty")}>
               <strong>Nu am gasit materia cautata.</strong>
               <p>O poti adauga pentru {contextLabel}, apoi ramane selectata aici.</p>
               <button
-                className={moduleClassNames([styles, sourceStyles], "btn-link secondary workspace-subject-empty-action")}
+                className={moduleClassNames(subjectPickerStyleMaps, "btn-link secondary workspace-subject-empty-action")}
                 type="button"
                 disabled={pickerLocked}
                 onClick={() => openCreateSubject(trimmedSearchValue)}
@@ -382,13 +385,13 @@ export function WorkspaceSubjectPicker({
       ) : null}
 
       {isContextReady ? (
-        <div className={moduleClassNames([styles, sourceStyles], "workspace-subject-helper ai-workspace-subject-helper")}>
+        <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-subject-helper ai-workspace-subject-helper")}>
           <p>
             Nu gasesti materia? Adaug-o o singura data, iar apoi o poti folosi direct pentru anul si
             semestrul ales.
           </p>
           <button
-            className={moduleClassNames([styles, sourceStyles], "btn-link secondary workspace-subject-trigger")}
+            className={moduleClassNames(subjectPickerStyleMaps, "btn-link secondary workspace-subject-trigger")}
             type="button"
             disabled={pickerLocked}
             onClick={() => openCreateSubject()}
@@ -397,14 +400,14 @@ export function WorkspaceSubjectPicker({
           </button>
         </div>
       ) : (
-        <div className={moduleClassNames([styles, sourceStyles], "micro-copy")}>
+        <div className={moduleClassNames(subjectPickerStyleMaps, "micro-copy")}>
           {userType === "student"
             ? "Alege mai intai anul si semestrul, apoi poti selecta sau adauga materia."
             : "Completeaza mai intai clasa si semestrul, apoi poti selecta sau adauga materia."}
         </div>
       )}
 
-      {successMessage ? <div className={moduleClassNames([styles, sourceStyles], "success-state")} role="status">{successMessage}</div> : null}
+      {successMessage ? <div className={moduleClassNames(subjectPickerStyleMaps, "success-state")} role="status">{successMessage}</div> : null}
 
       {isModalOpen ? (
         <DialogShell
@@ -417,13 +420,13 @@ export function WorkspaceSubjectPicker({
             setErrorMessage("");
           }}
           closeDisabled={isSubmitting}
-          panelClassName={moduleClassNames([styles, sourceStyles], "ai-workspace-subject-modal")}
-          bodyClassName={moduleClassNames([styles, sourceStyles], "workspace-modal-form")}
+          panelClassName={moduleClassNames(subjectPickerStyleMaps, "ai-workspace-subject-modal")}
+          bodyClassName={moduleClassNames(subjectPickerStyleMaps, "workspace-modal-form")}
         >
-              <label className={moduleClassNames([styles, sourceStyles], "onboarding-form-field")}>
+              <label className={moduleClassNames(subjectPickerStyleMaps, "onboarding-form-field")}>
                 <span>Numele materiei</span>
                 <input
-                  className={moduleClassNames([styles, sourceStyles], "input-search math-friendly-input")}
+                  className={moduleClassNames(subjectPickerStyleMaps, "input-search math-friendly-input")}
                   type="text"
                   value={subjectTitle}
                   disabled={pickerLocked}
@@ -432,19 +435,19 @@ export function WorkspaceSubjectPicker({
                 />
               </label>
 
-              <div className={moduleClassNames([styles, sourceStyles], "workspace-context-summary")}>
+              <div className={moduleClassNames(subjectPickerStyleMaps, "workspace-context-summary")}>
                 <strong>Se foloseste pentru</strong>
                 <span>{contextLabel}</span>
               </div>
 
-              {errorMessage ? <div className={moduleClassNames([styles, sourceStyles], "error-state")} role="alert">{errorMessage}</div> : null}
+              {errorMessage ? <div className={moduleClassNames(subjectPickerStyleMaps, "error-state")} role="alert">{errorMessage}</div> : null}
 
-              <div className={moduleClassNames([styles, sourceStyles], "inline-actions workspace-modal-actions")}>
+              <div className={moduleClassNames(subjectPickerStyleMaps, "inline-actions workspace-modal-actions")}>
                 <button type="button" disabled={!canSubmit} onClick={handleCreateSubject}>
                   {isSubmitting ? "Se adauga..." : "Adauga si selecteaza"}
                 </button>
                 <button
-                  className={moduleClassNames([styles, sourceStyles], "reset-btn")}
+                  className={moduleClassNames(subjectPickerStyleMaps, "reset-btn")}
                   type="button"
                   disabled={pickerLocked}
                   onClick={() => {

@@ -6,6 +6,7 @@ import styles from "./licenta-session-workspace-client.module.css";
 import sourceStyles from "./workspace-source-input.module.css";
 import reviewStyles from "./workspace-question-review.module.css";
 import flowStyles from "./workspace-flow-patterns.module.css";
+import uploadStatusStyles from "./learning-upload-status.module.css";
 import { CheckCircle2, ClipboardList, ExternalLink, FileText, Keyboard, ListPlus, Trash2, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -19,6 +20,14 @@ import {
 } from "@/lib/ai/upload-limits";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
+
+const licentaSessionStyleMaps = [
+  styles,
+  sourceStyles,
+  flowStyles,
+  reviewStyles,
+  uploadStatusStyles
+];
 
 const BLOCKING_SET_STATUSES = new Set([
   "uploaded",
@@ -65,7 +74,7 @@ function isSupportedSourceFile(file) {
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-icon-text")}>
+    <span className={moduleClassNames(licentaSessionStyleMaps, "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -594,35 +603,35 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
   }
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-session-workspace upload-refresh-flow")}>
-      {feedback ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "success-state")} role="status">{feedback}</div> : null}
+    <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-session-workspace upload-refresh-flow")}>
+      {feedback ? <div className={moduleClassNames(licentaSessionStyleMaps, "success-state")} role="status">{feedback}</div> : null}
       {isBusy && !isFinalizing ? (
-        <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-processing-icon")} aria-hidden="true"><LoadingSpinner size={20} /></span>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-processing-copy")}>
+        <section className={moduleClassNames(licentaSessionStyleMaps, "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
+          <span className={moduleClassNames(licentaSessionStyleMaps, "learning-processing-icon")} aria-hidden="true"><LoadingSpinner size={20} /></span>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "learning-processing-copy")}>
             <strong>Pregătim setul...</strong>
             <p>Păstrează pagina deschisă. Vei vedea automat întrebările imediat ce sunt gata.</p>
           </div>
         </section>
       ) : null}
       {isFinalizing ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-credit-alert import-warning-panel")} aria-live="polite">
+        <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-credit-alert import-warning-panel")} aria-live="polite">
           <div>
             <strong>Finalizam licenta</strong>
             <p>Pregatim testul final din seturile salvate. Pentru licente mari poate dura putin.</p>
           </div>
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "status-pill is-muted")}>In lucru</span>
+          <span className={moduleClassNames(licentaSessionStyleMaps, "status-pill is-muted")}>In lucru</span>
         </div>
       ) : null}
-      {errorMessage ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "error-state")} role="alert">{errorMessage}</div> : null}
+      {errorMessage ? <div className={moduleClassNames(licentaSessionStyleMaps, "error-state")} role="alert">{errorMessage}</div> : null}
       {creditsRequired ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-credit-alert licenta-credit-required-alert")}>
+        <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-credit-alert licenta-credit-required-alert")}>
           <div>
             <strong>Ai nevoie de o incarcare pentru finalizare</strong>
             <p>Licenta ramane salvata aici. Adauga o incarcare, apoi revii si apesi din nou pe finalizare.</p>
           </div>
           <PendingNavigationLink
-            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-alert-link")}
+            className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary ai-workspace-alert-link")}
             href={creditsHref}
             pendingLabel="Se deschid pachetele..."
             pendingMode="replace"
@@ -633,17 +642,17 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : null}
 
       {isAbandoned ? (
-        <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-flow-card licenta-session-abandoned-panel")}>
+        <section className={moduleClassNames(licentaSessionStyleMaps, "surface licenta-flow-card licenta-session-abandoned-panel")}>
           <div>
             <SectionLabel>Sesiune inchisa</SectionLabel>
             <h2>Licenta aceasta nu mai poate fi modificata</h2>
-            <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>
+            <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>
               Nu s-a consumat nicio incarcare. Seturile ramase aici sunt doar pentru orientare.
             </p>
           </div>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-next-step-actions")}>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "import-next-step-actions")}>
             <PendingNavigationLink
-              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")}
+              className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")}
               href="/materiale"
               pendingLabel="Se deschid materialele..."
               pendingMode="replace"
@@ -653,21 +662,21 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
           </div>
         </section>
       ) : isCompleted ? (
-        <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-flow-card licenta-session-complete-panel")}>
+        <section className={moduleClassNames(licentaSessionStyleMaps, "surface licenta-flow-card licenta-session-complete-panel")}>
           <div>
             <SectionLabel>Licenta finalizata</SectionLabel>
             <h2>Testul final este creat</h2>
-            <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>
+            <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>
               Banca finala a fost creata din {session.completedSetCount} seturi si {session.questionsWithAnswers} intrebari cu raspuns.{" "}
               {isResultPublished
                 ? "O poti porni imediat din simulare."
                 : "Confirma publicarea ca sa devina disponibila in simulare."}
             </p>
           </div>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-next-step-actions")}>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "import-next-step-actions")}>
             {session.resultHref ? (
               <PendingNavigationLink
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-back")}
+                className={moduleClassNames(licentaSessionStyleMaps, "btn-back")}
                 href={session.resultHref}
                 pendingLabel={isResultPublished ? "Se deschide simularea..." : "Se deschide publicarea..."}
                 pendingMode="replace"
@@ -679,7 +688,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
             ) : null}
             {isResultPublished && session.reviewHref ? (
               <PendingNavigationLink
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")}
+                className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")}
                 href={session.reviewHref}
                 pendingLabel="Se deschid intrebarile..."
                 pendingMode="replace"
@@ -692,9 +701,9 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : (
         <section
           ref={flowCardRef}
-          className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `surface licenta-flow-card ${flowJob ? "is-review" : shouldShowSavedStep ? "is-saved" : "is-upload"}`)}
+          className={moduleClassNames(licentaSessionStyleMaps, `surface licenta-flow-card ${flowJob ? "is-review" : shouldShowSavedStep ? "is-saved" : "is-upload"}`)}
         >
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-flow-head")}>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-flow-head")}>
             <div>
               <SectionLabel>
                 {flowJob
@@ -716,7 +725,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                       ? "Incarca urmatorul set"
                       : "Construieste licenta pe seturi"}
               </h2>
-              <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>
+              <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>
                 {flowJob
                   ? ["uploaded", "extracting", "chunking", "processing", "matching_answers"].includes(flowJob.status)
                     ? "Extragem intrebarile, variantele si raspunsurile corecte. Pastreaza pagina deschisa."
@@ -726,7 +735,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     : "Incarca materia pe bucati. La final, seturile salvate vor fi unite intr-un singur test final."}
               </p>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-flow-summary")} aria-label="Sumar licenta">
+            <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-flow-summary")} aria-label="Sumar licenta">
               <article>
                 <span>Seturi salvate</span>
                 <strong>{`${session.completedSetCount}/${session.setCount}`}</strong>
@@ -751,19 +760,19 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
               onRequestFinalize={openFinalizeOrExplain}
             />
           ) : shouldShowSavedStep ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-saved-choice")} aria-live="polite">
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-saved-choice-copy")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-saved-choice")} aria-live="polite">
+              <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-saved-choice-copy")}>
                 <CheckCircle2 aria-hidden="true" size={28} strokeWidth={2.4} />
                 <div>
                   <strong>S-a intamplat: setul este in licenta.</strong>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>Urmatorul pas este alegerea ta: mai incarci un set sau creezi testul final.</p>
+                  <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>Urmatorul pas este alegerea ta: mai incarci un set sau creezi testul final.</p>
                 </div>
               </div>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-next-step-actions")}>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-back")} onClick={scrollToNextSetForm}>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "import-next-step-actions")}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-back")} onClick={scrollToNextSetForm}>
                   <IconText icon={ListPlus}>Incarca urmatorul set</IconText>
                 </button>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={openFinalizeOrExplain} disabled={isBusy}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={openFinalizeOrExplain} disabled={isBusy}>
                   <IconText icon={CheckCircle2}>Finalizeaza licenta</IconText>
                 </button>
               </div>
@@ -771,14 +780,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
           ) : shouldShowUploadStep ? (
             <form
               ref={nextSetFormRef}
-              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-guided-upload")}
+              className={moduleClassNames(licentaSessionStyleMaps, "licenta-guided-upload")}
               onSubmit={submitSet}
             >
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-head")}>
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-step-head")}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">{nextSetNumber}</span>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-form-head")}>
+                <div className={moduleClassNames(licentaSessionStyleMaps, "upload-refresh-step-head")}>
+                  <span className={moduleClassNames(licentaSessionStyleMaps, "learning-upload-step-number")} aria-hidden="true">{nextSetNumber}</span>
                   <div>
-                    <SectionLabel className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-step-label")}>
+                    <SectionLabel className={moduleClassNames(licentaSessionStyleMaps, "ai-workspace-step-label")}>
                       {snapshot.jobs.length ? "Set nou" : "Primul set"}
                     </SectionLabel>
                     <h2>{snapshot.jobs.length ? "Adaugă setul următor" : "Adaugă primul set"}</h2>
@@ -788,7 +797,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
               </div>
 
               <div
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-segmented-tabs ai-workspace-source-tabs")}
+                className={moduleClassNames(licentaSessionStyleMaps, "ui-segmented-tabs ai-workspace-source-tabs")}
                 role="tablist"
                 aria-label="Sursa setului"
                 onKeyDown={handleTablistKeyDown}
@@ -800,15 +809,15 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                   aria-selected={sourceMode === "text"}
                   aria-controls="licenta-session-source-panel"
                   tabIndex={sourceMode === "text" ? 0 : -1}
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-segmented-tab secondary ai-workspace-source-tab ${sourceMode === "text" ? "is-active" : ""}`)}
+                  className={moduleClassNames(licentaSessionStyleMaps, `ui-segmented-tab secondary ai-workspace-source-tab ${sourceMode === "text" ? "is-active" : ""}`)}
                   onClick={() => {
                     if (isBusy) return;
                     setSourceMode("text");
                     setErrorMessage("");
                   }}
                 >
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-source-tab-icon")} aria-hidden="true"><Keyboard size={19} /></span>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-option-copy")}><strong>Lipește text</strong><small>Întrebări copiate</small></span>
+                  <span className={moduleClassNames(licentaSessionStyleMaps, "ai-workspace-source-tab-icon")} aria-hidden="true"><Keyboard size={19} /></span>
+                  <span className={moduleClassNames(licentaSessionStyleMaps, "upload-refresh-option-copy")}><strong>Lipește text</strong><small>Întrebări copiate</small></span>
                 </button>
                 <button
                   id="licenta-session-source-tab-file"
@@ -817,29 +826,29 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                   aria-selected={sourceMode === "file"}
                   aria-controls="licenta-session-source-panel"
                   tabIndex={sourceMode === "file" ? 0 : -1}
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-segmented-tab secondary ai-workspace-source-tab ${sourceMode === "file" ? "is-active" : ""}`)}
+                  className={moduleClassNames(licentaSessionStyleMaps, `ui-segmented-tab secondary ai-workspace-source-tab ${sourceMode === "file" ? "is-active" : ""}`)}
                   onClick={() => {
                     if (isBusy) return;
                     setSourceMode("file");
                     setErrorMessage("");
                   }}
                 >
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-source-tab-icon")} aria-hidden="true"><Upload size={19} /></span>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-option-copy")}><strong>Încarcă fișier</strong><small>PDF, DOCX sau TXT</small></span>
+                  <span className={moduleClassNames(licentaSessionStyleMaps, "ai-workspace-source-tab-icon")} aria-hidden="true"><Upload size={19} /></span>
+                  <span className={moduleClassNames(licentaSessionStyleMaps, "upload-refresh-option-copy")}><strong>Încarcă fișier</strong><small>PDF, DOCX sau TXT</small></span>
                 </button>
               </div>
 
               {sourceMode === "text" ? (
                 <div
                   id="licenta-session-source-panel"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "selector-container")}
+                  className={moduleClassNames(licentaSessionStyleMaps, "selector-container")}
                   role="tabpanel"
                   aria-labelledby="licenta-session-source-tab-text"
                 >
                   <label>
                     Lipeste continutul setului
                     <textarea
-                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "textarea-input ai-workspace-textarea")}
+                      className={moduleClassNames(licentaSessionStyleMaps, "textarea-input ai-workspace-textarea")}
                       rows="10"
                       value={contentText}
                       onChange={(event) => {
@@ -850,8 +859,8 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     />
                   </label>
                   {setTextLength > 0 ? (
-                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-source-meta${setTextTooShort ? " is-warning" : ""}`)}>
-                      <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-chip ${setTextTooShort ? "is-warning" : "is-good"}`)}>
+                    <div className={moduleClassNames(licentaSessionStyleMaps, `ai-workspace-source-meta${setTextTooShort ? " is-warning" : ""}`)}>
+                      <span className={moduleClassNames(licentaSessionStyleMaps, `ui-chip ${setTextTooShort ? "is-warning" : "is-good"}`)}>
                         {setTextTooShort ? "Set scurt" : "Set pregatit"}
                       </span>
                       <span>
@@ -859,7 +868,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                       </span>
                       <button
                         type="button"
-                        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-source-action")}
+                        className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary ai-workspace-source-action")}
                         onClick={() => {
                           if (isBusy) return;
                           setContentText("");
@@ -875,7 +884,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
               ) : (
                 <div
                   id="licenta-session-source-panel"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "selector-container")}
+                  className={moduleClassNames(licentaSessionStyleMaps, "selector-container")}
                   role="tabpanel"
                   aria-labelledby="licenta-session-source-tab-file"
                 >
@@ -883,7 +892,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     Incarca fisierul setului
                     <input
                       ref={fileRef}
-                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "input-search")}
+                      className={moduleClassNames(licentaSessionStyleMaps, "input-search")}
                       type="file"
                       accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
                       disabled={isBusy}
@@ -893,12 +902,12 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                       }}
                     />
                   </label>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "micro-copy ai-workspace-source-hint")}>
+                  <p className={moduleClassNames(licentaSessionStyleMaps, "micro-copy ai-workspace-source-hint")}>
                     Un singur PDF, DOCX sau TXT pentru setul curent. Maxim {AI_SOURCE_UPLOAD_MAX_LABEL}.
                   </p>
                   {selectedSetFile ? (
-                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-source-meta${setFileHasIssue ? " is-warning" : ""}`)}>
-                      <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-chip ${setFileHasIssue ? "is-warning" : "is-good"}`)}>
+                    <div className={moduleClassNames(licentaSessionStyleMaps, `ai-workspace-source-meta${setFileHasIssue ? " is-warning" : ""}`)}>
+                      <span className={moduleClassNames(licentaSessionStyleMaps, `ui-chip ${setFileHasIssue ? "is-warning" : "is-good"}`)}>
                         {setFileUnsupported
                           ? "Tip neacceptat"
                           : setFileTooLarge
@@ -911,7 +920,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                       </span>
                       <button
                         type="button"
-                        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-source-action")}
+                        className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary ai-workspace-source-action")}
                         onClick={() => {
                           if (isBusy) return;
                           setSelectedSetFile(null);
@@ -929,30 +938,30 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 </div>
               )}
 
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions import-actions-row")}>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "inline-actions import-actions-row")}>
                 <button type="submit" disabled={nextSetSubmitDisabled}>
                   <LoadingIconText icon={ClipboardList} loading={isBusy} loadingLabel="Procesam...">
                     Proceseaza setul
                   </LoadingIconText>
                 </button>
-                <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-submit-action-hint")} aria-live="polite">
+                <p className={moduleClassNames(licentaSessionStyleMaps, "ai-workspace-submit-action-hint")} aria-live="polite">
                   {nextSetHint}
                 </p>
               </div>
             </form>
           ) : null}
 
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-flow-secondary-actions")}>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-flow-secondary-actions")}>
             {flowJob && isEditable ? (
-              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary review-delete-btn")} onClick={() => setRemoveSet(flowJob)} disabled={isBusy}>
+              <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary review-delete-btn")} onClick={() => setRemoveSet(flowJob)} disabled={isBusy}>
                 <IconText icon={Trash2}>Elimina setul curent</IconText>
               </button>
             ) : null}
-            <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setShowSetManager((value) => !value)}>
+            <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setShowSetManager((value) => !value)}>
               <IconText icon={ClipboardList}>{showSetManager ? "Ascunde seturile" : "Gestioneaza seturile"}</IconText>
             </button>
             <PendingNavigationLink
-              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")}
+              className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")}
               href="/materiale"
               pendingLabel="Se revine..."
               pendingMode="replace"
@@ -964,54 +973,54 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       )}
 
       {isCompleted || isAbandoned ? (
-        <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-manage-strip")}>
+        <section className={moduleClassNames(licentaSessionStyleMaps, "surface licenta-manage-strip")}>
           <div>
             <SectionLabel>Seturi si audit</SectionLabel>
             <strong>Seturile raman disponibile pentru verificare.</strong>
           </div>
-          <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setShowSetManager((value) => !value)}>
+          <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setShowSetManager((value) => !value)}>
             <IconText icon={ClipboardList}>{showSetManager ? "Ascunde seturile" : "Gestioneaza seturile"}</IconText>
           </button>
         </section>
       ) : null}
 
       {showSetManager ? (
-        <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "surface licenta-set-manager")}>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "dashboard-header")}>
+        <section className={moduleClassNames(licentaSessionStyleMaps, "surface licenta-set-manager")}>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "dashboard-header")}>
             <div>
               <SectionLabel>Gestionare seturi</SectionLabel>
               <h2>Seturile acestei licente</h2>
-              <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>Aici vezi auditul, intrebarile si actiunile secundare. Flow-ul principal ramane curat.</p>
+              <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>Aici vezi auditul, intrebarile si actiunile secundare. Flow-ul principal ramane curat.</p>
             </div>
           </div>
-          <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-set-list")}>
+          <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-set-list")}>
             {snapshot.jobs.length ? (
               snapshot.jobs.map((job) => {
                 const issueSummary = getSetIssueSummary(job);
 
                 return (
-                  <article key={job.id} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-set-manager-row")}>
+                  <article key={job.id} className={moduleClassNames(licentaSessionStyleMaps, "licenta-set-manager-row")}>
                     <div>
                       <span>{`Set ${job.setIndex || ""}`}</span>
                       <strong>{job.title || job.fileName || "Set importat"}</strong>
                       <small>{`${job.totalQuestions || 0} intrebari, ${job.questionsWithAnswers || 0} cu raspuns`}</small>
-                      <small className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `licenta-set-issue ${issueSummary.tone}`)}>{issueSummary.text}</small>
+                      <small className={moduleClassNames(licentaSessionStyleMaps, `licenta-set-issue ${issueSummary.tone}`)}>{issueSummary.text}</small>
                     </div>
-                    <em className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `status-pill ${setStatusTone(job.status)}`)}>{setStatusLabel(job.status)}</em>
-                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions")}>
+                    <em className={moduleClassNames(licentaSessionStyleMaps, `status-pill ${setStatusTone(job.status)}`)}>{setStatusLabel(job.status)}</em>
+                    <div className={moduleClassNames(licentaSessionStyleMaps, "inline-actions")}>
                       {isBlockingJob(job) && job.id === flowJob?.id ? (
-                        <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "status-pill is-muted licenta-set-current-pill")}>Deschis</span>
+                        <span className={moduleClassNames(licentaSessionStyleMaps, "status-pill is-muted licenta-set-current-pill")}>Deschis</span>
                       ) : isBlockingJob(job) ? (
-                        <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link licenta-set-open-btn")} onClick={() => selectJob(job.id)}>
+                        <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link licenta-set-open-btn")} onClick={() => selectJob(job.id)}>
                           <IconText icon={ClipboardList}>Deschide setul</IconText>
                         </button>
                       ) : (
-                        <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setAuditJob(job)}>
+                        <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setAuditJob(job)}>
                           Vezi intrebarile
                         </button>
                       )}
                       {isEditable ? (
-                        <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setRemoveSet(job)} disabled={isBusy}>
+                        <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setRemoveSet(job)} disabled={isBusy}>
                           <IconText icon={Trash2}>Elimina</IconText>
                         </button>
                       ) : null}
@@ -1020,19 +1029,19 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 );
               })
             ) : (
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "draft-card review-empty-card")}>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "draft-card review-empty-card")}>
                 <strong>Niciun set inca.</strong>
-                <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>Incarca primul set din flow-ul principal.</p>
+                <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>Incarca primul set din flow-ul principal.</p>
               </div>
             )}
           </div>
           {isEditable ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-manager-danger")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "licenta-manager-danger")}>
               <div>
                 <strong>Renunta la licenta curenta</strong>
-                <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>Actiune secundara pentru material incarcat gresit. Nu consuma nicio incarcare.</p>
+                <p className={moduleClassNames(licentaSessionStyleMaps, "page-copy")}>Actiune secundara pentru material incarcat gresit. Nu consuma nicio incarcare.</p>
               </div>
-              <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setConfirmAbandon(true)} disabled={isBusy}>
+              <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setConfirmAbandon(true)} disabled={isBusy}>
                 <IconText icon={Trash2}>Renunta la licenta</IconText>
               </button>
             </div>
@@ -1041,28 +1050,28 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : null}
 
       {auditJob ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
+        <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-backdrop")} role="presentation">
           <div
             ref={dialogRef}
-            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-card licenta-questions-modal")}
+            className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-card licenta-questions-modal")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="licenta-audit-dialog-title"
           >
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-head")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-head")}>
               <div>
                 <strong id="licenta-audit-dialog-title">{`Set ${auditJob.setIndex || ""} - intrebari`}</strong>
                 <p>Set salvat in licenta. Il poti consulta fara sa intri inapoi in flow-ul principal.</p>
               </div>
               <button
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-close feedback-modal-close")}
+                className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-close feedback-modal-close")}
                 type="button"
                 onClick={() => setAuditJob(null)}
               >
                 <IconText icon={X}>Inchide</IconText>
               </button>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-form licenta-questions-modal-body")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-form licenta-questions-modal-body")}>
               <ImportJobStatusClient
                 key={auditJob.id}
                 initialStatus={auditJob}
@@ -1077,21 +1086,21 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : null}
 
       {removeSet && isEditable ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
+        <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-backdrop")} role="presentation">
           <div
             ref={dialogRef}
-            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-card review-confirm-modal")}
+            className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-card review-confirm-modal")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="licenta-remove-dialog-title"
           >
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-head")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-head")}>
               <div>
                 <strong id="licenta-remove-dialog-title">{`Elimini setul ${removeSet.setIndex || ""}?`}</strong>
                 <p>Setul si intrebarile extrase din el vor fi scoase din licenta curenta.</p>
               </div>
               <button
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-close feedback-modal-close")}
+                className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-close feedback-modal-close")}
                 type="button"
                 onClick={() => setRemoveSet(null)}
                 disabled={isBusy}
@@ -1099,14 +1108,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 <IconText icon={X}>Inchide</IconText>
               </button>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-form")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions")}>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "secondary review-delete-btn")} onClick={deleteSet} disabled={isBusy}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-form")}>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "inline-actions")}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "secondary review-delete-btn")} onClick={deleteSet} disabled={isBusy}>
                   <LoadingIconText icon={Trash2} loading={isBusy} loadingLabel="Se elimina...">
                     Da, elimina setul
                   </LoadingIconText>
                 </button>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setRemoveSet(null)} disabled={isBusy}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setRemoveSet(null)} disabled={isBusy}>
                   <IconText icon={X}>Renunta</IconText>
                 </button>
               </div>
@@ -1116,15 +1125,15 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : null}
 
       {confirmFinalize && isEditable ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
+        <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-backdrop")} role="presentation">
           <div
             ref={dialogRef}
-            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-card review-confirm-modal")}
+            className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-card review-confirm-modal")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="licenta-finalize-dialog-title"
           >
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-head")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-head")}>
               <div>
                 <strong id="licenta-finalize-dialog-title">Finalizezi licenta?</strong>
                 <p>
@@ -1133,7 +1142,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 </p>
               </div>
               <button
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-close feedback-modal-close")}
+                className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-close feedback-modal-close")}
                 type="button"
                 onClick={() => setConfirmFinalize(false)}
                 disabled={isBusy}
@@ -1141,8 +1150,8 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 <IconText icon={X}>Inchide</IconText>
               </button>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-form")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-form")}>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "inline-actions")}>
                 <button
                   type="button"
                   onClick={async () => {
@@ -1155,7 +1164,7 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                     Finalizeaza licenta
                   </LoadingIconText>
                 </button>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setConfirmFinalize(false)} disabled={isBusy}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setConfirmFinalize(false)} disabled={isBusy}>
                   <IconText icon={X}>Inapoi</IconText>
                 </button>
               </div>
@@ -1165,21 +1174,21 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
       ) : null}
 
       {confirmAbandon && isEditable ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-backdrop")} role="presentation">
+        <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-backdrop")} role="presentation">
           <div
             ref={dialogRef}
-            className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-card review-confirm-modal")}
+            className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-card review-confirm-modal")}
             role="dialog"
             aria-modal="true"
             aria-labelledby="licenta-abandon-dialog-title"
           >
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-head")}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-head")}>
               <div>
                 <strong id="licenta-abandon-dialog-title">Renunti la licenta curenta?</strong>
                 <p>Seturile din aceasta sesiune vor fi sterse. Nu se consuma nicio incarcare.</p>
               </div>
               <button
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-close feedback-modal-close")}
+                className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-close feedback-modal-close")}
                 type="button"
                 onClick={() => setConfirmAbandon(false)}
                 disabled={isBusy}
@@ -1187,14 +1196,14 @@ export function LicentaSessionWorkspaceClient({ initialSnapshot }) {
                 <IconText icon={X}>Inchide</IconText>
               </button>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-modal-form")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions")}>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "secondary review-delete-btn")} onClick={abandonSession} disabled={isBusy}>
+            <div className={moduleClassNames(licentaSessionStyleMaps, "workspace-modal-form")}>
+              <div className={moduleClassNames(licentaSessionStyleMaps, "inline-actions")}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "secondary review-delete-btn")} onClick={abandonSession} disabled={isBusy}>
                   <LoadingIconText icon={Trash2} loading={isBusy} loadingLabel="Se renunta...">
                     Da, renunta
                   </LoadingIconText>
                 </button>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary")} onClick={() => setConfirmAbandon(false)} disabled={isBusy}>
+                <button type="button" className={moduleClassNames(licentaSessionStyleMaps, "btn-link secondary")} onClick={() => setConfirmAbandon(false)} disabled={isBusy}>
                   <IconText icon={X}>Pastrez licenta</IconText>
                 </button>
               </div>

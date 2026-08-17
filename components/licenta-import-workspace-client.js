@@ -5,6 +5,7 @@ import styles from "./licenta-import-workspace-client.module.css";
 import sourceStyles from "./workspace-source-input.module.css";
 import reviewStyles from "./workspace-question-review.module.css";
 import flowStyles from "./workspace-flow-patterns.module.css";
+import uploadStatusStyles from "./learning-upload-status.module.css";
 import Link from "next/link";
 import {
   ClipboardList,
@@ -29,6 +30,14 @@ import {
 } from "@/lib/ai/upload-limits";
 import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
+
+const licentaImportStyleMaps = [
+  styles,
+  sourceStyles,
+  flowStyles,
+  reviewStyles,
+  uploadStatusStyles
+];
 
 const TERMINAL_STATUSES = new Set([
   "ready_for_preview",
@@ -179,13 +188,13 @@ function ExamplesModal({ onClose }) {
       title="Exemple de continut acceptat"
       description="Poti pune intrebarile si raspunsurile in mai multe forme. Pastreaza textul cat mai clar."
       onClose={onClose}
-      panelClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-examples-modal")}
+      panelClassName={moduleClassNames(licentaImportStyleMaps, "import-examples-modal")}
     >
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-examples-grid")}>
+        <div className={moduleClassNames(licentaImportStyleMaps, "import-examples-grid")}>
           {EXAMPLES.map((example) => (
             <article
               key={example.title}
-              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-panel-card import-example-card ${example.tone === "warning" ? "is-warning" : ""}`)}
+              className={moduleClassNames(licentaImportStyleMaps, `ui-panel-card import-example-card ${example.tone === "warning" ? "is-warning" : ""}`)}
             >
               <strong>{example.title}</strong>
               <pre>{example.body}</pre>
@@ -198,7 +207,7 @@ function ExamplesModal({ onClose }) {
 
 function IconText({ icon: Icon, children }) {
   return (
-    <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-icon-text")}>
+    <span className={moduleClassNames(licentaImportStyleMaps, "ui-icon-text")}>
       <Icon aria-hidden="true" size={16} strokeWidth={2.2} />
       <span>{children}</span>
     </span>
@@ -211,27 +220,27 @@ function QuestionPreviewList({ title, items }) {
   }
 
   return (
-    <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-preview-block")}>
+    <section className={moduleClassNames(licentaImportStyleMaps, "import-preview-block")}>
       <h3>{title}</h3>
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "draft-list import-preview-list")}>
+      <div className={moduleClassNames(licentaImportStyleMaps, "draft-list import-preview-list")}>
         {items.map((item) => (
-          <article key={item.id} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "draft-card import-preview-question")}>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "draft-card-head")}>
+          <article key={item.id} className={moduleClassNames(licentaImportStyleMaps, "draft-card import-preview-question")}>
+            <div className={moduleClassNames(licentaImportStyleMaps, "draft-card-head")}>
               <div>
                 <SectionLabel variant="eyebrow">{`Intrebarea ${item.globalIndex || item.localNumber || ""}`}</SectionLabel>
-                <strong className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "review-question-text")}>{item.questionText}</strong>
+                <strong className={moduleClassNames(licentaImportStyleMaps, "review-question-text")}>{item.questionText}</strong>
               </div>
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `status-pill ${item.status === "answer_matched" ? "is-good" : "is-warning"}`)}>
+              <span className={moduleClassNames(licentaImportStyleMaps, `status-pill ${item.status === "answer_matched" ? "is-good" : "is-warning"}`)}>
                 {questionStatusLabel(item.status)}
               </span>
             </div>
-            <ol className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "review-answer-list")}>
+            <ol className={moduleClassNames(licentaImportStyleMaps, "review-answer-list")}>
               {(item.options || []).map((option, index) => (
-                <li key={`${item.id}-${index}`} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `review-answer-item ${option.isCorrect ? "is-correct" : ""}`)}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "review-answer-badge")}>
+                <li key={`${item.id}-${index}`} className={moduleClassNames(licentaImportStyleMaps, `review-answer-item ${option.isCorrect ? "is-correct" : ""}`)}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "review-answer-badge")}>
                     {String(option.label || String.fromCharCode(65 + index)).toUpperCase()}
                   </span>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "review-answer-copy")}>{option.text}</span>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "review-answer-copy")}>{option.text}</span>
                 </li>
               ))}
             </ol>
@@ -298,23 +307,23 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
         : 8;
 
   return (
-    <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-panel ui-panel-card import-progress-panel")}>
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "dashboard-header")}>
+    <section className={moduleClassNames(licentaImportStyleMaps, "workspace-form-panel ui-panel-card import-progress-panel")}>
+      <div className={moduleClassNames(licentaImportStyleMaps, "dashboard-header")}>
         <div>
-          <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `status-pill ${statusTone(status.status)}`)}>{statusLabel(status.status)}</span>
+          <span className={moduleClassNames(licentaImportStyleMaps, `status-pill ${statusTone(status.status)}`)}>{statusLabel(status.status)}</span>
           <h2>{status.fileName || status.title || "Import grile"}</h2>
-          <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "page-copy")}>{status.message}</p>
+          <p className={moduleClassNames(licentaImportStyleMaps, "page-copy")}>{status.message}</p>
         </div>
       </div>
 
       <ProgressBar
         value={progress}
-        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "job-progress-bar")}
-        fillClassName={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "progress-fill")}
+        className={moduleClassNames(licentaImportStyleMaps, "job-progress-bar")}
+        fillClassName={moduleClassNames(licentaImportStyleMaps, "progress-fill")}
         aria-label="Progres import"
       />
 
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-count-grid")}>
+      <div className={moduleClassNames(licentaImportStyleMaps, "import-count-grid")}>
         <article>
           <span>Etape finalizate</span>
           <strong>{`${status.processedChunks}/${status.totalChunks || 0}`}</strong>
@@ -337,12 +346,12 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
         </article>
       </div>
 
-      {status.errorMessage ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "error-state")} role="alert">{status.errorMessage}</div> : null}
+      {status.errorMessage ? <div className={moduleClassNames(licentaImportStyleMaps, "error-state")} role="alert">{status.errorMessage}</div> : null}
 
       {preview ? (
-        <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "import-preview-shell")}>
+        <div className={moduleClassNames(licentaImportStyleMaps, "import-preview-shell")}>
           {preview.warnings?.length ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-credit-alert import-warning-panel")}>
+            <div className={moduleClassNames(licentaImportStyleMaps, "workspace-credit-alert import-warning-panel")}>
               <div>
                 <strong>Atentionari</strong>
                 {preview.warnings.map((warning) => (
@@ -357,9 +366,9 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
         </div>
       ) : null}
 
-      <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions import-actions-row")}>
+      <div className={moduleClassNames(licentaImportStyleMaps, "inline-actions import-actions-row")}>
         {status.status === "failed" ? (
-          <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-back")} onClick={onRetry} disabled={isBusy}>
+          <button type="button" className={moduleClassNames(licentaImportStyleMaps, "btn-back")} onClick={onRetry} disabled={isBusy}>
             <LoadingIconText loading={isBusy} loadingLabel="Reluam...">
               Reproceseaza
             </LoadingIconText>
@@ -373,7 +382,7 @@ function ImportProgress({ status, preview, onConfirm, onRetry, isBusy }) {
           </button>
         ) : null}
         {status.resultHref ? (
-          <Link className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-back")} href={status.resultHref}>
+          <Link className={moduleClassNames(licentaImportStyleMaps, "btn-back")} href={status.resultHref}>
             Deschide verificarea
           </Link>
         ) : null}
@@ -789,27 +798,27 @@ export function LicentaImportWorkspaceClient({
   }
 
   return (
-    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-import-workspace upload-refresh-flow")}>
+    <div className={moduleClassNames(licentaImportStyleMaps, "licenta-import-workspace upload-refresh-flow")}>
       {mainMode === "licenta" ? (
         <>
           {demoMode ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "error-state")} role="status">In modul demo poti vedea doar interfata. Pentru procesare reala intra in cont.</div>
+            <div className={moduleClassNames(licentaImportStyleMaps, "error-state")} role="status">In modul demo poti vedea doar interfata. Pentru procesare reala intra in cont.</div>
           ) : null}
-          {setupWarning ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "error-state")} role="alert">{setupWarning}</div> : null}
-          {message ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "success-state")} role="status">{message}</div> : null}
-          {error ? <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "error-state")} role="alert">{error}</div> : null}
+          {setupWarning ? <div className={moduleClassNames(licentaImportStyleMaps, "error-state")} role="alert">{setupWarning}</div> : null}
+          {message ? <div className={moduleClassNames(licentaImportStyleMaps, "success-state")} role="status">{message}</div> : null}
+          {error ? <div className={moduleClassNames(licentaImportStyleMaps, "error-state")} role="alert">{error}</div> : null}
           {activeError ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "error-state")} role="alert">
+            <div className={moduleClassNames(licentaImportStyleMaps, "error-state")} role="alert">
               <span>{activeError}</span>
               {activeErrorActionHref ? <Link href={activeErrorActionHref}>Continua</Link> : null}
             </div>
           ) : null}
           {isBusy ? (
-            <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-processing-icon")} aria-hidden="true">
+            <section className={moduleClassNames(licentaImportStyleMaps, "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
+              <span className={moduleClassNames(licentaImportStyleMaps, "learning-processing-icon")} aria-hidden="true">
                 <LoadingSpinner size={20} />
               </span>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-processing-copy")}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "learning-processing-copy")}>
                 <strong>Pregătim setul de grile...</strong>
                 <p>Păstrează pagina deschisă. Următorul pas apare automat când procesarea este gata.</p>
               </div>
@@ -834,17 +843,17 @@ export function LicentaImportWorkspaceClient({
       ) : (
         <>
           {activeLicentaSession ? (
-            <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-panel ui-panel-card licenta-active-session-focus")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-head")}>
+            <section className={moduleClassNames(licentaImportStyleMaps, "workspace-form-panel ui-panel-card licenta-active-session-focus")}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "workspace-form-head")}>
                 <div>
-                  <SectionLabel className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-step-label")}>{activeLicentaStep.eyebrow}</SectionLabel>
+                  <SectionLabel className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-step-label")}>{activeLicentaStep.eyebrow}</SectionLabel>
                   <h2>{activeLicentaStep.title}</h2>
                   <p>
                     {activeLicentaStep.copy}
                   </p>
                 </div>
               </div>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "licenta-active-session-stats")}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "licenta-active-session-stats")}>
                 <article>
                   <span>Seturi adaugate</span>
                   <strong>{`${activeLicentaSession.completedSetCount}/${activeLicentaSession.setCount}`}</strong>
@@ -865,31 +874,31 @@ export function LicentaImportWorkspaceClient({
                   </strong>
                 </article>
               </div>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-credit-alert licenta-active-session-note")}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "workspace-credit-alert licenta-active-session-note")}>
                 <div>
                   <strong>Nu porni alta licenta pentru setul urmator</strong>
                   <p>Tot ce urci pentru aceasta licenta trebuie sa ramana in aceeasi sesiune. Creditul se consuma doar la finalizare.</p>
                 </div>
               </div>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions import-actions-row")}>
-                <Link className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-back")} href={activeLicentaSession.href}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "inline-actions import-actions-row")}>
+                <Link className={moduleClassNames(licentaImportStyleMaps, "btn-back")} href={activeLicentaSession.href}>
                   <IconText icon={FolderOpen}>{activeLicentaStep.cta}</IconText>
                 </Link>
               </div>
             </section>
           ) : (
             <>
-          <ol className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-flow upload-refresh-steps")} aria-label="Pașii pregătirii licenței">
-            <li className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "is-done")}><span>1</span>Format</li>
-            <li className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], licentaImportMode === "auto" ? (autoFileReady ? "is-done" : "is-active") : (setInputReady ? "is-done" : "is-active"))}>
+          <ol className={moduleClassNames(licentaImportStyleMaps, "learning-upload-flow upload-refresh-steps")} aria-label="Pașii pregătirii licenței">
+            <li className={moduleClassNames(licentaImportStyleMaps, "is-done")}><span>1</span>Format</li>
+            <li className={moduleClassNames(licentaImportStyleMaps, licentaImportMode === "auto" ? (autoFileReady ? "is-done" : "is-active") : (setInputReady ? "is-done" : "is-active"))}>
               <span>2</span>Conținut
             </li>
             <li><span>3</span>Verificare</li>
           </ol>
-          <section className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-panel ui-panel-card import-method-panel")}>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-head")}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-step-head")}>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">1</span>
+          <section className={moduleClassNames(licentaImportStyleMaps, "workspace-form-panel ui-panel-card import-method-panel")}>
+            <div className={moduleClassNames(licentaImportStyleMaps, "workspace-form-head")}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-step-head")}>
+                <span className={moduleClassNames(licentaImportStyleMaps, "learning-upload-step-number")} aria-hidden="true">1</span>
                 <div>
                   <h2>Cum sunt organizate grilele?</h2>
                   <p>Alege varianta care seamănă cu materialul tău.</p>
@@ -897,7 +906,7 @@ export function LicentaImportWorkspaceClient({
               </div>
             </div>
             <div
-              className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-segmented-tabs import-method-tabs")}
+              className={moduleClassNames(licentaImportStyleMaps, "ui-segmented-tabs import-method-tabs")}
               role="tablist"
               aria-label="Metoda import licenta"
               onKeyDown={handleTablistKeyDown}
@@ -909,15 +918,15 @@ export function LicentaImportWorkspaceClient({
                 aria-selected={licentaImportMode === "set"}
                 aria-controls="licenta-import-mode-panel"
                 tabIndex={licentaImportMode === "set" ? 0 : -1}
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-segmented-tab secondary import-method-tab ${licentaImportMode === "set" ? "is-active" : ""}`)}
+                className={moduleClassNames(licentaImportStyleMaps, `ui-segmented-tab secondary import-method-tab ${licentaImportMode === "set" ? "is-active" : ""}`)}
                 onClick={() => setLicentaImportMode("set")}
               >
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-source-tab-icon")} aria-hidden="true"><FolderOpen size={19} /></span>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-option-copy")}>
+                <span className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-source-tab-icon")} aria-hidden="true"><FolderOpen size={19} /></span>
+                <span className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-option-copy")}>
                   <strong>Pe seturi</strong>
                   <small>Recomandat pentru materiale mari</small>
                 </span>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-chip is-good import-method-badge")}>Recomandat</span>
+                <span className={moduleClassNames(licentaImportStyleMaps, "ui-chip is-good import-method-badge")}>Recomandat</span>
               </button>
               <button
                 id="licenta-import-tab-auto"
@@ -926,21 +935,21 @@ export function LicentaImportWorkspaceClient({
                 aria-selected={licentaImportMode === "auto"}
                 aria-controls="licenta-import-mode-panel"
                 tabIndex={licentaImportMode === "auto" ? 0 : -1}
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-segmented-tab secondary import-method-tab ${licentaImportMode === "auto" ? "is-active" : ""}`)}
+                className={moduleClassNames(licentaImportStyleMaps, `ui-segmented-tab secondary import-method-tab ${licentaImportMode === "auto" ? "is-active" : ""}`)}
                 onClick={() => {
                   setLicentaImportMode("auto");
                   setActiveError("");
                 }}
               >
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-source-tab-icon")} aria-hidden="true"><FileText size={19} /></span>
-                <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-option-copy")}>
+                <span className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-source-tab-icon")} aria-hidden="true"><FileText size={19} /></span>
+                <span className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-option-copy")}>
                   <strong>Fișier complet</strong>
                   <small>Când toate grilele sunt într-un singur document</small>
                 </span>
               </button>
             </div>
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-credit-summary licenta-import-credit-summary${noCredits ? " is-warning" : ""}`)}>
-              <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-chip ${noCredits ? "is-warning" : "is-good"}`)}>
+            <div className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-credit-summary licenta-import-credit-summary${noCredits ? " is-warning" : ""}`)}>
+              <span className={moduleClassNames(licentaImportStyleMaps, `ui-chip ${noCredits ? "is-warning" : "is-good"}`)}>
                 {creditCountLabel}
               </span>
               <span>{licentaCreditPolicyText}</span>
@@ -953,10 +962,10 @@ export function LicentaImportWorkspaceClient({
             aria-labelledby={`licenta-import-tab-${licentaImportMode}`}
           >
           {licentaImportMode === "auto" ? (
-            <form className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-panel ui-panel-card import-mode-card import-mode-card-single")} onSubmit={submitAuto}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-head")}>
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-step-head")}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">2</span>
+            <form className={moduleClassNames(licentaImportStyleMaps, "workspace-form-panel ui-panel-card import-mode-card import-mode-card-single")} onSubmit={submitAuto}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "workspace-form-head")}>
+                <div className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-step-head")}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "learning-upload-step-number")} aria-hidden="true">2</span>
                   <div>
                     <h2>Încarcă fișierul complet</h2>
                   <p>
@@ -965,9 +974,9 @@ export function LicentaImportWorkspaceClient({
                   </div>
                 </div>
               </div>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "selector-container ai-workspace-source-panel")}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "selector-container ai-workspace-source-panel")}>
                 <label
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-file-dropzone${
+                  className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-file-dropzone${
                     isDraggingAutoFile ? " is-dragging" : ""
                   }${autoFileHasIssue ? " is-warning" : ""}${autoFileReady ? " is-ready" : ""}`)}
                   htmlFor={autoFileInputId}
@@ -1011,16 +1020,16 @@ export function LicentaImportWorkspaceClient({
                     applyDroppedAutoFiles(event.dataTransfer.files);
                   }}
                 >
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-file-drop-title")}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-file-drop-title")}>
                     {isDraggingAutoFile ? "Elibereaza fisierul aici" : "Alege sau trage fisierul complet aici"}
                   </span>
-                  <span id={autoFileDropNoteId} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-file-drop-note")}>
+                  <span id={autoFileDropNoteId} className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-file-drop-note")}>
                     Un singur PDF, DOCX sau TXT cu toata licenta. Maxim {AI_SOURCE_UPLOAD_MAX_LABEL}.
                   </span>
                   <input
                     id={autoFileInputId}
                     ref={autoFileRef}
-                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-file-input")}
+                    className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-file-input")}
                     type="file"
                     disabled={disabled}
                     tabIndex={-1}
@@ -1030,13 +1039,13 @@ export function LicentaImportWorkspaceClient({
                     }}
                   />
                 </label>
-                <p id={autoFileDropStatusId} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "sr-only")} aria-live="polite">
+                <p id={autoFileDropStatusId} className={moduleClassNames(licentaImportStyleMaps, "sr-only")} aria-live="polite">
                   {autoFileDropStatusText}
                 </p>
               </div>
               {selectedAutoFile ? (
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-source-meta${autoFileHasIssue ? " is-warning" : ""}`)}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-chip ${autoFileHasIssue ? "is-warning" : "is-good"}`)}>
+                <div className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-source-meta${autoFileHasIssue ? " is-warning" : ""}`)}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, `ui-chip ${autoFileHasIssue ? "is-warning" : "is-good"}`)}>
                     {autoFileUnsupported
                       ? "Tip neacceptat"
                       : autoFileTooLarge
@@ -1049,7 +1058,7 @@ export function LicentaImportWorkspaceClient({
                   </span>
                   <button
                     type="button"
-                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-source-action")}
+                    className={moduleClassNames(licentaImportStyleMaps, "btn-link secondary ai-workspace-source-action")}
                     onClick={clearAutoFile}
                     disabled={isBusy}
                   >
@@ -1057,12 +1066,12 @@ export function LicentaImportWorkspaceClient({
                   </button>
                 </div>
               ) : null}
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions import-actions-row upload-refresh-final-action")}>
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-action-label")}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">3</span>
+              <div className={moduleClassNames(licentaImportStyleMaps, "inline-actions import-actions-row upload-refresh-final-action")}>
+                <div className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-action-label")}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "learning-upload-step-number")} aria-hidden="true">3</span>
                   <div>
                     <strong>Trimite spre verificare</strong>
-                    <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-submit-action-hint")} aria-live="polite">{autoInputHint}</p>
+                    <p className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-submit-action-hint")} aria-live="polite">{autoInputHint}</p>
                   </div>
                 </div>
                 <button type="submit" disabled={autoSubmitDisabled}>
@@ -1073,10 +1082,10 @@ export function LicentaImportWorkspaceClient({
               </div>
             </form>
           ) : (
-            <form className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-panel ui-panel-card import-mode-card import-mode-card-single")} onSubmit={submitSet}>
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-form-head")}>
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-step-head")}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">2</span>
+            <form className={moduleClassNames(licentaImportStyleMaps, "workspace-form-panel ui-panel-card import-mode-card import-mode-card-single")} onSubmit={submitSet}>
+              <div className={moduleClassNames(licentaImportStyleMaps, "workspace-form-head")}>
+                <div className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-step-head")}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "learning-upload-step-number")} aria-hidden="true">2</span>
                   <div>
                   <h2>Adaugă primul set</h2>
                   <p>
@@ -1084,13 +1093,13 @@ export function LicentaImportWorkspaceClient({
                   </p>
                   </div>
                 </div>
-                <button type="button" className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary import-examples-trigger")} onClick={() => setShowExamples(true)}>
+                <button type="button" className={moduleClassNames(licentaImportStyleMaps, "btn-link secondary import-examples-trigger")} onClick={() => setShowExamples(true)}>
                   <IconText icon={HelpCircle}>Vezi exemple</IconText>
                 </button>
               </div>
 
               <div
-                className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ui-segmented-tabs ai-workspace-source-tabs")}
+                className={moduleClassNames(licentaImportStyleMaps, "ui-segmented-tabs ai-workspace-source-tabs")}
                 role="tablist"
                 aria-label="Sursa setului"
                 onKeyDown={handleTablistKeyDown}
@@ -1102,7 +1111,7 @@ export function LicentaImportWorkspaceClient({
                   aria-selected={setSourceMode === "text"}
                   aria-controls="licenta-set-source-panel"
                   tabIndex={setSourceMode === "text" ? 0 : -1}
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-segmented-tab secondary ai-workspace-source-tab ${setSourceMode === "text" ? "is-active" : ""}`)}
+                  className={moduleClassNames(licentaImportStyleMaps, `ui-segmented-tab secondary ai-workspace-source-tab ${setSourceMode === "text" ? "is-active" : ""}`)}
                   onClick={() => {
                     setSetSourceMode("text");
                     setRequestIdRef.current = createRequestId("set");
@@ -1110,8 +1119,8 @@ export function LicentaImportWorkspaceClient({
                     setActiveErrorActionHref("");
                   }}
                 >
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-source-tab-icon")} aria-hidden="true"><Keyboard size={19} /></span>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-option-copy")}><strong>Lipește text</strong><small>Întrebări copiate</small></span>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-source-tab-icon")} aria-hidden="true"><Keyboard size={19} /></span>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-option-copy")}><strong>Lipește text</strong><small>Întrebări copiate</small></span>
                 </button>
                 <button
                   id="licenta-set-source-tab-file"
@@ -1120,7 +1129,7 @@ export function LicentaImportWorkspaceClient({
                   aria-selected={setSourceMode === "file"}
                   aria-controls="licenta-set-source-panel"
                   tabIndex={setSourceMode === "file" ? 0 : -1}
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-segmented-tab secondary ai-workspace-source-tab ${setSourceMode === "file" ? "is-active" : ""}`)}
+                  className={moduleClassNames(licentaImportStyleMaps, `ui-segmented-tab secondary ai-workspace-source-tab ${setSourceMode === "file" ? "is-active" : ""}`)}
                   onClick={() => {
                     setSetSourceMode("file");
                     setRequestIdRef.current = createRequestId("set");
@@ -1128,22 +1137,22 @@ export function LicentaImportWorkspaceClient({
                     setActiveErrorActionHref("");
                   }}
                 >
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-source-tab-icon")} aria-hidden="true"><Upload size={19} /></span>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-option-copy")}><strong>Încarcă fișier</strong><small>PDF, DOCX sau TXT</small></span>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-source-tab-icon")} aria-hidden="true"><Upload size={19} /></span>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-option-copy")}><strong>Încarcă fișier</strong><small>PDF, DOCX sau TXT</small></span>
                 </button>
               </div>
 
               {setSourceMode === "text" ? (
                 <div
                   id="licenta-set-source-panel"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "selector-container ai-workspace-source-panel")}
+                  className={moduleClassNames(licentaImportStyleMaps, "selector-container ai-workspace-source-panel")}
                   role="tabpanel"
                   aria-labelledby="licenta-set-source-tab-text"
                 >
                   <label>
                     Lipeste continutul complet al setului
                     <textarea
-                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "textarea-input ai-workspace-textarea")}
+                      className={moduleClassNames(licentaImportStyleMaps, "textarea-input ai-workspace-textarea")}
                       rows="12"
                       value={contentText}
                       onChange={(event) => {
@@ -1156,8 +1165,8 @@ export function LicentaImportWorkspaceClient({
                     />
                   </label>
                   {setTextLength > 0 ? (
-                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-source-meta${setTextTooShort || setTextNeedsReview ? " is-warning" : ""}`)}>
-                      <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-chip ${setTextTooShort || setTextNeedsReview ? "is-warning" : "is-good"}`)}>
+                    <div className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-source-meta${setTextTooShort || setTextNeedsReview ? " is-warning" : ""}`)}>
+                      <span className={moduleClassNames(licentaImportStyleMaps, `ui-chip ${setTextTooShort || setTextNeedsReview ? "is-warning" : "is-good"}`)}>
                         {setTextTooShort
                           ? "Set scurt"
                           : setTextNeedsReview
@@ -1169,7 +1178,7 @@ export function LicentaImportWorkspaceClient({
                       </span>
                       <button
                         type="button"
-                        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-source-action")}
+                        className={moduleClassNames(licentaImportStyleMaps, "btn-link secondary ai-workspace-source-action")}
                         onClick={clearSetText}
                         disabled={isBusy}
                       >
@@ -1178,11 +1187,11 @@ export function LicentaImportWorkspaceClient({
                     </div>
                   ) : null}
                   {setTextLength >= LICENTA_SET_MIN_CHARS ? (
-                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-text-signals")} aria-label="Semnale set licenta">
+                    <div className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-text-signals")} aria-label="Semnale set licenta">
                       {setTextQualityChecks.map((check) => (
                         <span
                           key={check.key}
-                          className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-text-signal${check.passed ? " is-done" : " is-open"}`)}
+                          className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-text-signal${check.passed ? " is-done" : " is-open"}`)}
                         >
                           <span aria-hidden="true">{check.passed ? "OK" : "?"}</span>
                           {check.label}
@@ -1194,12 +1203,12 @@ export function LicentaImportWorkspaceClient({
               ) : (
                 <div
                   id="licenta-set-source-panel"
-                  className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "selector-container ai-workspace-source-panel")}
+                  className={moduleClassNames(licentaImportStyleMaps, "selector-container ai-workspace-source-panel")}
                   role="tabpanel"
                   aria-labelledby="licenta-set-source-tab-file"
                 >
                   <label
-                    className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-file-dropzone${
+                    className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-file-dropzone${
                       isDraggingSetFile ? " is-dragging" : ""
                     }${setFileHasIssue ? " is-warning" : ""}${setFileReady ? " is-ready" : ""}`)}
                     htmlFor={setFileInputId}
@@ -1243,16 +1252,16 @@ export function LicentaImportWorkspaceClient({
                       applyDroppedSetFiles(event.dataTransfer.files);
                     }}
                   >
-                    <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-file-drop-title")}>
+                    <span className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-file-drop-title")}>
                       {isDraggingSetFile ? "Elibereaza fisierul aici" : "Alege sau trage fisierul setului aici"}
                     </span>
-                    <span id={setFileDropNoteId} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-file-drop-note")}>
+                    <span id={setFileDropNoteId} className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-file-drop-note")}>
                       Un singur fisier mic pentru setul curent. PDF, DOCX sau TXT, maxim {AI_SOURCE_UPLOAD_MAX_LABEL}.
                     </span>
                     <input
                       id={setFileInputId}
                       ref={setContentFileRef}
-                      className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-file-input")}
+                      className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-file-input")}
                       type="file"
                       disabled={disabled}
                       tabIndex={-1}
@@ -1262,15 +1271,15 @@ export function LicentaImportWorkspaceClient({
                       }}
                     />
                   </label>
-                  <p id={setFileDropStatusId} className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "sr-only")} aria-live="polite">
+                  <p id={setFileDropStatusId} className={moduleClassNames(licentaImportStyleMaps, "sr-only")} aria-live="polite">
                     {setFileDropStatusText}
                   </p>
-                  <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "micro-copy ai-workspace-source-hint")}>
+                  <p className={moduleClassNames(licentaImportStyleMaps, "micro-copy ai-workspace-source-hint")}>
                     Pentru materiale mari, incarca pe rand seturi mai mici. Le vei vedea grupate in aceeasi licenta.
                   </p>
                   {selectedSetFile ? (
-                    <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ai-workspace-source-meta${setFileHasIssue ? " is-warning" : ""}`)}>
-                      <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], `ui-chip ${setFileHasIssue ? "is-warning" : "is-good"}`)}>
+                    <div className={moduleClassNames(licentaImportStyleMaps, `ai-workspace-source-meta${setFileHasIssue ? " is-warning" : ""}`)}>
+                      <span className={moduleClassNames(licentaImportStyleMaps, `ui-chip ${setFileHasIssue ? "is-warning" : "is-good"}`)}>
                         {setFileUnsupported
                           ? "Tip neacceptat"
                           : setFileTooLarge
@@ -1283,7 +1292,7 @@ export function LicentaImportWorkspaceClient({
                       </span>
                       <button
                         type="button"
-                        className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-source-action")}
+                        className={moduleClassNames(licentaImportStyleMaps, "btn-link secondary ai-workspace-source-action")}
                         onClick={clearSetFile}
                         disabled={isBusy}
                       >
@@ -1294,12 +1303,12 @@ export function LicentaImportWorkspaceClient({
                 </div>
               )}
 
-              <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "inline-actions import-actions-row upload-refresh-final-action")}>
-                <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "upload-refresh-action-label")}>
-                  <span className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">3</span>
+              <div className={moduleClassNames(licentaImportStyleMaps, "inline-actions import-actions-row upload-refresh-final-action")}>
+                <div className={moduleClassNames(licentaImportStyleMaps, "upload-refresh-action-label")}>
+                  <span className={moduleClassNames(licentaImportStyleMaps, "learning-upload-step-number")} aria-hidden="true">3</span>
                   <div>
                     <strong>Trimite setul spre verificare</strong>
-                    <p className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "ai-workspace-submit-action-hint")} aria-live="polite">{setInputHint}</p>
+                    <p className={moduleClassNames(licentaImportStyleMaps, "ai-workspace-submit-action-hint")} aria-live="polite">{setInputHint}</p>
                   </div>
                 </div>
                 <button type="submit" disabled={setSubmitDisabled}>
@@ -1313,12 +1322,12 @@ export function LicentaImportWorkspaceClient({
           </div>
 
           {noCredits ? (
-            <div className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "workspace-credit-alert")}>
+            <div className={moduleClassNames(licentaImportStyleMaps, "workspace-credit-alert")}>
               <div>
                 <strong>Nu mai ai incarcari disponibile</strong>
                 <p>Adauga o incarcare noua din cont ca sa poti importa grilele.</p>
               </div>
-              <PendingNavigationLink className={moduleClassNames([styles, sourceStyles, flowStyles, reviewStyles], "btn-link secondary ai-workspace-alert-link")} href="/cont?section=credits" pendingLabel="Se deschid pachetele..." pendingMode="replace">
+              <PendingNavigationLink className={moduleClassNames(licentaImportStyleMaps, "btn-link secondary ai-workspace-alert-link")} href="/cont?section=credits" pendingLabel="Se deschid pachetele..." pendingMode="replace">
                 Adauga incarcari
               </PendingNavigationLink>
             </div>

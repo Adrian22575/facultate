@@ -4,6 +4,7 @@ import { moduleClassNames } from "@/lib/ui/module-class-names";
 import styles from "./learning-upload-form.module.css";
 import uploadStatusStyles from "./learning-upload-status.module.css";
 import reviewStyles from "./workspace-question-review.module.css";
+import flowStyles from "./workspace-flow-patterns.module.css";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { Check, ClipboardPaste, FileText, FileUp, Upload, X } from "lucide-react";
@@ -19,6 +20,7 @@ import { createClient as createSupabaseBrowserClient } from "@/lib/supabase/clie
 
 const ACCEPTED_EXTENSIONS = [".pdf", ".docx", ".pptx", ".txt"];
 const MIN_TEXT_LENGTH = 600;
+const learningUploadStyleMaps = [styles, uploadStatusStyles, reviewStyles, flowStyles];
 
 function createIdempotencyKey() {
   if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
@@ -51,7 +53,7 @@ function SourceOption({ icon: Icon, title, copy, active = false, disabled = fals
   return (
     <button
       type="button"
-      className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], `learning-upload-source-option${active ? " is-active" : ""}`)}
+      className={moduleClassNames(learningUploadStyleMaps, `learning-upload-source-option${active ? " is-active" : ""}`)}
       data-usage-event="learning_source_selected"
       data-usage-label={title}
       aria-pressed={active}
@@ -65,7 +67,7 @@ function SourceOption({ icon: Icon, title, copy, active = false, disabled = fals
         <strong>{title}</strong>
         <small>{copy}</small>
       </div>
-      {active ? <Check className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-source-check")} aria-hidden="true" size={18} strokeWidth={2.5} /> : null}
+      {active ? <Check className={moduleClassNames(learningUploadStyleMaps, "learning-upload-source-check")} aria-hidden="true" size={18} strokeWidth={2.5} /> : null}
     </button>
   );
 }
@@ -84,11 +86,11 @@ function ProcessingPanel({ status, sourceMode, sourceSaved }) {
       : "Pregatim continutul pentru procesare.";
 
   return (
-    <section className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
-      <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-processing-icon")} aria-hidden="true">
+    <section className={moduleClassNames(learningUploadStyleMaps, "learning-processing-panel")} role="status" aria-live="polite" aria-atomic="true">
+      <span className={moduleClassNames(learningUploadStyleMaps, "learning-processing-icon")} aria-hidden="true">
         <LoadingSpinner size={20} />
       </span>
-      <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-processing-copy")}>
+      <div className={moduleClassNames(learningUploadStyleMaps, "learning-processing-copy")}>
         <strong>{status || "Pregatim materialul..."}</strong>
         <p>{waitingMessage}</p>
       </div>
@@ -277,53 +279,53 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
         <ProcessingPanel status={status} sourceMode={sourceMode} sourceSaved={sourceSaved} />
       ) : null}
       {visibleError ? (
-        <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "error-state")} role="alert">
+        <div className={moduleClassNames(learningUploadStyleMaps, "error-state")} role="alert">
           <span>{visibleError}</span>
           {errorActionHref ? <Link href={errorActionHref}>Vezi pachetele</Link> : null}
         </div>
       ) : null}
       {noCredits ? (
-        <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-credit-warning")} role="status">
+        <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-credit-warning")} role="status">
           <div>
             <strong>Ai nevoie de o încărcare disponibilă.</strong>
             <span>Alege un pachet, apoi revii automat aici.</span>
           </div>
-          <Link className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "btn-link secondary")} href={creditPurchaseHref}>
+          <Link className={moduleClassNames(learningUploadStyleMaps, "btn-link secondary")} href={creditPurchaseHref}>
             Vezi pachetele
           </Link>
         </div>
       ) : null}
       {!isSubmitting ? (
-        <form className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "surface learning-upload-form")} onSubmit={handleSubmit}>
-          <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-section-head")}>
+        <form className={moduleClassNames(learningUploadStyleMaps, "surface learning-upload-form")} onSubmit={handleSubmit}>
+          <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-section-head")}>
             <div>
               <h2>Încarcă materialul</h2>
               <p>Trei pași simpli. Tu alegi, noi pregătim modurile de învățare.</p>
             </div>
-            <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-cost-meta")}>
+            <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-cost-meta")}>
               {`${billingSnapshot.aiCredits || 0} disponibile · consumă 1`}
             </span>
           </div>
 
-          <ol className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-flow")} aria-label="Pașii încărcării">
-            <li className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], subjectReady ? "is-done" : "is-active")}>
+          <ol className={moduleClassNames(learningUploadStyleMaps, "learning-upload-flow")} aria-label="Pașii încărcării">
+            <li className={moduleClassNames(learningUploadStyleMaps, subjectReady ? "is-done" : "is-active")}>
               <span>{subjectReady ? <Check aria-hidden="true" size={14} /> : "1"}</span>
               Materie
             </li>
-            <li className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], sourceReady ? "is-done" : subjectReady ? "is-active" : "")}>
+            <li className={moduleClassNames(learningUploadStyleMaps, sourceReady ? "is-done" : subjectReady ? "is-active" : "")}>
               <span>{sourceReady ? <Check aria-hidden="true" size={14} /> : "2"}</span>
               Conținut
             </li>
-            <li className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], sourceReady && subjectReady ? "is-active" : "")}>
+            <li className={moduleClassNames(learningUploadStyleMaps, sourceReady && subjectReady ? "is-active" : "")}>
               <span>3</span>
               Confirmare
             </li>
           </ol>
 
-          <section className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-subject-section")} aria-labelledby="learning-upload-subject-title">
-            <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-subject-head")}>
+          <section className={moduleClassNames(learningUploadStyleMaps, "learning-upload-subject-section")} aria-labelledby="learning-upload-subject-title">
+            <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-subject-head")}>
               <div>
-                <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">1</span>
+                <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-step-number")} aria-hidden="true">1</span>
                 <div>
                   <h3 id="learning-upload-subject-title">Alege materia</h3>
                   <p>Așa găsești ușor materialul mai târziu.</p>
@@ -331,10 +333,10 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
               </div>
             </div>
 
-            <label className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-field")}>
-              <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "sr-only")}>Materia</span>
+            <label className={moduleClassNames(learningUploadStyleMaps, "learning-upload-field")}>
+              <span className={moduleClassNames(learningUploadStyleMaps, "sr-only")}>Materia</span>
               <select
-                className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "input-search")}
+                className={moduleClassNames(learningUploadStyleMaps, "input-search")}
                 name="subjectId"
                 value={selectedSubjectId}
                 required
@@ -354,10 +356,10 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
             </label>
 
             {selectedSubjectId === "custom" ? (
-              <label className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-field learning-upload-new-subject")}>
+              <label className={moduleClassNames(learningUploadStyleMaps, "learning-upload-field learning-upload-new-subject")}>
                 Numele materiei noi
                 <input
-                  className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "input-search")}
+                  className={moduleClassNames(learningUploadStyleMaps, "input-search")}
                   name="subjectCustomName"
                   placeholder="Ex: Economie internațională"
                   type="text"
@@ -368,15 +370,15 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
                   autoFocus
                   onChange={(event) => setCustomSubjectName(event.target.value)}
                 />
-                <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-field-note")}>O adăugăm acum, iar materialul rămâne privat.</span>
+                <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-field-note")}>O adăugăm acum, iar materialul rămâne privat.</span>
               </label>
             ) : null}
           </section>
 
-          <section className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-content-section")} aria-labelledby="learning-upload-content-title">
-            <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-subject-head")}>
+          <section className={moduleClassNames(learningUploadStyleMaps, "learning-upload-content-section")} aria-labelledby="learning-upload-content-title">
+            <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-subject-head")}>
               <div>
-                <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">2</span>
+                <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-step-number")} aria-hidden="true">2</span>
                 <div>
                   <h3 id="learning-upload-content-title">Adaugă conținutul</h3>
                   <p>Încarcă un fișier sau lipește textul.</p>
@@ -384,7 +386,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
               </div>
             </div>
 
-            <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-source-grid")} aria-label="Tipul conținutului">
+            <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-source-grid")} aria-label="Tipul conținutului">
               <SourceOption
                 icon={FileUp}
                 title="Încarcă fișier"
@@ -402,9 +404,9 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
             </div>
 
             {sourceMode === "file" ? (
-              <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-file-box")}>
+              <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-file-box")}>
                 <label
-                  className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], `learning-upload-file-drop${isDraggingFile ? " is-dragging" : ""}${selectedFile ? " is-selected" : ""}`)}
+                  className={moduleClassNames(learningUploadStyleMaps, `learning-upload-file-drop${isDraggingFile ? " is-dragging" : ""}${selectedFile ? " is-selected" : ""}`)}
                   htmlFor={fileInputId}
                   onDragEnter={(event) => {
                     event.preventDefault();
@@ -414,7 +416,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
                   onDragLeave={() => setIsDraggingFile(false)}
                   onDrop={handleFileDrop}
                 >
-                  <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-file-icon")} aria-hidden="true">
+                  <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-file-icon")} aria-hidden="true">
                     {selectedFile ? <FileText size={24} strokeWidth={2.1} /> : <Upload size={24} strokeWidth={2.1} />}
                   </span>
                   <strong>{selectedFile ? selectedFile.name : "Trage fișierul aici"}</strong>
@@ -435,7 +437,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
                 {selectedFile ? (
                   <button
                     type="button"
-                    className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-file-remove")}
+                    className={moduleClassNames(learningUploadStyleMaps, "learning-upload-file-remove")}
                     data-usage-event="learning_file_removed"
                     data-usage-label="Elimină fișierul"
                     onClick={() => {
@@ -449,10 +451,10 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
                 ) : null}
               </div>
             ) : (
-              <label className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-field")}>
+              <label className={moduleClassNames(learningUploadStyleMaps, "learning-upload-field")}>
                 Textul materialului
                 <textarea
-                  className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "input-search learning-upload-textarea")}
+                  className={moduleClassNames(learningUploadStyleMaps, "input-search learning-upload-textarea")}
                   name="manualText"
                   placeholder="Lipește aici cursul, notițele sau conținutul capitolului..."
                   value={manualText}
@@ -464,7 +466,7 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
                     setStatus("");
                   }}
                 />
-                <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-field-note")}>
+                <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-field-note")}>
                   {textLength
                     ? `${textLength.toLocaleString("ro-RO")} caractere · minimum ${MIN_TEXT_LENGTH}`
                     : `Minimum ${MIN_TEXT_LENGTH} de caractere.`}
@@ -476,15 +478,15 @@ export function LearningUploadForm({ billingSnapshot, setupWarning, subjects = [
           <input type="hidden" name="uploadedSourceDocumentId" value="" />
           <input type="hidden" name="idempotencyKey" value={idempotencyKeyRef.current} />
 
-          <section className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-review")} aria-labelledby="learning-upload-review-title">
-            <div className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-review-head")}>
-              <span className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-step-number")} aria-hidden="true">3</span>
+          <section className={moduleClassNames(learningUploadStyleMaps, "learning-upload-review")} aria-labelledby="learning-upload-review-title">
+            <div className={moduleClassNames(learningUploadStyleMaps, "learning-upload-review-head")}>
+              <span className={moduleClassNames(learningUploadStyleMaps, "learning-upload-step-number")} aria-hidden="true">3</span>
               <div>
                 <h3 id="learning-upload-review-title">Verifică și pornește</h3>
                 <p>{readinessMessage}</p>
               </div>
             </div>
-            <dl className={moduleClassNames([styles, uploadStatusStyles, reviewStyles], "learning-upload-summary")}>
+            <dl className={moduleClassNames(learningUploadStyleMaps, "learning-upload-summary")}>
               <div><dt>Materie</dt><dd>{subjectReady ? subjectLabel : "Nealeasă"}</dd></div>
               <div><dt>Conținut</dt><dd>{sourceLabel}</dd></div>
             </dl>

@@ -1,6 +1,7 @@
 import { moduleClassNames } from "@/lib/ui/module-class-names";
 import styles from "@/components/ai-activity-center-client.module.css";
 import reviewStyles from "../../../components/workspace-question-review.module.css";
+import layoutStyles from "../workspace-layout.module.css";
 import { Upload } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -115,17 +116,17 @@ export default async function AIActivityPage({ searchParams }) {
     testGroups.drafts.length;
 
   return (
-    <main className={moduleClassNames([styles, reviewStyles], "app-shell ai-workspace-page ai-activity-page")}>
+    <main className={moduleClassNames([styles, reviewStyles, layoutStyles], "app-shell ai-workspace-page ai-activity-page")}>
       <AppHeader
         title="Materiale de studiu"
         subtitle="Materialele, importurile si testele tale intr-un singur loc."
         hidePageTitle
       />
 
-      <section className={moduleClassNames([styles, reviewStyles], "ai-workspace-header ai-activity-header")}>
-        <div className={moduleClassNames([styles, reviewStyles], "ai-workspace-header-copy")}>
-          <h1 className={moduleClassNames([styles, reviewStyles], "ai-workspace-title")}>Materialele mele</h1>
-          <p className={moduleClassNames([styles, reviewStyles], "ai-workspace-subtitle")}>
+      <section className={moduleClassNames([styles, reviewStyles, layoutStyles], "ai-workspace-header ai-activity-header")}>
+        <div className={moduleClassNames([styles, reviewStyles, layoutStyles], "ai-workspace-header-copy")}>
+          <h1 className={moduleClassNames([styles, reviewStyles, layoutStyles], "ai-workspace-title")}>Materialele mele</h1>
+          <p className={moduleClassNames([styles, reviewStyles, layoutStyles], "ai-workspace-subtitle")}>
             Deschide un material salvat sau urmareste o procesare in curs.
           </p>
         </div>

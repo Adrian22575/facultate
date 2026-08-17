@@ -1,5 +1,6 @@
 import { moduleClassNames } from "@/lib/ui/module-class-names";
 import styles from "./page.module.css";
+import layoutStyles from "./workspace-layout.module.css";
 import { Activity, ArrowRight, BookOpen, ClipboardList } from "lucide-react";
 import { redirect } from "next/navigation";
 
@@ -65,13 +66,13 @@ export default async function AIWorkspacePage() {
   }
 
   return (
-    <main className={moduleClassNames([styles], "app-shell ai-workspace-page ai-workspace-page--simple")}>
+    <main className={moduleClassNames([styles, layoutStyles], "app-shell ai-workspace-page ai-workspace-page--simple")}>
       <AppHeader title="Materiale de studiu" hidePageTitle />
 
-      <section className={moduleClassNames([styles], "ai-workspace-header")}>
-        <div className={moduleClassNames([styles], "ai-workspace-header-copy")}>
-          <h1 className={moduleClassNames([styles], "ai-workspace-title")}>Alege cum inveti</h1>
-          <p className={moduleClassNames([styles], "ai-workspace-subtitle")}>Porneste cu materia ta sau cu un set de grile pe care il ai deja.</p>
+      <section className={moduleClassNames([styles, layoutStyles], "ai-workspace-header")}>
+        <div className={moduleClassNames([styles, layoutStyles], "ai-workspace-header-copy")}>
+          <h1 className={moduleClassNames([styles, layoutStyles], "ai-workspace-title")}>Alege cum inveti</h1>
+          <p className={moduleClassNames([styles, layoutStyles], "ai-workspace-subtitle")}>Porneste cu materia ta sau cu un set de grile pe care il ai deja.</p>
         </div>
         <PendingNavigationLink
           className={moduleClassNames([styles], "btn-link secondary ai-workspace-header-action")}

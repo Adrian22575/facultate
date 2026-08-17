@@ -106,6 +106,7 @@ const colocatedCssEntries = [
   ,{ relativePath: "app/admin/articole/[articleId]/preview/page.module.css", importantCeiling: 0 }
   ,{ relativePath: "app/admin/dictionar/[termId]/preview/page.module.css", importantCeiling: 0 }
   ,{ relativePath: "app/ai/page.module.css", importantCeiling: 0 }
+  ,{ relativePath: "app/ai/workspace-layout.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/workspace-upload-shell.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/workspace-source-input.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/workspace-flow-patterns.module.css", importantCeiling: 0 }

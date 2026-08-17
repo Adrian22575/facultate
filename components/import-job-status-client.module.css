@@ -3,6 +3,9 @@
 	background:#fff7f7;
 	color:#8f1d27;
 }
+.ai-workspace-subsection-head{
+	margin-bottom:0;
+}
 .import-main-tabs{
 	width:fit-content;
 }

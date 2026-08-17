@@ -115,15 +115,6 @@
 	font-weight:700;
 	line-height:1.45;
 }
-.learning-upload-flow li.is-done{
-	border-color:#65b78b;
-	color:#19704a;
-}
-.learning-upload-flow li.is-done > span{
-	border-color:#9bd2b5;
-	background:#e7f7ed;
-	color:#19704a;
-}
 .learning-test-result.is-done{
 	border-color:#cce4d8;
 	background:#eef8f2;
