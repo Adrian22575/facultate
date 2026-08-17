@@ -10,6 +10,7 @@ import {
 import { isDemoUser } from "@/lib/demo-user";
 import { getGamificationSummary } from "@/lib/gamification";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { measureServerTiming } from "@/lib/server-timing";
 
 export const dynamic = "force-dynamic";
 
@@ -17,8 +18,8 @@ export const metadata = {
   title: "Progresul meu | Nota 5+"
 };
 
-export default async function MyProgressPage() {
-  const user = await getOptionalUser();
+async function renderMyProgressPage() {
+  const user = await measureServerTiming("page.get_user", getOptionalUser, { route: "/progresul-meu" });
   const demoMode = isDemoUser(user);
 
   if (!user) {
@@ -39,10 +40,16 @@ export default async function MyProgressPage() {
   return (
     <main className="app-shell">
       <AppHeader
+        user={user}
+        gamificationSummary={summary}
         title="Progres"
         subtitle="Vezi ce ai făcut și alege următorul pas de învățare."
       />
       <GamificationProgressPage summary={summary} />
     </main>
   );
+}
+
+export default async function MyProgressPage() {
+  return measureServerTiming("page.loader", renderMyProgressPage, { route: "/progresul-meu" });
 }

@@ -4,48 +4,67 @@ import { isAdminUser } from "@/lib/admin";
 import { getBillingSnapshot } from "@/lib/billing";
 import { isDemoUser } from "@/lib/demo-user";
 import { getGamificationSummary } from "@/lib/gamification";
-import { getAdminActionSummary } from "@/lib/admin-center";
+import { getAdminHeaderActionSummary } from "@/lib/admin-center";
+import { measureServerTiming } from "@/lib/server-timing";
 import { getOptionalUser } from "@/lib/supabase/guards";
 
-export async function AppHeader({
+async function renderAppHeader({
   title,
   subtitle,
   action,
   hidePrivateNav = false,
   hidePageTitle = false,
-  suppressAdminActionCount = false
+  suppressAdminActionCount = false,
+  user: providedUser,
+  isAdmin: providedIsAdmin,
+  billingSnapshot: providedBillingSnapshot,
+  gamificationSummary: providedGamificationSummary,
+  adminActionCount: providedAdminActionCount
 }) {
-  const user = await getOptionalUser();
+  const user = providedUser === undefined
+    ? await measureServerTiming("app_header.get_user", getOptionalUser, { component: "AppHeader" })
+    : providedUser;
   const demoMode = isDemoUser(user);
   const showLogout = Boolean(user) && !demoMode;
   const showPrivateNav = Boolean(user) && !hidePrivateNav && !demoMode;
   const brandHref = demoMode ? "/auth/exit-demo?next=/" : user ? "/" : "/auth/login";
   const brandPendingLabel = demoMode ? "Ieși din demo..." : "Se deschide pagina principală...";
-  const showAdminLink = await isAdminUser(user);
+  const showAdminLink = providedIsAdmin === undefined
+    ? await isAdminUser(user)
+    : providedIsAdmin;
   const logoutLabel = demoMode ? "Iesi din demo" : "Logout";
-  let billingSnapshot = null;
-  let gamificationSummary = null;
-  let adminActionCount = 0;
+  let billingSnapshot = providedBillingSnapshot === undefined ? null : providedBillingSnapshot;
+  let gamificationSummary = providedGamificationSummary === undefined ? null : providedGamificationSummary;
+  let adminActionCount = providedAdminActionCount === undefined ? 0 : providedAdminActionCount;
+  const shouldLoadAdminActionCount =
+    showAdminLink &&
+    !suppressAdminActionCount &&
+    providedAdminActionCount === undefined;
+  const adminSummaryPromise = shouldLoadAdminActionCount
+    ? getAdminHeaderActionSummary(user.id).catch(() => null)
+    : Promise.resolve(null);
 
   if (user && !demoMode) {
     try {
-      [billingSnapshot, gamificationSummary] = await Promise.all([
-        getBillingSnapshot(user.id).catch(() => null),
-        getGamificationSummary(user.id).catch(() => null)
+      const [nextBillingSnapshot, nextGamificationSummary, adminSummary] = await Promise.all([
+        providedBillingSnapshot === undefined
+          ? getBillingSnapshot(user.id).catch(() => null)
+          : providedBillingSnapshot,
+        providedGamificationSummary === undefined
+          ? getGamificationSummary(user.id).catch(() => null)
+          : providedGamificationSummary,
+        adminSummaryPromise
       ]);
+      billingSnapshot = nextBillingSnapshot;
+      gamificationSummary = nextGamificationSummary;
+      adminActionCount = adminSummary?.total || adminActionCount;
     } catch {
       billingSnapshot = null;
       gamificationSummary = null;
     }
-  }
-
-  if (showAdminLink && !suppressAdminActionCount) {
-    try {
-      const adminSummary = await getAdminActionSummary(user.id);
-      adminActionCount = adminSummary.total || 0;
-    } catch {
-      adminActionCount = 0;
-    }
+  } else {
+    const adminSummary = await adminSummaryPromise;
+    adminActionCount = adminSummary?.total || adminActionCount;
   }
 
   return (
@@ -87,5 +106,13 @@ export async function AppHeader({
         </div>
       ) : null}
     </header>
+  );
+}
+
+export async function AppHeader(props) {
+  return measureServerTiming(
+    "app_header",
+    () => renderAppHeader(props),
+    { component: "AppHeader" }
   );
 }

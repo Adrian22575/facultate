@@ -5,12 +5,13 @@ import LoginPage from "@/app/auth/login/page";
 import { isAdminUser } from "@/lib/admin";
 import { getAcademicContext, getOnboardingHref, isAcademicContextComplete } from "@/lib/academic/server";
 import { getBillingSnapshot } from "@/lib/billing";
-import { getAdminActionSummary } from "@/lib/admin-center";
+import { getAdminHeaderActionSummary } from "@/lib/admin-center";
 import { getLicentaExamAvailability, getSubjectLibraryForUser } from "@/lib/data";
 import { isDemoUser } from "@/lib/demo-user";
 import { getGamificationSummary } from "@/lib/gamification";
 import { getPublicSiteUrl } from "@/lib/site";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { measureServerTiming } from "@/lib/server-timing";
 
 export const dynamic = "force-dynamic";
 
@@ -96,8 +97,8 @@ function HomeStructuredData() {
   );
 }
 
-export default async function HomePage() {
-  const user = await getOptionalUser();
+async function renderHomePage() {
+  const user = await measureServerTiming("page.get_user", getOptionalUser, { route: "/" });
   const demoMode = isDemoUser(user);
   let academicContext = null;
   const adminStatePromise = user ? isAdminUser(user) : Promise.resolve(false);
@@ -126,7 +127,7 @@ export default async function HomePage() {
   const userType = academicContext?.profile?.user_type === "elev" ? "elev" : "student";
   const adminActionCountPromise = adminStatePromise.then((isAdmin) =>
     isAdmin
-      ? getAdminActionSummary(user.id)
+      ? getAdminHeaderActionSummary(user.id)
           .then((summary) => summary.total || 0)
           .catch(() => 0)
       : 0
@@ -167,4 +168,8 @@ export default async function HomePage() {
       />
     </main>
   );
+}
+
+export default async function HomePage() {
+  return measureServerTiming("page.loader", renderHomePage, { route: "/" });
 }

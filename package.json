@@ -36,6 +36,7 @@
     "dictionary:seed": "node --use-system-ca --env-file=.env.local scripts/seed-dictionary.mjs",
     "vercel:preflight": "node scripts/vercel-preflight.mjs",
     "production:smoke": "node --use-system-ca scripts/production-smoke.mjs",
+    "performance:authenticated": "node --use-system-ca --env-file=.env.local --import ./scripts/register-path-alias.mjs scripts/authenticated-performance-benchmark.mjs",
     "ui:check": "node scripts/ui-static-check.mjs",
     "design:check": "node scripts/design-spacing-check.mjs",
     "test:tools": "node --test tests/free-tools.test.mjs",

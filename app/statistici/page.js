@@ -11,13 +11,14 @@ import { isDemoUser } from "@/lib/demo-user";
 import { buildOverallStatsDashboard } from "@/lib/overall-stats-dashboard";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { measureServerTiming } from "@/lib/server-timing";
 
 export const metadata = {
   title: "Statistici | Nota 5+"
 };
 
-export default async function StatsPage() {
-  const user = await getOptionalUser();
+async function renderStatsPage() {
+  const user = await measureServerTiming("page.get_user", getOptionalUser, { route: "/statistici" });
   const demoMode = isDemoUser(user);
 
   if (!user) {
@@ -42,6 +43,7 @@ export default async function StatsPage() {
   return (
     <main className="app-shell">
       <AppHeader
+        user={user}
         title="Statistici"
         subtitle="Vezi ce ai lucrat și alege următorul pas."
       />
@@ -49,4 +51,8 @@ export default async function StatsPage() {
       <OverallStatsDashboard stats={stats} />
     </main>
   );
+}
+
+export default async function StatsPage() {
+  return measureServerTiming("page.loader", renderStatsPage, { route: "/statistici" });
 }

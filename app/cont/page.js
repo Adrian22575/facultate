@@ -26,6 +26,7 @@ import { getReferralDashboard, getReferralInvitationForUser } from "@/lib/referr
 import { BILLING_PLAN_LIST } from "@/lib/stripe/plans";
 import { hasStripeEnv, STRIPE_MODE } from "@/lib/stripe/server";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { measureServerTiming } from "@/lib/server-timing";
 import { getUserTestimonialRewardStatus } from "@/lib/testimonial-rewards";
 import styles from "./page.module.css";
 
@@ -346,11 +347,11 @@ function InvitedByReferralCard({ invitation }) {
   );
 }
 
-export default async function AccountPage({ searchParams }) {
+async function renderAccountPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
   const section = resolvedSearchParams?.section === "credits" ? "credits" : "plans";
   const isConfigured = hasSupabasePublicEnv();
-  const user = await getOptionalUser();
+  const user = await measureServerTiming("page.get_user", getOptionalUser, { route: "/cont" });
   const demoMode = isDemoUser(user);
   let adminUser = false;
 
@@ -481,6 +482,9 @@ export default async function AccountPage({ searchParams }) {
         title="Contul meu"
         subtitle="Setari simple pentru comunitate, plan si incarcari."
         hidePageTitle
+        user={user}
+        isAdmin={adminUser}
+        billingSnapshot={billingSnapshot}
       />
 
       <section className={styles["account-page-header"]}>
@@ -652,4 +656,8 @@ export default async function AccountPage({ searchParams }) {
       {!demoMode ? <AccountDangerZone isAdmin={adminUser} /> : null}
     </main>
   );
+}
+
+export default async function AccountPage(props) {
+  return measureServerTiming("page.loader", () => renderAccountPage(props), { route: "/cont" });
 }

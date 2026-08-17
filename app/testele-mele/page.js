@@ -14,6 +14,7 @@ import {
 import { isDemoUser } from "@/lib/demo-user";
 import { getPrivateGeneratedTests } from "@/lib/private-tests";
 import { getOptionalUser } from "@/lib/supabase/guards";
+import { measureServerTiming } from "@/lib/server-timing";
 
 import styles from "./page.module.css";
 
@@ -36,8 +37,8 @@ function TestOpenLink({ href, children = "Rezolva" }) {
   );
 }
 
-export default async function MyTestsPage() {
-  const user = await getOptionalUser();
+async function renderMyTestsPage() {
+  const user = await measureServerTiming("page.get_user", getOptionalUser, { route: "/testele-mele" });
   const demoMode = isDemoUser(user);
 
   if (!user) {
@@ -77,6 +78,7 @@ export default async function MyTestsPage() {
   return (
     <main className="app-shell">
       <AppHeader
+        user={user}
         action={
           <PendingNavigationLink className="btn-back" href="/materiale" pendingLabel="Se revine la materiale..." pendingMode="replace">
             Inapoi la materiale
@@ -190,4 +192,8 @@ export default async function MyTestsPage() {
       </SurfaceCard>
     </main>
   );
+}
+
+export default async function MyTestsPage() {
+  return measureServerTiming("page.loader", renderMyTestsPage, { route: "/testele-mele" });
 }
