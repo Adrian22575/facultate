@@ -135,10 +135,6 @@
 
 .admin-dictionary-panel { display: grid; gap: 22px; padding: 24px; }
 
- .admin-dictionary-message { margin: 0; padding: 11px 13px; border: 1px solid #bdd4f5; border-radius: 12px; color: #21558f; background: #edf5ff; }
-
- .admin-dictionary-message:global(.is-error) { border-color: #f0b4b4; color: #a23030; background: #fff3f3; }
-
  .admin-dictionary-grid { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 18px; }
 
  .admin-dictionary-editor { display: grid; gap: 12px; }

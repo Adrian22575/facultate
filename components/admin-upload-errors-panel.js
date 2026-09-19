@@ -7,8 +7,9 @@ import { FilterSearch, Pagination } from "@/components/ui/collection-controls";
 import { DataTable } from "@/components/ui/data-table";
 import { AdminReviewDot, AdminStatusPill } from "@/components/admin-table-meta";
 
-import tabsStyles from "./admin-tabs-container.module.css";
 import uploadStyles from "./admin-upload-errors-panel.module.css";
+import sharedStyles from "./admin-shared.module.css";
+import metaStyles from "./admin-table-meta.module.css";
 
 const PAGE_SIZE = 10;
 
@@ -65,7 +66,7 @@ function paginateRows(rows, page) {
 }
 
 function SearchInput({ value, onChange, placeholder }) {
-  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-search-input")} />;
+  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-search-input")} />;
 }
 
 const CellPill = AdminStatusPill;
@@ -139,21 +140,21 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
   const paginated = useMemo(() => paginateRows(filteredRows, page), [filteredRows, page]);
 
   return (
-    <section className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-section")}>
-      <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-section-head")}>
+    <section className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-section")}>
+      <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-section-head")}>
         <div>
           <h3>Upload-uri cu erori</h3>
-          <p className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "page-copy")}>
+          <p className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "page-copy")}>
             Vezi rapid fisierele care au picat la upload, extractie sau procesare si descarca sursa
             atunci cand este disponibila.
           </p>
         </div>
-        <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-head-actions")}>
-          <span className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${filteredRows.length} cazuri`}</span>
+        <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-head-actions")}>
+          <span className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "status-pill is-muted")}>{`${filteredRows.length} cazuri`}</span>
         </div>
       </div>
 
-      <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+      <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-toolbar")}>
         <SearchInput
           value={query}
           onChange={(value) => {
@@ -184,13 +185,13 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
             {paginated.rows.length ? (
               paginated.rows.map((entry) => (
                 <tr key={entry.id} data-table-tone="review">
-                  <td className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-review-cell")}>
+                  <td className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-review-cell")}>
                     <ReviewDot show label="Upload de verificat" />
                   </td>
                   <td>{formatDate(entry.created_at)}</td>
-                  <td className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{entry.user_email || entry.user_id || "-"}</td>
-                  <td className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>
-                    <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-upload-errors-cell")}>
+                  <td className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-text-cell")}>{entry.user_email || entry.user_id || "-"}</td>
+                  <td className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-text-cell")}>
+                    <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-upload-errors-cell")}>
                       <strong>{entry.filename || "Input fara nume"}</strong>
                       <span>{entry.subject_label || "Fara materie detectata"}</span>
                     </div>
@@ -200,9 +201,9 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
                     <CellPill tone="bad">{entry.job_status || entry.extraction_status || "eroare"}</CellPill>
                   </td>
                   <td>{formatStage(entry.job_stage)}</td>
-                  <td className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>{buildExcerpt(entry.user_message)}</td>
-                  <td className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-table-text-cell")}>
-                    <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-upload-errors-cell")}>
+                  <td className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-text-cell")}>{buildExcerpt(entry.user_message)}</td>
+                  <td className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-table-text-cell")}>
+                    <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-upload-errors-cell")}>
                       <span>{buildExcerpt(entry.technical_detail)}</span>
                       {entry.failure_context ? (
                         <span>{buildExcerpt(entry.failure_context, 120)}</span>
@@ -211,12 +212,12 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
                   </td>
                   <td>{formatFailureReason(entry.failure_reason)}</td>
                   <td>
-                    <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "admin-upload-errors-actions")}>
+                    <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "admin-upload-errors-actions")}>
                       <CellPill tone={toneForFile(entry)}>
                         {entry.file_available ? "salvat" : "indisponibil"}
                       </CellPill>
                       {entry.download_path ? (
-                        <a className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "btn-link secondary admin-upload-errors-link")} href={entry.download_path}>
+                        <a className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "btn-link secondary admin-upload-errors-link")} href={entry.download_path}>
                           Descarca
                         </a>
                       ) : null}
@@ -227,7 +228,7 @@ export function AdminUploadErrorsPanel({ rows = [] }) {
             ) : (
               <tr>
                 <td colSpan={11}>
-                  <div className={moduleClassNames([uploadStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
+                  <div className={moduleClassNames([uploadStyles, sharedStyles, metaStyles], "workspace-context-summary")}>
                     <strong>Nu exista upload-uri cu erori pentru filtrul curent.</strong>
                     <span>Schimba cautarea sau revino dupa urmatoarele procesari.</span>
                   </div>

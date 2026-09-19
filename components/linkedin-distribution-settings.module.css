@@ -131,27 +131,6 @@
   background: #fff8e8;
 }
 
- .admin-linkedin-message {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin: 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #5c4b24;
-  font-size: .84rem;
-  line-height: 1.45;
-  background: #fff8e8;
-}
-
- .admin-linkedin-message { color: #185d43; background: #edf8f3; }
-
- .admin-linkedin-message:global(.is-info) { color: #245b91; background: #edf5ff; }
-
- .admin-linkedin-message:global(.is-warning) { color: #79520a; background: #fff8e8; }
-
- .admin-linkedin-message:global(.is-error) { color: #9a3038; background: #fff0f1; }
-
  .admin-linkedin-settings { border: 1px solid #d4e2f1; border-radius: 12px; background: #fbfdff; }
 
  .admin-linkedin-settings > summary { display: flex; align-items: center; gap: 7px; padding: 11px 12px; color: #294e78; font-size: .84rem; font-weight: 850; cursor: pointer; }

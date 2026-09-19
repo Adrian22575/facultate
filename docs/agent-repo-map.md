@@ -24,6 +24,15 @@ Harta scurta pentru orientare rapida in `Teste Facultate`.
 - `/admin` contine tabelele si alertele admin.
 - `/auth/*`, `/onboarding`, `/cont` sunt fluxurile de autentificare si profil.
 
+## Stiluri comune Admin
+
+- `components/admin-shared.module.css` deține layout-ul panourilor, toolbar-urilor și secțiunilor de tabel folosite de `AdminCenterClient`, `AdminOpenAILogsPanel` și `AdminUploadErrorsPanel`. Controalele și suprafețele păstrează primitivele din `components/ui/`.
+- `components/admin-tabs-container.module.css` deține taburile și conținutul lor; `components/admin-table-meta.module.css` deține metadatele celulelor.
+- Articolele și dicționarul reutilizează `admin-editorial-articles-page.module.css` și `admin-editorial-library-list.module.css` pentru biblioteci; mesajele și istoricul comun sunt în `admin-content-library.module.css`.
+- `admin-linkedin-distribution.module.css` deține identitatea, statusurile și mesajele comune distribuției și setărilor. Geometria listei de postări rămâne în `admin-linkedin-distribution-center.module.css`.
+- O clasă locală CSS Module trebuie mapată prin modulul proprietar în `moduleClassNames`. Importarea fișierului fără includerea mapării nu aplică stilul. Pentru contexte între componente, folosește explicit `:global(...)` pentru clasa părintelui.
+- `npm run ui:check` detectează și identificatorii nedeclarați din argumentul de module al `moduleClassNames`.
+
 ## Rute/API sensibile
 
 - `app/api/ai/*` - generare materiale.

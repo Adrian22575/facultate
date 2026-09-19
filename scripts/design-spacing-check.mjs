@@ -82,6 +82,7 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/admin-route-switcher.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-overview.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-tabs-container.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-shared.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-table-meta.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-center-client.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-openai-logs-panel.module.css", importantCeiling: 0 }

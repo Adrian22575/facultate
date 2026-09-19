@@ -1,3 +1,10 @@
+.admin-review-cell {
+  width: 42px;
+  min-width: 42px;
+  max-width: 42px;
+  text-align: center;
+}
+
 .admin-review-dot {
   width: 11px;
   height: 11px;

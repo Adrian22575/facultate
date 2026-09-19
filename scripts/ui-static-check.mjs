@@ -3,7 +3,7 @@ import path from "node:path";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { parse } = require("next/dist/compiled/babel/eslint-parser");
+const { parseForESLint } = require("next/dist/compiled/babel/eslint-parser");
 
 const ROOT = process.cwd();
 const SOURCE_ROOTS = ["app", "components"];
@@ -625,6 +625,9 @@ function getStaticNavigationTarget(node) {
 
 function traverse(filePath, node, context, ancestors = []) {
   if (!node || typeof node !== "object") return;
+  if (node.type === "CallExpression" && node.callee?.name === "moduleClassNames") {
+    inspectStyleMapReferences(filePath, node.arguments[0], context);
+  }
   if (node.type === "JSXElement") inspectElement(filePath, node, context, ancestors);
   const navigationTarget = getStaticNavigationTarget(node);
   if (navigationTarget && !internalRouteExists(navigationTarget)) {
@@ -639,6 +642,25 @@ function traverse(filePath, node, context, ancestors = []) {
       for (const item of value) traverse(filePath, item, context, nextAncestors);
     } else if (value && typeof value === "object") {
       traverse(filePath, value, context, nextAncestors);
+    }
+  }
+}
+
+function inspectStyleMapReferences(filePath, node, context, visited = new Set()) {
+  if (!node || typeof node !== "object" || visited.has(node)) return;
+  visited.add(node);
+  const initializer = context.styleMapInitializers.get(node);
+  if (initializer) inspectStyleMapReferences(filePath, initializer, context, visited);
+  if (context.unresolvedReferences.has(node) && !context.reportedStyleMaps.has(node.name)) {
+    report(filePath, node, `Modul CSS nedeclarat în moduleClassNames: ${node.name}. Verifică importurile de stiluri.`);
+    context.reportedStyleMaps.add(node.name);
+  }
+  for (const [key, value] of Object.entries(node)) {
+    if (["loc", "range", "tokens", "comments"].includes(key)) continue;
+    if (Array.isArray(value)) {
+      for (const item of value) inspectStyleMapReferences(filePath, item, context, visited);
+    } else if (value && typeof value === "object") {
+      inspectStyleMapReferences(filePath, value, context, visited);
     }
   }
 }
@@ -779,7 +801,7 @@ for (const filePath of sourceFiles) {
   }
 
   try {
-    const ast = parse(source, {
+    const { ast, scopeManager } = parseForESLint(source, {
       sourceType: "module",
       ecmaVersion: "latest",
       ecmaFeatures: { jsx: true },
@@ -790,7 +812,17 @@ for (const filePath of sourceFiles) {
         parserOpts: { plugins: ["jsx"] }
       }
     });
+    const styleMapInitializers = new Map();
+    for (const scope of scopeManager.scopes) {
+      for (const reference of scope.references) {
+        const definition = reference.resolved?.defs.find((entry) => entry.type === "Variable");
+        if (definition?.node.init) styleMapInitializers.set(reference.identifier, definition.node.init);
+      }
+    }
     const context = {
+      styleMapInitializers,
+      unresolvedReferences: new Set(scopeManager.globalScope.through.map((reference) => reference.identifier)),
+      reportedStyleMaps: new Set(),
       ids: collectStaticIds(ast),
       idPatterns: collectIdPatterns(ast),
       labelTargets: collectLabelTargets(ast),

@@ -11,7 +11,37 @@
 
  .admin-linkedin-brand-glyph { color: inherit; font-family: Arial, sans-serif; font-size: 1.2rem; font-weight: 900; letter-spacing: -.06em; line-height: 1; }
 
- .admin-linkedin-brand-glyph:global(.is-small) { font-size: .9rem; }
+.admin-linkedin-brand-glyph:global(.is-small) { font-size: .9rem; }
+
+.admin-linkedin-connection-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 var(--space-2);
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--surface-soft);
+  font-size: .75rem;
+  font-weight: 850;
+}
+
+.admin-linkedin-connection-state:global(.is-connected) { color: var(--good); background: color-mix(in srgb, var(--good) 12%, var(--surface)); }
+.admin-linkedin-connection-state:global(.is-offline) { color: var(--bad); background: color-mix(in srgb, var(--bad) 10%, var(--surface)); }
+
+.admin-linkedin-message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: 10px;
+  color: #185d43;
+  background: #edf8f3;
+}
+
+.admin-linkedin-message:global(.is-info) { color: #245b91; background: #edf5ff; }
+.admin-linkedin-message:global(.is-warning) { color: #79520a; background: #fff8e8; }
+.admin-linkedin-message:global(.is-error) { color: #9a3038; background: #fff0f1; }
 
  .admin-linkedin-approve {
   display: inline-flex;

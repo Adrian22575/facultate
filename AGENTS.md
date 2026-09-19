@@ -397,3 +397,16 @@ Pentru audit, include:
 - ce informație lipsește pentru o concluzie sigură.
 
 Nu folosi formulări precum „totul este perfect” sau „gata complet” când există limitări de verificare.
+
+## 13. Orchestrarea subagenților
+
+Configurația locală este în `.codex/config.toml`, iar cele cinci roluri sunt în `.codex/agents/`. Citește `docs/codex-agents.md` pentru matricea de rutare, verificări și limitele runtime-ului. Modelul părinte ales de utilizator rămâne responsabil de rezultatul final.
+
+- Delegarea este autorizată când aduce valoare: `repo_explorer` pentru căutări delimitate, `quick_fixer` pentru remedieri mici cu cauză stabilită, `implementer` pentru implementare normală, `reviewer` pentru review independent al schimbărilor importante și `validator` pentru verificări existente. Nu porni toate rolurile pentru fiecare task.
+- Înțelege problema înainte de delegare. Definește rezultatul așteptat, fișierele permise, contractele de păstrat, dovezile cerute și condițiile de escaladare. Trimite context suficient și focalizat, fără a cere fiecărui agent să recitească întregul repository.
+- Preferă rolul cu cel mai mic model capabil; nu lăsa modelul puternic al părintelui să fie moștenit accidental. Nu inventa modele sau opțiuni de tool. Dacă tool-ul nu permite selectarea rolului, nu pretinde că fișierul rolului ori sandbox-ul lui au fost aplicate. Respectă limitările și procedura din documentație.
+- Maximum trei subagenți simultan; în același checkout, un singur agent cu sarcini de scriere la un moment dat. Părintele nu modifică fișierele deținute de acel agent. Paralelizează în principal explorarea și review-ul pe fișiere stabile. Serializează build-urile și orice verificări care scriu în `.next` sau alte ieșiri comune.
+- Agentul returnează controlul când cauza nu este stabilită, cerințele sau arhitectura sunt ambigue, soluția depinde de presupuneri, interacțiunile dintre subsisteme sunt neașteptate, scopul crește, verificările eșuează neașteptat sau încrederea este mică. Deciziile despre securitate, autentificare/RLS, integritatea datelor, plăți/consum, concurență, migrări și procesare în fundal revin părintelui; acesta poate delega ulterior un patch precis.
+- Subagenții nu deleagă mai departe. Părintele alege explicit dacă este necesară o analiză mai puternică; nu forța un agent slab să finalizeze un task în afara competenței lui.
+- Implementările importante cer review independent și verificarea relevantă. Rezultatul „gata” al unui agent nu este dovadă: inspectează diff-ul și rezultatele comenzilor. Refolosește verificările deja valide; repetă doar după modificări relevante sau dovezi noi.
+- Pentru un task minuscul sau o comandă deterministă, lucrează direct. Raportează rolurile efectiv folosite, modelele confirmate de runtime, verificările și limitările; nu confunda configurația intenționată cu execuția observată.

@@ -11,6 +11,9 @@ import { useDialogFocus } from "@/lib/ui/dialog";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
 
 import openAIStyles from "./admin-openai-logs-panel.module.css";
+import sharedStyles from "./admin-shared.module.css";
+import tabsStyles from "./admin-tabs-container.module.css";
+import metaStyles from "./admin-table-meta.module.css";
 
 const PAGE_SIZE = 8;
 const SUMMARY_LIMIT = 180;
@@ -85,7 +88,7 @@ const ReviewDot = AdminReviewDot;
 const FilterButton = AdminFilterButton;
 
 function SearchInput({ value, onChange, placeholder }) {
-  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-search-input")} />;
+  return <FilterSearch value={value} onChange={onChange} placeholder={placeholder} compact className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-search-input")} />;
 }
 
 function formatScopeLabel(value) {
@@ -209,24 +212,23 @@ function buildSummary(row) {
       ""
   );
 }
-
 function CostOverviewCard({ title, value, caption, tone = "default" }) {
   return (
-    <article className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], `admin-cost-card ${tone !== "default" ? `is-${tone}` : ""}`)}>
-      <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-card-label")}>{title}</span>
+    <article className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], `admin-cost-card ${tone !== "default" ? `is-${tone}` : ""}`)}>
+      <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-card-label")}>{title}</span>
       <strong>{value}</strong>
-      <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-card-copy")}>{caption}</span>
+      <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-card-copy")}>{caption}</span>
     </article>
   );
 }
 
 function CostTableSection({ title, copy, columns, children, minWidth = 820 }) {
   return (
-    <section className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-section")}>
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-section-head")}>
+    <section className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-section")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-section-head")}>
         <div>
           <h3>{title}</h3>
-          <p className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "page-copy")}>{copy}</p>
+          <p className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "page-copy")}>{copy}</p>
         </div>
       </div>
       <DataTable caption={title} columns={columns} minWidth={minWidth}>
@@ -245,7 +247,7 @@ function OpenAILogDetailModal({ row, onClose }) {
 
   return (
     <div
-      className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-modal-backdrop")}
+      className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-modal-backdrop")}
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
@@ -255,12 +257,12 @@ function OpenAILogDetailModal({ row, onClose }) {
     >
       <div
         ref={dialogRef}
-        className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-modal-card admin-openai-modal")}
+        className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-modal-card admin-openai-modal")}
         role="dialog"
         aria-modal="true"
         aria-labelledby="admin-openai-log-title"
       >
-        <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-modal-head")}>
+        <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-modal-head")}>
           <div>
             <strong id="admin-openai-log-title">Detalii procesare</strong>
             <p>
@@ -270,7 +272,7 @@ function OpenAILogDetailModal({ row, onClose }) {
             </p>
           </div>
           <button
-            className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-modal-close feedback-modal-close")}
+            className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-modal-close feedback-modal-close")}
             type="button"
             onClick={onClose}
             aria-label="Inchide"
@@ -279,7 +281,7 @@ function OpenAILogDetailModal({ row, onClose }) {
           </button>
         </div>
 
-        <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-modal-statuses")}>
+        <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-modal-statuses")}>
           <CellPill tone={formatOpenAIStatusTone(row.status)}>
             {row.status === "succeeded" ? "Provider: succes" : "Provider: eroare"}
           </CellPill>
@@ -292,81 +294,81 @@ function OpenAILogDetailModal({ row, onClose }) {
           </CellPill>
         </div>
 
-        <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-list")}>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Utilizator</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.user_email || row.user_id || "-"}</span>
+        <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-list")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Utilizator</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.user_email || row.user_id || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Model si reasoning</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{`${row.model || "-"} / ${row.reasoning_effort || "-"}`}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Model si reasoning</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{`${row.model || "-"} / ${row.reasoning_effort || "-"}`}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Cost estimat</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatUsd(row.cost_estimate_usd || 0)}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Cost estimat</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatUsd(row.cost_estimate_usd || 0)}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Breakdown cost</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Breakdown cost</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
               {`${formatUsd(row.cost_input_usd || 0)} input • ${formatUsd(row.cost_cached_input_usd || 0)} cached • ${formatUsd(row.cost_output_usd || 0)} output`}
             </span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Origine cost</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatCostOriginLabel(row.cost_origin)}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Origine cost</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatCostOriginLabel(row.cost_origin)}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Pricing version</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.cost_pricing_version || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Pricing version</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.cost_pricing_version || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Tokeni normalizati</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Tokeni normalizati</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
               {`${formatCount(row.input_tokens_normalized || 0)} input • ${formatCount(row.cached_input_tokens_normalized || 0)} cached • ${formatCount(row.output_tokens_normalized || 0)} output • ${formatCount(row.reasoning_tokens_normalized || 0)} reasoning`}
             </span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Response ID</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.response_id || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Response ID</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.response_id || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>File ID provider</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.openai_file_id || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>File ID provider</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.openai_file_id || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job status</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatJobStatusLabel(row.job_status)}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job status</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatJobStatusLabel(row.job_status)}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job stage</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatJobStageLabel(row.job_stage)}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job stage</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatJobStageLabel(row.job_stage)}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Progres job</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Progres job</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
               {typeof row.job_progress_percent === "number" ? `${row.job_progress_percent}%` : "-"}
             </span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Coverage job</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Coverage job</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
               {row.job_coverage_target_count
                 ? `${row.job_coverage_percent || 0}% (${row.job_coverage_target_count} tinta)`
                 : "-"}
             </span>
           </div>
           {row.request_scope === "question_bank_chunk_extract" ? (
-            <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-              <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Interpretare log</span>
-              <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+            <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+              <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Interpretare log</span>
+              <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
                 {`Acest apel a extras un chunk. Verdictul final al jobului a fost dat ulterior in etapa ${formatJobStageLabel(row.job_stage)}.`}
               </span>
             </div>
           ) : null}
           {row.request_scope === "pdf_fallback_extract" ? (
-            <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-              <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Interpretare log</span>
-              <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+            <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+              <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Interpretare log</span>
+              <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
                 {row.job_processing_mode === "openai_pdf_primary"
                   ? "Acest apel a procesat PDF-ul direct cu providerul, ca traseu principal pentru aceasta banca."
                   : row.job_processing_mode === "openai_fallback"
@@ -377,85 +379,85 @@ function OpenAILogDetailModal({ row, onClose }) {
               </span>
             </div>
           ) : null}
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Materia</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_subject_label || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Materia</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_subject_label || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Fisier sursa</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_source_filename || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Fisier sursa</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_source_filename || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Mod procesare job</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_processing_mode || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Mod procesare job</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_processing_mode || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Sursa extractiei</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_extraction_source || "-"}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Sursa extractiei</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{row.job_extraction_source || "-"}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Motiv final esec</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatFailureReasonLabel(row.job_final_failure_reason)}</span>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Motiv final esec</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>{formatFailureReasonLabel(row.job_final_failure_reason)}</span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Chunk-uri reusite</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Chunk-uri reusite</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
               {row.job_successful_chunk_count != null ? row.job_successful_chunk_count : "-"}
             </span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Iteme extrase brut din chunk-uri</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-value")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Iteme extrase brut din chunk-uri</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-value")}>
               {row.job_successful_chunk_item_count != null ? row.job_successful_chunk_item_count : "-"}
             </span>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job status detail</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_status_detail)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job status detail</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_status_detail)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job error</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_error_message)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Job error</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_error_message)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Cauza tehnica job</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_last_failure_context)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Cauza tehnica job</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_last_failure_context)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Diagnostic consolidare</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_consolidation_diagnostics)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Diagnostic consolidare</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_consolidation_diagnostics)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Attempt-uri extractie</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_extraction_attempts)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Attempt-uri extractie</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_extraction_attempts)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Rezumat consolidare</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_consolidation_summary)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Rezumat consolidare</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.job_consolidation_summary)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Prompt trimis</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.prompt_text)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Prompt trimis</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.prompt_text)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Input preview</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.input_preview)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Input preview</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.input_preview)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Output preview</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.output_preview)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Output preview</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.output_preview)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Eroare provider</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.error_message)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Eroare provider</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.error_message)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Usage</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.usage)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Usage</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.usage)}</pre>
           </div>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-row")}>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-kv-label")}>Metadata</span>
-            <pre className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.metadata)}</pre>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-row")}>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-kv-label")}>Metadata</span>
+            <pre className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-pre")}>{stringifyValue(row.metadata)}</pre>
           </div>
         </div>
       </div>
@@ -466,7 +468,7 @@ function OpenAILogDetailModal({ row, onClose }) {
 function AdminOpenAICostsView({ dashboard, rows, warning }) {
   if (!dashboard) {
     return (
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
         <strong>Costurile de procesare nu sunt disponibile inca.</strong>
         <span>Verifica migrarea si logurile tehnice pentru a incepe trackingul financiar.</span>
       </div>
@@ -477,13 +479,13 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
   const failedRows = rows.filter((row) => row.status === "failed" || row.job_status === "failed").length;
 
   return (
-    <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-stack")}>
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-copy")}>
-        <p className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "page-copy")}>
+    <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-stack")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-copy")}>
+        <p className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "page-copy")}>
           Costurile de mai jos sunt estimate tehnic din usage-ul providerului si pricing-ul oficial, nu o
           factura reconciliata. Moneda este USD.
         </p>
-        <p className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-note")}>
+        <p className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-note")}>
           {`Pricing version: ${meta.pricingVersion} • actualizat ${meta.pricingUpdatedAt} • `}
           <a href={meta.pricingSourceUrl} target="_blank" rel="noreferrer">
             sursa oficiala provider
@@ -491,9 +493,9 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
         </p>
       </div>
 
-      {warning ? <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "error-state")} role="alert">{warning}</div> : null}
+      {warning ? <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "error-state")} role="alert">{warning}</div> : null}
 
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-grid")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-grid")}>
         <CostOverviewCard
           title="24h"
           value={formatUsd(overview.last24h.totalCostUsd)}
@@ -537,7 +539,7 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
         />
       </div>
 
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-grid admin-cost-grid--secondary")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-grid admin-cost-grid--secondary")}>
         <CostOverviewCard
           title="Modele puternice"
           value={formatUsd(diagnostics.strongModelCostUsd)}
@@ -555,32 +557,32 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
         />
       </div>
 
-      <section className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-section")}>
-        <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-section-head")}>
+      <section className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-section")}>
+        <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-section-head")}>
           <div>
             <h3>Semnale de optimizare</h3>
-            <p className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "page-copy")}>
+            <p className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "page-copy")}>
               Aici vezi rapid unde merita sa tai cost sau sa verifici daca modelul si reasoning-ul sunt bine alese.
             </p>
           </div>
         </div>
         {recommendations.length ? (
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-recommendations")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-recommendations")}>
             {recommendations.map((recommendation) => (
-              <div key={recommendation} className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-recommendation")}>
+              <div key={recommendation} className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-recommendation")}>
                 {recommendation}
               </div>
             ))}
           </div>
         ) : (
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
             <strong>Nu exista inca semnale puternice.</strong>
             <span>Pe masura ce strangi mai multe loguri, aici vor aparea sugestii clare de optimizare.</span>
           </div>
         )}
       </section>
 
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-layout")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-layout")}>
         <CostTableSection
           title="Top modele dupa cost"
           copy="Identifica rapid ce familie de model consuma bugetul."
@@ -628,7 +630,7 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
         </CostTableSection>
       </div>
 
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cost-layout")}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cost-layout")}>
         <CostTableSection
           title="Top utilizatori dupa cost"
           copy="Bun pentru a intelege cine consuma cel mai mult din bugetul de procesare."
@@ -642,7 +644,7 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
         >
           {breakdowns.users.map((entry) => (
             <tr key={entry.key}>
-              <td className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{entry.label}</td>
+              <td className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{entry.label}</td>
               <td>{formatUsd(entry.totalCostUsd)}</td>
               <td>{formatCount(entry.requestCount)}</td>
               <td>{formatUsd(entry.averageCostPerRequestUsd)}</td>
@@ -686,13 +688,13 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
       >
         {breakdowns.requests.map((entry) => (
           <tr key={entry.id}>
-            <td><span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-date-cell")}>{formatDate(entry.created_at)}</span></td>
+            <td><span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-date-cell")}>{formatDate(entry.created_at)}</span></td>
             <td>{formatScopeLabel(entry.request_scope)}</td>
             <td>{entry.canonical_model || entry.model || "-"}</td>
             <td>{entry.reasoning_effort || "-"}</td>
             <td>{formatUsd(entry.cost_estimate_usd)}</td>
             <td>
-              <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cell-pill-list")}>
+              <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cell-pill-list")}>
                 <CellPill tone={formatOpenAIStatusTone(entry.status)}>
                   {entry.status === "succeeded" ? "Provider ok" : "Provider fail"}
                 </CellPill>
@@ -701,7 +703,7 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
                 </CellPill>
               </div>
             </td>
-            <td className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{entry.user_email}</td>
+            <td className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{entry.user_email}</td>
           </tr>
         ))}
       </CostTableSection>
@@ -721,12 +723,12 @@ function AdminOpenAICostsView({ dashboard, rows, warning }) {
       >
         {breakdowns.jobs.map((entry) => (
           <tr key={entry.job_id}>
-            <td className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{entry.label}</td>
+            <td className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-name-cell")}>{entry.label}</td>
             <td>{formatUsd(entry.totalCostUsd)}</td>
             <td>{formatCount(entry.requestCount)}</td>
             <td>{`${formatUsd(entry.failedCostUsd)} (${formatPercent(entry.failedCostRatePercent)})`}</td>
             <td>
-              <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-cell-pill-list")}>
+              <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-cell-pill-list")}>
                 <CellPill tone={formatJobStatusTone(entry.job_status)}>
                   {formatJobStatusLabel(entry.job_status)}
                 </CellPill>
@@ -825,25 +827,25 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
   const total30dCost = costDashboard?.overview?.last30d?.totalCostUsd || 0;
 
   return (
-    <section className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-panel is-visible")} aria-hidden={false}>
-      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
+    <section className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-panel is-visible")} aria-hidden={false}>
+      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "dashboard-header admin-section-intro")}>
         <div>
           <h2>Loguri procesare</h2>
-          <p className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "page-copy")}>
+          <p className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "page-copy")}>
             Vezi separat daca apelul providerului a mers si daca procesarea s-a terminat cu succes.
             Un `output preview` bun poate aparea chiar daca pipeline-ul s-a oprit ulterior.
             In tabul `Costuri` vezi estimarea financiara si zonele unde merita optimizare.
           </p>
         </div>
-        <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-inline-stats")}>
-          <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${rows.length} apeluri`}</span>
-          <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${failureCount} opriri sau erori`}</span>
-          <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${formatUsd(total30dCost)} / 30 zile`}</span>
+        <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-inline-stats")}>
+          <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${rows.length} apeluri`}</span>
+          <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${failureCount} opriri sau erori`}</span>
+          <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "status-pill is-muted")}>{`${formatUsd(total30dCost)} / 30 zile`}</span>
         </div>
       </div>
 
       <AdminTabsContainer
-        className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-subtabs")}
+        className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-subtabs")}
         role="tablist"
         aria-label="Sectiuni procesare"
         onKeyDown={handleTablistKeyDown}
@@ -855,13 +857,13 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
           aria-selected={panelTab === "costs"}
           aria-controls="processing-active-panel"
           tabIndex={panelTab === "costs" ? 0 : -1}
-          className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], `btn-link secondary admin-main-tab ${panelTab === "costs" ? "is-active-filter" : ""}`)}
+          className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], `btn-link secondary admin-main-tab ${panelTab === "costs" ? "is-active-filter" : ""}`)}
           onClick={() => setPanelTab("costs")}
         >
-          <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-content")}>
-            <BarChart3 className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-icon")} aria-hidden="true" size={16} strokeWidth={2.2} />
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-label")}>Costuri</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-count")}>{rows.length}</span>
+          <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-content")}>
+            <BarChart3 className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-icon")} aria-hidden="true" size={16} strokeWidth={2.2} />
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-label")}>Costuri</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-count")}>{rows.length}</span>
           </span>
         </button>
         <button
@@ -871,13 +873,13 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
           aria-selected={panelTab === "logs"}
           aria-controls="processing-active-panel"
           tabIndex={panelTab === "logs" ? 0 : -1}
-          className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], `btn-link secondary admin-main-tab ${panelTab === "logs" ? "is-active-filter" : ""}`)}
+          className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], `btn-link secondary admin-main-tab ${panelTab === "logs" ? "is-active-filter" : ""}`)}
           onClick={() => setPanelTab("logs")}
         >
-          <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-content")}>
-            <ReceiptText className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-icon")} aria-hidden="true" size={16} strokeWidth={2.2} />
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-label")}>Loguri</span>
-            <span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-tab-count")}>{rows.length}</span>
+          <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-content")}>
+            <ReceiptText className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-icon")} aria-hidden="true" size={16} strokeWidth={2.2} />
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-label")}>Loguri</span>
+            <span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-tab-count")}>{rows.length}</span>
           </span>
         </button>
       </AdminTabsContainer>
@@ -891,9 +893,9 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
         <AdminOpenAICostsView dashboard={costDashboard} rows={rows} warning={warning} />
       ) : (
         <>
-          <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-toolbar")}>
+          <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-toolbar")}>
             <AdminTabsContainer
-              className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-filter-row")}
+              className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-filter-row")}
               role="group"
               aria-label="Filtre loguri procesare"
             >
@@ -910,7 +912,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
             />
           </div>
 
-          {warning ? <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "error-state")} role="alert">{warning}</div> : null}
+          {warning ? <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "error-state")} role="alert">{warning}</div> : null}
 
           {filteredRows.length ? (
             <>
@@ -938,10 +940,10 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
 
                   return (
                   <tr key={row.id} data-table-tone={needsReview ? "review" : undefined}>
-                    <td className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-review-cell")}>
+                    <td className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-review-cell")}>
                       <ReviewDot show={needsReview} label="Procesare de verificat" />
                     </td>
-                    <td><span className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-table-date-cell")}>{formatDate(row.created_at)}</span></td>
+                    <td><span className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-table-date-cell")}>{formatDate(row.created_at)}</span></td>
                     <td><CellPill>{formatScopeLabel(row.request_scope)}</CellPill></td>
                     <td>{formatOperationLabel(row.operation)}</td>
                     <td>
@@ -958,21 +960,21 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
                     <td>{row.model || "-"}</td>
                     <td>{row.reasoning_effort || "-"}</td>
                     <td>
-                      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-cost-cell")}>
+                      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-cost-cell")}>
                         <strong>{formatUsd(row.cost_estimate_usd || 0)}</strong>
                         <span>{formatPricingStatusLabel(row.cost_pricing_status)}</span>
                       </div>
                     </td>
                     <td>{`${row.duration_ms || 0} ms`}</td>
-                    <td className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-summary-cell")}>
-                      <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "admin-openai-summary-text")} title={buildSummary(row)}>
+                    <td className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-summary-cell")}>
+                      <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "admin-openai-summary-text")} title={buildSummary(row)}>
                         {buildSummary(row)}
                       </div>
                     </td>
                     <td>
                       <button
                         type="button"
-                        className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
+                        className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "btn-link secondary admin-toggle-btn")}
                         onClick={() => setSelectedRow(row)}
                       >
                         Vezi
@@ -985,7 +987,7 @@ export function AdminOpenAILogsPanel({ rows, costDashboard = null, warning = nul
               <Pagination page={pageData.page} totalPages={pageData.totalPages} onPageChange={setPage} />
             </>
           ) : (
-            <div className={moduleClassNames([openAIStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
+            <div className={moduleClassNames([openAIStyles, sharedStyles, tabsStyles, metaStyles], "workspace-context-summary")}>
               <strong>Nu exista loguri pentru filtrul ales.</strong>
               <span>Schimba filtrul sau repeta uploadul ca sa vezi apelurile de procesare.</span>
             </div>
