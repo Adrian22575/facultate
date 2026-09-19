@@ -17,8 +17,8 @@
 
  .admin-dictionary-live-run span {
   color: #1761c8;
-  font-size: .72rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -30,7 +30,7 @@
  .admin-dictionary-live-run p {
   margin: 0;
   color: #587291;
-  font-size: .84rem;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
 }
 
@@ -55,7 +55,7 @@
   right: 0;
   bottom: 14px;
   color: #315b8a;
-  font-size: .72rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-dictionary-statebar {
@@ -79,8 +79,8 @@
 
  .admin-dictionary-statebar span {
   color: #6d809a;
-  font-size: .7rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -94,7 +94,7 @@
  .admin-dictionary-statebar small {
   overflow-wrap: anywhere;
   color: #667b96;
-  font-size: .73rem;
+  font-size: var(--font-size-meta);
   line-height: 1.35;
 }
 
@@ -147,8 +147,8 @@
 
  .admin-dictionary-workflow-head span {
   color: #1764d5;
-  font-size: .7rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -184,8 +184,8 @@
 
  .admin-dictionary-workflow-steps article span {
   color: #74859a;
-  font-size: .7rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: .05em;
   text-transform: uppercase;
 }
@@ -198,7 +198,7 @@
  .admin-dictionary-workflow-steps article p {
   margin: 0;
   color: #687e98;
-  font-size: .76rem;
+  font-size: var(--font-size-meta);
   line-height: 1.4;
 }
 
@@ -233,7 +233,7 @@
  .admin-dictionary-confirmation p {
   margin: 0;
   color: #687d96;
-  font-size: .8rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-dictionary-confirmation > div:last-child {
@@ -385,9 +385,9 @@
 
  .admin-dictionary-runs article { display: grid; gap: 3px; border: 1px solid #d9e5f5; border-radius: 11px; padding: 10px; background: #fbfdff; }
 
- .admin-dictionary-runs span { color: #607895; font-size: .82rem; }
+ .admin-dictionary-runs span { color: #607895; font-size: var(--font-size-meta); }
 
- .admin-dictionary-runs small { color: #607895; font-size: .82rem; }
+ .admin-dictionary-runs small { color: #607895; font-size: var(--font-size-meta); }
 
  :global(.admin-run-history) .admin-dictionary-runs { margin-top: 10px; }
 
@@ -395,11 +395,11 @@
 
  .admin-dictionary-schedule-status > div { display: grid; gap: 2px; min-width: 0; }
 
- .admin-dictionary-schedule-status span { color: #6d809a; font-size: .68rem; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; }
+ .admin-dictionary-schedule-status span { color: #6d809a; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); letter-spacing: .055em; text-transform: uppercase; }
 
  .admin-dictionary-schedule-status strong { color: #244d78; font-size: .9rem; }
 
- .admin-dictionary-schedule-status small { color: #607995; font-size: .77rem; line-height: 1.4; }
+ .admin-dictionary-schedule-status small { color: #607995; font-size: var(--font-size-meta); line-height: 1.4; }
 
  .admin-dictionary-schedule-status:global(.is-success) { border-color: #b7ddca; color: #167456; background: #f1fbf6; }
 

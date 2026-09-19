@@ -19,6 +19,11 @@
   --radius-soft: 20px;
   --container: 1180px;
   --touch-target: 48px;
+  --font-weight-body: 400;
+  --font-weight-control: 500;
+  --font-weight-heading: 600;
+  --font-size-meta: 0.875rem;
+  --font-size-body: 1rem;
   --space-0: 0px;
   --space-1: 4px;
   --space-2: 8px;

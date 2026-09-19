@@ -5,13 +5,13 @@
 
  .admin-upload-errors-cell strong {
   font-size: 0.96rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-heading);
   color: var(--ink);
 }
 
  .admin-upload-errors-cell span {
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: var(--font-size-meta);
   font-weight: 500;
   line-height: 1.45;
 }

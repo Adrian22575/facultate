@@ -1,6 +1,6 @@
 import { moduleClassNames } from "@/lib/ui/module-class-names";
 import { ChevronRight, LayoutDashboard } from "lucide-react";
-import Link from "next/link";
+import { PendingNavigationLink as Link } from "@/components/pending-navigation-link";
 
 import { AdminRouteSwitcher } from "@/components/admin-route-switcher";
 import { AppHeader } from "@/components/app-header";

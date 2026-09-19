@@ -30,13 +30,13 @@
 
  .admin-overview-card { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr); gap: 14px; overflow: hidden; padding: 20px; border: 1px solid #d6e3f1; border-radius: 20px; background: rgba(255,255,255,.94); box-shadow: 0 12px 28px rgba(30, 70, 115, .055); }
 
- .admin-overview-index { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #c7dbf1; border-radius: 12px; color: #1760ba; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; font-weight: 850; background: #edf5ff; }
+ .admin-overview-index { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid #c7dbf1; border-radius: 12px; color: #1760ba; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); background: #edf5ff; }
 
  .admin-overview-card-head { display: grid; gap: 3px; }
 
- .admin-overview-card h2 { margin: 0; color: #183d67; font-family: Georgia, "Times New Roman", serif; font-size: 1.25rem; }
+ .admin-overview-card h2 { margin: 0; color: #183d67; font-family: inherit; font-size: 1.25rem; font-weight: var(--font-weight-heading); }
 
- .admin-overview-card p { margin: 0; color: #71839a; font-size: .78rem; }
+ .admin-overview-card p { margin: 0; color: #71839a; font-size: var(--font-size-meta); }
 
  .admin-overview-card ul { grid-column: 1 / -1; display: grid; gap: 4px; margin: 3px 0 0; padding: 0; list-style: none; }
 
@@ -48,9 +48,9 @@
 
  .admin-overview-card li span { display: grid; gap: 2px; }
 
- .admin-overview-card li strong { font-size: .85rem; }
+ .admin-overview-card li strong { font-size: var(--font-size-meta); font-weight: var(--font-weight-heading); }
 
- .admin-overview-card li small { overflow: hidden; color: #71839a; font-size: .72rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+ .admin-overview-card li small { overflow: hidden; color: #71839a; font-size: var(--font-size-meta); line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
 
  .admin-overview-card li svg { color: #5680ad; }
 

@@ -43,11 +43,11 @@
 
 
 
- .admin-dictionary-list-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; overflow: visible; color: #627b9b; font-size: .76rem; line-height: 1.25; white-space: normal; }
+ .admin-dictionary-list-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; overflow: visible; color: #627b9b; font-size: var(--font-size-meta); line-height: 1.25; white-space: normal; }
 
 
 
- .admin-dictionary-list-meta b { color: #26624d; font-weight: 850; }
+ .admin-dictionary-list-meta b { color: #26624d; font-weight: var(--font-weight-control); }
 
 
 
@@ -55,7 +55,7 @@
 
 
 
- .admin-dictionary-list-created { display: inline-flex; align-items: flex-start; gap: 5px; overflow: visible; color: #476a91; font-size: .75rem; font-style: normal; font-weight: 750; line-height: 1.35; white-space: normal; }
+ .admin-dictionary-list-created { display: inline-flex; align-items: flex-start; gap: 5px; overflow: visible; color: #476a91; font-size: var(--font-size-meta); font-style: normal; font-weight: var(--font-weight-control); line-height: 1.35; white-space: normal; }
 
 
 
@@ -100,7 +100,7 @@
 
 
 
- .admin-dictionary-list em { color: #1764d5; font-size: .78rem; font-style: normal; font-weight: 800; }
+ .admin-dictionary-list em { color: #1764d5; font-size: var(--font-size-meta); font-style: normal; font-weight: var(--font-weight-control); }
 
 
 
@@ -137,15 +137,15 @@
 
 
 
- .admin-dictionary-list-count { margin: 0 2px; color: #71839b; font-size: .75rem; font-weight: 750; }
+ .admin-dictionary-list-count { margin: 0 2px; color: #71839b; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); }
 
 
 
- .admin-dictionary-list-empty { display: grid; gap: 4px; padding: 14px 12px; border: 1px dashed #c6d8ec; border-radius: 11px; color: #617a98; font-size: .8rem; line-height: 1.4; background: #f9fbfe; }
+ .admin-dictionary-list-empty { display: grid; gap: 4px; padding: 14px 12px; border: 1px dashed #c6d8ec; border-radius: 11px; color: #617a98; font-size: var(--font-size-meta); line-height: 1.4; background: #f9fbfe; }
 
 
 
- .admin-dictionary-list-empty strong { display: block; color: #36587f; font-size: .84rem; }
+ .admin-dictionary-list-empty strong { display: block; color: #36587f; font-size: var(--font-size-meta); }
 
 
 

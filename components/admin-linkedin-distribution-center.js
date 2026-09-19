@@ -5,7 +5,7 @@ import centerStyles from "./admin-linkedin-distribution-center.module.css";
 import distributionStyles from "./admin-linkedin-distribution.module.css";
 
 import { ArrowRight, CircleAlert, Clock3, Search, Send } from "lucide-react";
-import Link from "next/link";
+import { PendingNavigationLink as Link } from "@/components/pending-navigation-link";
 import { useEffect, useMemo, useState } from "react";
 
 import { FilterSearch } from "@/components/ui/collection-controls";

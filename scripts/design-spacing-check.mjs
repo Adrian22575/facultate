@@ -83,6 +83,7 @@ const colocatedCssEntries = [
   ,{ relativePath: "components/admin-overview.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-tabs-container.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-shared.module.css", importantCeiling: 0 }
+  ,{ relativePath: "components/admin-content-workspace.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-table-meta.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-center-client.module.css", importantCeiling: 0 }
   ,{ relativePath: "components/admin-openai-logs-panel.module.css", importantCeiling: 0 }
@@ -264,6 +265,10 @@ for (const family of colocatedActiveFamilies) {
 }
 
 const expectedTokens = {
+  "--font-weight-body": "400",
+  "--font-weight-control": "500",
+  "--font-weight-heading": "600",
+  "--font-size-meta": "0.875rem",
   "--space-0": "0px",
   "--space-1": "4px",
   "--space-2": "8px",
@@ -274,6 +279,25 @@ const expectedTokens = {
   "--space-7": "48px",
   "--space-8": "64px"
 };
+
+// Admin typography is deliberately quieter than promotional/public surfaces.
+// Check the owning modules so moving a rule cannot silently restore heavy labels.
+for (const relativePath of actualModulePaths.filter((file) => /^components\/(?:admin-|linkedin-distribution-settings)/.test(file))) {
+  const css = fs.readFileSync(path.join(root, relativePath), "utf8").replaceAll(/\/\*[\s\S]*?\*\//g, "");
+  for (const [, selector, declarations] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    if (selector.trim() === ".admin-linkedin-brand-glyph") continue;
+    for (const [, value] of declarations.matchAll(/\bfont-weight\s*:\s*([^;{}]+)/g)) {
+      if (/^(bold|bolder)$/i.test(value.trim()) || Number.parseFloat(value) > 600) {
+        failures.push(`${relativePath}: ${selector.trim()} reintroduce bold excesiv (${value.trim()}); folosește rolurile tipografice Admin.`);
+      }
+    }
+    for (const [, value, unit] of declarations.matchAll(/\bfont-size\s*:\s*(\d*\.?\d+)\s*(px|rem)\s*[;}]/g)) {
+      if (Number(value) * (unit === "rem" ? 16 : 1) < 14) {
+        failures.push(`${relativePath}: ${selector.trim()} folosește text sub 14px (${value}${unit}).`);
+      }
+    }
+  }
+}
 
 for (const [token, value] of Object.entries(expectedTokens)) {
   if (!new RegExp(`${token}:\\s*${value.replace(".", "\\.")}`).test(tokensCss)) {

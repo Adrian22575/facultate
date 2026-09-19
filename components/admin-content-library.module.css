@@ -17,8 +17,8 @@
 
  .admin-editorial-live-run span {
   color: #1761c8;
-  font-size: .72rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -30,7 +30,7 @@
  .admin-editorial-live-run p {
   margin: 0;
   color: #587291;
-  font-size: .84rem;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
 }
 
@@ -55,7 +55,7 @@
   right: 0;
   bottom: 14px;
   color: #315b8a;
-  font-size: .72rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-editorial-action-message {
@@ -66,7 +66,7 @@
   color: #244f7d;
   background: #f2f7fd;
   font-size: .88rem;
-  font-weight: 720;
+  font-weight: var(--font-weight-control);
   line-height: 1.45;
 }
 
@@ -108,8 +108,8 @@
   border-radius: 10px;
   color: #7a5106;
   background: #fff4d7;
-  font-size: .82rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-editorial-workflow-steps article:global(.is-failed) {
@@ -129,8 +129,8 @@
   color: #a22d2d;
   background: transparent;
   font: inherit;
-  font-size: .8rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   cursor: pointer;
 }
 
@@ -167,7 +167,7 @@
  .admin-editorial-confirmation p {
   margin: 0;
   color: #687d96;
-  font-size: .8rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-editorial-confirmation > div:last-child {
@@ -261,15 +261,15 @@
 
 .admin-run-history summary {
   color: #315b8f;
-  font-size: .85rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   cursor: pointer;
 }
 
 .admin-run-history > p {
   margin: var(--space-2) 0 0;
   color: #607895;
-  font-size: .86rem;
+  font-size: var(--font-size-meta);
 }
 
 .admin-editorial-runs {

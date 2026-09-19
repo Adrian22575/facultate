@@ -57,7 +57,7 @@
   min-height: 38px;
   padding: var(--space-2) var(--space-3);
   border-radius: 9px;
-  font-size: 0.86rem;
+  font-size: var(--font-size-meta);
 }
 
 :global(.admin-panel) .admin-tabs-container {
@@ -106,8 +106,8 @@
   border-radius: 999px;
   background: rgba(18, 80, 177, 0.1);
   color: var(--primary-dark);
-  font-size: 0.78rem;
-  font-weight: 900;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   line-height: 1;
 }
 

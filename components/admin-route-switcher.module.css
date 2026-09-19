@@ -1,6 +1,6 @@
-.admin-route-switcher { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: #647b95; font-size: .73rem; font-weight: 800; }
+.admin-route-switcher { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; color: #647b95; font-size: var(--font-size-meta); font-weight: var(--font-weight-body); }
 
- .admin-route-switcher select { width: 190px; min-height: 36px; border: 1px solid #bfd2e7; border-radius: 10px; padding: 0 30px 0 10px; color: #174571; font: inherit; font-weight: 800; background: #f8fbff; cursor: pointer; }
+ .admin-route-switcher select { width: 190px; min-height: 36px; border: 1px solid #bfd2e7; border-radius: 10px; padding: 0 30px 0 10px; color: #174571; font: inherit; font-weight: var(--font-weight-control); background: #f8fbff; cursor: pointer; }
 
  .admin-route-switcher select:hover { border-color: #8eb3dc; background: #fff; }
 

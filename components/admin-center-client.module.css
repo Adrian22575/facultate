@@ -1,7 +1,7 @@
 .admin-feedback-screenshot-link {
   min-height: 34px;
   padding: 6px 10px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-analytics-warning {
@@ -39,22 +39,23 @@
   color: var(--primary-dark);
 }
 
- .admin-analytics-kpi-label {
+.admin-analytics-kpi-label {
   color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-body);
 }
 
- .admin-analytics-kpi strong {
+.admin-analytics-kpi strong {
   color: var(--primary-dark);
   font-size: 1.42rem;
+  font-weight: var(--font-weight-heading);
   line-height: 1.1;
 }
 
- .admin-analytics-kpi-hint {
+.admin-analytics-kpi-hint {
   color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-body);
 }
 
  .admin-analytics-grid {
@@ -82,8 +83,8 @@
   gap: 12px;
   min-width: 0;
   color: var(--ink);
-  font-size: 0.94rem;
-  font-weight: 800;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-analytics-row-main span {
@@ -137,8 +138,8 @@
  .admin-free-access-label {
   margin: 0;
   color: var(--ink);
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-free-access-textarea {
@@ -173,7 +174,7 @@
   background: #fae9ea;
   color: #8f1d27;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-body);
 }
 
  .admin-inline-success {
@@ -184,7 +185,7 @@
   background: #e7f5ed;
   color: #1f7f53;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-body);
 }
 
  .admin-danger-action {
@@ -241,8 +242,8 @@
 
  .admin-section-nav-group > span {
   color: #6f83a1;
-  font-size: 0.72rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }

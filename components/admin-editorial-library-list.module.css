@@ -6,8 +6,8 @@
 
  .admin-articles-library-head > div > span {
   color: var(--primary);
-  font-size: 0.7rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -29,7 +29,7 @@
  .admin-articles-library-head h2 {
   margin: 3px 0 0;
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.3rem;
 }
 
@@ -57,8 +57,8 @@
   padding: 0 11px;
   color: #61758e;
   font: inherit;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: transparent;
   cursor: pointer;
 }
@@ -88,7 +88,7 @@
   place-items: center;
   border-radius: 7px;
   color: #55718f;
-  font-size: 0.68rem;
+  font-size: var(--font-size-meta);
   background: #fff;
 }
 
@@ -112,7 +112,7 @@
 
  .admin-articles-empty p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-articles-empty button {
@@ -122,8 +122,8 @@
   padding: 0 11px;
   color: #1c568e;
   font: inherit;
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: #fff;
 }
 
@@ -226,8 +226,8 @@
   border-radius: 7px;
   padding: 0 7px;
   color: #596f88;
-  font-size: 0.68rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: #edf2f7;
 }
 
@@ -254,7 +254,7 @@
  .admin-article-row h3 {
   margin: 0;
   color: #193c66;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.03rem;
   line-height: 1.3;
 }
@@ -264,7 +264,7 @@
   overflow: hidden;
   margin: 0;
   color: #657b95;
-  font-size: 0.8rem;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -276,7 +276,7 @@
   align-items: center;
   gap: 6px;
   color: #8190a3;
-  font-size: 0.7rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-row-copy > small i {
@@ -288,8 +288,8 @@
   align-items: center;
   gap: 5px;
   color: #a04a27;
-  font-size: 0.72rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-article-row-actions {
@@ -308,12 +308,12 @@
 
  .admin-article-row-actions > span strong {
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.35rem;
 }
 
  .admin-article-row-actions > span small {
-  font-size: 0.7rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-row-actions a {
@@ -325,8 +325,8 @@
   border-radius: 10px;
   padding: 0 11px;
   color: #194f88;
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   text-decoration: none;
   background: #fff;
 }

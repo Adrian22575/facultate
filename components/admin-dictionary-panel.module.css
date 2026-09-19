@@ -6,7 +6,7 @@
   color: #244f7d;
   background: #f2f7fd;
   font-size: .88rem;
-  font-weight: 720;
+  font-weight: var(--font-weight-control);
   line-height: 1.45;
 }
 
@@ -41,7 +41,7 @@
  .admin-dictionary-content-details > summary {
   padding: 13px;
   color: #254d7d;
-  font-weight: 800;
+  font-weight: var(--font-weight-control);
   cursor: pointer;
 }
 
@@ -60,8 +60,8 @@
   border-radius: 10px;
   color: #7a5106;
   background: #fff4d7;
-  font-size: .82rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-dictionary-score {
@@ -69,8 +69,8 @@
   border-radius: 9px;
   color: #61748b;
   background: #edf1f6;
-  font-size: .78rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -80,8 +80,8 @@
   border-radius: 9px;
   color: #61748b;
   background: #edf1f6;
-  font-size: .78rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -98,8 +98,8 @@
   color: #a22d2d;
   background: transparent;
   font: inherit;
-  font-size: .8rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   cursor: pointer;
 }
 
@@ -139,7 +139,7 @@
 
  .admin-dictionary-editor { display: grid; gap: 12px; }
 
- .admin-dictionary-editor label { display: grid; gap: 6px; color: #334e75; font-size: .85rem; font-weight: 750; }
+ .admin-dictionary-editor label { display: grid; gap: 6px; color: #334e75; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); }
 
  .admin-dictionary-editor label small { color: #7185a2; font-weight: 600; }
 
@@ -151,7 +151,7 @@
 
  .admin-dictionary-editor textarea { min-height: 84px; resize: vertical; }
 
- .admin-dictionary-editor textarea.admin-dictionary-json { min-height: 170px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .79rem; }
+ .admin-dictionary-editor textarea.admin-dictionary-json { min-height: 170px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--font-size-meta); }
 
  .admin-dictionary-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, .8fr); gap: 10px; }
 
@@ -167,9 +167,9 @@
 
  .admin-dictionary-detail-head > div { display: grid; gap: 4px; }
 
- .admin-dictionary-detail-head span { color: var(--primary); font-size: .78rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
+ .admin-dictionary-detail-head span { color: var(--primary); font-size: var(--font-size-meta); font-weight: var(--font-weight-control); letter-spacing: .08em; text-transform: uppercase; }
 
- .admin-dictionary-detail-head h1 { margin: 0; color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.55rem, 3vw, 2.1rem); line-height: 1.15; }
+ .admin-dictionary-detail-head h1 { margin: 0; color: var(--ink); font-family: inherit; font-size: clamp(1.55rem, 3vw, 2.1rem); line-height: 1.15; }
 
  .admin-dictionary-detail-head p { margin: 0; color: var(--muted); line-height: 1.5; }
 

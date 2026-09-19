@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 
 import { LoadingSpinner } from "@/components/loading-spinner";
+import { ActionLink, Button } from "@/components/ui/action";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -265,6 +266,7 @@ export function AdminEditorialArticlePage({
       if (!response.ok) {
         setMessage({
           tone: "error",
+          scope: "save",
           text:
             result?.error === "unknown_source_reference"
               ? "O secțiune folosește un ID care nu există în lista de surse."
@@ -298,6 +300,7 @@ export function AdminEditorialArticlePage({
       setDirty(false);
       setMessage({
         tone: "success",
+        scope: "save",
         text:
           article.status === "published"
             ? "Modificările au fost salvate. Articolul a fost retras temporar și trebuie verificat din nou."
@@ -307,6 +310,7 @@ export function AdminEditorialArticlePage({
     } catch (error) {
       setMessage({
         tone: "error",
+        scope: "save",
         text: error instanceof Error ? error.message : "Date invalide."
       });
     } finally {
@@ -323,6 +327,7 @@ export function AdminEditorialArticlePage({
     ) {
       setMessage({
         tone: "error",
+        scope: "publication",
         text: "Completează audiența personalizată pentru postarea LinkedIn."
       });
       return;
@@ -342,6 +347,7 @@ export function AdminEditorialArticlePage({
     if (!response?.ok) {
       setMessage({
         tone: "error",
+        scope: action === "fact_check" ? "quality" : "publication",
         text:
           result?.error === "publication_quality_not_met"
             ? "Publicarea este blocată până când verificarea trece și scorul este cel puțin 85."
@@ -361,6 +367,7 @@ export function AdminEditorialArticlePage({
       }));
       setMessage({
         tone: result.factCheckStatus === "passed" ? "success" : "warning",
+        scope: "quality",
         text:
           result.factCheckStatus === "passed"
             ? "Verificarea a trecut. Afirmațiile au fost confirmate din sursele articolului."
@@ -372,11 +379,12 @@ export function AdminEditorialArticlePage({
         status: "published",
         published_at: current.published_at || new Date().toISOString()
       }));
-      setMessage({ tone: "success", text: "Articolul este publicat și vizibil pe site." });
+      setMessage({ tone: "success", scope: "publication", text: "Articolul este publicat și vizibil pe site." });
     } else {
       setArticle((current) => ({ ...current, status: "withdrawn" }));
       setMessage({
         tone: "success",
+        scope: "publication",
         text: "Articolul a fost retras. Rămâne disponibil în Admin."
       });
     }
@@ -420,8 +428,6 @@ export function AdminEditorialArticlePage({
           Salvarea modificărilor va retrage temporar articolul până la o nouă verificare.
         </p>
       ) : null}
-      <ActionMessage message={message} />
-
       <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "admin-article-editor-shell")}>
         <div
           className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "admin-article-tabs")}
@@ -473,19 +479,10 @@ export function AdminEditorialArticlePage({
                     ? "Verificarea și previzualizarea sunt blocate cât timp există modificări nesalvate."
                     : factInfo.help}
                 </p>
-                {dirty ? (
-                  <button type="button" className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-link")} onClick={save} disabled={Boolean(busy)}>
-                    <Save size={16} aria-hidden="true" />
-                    Salvează acum
-                  </button>
-                ) : article.fact_check_status !== "passed" ? (
-                  <button
-                    type="button"
-                    className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-link")}
-                    onClick={() => setActiveTab("quality")}
-                  >
+                {!dirty && article.fact_check_status !== "passed" ? (
+                  <Button onClick={() => setActiveTab("quality")}>
                     Vezi verificarea
-                  </button>
+                  </Button>
                 ) : null}
               </section>
 
@@ -685,11 +682,10 @@ export function AdminEditorialArticlePage({
                   <h2>Calitatea articolului</h2>
                   <p>Verificarea compară afirmațiile cu sursele salvate.</p>
                 </div>
-                <button
-                  type="button"
-                  className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-link")}
+                <Button
                   onClick={() => runAction("fact_check")}
                   disabled={dirty || Boolean(busy)}
+                  aria-busy={busy === "fact_check" || undefined}
                 >
                   {busy === "fact_check" ? (
                     <LoadingSpinner size={16} />
@@ -697,8 +693,9 @@ export function AdminEditorialArticlePage({
                     <ShieldCheck size={16} aria-hidden="true" />
                   )}
                   {article.fact_check_status === "passed" ? "Verifică din nou" : "Rulează verificarea"}
-                </button>
+                </Button>
               </div>
+              <ActionMessage message={message?.scope === "quality" ? message : null} />
               {dirty ? (
                 <p className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "admin-article-quality-note")}>
                   Salvează modificările înainte de o nouă verificare.
@@ -787,26 +784,25 @@ export function AdminEditorialArticlePage({
             </p>
           </div>
           <div>
-            <button
-              type="button"
-              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], confirmation === "publish" ? "btn-link" : "admin-editorial-withdraw is-confirm")}
+            <Button
+              variant={confirmation === "publish" ? "primary" : "destructive"}
               onClick={() => runAction(confirmation)}
               disabled={Boolean(busy)}
+              aria-busy={busy === confirmation || undefined}
             >
               {busy === confirmation
                 ? "Se salvează…"
                 : confirmation === "publish"
                   ? "Da, publică"
                   : "Da, retrage"}
-            </button>
-            <button
-              type="button"
-              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-back")}
+            </Button>
+            <Button
+              variant="secondary"
               onClick={() => setConfirmation("")}
               disabled={Boolean(busy)}
             >
               Anulează
-            </button>
+            </Button>
           </div>
         </div>
       ) : null}
@@ -827,77 +823,70 @@ export function AdminEditorialArticlePage({
         <Link href="/admin/continut/articole" onClick={handleBack}>
           Înapoi la articole
         </Link>
-        <span>
-          {dirty ? (
-            <>
-              <Clock3 size={15} aria-hidden="true" />
-              Modificări nesalvate
-            </>
-          ) : (
-            <>
-              <Check size={15} aria-hidden="true" />
-              Toate modificările sunt salvate
-            </>
-          )}
-        </span>
+        {["save", "publication"].includes(message?.scope) ? (
+          <div className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "admin-article-action-feedback")}>
+            <ActionMessage message={message} />
+          </div>
+        ) : (
+          <span>
+            {dirty ? (
+              <><Clock3 size={15} aria-hidden="true" />Modificări nesalvate</>
+            ) : (
+              <><Check size={15} aria-hidden="true" />Toate modificările sunt salvate</>
+            )}
+          </span>
+        )}
         <div>
-          {dirty ? (
+          {!isPublished && dirty ? (
             <span className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "admin-article-disabled-preview")}>Salvează pentru previzualizare</span>
-          ) : (
-            <a
-              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-back")}
+          ) : !isPublished ? (
+            <ActionLink
+              as="a"
+              variant="secondary"
               href={`/admin/articole/${article.id}/preview`}
               target="_blank"
               rel="noreferrer"
             >
               <Eye size={15} aria-hidden="true" />
               Previzualizează
-            </a>
-          )}
+            </ActionLink>
+          ) : null}
           {isPublished ? (
             <>
-              <a
-                className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-back")}
+              <ActionLink
+                as="a"
+                variant="secondary"
                 href={`/articole/${article.slug}`}
                 target="_blank"
                 rel="noreferrer"
               >
                 Vezi articolul
-              </a>
-              <button
-                type="button"
+              </ActionLink>
+              <Button
+                variant="secondary"
                 className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "admin-editorial-withdraw")}
                 onClick={() => setConfirmation("withdraw")}
                 disabled={Boolean(busy)}
               >
                 <Undo2 size={15} aria-hidden="true" />
                 Retrage
-              </button>
+              </Button>
             </>
-          ) : (
-            <button
-              type="button"
-              className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-back")}
+          ) : canPublish ? (
+            <Button
               onClick={() => setConfirmation("publish")}
-              disabled={!canPublish || Boolean(busy)}
+              disabled={Boolean(busy)}
             >
               <Send size={15} aria-hidden="true" />
               Publică
-            </button>
-          )}
-          <button
-            type="button"
-            className={moduleClassNames([libraryStyles, pageStyles, workflowStyles, listStyles], "btn-link")}
-            onClick={save}
-            disabled={!dirty || Boolean(busy)}
-          >
-            {busy === "save" ? (
-              <LoadingSpinner size={16} />
-            ) : (
-              <Save size={16} aria-hidden="true" />
-            )}
-            {busy === "save" ? "Se salvează…" : dirty ? "Salvează modificările" : "Salvat"}
-          </button>
+            </Button>
+          ) : null}
+          {dirty ? (
+            <Button onClick={save} disabled={Boolean(busy)} aria-busy={busy === "save" || undefined}>
+              {busy === "save" ? <LoadingSpinner size={16} /> : <Save size={16} aria-hidden="true" />}
+              {busy === "save" ? "Se salvează…" : "Salvează modificările"}
+            </Button>
+          ) : null}
         </div>
       </div>
     </section>

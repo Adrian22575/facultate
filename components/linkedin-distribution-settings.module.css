@@ -15,7 +15,7 @@
 
  .admin-linkedin-model > span { display: inline-flex; align-items: center; gap: 5px; }
 
- .admin-linkedin-controls label > span { color: #385979; font-size: .78rem; font-weight: 800; }
+ .admin-linkedin-controls label > span { color: #385979; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); }
 
  .admin-linkedin-controls select {
   width: 100%;
@@ -50,8 +50,8 @@
   min-height: 40px;
   padding: 0 13px;
   border-radius: 10px;
-  font-size: .82rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   text-decoration: none;
   cursor: pointer;
 }
@@ -64,8 +64,8 @@
   min-height: 40px;
   padding: 0 13px;
   border-radius: 10px;
-  font-size: .82rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   text-decoration: none;
   cursor: pointer;
 }
@@ -78,8 +78,8 @@
   min-height: 40px;
   padding: 0 13px;
   border-radius: 10px;
-  font-size: .82rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   text-decoration: none;
   cursor: pointer;
 }
@@ -126,14 +126,14 @@
   padding: 10px 12px;
   border-radius: 10px;
   color: #5c4b24;
-  font-size: .84rem;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
   background: #fff8e8;
 }
 
  .admin-linkedin-settings { border: 1px solid #d4e2f1; border-radius: 12px; background: #fbfdff; }
 
- .admin-linkedin-settings > summary { display: flex; align-items: center; gap: 7px; padding: 11px 12px; color: #294e78; font-size: .84rem; font-weight: 850; cursor: pointer; }
+ .admin-linkedin-settings > summary { display: flex; align-items: center; gap: 7px; padding: 11px 12px; color: #294e78; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); cursor: pointer; }
 
  .admin-linkedin-settings[open] > summary { border-bottom: 1px solid #dce7f4; }
 
@@ -167,4 +167,4 @@
    .admin-linkedin-disconnect { width: 100%; }
 }
 
- :global(.admin-linkedin-refinements) .admin-linkedin-secondary { min-height: 34px; padding: 0 10px; font-size: .74rem; }
+ :global(.admin-linkedin-refinements) .admin-linkedin-secondary { min-height: 34px; padding: 0 10px; font-size: var(--font-size-meta); }

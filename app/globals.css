@@ -68,8 +68,8 @@ p {
   min-height: 32px;
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: var(--ui-meta-font-size, 0.8rem);
+  font-weight: var(--ui-control-weight, 800);
 }
 
 .status-pill.is-good {
@@ -303,7 +303,7 @@ p {
   background: var(--good-soft);
   border: 1px solid #9bd0b0;
   border-radius: var(--radius);
-  font-weight: 800;
+  font-weight: var(--ui-body-weight, 800);
 }
 
 .check-list {
@@ -343,7 +343,7 @@ button.is-disabled-soft,
   background: var(--primary);
   color: #fff;
   padding: 12px 18px;
-  font-weight: 800;
+  font-weight: var(--ui-action-weight, 800);
 }
 
 button:not([class]):hover,
@@ -367,7 +367,7 @@ button.inline-text-action:hover {
   color: var(--primary-dark);
   border-color: var(--line-strong);
   padding: 10px 14px;
-  font-weight: 800;
+  font-weight: var(--ui-action-weight, 800);
 }
 
 .btn-back:hover,
@@ -465,7 +465,7 @@ select:focus {
   color: var(--bad);
   background: var(--bad-soft);
   border: 1px solid #efc5c9;
-  font-weight: 800;
+  font-weight: var(--ui-body-weight, 800);
 }
 
 .study-explanation {

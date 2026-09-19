@@ -1,28 +1,12 @@
 "use client";
 
-import { moduleClassNames } from "@/lib/ui/module-class-names";
-import libraryStyles from "./admin-content-library.module.css";
-import pageStyles from "./admin-editorial-articles-page.module.css";
-import listStyles from "./admin-editorial-library-list.module.css";
-
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Clock3,
-  FilePenLine,
-  FlaskConical,
-  Newspaper,
-  Settings2,
-  ShieldCheck
-} from "lucide-react";
-import Link from "next/link";
-
-import { LoadingSpinner } from "@/components/loading-spinner";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-
-import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
-import { FilterSearch } from "@/components/ui/collection-controls";
+import { moduleClassNames } from "@/lib/ui/module-class-names";
+import { InlineFeedback } from "@/components/ui/status";
+import { AdminContentTools, AdminContentProgress, AdminContentList } from "@/components/admin-content-workspace";
+import libraryStyles from "./admin-content-library.module.css";
+import pageStyles from "./admin-editorial-articles-page.module.css";
 
 const ACTIVE_RUN_STATUSES = new Set([
   "started",
@@ -31,13 +15,6 @@ const ACTIVE_RUN_STATUSES = new Set([
   "drafted",
   "fact_checked"
 ]);
-const RUN_PROGRESS = {
-  started: 8,
-  researching: 32,
-  validated_research: 56,
-  drafted: 78,
-  fact_checked: 92
-};
 const ARTICLE_FILTERS = [
   { id: "all", label: "Toate" },
   { id: "review", label: "Necesită revizuire" },
@@ -96,14 +73,6 @@ function filterMatches(article, filter) {
   return true;
 }
 
-function frequencyLabel(settings) {
-  const days = Number(settings?.frequency_days || 0);
-  if (days === 1) return "Zilnic";
-  if (days === 7) return "Săptămânal";
-  if (days === 14) return "La 2 săptămâni";
-  return days > 1 ? `La ${days} zile` : "Neprogramat";
-}
-
 function generationStatusMessage(latestRun) {
   if (!latestRun || !["failed", "rejected"].includes(latestRun.status)) return null;
   return {
@@ -127,6 +96,7 @@ export function AdminEditorialArticlesPage({
   const [query, setQuery] = useState("");
   const [searchedArticles, setSearchedArticles] = useState([]);
   const [searchBusy, setSearchBusy] = useState(false);
+  const [searchError, setSearchError] = useState(false);
   const [busy, setBusy] = useState("");
   const [generationMessage, setGenerationMessage] = useState(null);
   const activeRun = useMemo(
@@ -143,9 +113,12 @@ export function AdminEditorialArticlesPage({
     if (value.length < 2) {
       setSearchedArticles([]);
       setSearchBusy(false);
+      setSearchError(false);
       return undefined;
     }
 
+    setSearchBusy(true);
+    setSearchError(false);
     const controller = new AbortController();
     const timer = window.setTimeout(async () => {
       setSearchBusy(true);
@@ -156,6 +129,9 @@ export function AdminEditorialArticlesPage({
       const result = await response?.json().catch(() => ({}));
       if (!controller.signal.aborted && response?.ok) {
         setSearchedArticles(result.articles || []);
+      } else if (!controller.signal.aborted) {
+        setSearchedArticles([]);
+        setSearchError(true);
       }
       if (!controller.signal.aborted) setSearchBusy(false);
     }, 250);
@@ -198,13 +174,6 @@ export function AdminEditorialArticlesPage({
     }),
     [articles]
   );
-  const scoredArticles = articles.filter((article) => Number.isFinite(Number(article.quality_score)));
-  const averageScore = scoredArticles.length
-    ? Math.round(
-        scoredArticles.reduce((sum, article) => sum + Number(article.quality_score), 0) /
-          scoredArticles.length
-      )
-    : 0;
 
   async function generateDraft() {
     if (activeRun || busy) return;
@@ -241,227 +210,36 @@ export function AdminEditorialArticlesPage({
   }
 
   return (
-    <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-index")}>
-      <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-primary-row")}>
-        <div>
-          <span>Flux editorial</span>
-          <strong>Gestionează articolele de la ciornă la publicare</strong>
-          <p>Prioritizează articolele care necesită verificare și deschide editorul doar când ai nevoie.</p>
-        </div>
-        <button
-          type="button"
-          className={moduleClassNames([libraryStyles, pageStyles, listStyles], "btn-link admin-articles-generate")}
-          onClick={generateDraft}
-          disabled={Boolean(busy) || Boolean(activeRun)}
-        >
-          {liveRun ? (
-            <LoadingSpinner size={17} />
-          ) : (
-            <FlaskConical size={17} aria-hidden="true" />
-          )}
-          {liveRun ? "Generare în curs" : "Generează un articol"}
-        </button>
-      </div>
-
-      <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation")} aria-label="Generare automată">
-        <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation-summary")}>
-          <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation-icon")} aria-hidden="true">
-            <Clock3 size={20} />
-          </span>
-          <div>
-            <strong>Generare automată</strong>
-            <p>Programarea pregătește articole noi și păstrează controlul editorial în această listă.</p>
-            <div>
-              <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], automationSettings?.enabled ? "is-active" : "")}>
-                {automationSettings?.enabled ? "Activă" : "Oprită"}
-              </span>
-              <span>{frequencyLabel(automationSettings)}</span>
-              {automationSettings?.model ? <span>{automationSettings.model}</span> : null}
-              {automationSettings?.notify_telegram ? <span>Telegram activ</span> : null}
-            </div>
-          </div>
-        </div>
-        <details className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-automation-settings")}>
-          <summary>
-            <Settings2 size={16} aria-hidden="true" />
-            Configurează
-          </summary>
-          <AdminEditorialAutomationSettings
-            workflow="editorial"
-            settings={automationSettings}
-            generationPreview={generationPreview}
-          />
-        </details>
-      </section>
-
-      {liveRun ? (
-        <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-editorial-live-run")} aria-live="polite">
-          <LoadingSpinner size={23} />
-          <div>
-            <span>Generare în curs</span>
-            <strong>{runStatusLabel(liveRun.status)}</strong>
-            <p>Poți părăsi pagina. Starea se actualizează automat când revii.</p>
-          </div>
-          <div
-            className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-editorial-live-progress")}
-            aria-label={`Progres estimat ${RUN_PROGRESS[liveRun.status] || 8}%`}
-          >
-            <span>{RUN_PROGRESS[liveRun.status] || 8}%</span>
-            <i style={{ width: `${RUN_PROGRESS[liveRun.status] || 8}%` }} />
-          </div>
-        </section>
-      ) : null}
-
-      {persistedGenerationMessage ? (
-        <p
-          className={moduleClassNames([libraryStyles, pageStyles, listStyles], `admin-editorial-action-message is-${persistedGenerationMessage.tone}`)}
-          role="status"
-        >
-          {persistedGenerationMessage.text}
-        </p>
-      ) : null}
-      {warning ? <p className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-dictionary-message is-error")}>{warning}</p> : null}
-
-      <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-stats")} aria-label="Rezumat articole">
-        <article>
-          <span>Publicate</span>
-          <strong>{counts.published}</strong>
-          <small>vizibile în secțiunea publică</small>
-        </article>
-        <article className={moduleClassNames([libraryStyles, pageStyles, listStyles], counts.review ? "is-attention" : "")}>
-          <span>Necesită revizuire</span>
-          <strong>{counts.review}</strong>
-          <small>{counts.review ? "articole care cer intervenție" : "nimic urgent acum"}</small>
-        </article>
-        <article>
-          <span>Scor editorial mediu</span>
-          <strong>{averageScore || "—"}</strong>
-          <small>pragul de publicare este 85</small>
-        </article>
-      </div>
-
-      <section className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-library")} aria-labelledby="admin-articles-library-title">
-        <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-library-head")}>
-          <div>
-            <span>Bibliotecă editorială</span>
-            <h2 id="admin-articles-library-title">Toate articolele</h2>
-          </div>
-          <FilterSearch
-            value={query}
-            onChange={setQuery}
-            placeholder="Caută după titlu sau subiect"
-            ariaLabel="Caută articole"
-            compact
-            loading={searchBusy}
-            clearable
-            className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-search")}
-          />
-        </div>
-
-        <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-filter-tabs")} role="group" aria-label="Filtrează articolele">
-          {ARTICLE_FILTERS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={filter === item.id}
-              className={moduleClassNames([libraryStyles, pageStyles, listStyles], filter === item.id ? "is-active" : "")}
-              onClick={() => setFilter(item.id)}
-            >
-              {item.label}
-              <span>{counts[item.id]}</span>
-            </button>
-          ))}
-        </div>
-
-        {visibleArticles.length ? (
-          <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-list")}>
-            {visibleArticles.map((article) => {
-              const status = articleStatus(article);
-              const reviewRequired = needsReview(article);
-              return (
-                <article className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row")} key={article.id}>
-                  <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-icon")} aria-hidden="true">
-                    <Newspaper size={20} />
-                  </span>
-                  <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-copy")}>
-                    <div>
-                      <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], `admin-article-status is-${status.tone}`)}>{status.label}</span>
-                      {reviewRequired ? (
-                        <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-status is-review")}>Necesită revizuire</span>
-                      ) : null}
-                    </div>
-                    <h3>{article.title}</h3>
-                    <p>{article.summary || article.subtitle || "Articol fără rezumat."}</p>
-                    <small>
-                      {formatDate(article.updated_at)}
-                      <i aria-hidden="true">·</i>
-                      {(article.sources || []).length} surse
-                      <i aria-hidden="true">·</i>
-                      {article.primary_topic || "Fără subiect principal"}
-                    </small>
-                    {reviewRequired ? (
-                      <span className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-warning")}>
-                        <AlertTriangle size={14} aria-hidden="true" />
-                        Verificarea factuală trebuie revizuită înainte de publicare.
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-article-row-actions")}>
-                    <span>
-                      <strong>{article.quality_score ?? "—"}</strong>
-                      <small>scor</small>
-                    </span>
-                    <Link href={`/admin/continut/articole/${article.id}`}>
-                      <FilePenLine size={16} aria-hidden="true" />
-                      Deschide articolul
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        ) : (
-          <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-articles-empty")}>
-            <ShieldCheck size={22} aria-hidden="true" />
-            <strong>Nu am găsit articole potrivite</strong>
-            <p>Schimbă filtrul sau șterge termenul de căutare.</p>
-            <button
-              type="button"
-              onClick={() => {
-                setFilter("all");
-                setQuery("");
-              }}
-            >
-              Resetează lista
-            </button>
-          </div>
-        )}
-      </section>
-
-      <details
-        className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-run-history admin-articles-run-history")}
-        open={runs.some((run) => ["rejected", "failed"].includes(run.status))}
-      >
+    <div className={moduleClassNames(pageStyles, "admin-articles-index")}>
+      <AdminContentTools label="Generează un articol" onGenerate={generateDraft} generating={Boolean(liveRun)} workflow="editorial" settings={automationSettings} generationPreview={generationPreview} />
+      {liveRun ? <AdminContentProgress label={runStatusLabel(liveRun.status)} /> : null}
+      {persistedGenerationMessage ? <InlineFeedback tone={persistedGenerationMessage.tone}>{persistedGenerationMessage.text}</InlineFeedback> : null}
+      {warning ? <InlineFeedback tone="error">{warning}</InlineFeedback> : null}
+      <AdminContentList
+        id="admin-articles-library-title" title="Toate articolele"
+        query={query} onQuery={setQuery} filter={filter} onFilter={setFilter}
+        filters={ARTICLE_FILTERS} counts={counts}
+        searching={searchBusy} searchError={searchError}
+        searchLabel="Caută articole" placeholder="Caută după titlu sau subiect"
+        items={visibleArticles.map((article) => ({
+          id: article.id, title: article.title, href: `/admin/continut/articole/${article.id}`,
+          description: article.summary || article.subtitle || "Articol fără rezumat.",
+          date: formatDate(article.updated_at), meta: article.primary_topic || "Fără subiect principal",
+          status: articleStatus(article).label,
+          warning: needsReview(article) ? "Verificarea factuală trebuie revizuită înainte de publicare." : ""
+        }))}
+      />
+      <details className={moduleClassNames(libraryStyles, "admin-run-history")}>
         <summary>Istoric generări ({runs.length})</summary>
-        {runs.length ? (
-          <div className={moduleClassNames([libraryStyles, pageStyles, listStyles], "admin-editorial-runs")}>
-            {runs.map((run) => (
-              <article key={run.id}>
-                <strong>{run.run_date || `${run.week_start} – ${run.week_end}`}</strong>
-                <span>
-                  {run.trigger_source === "cron" ? "Programat" : "Manual"} ·{" "}
-                  {runStatusLabel(run.status)} · {run.quality_score ?? "—"}/100
-                </span>
-                <small>
-                  {run.source_count ?? 0} surse verificate · {run.topic_count ?? 0} subiecte
-                </small>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <p>Nu există rulări încă.</p>
-        )}
+        {runs.length ? <div className={moduleClassNames(libraryStyles, "admin-editorial-runs")}>
+          {runs.map((run) => <article key={run.id}>
+            <span>{run.run_date || `${run.week_start} – ${run.week_end}`}</span>
+            <span>{run.trigger_source === "cron" ? "Programat" : "Manual"} · {runStatusLabel(run.status)} · {run.quality_score ?? "—"}/100</span>
+            <span>{run.source_count ?? 0} surse verificate · {run.topic_count ?? 0} subiecte</span>
+            {run.rejection_reason || run.error_message ? <span>{run.rejection_reason || run.error_message}</span> : null}
+          </article>)}
+        </div> : <p>Nu există rulări încă.</p>}
       </details>
-    </section>
+    </div>
   );
 }

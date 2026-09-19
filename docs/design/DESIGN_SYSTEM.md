@@ -98,6 +98,18 @@ Reguli:
 
 Greutățile și dimensiunile concrete trebuie să provină din tokenurile sau tiparele aprobate ale sistemului, nu din valori locale arbitrare.
 
+### Scala semantică de tipografie
+
+| Rol | Token | Valoare | Utilizare |
+| --- | --- | --- | --- |
+| Text curent | `--font-weight-body` | `400` | Copy, metadata și descrieri. |
+| Control | `--font-weight-control` | `500` | Butoane, filtre, labeluri și statusuri scurte. |
+| Heading | `--font-weight-heading` | `600` | Titluri și nume care structurează conținutul. |
+| Metadata | `--font-size-meta` | `0.875rem` | Informație secundară relevantă; nu coboară sub 14px. |
+| Text curent | `--font-size-body` | `1rem` | Texte, câmpuri și copy relevante. |
+
+Zonele administrative folosesc această scară calmă: heading-ul principal este între `1.75rem` și `2rem`, `h2` este aproximativ `1.25rem`, iar `h3` între `1rem` și `1.125rem`. Excepția pentru o greutate mai mare rămâne doar un glyph de brand sau un icon care o cere pentru lizibilitate; nu se folosește pentru text administrativ obișnuit.
+
 ## 6. Spacing și layout
 
 Scara, tokenurile și contractul de layout sunt definite în `LAYOUT_SPACING_RULES.md`.
@@ -216,6 +228,8 @@ Compoziții reutilizabile pentru o sarcină, de exemplu:
 - form section.
 
 Patternurile pot compune primitive, dar nu trebuie să conțină logica unei singure pagini.
+
+Bibliotecile administrative de articole și dicționar reutilizează `AdminContentTools`, `AdminContentProgress` și `AdminContentList` din `components/admin-content-workspace.js`, cu stiluri colocate. Patternul compune controalele canonice, paginează câte 15 rezultate și păstrează setările și istoricul în secțiuni expandabile. Datele, filtrele și generarea rămân responsabilitatea fiecărei pagini.
 
 ### 8.4 Page modules
 

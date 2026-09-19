@@ -1,6 +1,6 @@
 import { moduleClassNames } from "@/lib/ui/module-class-names";
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { PendingNavigationLink as Link } from "@/components/pending-navigation-link";
 
 import { ADMIN_ROUTE_GROUPS } from "@/lib/admin-routes";
 

@@ -40,15 +40,15 @@
 
  .admin-articles-primary-row > div > span {
   color: var(--primary);
-  font-size: 0.7rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
  .admin-articles-primary-row > div > strong {
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.35rem;
 }
 
@@ -56,7 +56,7 @@
   max-width: 720px;
   margin: 0;
   color: #657b95;
-  font-size: 0.84rem;
+  font-size: var(--font-size-meta);
   line-height: 1.5;
 }
 
@@ -64,7 +64,7 @@
   max-width: 720px;
   margin: 0;
   color: #657b95;
-  font-size: 0.84rem;
+  font-size: var(--font-size-meta);
   line-height: 1.5;
 }
 
@@ -123,8 +123,8 @@
   border-radius: 8px;
   padding: 0 8px;
   color: #617791;
-  font-size: 0.72rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: #f8fbff;
 }
 
@@ -147,8 +147,8 @@
   border-radius: 11px;
   padding: 0 12px;
   color: #27557f;
-  font-size: 0.8rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: #fff;
   cursor: pointer;
   list-style: none;
@@ -189,13 +189,13 @@
 
  .admin-articles-stats span {
   color: #657b95;
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-articles-stats strong {
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.8rem;
   line-height: 1.05;
 }
@@ -203,7 +203,7 @@
  .admin-articles-stats small {
   overflow: hidden;
   color: #7c8da3;
-  font-size: 0.72rem;
+  font-size: var(--font-size-meta);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

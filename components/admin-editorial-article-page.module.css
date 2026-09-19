@@ -19,8 +19,8 @@
 
  .admin-article-section-heading > div > span {
   color: var(--primary);
-  font-size: 0.7rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -29,14 +29,14 @@
   max-width: 720px;
   margin: 0;
   color: #657b95;
-  font-size: 0.84rem;
+  font-size: var(--font-size-meta);
   line-height: 1.5;
 }
 
  .admin-article-section-heading h2 {
   margin: 3px 0 0;
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.3rem;
 }
 
@@ -61,8 +61,8 @@
 
  .admin-article-hero > div > span {
   color: #1760b9;
-  font-size: 0.7rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -71,7 +71,7 @@
   max-width: 920px;
   margin: 0;
   color: #15375e;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: clamp(1.55rem, 3vw, 2.35rem);
   line-height: 1.12;
   letter-spacing: -0.035em;
@@ -80,7 +80,7 @@
  .admin-article-hero p {
   margin: 0;
   color: #667b94;
-  font-size: 0.82rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-hero-status {
@@ -91,8 +91,8 @@
   border-radius: 10px;
   padding: 0 10px;
   color: #6e5b26;
-  font-size: 0.73rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: #fff7db;
 }
 
@@ -114,8 +114,8 @@
 
  .admin-article-overview-side article > span {
   color: #1760b9;
-  font-size: 0.68rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -136,7 +136,7 @@
 
  .admin-article-overview-side article > strong {
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 2.25rem;
   line-height: 1;
 }
@@ -144,7 +144,7 @@
  .admin-article-overview-side article > p {
   margin: 0;
   color: #6c8098;
-  font-size: 0.76rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-overview-side dl {
@@ -159,7 +159,7 @@
   gap: 12px;
   padding-bottom: 6px;
   border-bottom: 1px solid #edf1f6;
-  font-size: 0.76rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-overview-side dt {
@@ -170,7 +170,7 @@
   overflow: hidden;
   margin: 0;
   color: #274e78;
-  font-weight: 800;
+  font-weight: var(--font-weight-control);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -276,8 +276,8 @@
 
  .admin-article-sticky-actions > a:first-child {
   color: #28577f;
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   text-decoration: none;
 }
 
@@ -286,8 +286,19 @@
   align-items: center;
   gap: 6px;
   color: #637991;
-  font-size: 0.74rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
+}
+
+.admin-article-sticky-actions > .admin-article-action-feedback {
+  min-width: 0;
+  display: block;
+}
+
+.admin-article-action-feedback > p {
+  width: 100%;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
 }
 
  .admin-article-sticky-actions > div {
@@ -365,8 +376,8 @@
   padding: 10px 12px;
   border-radius: 10px;
   color: #83580c;
-  font-size: 0.78rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: #fff5d8;
 }
 
@@ -387,14 +398,14 @@
 
  .admin-article-quality-grid article > span {
   color: #6e829a;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   text-transform: uppercase;
 }
 
  .admin-article-quality-grid article > strong {
   color: #173a65;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.5rem;
 }
 
@@ -415,7 +426,7 @@
  .admin-article-quality-grid article p {
   margin: 0;
   color: #667d97;
-  font-size: 0.77rem;
+  font-size: var(--font-size-meta);
   line-height: 1.5;
 }
 

@@ -10,13 +10,13 @@
 
 .linkedin-post-preview > header > div { display: grid; gap: 1px; }
 
-.linkedin-post-preview > header strong { font-size: .84rem; }
+.linkedin-post-preview > header strong { font-size: var(--font-size-meta); }
 
-.linkedin-post-preview > header small { color: #68727c; font-size: .7rem; }
+.linkedin-post-preview > header small { color: #68727c; font-size: var(--font-size-meta); }
 
-.linkedin-post-preview > p { margin: 0; padding: 13px 14px 16px; font-size: .86rem; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.linkedin-post-preview > p { margin: 0; padding: 13px 14px 16px; font-size: var(--font-size-meta); line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
 
-.linkedin-post-preview > footer { display: grid; grid-template-columns: repeat(4, 1fr); padding: 4px 8px; border-top: 1px solid #e3e6e9; color: #5e6871; font-size: .7rem; font-weight: 750; text-align: center; }
+.linkedin-post-preview > footer { display: grid; grid-template-columns: repeat(4, 1fr); padding: 4px 8px; border-top: 1px solid #e3e6e9; color: #5e6871; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); text-align: center; }
 
 .linkedin-post-preview > footer span { padding: 8px 2px; }
 

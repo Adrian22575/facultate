@@ -30,8 +30,8 @@
   padding: 0 11px;
   color: #61758e;
   font: inherit;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   background: transparent;
   cursor: pointer;
 }
@@ -61,7 +61,7 @@
   place-items: center;
   border-radius: 7px;
   color: #55718f;
-  font-size: 0.68rem;
+  font-size: var(--font-size-meta);
   background: #fff;
 }
 
@@ -94,8 +94,8 @@
 
  .admin-article-next-action > span {
   color: #1760b9;
-  font-size: 0.68rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -103,7 +103,7 @@
  .admin-article-next-action h2 {
   margin: 0;
   color: #173b66;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 1.35rem;
 }
 
@@ -111,7 +111,7 @@
   max-width: 680px;
   margin: 0;
   color: #607892;
-  font-size: 0.83rem;
+  font-size: var(--font-size-meta);
   line-height: 1.55;
 }
 
@@ -144,12 +144,12 @@
 
  .admin-article-flow article strong {
   color: #294e77;
-  font-size: 0.78rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-flow article span {
   overflow: hidden;
-  font-size: 0.68rem;
+  font-size: var(--font-size-meta);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -178,8 +178,8 @@
   align-content: start;
   gap: 6px;
   color: #304f73;
-  font-size: 0.8rem;
-  font-weight: 750;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-article-editor-field:global(.is-full) {
@@ -188,8 +188,8 @@
 
  .admin-article-editor-field > small {
   color: #8090a4;
-  font-size: 0.68rem;
-  font-weight: 650;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
  .admin-article-editor-field input {
@@ -221,7 +221,7 @@
  .admin-article-editor-field textarea:global(.is-code) {
   min-height: 180px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.73rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-editor-field textarea:global(.is-long) {
@@ -259,7 +259,7 @@
 
  .admin-article-history time {
   color: #71859c;
-  font-size: 0.73rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-history article > span {
@@ -279,20 +279,20 @@
 
  .admin-article-history strong {
   color: #274d77;
-  font-size: 0.84rem;
+  font-size: var(--font-size-meta);
 }
 
  .admin-article-history p {
   margin: 0;
   color: #6b8098;
-  font-size: 0.75rem;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
 }
 
  .admin-article-history small {
   margin: 0;
   color: #6b8098;
-  font-size: 0.75rem;
+  font-size: var(--font-size-meta);
   line-height: 1.45;
 }
 
@@ -303,8 +303,8 @@
 
  .admin-article-publication-options > summary {
   color: #28537f;
-  font-size: 0.8rem;
-  font-weight: 850;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
   cursor: pointer;
 }
 
@@ -314,8 +314,8 @@
 
  .admin-article-disabled-preview {
   color: #8795a7;
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: var(--font-size-meta);
+  font-weight: var(--font-weight-control);
 }
 
 @media (max-width: 980px) {

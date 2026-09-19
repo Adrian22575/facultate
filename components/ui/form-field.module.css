@@ -3,8 +3,8 @@
   gap: var(--space-2);
   min-width: 0;
   color: var(--ink);
-  font-size: 0.9rem;
-  font-weight: 800;
+  font-size: var(--ui-body-font-size, 0.9rem);
+  font-weight: var(--ui-control-weight, 800);
 }
 
 :where(.label) {
@@ -24,8 +24,8 @@
   background: var(--surface);
   color: var(--ink);
   font: inherit;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: var(--ui-body-font-size, 16px);
+  font-weight: var(--ui-body-weight, 400);
   transition:
     border-color 160ms ease,
     background 160ms ease,
@@ -67,14 +67,14 @@
 
 :where(.hint) {
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 650;
+  font-size: var(--ui-meta-font-size, 0.78rem);
+  font-weight: var(--ui-hint-weight, 650);
   line-height: 1.4;
 }
 
 :where(.error) {
   color: var(--bad);
-  font-size: 0.82rem;
-  font-weight: 750;
+  font-size: var(--ui-meta-font-size, 0.82rem);
+  font-weight: var(--ui-control-weight, 750);
   line-height: 1.4;
 }

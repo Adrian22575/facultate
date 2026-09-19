@@ -1,14 +1,16 @@
-.admin-app-shell { min-height: 100vh; font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: linear-gradient(135deg, #f4f8fd 0%, #f8fbff 45%, #f3f7fc 100%); }
+.admin-app-shell { --ui-action-weight: var(--font-weight-control); --ui-control-weight: var(--font-weight-control); --ui-heading-weight: var(--font-weight-heading); --ui-meta-font-size: var(--font-size-meta); --ui-body-font-size: var(--font-size-body); --ui-body-weight: var(--font-weight-body); --ui-hint-weight: var(--font-weight-body); --ui-option-weight: var(--font-weight-control); --ui-pagination-weight: var(--font-weight-body); --ui-table-header-weight: var(--font-weight-heading); --ui-table-link-weight: var(--font-weight-heading); --ui-table-card-label-weight: var(--font-weight-control); --ui-loading-heading-weight: var(--font-weight-heading); --ui-loading-copy-weight: var(--font-weight-body); --ui-dialog-heading-weight: var(--font-weight-heading); --navigation-action-weight: var(--font-weight-control); --navigation-brand-weight: var(--font-weight-heading); min-height: 100vh; font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; font-size: var(--font-size-body); font-weight: var(--font-weight-body); background: linear-gradient(135deg, #f4f8fd 0%, #f8fbff 45%, #f3f7fc 100%); }
 
 .admin-app-shell :global(.admin-route-shell) { width: 100%; margin: var(--space-4) auto var(--space-7); }
+
+.admin-app-shell :where(strong, b) { font-weight: var(--font-weight-control); }
 
  .admin-app-shell :global(.admin-route-workspace) { min-width: 0; }
 
  .admin-app-shell :global(.admin-route-topbar) { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: 52px; margin-bottom: var(--layout-section-gap); padding: var(--space-2) var(--space-3); border: 1px solid #d7e3f1; border-radius: 15px; background: rgba(255, 255, 255, .88); box-shadow: 0 8px 22px rgba(29, 69, 116, .05); }
 
- .admin-app-shell :global(.admin-route-location) { display: flex; align-items: center; gap: 7px; min-width: 0; color: #8090a3; font-size: .78rem; white-space: nowrap; }
+ .admin-app-shell :global(.admin-route-location) { display: flex; align-items: center; gap: 7px; min-width: 0; color: #8090a3; font-size: var(--font-size-meta); white-space: nowrap; }
 
- .admin-app-shell :global(.admin-route-location) a { display: inline-flex; align-items: center; gap: 7px; color: #20588f; font-weight: 850; text-decoration: none; }
+ .admin-app-shell :global(.admin-route-location) a { display: inline-flex; align-items: center; gap: 7px; color: #20588f; font-weight: var(--font-weight-control); text-decoration: none; }
 
  .admin-app-shell :global(.admin-route-location) a:hover { color: #0c5cba; outline: none; text-decoration: underline; text-underline-offset: 3px; }
 
@@ -16,17 +18,23 @@
 
  .admin-app-shell :global(.admin-route-location) span { overflow: hidden; color: #657c95; text-overflow: ellipsis; }
 
- .admin-app-shell :global(.admin-route-location) strong { overflow: hidden; color: #244d76; font-weight: 900; text-overflow: ellipsis; }
+ .admin-app-shell :global(.admin-route-location) strong { overflow: hidden; color: #244d76; font-weight: var(--font-weight-heading); text-overflow: ellipsis; }
 
  .admin-app-shell :global(.admin-route-header) { display: grid; gap: var(--space-1); margin-bottom: var(--layout-section-gap); padding: var(--space-0); }
 
- .admin-app-shell :global(.admin-route-header) > span { color: #1760b9; font-size: .73rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+ .admin-app-shell :global(.admin-route-header) > span { color: #1760b9; font-size: var(--font-size-meta); font-weight: var(--font-weight-control); letter-spacing: .08em; text-transform: uppercase; }
 
- .admin-app-shell :global(.admin-route-header) h1 { margin: 0; color: #15375e; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.8rem, 3vw, 2.55rem); letter-spacing: -.035em; }
+ .admin-app-shell :global(.admin-route-header) h1 { margin: 0; color: #15375e; font-family: inherit; font-size: clamp(1.75rem, 3vw, 2rem); font-weight: var(--font-weight-heading); letter-spacing: -.035em; }
 
- .admin-app-shell :global(.admin-route-header) p { max-width: 760px; margin: 0; color: #617791; font-size: .93rem; line-height: 1.55; }
+ .admin-app-shell :global(.admin-route-header) p { max-width: 760px; margin: 0; color: #617791; font-size: var(--font-size-body); line-height: 1.55; }
 
  .admin-app-shell :global(.admin-route-content) { min-width: 0; }
+
+ .admin-app-shell :where(:global(.admin-route-content) h1) { font-family: inherit; font-size: clamp(1.75rem, 3vw, 2rem); font-weight: var(--font-weight-heading); }
+
+ .admin-app-shell :where(:global(.admin-route-content) h2) { font-family: inherit; font-size: 1.25rem; font-weight: var(--font-weight-heading); }
+
+ .admin-app-shell :where(:global(.admin-route-content) h3) { font-family: inherit; font-size: 1.1rem; font-weight: var(--font-weight-heading); }
 
  .admin-app-shell :global(.admin-route-content) > :global(.admin-panel) { border: 1px solid #d9e5f2; border-radius: 20px; background: rgba(255, 255, 255, .94); box-shadow: 0 13px 34px rgba(29, 69, 116, .065); }
 

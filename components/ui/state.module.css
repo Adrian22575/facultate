@@ -66,8 +66,8 @@
   display: block;
   margin-bottom: var(--loading-kicker-margin);
   color: var(--primary);
-  font-size: 0.8rem;
-  font-weight: 900;
+  font-size: var(--ui-meta-font-size, 0.8rem);
+  font-weight: var(--ui-control-weight, 900);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -75,6 +75,7 @@
 .loadingCard h1 {
   margin: var(--space-0);
   font-size: 1.55rem;
+  font-weight: var(--ui-loading-heading-weight, inherit);
   line-height: 1.15;
 }
 
@@ -82,7 +83,7 @@
   --loading-copy-margin: 6px;
   margin: var(--loading-copy-margin) var(--space-0) var(--space-0);
   color: var(--muted);
-  font-weight: 700;
+  font-weight: var(--ui-loading-copy-weight, 700);
 }
 
 .feedbackCard {

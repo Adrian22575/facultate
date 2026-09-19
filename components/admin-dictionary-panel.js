@@ -27,6 +27,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AdminEditorialAutomationSettings } from "@/components/admin-editorial-automation-settings";
 import { FilterSearch } from "@/components/ui/collection-controls";
+import { ActionLink, Button } from "@/components/ui/action";
 
 const ACTIVE_RUN_STATUSES = new Set(["started", "generated", "validated"]);
 const RUN_PROGRESS = { started: 12, generated: 62, validated: 88 };
@@ -222,7 +223,7 @@ export function AdminDictionaryPanel({
     try {
       faqs = JSON.parse(form.faqs);
     } catch {
-      setTermMessage({ tone: "error", text: "Întrebările frecvente trebuie să aibă format JSON valid." });
+      setTermMessage({ tone: "error", scope: "save", text: "Întrebările frecvente trebuie să aibă format JSON valid." });
       return;
     }
 
@@ -243,13 +244,14 @@ export function AdminDictionaryPanel({
     setBusy("");
 
     if (!response) {
-      setTermMessage({ tone: "error", text: "Nu am putut contacta serviciul. Încearcă din nou." });
+      setTermMessage({ tone: "error", scope: "save", text: "Nu am putut contacta serviciul. Încearcă din nou." });
       return;
     }
     if (!response.ok) {
       const reasons = Array.isArray(result?.reasons) ? result.reasons.join(" ") : "";
       setTermMessage({
         tone: "error",
+        scope: "save",
         text: result?.error === "quality_check_failed"
           ? `Conținutul nu a trecut verificarea de calitate.${reasons ? ` ${reasons}` : ""}`
           : result?.error === "invalid_payload"
@@ -263,6 +265,7 @@ export function AdminDictionaryPanel({
     setDirty(false);
     setTermMessage({
       tone: "success",
+      scope: "save",
       text: effectiveSelected.status === "published"
         ? "Modificările au fost salvate și au trecut verificarea. Termenul a fost retras temporar până la republicare."
         : `Modificările au fost salvate. Scor editorial: ${result.term.quality_score}/100.`
@@ -307,12 +310,13 @@ export function AdminDictionaryPanel({
     setConfirmation("");
 
     if (!response) {
-      setTermMessage({ tone: "error", text: "Nu am putut contacta serviciul. Încearcă din nou." });
+      setTermMessage({ tone: "error", scope: "publication", text: "Nu am putut contacta serviciul. Încearcă din nou." });
       return;
     }
     if (!response.ok) {
       setTermMessage({
         tone: "error",
+        scope: "publication",
         text: result?.error === "publication_quality_not_met"
           ? "Publicarea este blocată până când termenul obține un scor editorial de cel puțin 82."
           : "Acțiunea nu a fost salvată. Încearcă din nou."
@@ -324,6 +328,7 @@ export function AdminDictionaryPanel({
     patchTerm(effectiveSelected.id, { status: nextStatus });
     setTermMessage({
       tone: "success",
+      scope: "publication",
       text: action === "publish"
         ? "Termenul este publicat și poate fi deschis în Dicționar."
         : "Termenul a fost retras din Dicționar. Rămâne disponibil în Admin."
@@ -441,8 +446,9 @@ export function AdminDictionaryPanel({
             <section className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-workflow")} aria-labelledby="dictionary-workflow-title">
               <div className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-workflow-head")}>
                 <div><span>Flux editorial</span><h3 id="dictionary-workflow-title">Salvează, previzualizează și publică</h3></div>
-                <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "btn-back")} onClick={save} disabled={!dirty || Boolean(busy)}><Save size={16} />{busy === "save" ? "Se salvează…" : dirty ? "Salvează modificările" : "Modificări salvate"}</button>
+                {dirty ? <Button onClick={save} disabled={Boolean(busy)} aria-busy={busy === "save" || undefined}>{busy === "save" ? <LoadingSpinner size={16} /> : <Save size={16} />}{busy === "save" ? "Se salvează…" : "Salvează modificările"}</Button> : null}
               </div>
+              <ActionMessage message={termMessage?.scope === "save" ? termMessage : null} />
 
               {isPublished && dirty ? <p className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-edit-warning")}><AlertTriangle size={16} />Salvarea va retrage temporar termenul până când confirmi republicarea.</p> : null}
 
@@ -456,15 +462,15 @@ export function AdminDictionaryPanel({
                 <article>
                   <Eye aria-hidden="true" size={20} />
                   <div><span>2. Previzualizare</span><strong>Pagină privată</strong><p>Vezi termenul exact cum va arăta, inclusiv când este ciornă sau retras.</p></div>
-                  {dirty ? <span className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-disabled-action")}>Salvează mai întâi</span> : <a className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "btn-back")} href={`/admin/dictionar/${effectiveSelected.id}/preview`} target="_blank" rel="noreferrer">Deschide previzualizarea</a>}
+                  {isPublished ? <span className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-disabled-action")}>Disponibil în Dicționar</span> : dirty ? <span className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-disabled-action")}>Salvează mai întâi</span> : <ActionLink as="a" variant="secondary" href={`/admin/dictionar/${effectiveSelected.id}/preview`} target="_blank" rel="noreferrer">Deschide previzualizarea</ActionLink>}
                 </article>
 
                 <article className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], isPublished ? "is-published" : "")}>
                   {isPublished ? <CheckCircle2 aria-hidden="true" size={20} /> : <Send aria-hidden="true" size={20} />}
                   <div><span>3. Publicare</span><strong>{isPublished ? "Termen publicat" : canPublish ? "Pregătit pentru publicare" : "Publicare indisponibilă"}</strong><p>{isPublished ? "Termenul este vizibil în Dicționar." : canPublish ? "Confirmarea îl face vizibil public imediat." : "Salvează și obține un scor de cel puțin 82."}</p></div>
                   <div className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-step-actions")}>
-                    {isPublished ? <a className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "btn-back")} href={`/dictionar/${effectiveSelected.slug}`} target="_blank" rel="noreferrer">Vezi termenul public</a> : <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "btn-link")} onClick={() => setConfirmation("publish")} disabled={!canPublish || Boolean(busy)}>Publică termenul</button>}
-                    {isPublished ? <button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-withdraw")} onClick={() => setConfirmation("withdraw")} disabled={Boolean(busy)}><Undo2 size={15} />Retrage din site</button> : null}
+                    {isPublished ? <ActionLink as="a" variant="secondary" href={`/dictionar/${effectiveSelected.slug}`} target="_blank" rel="noreferrer">Vezi termenul public</ActionLink> : canPublish ? <Button onClick={() => setConfirmation("publish")} disabled={Boolean(busy)}>Publică termenul</Button> : null}
+                    {isPublished ? <Button variant="secondary" className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-withdraw")} onClick={() => setConfirmation("withdraw")} disabled={Boolean(busy)}><Undo2 size={15} />Retrage din site</Button> : null}
                   </div>
                 </article>
               </div>
@@ -472,11 +478,11 @@ export function AdminDictionaryPanel({
               {confirmation ? (
                 <div className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], `admin-dictionary-confirmation is-${confirmation}`)}>
                   <div><strong>{confirmation === "publish" ? "Publici termenul acum?" : "Retragi termenul din Dicționar?"}</strong><p>{confirmation === "publish" ? "Termenul va deveni vizibil public imediat." : "Termenul va fi ascuns public, dar rămâne în Admin și poate fi republicat."}</p></div>
-                  <div><button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], confirmation === "publish" ? "btn-link" : "admin-dictionary-withdraw is-confirm")} onClick={() => runAction(confirmation)} disabled={Boolean(busy)}>{busy === confirmation ? "Se salvează…" : confirmation === "publish" ? "Da, publică" : "Da, retrage"}</button><button type="button" className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "btn-back")} onClick={() => setConfirmation("")} disabled={Boolean(busy)}>Anulează</button></div>
+                  <div><Button variant={confirmation === "publish" ? "primary" : "destructive"} onClick={() => runAction(confirmation)} disabled={Boolean(busy)} aria-busy={busy === confirmation || undefined}>{busy === confirmation ? confirmation === "publish" ? "Se publică…" : "Se retrage…" : confirmation === "publish" ? "Da, publică" : "Da, retrage"}</Button><Button variant="secondary" onClick={() => setConfirmation("")} disabled={Boolean(busy)}>Anulează</Button></div>
                 </div>
               ) : null}
 
-              <ActionMessage message={termMessage} />
+              <ActionMessage message={termMessage?.scope === "publication" ? termMessage : null} />
             </section>
           </div>
         ) : <div className={moduleClassNames([panelStyles, listStyles, workflowStyles, libraryStyles], "admin-dictionary-editor is-empty")}>Alege un termen pentru editare.</div>}

@@ -7,10 +7,11 @@ import linkedInPreviewStyles from "./admin-linkedin-preview.module.css";
 
 import { CheckCircle2, ExternalLink, Eye, FilePenLine, FileText, RefreshCw, Save, Send, ThumbsDown, ThumbsUp, WandSparkles, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { AdminGenerationPromptPreview } from "@/components/admin-generation-prompt-preview";
 import { LoadingSpinner as LoaderCircle } from "@/components/loading-spinner";
+import { Button } from "@/components/ui/action";
 import { getLinkedInOptionsFromSettings, LinkedInDistributionSettings } from "@/components/linkedin-distribution-settings";
 import { LinkedInGenerationOptions } from "@/components/linkedin-generation-options";
 import { handleTablistKeyDown } from "@/lib/ui/tablist";
@@ -58,6 +59,9 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
   const [messageTone, setMessageTone] = useState("success");
+  const [messageScope, setMessageScope] = useState("editor");
+  const selectionContext = useRef(null);
+  const pendingInitialPost = useRef(initialPostId);
 
   useEffect(() => setPosts(data?.posts || []), [data?.posts]);
   useEffect(() => setConnection(data?.connection || null), [data?.connection]);
@@ -79,20 +83,30 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
   const publishAmbiguous = ["linkedin_publish_result_unknown", "linkedin_publish_confirmation_missing", "linkedin_publish_confirmation_persistence_failed"].includes(selected?.last_error);
 
   useEffect(() => {
-    const preferred = articlePosts.find((post) => post.id === initialPostId) || articlePosts[0] || null;
+    const context = `${article?.id || ""}:${initialPostId}`;
+    const contextChanged = selectionContext.current !== context;
+    selectionContext.current = context;
+    if (contextChanged) pendingInitialPost.current = initialPostId;
+    const requested = articlePosts.find((post) => post.id === pendingInitialPost.current);
+    if (!contextChanged && !requested && articlePosts.some((post) => post.id === selectedId)) return;
+    const preferred = requested || articlePosts[0] || null;
+    if (requested) pendingInitialPost.current = "";
     setSelectedId(preferred?.id || "");
     setText(preferred?.edited_text || preferred?.generated_text || "");
-    setMessage("");
-  }, [article?.id, initialPostId, articlePosts]);
+    if (contextChanged || selectedId !== preferred?.id) {
+      setMessage("");
+      setMessageScope("editor");
+    }
+  }, [article?.id, articlePosts, initialPostId, selectedId]);
 
   function patchPost(postId, patch) { setPosts((current) => current.map((post) => post.id === postId ? { ...post, ...patch } : post)); }
-  function choose(post) { setSelectedId(post.id); setText(post.edited_text || post.generated_text || ""); setEditorView("edit"); setMessage(""); }
-  function showMessage(text, tone = "success") { setMessage(text); setMessageTone(tone); }
+  function choose(post) { pendingInitialPost.current = ""; setSelectedId(post.id); setText(post.edited_text || post.generated_text || ""); setEditorView("edit"); setMessage(""); setMessageScope("editor"); }
+  function showMessage(text, tone = "success", scope = "editor") { setMessage(text); setMessageTone(tone); setMessageScope(scope); }
 
   async function generate() {
     if (!canPrepare || busy) return;
     if (articleActivity.published && !window.confirm(`Acest articol are deja ${articleActivity.published} postări publicate. Creezi o variantă nouă pentru verificare?`)) return;
-    setBusy("generate"); showMessage("Analizăm articolul, alegem unghiul și verificăm varianta finală.", "info");
+    setBusy("generate"); showMessage("Analizăm articolul, alegem unghiul și verificăm varianta finală.", "info", "generator");
     const response = await fetch(`/api/admin/linkedin/articles/${article.id}/generate`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(manualOptions) }).catch(() => null);
     const result = await response?.json().catch(() => ({})); setBusy("");
     if (!response?.ok || !result?.post || result?.skipped) {
@@ -102,10 +116,10 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
         already_prepared: "Există deja o variantă pregătită pentru acest articol. Selecteaz-o din istoric.",
         already_published: "Varianta selectată este deja publicată. Creează o variantă nouă din secțiunea de generare."
       }[result?.reason];
-      return showMessage(skippedMessage || humanError(result?.reason || result?.error) || "Textul nu a putut fi pregătit.", "error");
+      return showMessage(skippedMessage || humanError(result?.reason || result?.error) || "Textul nu a putut fi pregătit.", "error", "generator");
     }
     const next = { ...result.post, article: { id: article.id, slug: article.slug, title: article.title, status: article.status, published_at: article.published_at } };
-    setPosts((current) => [next, ...current.filter((item) => item.id !== next.id)]); choose(next); showMessage("Varianta este pregătită pentru verificare."); router.refresh();
+    setPosts((current) => [next, ...current.filter((item) => item.id !== next.id)]); choose(next); showMessage("Varianta este pregătită pentru verificare.", "success", "generator"); router.refresh();
   }
 
   async function saveText() {
@@ -122,11 +136,11 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
     setBusy(actionName); setMessage("");
     const response = await fetch(`/api/admin/linkedin/posts/${selected.id}/actions`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: actionName, ...extra }) }).catch(() => null);
     const result = await response?.json().catch(() => ({})); setBusy("");
-    if (!response?.ok || !result?.post || result?.skipped) { showMessage(humanError(result?.reason || result?.error) || "Acțiunea nu a putut fi finalizată.", "error"); router.refresh(); return; }
+    if (!response?.ok || !result?.post || result?.skipped) { showMessage(humanError(result?.reason || result?.error) || "Acțiunea nu a putut fi finalizată.", "error", actionName === "feedback" ? "feedback" : "editor"); router.refresh(); return; }
     patchPost(selected.id, result.post);
     if (!["feedback"].includes(actionName)) setText(result.post.edited_text || result.post.generated_text || text);
     const messages = { approve: "Postarea este aprobată.", reject: "Postarea a fost respinsă și rămâne în istoric.", publish: result.warning ? "Postarea a fost publicată, dar primul comentariu necesită atenție." : "Postarea a fost publicată pe LinkedIn.", retry: "Postarea a fost pregătită din nou pentru aprobare.", retry_comment: "Primul comentariu a fost publicat.", feedback: "Feedbackul a fost salvat." };
-    showMessage(messages[actionName] || "Varianta a fost rafinată și a revenit la aprobare.", result.warning ? "warning" : "success"); router.refresh();
+    showMessage(messages[actionName] || "Varianta a fost rafinată și a revenit la aprobare.", result.warning ? "warning" : "success", actionName === "feedback" ? "feedback" : "editor"); router.refresh();
   }
 
   const finalPayload = selected?.generated_payload?.final || {};
@@ -148,10 +162,9 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
       />
 
       {data?.warning ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-message is-error")}>{data.warning}</p> : null}
-      {message ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], `admin-linkedin-message is-${messageTone}`)} role="status" aria-live="polite">{message}</p> : null}
-
       {article?.status !== "published" ? <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-empty")}><strong>Articolul nu este publicat încă</strong><p>Publică articolul mai întâi, apoi pregătește postarea.</p></div> : <>
         <section className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-generator")}><div><span>Strategia următoarei variante</span><strong>Alege intenția. Sistemul selectează un singur unghi și verifică rezultatul.</strong></div><LinkedInGenerationOptions value={manualOptions} onChange={setManualOptions} disabled={!connected || Boolean(busy)} /><div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-generator-footer")}><div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-article-activity")}><strong>{articleActivity.published ? `Publicată de ${articleActivity.published} ori` : "Încă nepublicată pe LinkedIn"}</strong><span>O variantă nouă nu modifică postările publicate.</span></div><button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "btn-link")} onClick={generate} disabled={!canPrepare || Boolean(busy)}>{busy === "generate" ? <LoaderCircle className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "is-spinning")} size={16} /> : <FileText size={16} />}{busy === "generate" ? "Se pregătește…" : articleActivity.total ? "Creează variantă nouă" : "Pregătește postarea"}</button></div></section>
+        {message && messageScope === "generator" ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], `admin-linkedin-message is-${messageTone}`)} role="status" aria-live="polite">{message}</p> : null}
         <AdminGenerationPromptPreview preview={promptPreview ? { ...promptPreview, model: settings.model } : null} />
 
         {articlePosts.length ? <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-workspace is-article-context")}><div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-list")} role="group" aria-label="Variantele postării LinkedIn">{articlePosts.map((post) => { const status = STATUS[post.status] || [post.status, "draft"]; return <button type="button" key={post.id} className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], post.id === selected?.id ? "is-selected" : "")} onClick={() => choose(post)} disabled={Boolean(busy)} aria-pressed={post.id === selected?.id}><span className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], `is-${status[1]}`)}>{status[0]}</span><strong>Varianta {post.edition_number || 1}</strong><small>{post.quality_score == null ? formatDate(post.updated_at) : `Scor ${Number(post.quality_score).toFixed(1)} · ${formatDate(post.updated_at)}`}</small></button>; })}</div>
@@ -165,8 +178,18 @@ export function AdminLinkedInDistribution({ data, article, initialPostId = "" })
             {selected.last_error ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-error")}><XCircle size={16} />{humanError(selected.last_error)}</p> : null}
             {selected.link_comment_error ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-error")}><XCircle size={16} />{humanError(selected.link_comment_error)}</p> : null}
             {!['published', 'publishing', 'not_generated'].includes(selected.status) ? <details className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-refinements")}><summary><WandSparkles size={15} />Rafinează varianta</summary><div>{REFINEMENTS.map(([key, label]) => <button type="button" key={key} className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-secondary")} onClick={() => action(key)} disabled={Boolean(busy)}>{busy === key ? <LoaderCircle className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "is-spinning")} size={15} /> : null}{label}</button>)}</div></details> : null}
-            <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-actions")}>{!["published", "publishing", "not_generated"].includes(selected.status) ? <button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "btn-back admin-linkedin-secondary")} onClick={saveText} disabled={!textDirty || Boolean(busy)}><Save size={16} />{textDirty ? "Salvează textul" : "Text salvat"}</button> : null}{["draft", "pending_approval", "rejected", "failed"].includes(selected.status) && !publishAmbiguous ? <button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-approve")} onClick={() => action("approve")} disabled={textDirty || Boolean(busy)}><CheckCircle2 size={16} />Aprobă</button> : null}{["draft", "pending_approval", "approved", "failed"].includes(selected.status) && !publishAmbiguous ? <button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-reject")} onClick={() => action("reject")} disabled={Boolean(busy)}><XCircle size={16} />Respinge</button> : null}{selected.status === "approved" ? <button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "btn-link")} onClick={() => action("publish")} disabled={Boolean(busy)}><Send size={16} />{busy === "publish" ? "Se publică…" : "Publică pe LinkedIn"}</button> : null}{selected.status === "failed" && !publishAmbiguous ? <button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "btn-link")} onClick={() => action("retry")} disabled={Boolean(busy)}><RefreshCw size={16} />Reîncearcă</button> : null}{selected.status === "published" && selected.link_comment_status === "failed" && !commentAmbiguous ? <button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-secondary")} onClick={() => action("retry_comment")} disabled={Boolean(busy)}>Reîncearcă primul comentariu</button> : null}</div>
-            <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-feedback")}><span>A fost utilă varianta?</span><button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], selected.feedback === "up" ? "is-active" : "")} onClick={() => action("feedback", { feedback: "up" })} disabled={Boolean(busy)} aria-label="Feedback pozitiv"><ThumbsUp size={15} /></button><button type="button" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], selected.feedback === "down" ? "is-active" : "")} onClick={() => action("feedback", { feedback: "down" })} disabled={Boolean(busy)} aria-label="Feedback negativ"><ThumbsDown size={15} /></button></div>
+            <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-actions")}>
+              {textDirty && !["published", "publishing", "not_generated"].includes(selected.status) ? <Button onClick={saveText} disabled={Boolean(busy)} aria-busy={busy === "save" || undefined}>{busy === "save" ? <LoaderCircle size={16} /> : <Save size={16} />}{busy === "save" ? "Se salvează…" : "Salvează textul"}</Button> : null}
+              {!textDirty && ["draft", "pending_approval", "rejected"].includes(selected.status) && !publishAmbiguous ? <Button onClick={() => action("approve")} disabled={Boolean(busy)} aria-busy={busy === "approve" || undefined}>{busy === "approve" ? <LoaderCircle size={16} /> : <CheckCircle2 size={16} />}{busy === "approve" ? "Se aprobă…" : "Aprobă"}</Button> : null}
+              {selected.status === "approved" && !textDirty ? <Button onClick={() => action("publish")} disabled={Boolean(busy) || textDirty} aria-busy={busy === "publish" || undefined}><Send size={16} />{busy === "publish" ? "Se publică…" : "Publică pe LinkedIn"}</Button> : null}
+              {selected.status === "failed" && !publishAmbiguous && !textDirty ? <Button onClick={() => action("retry")} disabled={Boolean(busy)} aria-busy={busy === "retry" || undefined}><RefreshCw size={16} />{busy === "retry" ? "Se reîncearcă…" : "Reîncearcă"}</Button> : null}
+              {["draft", "pending_approval", "approved", "failed"].includes(selected.status) && !publishAmbiguous ? <Button variant="secondary" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-reject")} onClick={() => action("reject")} disabled={Boolean(busy)} aria-busy={busy === "reject" || undefined}><XCircle size={16} />{busy === "reject" ? "Se respinge…" : "Respinge"}</Button> : null}
+              {selected.status === "published" && selected.link_comment_status === "failed" && !commentAmbiguous ? <Button onClick={() => action("retry_comment")} disabled={Boolean(busy)} aria-busy={busy === "retry_comment" || undefined}>{busy === "retry_comment" ? "Se publică…" : "Reîncearcă primul comentariu"}</Button> : null}
+            </div>
+            {selected.status === "failed" && !publishAmbiguous && !textDirty ? <details className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-refinements")}><summary>Alte acțiuni</summary><div><Button variant="secondary" onClick={() => action("approve")} disabled={Boolean(busy)} aria-busy={busy === "approve" || undefined}>{busy === "approve" ? <LoaderCircle size={15} /> : <CheckCircle2 size={15} />}{busy === "approve" ? "Se aprobă…" : "Aprobă fără reîncercare"}</Button></div></details> : null}
+            {message && messageScope === "editor" ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], `admin-linkedin-message is-${messageTone}`)} role="status" aria-live="polite">{message}</p> : null}
+            <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-feedback")}><span>A fost utilă varianta?</span><Button variant="text" size="icon" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], selected.feedback === "up" ? "is-active" : "")} onClick={() => action("feedback", { feedback: "up" })} disabled={Boolean(busy)} aria-busy={busy === "feedback" || undefined} aria-label="Feedback pozitiv"><ThumbsUp size={15} /></Button><Button variant="text" size="icon" className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], selected.feedback === "down" ? "is-active" : "")} onClick={() => action("feedback", { feedback: "down" })} disabled={Boolean(busy)} aria-busy={busy === "feedback" || undefined} aria-label="Feedback negativ"><ThumbsDown size={15} /></Button></div>
+            {message && messageScope === "feedback" ? <p className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], `admin-linkedin-message is-${messageTone}`)} role="status" aria-live="polite">{message}</p> : null}
             <footer><span>Versiune: {selected.prompt_version || "—"}</span><span>Model: {selected.model || "—"}</span><span>Generată: {formatDate(selected.generated_at)}</span><span>Publicată: {formatDate(selected.published_at)}</span></footer>
           </div> : null}</div> : <div className={moduleClassNames([linkedInStyles, linkedInEditorStyles, linkedInPreviewStyles], "admin-linkedin-empty")}><strong>Nicio postare pregătită</strong><p>Alege strategia și pregătește prima variantă.</p></div>}
       </>}
