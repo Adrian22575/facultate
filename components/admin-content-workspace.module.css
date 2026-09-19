@@ -12,11 +12,11 @@
 .collection h2 { margin: 0; font-size: 1.125rem; font-weight: var(--font-weight-heading); color: var(--ink); }
 .collection h2:focus { outline: none; }
 .collection h2:focus-visible { outline: 2px solid var(--primary); outline-offset: var(--space-1); }
-.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.collection .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 .toolbar > label { flex: 1 1 300px; max-width: 440px; }
 .filters { display: flex; flex-wrap: wrap; gap: var(--space-1); }
-.filter { color: var(--muted); font-weight: var(--font-weight-body); border-radius: var(--radius-soft); }
-.filter[aria-pressed="true"] { color: var(--primary-dark); background: var(--primary-soft); box-shadow: inset 0 -2px var(--primary); font-weight: var(--font-weight-control); }
+.filters .filter { color: var(--muted); font-weight: var(--font-weight-body); border-radius: var(--radius-soft); }
+.filters .filter[aria-pressed="true"] { color: var(--primary-dark); background: var(--primary-soft); box-shadow: inset 0 -2px var(--primary); font-weight: var(--font-weight-control); }
 .filter span { font-variant-numeric: tabular-nums; color: inherit; font-weight: var(--font-weight-body); }
 .summary { margin: 0; color: var(--muted); font-size: var(--font-size-meta); }
 .list { list-style: none; margin: 0; padding: 0; }
@@ -30,13 +30,13 @@
 .row p { max-width: 75ch; margin: 0; font-size: var(--font-size-meta); font-weight: var(--font-weight-body); color: var(--muted); line-height: 1.55; overflow-wrap: anywhere; }
 .metadata { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); margin-top: var(--space-2); color: var(--muted); font-size: var(--font-size-meta); }
 .row .warning { margin-top: var(--space-2); color: #79520a; }
-.status { flex-shrink: 0; margin-top: var(--space-2); font-size: var(--font-size-meta); font-weight: var(--font-weight-body); }
+.row .status { flex-shrink: 0; margin-top: var(--space-2); font-size: var(--font-size-meta); font-weight: var(--font-weight-body); }
 .searchPending { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-5); color: var(--muted); }
 @media (max-width: 760px) {
   .toolbar > label { flex-basis: 100%; max-width: none; }
   .filters { width: 100%; }
-  .filter { min-height: 44px; }
+  .filters .filter { min-height: 44px; }
   .row { flex-direction: column; gap: var(--space-2); }
-  .status { margin: 0; }
+  .row .status { margin: 0; }
   .settings { flex-basis: 100%; }
 }
